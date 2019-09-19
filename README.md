@@ -1,6 +1,10 @@
 # atoz
 Amazon Web Services (AWS) APIs in Nim
 
+## Supported APIs
+
+[Sadly, only the 206 most popular AWS APIs are supported at this time.](https://github.com/disruptek/atoz/tree/master/src/atoz) :cry:
+
 ## Example
 
 Your import statement names the APIs you want to use and the versions of same,
