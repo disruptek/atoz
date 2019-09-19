@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode): string
 
-  OpenApiRestCall_772581 = ref object of OpenApiRestCall
+  OpenApiRestCall_600410 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_772581](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600410](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_772581): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600410): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -137,8 +137,8 @@ const
   awsServiceName = "sqs"
 method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
 type
-  Call_PostAddPermission_773207 = ref object of OpenApiRestCall_772581
-proc url_PostAddPermission_773209(protocol: Scheme; host: string; base: string;
+  Call_PostAddPermission_601042 = ref object of OpenApiRestCall_600410
+proc url_PostAddPermission_601044(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -154,7 +154,7 @@ proc url_PostAddPermission_773209(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostAddPermission_773208(path: JsonNode; query: JsonNode;
+proc validate_PostAddPermission_601043(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Adds a permission to a queue for a specific <a href="https://docs.aws.amazon.com/general/latest/gr/glos-chap.html#P">principal</a>. This allows sharing access to the queue.</p> <p>When you create a queue, you have full control access rights for the queue. Only you, the owner of the queue, can grant or deny permissions to the queue. For more information about these permissions, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-writing-an-sqs-policy.html#write-messages-to-shared-queue">Allow Developers to Write Messages to a Shared Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <ul> <li> <p> <code>AddPermission</code> generates a policy for you. You can use <code> <a>SetQueueAttributes</a> </code> to upload your policy. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-creating-custom-policies.html">Using Custom Policies with the Amazon SQS Access Policy Language</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>An Amazon SQS policy can have a maximum of 7 actions.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -168,31 +168,31 @@ proc validate_PostAddPermission_773208(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773210 = path.getOrDefault("QueueName")
-  valid_773210 = validateParameter(valid_773210, JString, required = true,
+  var valid_601045 = path.getOrDefault("QueueName")
+  valid_601045 = validateParameter(valid_601045, JString, required = true,
                                  default = nil)
-  if valid_773210 != nil:
-    section.add "QueueName", valid_773210
-  var valid_773211 = path.getOrDefault("AccountNumber")
-  valid_773211 = validateParameter(valid_773211, JInt, required = true, default = nil)
-  if valid_773211 != nil:
-    section.add "AccountNumber", valid_773211
+  if valid_601045 != nil:
+    section.add "QueueName", valid_601045
+  var valid_601046 = path.getOrDefault("AccountNumber")
+  valid_601046 = validateParameter(valid_601046, JInt, required = true, default = nil)
+  if valid_601046 != nil:
+    section.add "AccountNumber", valid_601046
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773212 = query.getOrDefault("Action")
-  valid_773212 = validateParameter(valid_773212, JString, required = true,
+  var valid_601047 = query.getOrDefault("Action")
+  valid_601047 = validateParameter(valid_601047, JString, required = true,
                                  default = newJString("AddPermission"))
-  if valid_773212 != nil:
-    section.add "Action", valid_773212
-  var valid_773213 = query.getOrDefault("Version")
-  valid_773213 = validateParameter(valid_773213, JString, required = true,
+  if valid_601047 != nil:
+    section.add "Action", valid_601047
+  var valid_601048 = query.getOrDefault("Version")
+  valid_601048 = validateParameter(valid_601048, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773213 != nil:
-    section.add "Version", valid_773213
+  if valid_601048 != nil:
+    section.add "Version", valid_601048
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -203,41 +203,41 @@ proc validate_PostAddPermission_773208(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773214 = header.getOrDefault("X-Amz-Date")
-  valid_773214 = validateParameter(valid_773214, JString, required = false,
+  var valid_601049 = header.getOrDefault("X-Amz-Date")
+  valid_601049 = validateParameter(valid_601049, JString, required = false,
                                  default = nil)
-  if valid_773214 != nil:
-    section.add "X-Amz-Date", valid_773214
-  var valid_773215 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773215 = validateParameter(valid_773215, JString, required = false,
+  if valid_601049 != nil:
+    section.add "X-Amz-Date", valid_601049
+  var valid_601050 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601050 = validateParameter(valid_601050, JString, required = false,
                                  default = nil)
-  if valid_773215 != nil:
-    section.add "X-Amz-Security-Token", valid_773215
-  var valid_773216 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773216 = validateParameter(valid_773216, JString, required = false,
+  if valid_601050 != nil:
+    section.add "X-Amz-Security-Token", valid_601050
+  var valid_601051 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601051 = validateParameter(valid_601051, JString, required = false,
                                  default = nil)
-  if valid_773216 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773216
-  var valid_773217 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773217 = validateParameter(valid_773217, JString, required = false,
+  if valid_601051 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601051
+  var valid_601052 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601052 = validateParameter(valid_601052, JString, required = false,
                                  default = nil)
-  if valid_773217 != nil:
-    section.add "X-Amz-Algorithm", valid_773217
-  var valid_773218 = header.getOrDefault("X-Amz-Signature")
-  valid_773218 = validateParameter(valid_773218, JString, required = false,
+  if valid_601052 != nil:
+    section.add "X-Amz-Algorithm", valid_601052
+  var valid_601053 = header.getOrDefault("X-Amz-Signature")
+  valid_601053 = validateParameter(valid_601053, JString, required = false,
                                  default = nil)
-  if valid_773218 != nil:
-    section.add "X-Amz-Signature", valid_773218
-  var valid_773219 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773219 = validateParameter(valid_773219, JString, required = false,
+  if valid_601053 != nil:
+    section.add "X-Amz-Signature", valid_601053
+  var valid_601054 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601054 = validateParameter(valid_601054, JString, required = false,
                                  default = nil)
-  if valid_773219 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773219
-  var valid_773220 = header.getOrDefault("X-Amz-Credential")
-  valid_773220 = validateParameter(valid_773220, JString, required = false,
+  if valid_601054 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601054
+  var valid_601055 = header.getOrDefault("X-Amz-Credential")
+  valid_601055 = validateParameter(valid_601055, JString, required = false,
                                  default = nil)
-  if valid_773220 != nil:
-    section.add "X-Amz-Credential", valid_773220
+  if valid_601055 != nil:
+    section.add "X-Amz-Credential", valid_601055
   result.add "header", section
   ## parameters in `formData` object:
   ##   Actions: JArray (required)
@@ -252,36 +252,36 @@ proc validate_PostAddPermission_773208(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Actions` field"
-  var valid_773221 = formData.getOrDefault("Actions")
-  valid_773221 = validateParameter(valid_773221, JArray, required = true, default = nil)
-  if valid_773221 != nil:
-    section.add "Actions", valid_773221
-  var valid_773222 = formData.getOrDefault("Label")
-  valid_773222 = validateParameter(valid_773222, JString, required = true,
+  var valid_601056 = formData.getOrDefault("Actions")
+  valid_601056 = validateParameter(valid_601056, JArray, required = true, default = nil)
+  if valid_601056 != nil:
+    section.add "Actions", valid_601056
+  var valid_601057 = formData.getOrDefault("Label")
+  valid_601057 = validateParameter(valid_601057, JString, required = true,
                                  default = nil)
-  if valid_773222 != nil:
-    section.add "Label", valid_773222
-  var valid_773223 = formData.getOrDefault("AWSAccountIds")
-  valid_773223 = validateParameter(valid_773223, JArray, required = true, default = nil)
-  if valid_773223 != nil:
-    section.add "AWSAccountIds", valid_773223
+  if valid_601057 != nil:
+    section.add "Label", valid_601057
+  var valid_601058 = formData.getOrDefault("AWSAccountIds")
+  valid_601058 = validateParameter(valid_601058, JArray, required = true, default = nil)
+  if valid_601058 != nil:
+    section.add "AWSAccountIds", valid_601058
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773224: Call_PostAddPermission_773207; path: JsonNode;
+proc call*(call_601059: Call_PostAddPermission_601042; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds a permission to a queue for a specific <a href="https://docs.aws.amazon.com/general/latest/gr/glos-chap.html#P">principal</a>. This allows sharing access to the queue.</p> <p>When you create a queue, you have full control access rights for the queue. Only you, the owner of the queue, can grant or deny permissions to the queue. For more information about these permissions, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-writing-an-sqs-policy.html#write-messages-to-shared-queue">Allow Developers to Write Messages to a Shared Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <ul> <li> <p> <code>AddPermission</code> generates a policy for you. You can use <code> <a>SetQueueAttributes</a> </code> to upload your policy. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-creating-custom-policies.html">Using Custom Policies with the Amazon SQS Access Policy Language</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>An Amazon SQS policy can have a maximum of 7 actions.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773224.validator(path, query, header, formData, body)
-  let scheme = call_773224.pickScheme
+  let valid = call_601059.validator(path, query, header, formData, body)
+  let scheme = call_601059.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773224.url(scheme.get, call_773224.host, call_773224.base,
-                         call_773224.route, valid.getOrDefault("path"))
-  result = hook(call_773224, url, valid)
+  let url = call_601059.url(scheme.get, call_601059.host, call_601059.base,
+                         call_601059.route, valid.getOrDefault("path"))
+  result = hook(call_601059, url, valid)
 
-proc call*(call_773225: Call_PostAddPermission_773207; Actions: JsonNode;
+proc call*(call_601060: Call_PostAddPermission_601042; Actions: JsonNode;
           Label: string; AWSAccountIds: JsonNode; QueueName: string;
           AccountNumber: int; Action: string = "AddPermission";
           Version: string = "2012-11-05"): Recallable =
@@ -302,28 +302,28 @@ proc call*(call_773225: Call_PostAddPermission_773207; Actions: JsonNode;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773226 = newJObject()
-  var query_773227 = newJObject()
-  var formData_773228 = newJObject()
+  var path_601061 = newJObject()
+  var query_601062 = newJObject()
+  var formData_601063 = newJObject()
   if Actions != nil:
-    formData_773228.add "Actions", Actions
-  add(formData_773228, "Label", newJString(Label))
+    formData_601063.add "Actions", Actions
+  add(formData_601063, "Label", newJString(Label))
   if AWSAccountIds != nil:
-    formData_773228.add "AWSAccountIds", AWSAccountIds
-  add(path_773226, "QueueName", newJString(QueueName))
-  add(query_773227, "Action", newJString(Action))
-  add(path_773226, "AccountNumber", newJInt(AccountNumber))
-  add(query_773227, "Version", newJString(Version))
-  result = call_773225.call(path_773226, query_773227, nil, formData_773228, nil)
+    formData_601063.add "AWSAccountIds", AWSAccountIds
+  add(path_601061, "QueueName", newJString(QueueName))
+  add(query_601062, "Action", newJString(Action))
+  add(path_601061, "AccountNumber", newJInt(AccountNumber))
+  add(query_601062, "Version", newJString(Version))
+  result = call_601060.call(path_601061, query_601062, nil, formData_601063, nil)
 
-var postAddPermission* = Call_PostAddPermission_773207(name: "postAddPermission",
+var postAddPermission* = Call_PostAddPermission_601042(name: "postAddPermission",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=AddPermission",
-    validator: validate_PostAddPermission_773208, base: "/",
-    url: url_PostAddPermission_773209, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostAddPermission_601043, base: "/",
+    url: url_PostAddPermission_601044, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAddPermission_772917 = ref object of OpenApiRestCall_772581
-proc url_GetAddPermission_772919(protocol: Scheme; host: string; base: string;
+  Call_GetAddPermission_600752 = ref object of OpenApiRestCall_600410
+proc url_GetAddPermission_600754(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -339,7 +339,7 @@ proc url_GetAddPermission_772919(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetAddPermission_772918(path: JsonNode; query: JsonNode;
+proc validate_GetAddPermission_600753(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Adds a permission to a queue for a specific <a href="https://docs.aws.amazon.com/general/latest/gr/glos-chap.html#P">principal</a>. This allows sharing access to the queue.</p> <p>When you create a queue, you have full control access rights for the queue. Only you, the owner of the queue, can grant or deny permissions to the queue. For more information about these permissions, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-writing-an-sqs-policy.html#write-messages-to-shared-queue">Allow Developers to Write Messages to a Shared Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <ul> <li> <p> <code>AddPermission</code> generates a policy for you. You can use <code> <a>SetQueueAttributes</a> </code> to upload your policy. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-creating-custom-policies.html">Using Custom Policies with the Amazon SQS Access Policy Language</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>An Amazon SQS policy can have a maximum of 7 actions.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -353,15 +353,15 @@ proc validate_GetAddPermission_772918(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773045 = path.getOrDefault("QueueName")
-  valid_773045 = validateParameter(valid_773045, JString, required = true,
+  var valid_600880 = path.getOrDefault("QueueName")
+  valid_600880 = validateParameter(valid_600880, JString, required = true,
                                  default = nil)
-  if valid_773045 != nil:
-    section.add "QueueName", valid_773045
-  var valid_773046 = path.getOrDefault("AccountNumber")
-  valid_773046 = validateParameter(valid_773046, JInt, required = true, default = nil)
-  if valid_773046 != nil:
-    section.add "AccountNumber", valid_773046
+  if valid_600880 != nil:
+    section.add "QueueName", valid_600880
+  var valid_600881 = path.getOrDefault("AccountNumber")
+  valid_600881 = validateParameter(valid_600881, JInt, required = true, default = nil)
+  if valid_600881 != nil:
+    section.add "AccountNumber", valid_600881
   result.add "path", section
   ## parameters in `query` object:
   ##   AWSAccountIds: JArray (required)
@@ -378,29 +378,29 @@ proc validate_GetAddPermission_772918(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `AWSAccountIds` field"
-  var valid_773047 = query.getOrDefault("AWSAccountIds")
-  valid_773047 = validateParameter(valid_773047, JArray, required = true, default = nil)
-  if valid_773047 != nil:
-    section.add "AWSAccountIds", valid_773047
-  var valid_773061 = query.getOrDefault("Action")
-  valid_773061 = validateParameter(valid_773061, JString, required = true,
+  var valid_600882 = query.getOrDefault("AWSAccountIds")
+  valid_600882 = validateParameter(valid_600882, JArray, required = true, default = nil)
+  if valid_600882 != nil:
+    section.add "AWSAccountIds", valid_600882
+  var valid_600896 = query.getOrDefault("Action")
+  valid_600896 = validateParameter(valid_600896, JString, required = true,
                                  default = newJString("AddPermission"))
-  if valid_773061 != nil:
-    section.add "Action", valid_773061
-  var valid_773062 = query.getOrDefault("Actions")
-  valid_773062 = validateParameter(valid_773062, JArray, required = true, default = nil)
-  if valid_773062 != nil:
-    section.add "Actions", valid_773062
-  var valid_773063 = query.getOrDefault("Version")
-  valid_773063 = validateParameter(valid_773063, JString, required = true,
+  if valid_600896 != nil:
+    section.add "Action", valid_600896
+  var valid_600897 = query.getOrDefault("Actions")
+  valid_600897 = validateParameter(valid_600897, JArray, required = true, default = nil)
+  if valid_600897 != nil:
+    section.add "Actions", valid_600897
+  var valid_600898 = query.getOrDefault("Version")
+  valid_600898 = validateParameter(valid_600898, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773063 != nil:
-    section.add "Version", valid_773063
-  var valid_773064 = query.getOrDefault("Label")
-  valid_773064 = validateParameter(valid_773064, JString, required = true,
+  if valid_600898 != nil:
+    section.add "Version", valid_600898
+  var valid_600899 = query.getOrDefault("Label")
+  valid_600899 = validateParameter(valid_600899, JString, required = true,
                                  default = nil)
-  if valid_773064 != nil:
-    section.add "Label", valid_773064
+  if valid_600899 != nil:
+    section.add "Label", valid_600899
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -411,60 +411,60 @@ proc validate_GetAddPermission_772918(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773065 = header.getOrDefault("X-Amz-Date")
-  valid_773065 = validateParameter(valid_773065, JString, required = false,
+  var valid_600900 = header.getOrDefault("X-Amz-Date")
+  valid_600900 = validateParameter(valid_600900, JString, required = false,
                                  default = nil)
-  if valid_773065 != nil:
-    section.add "X-Amz-Date", valid_773065
-  var valid_773066 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773066 = validateParameter(valid_773066, JString, required = false,
+  if valid_600900 != nil:
+    section.add "X-Amz-Date", valid_600900
+  var valid_600901 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600901 = validateParameter(valid_600901, JString, required = false,
                                  default = nil)
-  if valid_773066 != nil:
-    section.add "X-Amz-Security-Token", valid_773066
-  var valid_773067 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773067 = validateParameter(valid_773067, JString, required = false,
+  if valid_600901 != nil:
+    section.add "X-Amz-Security-Token", valid_600901
+  var valid_600902 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600902 = validateParameter(valid_600902, JString, required = false,
                                  default = nil)
-  if valid_773067 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773067
-  var valid_773068 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773068 = validateParameter(valid_773068, JString, required = false,
+  if valid_600902 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600902
+  var valid_600903 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600903 = validateParameter(valid_600903, JString, required = false,
                                  default = nil)
-  if valid_773068 != nil:
-    section.add "X-Amz-Algorithm", valid_773068
-  var valid_773069 = header.getOrDefault("X-Amz-Signature")
-  valid_773069 = validateParameter(valid_773069, JString, required = false,
+  if valid_600903 != nil:
+    section.add "X-Amz-Algorithm", valid_600903
+  var valid_600904 = header.getOrDefault("X-Amz-Signature")
+  valid_600904 = validateParameter(valid_600904, JString, required = false,
                                  default = nil)
-  if valid_773069 != nil:
-    section.add "X-Amz-Signature", valid_773069
-  var valid_773070 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773070 = validateParameter(valid_773070, JString, required = false,
+  if valid_600904 != nil:
+    section.add "X-Amz-Signature", valid_600904
+  var valid_600905 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600905 = validateParameter(valid_600905, JString, required = false,
                                  default = nil)
-  if valid_773070 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773070
-  var valid_773071 = header.getOrDefault("X-Amz-Credential")
-  valid_773071 = validateParameter(valid_773071, JString, required = false,
+  if valid_600905 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600905
+  var valid_600906 = header.getOrDefault("X-Amz-Credential")
+  valid_600906 = validateParameter(valid_600906, JString, required = false,
                                  default = nil)
-  if valid_773071 != nil:
-    section.add "X-Amz-Credential", valid_773071
+  if valid_600906 != nil:
+    section.add "X-Amz-Credential", valid_600906
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773094: Call_GetAddPermission_772917; path: JsonNode;
+proc call*(call_600929: Call_GetAddPermission_600752; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds a permission to a queue for a specific <a href="https://docs.aws.amazon.com/general/latest/gr/glos-chap.html#P">principal</a>. This allows sharing access to the queue.</p> <p>When you create a queue, you have full control access rights for the queue. Only you, the owner of the queue, can grant or deny permissions to the queue. For more information about these permissions, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-writing-an-sqs-policy.html#write-messages-to-shared-queue">Allow Developers to Write Messages to a Shared Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <ul> <li> <p> <code>AddPermission</code> generates a policy for you. You can use <code> <a>SetQueueAttributes</a> </code> to upload your policy. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-creating-custom-policies.html">Using Custom Policies with the Amazon SQS Access Policy Language</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>An Amazon SQS policy can have a maximum of 7 actions.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773094.validator(path, query, header, formData, body)
-  let scheme = call_773094.pickScheme
+  let valid = call_600929.validator(path, query, header, formData, body)
+  let scheme = call_600929.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773094.url(scheme.get, call_773094.host, call_773094.base,
-                         call_773094.route, valid.getOrDefault("path"))
-  result = hook(call_773094, url, valid)
+  let url = call_600929.url(scheme.get, call_600929.host, call_600929.base,
+                         call_600929.route, valid.getOrDefault("path"))
+  result = hook(call_600929, url, valid)
 
-proc call*(call_773165: Call_GetAddPermission_772917; AWSAccountIds: JsonNode;
+proc call*(call_601000: Call_GetAddPermission_600752; AWSAccountIds: JsonNode;
           QueueName: string; Actions: JsonNode; AccountNumber: int; Label: string;
           Action: string = "AddPermission"; Version: string = "2012-11-05"): Recallable =
   ## getAddPermission
@@ -484,27 +484,27 @@ proc call*(call_773165: Call_GetAddPermission_772917; AWSAccountIds: JsonNode;
   ##   Version: string (required)
   ##   Label: string (required)
   ##        : The unique identification of the permission you're setting (for example, <code>AliceSendMessage</code>). Maximum 80 characters. Allowed characters include alphanumeric characters, hyphens (<code>-</code>), and underscores (<code>_</code>).
-  var path_773166 = newJObject()
-  var query_773168 = newJObject()
+  var path_601001 = newJObject()
+  var query_601003 = newJObject()
   if AWSAccountIds != nil:
-    query_773168.add "AWSAccountIds", AWSAccountIds
-  add(path_773166, "QueueName", newJString(QueueName))
-  add(query_773168, "Action", newJString(Action))
+    query_601003.add "AWSAccountIds", AWSAccountIds
+  add(path_601001, "QueueName", newJString(QueueName))
+  add(query_601003, "Action", newJString(Action))
   if Actions != nil:
-    query_773168.add "Actions", Actions
-  add(path_773166, "AccountNumber", newJInt(AccountNumber))
-  add(query_773168, "Version", newJString(Version))
-  add(query_773168, "Label", newJString(Label))
-  result = call_773165.call(path_773166, query_773168, nil, nil, nil)
+    query_601003.add "Actions", Actions
+  add(path_601001, "AccountNumber", newJInt(AccountNumber))
+  add(query_601003, "Version", newJString(Version))
+  add(query_601003, "Label", newJString(Label))
+  result = call_601000.call(path_601001, query_601003, nil, nil, nil)
 
-var getAddPermission* = Call_GetAddPermission_772917(name: "getAddPermission",
+var getAddPermission* = Call_GetAddPermission_600752(name: "getAddPermission",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=AddPermission",
-    validator: validate_GetAddPermission_772918, base: "/",
-    url: url_GetAddPermission_772919, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetAddPermission_600753, base: "/",
+    url: url_GetAddPermission_600754, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostChangeMessageVisibility_773249 = ref object of OpenApiRestCall_772581
-proc url_PostChangeMessageVisibility_773251(protocol: Scheme; host: string;
+  Call_PostChangeMessageVisibility_601084 = ref object of OpenApiRestCall_600410
+proc url_PostChangeMessageVisibility_601086(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -520,7 +520,7 @@ proc url_PostChangeMessageVisibility_773251(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostChangeMessageVisibility_773250(path: JsonNode; query: JsonNode;
+proc validate_PostChangeMessageVisibility_601085(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Changes the visibility timeout of a specified message in a queue to a new value. The default visibility timeout for a message is 30 seconds. The minimum is 0 seconds. The maximum is 12 hours. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Visibility Timeout</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>For example, you have a message with a visibility timeout of 5 minutes. After 3 minutes, you call <code>ChangeMessageVisibility</code> with a timeout of 10 minutes. You can continue to call <code>ChangeMessageVisibility</code> to extend the visibility timeout to the maximum allowed time. If you try to extend the visibility timeout beyond the maximum, your request is rejected.</p> <p>An Amazon SQS message has three basic states:</p> <ol> <li> <p>Sent to a queue by a producer.</p> </li> <li> <p>Received from the queue by a consumer.</p> </li> <li> <p>Deleted from the queue.</p> </li> </ol> <p>A message is considered to be <i>stored</i> after it is sent to a queue by a producer, but not yet received from the queue by a consumer (that is, between states 1 and 2). There is no limit to the number of stored messages. A message is considered to be <i>in flight</i> after it is received from a queue by a consumer, but not yet deleted from the queue (that is, between states 2 and 3). There is a limit to the number of inflight messages.</p> <p>Limits that apply to inflight messages are unrelated to the <i>unlimited</i> number of stored messages.</p> <p>For most standard queues (depending on queue traffic and message backlog), there can be a maximum of approximately 120,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns the <code>OverLimit</code> error message. To avoid reaching the limit, you should delete messages from the queue after they're processed. You can also increase the number of queues you use to process your messages. To request a limit increase, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-sqs">file a support request</a>.</p> <p>For FIFO queues, there can be a maximum of 20,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns no error messages.</p> <important> <p>If you attempt to set the <code>VisibilityTimeout</code> to a value greater than the maximum time left, Amazon SQS returns an error. Amazon SQS doesn't automatically recalculate and increase the timeout to the maximum remaining time.</p> <p>Unlike with a queue, when you change the visibility timeout for a specific message the timeout value is applied immediately but isn't saved in memory for that message. If you don't delete a message after it is received, the visibility timeout for the message reverts to the original timeout value (not to the value you set using the <code>ChangeMessageVisibility</code> action) the next time the message is received.</p> </important>
   ## 
@@ -533,31 +533,31 @@ proc validate_PostChangeMessageVisibility_773250(path: JsonNode; query: JsonNode
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773252 = path.getOrDefault("QueueName")
-  valid_773252 = validateParameter(valid_773252, JString, required = true,
+  var valid_601087 = path.getOrDefault("QueueName")
+  valid_601087 = validateParameter(valid_601087, JString, required = true,
                                  default = nil)
-  if valid_773252 != nil:
-    section.add "QueueName", valid_773252
-  var valid_773253 = path.getOrDefault("AccountNumber")
-  valid_773253 = validateParameter(valid_773253, JInt, required = true, default = nil)
-  if valid_773253 != nil:
-    section.add "AccountNumber", valid_773253
+  if valid_601087 != nil:
+    section.add "QueueName", valid_601087
+  var valid_601088 = path.getOrDefault("AccountNumber")
+  valid_601088 = validateParameter(valid_601088, JInt, required = true, default = nil)
+  if valid_601088 != nil:
+    section.add "AccountNumber", valid_601088
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773254 = query.getOrDefault("Action")
-  valid_773254 = validateParameter(valid_773254, JString, required = true, default = newJString(
+  var valid_601089 = query.getOrDefault("Action")
+  valid_601089 = validateParameter(valid_601089, JString, required = true, default = newJString(
       "ChangeMessageVisibility"))
-  if valid_773254 != nil:
-    section.add "Action", valid_773254
-  var valid_773255 = query.getOrDefault("Version")
-  valid_773255 = validateParameter(valid_773255, JString, required = true,
+  if valid_601089 != nil:
+    section.add "Action", valid_601089
+  var valid_601090 = query.getOrDefault("Version")
+  valid_601090 = validateParameter(valid_601090, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773255 != nil:
-    section.add "Version", valid_773255
+  if valid_601090 != nil:
+    section.add "Version", valid_601090
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -568,41 +568,41 @@ proc validate_PostChangeMessageVisibility_773250(path: JsonNode; query: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773256 = header.getOrDefault("X-Amz-Date")
-  valid_773256 = validateParameter(valid_773256, JString, required = false,
+  var valid_601091 = header.getOrDefault("X-Amz-Date")
+  valid_601091 = validateParameter(valid_601091, JString, required = false,
                                  default = nil)
-  if valid_773256 != nil:
-    section.add "X-Amz-Date", valid_773256
-  var valid_773257 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773257 = validateParameter(valid_773257, JString, required = false,
+  if valid_601091 != nil:
+    section.add "X-Amz-Date", valid_601091
+  var valid_601092 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601092 = validateParameter(valid_601092, JString, required = false,
                                  default = nil)
-  if valid_773257 != nil:
-    section.add "X-Amz-Security-Token", valid_773257
-  var valid_773258 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773258 = validateParameter(valid_773258, JString, required = false,
+  if valid_601092 != nil:
+    section.add "X-Amz-Security-Token", valid_601092
+  var valid_601093 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601093 = validateParameter(valid_601093, JString, required = false,
                                  default = nil)
-  if valid_773258 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773258
-  var valid_773259 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773259 = validateParameter(valid_773259, JString, required = false,
+  if valid_601093 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601093
+  var valid_601094 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601094 = validateParameter(valid_601094, JString, required = false,
                                  default = nil)
-  if valid_773259 != nil:
-    section.add "X-Amz-Algorithm", valid_773259
-  var valid_773260 = header.getOrDefault("X-Amz-Signature")
-  valid_773260 = validateParameter(valid_773260, JString, required = false,
+  if valid_601094 != nil:
+    section.add "X-Amz-Algorithm", valid_601094
+  var valid_601095 = header.getOrDefault("X-Amz-Signature")
+  valid_601095 = validateParameter(valid_601095, JString, required = false,
                                  default = nil)
-  if valid_773260 != nil:
-    section.add "X-Amz-Signature", valid_773260
-  var valid_773261 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773261 = validateParameter(valid_773261, JString, required = false,
+  if valid_601095 != nil:
+    section.add "X-Amz-Signature", valid_601095
+  var valid_601096 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601096 = validateParameter(valid_601096, JString, required = false,
                                  default = nil)
-  if valid_773261 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773261
-  var valid_773262 = header.getOrDefault("X-Amz-Credential")
-  valid_773262 = validateParameter(valid_773262, JString, required = false,
+  if valid_601096 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601096
+  var valid_601097 = header.getOrDefault("X-Amz-Credential")
+  valid_601097 = validateParameter(valid_601097, JString, required = false,
                                  default = nil)
-  if valid_773262 != nil:
-    section.add "X-Amz-Credential", valid_773262
+  if valid_601097 != nil:
+    section.add "X-Amz-Credential", valid_601097
   result.add "header", section
   ## parameters in `formData` object:
   ##   VisibilityTimeout: JInt (required)
@@ -611,32 +611,32 @@ proc validate_PostChangeMessageVisibility_773250(path: JsonNode; query: JsonNode
   ##                : The receipt handle associated with the message whose visibility timeout is changed. This parameter is returned by the <code> <a>ReceiveMessage</a> </code> action.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `VisibilityTimeout` field"
-  var valid_773263 = formData.getOrDefault("VisibilityTimeout")
-  valid_773263 = validateParameter(valid_773263, JInt, required = true, default = nil)
-  if valid_773263 != nil:
-    section.add "VisibilityTimeout", valid_773263
-  var valid_773264 = formData.getOrDefault("ReceiptHandle")
-  valid_773264 = validateParameter(valid_773264, JString, required = true,
+  var valid_601098 = formData.getOrDefault("VisibilityTimeout")
+  valid_601098 = validateParameter(valid_601098, JInt, required = true, default = nil)
+  if valid_601098 != nil:
+    section.add "VisibilityTimeout", valid_601098
+  var valid_601099 = formData.getOrDefault("ReceiptHandle")
+  valid_601099 = validateParameter(valid_601099, JString, required = true,
                                  default = nil)
-  if valid_773264 != nil:
-    section.add "ReceiptHandle", valid_773264
+  if valid_601099 != nil:
+    section.add "ReceiptHandle", valid_601099
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773265: Call_PostChangeMessageVisibility_773249; path: JsonNode;
+proc call*(call_601100: Call_PostChangeMessageVisibility_601084; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Changes the visibility timeout of a specified message in a queue to a new value. The default visibility timeout for a message is 30 seconds. The minimum is 0 seconds. The maximum is 12 hours. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Visibility Timeout</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>For example, you have a message with a visibility timeout of 5 minutes. After 3 minutes, you call <code>ChangeMessageVisibility</code> with a timeout of 10 minutes. You can continue to call <code>ChangeMessageVisibility</code> to extend the visibility timeout to the maximum allowed time. If you try to extend the visibility timeout beyond the maximum, your request is rejected.</p> <p>An Amazon SQS message has three basic states:</p> <ol> <li> <p>Sent to a queue by a producer.</p> </li> <li> <p>Received from the queue by a consumer.</p> </li> <li> <p>Deleted from the queue.</p> </li> </ol> <p>A message is considered to be <i>stored</i> after it is sent to a queue by a producer, but not yet received from the queue by a consumer (that is, between states 1 and 2). There is no limit to the number of stored messages. A message is considered to be <i>in flight</i> after it is received from a queue by a consumer, but not yet deleted from the queue (that is, between states 2 and 3). There is a limit to the number of inflight messages.</p> <p>Limits that apply to inflight messages are unrelated to the <i>unlimited</i> number of stored messages.</p> <p>For most standard queues (depending on queue traffic and message backlog), there can be a maximum of approximately 120,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns the <code>OverLimit</code> error message. To avoid reaching the limit, you should delete messages from the queue after they're processed. You can also increase the number of queues you use to process your messages. To request a limit increase, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-sqs">file a support request</a>.</p> <p>For FIFO queues, there can be a maximum of 20,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns no error messages.</p> <important> <p>If you attempt to set the <code>VisibilityTimeout</code> to a value greater than the maximum time left, Amazon SQS returns an error. Amazon SQS doesn't automatically recalculate and increase the timeout to the maximum remaining time.</p> <p>Unlike with a queue, when you change the visibility timeout for a specific message the timeout value is applied immediately but isn't saved in memory for that message. If you don't delete a message after it is received, the visibility timeout for the message reverts to the original timeout value (not to the value you set using the <code>ChangeMessageVisibility</code> action) the next time the message is received.</p> </important>
   ## 
-  let valid = call_773265.validator(path, query, header, formData, body)
-  let scheme = call_773265.pickScheme
+  let valid = call_601100.validator(path, query, header, formData, body)
+  let scheme = call_601100.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773265.url(scheme.get, call_773265.host, call_773265.base,
-                         call_773265.route, valid.getOrDefault("path"))
-  result = hook(call_773265, url, valid)
+  let url = call_601100.url(scheme.get, call_601100.host, call_601100.base,
+                         call_601100.route, valid.getOrDefault("path"))
+  result = hook(call_601100, url, valid)
 
-proc call*(call_773266: Call_PostChangeMessageVisibility_773249;
+proc call*(call_601101: Call_PostChangeMessageVisibility_601084;
           VisibilityTimeout: int; QueueName: string; AccountNumber: int;
           ReceiptHandle: string; Action: string = "ChangeMessageVisibility";
           Version: string = "2012-11-05"): Recallable =
@@ -652,27 +652,27 @@ proc call*(call_773266: Call_PostChangeMessageVisibility_773249;
   ##   ReceiptHandle: string (required)
   ##                : The receipt handle associated with the message whose visibility timeout is changed. This parameter is returned by the <code> <a>ReceiveMessage</a> </code> action.
   ##   Version: string (required)
-  var path_773267 = newJObject()
-  var query_773268 = newJObject()
-  var formData_773269 = newJObject()
-  add(formData_773269, "VisibilityTimeout", newJInt(VisibilityTimeout))
-  add(path_773267, "QueueName", newJString(QueueName))
-  add(query_773268, "Action", newJString(Action))
-  add(path_773267, "AccountNumber", newJInt(AccountNumber))
-  add(formData_773269, "ReceiptHandle", newJString(ReceiptHandle))
-  add(query_773268, "Version", newJString(Version))
-  result = call_773266.call(path_773267, query_773268, nil, formData_773269, nil)
+  var path_601102 = newJObject()
+  var query_601103 = newJObject()
+  var formData_601104 = newJObject()
+  add(formData_601104, "VisibilityTimeout", newJInt(VisibilityTimeout))
+  add(path_601102, "QueueName", newJString(QueueName))
+  add(query_601103, "Action", newJString(Action))
+  add(path_601102, "AccountNumber", newJInt(AccountNumber))
+  add(formData_601104, "ReceiptHandle", newJString(ReceiptHandle))
+  add(query_601103, "Version", newJString(Version))
+  result = call_601101.call(path_601102, query_601103, nil, formData_601104, nil)
 
-var postChangeMessageVisibility* = Call_PostChangeMessageVisibility_773249(
+var postChangeMessageVisibility* = Call_PostChangeMessageVisibility_601084(
     name: "postChangeMessageVisibility", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ChangeMessageVisibility",
-    validator: validate_PostChangeMessageVisibility_773250, base: "/",
-    url: url_PostChangeMessageVisibility_773251,
+    validator: validate_PostChangeMessageVisibility_601085, base: "/",
+    url: url_PostChangeMessageVisibility_601086,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetChangeMessageVisibility_773229 = ref object of OpenApiRestCall_772581
-proc url_GetChangeMessageVisibility_773231(protocol: Scheme; host: string;
+  Call_GetChangeMessageVisibility_601064 = ref object of OpenApiRestCall_600410
+proc url_GetChangeMessageVisibility_601066(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -688,7 +688,7 @@ proc url_GetChangeMessageVisibility_773231(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetChangeMessageVisibility_773230(path: JsonNode; query: JsonNode;
+proc validate_GetChangeMessageVisibility_601065(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Changes the visibility timeout of a specified message in a queue to a new value. The default visibility timeout for a message is 30 seconds. The minimum is 0 seconds. The maximum is 12 hours. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Visibility Timeout</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>For example, you have a message with a visibility timeout of 5 minutes. After 3 minutes, you call <code>ChangeMessageVisibility</code> with a timeout of 10 minutes. You can continue to call <code>ChangeMessageVisibility</code> to extend the visibility timeout to the maximum allowed time. If you try to extend the visibility timeout beyond the maximum, your request is rejected.</p> <p>An Amazon SQS message has three basic states:</p> <ol> <li> <p>Sent to a queue by a producer.</p> </li> <li> <p>Received from the queue by a consumer.</p> </li> <li> <p>Deleted from the queue.</p> </li> </ol> <p>A message is considered to be <i>stored</i> after it is sent to a queue by a producer, but not yet received from the queue by a consumer (that is, between states 1 and 2). There is no limit to the number of stored messages. A message is considered to be <i>in flight</i> after it is received from a queue by a consumer, but not yet deleted from the queue (that is, between states 2 and 3). There is a limit to the number of inflight messages.</p> <p>Limits that apply to inflight messages are unrelated to the <i>unlimited</i> number of stored messages.</p> <p>For most standard queues (depending on queue traffic and message backlog), there can be a maximum of approximately 120,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns the <code>OverLimit</code> error message. To avoid reaching the limit, you should delete messages from the queue after they're processed. You can also increase the number of queues you use to process your messages. To request a limit increase, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-sqs">file a support request</a>.</p> <p>For FIFO queues, there can be a maximum of 20,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns no error messages.</p> <important> <p>If you attempt to set the <code>VisibilityTimeout</code> to a value greater than the maximum time left, Amazon SQS returns an error. Amazon SQS doesn't automatically recalculate and increase the timeout to the maximum remaining time.</p> <p>Unlike with a queue, when you change the visibility timeout for a specific message the timeout value is applied immediately but isn't saved in memory for that message. If you don't delete a message after it is received, the visibility timeout for the message reverts to the original timeout value (not to the value you set using the <code>ChangeMessageVisibility</code> action) the next time the message is received.</p> </important>
   ## 
@@ -701,15 +701,15 @@ proc validate_GetChangeMessageVisibility_773230(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773232 = path.getOrDefault("QueueName")
-  valid_773232 = validateParameter(valid_773232, JString, required = true,
+  var valid_601067 = path.getOrDefault("QueueName")
+  valid_601067 = validateParameter(valid_601067, JString, required = true,
                                  default = nil)
-  if valid_773232 != nil:
-    section.add "QueueName", valid_773232
-  var valid_773233 = path.getOrDefault("AccountNumber")
-  valid_773233 = validateParameter(valid_773233, JInt, required = true, default = nil)
-  if valid_773233 != nil:
-    section.add "AccountNumber", valid_773233
+  if valid_601067 != nil:
+    section.add "QueueName", valid_601067
+  var valid_601068 = path.getOrDefault("AccountNumber")
+  valid_601068 = validateParameter(valid_601068, JInt, required = true, default = nil)
+  if valid_601068 != nil:
+    section.add "AccountNumber", valid_601068
   result.add "path", section
   ## parameters in `query` object:
   ##   ReceiptHandle: JString (required)
@@ -721,25 +721,25 @@ proc validate_GetChangeMessageVisibility_773230(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `ReceiptHandle` field"
-  var valid_773234 = query.getOrDefault("ReceiptHandle")
-  valid_773234 = validateParameter(valid_773234, JString, required = true,
+  var valid_601069 = query.getOrDefault("ReceiptHandle")
+  valid_601069 = validateParameter(valid_601069, JString, required = true,
                                  default = nil)
-  if valid_773234 != nil:
-    section.add "ReceiptHandle", valid_773234
-  var valid_773235 = query.getOrDefault("Action")
-  valid_773235 = validateParameter(valid_773235, JString, required = true, default = newJString(
+  if valid_601069 != nil:
+    section.add "ReceiptHandle", valid_601069
+  var valid_601070 = query.getOrDefault("Action")
+  valid_601070 = validateParameter(valid_601070, JString, required = true, default = newJString(
       "ChangeMessageVisibility"))
-  if valid_773235 != nil:
-    section.add "Action", valid_773235
-  var valid_773236 = query.getOrDefault("Version")
-  valid_773236 = validateParameter(valid_773236, JString, required = true,
+  if valid_601070 != nil:
+    section.add "Action", valid_601070
+  var valid_601071 = query.getOrDefault("Version")
+  valid_601071 = validateParameter(valid_601071, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773236 != nil:
-    section.add "Version", valid_773236
-  var valid_773237 = query.getOrDefault("VisibilityTimeout")
-  valid_773237 = validateParameter(valid_773237, JInt, required = true, default = nil)
-  if valid_773237 != nil:
-    section.add "VisibilityTimeout", valid_773237
+  if valid_601071 != nil:
+    section.add "Version", valid_601071
+  var valid_601072 = query.getOrDefault("VisibilityTimeout")
+  valid_601072 = validateParameter(valid_601072, JInt, required = true, default = nil)
+  if valid_601072 != nil:
+    section.add "VisibilityTimeout", valid_601072
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -750,60 +750,60 @@ proc validate_GetChangeMessageVisibility_773230(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773238 = header.getOrDefault("X-Amz-Date")
-  valid_773238 = validateParameter(valid_773238, JString, required = false,
+  var valid_601073 = header.getOrDefault("X-Amz-Date")
+  valid_601073 = validateParameter(valid_601073, JString, required = false,
                                  default = nil)
-  if valid_773238 != nil:
-    section.add "X-Amz-Date", valid_773238
-  var valid_773239 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773239 = validateParameter(valid_773239, JString, required = false,
+  if valid_601073 != nil:
+    section.add "X-Amz-Date", valid_601073
+  var valid_601074 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601074 = validateParameter(valid_601074, JString, required = false,
                                  default = nil)
-  if valid_773239 != nil:
-    section.add "X-Amz-Security-Token", valid_773239
-  var valid_773240 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773240 = validateParameter(valid_773240, JString, required = false,
+  if valid_601074 != nil:
+    section.add "X-Amz-Security-Token", valid_601074
+  var valid_601075 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601075 = validateParameter(valid_601075, JString, required = false,
                                  default = nil)
-  if valid_773240 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773240
-  var valid_773241 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773241 = validateParameter(valid_773241, JString, required = false,
+  if valid_601075 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601075
+  var valid_601076 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601076 = validateParameter(valid_601076, JString, required = false,
                                  default = nil)
-  if valid_773241 != nil:
-    section.add "X-Amz-Algorithm", valid_773241
-  var valid_773242 = header.getOrDefault("X-Amz-Signature")
-  valid_773242 = validateParameter(valid_773242, JString, required = false,
+  if valid_601076 != nil:
+    section.add "X-Amz-Algorithm", valid_601076
+  var valid_601077 = header.getOrDefault("X-Amz-Signature")
+  valid_601077 = validateParameter(valid_601077, JString, required = false,
                                  default = nil)
-  if valid_773242 != nil:
-    section.add "X-Amz-Signature", valid_773242
-  var valid_773243 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773243 = validateParameter(valid_773243, JString, required = false,
+  if valid_601077 != nil:
+    section.add "X-Amz-Signature", valid_601077
+  var valid_601078 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601078 = validateParameter(valid_601078, JString, required = false,
                                  default = nil)
-  if valid_773243 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773243
-  var valid_773244 = header.getOrDefault("X-Amz-Credential")
-  valid_773244 = validateParameter(valid_773244, JString, required = false,
+  if valid_601078 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601078
+  var valid_601079 = header.getOrDefault("X-Amz-Credential")
+  valid_601079 = validateParameter(valid_601079, JString, required = false,
                                  default = nil)
-  if valid_773244 != nil:
-    section.add "X-Amz-Credential", valid_773244
+  if valid_601079 != nil:
+    section.add "X-Amz-Credential", valid_601079
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773245: Call_GetChangeMessageVisibility_773229; path: JsonNode;
+proc call*(call_601080: Call_GetChangeMessageVisibility_601064; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Changes the visibility timeout of a specified message in a queue to a new value. The default visibility timeout for a message is 30 seconds. The minimum is 0 seconds. The maximum is 12 hours. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Visibility Timeout</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>For example, you have a message with a visibility timeout of 5 minutes. After 3 minutes, you call <code>ChangeMessageVisibility</code> with a timeout of 10 minutes. You can continue to call <code>ChangeMessageVisibility</code> to extend the visibility timeout to the maximum allowed time. If you try to extend the visibility timeout beyond the maximum, your request is rejected.</p> <p>An Amazon SQS message has three basic states:</p> <ol> <li> <p>Sent to a queue by a producer.</p> </li> <li> <p>Received from the queue by a consumer.</p> </li> <li> <p>Deleted from the queue.</p> </li> </ol> <p>A message is considered to be <i>stored</i> after it is sent to a queue by a producer, but not yet received from the queue by a consumer (that is, between states 1 and 2). There is no limit to the number of stored messages. A message is considered to be <i>in flight</i> after it is received from a queue by a consumer, but not yet deleted from the queue (that is, between states 2 and 3). There is a limit to the number of inflight messages.</p> <p>Limits that apply to inflight messages are unrelated to the <i>unlimited</i> number of stored messages.</p> <p>For most standard queues (depending on queue traffic and message backlog), there can be a maximum of approximately 120,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns the <code>OverLimit</code> error message. To avoid reaching the limit, you should delete messages from the queue after they're processed. You can also increase the number of queues you use to process your messages. To request a limit increase, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-sqs">file a support request</a>.</p> <p>For FIFO queues, there can be a maximum of 20,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns no error messages.</p> <important> <p>If you attempt to set the <code>VisibilityTimeout</code> to a value greater than the maximum time left, Amazon SQS returns an error. Amazon SQS doesn't automatically recalculate and increase the timeout to the maximum remaining time.</p> <p>Unlike with a queue, when you change the visibility timeout for a specific message the timeout value is applied immediately but isn't saved in memory for that message. If you don't delete a message after it is received, the visibility timeout for the message reverts to the original timeout value (not to the value you set using the <code>ChangeMessageVisibility</code> action) the next time the message is received.</p> </important>
   ## 
-  let valid = call_773245.validator(path, query, header, formData, body)
-  let scheme = call_773245.pickScheme
+  let valid = call_601080.validator(path, query, header, formData, body)
+  let scheme = call_601080.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773245.url(scheme.get, call_773245.host, call_773245.base,
-                         call_773245.route, valid.getOrDefault("path"))
-  result = hook(call_773245, url, valid)
+  let url = call_601080.url(scheme.get, call_601080.host, call_601080.base,
+                         call_601080.route, valid.getOrDefault("path"))
+  result = hook(call_601080, url, valid)
 
-proc call*(call_773246: Call_GetChangeMessageVisibility_773229;
+proc call*(call_601081: Call_GetChangeMessageVisibility_601064;
           ReceiptHandle: string; QueueName: string; AccountNumber: int;
           VisibilityTimeout: int; Action: string = "ChangeMessageVisibility";
           Version: string = "2012-11-05"): Recallable =
@@ -819,26 +819,26 @@ proc call*(call_773246: Call_GetChangeMessageVisibility_773229;
   ##   Version: string (required)
   ##   VisibilityTimeout: int (required)
   ##                    : The new value for the message's visibility timeout (in seconds). Values values: <code>0</code> to <code>43200</code>. Maximum: 12 hours.
-  var path_773247 = newJObject()
-  var query_773248 = newJObject()
-  add(query_773248, "ReceiptHandle", newJString(ReceiptHandle))
-  add(path_773247, "QueueName", newJString(QueueName))
-  add(query_773248, "Action", newJString(Action))
-  add(path_773247, "AccountNumber", newJInt(AccountNumber))
-  add(query_773248, "Version", newJString(Version))
-  add(query_773248, "VisibilityTimeout", newJInt(VisibilityTimeout))
-  result = call_773246.call(path_773247, query_773248, nil, nil, nil)
+  var path_601082 = newJObject()
+  var query_601083 = newJObject()
+  add(query_601083, "ReceiptHandle", newJString(ReceiptHandle))
+  add(path_601082, "QueueName", newJString(QueueName))
+  add(query_601083, "Action", newJString(Action))
+  add(path_601082, "AccountNumber", newJInt(AccountNumber))
+  add(query_601083, "Version", newJString(Version))
+  add(query_601083, "VisibilityTimeout", newJInt(VisibilityTimeout))
+  result = call_601081.call(path_601082, query_601083, nil, nil, nil)
 
-var getChangeMessageVisibility* = Call_GetChangeMessageVisibility_773229(
+var getChangeMessageVisibility* = Call_GetChangeMessageVisibility_601064(
     name: "getChangeMessageVisibility", meth: HttpMethod.HttpGet,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ChangeMessageVisibility",
-    validator: validate_GetChangeMessageVisibility_773230, base: "/",
-    url: url_GetChangeMessageVisibility_773231,
+    validator: validate_GetChangeMessageVisibility_601065, base: "/",
+    url: url_GetChangeMessageVisibility_601066,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostChangeMessageVisibilityBatch_773289 = ref object of OpenApiRestCall_772581
-proc url_PostChangeMessageVisibilityBatch_773291(protocol: Scheme; host: string;
+  Call_PostChangeMessageVisibilityBatch_601124 = ref object of OpenApiRestCall_600410
+proc url_PostChangeMessageVisibilityBatch_601126(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -854,7 +854,7 @@ proc url_PostChangeMessageVisibilityBatch_773291(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostChangeMessageVisibilityBatch_773290(path: JsonNode;
+proc validate_PostChangeMessageVisibilityBatch_601125(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Changes the visibility timeout of multiple messages. This is a batch version of <code> <a>ChangeMessageVisibility</a>.</code> The result of the action on each message is reported individually in the response. You can send up to 10 <code> <a>ChangeMessageVisibility</a> </code> requests with each <code>ChangeMessageVisibilityBatch</code> action.</p> <important> <p>Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> </important> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
@@ -867,31 +867,31 @@ proc validate_PostChangeMessageVisibilityBatch_773290(path: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773292 = path.getOrDefault("QueueName")
-  valid_773292 = validateParameter(valid_773292, JString, required = true,
+  var valid_601127 = path.getOrDefault("QueueName")
+  valid_601127 = validateParameter(valid_601127, JString, required = true,
                                  default = nil)
-  if valid_773292 != nil:
-    section.add "QueueName", valid_773292
-  var valid_773293 = path.getOrDefault("AccountNumber")
-  valid_773293 = validateParameter(valid_773293, JInt, required = true, default = nil)
-  if valid_773293 != nil:
-    section.add "AccountNumber", valid_773293
+  if valid_601127 != nil:
+    section.add "QueueName", valid_601127
+  var valid_601128 = path.getOrDefault("AccountNumber")
+  valid_601128 = validateParameter(valid_601128, JInt, required = true, default = nil)
+  if valid_601128 != nil:
+    section.add "AccountNumber", valid_601128
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773294 = query.getOrDefault("Action")
-  valid_773294 = validateParameter(valid_773294, JString, required = true, default = newJString(
+  var valid_601129 = query.getOrDefault("Action")
+  valid_601129 = validateParameter(valid_601129, JString, required = true, default = newJString(
       "ChangeMessageVisibilityBatch"))
-  if valid_773294 != nil:
-    section.add "Action", valid_773294
-  var valid_773295 = query.getOrDefault("Version")
-  valid_773295 = validateParameter(valid_773295, JString, required = true,
+  if valid_601129 != nil:
+    section.add "Action", valid_601129
+  var valid_601130 = query.getOrDefault("Version")
+  valid_601130 = validateParameter(valid_601130, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773295 != nil:
-    section.add "Version", valid_773295
+  if valid_601130 != nil:
+    section.add "Version", valid_601130
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -902,41 +902,41 @@ proc validate_PostChangeMessageVisibilityBatch_773290(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773296 = header.getOrDefault("X-Amz-Date")
-  valid_773296 = validateParameter(valid_773296, JString, required = false,
+  var valid_601131 = header.getOrDefault("X-Amz-Date")
+  valid_601131 = validateParameter(valid_601131, JString, required = false,
                                  default = nil)
-  if valid_773296 != nil:
-    section.add "X-Amz-Date", valid_773296
-  var valid_773297 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773297 = validateParameter(valid_773297, JString, required = false,
+  if valid_601131 != nil:
+    section.add "X-Amz-Date", valid_601131
+  var valid_601132 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601132 = validateParameter(valid_601132, JString, required = false,
                                  default = nil)
-  if valid_773297 != nil:
-    section.add "X-Amz-Security-Token", valid_773297
-  var valid_773298 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773298 = validateParameter(valid_773298, JString, required = false,
+  if valid_601132 != nil:
+    section.add "X-Amz-Security-Token", valid_601132
+  var valid_601133 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601133 = validateParameter(valid_601133, JString, required = false,
                                  default = nil)
-  if valid_773298 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773298
-  var valid_773299 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773299 = validateParameter(valid_773299, JString, required = false,
+  if valid_601133 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601133
+  var valid_601134 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601134 = validateParameter(valid_601134, JString, required = false,
                                  default = nil)
-  if valid_773299 != nil:
-    section.add "X-Amz-Algorithm", valid_773299
-  var valid_773300 = header.getOrDefault("X-Amz-Signature")
-  valid_773300 = validateParameter(valid_773300, JString, required = false,
+  if valid_601134 != nil:
+    section.add "X-Amz-Algorithm", valid_601134
+  var valid_601135 = header.getOrDefault("X-Amz-Signature")
+  valid_601135 = validateParameter(valid_601135, JString, required = false,
                                  default = nil)
-  if valid_773300 != nil:
-    section.add "X-Amz-Signature", valid_773300
-  var valid_773301 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773301 = validateParameter(valid_773301, JString, required = false,
+  if valid_601135 != nil:
+    section.add "X-Amz-Signature", valid_601135
+  var valid_601136 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601136 = validateParameter(valid_601136, JString, required = false,
                                  default = nil)
-  if valid_773301 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773301
-  var valid_773302 = header.getOrDefault("X-Amz-Credential")
-  valid_773302 = validateParameter(valid_773302, JString, required = false,
+  if valid_601136 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601136
+  var valid_601137 = header.getOrDefault("X-Amz-Credential")
+  valid_601137 = validateParameter(valid_601137, JString, required = false,
                                  default = nil)
-  if valid_773302 != nil:
-    section.add "X-Amz-Credential", valid_773302
+  if valid_601137 != nil:
+    section.add "X-Amz-Credential", valid_601137
   result.add "header", section
   ## parameters in `formData` object:
   ##   Entries: JArray (required)
@@ -944,28 +944,28 @@ proc validate_PostChangeMessageVisibilityBatch_773290(path: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Entries` field"
-  var valid_773303 = formData.getOrDefault("Entries")
-  valid_773303 = validateParameter(valid_773303, JArray, required = true, default = nil)
-  if valid_773303 != nil:
-    section.add "Entries", valid_773303
+  var valid_601138 = formData.getOrDefault("Entries")
+  valid_601138 = validateParameter(valid_601138, JArray, required = true, default = nil)
+  if valid_601138 != nil:
+    section.add "Entries", valid_601138
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773304: Call_PostChangeMessageVisibilityBatch_773289;
+proc call*(call_601139: Call_PostChangeMessageVisibilityBatch_601124;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Changes the visibility timeout of multiple messages. This is a batch version of <code> <a>ChangeMessageVisibility</a>.</code> The result of the action on each message is reported individually in the response. You can send up to 10 <code> <a>ChangeMessageVisibility</a> </code> requests with each <code>ChangeMessageVisibilityBatch</code> action.</p> <important> <p>Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> </important> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
-  let valid = call_773304.validator(path, query, header, formData, body)
-  let scheme = call_773304.pickScheme
+  let valid = call_601139.validator(path, query, header, formData, body)
+  let scheme = call_601139.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773304.url(scheme.get, call_773304.host, call_773304.base,
-                         call_773304.route, valid.getOrDefault("path"))
-  result = hook(call_773304, url, valid)
+  let url = call_601139.url(scheme.get, call_601139.host, call_601139.base,
+                         call_601139.route, valid.getOrDefault("path"))
+  result = hook(call_601139, url, valid)
 
-proc call*(call_773305: Call_PostChangeMessageVisibilityBatch_773289;
+proc call*(call_601140: Call_PostChangeMessageVisibilityBatch_601124;
           Entries: JsonNode; QueueName: string; AccountNumber: int;
           Action: string = "ChangeMessageVisibilityBatch";
           Version: string = "2012-11-05"): Recallable =
@@ -979,27 +979,27 @@ proc call*(call_773305: Call_PostChangeMessageVisibilityBatch_773289;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773306 = newJObject()
-  var query_773307 = newJObject()
-  var formData_773308 = newJObject()
+  var path_601141 = newJObject()
+  var query_601142 = newJObject()
+  var formData_601143 = newJObject()
   if Entries != nil:
-    formData_773308.add "Entries", Entries
-  add(path_773306, "QueueName", newJString(QueueName))
-  add(query_773307, "Action", newJString(Action))
-  add(path_773306, "AccountNumber", newJInt(AccountNumber))
-  add(query_773307, "Version", newJString(Version))
-  result = call_773305.call(path_773306, query_773307, nil, formData_773308, nil)
+    formData_601143.add "Entries", Entries
+  add(path_601141, "QueueName", newJString(QueueName))
+  add(query_601142, "Action", newJString(Action))
+  add(path_601141, "AccountNumber", newJInt(AccountNumber))
+  add(query_601142, "Version", newJString(Version))
+  result = call_601140.call(path_601141, query_601142, nil, formData_601143, nil)
 
-var postChangeMessageVisibilityBatch* = Call_PostChangeMessageVisibilityBatch_773289(
+var postChangeMessageVisibilityBatch* = Call_PostChangeMessageVisibilityBatch_601124(
     name: "postChangeMessageVisibilityBatch", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ChangeMessageVisibilityBatch",
-    validator: validate_PostChangeMessageVisibilityBatch_773290, base: "/",
-    url: url_PostChangeMessageVisibilityBatch_773291,
+    validator: validate_PostChangeMessageVisibilityBatch_601125, base: "/",
+    url: url_PostChangeMessageVisibilityBatch_601126,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetChangeMessageVisibilityBatch_773270 = ref object of OpenApiRestCall_772581
-proc url_GetChangeMessageVisibilityBatch_773272(protocol: Scheme; host: string;
+  Call_GetChangeMessageVisibilityBatch_601105 = ref object of OpenApiRestCall_600410
+proc url_GetChangeMessageVisibilityBatch_601107(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -1015,7 +1015,7 @@ proc url_GetChangeMessageVisibilityBatch_773272(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetChangeMessageVisibilityBatch_773271(path: JsonNode;
+proc validate_GetChangeMessageVisibilityBatch_601106(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Changes the visibility timeout of multiple messages. This is a batch version of <code> <a>ChangeMessageVisibility</a>.</code> The result of the action on each message is reported individually in the response. You can send up to 10 <code> <a>ChangeMessageVisibility</a> </code> requests with each <code>ChangeMessageVisibilityBatch</code> action.</p> <important> <p>Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> </important> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
@@ -1028,15 +1028,15 @@ proc validate_GetChangeMessageVisibilityBatch_773271(path: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773273 = path.getOrDefault("QueueName")
-  valid_773273 = validateParameter(valid_773273, JString, required = true,
+  var valid_601108 = path.getOrDefault("QueueName")
+  valid_601108 = validateParameter(valid_601108, JString, required = true,
                                  default = nil)
-  if valid_773273 != nil:
-    section.add "QueueName", valid_773273
-  var valid_773274 = path.getOrDefault("AccountNumber")
-  valid_773274 = validateParameter(valid_773274, JInt, required = true, default = nil)
-  if valid_773274 != nil:
-    section.add "AccountNumber", valid_773274
+  if valid_601108 != nil:
+    section.add "QueueName", valid_601108
+  var valid_601109 = path.getOrDefault("AccountNumber")
+  valid_601109 = validateParameter(valid_601109, JInt, required = true, default = nil)
+  if valid_601109 != nil:
+    section.add "AccountNumber", valid_601109
   result.add "path", section
   ## parameters in `query` object:
   ##   Entries: JArray (required)
@@ -1045,20 +1045,20 @@ proc validate_GetChangeMessageVisibilityBatch_773271(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Entries` field"
-  var valid_773275 = query.getOrDefault("Entries")
-  valid_773275 = validateParameter(valid_773275, JArray, required = true, default = nil)
-  if valid_773275 != nil:
-    section.add "Entries", valid_773275
-  var valid_773276 = query.getOrDefault("Action")
-  valid_773276 = validateParameter(valid_773276, JString, required = true, default = newJString(
+  var valid_601110 = query.getOrDefault("Entries")
+  valid_601110 = validateParameter(valid_601110, JArray, required = true, default = nil)
+  if valid_601110 != nil:
+    section.add "Entries", valid_601110
+  var valid_601111 = query.getOrDefault("Action")
+  valid_601111 = validateParameter(valid_601111, JString, required = true, default = newJString(
       "ChangeMessageVisibilityBatch"))
-  if valid_773276 != nil:
-    section.add "Action", valid_773276
-  var valid_773277 = query.getOrDefault("Version")
-  valid_773277 = validateParameter(valid_773277, JString, required = true,
+  if valid_601111 != nil:
+    section.add "Action", valid_601111
+  var valid_601112 = query.getOrDefault("Version")
+  valid_601112 = validateParameter(valid_601112, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773277 != nil:
-    section.add "Version", valid_773277
+  if valid_601112 != nil:
+    section.add "Version", valid_601112
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1069,61 +1069,61 @@ proc validate_GetChangeMessageVisibilityBatch_773271(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773278 = header.getOrDefault("X-Amz-Date")
-  valid_773278 = validateParameter(valid_773278, JString, required = false,
+  var valid_601113 = header.getOrDefault("X-Amz-Date")
+  valid_601113 = validateParameter(valid_601113, JString, required = false,
                                  default = nil)
-  if valid_773278 != nil:
-    section.add "X-Amz-Date", valid_773278
-  var valid_773279 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773279 = validateParameter(valid_773279, JString, required = false,
+  if valid_601113 != nil:
+    section.add "X-Amz-Date", valid_601113
+  var valid_601114 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601114 = validateParameter(valid_601114, JString, required = false,
                                  default = nil)
-  if valid_773279 != nil:
-    section.add "X-Amz-Security-Token", valid_773279
-  var valid_773280 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773280 = validateParameter(valid_773280, JString, required = false,
+  if valid_601114 != nil:
+    section.add "X-Amz-Security-Token", valid_601114
+  var valid_601115 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601115 = validateParameter(valid_601115, JString, required = false,
                                  default = nil)
-  if valid_773280 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773280
-  var valid_773281 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773281 = validateParameter(valid_773281, JString, required = false,
+  if valid_601115 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601115
+  var valid_601116 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601116 = validateParameter(valid_601116, JString, required = false,
                                  default = nil)
-  if valid_773281 != nil:
-    section.add "X-Amz-Algorithm", valid_773281
-  var valid_773282 = header.getOrDefault("X-Amz-Signature")
-  valid_773282 = validateParameter(valid_773282, JString, required = false,
+  if valid_601116 != nil:
+    section.add "X-Amz-Algorithm", valid_601116
+  var valid_601117 = header.getOrDefault("X-Amz-Signature")
+  valid_601117 = validateParameter(valid_601117, JString, required = false,
                                  default = nil)
-  if valid_773282 != nil:
-    section.add "X-Amz-Signature", valid_773282
-  var valid_773283 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773283 = validateParameter(valid_773283, JString, required = false,
+  if valid_601117 != nil:
+    section.add "X-Amz-Signature", valid_601117
+  var valid_601118 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601118 = validateParameter(valid_601118, JString, required = false,
                                  default = nil)
-  if valid_773283 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773283
-  var valid_773284 = header.getOrDefault("X-Amz-Credential")
-  valid_773284 = validateParameter(valid_773284, JString, required = false,
+  if valid_601118 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601118
+  var valid_601119 = header.getOrDefault("X-Amz-Credential")
+  valid_601119 = validateParameter(valid_601119, JString, required = false,
                                  default = nil)
-  if valid_773284 != nil:
-    section.add "X-Amz-Credential", valid_773284
+  if valid_601119 != nil:
+    section.add "X-Amz-Credential", valid_601119
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773285: Call_GetChangeMessageVisibilityBatch_773270;
+proc call*(call_601120: Call_GetChangeMessageVisibilityBatch_601105;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Changes the visibility timeout of multiple messages. This is a batch version of <code> <a>ChangeMessageVisibility</a>.</code> The result of the action on each message is reported individually in the response. You can send up to 10 <code> <a>ChangeMessageVisibility</a> </code> requests with each <code>ChangeMessageVisibilityBatch</code> action.</p> <important> <p>Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> </important> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
-  let valid = call_773285.validator(path, query, header, formData, body)
-  let scheme = call_773285.pickScheme
+  let valid = call_601120.validator(path, query, header, formData, body)
+  let scheme = call_601120.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773285.url(scheme.get, call_773285.host, call_773285.base,
-                         call_773285.route, valid.getOrDefault("path"))
-  result = hook(call_773285, url, valid)
+  let url = call_601120.url(scheme.get, call_601120.host, call_601120.base,
+                         call_601120.route, valid.getOrDefault("path"))
+  result = hook(call_601120, url, valid)
 
-proc call*(call_773286: Call_GetChangeMessageVisibilityBatch_773270;
+proc call*(call_601121: Call_GetChangeMessageVisibilityBatch_601105;
           QueueName: string; Entries: JsonNode; AccountNumber: int;
           Action: string = "ChangeMessageVisibilityBatch";
           Version: string = "2012-11-05"): Recallable =
@@ -1137,30 +1137,30 @@ proc call*(call_773286: Call_GetChangeMessageVisibilityBatch_773270;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773287 = newJObject()
-  var query_773288 = newJObject()
-  add(path_773287, "QueueName", newJString(QueueName))
+  var path_601122 = newJObject()
+  var query_601123 = newJObject()
+  add(path_601122, "QueueName", newJString(QueueName))
   if Entries != nil:
-    query_773288.add "Entries", Entries
-  add(query_773288, "Action", newJString(Action))
-  add(path_773287, "AccountNumber", newJInt(AccountNumber))
-  add(query_773288, "Version", newJString(Version))
-  result = call_773286.call(path_773287, query_773288, nil, nil, nil)
+    query_601123.add "Entries", Entries
+  add(query_601123, "Action", newJString(Action))
+  add(path_601122, "AccountNumber", newJInt(AccountNumber))
+  add(query_601123, "Version", newJString(Version))
+  result = call_601121.call(path_601122, query_601123, nil, nil, nil)
 
-var getChangeMessageVisibilityBatch* = Call_GetChangeMessageVisibilityBatch_773270(
+var getChangeMessageVisibilityBatch* = Call_GetChangeMessageVisibilityBatch_601105(
     name: "getChangeMessageVisibilityBatch", meth: HttpMethod.HttpGet,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ChangeMessageVisibilityBatch",
-    validator: validate_GetChangeMessageVisibilityBatch_773271, base: "/",
-    url: url_GetChangeMessageVisibilityBatch_773272,
+    validator: validate_GetChangeMessageVisibilityBatch_601106, base: "/",
+    url: url_GetChangeMessageVisibilityBatch_601107,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateQueue_773337 = ref object of OpenApiRestCall_772581
-proc url_PostCreateQueue_773339(protocol: Scheme; host: string; base: string;
+  Call_PostCreateQueue_601172 = ref object of OpenApiRestCall_600410
+proc url_PostCreateQueue_601174(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostCreateQueue_773338(path: JsonNode; query: JsonNode;
+proc validate_PostCreateQueue_601173(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Creates a new standard or FIFO queue. You can pass one or more attributes in the request. Keep the following caveats in mind:</p> <ul> <li> <p>If you don't specify the <code>FifoQueue</code> attribute, Amazon SQS creates a standard queue.</p> <note> <p>You can't change the queue type after you create it and you can't convert an existing standard queue into a FIFO queue. You must either create a new FIFO queue for your application or delete your existing standard queue and recreate it as a FIFO queue. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html#FIFO-queues-moving">Moving From a Standard Queue to a FIFO Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> </note> </li> <li> <p>If you don't provide a value for an attribute, the queue is created with the default value for the attribute.</p> </li> <li> <p>If you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.</p> </li> </ul> <p>To successfully create a new queue, you must provide a queue name that adheres to the <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/limits-queues.html">limits related to queues</a> and is unique within the scope of your queues.</p> <p>To get the queue URL, use the <code> <a>GetQueueUrl</a> </code> action. <code> <a>GetQueueUrl</a> </code> requires only the <code>QueueName</code> parameter. be aware of existing queue names:</p> <ul> <li> <p>If you provide the name of an existing queue along with the exact names and values of all the queue's attributes, <code>CreateQueue</code> returns the queue URL for the existing queue.</p> </li> <li> <p>If the queue name, attribute names, or attribute values don't match an existing queue, <code>CreateQueue</code> returns an error.</p> </li> </ul> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -1174,16 +1174,16 @@ proc validate_PostCreateQueue_773338(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773340 = query.getOrDefault("Action")
-  valid_773340 = validateParameter(valid_773340, JString, required = true,
+  var valid_601175 = query.getOrDefault("Action")
+  valid_601175 = validateParameter(valid_601175, JString, required = true,
                                  default = newJString("CreateQueue"))
-  if valid_773340 != nil:
-    section.add "Action", valid_773340
-  var valid_773341 = query.getOrDefault("Version")
-  valid_773341 = validateParameter(valid_773341, JString, required = true,
+  if valid_601175 != nil:
+    section.add "Action", valid_601175
+  var valid_601176 = query.getOrDefault("Version")
+  valid_601176 = validateParameter(valid_601176, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773341 != nil:
-    section.add "Version", valid_773341
+  if valid_601176 != nil:
+    section.add "Version", valid_601176
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1194,41 +1194,41 @@ proc validate_PostCreateQueue_773338(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773342 = header.getOrDefault("X-Amz-Date")
-  valid_773342 = validateParameter(valid_773342, JString, required = false,
+  var valid_601177 = header.getOrDefault("X-Amz-Date")
+  valid_601177 = validateParameter(valid_601177, JString, required = false,
                                  default = nil)
-  if valid_773342 != nil:
-    section.add "X-Amz-Date", valid_773342
-  var valid_773343 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773343 = validateParameter(valid_773343, JString, required = false,
+  if valid_601177 != nil:
+    section.add "X-Amz-Date", valid_601177
+  var valid_601178 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601178 = validateParameter(valid_601178, JString, required = false,
                                  default = nil)
-  if valid_773343 != nil:
-    section.add "X-Amz-Security-Token", valid_773343
-  var valid_773344 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773344 = validateParameter(valid_773344, JString, required = false,
+  if valid_601178 != nil:
+    section.add "X-Amz-Security-Token", valid_601178
+  var valid_601179 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601179 = validateParameter(valid_601179, JString, required = false,
                                  default = nil)
-  if valid_773344 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773344
-  var valid_773345 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773345 = validateParameter(valid_773345, JString, required = false,
+  if valid_601179 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601179
+  var valid_601180 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601180 = validateParameter(valid_601180, JString, required = false,
                                  default = nil)
-  if valid_773345 != nil:
-    section.add "X-Amz-Algorithm", valid_773345
-  var valid_773346 = header.getOrDefault("X-Amz-Signature")
-  valid_773346 = validateParameter(valid_773346, JString, required = false,
+  if valid_601180 != nil:
+    section.add "X-Amz-Algorithm", valid_601180
+  var valid_601181 = header.getOrDefault("X-Amz-Signature")
+  valid_601181 = validateParameter(valid_601181, JString, required = false,
                                  default = nil)
-  if valid_773346 != nil:
-    section.add "X-Amz-Signature", valid_773346
-  var valid_773347 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773347 = validateParameter(valid_773347, JString, required = false,
+  if valid_601181 != nil:
+    section.add "X-Amz-Signature", valid_601181
+  var valid_601182 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601182 = validateParameter(valid_601182, JString, required = false,
                                  default = nil)
-  if valid_773347 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773347
-  var valid_773348 = header.getOrDefault("X-Amz-Credential")
-  valid_773348 = validateParameter(valid_773348, JString, required = false,
+  if valid_601182 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601182
+  var valid_601183 = header.getOrDefault("X-Amz-Credential")
+  valid_601183 = validateParameter(valid_601183, JString, required = false,
                                  default = nil)
-  if valid_773348 != nil:
-    section.add "X-Amz-Credential", valid_773348
+  if valid_601183 != nil:
+    section.add "X-Amz-Credential", valid_601183
   result.add "header", section
   ## parameters in `formData` object:
   ##   Tag.1.value: JString
@@ -1246,90 +1246,90 @@ proc validate_PostCreateQueue_773338(path: JsonNode; query: JsonNode;
   ##   Attribute.2.value: JString
   ##   Attribute.2.key: JString
   section = newJObject()
-  var valid_773349 = formData.getOrDefault("Tag.1.value")
-  valid_773349 = validateParameter(valid_773349, JString, required = false,
+  var valid_601184 = formData.getOrDefault("Tag.1.value")
+  valid_601184 = validateParameter(valid_601184, JString, required = false,
                                  default = nil)
-  if valid_773349 != nil:
-    section.add "Tag.1.value", valid_773349
-  var valid_773350 = formData.getOrDefault("Attribute.0.key")
-  valid_773350 = validateParameter(valid_773350, JString, required = false,
+  if valid_601184 != nil:
+    section.add "Tag.1.value", valid_601184
+  var valid_601185 = formData.getOrDefault("Attribute.0.key")
+  valid_601185 = validateParameter(valid_601185, JString, required = false,
                                  default = nil)
-  if valid_773350 != nil:
-    section.add "Attribute.0.key", valid_773350
-  var valid_773351 = formData.getOrDefault("Attribute.0.value")
-  valid_773351 = validateParameter(valid_773351, JString, required = false,
+  if valid_601185 != nil:
+    section.add "Attribute.0.key", valid_601185
+  var valid_601186 = formData.getOrDefault("Attribute.0.value")
+  valid_601186 = validateParameter(valid_601186, JString, required = false,
                                  default = nil)
-  if valid_773351 != nil:
-    section.add "Attribute.0.value", valid_773351
-  var valid_773352 = formData.getOrDefault("Attribute.1.value")
-  valid_773352 = validateParameter(valid_773352, JString, required = false,
+  if valid_601186 != nil:
+    section.add "Attribute.0.value", valid_601186
+  var valid_601187 = formData.getOrDefault("Attribute.1.value")
+  valid_601187 = validateParameter(valid_601187, JString, required = false,
                                  default = nil)
-  if valid_773352 != nil:
-    section.add "Attribute.1.value", valid_773352
-  var valid_773353 = formData.getOrDefault("Tag.0.key")
-  valid_773353 = validateParameter(valid_773353, JString, required = false,
+  if valid_601187 != nil:
+    section.add "Attribute.1.value", valid_601187
+  var valid_601188 = formData.getOrDefault("Tag.0.key")
+  valid_601188 = validateParameter(valid_601188, JString, required = false,
                                  default = nil)
-  if valid_773353 != nil:
-    section.add "Tag.0.key", valid_773353
+  if valid_601188 != nil:
+    section.add "Tag.0.key", valid_601188
   assert formData != nil,
         "formData argument is necessary due to required `QueueName` field"
-  var valid_773354 = formData.getOrDefault("QueueName")
-  valid_773354 = validateParameter(valid_773354, JString, required = true,
+  var valid_601189 = formData.getOrDefault("QueueName")
+  valid_601189 = validateParameter(valid_601189, JString, required = true,
                                  default = nil)
-  if valid_773354 != nil:
-    section.add "QueueName", valid_773354
-  var valid_773355 = formData.getOrDefault("Attribute.1.key")
-  valid_773355 = validateParameter(valid_773355, JString, required = false,
+  if valid_601189 != nil:
+    section.add "QueueName", valid_601189
+  var valid_601190 = formData.getOrDefault("Attribute.1.key")
+  valid_601190 = validateParameter(valid_601190, JString, required = false,
                                  default = nil)
-  if valid_773355 != nil:
-    section.add "Attribute.1.key", valid_773355
-  var valid_773356 = formData.getOrDefault("Tag.1.key")
-  valid_773356 = validateParameter(valid_773356, JString, required = false,
+  if valid_601190 != nil:
+    section.add "Attribute.1.key", valid_601190
+  var valid_601191 = formData.getOrDefault("Tag.1.key")
+  valid_601191 = validateParameter(valid_601191, JString, required = false,
                                  default = nil)
-  if valid_773356 != nil:
-    section.add "Tag.1.key", valid_773356
-  var valid_773357 = formData.getOrDefault("Tag.0.value")
-  valid_773357 = validateParameter(valid_773357, JString, required = false,
+  if valid_601191 != nil:
+    section.add "Tag.1.key", valid_601191
+  var valid_601192 = formData.getOrDefault("Tag.0.value")
+  valid_601192 = validateParameter(valid_601192, JString, required = false,
                                  default = nil)
-  if valid_773357 != nil:
-    section.add "Tag.0.value", valid_773357
-  var valid_773358 = formData.getOrDefault("Tag.2.key")
-  valid_773358 = validateParameter(valid_773358, JString, required = false,
+  if valid_601192 != nil:
+    section.add "Tag.0.value", valid_601192
+  var valid_601193 = formData.getOrDefault("Tag.2.key")
+  valid_601193 = validateParameter(valid_601193, JString, required = false,
                                  default = nil)
-  if valid_773358 != nil:
-    section.add "Tag.2.key", valid_773358
-  var valid_773359 = formData.getOrDefault("Tag.2.value")
-  valid_773359 = validateParameter(valid_773359, JString, required = false,
+  if valid_601193 != nil:
+    section.add "Tag.2.key", valid_601193
+  var valid_601194 = formData.getOrDefault("Tag.2.value")
+  valid_601194 = validateParameter(valid_601194, JString, required = false,
                                  default = nil)
-  if valid_773359 != nil:
-    section.add "Tag.2.value", valid_773359
-  var valid_773360 = formData.getOrDefault("Attribute.2.value")
-  valid_773360 = validateParameter(valid_773360, JString, required = false,
+  if valid_601194 != nil:
+    section.add "Tag.2.value", valid_601194
+  var valid_601195 = formData.getOrDefault("Attribute.2.value")
+  valid_601195 = validateParameter(valid_601195, JString, required = false,
                                  default = nil)
-  if valid_773360 != nil:
-    section.add "Attribute.2.value", valid_773360
-  var valid_773361 = formData.getOrDefault("Attribute.2.key")
-  valid_773361 = validateParameter(valid_773361, JString, required = false,
+  if valid_601195 != nil:
+    section.add "Attribute.2.value", valid_601195
+  var valid_601196 = formData.getOrDefault("Attribute.2.key")
+  valid_601196 = validateParameter(valid_601196, JString, required = false,
                                  default = nil)
-  if valid_773361 != nil:
-    section.add "Attribute.2.key", valid_773361
+  if valid_601196 != nil:
+    section.add "Attribute.2.key", valid_601196
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773362: Call_PostCreateQueue_773337; path: JsonNode; query: JsonNode;
+proc call*(call_601197: Call_PostCreateQueue_601172; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new standard or FIFO queue. You can pass one or more attributes in the request. Keep the following caveats in mind:</p> <ul> <li> <p>If you don't specify the <code>FifoQueue</code> attribute, Amazon SQS creates a standard queue.</p> <note> <p>You can't change the queue type after you create it and you can't convert an existing standard queue into a FIFO queue. You must either create a new FIFO queue for your application or delete your existing standard queue and recreate it as a FIFO queue. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html#FIFO-queues-moving">Moving From a Standard Queue to a FIFO Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> </note> </li> <li> <p>If you don't provide a value for an attribute, the queue is created with the default value for the attribute.</p> </li> <li> <p>If you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.</p> </li> </ul> <p>To successfully create a new queue, you must provide a queue name that adheres to the <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/limits-queues.html">limits related to queues</a> and is unique within the scope of your queues.</p> <p>To get the queue URL, use the <code> <a>GetQueueUrl</a> </code> action. <code> <a>GetQueueUrl</a> </code> requires only the <code>QueueName</code> parameter. be aware of existing queue names:</p> <ul> <li> <p>If you provide the name of an existing queue along with the exact names and values of all the queue's attributes, <code>CreateQueue</code> returns the queue URL for the existing queue.</p> </li> <li> <p>If the queue name, attribute names, or attribute values don't match an existing queue, <code>CreateQueue</code> returns an error.</p> </li> </ul> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773362.validator(path, query, header, formData, body)
-  let scheme = call_773362.pickScheme
+  let valid = call_601197.validator(path, query, header, formData, body)
+  let scheme = call_601197.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773362.url(scheme.get, call_773362.host, call_773362.base,
-                         call_773362.route, valid.getOrDefault("path"))
-  result = hook(call_773362, url, valid)
+  let url = call_601197.url(scheme.get, call_601197.host, call_601197.base,
+                         call_601197.route, valid.getOrDefault("path"))
+  result = hook(call_601197, url, valid)
 
-proc call*(call_773363: Call_PostCreateQueue_773337; QueueName: string;
+proc call*(call_601198: Call_PostCreateQueue_601172; QueueName: string;
           Tag1Value: string = ""; Attribute0Key: string = "";
           Attribute0Value: string = ""; Attribute1Value: string = "";
           Tag0Key: string = ""; Action: string = "CreateQueue";
@@ -1354,36 +1354,36 @@ proc call*(call_773363: Call_PostCreateQueue_773337; QueueName: string;
   ##   Attribute2Value: string
   ##   Version: string (required)
   ##   Attribute2Key: string
-  var query_773364 = newJObject()
-  var formData_773365 = newJObject()
-  add(formData_773365, "Tag.1.value", newJString(Tag1Value))
-  add(formData_773365, "Attribute.0.key", newJString(Attribute0Key))
-  add(formData_773365, "Attribute.0.value", newJString(Attribute0Value))
-  add(formData_773365, "Attribute.1.value", newJString(Attribute1Value))
-  add(formData_773365, "Tag.0.key", newJString(Tag0Key))
-  add(query_773364, "Action", newJString(Action))
-  add(formData_773365, "QueueName", newJString(QueueName))
-  add(formData_773365, "Attribute.1.key", newJString(Attribute1Key))
-  add(formData_773365, "Tag.1.key", newJString(Tag1Key))
-  add(formData_773365, "Tag.0.value", newJString(Tag0Value))
-  add(formData_773365, "Tag.2.key", newJString(Tag2Key))
-  add(formData_773365, "Tag.2.value", newJString(Tag2Value))
-  add(formData_773365, "Attribute.2.value", newJString(Attribute2Value))
-  add(query_773364, "Version", newJString(Version))
-  add(formData_773365, "Attribute.2.key", newJString(Attribute2Key))
-  result = call_773363.call(nil, query_773364, nil, formData_773365, nil)
+  var query_601199 = newJObject()
+  var formData_601200 = newJObject()
+  add(formData_601200, "Tag.1.value", newJString(Tag1Value))
+  add(formData_601200, "Attribute.0.key", newJString(Attribute0Key))
+  add(formData_601200, "Attribute.0.value", newJString(Attribute0Value))
+  add(formData_601200, "Attribute.1.value", newJString(Attribute1Value))
+  add(formData_601200, "Tag.0.key", newJString(Tag0Key))
+  add(query_601199, "Action", newJString(Action))
+  add(formData_601200, "QueueName", newJString(QueueName))
+  add(formData_601200, "Attribute.1.key", newJString(Attribute1Key))
+  add(formData_601200, "Tag.1.key", newJString(Tag1Key))
+  add(formData_601200, "Tag.0.value", newJString(Tag0Value))
+  add(formData_601200, "Tag.2.key", newJString(Tag2Key))
+  add(formData_601200, "Tag.2.value", newJString(Tag2Value))
+  add(formData_601200, "Attribute.2.value", newJString(Attribute2Value))
+  add(query_601199, "Version", newJString(Version))
+  add(formData_601200, "Attribute.2.key", newJString(Attribute2Key))
+  result = call_601198.call(nil, query_601199, nil, formData_601200, nil)
 
-var postCreateQueue* = Call_PostCreateQueue_773337(name: "postCreateQueue",
+var postCreateQueue* = Call_PostCreateQueue_601172(name: "postCreateQueue",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
-    route: "/#Action=CreateQueue", validator: validate_PostCreateQueue_773338,
-    base: "/", url: url_PostCreateQueue_773339, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=CreateQueue", validator: validate_PostCreateQueue_601173,
+    base: "/", url: url_PostCreateQueue_601174, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateQueue_773309 = ref object of OpenApiRestCall_772581
-proc url_GetCreateQueue_773311(protocol: Scheme; host: string; base: string;
+  Call_GetCreateQueue_601144 = ref object of OpenApiRestCall_600410
+proc url_GetCreateQueue_601146(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetCreateQueue_773310(path: JsonNode; query: JsonNode;
+proc validate_GetCreateQueue_601145(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Creates a new standard or FIFO queue. You can pass one or more attributes in the request. Keep the following caveats in mind:</p> <ul> <li> <p>If you don't specify the <code>FifoQueue</code> attribute, Amazon SQS creates a standard queue.</p> <note> <p>You can't change the queue type after you create it and you can't convert an existing standard queue into a FIFO queue. You must either create a new FIFO queue for your application or delete your existing standard queue and recreate it as a FIFO queue. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html#FIFO-queues-moving">Moving From a Standard Queue to a FIFO Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> </note> </li> <li> <p>If you don't provide a value for an attribute, the queue is created with the default value for the attribute.</p> </li> <li> <p>If you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.</p> </li> </ul> <p>To successfully create a new queue, you must provide a queue name that adheres to the <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/limits-queues.html">limits related to queues</a> and is unique within the scope of your queues.</p> <p>To get the queue URL, use the <code> <a>GetQueueUrl</a> </code> action. <code> <a>GetQueueUrl</a> </code> requires only the <code>QueueName</code> parameter. be aware of existing queue names:</p> <ul> <li> <p>If you provide the name of an existing queue along with the exact names and values of all the queue's attributes, <code>CreateQueue</code> returns the queue URL for the existing queue.</p> </li> <li> <p>If the queue name, attribute names, or attribute values don't match an existing queue, <code>CreateQueue</code> returns an error.</p> </li> </ul> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -1410,82 +1410,82 @@ proc validate_GetCreateQueue_773310(path: JsonNode; query: JsonNode;
   ##   Attribute.0.value: JString
   ##   Version: JString (required)
   section = newJObject()
-  var valid_773312 = query.getOrDefault("Attribute.2.value")
-  valid_773312 = validateParameter(valid_773312, JString, required = false,
+  var valid_601147 = query.getOrDefault("Attribute.2.value")
+  valid_601147 = validateParameter(valid_601147, JString, required = false,
                                  default = nil)
-  if valid_773312 != nil:
-    section.add "Attribute.2.value", valid_773312
-  var valid_773313 = query.getOrDefault("Tag.0.value")
-  valid_773313 = validateParameter(valid_773313, JString, required = false,
+  if valid_601147 != nil:
+    section.add "Attribute.2.value", valid_601147
+  var valid_601148 = query.getOrDefault("Tag.0.value")
+  valid_601148 = validateParameter(valid_601148, JString, required = false,
                                  default = nil)
-  if valid_773313 != nil:
-    section.add "Tag.0.value", valid_773313
-  var valid_773314 = query.getOrDefault("Tag.2.value")
-  valid_773314 = validateParameter(valid_773314, JString, required = false,
+  if valid_601148 != nil:
+    section.add "Tag.0.value", valid_601148
+  var valid_601149 = query.getOrDefault("Tag.2.value")
+  valid_601149 = validateParameter(valid_601149, JString, required = false,
                                  default = nil)
-  if valid_773314 != nil:
-    section.add "Tag.2.value", valid_773314
-  var valid_773315 = query.getOrDefault("Attribute.0.key")
-  valid_773315 = validateParameter(valid_773315, JString, required = false,
+  if valid_601149 != nil:
+    section.add "Tag.2.value", valid_601149
+  var valid_601150 = query.getOrDefault("Attribute.0.key")
+  valid_601150 = validateParameter(valid_601150, JString, required = false,
                                  default = nil)
-  if valid_773315 != nil:
-    section.add "Attribute.0.key", valid_773315
-  var valid_773316 = query.getOrDefault("Tag.1.value")
-  valid_773316 = validateParameter(valid_773316, JString, required = false,
+  if valid_601150 != nil:
+    section.add "Attribute.0.key", valid_601150
+  var valid_601151 = query.getOrDefault("Tag.1.value")
+  valid_601151 = validateParameter(valid_601151, JString, required = false,
                                  default = nil)
-  if valid_773316 != nil:
-    section.add "Tag.1.value", valid_773316
-  var valid_773317 = query.getOrDefault("Tag.2.key")
-  valid_773317 = validateParameter(valid_773317, JString, required = false,
+  if valid_601151 != nil:
+    section.add "Tag.1.value", valid_601151
+  var valid_601152 = query.getOrDefault("Tag.2.key")
+  valid_601152 = validateParameter(valid_601152, JString, required = false,
                                  default = nil)
-  if valid_773317 != nil:
-    section.add "Tag.2.key", valid_773317
-  var valid_773318 = query.getOrDefault("Attribute.1.value")
-  valid_773318 = validateParameter(valid_773318, JString, required = false,
+  if valid_601152 != nil:
+    section.add "Tag.2.key", valid_601152
+  var valid_601153 = query.getOrDefault("Attribute.1.value")
+  valid_601153 = validateParameter(valid_601153, JString, required = false,
                                  default = nil)
-  if valid_773318 != nil:
-    section.add "Attribute.1.value", valid_773318
-  var valid_773319 = query.getOrDefault("Attribute.1.key")
-  valid_773319 = validateParameter(valid_773319, JString, required = false,
+  if valid_601153 != nil:
+    section.add "Attribute.1.value", valid_601153
+  var valid_601154 = query.getOrDefault("Attribute.1.key")
+  valid_601154 = validateParameter(valid_601154, JString, required = false,
                                  default = nil)
-  if valid_773319 != nil:
-    section.add "Attribute.1.key", valid_773319
-  var valid_773320 = query.getOrDefault("Tag.0.key")
-  valid_773320 = validateParameter(valid_773320, JString, required = false,
+  if valid_601154 != nil:
+    section.add "Attribute.1.key", valid_601154
+  var valid_601155 = query.getOrDefault("Tag.0.key")
+  valid_601155 = validateParameter(valid_601155, JString, required = false,
                                  default = nil)
-  if valid_773320 != nil:
-    section.add "Tag.0.key", valid_773320
+  if valid_601155 != nil:
+    section.add "Tag.0.key", valid_601155
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773321 = query.getOrDefault("Action")
-  valid_773321 = validateParameter(valid_773321, JString, required = true,
+  var valid_601156 = query.getOrDefault("Action")
+  valid_601156 = validateParameter(valid_601156, JString, required = true,
                                  default = newJString("CreateQueue"))
-  if valid_773321 != nil:
-    section.add "Action", valid_773321
-  var valid_773322 = query.getOrDefault("Attribute.2.key")
-  valid_773322 = validateParameter(valid_773322, JString, required = false,
+  if valid_601156 != nil:
+    section.add "Action", valid_601156
+  var valid_601157 = query.getOrDefault("Attribute.2.key")
+  valid_601157 = validateParameter(valid_601157, JString, required = false,
                                  default = nil)
-  if valid_773322 != nil:
-    section.add "Attribute.2.key", valid_773322
-  var valid_773323 = query.getOrDefault("Tag.1.key")
-  valid_773323 = validateParameter(valid_773323, JString, required = false,
+  if valid_601157 != nil:
+    section.add "Attribute.2.key", valid_601157
+  var valid_601158 = query.getOrDefault("Tag.1.key")
+  valid_601158 = validateParameter(valid_601158, JString, required = false,
                                  default = nil)
-  if valid_773323 != nil:
-    section.add "Tag.1.key", valid_773323
-  var valid_773324 = query.getOrDefault("QueueName")
-  valid_773324 = validateParameter(valid_773324, JString, required = true,
+  if valid_601158 != nil:
+    section.add "Tag.1.key", valid_601158
+  var valid_601159 = query.getOrDefault("QueueName")
+  valid_601159 = validateParameter(valid_601159, JString, required = true,
                                  default = nil)
-  if valid_773324 != nil:
-    section.add "QueueName", valid_773324
-  var valid_773325 = query.getOrDefault("Attribute.0.value")
-  valid_773325 = validateParameter(valid_773325, JString, required = false,
+  if valid_601159 != nil:
+    section.add "QueueName", valid_601159
+  var valid_601160 = query.getOrDefault("Attribute.0.value")
+  valid_601160 = validateParameter(valid_601160, JString, required = false,
                                  default = nil)
-  if valid_773325 != nil:
-    section.add "Attribute.0.value", valid_773325
-  var valid_773326 = query.getOrDefault("Version")
-  valid_773326 = validateParameter(valid_773326, JString, required = true,
+  if valid_601160 != nil:
+    section.add "Attribute.0.value", valid_601160
+  var valid_601161 = query.getOrDefault("Version")
+  valid_601161 = validateParameter(valid_601161, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773326 != nil:
-    section.add "Version", valid_773326
+  if valid_601161 != nil:
+    section.add "Version", valid_601161
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1496,60 +1496,60 @@ proc validate_GetCreateQueue_773310(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773327 = header.getOrDefault("X-Amz-Date")
-  valid_773327 = validateParameter(valid_773327, JString, required = false,
+  var valid_601162 = header.getOrDefault("X-Amz-Date")
+  valid_601162 = validateParameter(valid_601162, JString, required = false,
                                  default = nil)
-  if valid_773327 != nil:
-    section.add "X-Amz-Date", valid_773327
-  var valid_773328 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773328 = validateParameter(valid_773328, JString, required = false,
+  if valid_601162 != nil:
+    section.add "X-Amz-Date", valid_601162
+  var valid_601163 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601163 = validateParameter(valid_601163, JString, required = false,
                                  default = nil)
-  if valid_773328 != nil:
-    section.add "X-Amz-Security-Token", valid_773328
-  var valid_773329 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773329 = validateParameter(valid_773329, JString, required = false,
+  if valid_601163 != nil:
+    section.add "X-Amz-Security-Token", valid_601163
+  var valid_601164 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601164 = validateParameter(valid_601164, JString, required = false,
                                  default = nil)
-  if valid_773329 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773329
-  var valid_773330 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773330 = validateParameter(valid_773330, JString, required = false,
+  if valid_601164 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601164
+  var valid_601165 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601165 = validateParameter(valid_601165, JString, required = false,
                                  default = nil)
-  if valid_773330 != nil:
-    section.add "X-Amz-Algorithm", valid_773330
-  var valid_773331 = header.getOrDefault("X-Amz-Signature")
-  valid_773331 = validateParameter(valid_773331, JString, required = false,
+  if valid_601165 != nil:
+    section.add "X-Amz-Algorithm", valid_601165
+  var valid_601166 = header.getOrDefault("X-Amz-Signature")
+  valid_601166 = validateParameter(valid_601166, JString, required = false,
                                  default = nil)
-  if valid_773331 != nil:
-    section.add "X-Amz-Signature", valid_773331
-  var valid_773332 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773332 = validateParameter(valid_773332, JString, required = false,
+  if valid_601166 != nil:
+    section.add "X-Amz-Signature", valid_601166
+  var valid_601167 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601167 = validateParameter(valid_601167, JString, required = false,
                                  default = nil)
-  if valid_773332 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773332
-  var valid_773333 = header.getOrDefault("X-Amz-Credential")
-  valid_773333 = validateParameter(valid_773333, JString, required = false,
+  if valid_601167 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601167
+  var valid_601168 = header.getOrDefault("X-Amz-Credential")
+  valid_601168 = validateParameter(valid_601168, JString, required = false,
                                  default = nil)
-  if valid_773333 != nil:
-    section.add "X-Amz-Credential", valid_773333
+  if valid_601168 != nil:
+    section.add "X-Amz-Credential", valid_601168
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773334: Call_GetCreateQueue_773309; path: JsonNode; query: JsonNode;
+proc call*(call_601169: Call_GetCreateQueue_601144; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new standard or FIFO queue. You can pass one or more attributes in the request. Keep the following caveats in mind:</p> <ul> <li> <p>If you don't specify the <code>FifoQueue</code> attribute, Amazon SQS creates a standard queue.</p> <note> <p>You can't change the queue type after you create it and you can't convert an existing standard queue into a FIFO queue. You must either create a new FIFO queue for your application or delete your existing standard queue and recreate it as a FIFO queue. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html#FIFO-queues-moving">Moving From a Standard Queue to a FIFO Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> </note> </li> <li> <p>If you don't provide a value for an attribute, the queue is created with the default value for the attribute.</p> </li> <li> <p>If you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.</p> </li> </ul> <p>To successfully create a new queue, you must provide a queue name that adheres to the <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/limits-queues.html">limits related to queues</a> and is unique within the scope of your queues.</p> <p>To get the queue URL, use the <code> <a>GetQueueUrl</a> </code> action. <code> <a>GetQueueUrl</a> </code> requires only the <code>QueueName</code> parameter. be aware of existing queue names:</p> <ul> <li> <p>If you provide the name of an existing queue along with the exact names and values of all the queue's attributes, <code>CreateQueue</code> returns the queue URL for the existing queue.</p> </li> <li> <p>If the queue name, attribute names, or attribute values don't match an existing queue, <code>CreateQueue</code> returns an error.</p> </li> </ul> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773334.validator(path, query, header, formData, body)
-  let scheme = call_773334.pickScheme
+  let valid = call_601169.validator(path, query, header, formData, body)
+  let scheme = call_601169.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773334.url(scheme.get, call_773334.host, call_773334.base,
-                         call_773334.route, valid.getOrDefault("path"))
-  result = hook(call_773334, url, valid)
+  let url = call_601169.url(scheme.get, call_601169.host, call_601169.base,
+                         call_601169.route, valid.getOrDefault("path"))
+  result = hook(call_601169, url, valid)
 
-proc call*(call_773335: Call_GetCreateQueue_773309; QueueName: string;
+proc call*(call_601170: Call_GetCreateQueue_601144; QueueName: string;
           Attribute2Value: string = ""; Tag0Value: string = ""; Tag2Value: string = "";
           Attribute0Key: string = ""; Tag1Value: string = ""; Tag2Key: string = "";
           Attribute1Value: string = ""; Attribute1Key: string = "";
@@ -1574,31 +1574,31 @@ proc call*(call_773335: Call_GetCreateQueue_773309; QueueName: string;
   ##            : <p>The name of the new queue. The following limits apply to this name:</p> <ul> <li> <p>A queue name can have up to 80 characters.</p> </li> <li> <p>Valid values: alphanumeric characters, hyphens (<code>-</code>), and underscores (<code>_</code>).</p> </li> <li> <p>A FIFO queue name must end with the <code>.fifo</code> suffix.</p> </li> </ul> <p>Queue URLs and names are case-sensitive.</p>
   ##   Attribute0Value: string
   ##   Version: string (required)
-  var query_773336 = newJObject()
-  add(query_773336, "Attribute.2.value", newJString(Attribute2Value))
-  add(query_773336, "Tag.0.value", newJString(Tag0Value))
-  add(query_773336, "Tag.2.value", newJString(Tag2Value))
-  add(query_773336, "Attribute.0.key", newJString(Attribute0Key))
-  add(query_773336, "Tag.1.value", newJString(Tag1Value))
-  add(query_773336, "Tag.2.key", newJString(Tag2Key))
-  add(query_773336, "Attribute.1.value", newJString(Attribute1Value))
-  add(query_773336, "Attribute.1.key", newJString(Attribute1Key))
-  add(query_773336, "Tag.0.key", newJString(Tag0Key))
-  add(query_773336, "Action", newJString(Action))
-  add(query_773336, "Attribute.2.key", newJString(Attribute2Key))
-  add(query_773336, "Tag.1.key", newJString(Tag1Key))
-  add(query_773336, "QueueName", newJString(QueueName))
-  add(query_773336, "Attribute.0.value", newJString(Attribute0Value))
-  add(query_773336, "Version", newJString(Version))
-  result = call_773335.call(nil, query_773336, nil, nil, nil)
+  var query_601171 = newJObject()
+  add(query_601171, "Attribute.2.value", newJString(Attribute2Value))
+  add(query_601171, "Tag.0.value", newJString(Tag0Value))
+  add(query_601171, "Tag.2.value", newJString(Tag2Value))
+  add(query_601171, "Attribute.0.key", newJString(Attribute0Key))
+  add(query_601171, "Tag.1.value", newJString(Tag1Value))
+  add(query_601171, "Tag.2.key", newJString(Tag2Key))
+  add(query_601171, "Attribute.1.value", newJString(Attribute1Value))
+  add(query_601171, "Attribute.1.key", newJString(Attribute1Key))
+  add(query_601171, "Tag.0.key", newJString(Tag0Key))
+  add(query_601171, "Action", newJString(Action))
+  add(query_601171, "Attribute.2.key", newJString(Attribute2Key))
+  add(query_601171, "Tag.1.key", newJString(Tag1Key))
+  add(query_601171, "QueueName", newJString(QueueName))
+  add(query_601171, "Attribute.0.value", newJString(Attribute0Value))
+  add(query_601171, "Version", newJString(Version))
+  result = call_601170.call(nil, query_601171, nil, nil, nil)
 
-var getCreateQueue* = Call_GetCreateQueue_773309(name: "getCreateQueue",
+var getCreateQueue* = Call_GetCreateQueue_601144(name: "getCreateQueue",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
-    route: "/#Action=CreateQueue", validator: validate_GetCreateQueue_773310,
-    base: "/", url: url_GetCreateQueue_773311, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=CreateQueue", validator: validate_GetCreateQueue_601145,
+    base: "/", url: url_GetCreateQueue_601146, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeleteMessage_773385 = ref object of OpenApiRestCall_772581
-proc url_PostDeleteMessage_773387(protocol: Scheme; host: string; base: string;
+  Call_PostDeleteMessage_601220 = ref object of OpenApiRestCall_600410
+proc url_PostDeleteMessage_601222(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -1614,7 +1614,7 @@ proc url_PostDeleteMessage_773387(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostDeleteMessage_773386(path: JsonNode; query: JsonNode;
+proc validate_PostDeleteMessage_601221(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes the specified message from the specified queue. To select the message to delete, use the <code>ReceiptHandle</code> of the message (<i>not</i> the <code>MessageId</code> which you receive when you send the message). Amazon SQS can delete a message from a queue even if a visibility timeout setting causes the message to be locked by another consumer. Amazon SQS automatically deletes messages left in a queue longer than the retention period configured for the queue. </p> <note> <p>The <code>ReceiptHandle</code> is associated with a <i>specific instance</i> of receiving a message. If you receive a message more than once, the <code>ReceiptHandle</code> is different each time you receive a message. When you use the <code>DeleteMessage</code> action, you must provide the most recently received <code>ReceiptHandle</code> for the message (otherwise, the request succeeds, but the message might not be deleted).</p> <p>For standard queues, it is possible to receive a message even after you delete it. This might happen on rare occasions if one of the servers which stores a copy of the message is unavailable when you send the request to delete the message. The copy remains on the server and might be returned to you during a subsequent receive request. You should ensure that your application is idempotent, so that receiving a message more than once does not cause issues.</p> </note>
@@ -1628,31 +1628,31 @@ proc validate_PostDeleteMessage_773386(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773388 = path.getOrDefault("QueueName")
-  valid_773388 = validateParameter(valid_773388, JString, required = true,
+  var valid_601223 = path.getOrDefault("QueueName")
+  valid_601223 = validateParameter(valid_601223, JString, required = true,
                                  default = nil)
-  if valid_773388 != nil:
-    section.add "QueueName", valid_773388
-  var valid_773389 = path.getOrDefault("AccountNumber")
-  valid_773389 = validateParameter(valid_773389, JInt, required = true, default = nil)
-  if valid_773389 != nil:
-    section.add "AccountNumber", valid_773389
+  if valid_601223 != nil:
+    section.add "QueueName", valid_601223
+  var valid_601224 = path.getOrDefault("AccountNumber")
+  valid_601224 = validateParameter(valid_601224, JInt, required = true, default = nil)
+  if valid_601224 != nil:
+    section.add "AccountNumber", valid_601224
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773390 = query.getOrDefault("Action")
-  valid_773390 = validateParameter(valid_773390, JString, required = true,
+  var valid_601225 = query.getOrDefault("Action")
+  valid_601225 = validateParameter(valid_601225, JString, required = true,
                                  default = newJString("DeleteMessage"))
-  if valid_773390 != nil:
-    section.add "Action", valid_773390
-  var valid_773391 = query.getOrDefault("Version")
-  valid_773391 = validateParameter(valid_773391, JString, required = true,
+  if valid_601225 != nil:
+    section.add "Action", valid_601225
+  var valid_601226 = query.getOrDefault("Version")
+  valid_601226 = validateParameter(valid_601226, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773391 != nil:
-    section.add "Version", valid_773391
+  if valid_601226 != nil:
+    section.add "Version", valid_601226
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1663,41 +1663,41 @@ proc validate_PostDeleteMessage_773386(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773392 = header.getOrDefault("X-Amz-Date")
-  valid_773392 = validateParameter(valid_773392, JString, required = false,
+  var valid_601227 = header.getOrDefault("X-Amz-Date")
+  valid_601227 = validateParameter(valid_601227, JString, required = false,
                                  default = nil)
-  if valid_773392 != nil:
-    section.add "X-Amz-Date", valid_773392
-  var valid_773393 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773393 = validateParameter(valid_773393, JString, required = false,
+  if valid_601227 != nil:
+    section.add "X-Amz-Date", valid_601227
+  var valid_601228 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601228 = validateParameter(valid_601228, JString, required = false,
                                  default = nil)
-  if valid_773393 != nil:
-    section.add "X-Amz-Security-Token", valid_773393
-  var valid_773394 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773394 = validateParameter(valid_773394, JString, required = false,
+  if valid_601228 != nil:
+    section.add "X-Amz-Security-Token", valid_601228
+  var valid_601229 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601229 = validateParameter(valid_601229, JString, required = false,
                                  default = nil)
-  if valid_773394 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773394
-  var valid_773395 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773395 = validateParameter(valid_773395, JString, required = false,
+  if valid_601229 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601229
+  var valid_601230 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601230 = validateParameter(valid_601230, JString, required = false,
                                  default = nil)
-  if valid_773395 != nil:
-    section.add "X-Amz-Algorithm", valid_773395
-  var valid_773396 = header.getOrDefault("X-Amz-Signature")
-  valid_773396 = validateParameter(valid_773396, JString, required = false,
+  if valid_601230 != nil:
+    section.add "X-Amz-Algorithm", valid_601230
+  var valid_601231 = header.getOrDefault("X-Amz-Signature")
+  valid_601231 = validateParameter(valid_601231, JString, required = false,
                                  default = nil)
-  if valid_773396 != nil:
-    section.add "X-Amz-Signature", valid_773396
-  var valid_773397 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773397 = validateParameter(valid_773397, JString, required = false,
+  if valid_601231 != nil:
+    section.add "X-Amz-Signature", valid_601231
+  var valid_601232 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601232 = validateParameter(valid_601232, JString, required = false,
                                  default = nil)
-  if valid_773397 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773397
-  var valid_773398 = header.getOrDefault("X-Amz-Credential")
-  valid_773398 = validateParameter(valid_773398, JString, required = false,
+  if valid_601232 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601232
+  var valid_601233 = header.getOrDefault("X-Amz-Credential")
+  valid_601233 = validateParameter(valid_601233, JString, required = false,
                                  default = nil)
-  if valid_773398 != nil:
-    section.add "X-Amz-Credential", valid_773398
+  if valid_601233 != nil:
+    section.add "X-Amz-Credential", valid_601233
   result.add "header", section
   ## parameters in `formData` object:
   ##   ReceiptHandle: JString (required)
@@ -1705,28 +1705,28 @@ proc validate_PostDeleteMessage_773386(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `ReceiptHandle` field"
-  var valid_773399 = formData.getOrDefault("ReceiptHandle")
-  valid_773399 = validateParameter(valid_773399, JString, required = true,
+  var valid_601234 = formData.getOrDefault("ReceiptHandle")
+  valid_601234 = validateParameter(valid_601234, JString, required = true,
                                  default = nil)
-  if valid_773399 != nil:
-    section.add "ReceiptHandle", valid_773399
+  if valid_601234 != nil:
+    section.add "ReceiptHandle", valid_601234
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773400: Call_PostDeleteMessage_773385; path: JsonNode;
+proc call*(call_601235: Call_PostDeleteMessage_601220; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified message from the specified queue. To select the message to delete, use the <code>ReceiptHandle</code> of the message (<i>not</i> the <code>MessageId</code> which you receive when you send the message). Amazon SQS can delete a message from a queue even if a visibility timeout setting causes the message to be locked by another consumer. Amazon SQS automatically deletes messages left in a queue longer than the retention period configured for the queue. </p> <note> <p>The <code>ReceiptHandle</code> is associated with a <i>specific instance</i> of receiving a message. If you receive a message more than once, the <code>ReceiptHandle</code> is different each time you receive a message. When you use the <code>DeleteMessage</code> action, you must provide the most recently received <code>ReceiptHandle</code> for the message (otherwise, the request succeeds, but the message might not be deleted).</p> <p>For standard queues, it is possible to receive a message even after you delete it. This might happen on rare occasions if one of the servers which stores a copy of the message is unavailable when you send the request to delete the message. The copy remains on the server and might be returned to you during a subsequent receive request. You should ensure that your application is idempotent, so that receiving a message more than once does not cause issues.</p> </note>
   ## 
-  let valid = call_773400.validator(path, query, header, formData, body)
-  let scheme = call_773400.pickScheme
+  let valid = call_601235.validator(path, query, header, formData, body)
+  let scheme = call_601235.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773400.url(scheme.get, call_773400.host, call_773400.base,
-                         call_773400.route, valid.getOrDefault("path"))
-  result = hook(call_773400, url, valid)
+  let url = call_601235.url(scheme.get, call_601235.host, call_601235.base,
+                         call_601235.route, valid.getOrDefault("path"))
+  result = hook(call_601235, url, valid)
 
-proc call*(call_773401: Call_PostDeleteMessage_773385; QueueName: string;
+proc call*(call_601236: Call_PostDeleteMessage_601220; QueueName: string;
           AccountNumber: int; ReceiptHandle: string;
           Action: string = "DeleteMessage"; Version: string = "2012-11-05"): Recallable =
   ## postDeleteMessage
@@ -1739,24 +1739,24 @@ proc call*(call_773401: Call_PostDeleteMessage_773385; QueueName: string;
   ##   ReceiptHandle: string (required)
   ##                : The receipt handle associated with the message to delete.
   ##   Version: string (required)
-  var path_773402 = newJObject()
-  var query_773403 = newJObject()
-  var formData_773404 = newJObject()
-  add(path_773402, "QueueName", newJString(QueueName))
-  add(query_773403, "Action", newJString(Action))
-  add(path_773402, "AccountNumber", newJInt(AccountNumber))
-  add(formData_773404, "ReceiptHandle", newJString(ReceiptHandle))
-  add(query_773403, "Version", newJString(Version))
-  result = call_773401.call(path_773402, query_773403, nil, formData_773404, nil)
+  var path_601237 = newJObject()
+  var query_601238 = newJObject()
+  var formData_601239 = newJObject()
+  add(path_601237, "QueueName", newJString(QueueName))
+  add(query_601238, "Action", newJString(Action))
+  add(path_601237, "AccountNumber", newJInt(AccountNumber))
+  add(formData_601239, "ReceiptHandle", newJString(ReceiptHandle))
+  add(query_601238, "Version", newJString(Version))
+  result = call_601236.call(path_601237, query_601238, nil, formData_601239, nil)
 
-var postDeleteMessage* = Call_PostDeleteMessage_773385(name: "postDeleteMessage",
+var postDeleteMessage* = Call_PostDeleteMessage_601220(name: "postDeleteMessage",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=DeleteMessage",
-    validator: validate_PostDeleteMessage_773386, base: "/",
-    url: url_PostDeleteMessage_773387, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostDeleteMessage_601221, base: "/",
+    url: url_PostDeleteMessage_601222, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeleteMessage_773366 = ref object of OpenApiRestCall_772581
-proc url_GetDeleteMessage_773368(protocol: Scheme; host: string; base: string;
+  Call_GetDeleteMessage_601201 = ref object of OpenApiRestCall_600410
+proc url_GetDeleteMessage_601203(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -1772,7 +1772,7 @@ proc url_GetDeleteMessage_773368(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetDeleteMessage_773367(path: JsonNode; query: JsonNode;
+proc validate_GetDeleteMessage_601202(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes the specified message from the specified queue. To select the message to delete, use the <code>ReceiptHandle</code> of the message (<i>not</i> the <code>MessageId</code> which you receive when you send the message). Amazon SQS can delete a message from a queue even if a visibility timeout setting causes the message to be locked by another consumer. Amazon SQS automatically deletes messages left in a queue longer than the retention period configured for the queue. </p> <note> <p>The <code>ReceiptHandle</code> is associated with a <i>specific instance</i> of receiving a message. If you receive a message more than once, the <code>ReceiptHandle</code> is different each time you receive a message. When you use the <code>DeleteMessage</code> action, you must provide the most recently received <code>ReceiptHandle</code> for the message (otherwise, the request succeeds, but the message might not be deleted).</p> <p>For standard queues, it is possible to receive a message even after you delete it. This might happen on rare occasions if one of the servers which stores a copy of the message is unavailable when you send the request to delete the message. The copy remains on the server and might be returned to you during a subsequent receive request. You should ensure that your application is idempotent, so that receiving a message more than once does not cause issues.</p> </note>
@@ -1786,15 +1786,15 @@ proc validate_GetDeleteMessage_773367(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773369 = path.getOrDefault("QueueName")
-  valid_773369 = validateParameter(valid_773369, JString, required = true,
+  var valid_601204 = path.getOrDefault("QueueName")
+  valid_601204 = validateParameter(valid_601204, JString, required = true,
                                  default = nil)
-  if valid_773369 != nil:
-    section.add "QueueName", valid_773369
-  var valid_773370 = path.getOrDefault("AccountNumber")
-  valid_773370 = validateParameter(valid_773370, JInt, required = true, default = nil)
-  if valid_773370 != nil:
-    section.add "AccountNumber", valid_773370
+  if valid_601204 != nil:
+    section.add "QueueName", valid_601204
+  var valid_601205 = path.getOrDefault("AccountNumber")
+  valid_601205 = validateParameter(valid_601205, JInt, required = true, default = nil)
+  if valid_601205 != nil:
+    section.add "AccountNumber", valid_601205
   result.add "path", section
   ## parameters in `query` object:
   ##   ReceiptHandle: JString (required)
@@ -1804,21 +1804,21 @@ proc validate_GetDeleteMessage_773367(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `ReceiptHandle` field"
-  var valid_773371 = query.getOrDefault("ReceiptHandle")
-  valid_773371 = validateParameter(valid_773371, JString, required = true,
+  var valid_601206 = query.getOrDefault("ReceiptHandle")
+  valid_601206 = validateParameter(valid_601206, JString, required = true,
                                  default = nil)
-  if valid_773371 != nil:
-    section.add "ReceiptHandle", valid_773371
-  var valid_773372 = query.getOrDefault("Action")
-  valid_773372 = validateParameter(valid_773372, JString, required = true,
+  if valid_601206 != nil:
+    section.add "ReceiptHandle", valid_601206
+  var valid_601207 = query.getOrDefault("Action")
+  valid_601207 = validateParameter(valid_601207, JString, required = true,
                                  default = newJString("DeleteMessage"))
-  if valid_773372 != nil:
-    section.add "Action", valid_773372
-  var valid_773373 = query.getOrDefault("Version")
-  valid_773373 = validateParameter(valid_773373, JString, required = true,
+  if valid_601207 != nil:
+    section.add "Action", valid_601207
+  var valid_601208 = query.getOrDefault("Version")
+  valid_601208 = validateParameter(valid_601208, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773373 != nil:
-    section.add "Version", valid_773373
+  if valid_601208 != nil:
+    section.add "Version", valid_601208
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1829,60 +1829,60 @@ proc validate_GetDeleteMessage_773367(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773374 = header.getOrDefault("X-Amz-Date")
-  valid_773374 = validateParameter(valid_773374, JString, required = false,
+  var valid_601209 = header.getOrDefault("X-Amz-Date")
+  valid_601209 = validateParameter(valid_601209, JString, required = false,
                                  default = nil)
-  if valid_773374 != nil:
-    section.add "X-Amz-Date", valid_773374
-  var valid_773375 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773375 = validateParameter(valid_773375, JString, required = false,
+  if valid_601209 != nil:
+    section.add "X-Amz-Date", valid_601209
+  var valid_601210 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601210 = validateParameter(valid_601210, JString, required = false,
                                  default = nil)
-  if valid_773375 != nil:
-    section.add "X-Amz-Security-Token", valid_773375
-  var valid_773376 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773376 = validateParameter(valid_773376, JString, required = false,
+  if valid_601210 != nil:
+    section.add "X-Amz-Security-Token", valid_601210
+  var valid_601211 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601211 = validateParameter(valid_601211, JString, required = false,
                                  default = nil)
-  if valid_773376 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773376
-  var valid_773377 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773377 = validateParameter(valid_773377, JString, required = false,
+  if valid_601211 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601211
+  var valid_601212 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601212 = validateParameter(valid_601212, JString, required = false,
                                  default = nil)
-  if valid_773377 != nil:
-    section.add "X-Amz-Algorithm", valid_773377
-  var valid_773378 = header.getOrDefault("X-Amz-Signature")
-  valid_773378 = validateParameter(valid_773378, JString, required = false,
+  if valid_601212 != nil:
+    section.add "X-Amz-Algorithm", valid_601212
+  var valid_601213 = header.getOrDefault("X-Amz-Signature")
+  valid_601213 = validateParameter(valid_601213, JString, required = false,
                                  default = nil)
-  if valid_773378 != nil:
-    section.add "X-Amz-Signature", valid_773378
-  var valid_773379 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773379 = validateParameter(valid_773379, JString, required = false,
+  if valid_601213 != nil:
+    section.add "X-Amz-Signature", valid_601213
+  var valid_601214 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601214 = validateParameter(valid_601214, JString, required = false,
                                  default = nil)
-  if valid_773379 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773379
-  var valid_773380 = header.getOrDefault("X-Amz-Credential")
-  valid_773380 = validateParameter(valid_773380, JString, required = false,
+  if valid_601214 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601214
+  var valid_601215 = header.getOrDefault("X-Amz-Credential")
+  valid_601215 = validateParameter(valid_601215, JString, required = false,
                                  default = nil)
-  if valid_773380 != nil:
-    section.add "X-Amz-Credential", valid_773380
+  if valid_601215 != nil:
+    section.add "X-Amz-Credential", valid_601215
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773381: Call_GetDeleteMessage_773366; path: JsonNode;
+proc call*(call_601216: Call_GetDeleteMessage_601201; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified message from the specified queue. To select the message to delete, use the <code>ReceiptHandle</code> of the message (<i>not</i> the <code>MessageId</code> which you receive when you send the message). Amazon SQS can delete a message from a queue even if a visibility timeout setting causes the message to be locked by another consumer. Amazon SQS automatically deletes messages left in a queue longer than the retention period configured for the queue. </p> <note> <p>The <code>ReceiptHandle</code> is associated with a <i>specific instance</i> of receiving a message. If you receive a message more than once, the <code>ReceiptHandle</code> is different each time you receive a message. When you use the <code>DeleteMessage</code> action, you must provide the most recently received <code>ReceiptHandle</code> for the message (otherwise, the request succeeds, but the message might not be deleted).</p> <p>For standard queues, it is possible to receive a message even after you delete it. This might happen on rare occasions if one of the servers which stores a copy of the message is unavailable when you send the request to delete the message. The copy remains on the server and might be returned to you during a subsequent receive request. You should ensure that your application is idempotent, so that receiving a message more than once does not cause issues.</p> </note>
   ## 
-  let valid = call_773381.validator(path, query, header, formData, body)
-  let scheme = call_773381.pickScheme
+  let valid = call_601216.validator(path, query, header, formData, body)
+  let scheme = call_601216.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773381.url(scheme.get, call_773381.host, call_773381.base,
-                         call_773381.route, valid.getOrDefault("path"))
-  result = hook(call_773381, url, valid)
+  let url = call_601216.url(scheme.get, call_601216.host, call_601216.base,
+                         call_601216.route, valid.getOrDefault("path"))
+  result = hook(call_601216, url, valid)
 
-proc call*(call_773382: Call_GetDeleteMessage_773366; ReceiptHandle: string;
+proc call*(call_601217: Call_GetDeleteMessage_601201; ReceiptHandle: string;
           QueueName: string; AccountNumber: int; Action: string = "DeleteMessage";
           Version: string = "2012-11-05"): Recallable =
   ## getDeleteMessage
@@ -1895,23 +1895,23 @@ proc call*(call_773382: Call_GetDeleteMessage_773366; ReceiptHandle: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773383 = newJObject()
-  var query_773384 = newJObject()
-  add(query_773384, "ReceiptHandle", newJString(ReceiptHandle))
-  add(path_773383, "QueueName", newJString(QueueName))
-  add(query_773384, "Action", newJString(Action))
-  add(path_773383, "AccountNumber", newJInt(AccountNumber))
-  add(query_773384, "Version", newJString(Version))
-  result = call_773382.call(path_773383, query_773384, nil, nil, nil)
+  var path_601218 = newJObject()
+  var query_601219 = newJObject()
+  add(query_601219, "ReceiptHandle", newJString(ReceiptHandle))
+  add(path_601218, "QueueName", newJString(QueueName))
+  add(query_601219, "Action", newJString(Action))
+  add(path_601218, "AccountNumber", newJInt(AccountNumber))
+  add(query_601219, "Version", newJString(Version))
+  result = call_601217.call(path_601218, query_601219, nil, nil, nil)
 
-var getDeleteMessage* = Call_GetDeleteMessage_773366(name: "getDeleteMessage",
+var getDeleteMessage* = Call_GetDeleteMessage_601201(name: "getDeleteMessage",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=DeleteMessage",
-    validator: validate_GetDeleteMessage_773367, base: "/",
-    url: url_GetDeleteMessage_773368, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDeleteMessage_601202, base: "/",
+    url: url_GetDeleteMessage_601203, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeleteMessageBatch_773424 = ref object of OpenApiRestCall_772581
-proc url_PostDeleteMessageBatch_773426(protocol: Scheme; host: string; base: string;
+  Call_PostDeleteMessageBatch_601259 = ref object of OpenApiRestCall_600410
+proc url_PostDeleteMessageBatch_601261(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -1927,7 +1927,7 @@ proc url_PostDeleteMessageBatch_773426(protocol: Scheme; host: string; base: str
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostDeleteMessageBatch_773425(path: JsonNode; query: JsonNode;
+proc validate_PostDeleteMessageBatch_601260(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes up to ten messages from the specified queue. This is a batch version of <code> <a>DeleteMessage</a>.</code> The result of the action on each message is reported individually in the response.</p> <important> <p>Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> </important> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
@@ -1940,31 +1940,31 @@ proc validate_PostDeleteMessageBatch_773425(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773427 = path.getOrDefault("QueueName")
-  valid_773427 = validateParameter(valid_773427, JString, required = true,
+  var valid_601262 = path.getOrDefault("QueueName")
+  valid_601262 = validateParameter(valid_601262, JString, required = true,
                                  default = nil)
-  if valid_773427 != nil:
-    section.add "QueueName", valid_773427
-  var valid_773428 = path.getOrDefault("AccountNumber")
-  valid_773428 = validateParameter(valid_773428, JInt, required = true, default = nil)
-  if valid_773428 != nil:
-    section.add "AccountNumber", valid_773428
+  if valid_601262 != nil:
+    section.add "QueueName", valid_601262
+  var valid_601263 = path.getOrDefault("AccountNumber")
+  valid_601263 = validateParameter(valid_601263, JInt, required = true, default = nil)
+  if valid_601263 != nil:
+    section.add "AccountNumber", valid_601263
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773429 = query.getOrDefault("Action")
-  valid_773429 = validateParameter(valid_773429, JString, required = true,
+  var valid_601264 = query.getOrDefault("Action")
+  valid_601264 = validateParameter(valid_601264, JString, required = true,
                                  default = newJString("DeleteMessageBatch"))
-  if valid_773429 != nil:
-    section.add "Action", valid_773429
-  var valid_773430 = query.getOrDefault("Version")
-  valid_773430 = validateParameter(valid_773430, JString, required = true,
+  if valid_601264 != nil:
+    section.add "Action", valid_601264
+  var valid_601265 = query.getOrDefault("Version")
+  valid_601265 = validateParameter(valid_601265, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773430 != nil:
-    section.add "Version", valid_773430
+  if valid_601265 != nil:
+    section.add "Version", valid_601265
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1975,41 +1975,41 @@ proc validate_PostDeleteMessageBatch_773425(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773431 = header.getOrDefault("X-Amz-Date")
-  valid_773431 = validateParameter(valid_773431, JString, required = false,
+  var valid_601266 = header.getOrDefault("X-Amz-Date")
+  valid_601266 = validateParameter(valid_601266, JString, required = false,
                                  default = nil)
-  if valid_773431 != nil:
-    section.add "X-Amz-Date", valid_773431
-  var valid_773432 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773432 = validateParameter(valid_773432, JString, required = false,
+  if valid_601266 != nil:
+    section.add "X-Amz-Date", valid_601266
+  var valid_601267 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601267 = validateParameter(valid_601267, JString, required = false,
                                  default = nil)
-  if valid_773432 != nil:
-    section.add "X-Amz-Security-Token", valid_773432
-  var valid_773433 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773433 = validateParameter(valid_773433, JString, required = false,
+  if valid_601267 != nil:
+    section.add "X-Amz-Security-Token", valid_601267
+  var valid_601268 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601268 = validateParameter(valid_601268, JString, required = false,
                                  default = nil)
-  if valid_773433 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773433
-  var valid_773434 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773434 = validateParameter(valid_773434, JString, required = false,
+  if valid_601268 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601268
+  var valid_601269 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601269 = validateParameter(valid_601269, JString, required = false,
                                  default = nil)
-  if valid_773434 != nil:
-    section.add "X-Amz-Algorithm", valid_773434
-  var valid_773435 = header.getOrDefault("X-Amz-Signature")
-  valid_773435 = validateParameter(valid_773435, JString, required = false,
+  if valid_601269 != nil:
+    section.add "X-Amz-Algorithm", valid_601269
+  var valid_601270 = header.getOrDefault("X-Amz-Signature")
+  valid_601270 = validateParameter(valid_601270, JString, required = false,
                                  default = nil)
-  if valid_773435 != nil:
-    section.add "X-Amz-Signature", valid_773435
-  var valid_773436 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773436 = validateParameter(valid_773436, JString, required = false,
+  if valid_601270 != nil:
+    section.add "X-Amz-Signature", valid_601270
+  var valid_601271 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601271 = validateParameter(valid_601271, JString, required = false,
                                  default = nil)
-  if valid_773436 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773436
-  var valid_773437 = header.getOrDefault("X-Amz-Credential")
-  valid_773437 = validateParameter(valid_773437, JString, required = false,
+  if valid_601271 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601271
+  var valid_601272 = header.getOrDefault("X-Amz-Credential")
+  valid_601272 = validateParameter(valid_601272, JString, required = false,
                                  default = nil)
-  if valid_773437 != nil:
-    section.add "X-Amz-Credential", valid_773437
+  if valid_601272 != nil:
+    section.add "X-Amz-Credential", valid_601272
   result.add "header", section
   ## parameters in `formData` object:
   ##   Entries: JArray (required)
@@ -2017,27 +2017,27 @@ proc validate_PostDeleteMessageBatch_773425(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Entries` field"
-  var valid_773438 = formData.getOrDefault("Entries")
-  valid_773438 = validateParameter(valid_773438, JArray, required = true, default = nil)
-  if valid_773438 != nil:
-    section.add "Entries", valid_773438
+  var valid_601273 = formData.getOrDefault("Entries")
+  valid_601273 = validateParameter(valid_601273, JArray, required = true, default = nil)
+  if valid_601273 != nil:
+    section.add "Entries", valid_601273
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773439: Call_PostDeleteMessageBatch_773424; path: JsonNode;
+proc call*(call_601274: Call_PostDeleteMessageBatch_601259; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes up to ten messages from the specified queue. This is a batch version of <code> <a>DeleteMessage</a>.</code> The result of the action on each message is reported individually in the response.</p> <important> <p>Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> </important> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
-  let valid = call_773439.validator(path, query, header, formData, body)
-  let scheme = call_773439.pickScheme
+  let valid = call_601274.validator(path, query, header, formData, body)
+  let scheme = call_601274.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773439.url(scheme.get, call_773439.host, call_773439.base,
-                         call_773439.route, valid.getOrDefault("path"))
-  result = hook(call_773439, url, valid)
+  let url = call_601274.url(scheme.get, call_601274.host, call_601274.base,
+                         call_601274.route, valid.getOrDefault("path"))
+  result = hook(call_601274, url, valid)
 
-proc call*(call_773440: Call_PostDeleteMessageBatch_773424; Entries: JsonNode;
+proc call*(call_601275: Call_PostDeleteMessageBatch_601259; Entries: JsonNode;
           QueueName: string; AccountNumber: int;
           Action: string = "DeleteMessageBatch"; Version: string = "2012-11-05"): Recallable =
   ## postDeleteMessageBatch
@@ -2050,26 +2050,26 @@ proc call*(call_773440: Call_PostDeleteMessageBatch_773424; Entries: JsonNode;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773441 = newJObject()
-  var query_773442 = newJObject()
-  var formData_773443 = newJObject()
+  var path_601276 = newJObject()
+  var query_601277 = newJObject()
+  var formData_601278 = newJObject()
   if Entries != nil:
-    formData_773443.add "Entries", Entries
-  add(path_773441, "QueueName", newJString(QueueName))
-  add(query_773442, "Action", newJString(Action))
-  add(path_773441, "AccountNumber", newJInt(AccountNumber))
-  add(query_773442, "Version", newJString(Version))
-  result = call_773440.call(path_773441, query_773442, nil, formData_773443, nil)
+    formData_601278.add "Entries", Entries
+  add(path_601276, "QueueName", newJString(QueueName))
+  add(query_601277, "Action", newJString(Action))
+  add(path_601276, "AccountNumber", newJInt(AccountNumber))
+  add(query_601277, "Version", newJString(Version))
+  result = call_601275.call(path_601276, query_601277, nil, formData_601278, nil)
 
-var postDeleteMessageBatch* = Call_PostDeleteMessageBatch_773424(
+var postDeleteMessageBatch* = Call_PostDeleteMessageBatch_601259(
     name: "postDeleteMessageBatch", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=DeleteMessageBatch",
-    validator: validate_PostDeleteMessageBatch_773425, base: "/",
-    url: url_PostDeleteMessageBatch_773426, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostDeleteMessageBatch_601260, base: "/",
+    url: url_PostDeleteMessageBatch_601261, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeleteMessageBatch_773405 = ref object of OpenApiRestCall_772581
-proc url_GetDeleteMessageBatch_773407(protocol: Scheme; host: string; base: string;
+  Call_GetDeleteMessageBatch_601240 = ref object of OpenApiRestCall_600410
+proc url_GetDeleteMessageBatch_601242(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -2085,7 +2085,7 @@ proc url_GetDeleteMessageBatch_773407(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetDeleteMessageBatch_773406(path: JsonNode; query: JsonNode;
+proc validate_GetDeleteMessageBatch_601241(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes up to ten messages from the specified queue. This is a batch version of <code> <a>DeleteMessage</a>.</code> The result of the action on each message is reported individually in the response.</p> <important> <p>Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> </important> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
@@ -2098,15 +2098,15 @@ proc validate_GetDeleteMessageBatch_773406(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773408 = path.getOrDefault("QueueName")
-  valid_773408 = validateParameter(valid_773408, JString, required = true,
+  var valid_601243 = path.getOrDefault("QueueName")
+  valid_601243 = validateParameter(valid_601243, JString, required = true,
                                  default = nil)
-  if valid_773408 != nil:
-    section.add "QueueName", valid_773408
-  var valid_773409 = path.getOrDefault("AccountNumber")
-  valid_773409 = validateParameter(valid_773409, JInt, required = true, default = nil)
-  if valid_773409 != nil:
-    section.add "AccountNumber", valid_773409
+  if valid_601243 != nil:
+    section.add "QueueName", valid_601243
+  var valid_601244 = path.getOrDefault("AccountNumber")
+  valid_601244 = validateParameter(valid_601244, JInt, required = true, default = nil)
+  if valid_601244 != nil:
+    section.add "AccountNumber", valid_601244
   result.add "path", section
   ## parameters in `query` object:
   ##   Entries: JArray (required)
@@ -2115,20 +2115,20 @@ proc validate_GetDeleteMessageBatch_773406(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Entries` field"
-  var valid_773410 = query.getOrDefault("Entries")
-  valid_773410 = validateParameter(valid_773410, JArray, required = true, default = nil)
-  if valid_773410 != nil:
-    section.add "Entries", valid_773410
-  var valid_773411 = query.getOrDefault("Action")
-  valid_773411 = validateParameter(valid_773411, JString, required = true,
+  var valid_601245 = query.getOrDefault("Entries")
+  valid_601245 = validateParameter(valid_601245, JArray, required = true, default = nil)
+  if valid_601245 != nil:
+    section.add "Entries", valid_601245
+  var valid_601246 = query.getOrDefault("Action")
+  valid_601246 = validateParameter(valid_601246, JString, required = true,
                                  default = newJString("DeleteMessageBatch"))
-  if valid_773411 != nil:
-    section.add "Action", valid_773411
-  var valid_773412 = query.getOrDefault("Version")
-  valid_773412 = validateParameter(valid_773412, JString, required = true,
+  if valid_601246 != nil:
+    section.add "Action", valid_601246
+  var valid_601247 = query.getOrDefault("Version")
+  valid_601247 = validateParameter(valid_601247, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773412 != nil:
-    section.add "Version", valid_773412
+  if valid_601247 != nil:
+    section.add "Version", valid_601247
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2139,60 +2139,60 @@ proc validate_GetDeleteMessageBatch_773406(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773413 = header.getOrDefault("X-Amz-Date")
-  valid_773413 = validateParameter(valid_773413, JString, required = false,
+  var valid_601248 = header.getOrDefault("X-Amz-Date")
+  valid_601248 = validateParameter(valid_601248, JString, required = false,
                                  default = nil)
-  if valid_773413 != nil:
-    section.add "X-Amz-Date", valid_773413
-  var valid_773414 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773414 = validateParameter(valid_773414, JString, required = false,
+  if valid_601248 != nil:
+    section.add "X-Amz-Date", valid_601248
+  var valid_601249 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601249 = validateParameter(valid_601249, JString, required = false,
                                  default = nil)
-  if valid_773414 != nil:
-    section.add "X-Amz-Security-Token", valid_773414
-  var valid_773415 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773415 = validateParameter(valid_773415, JString, required = false,
+  if valid_601249 != nil:
+    section.add "X-Amz-Security-Token", valid_601249
+  var valid_601250 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601250 = validateParameter(valid_601250, JString, required = false,
                                  default = nil)
-  if valid_773415 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773415
-  var valid_773416 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773416 = validateParameter(valid_773416, JString, required = false,
+  if valid_601250 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601250
+  var valid_601251 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601251 = validateParameter(valid_601251, JString, required = false,
                                  default = nil)
-  if valid_773416 != nil:
-    section.add "X-Amz-Algorithm", valid_773416
-  var valid_773417 = header.getOrDefault("X-Amz-Signature")
-  valid_773417 = validateParameter(valid_773417, JString, required = false,
+  if valid_601251 != nil:
+    section.add "X-Amz-Algorithm", valid_601251
+  var valid_601252 = header.getOrDefault("X-Amz-Signature")
+  valid_601252 = validateParameter(valid_601252, JString, required = false,
                                  default = nil)
-  if valid_773417 != nil:
-    section.add "X-Amz-Signature", valid_773417
-  var valid_773418 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773418 = validateParameter(valid_773418, JString, required = false,
+  if valid_601252 != nil:
+    section.add "X-Amz-Signature", valid_601252
+  var valid_601253 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601253 = validateParameter(valid_601253, JString, required = false,
                                  default = nil)
-  if valid_773418 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773418
-  var valid_773419 = header.getOrDefault("X-Amz-Credential")
-  valid_773419 = validateParameter(valid_773419, JString, required = false,
+  if valid_601253 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601253
+  var valid_601254 = header.getOrDefault("X-Amz-Credential")
+  valid_601254 = validateParameter(valid_601254, JString, required = false,
                                  default = nil)
-  if valid_773419 != nil:
-    section.add "X-Amz-Credential", valid_773419
+  if valid_601254 != nil:
+    section.add "X-Amz-Credential", valid_601254
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773420: Call_GetDeleteMessageBatch_773405; path: JsonNode;
+proc call*(call_601255: Call_GetDeleteMessageBatch_601240; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes up to ten messages from the specified queue. This is a batch version of <code> <a>DeleteMessage</a>.</code> The result of the action on each message is reported individually in the response.</p> <important> <p>Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> </important> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
-  let valid = call_773420.validator(path, query, header, formData, body)
-  let scheme = call_773420.pickScheme
+  let valid = call_601255.validator(path, query, header, formData, body)
+  let scheme = call_601255.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773420.url(scheme.get, call_773420.host, call_773420.base,
-                         call_773420.route, valid.getOrDefault("path"))
-  result = hook(call_773420, url, valid)
+  let url = call_601255.url(scheme.get, call_601255.host, call_601255.base,
+                         call_601255.route, valid.getOrDefault("path"))
+  result = hook(call_601255, url, valid)
 
-proc call*(call_773421: Call_GetDeleteMessageBatch_773405; QueueName: string;
+proc call*(call_601256: Call_GetDeleteMessageBatch_601240; QueueName: string;
           Entries: JsonNode; AccountNumber: int;
           Action: string = "DeleteMessageBatch"; Version: string = "2012-11-05"): Recallable =
   ## getDeleteMessageBatch
@@ -2205,25 +2205,25 @@ proc call*(call_773421: Call_GetDeleteMessageBatch_773405; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773422 = newJObject()
-  var query_773423 = newJObject()
-  add(path_773422, "QueueName", newJString(QueueName))
+  var path_601257 = newJObject()
+  var query_601258 = newJObject()
+  add(path_601257, "QueueName", newJString(QueueName))
   if Entries != nil:
-    query_773423.add "Entries", Entries
-  add(query_773423, "Action", newJString(Action))
-  add(path_773422, "AccountNumber", newJInt(AccountNumber))
-  add(query_773423, "Version", newJString(Version))
-  result = call_773421.call(path_773422, query_773423, nil, nil, nil)
+    query_601258.add "Entries", Entries
+  add(query_601258, "Action", newJString(Action))
+  add(path_601257, "AccountNumber", newJInt(AccountNumber))
+  add(query_601258, "Version", newJString(Version))
+  result = call_601256.call(path_601257, query_601258, nil, nil, nil)
 
-var getDeleteMessageBatch* = Call_GetDeleteMessageBatch_773405(
+var getDeleteMessageBatch* = Call_GetDeleteMessageBatch_601240(
     name: "getDeleteMessageBatch", meth: HttpMethod.HttpGet,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=DeleteMessageBatch",
-    validator: validate_GetDeleteMessageBatch_773406, base: "/",
-    url: url_GetDeleteMessageBatch_773407, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDeleteMessageBatch_601241, base: "/",
+    url: url_GetDeleteMessageBatch_601242, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeleteQueue_773462 = ref object of OpenApiRestCall_772581
-proc url_PostDeleteQueue_773464(protocol: Scheme; host: string; base: string;
+  Call_PostDeleteQueue_601297 = ref object of OpenApiRestCall_600410
+proc url_PostDeleteQueue_601299(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -2239,7 +2239,7 @@ proc url_PostDeleteQueue_773464(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostDeleteQueue_773463(path: JsonNode; query: JsonNode;
+proc validate_PostDeleteQueue_601298(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Deletes the queue specified by the <code>QueueUrl</code>, regardless of the queue's contents. If the specified queue doesn't exist, Amazon SQS returns a successful response.</p> <important> <p>Be careful with the <code>DeleteQueue</code> action: When you delete a queue, any messages in the queue are no longer available. </p> </important> <p>When you delete a queue, the deletion process takes up to 60 seconds. Requests you send involving that queue during the 60 seconds might succeed. For example, a <code> <a>SendMessage</a> </code> request might succeed, but after 60 seconds the queue and the message you sent no longer exist.</p> <p>When you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -2253,31 +2253,31 @@ proc validate_PostDeleteQueue_773463(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773465 = path.getOrDefault("QueueName")
-  valid_773465 = validateParameter(valid_773465, JString, required = true,
+  var valid_601300 = path.getOrDefault("QueueName")
+  valid_601300 = validateParameter(valid_601300, JString, required = true,
                                  default = nil)
-  if valid_773465 != nil:
-    section.add "QueueName", valid_773465
-  var valid_773466 = path.getOrDefault("AccountNumber")
-  valid_773466 = validateParameter(valid_773466, JInt, required = true, default = nil)
-  if valid_773466 != nil:
-    section.add "AccountNumber", valid_773466
+  if valid_601300 != nil:
+    section.add "QueueName", valid_601300
+  var valid_601301 = path.getOrDefault("AccountNumber")
+  valid_601301 = validateParameter(valid_601301, JInt, required = true, default = nil)
+  if valid_601301 != nil:
+    section.add "AccountNumber", valid_601301
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773467 = query.getOrDefault("Action")
-  valid_773467 = validateParameter(valid_773467, JString, required = true,
+  var valid_601302 = query.getOrDefault("Action")
+  valid_601302 = validateParameter(valid_601302, JString, required = true,
                                  default = newJString("DeleteQueue"))
-  if valid_773467 != nil:
-    section.add "Action", valid_773467
-  var valid_773468 = query.getOrDefault("Version")
-  valid_773468 = validateParameter(valid_773468, JString, required = true,
+  if valid_601302 != nil:
+    section.add "Action", valid_601302
+  var valid_601303 = query.getOrDefault("Version")
+  valid_601303 = validateParameter(valid_601303, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773468 != nil:
-    section.add "Version", valid_773468
+  if valid_601303 != nil:
+    section.add "Version", valid_601303
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2288,60 +2288,60 @@ proc validate_PostDeleteQueue_773463(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773469 = header.getOrDefault("X-Amz-Date")
-  valid_773469 = validateParameter(valid_773469, JString, required = false,
+  var valid_601304 = header.getOrDefault("X-Amz-Date")
+  valid_601304 = validateParameter(valid_601304, JString, required = false,
                                  default = nil)
-  if valid_773469 != nil:
-    section.add "X-Amz-Date", valid_773469
-  var valid_773470 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773470 = validateParameter(valid_773470, JString, required = false,
+  if valid_601304 != nil:
+    section.add "X-Amz-Date", valid_601304
+  var valid_601305 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601305 = validateParameter(valid_601305, JString, required = false,
                                  default = nil)
-  if valid_773470 != nil:
-    section.add "X-Amz-Security-Token", valid_773470
-  var valid_773471 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773471 = validateParameter(valid_773471, JString, required = false,
+  if valid_601305 != nil:
+    section.add "X-Amz-Security-Token", valid_601305
+  var valid_601306 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601306 = validateParameter(valid_601306, JString, required = false,
                                  default = nil)
-  if valid_773471 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773471
-  var valid_773472 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773472 = validateParameter(valid_773472, JString, required = false,
+  if valid_601306 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601306
+  var valid_601307 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601307 = validateParameter(valid_601307, JString, required = false,
                                  default = nil)
-  if valid_773472 != nil:
-    section.add "X-Amz-Algorithm", valid_773472
-  var valid_773473 = header.getOrDefault("X-Amz-Signature")
-  valid_773473 = validateParameter(valid_773473, JString, required = false,
+  if valid_601307 != nil:
+    section.add "X-Amz-Algorithm", valid_601307
+  var valid_601308 = header.getOrDefault("X-Amz-Signature")
+  valid_601308 = validateParameter(valid_601308, JString, required = false,
                                  default = nil)
-  if valid_773473 != nil:
-    section.add "X-Amz-Signature", valid_773473
-  var valid_773474 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773474 = validateParameter(valid_773474, JString, required = false,
+  if valid_601308 != nil:
+    section.add "X-Amz-Signature", valid_601308
+  var valid_601309 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601309 = validateParameter(valid_601309, JString, required = false,
                                  default = nil)
-  if valid_773474 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773474
-  var valid_773475 = header.getOrDefault("X-Amz-Credential")
-  valid_773475 = validateParameter(valid_773475, JString, required = false,
+  if valid_601309 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601309
+  var valid_601310 = header.getOrDefault("X-Amz-Credential")
+  valid_601310 = validateParameter(valid_601310, JString, required = false,
                                  default = nil)
-  if valid_773475 != nil:
-    section.add "X-Amz-Credential", valid_773475
+  if valid_601310 != nil:
+    section.add "X-Amz-Credential", valid_601310
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773476: Call_PostDeleteQueue_773462; path: JsonNode; query: JsonNode;
+proc call*(call_601311: Call_PostDeleteQueue_601297; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the queue specified by the <code>QueueUrl</code>, regardless of the queue's contents. If the specified queue doesn't exist, Amazon SQS returns a successful response.</p> <important> <p>Be careful with the <code>DeleteQueue</code> action: When you delete a queue, any messages in the queue are no longer available. </p> </important> <p>When you delete a queue, the deletion process takes up to 60 seconds. Requests you send involving that queue during the 60 seconds might succeed. For example, a <code> <a>SendMessage</a> </code> request might succeed, but after 60 seconds the queue and the message you sent no longer exist.</p> <p>When you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773476.validator(path, query, header, formData, body)
-  let scheme = call_773476.pickScheme
+  let valid = call_601311.validator(path, query, header, formData, body)
+  let scheme = call_601311.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773476.url(scheme.get, call_773476.host, call_773476.base,
-                         call_773476.route, valid.getOrDefault("path"))
-  result = hook(call_773476, url, valid)
+  let url = call_601311.url(scheme.get, call_601311.host, call_601311.base,
+                         call_601311.route, valid.getOrDefault("path"))
+  result = hook(call_601311, url, valid)
 
-proc call*(call_773477: Call_PostDeleteQueue_773462; QueueName: string;
+proc call*(call_601312: Call_PostDeleteQueue_601297; QueueName: string;
           AccountNumber: int; Action: string = "DeleteQueue";
           Version: string = "2012-11-05"): Recallable =
   ## postDeleteQueue
@@ -2352,22 +2352,22 @@ proc call*(call_773477: Call_PostDeleteQueue_773462; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773478 = newJObject()
-  var query_773479 = newJObject()
-  add(path_773478, "QueueName", newJString(QueueName))
-  add(query_773479, "Action", newJString(Action))
-  add(path_773478, "AccountNumber", newJInt(AccountNumber))
-  add(query_773479, "Version", newJString(Version))
-  result = call_773477.call(path_773478, query_773479, nil, nil, nil)
+  var path_601313 = newJObject()
+  var query_601314 = newJObject()
+  add(path_601313, "QueueName", newJString(QueueName))
+  add(query_601314, "Action", newJString(Action))
+  add(path_601313, "AccountNumber", newJInt(AccountNumber))
+  add(query_601314, "Version", newJString(Version))
+  result = call_601312.call(path_601313, query_601314, nil, nil, nil)
 
-var postDeleteQueue* = Call_PostDeleteQueue_773462(name: "postDeleteQueue",
+var postDeleteQueue* = Call_PostDeleteQueue_601297(name: "postDeleteQueue",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=DeleteQueue",
-    validator: validate_PostDeleteQueue_773463, base: "/", url: url_PostDeleteQueue_773464,
+    validator: validate_PostDeleteQueue_601298, base: "/", url: url_PostDeleteQueue_601299,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeleteQueue_773444 = ref object of OpenApiRestCall_772581
-proc url_GetDeleteQueue_773446(protocol: Scheme; host: string; base: string;
+  Call_GetDeleteQueue_601279 = ref object of OpenApiRestCall_600410
+proc url_GetDeleteQueue_601281(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -2383,7 +2383,7 @@ proc url_GetDeleteQueue_773446(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetDeleteQueue_773445(path: JsonNode; query: JsonNode;
+proc validate_GetDeleteQueue_601280(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Deletes the queue specified by the <code>QueueUrl</code>, regardless of the queue's contents. If the specified queue doesn't exist, Amazon SQS returns a successful response.</p> <important> <p>Be careful with the <code>DeleteQueue</code> action: When you delete a queue, any messages in the queue are no longer available. </p> </important> <p>When you delete a queue, the deletion process takes up to 60 seconds. Requests you send involving that queue during the 60 seconds might succeed. For example, a <code> <a>SendMessage</a> </code> request might succeed, but after 60 seconds the queue and the message you sent no longer exist.</p> <p>When you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -2397,31 +2397,31 @@ proc validate_GetDeleteQueue_773445(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773447 = path.getOrDefault("QueueName")
-  valid_773447 = validateParameter(valid_773447, JString, required = true,
+  var valid_601282 = path.getOrDefault("QueueName")
+  valid_601282 = validateParameter(valid_601282, JString, required = true,
                                  default = nil)
-  if valid_773447 != nil:
-    section.add "QueueName", valid_773447
-  var valid_773448 = path.getOrDefault("AccountNumber")
-  valid_773448 = validateParameter(valid_773448, JInt, required = true, default = nil)
-  if valid_773448 != nil:
-    section.add "AccountNumber", valid_773448
+  if valid_601282 != nil:
+    section.add "QueueName", valid_601282
+  var valid_601283 = path.getOrDefault("AccountNumber")
+  valid_601283 = validateParameter(valid_601283, JInt, required = true, default = nil)
+  if valid_601283 != nil:
+    section.add "AccountNumber", valid_601283
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773449 = query.getOrDefault("Action")
-  valid_773449 = validateParameter(valid_773449, JString, required = true,
+  var valid_601284 = query.getOrDefault("Action")
+  valid_601284 = validateParameter(valid_601284, JString, required = true,
                                  default = newJString("DeleteQueue"))
-  if valid_773449 != nil:
-    section.add "Action", valid_773449
-  var valid_773450 = query.getOrDefault("Version")
-  valid_773450 = validateParameter(valid_773450, JString, required = true,
+  if valid_601284 != nil:
+    section.add "Action", valid_601284
+  var valid_601285 = query.getOrDefault("Version")
+  valid_601285 = validateParameter(valid_601285, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773450 != nil:
-    section.add "Version", valid_773450
+  if valid_601285 != nil:
+    section.add "Version", valid_601285
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2432,60 +2432,60 @@ proc validate_GetDeleteQueue_773445(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773451 = header.getOrDefault("X-Amz-Date")
-  valid_773451 = validateParameter(valid_773451, JString, required = false,
+  var valid_601286 = header.getOrDefault("X-Amz-Date")
+  valid_601286 = validateParameter(valid_601286, JString, required = false,
                                  default = nil)
-  if valid_773451 != nil:
-    section.add "X-Amz-Date", valid_773451
-  var valid_773452 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773452 = validateParameter(valid_773452, JString, required = false,
+  if valid_601286 != nil:
+    section.add "X-Amz-Date", valid_601286
+  var valid_601287 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601287 = validateParameter(valid_601287, JString, required = false,
                                  default = nil)
-  if valid_773452 != nil:
-    section.add "X-Amz-Security-Token", valid_773452
-  var valid_773453 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773453 = validateParameter(valid_773453, JString, required = false,
+  if valid_601287 != nil:
+    section.add "X-Amz-Security-Token", valid_601287
+  var valid_601288 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601288 = validateParameter(valid_601288, JString, required = false,
                                  default = nil)
-  if valid_773453 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773453
-  var valid_773454 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773454 = validateParameter(valid_773454, JString, required = false,
+  if valid_601288 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601288
+  var valid_601289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601289 = validateParameter(valid_601289, JString, required = false,
                                  default = nil)
-  if valid_773454 != nil:
-    section.add "X-Amz-Algorithm", valid_773454
-  var valid_773455 = header.getOrDefault("X-Amz-Signature")
-  valid_773455 = validateParameter(valid_773455, JString, required = false,
+  if valid_601289 != nil:
+    section.add "X-Amz-Algorithm", valid_601289
+  var valid_601290 = header.getOrDefault("X-Amz-Signature")
+  valid_601290 = validateParameter(valid_601290, JString, required = false,
                                  default = nil)
-  if valid_773455 != nil:
-    section.add "X-Amz-Signature", valid_773455
-  var valid_773456 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773456 = validateParameter(valid_773456, JString, required = false,
+  if valid_601290 != nil:
+    section.add "X-Amz-Signature", valid_601290
+  var valid_601291 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601291 = validateParameter(valid_601291, JString, required = false,
                                  default = nil)
-  if valid_773456 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773456
-  var valid_773457 = header.getOrDefault("X-Amz-Credential")
-  valid_773457 = validateParameter(valid_773457, JString, required = false,
+  if valid_601291 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601291
+  var valid_601292 = header.getOrDefault("X-Amz-Credential")
+  valid_601292 = validateParameter(valid_601292, JString, required = false,
                                  default = nil)
-  if valid_773457 != nil:
-    section.add "X-Amz-Credential", valid_773457
+  if valid_601292 != nil:
+    section.add "X-Amz-Credential", valid_601292
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773458: Call_GetDeleteQueue_773444; path: JsonNode; query: JsonNode;
+proc call*(call_601293: Call_GetDeleteQueue_601279; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the queue specified by the <code>QueueUrl</code>, regardless of the queue's contents. If the specified queue doesn't exist, Amazon SQS returns a successful response.</p> <important> <p>Be careful with the <code>DeleteQueue</code> action: When you delete a queue, any messages in the queue are no longer available. </p> </important> <p>When you delete a queue, the deletion process takes up to 60 seconds. Requests you send involving that queue during the 60 seconds might succeed. For example, a <code> <a>SendMessage</a> </code> request might succeed, but after 60 seconds the queue and the message you sent no longer exist.</p> <p>When you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773458.validator(path, query, header, formData, body)
-  let scheme = call_773458.pickScheme
+  let valid = call_601293.validator(path, query, header, formData, body)
+  let scheme = call_601293.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773458.url(scheme.get, call_773458.host, call_773458.base,
-                         call_773458.route, valid.getOrDefault("path"))
-  result = hook(call_773458, url, valid)
+  let url = call_601293.url(scheme.get, call_601293.host, call_601293.base,
+                         call_601293.route, valid.getOrDefault("path"))
+  result = hook(call_601293, url, valid)
 
-proc call*(call_773459: Call_GetDeleteQueue_773444; QueueName: string;
+proc call*(call_601294: Call_GetDeleteQueue_601279; QueueName: string;
           AccountNumber: int; Action: string = "DeleteQueue";
           Version: string = "2012-11-05"): Recallable =
   ## getDeleteQueue
@@ -2496,22 +2496,22 @@ proc call*(call_773459: Call_GetDeleteQueue_773444; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773460 = newJObject()
-  var query_773461 = newJObject()
-  add(path_773460, "QueueName", newJString(QueueName))
-  add(query_773461, "Action", newJString(Action))
-  add(path_773460, "AccountNumber", newJInt(AccountNumber))
-  add(query_773461, "Version", newJString(Version))
-  result = call_773459.call(path_773460, query_773461, nil, nil, nil)
+  var path_601295 = newJObject()
+  var query_601296 = newJObject()
+  add(path_601295, "QueueName", newJString(QueueName))
+  add(query_601296, "Action", newJString(Action))
+  add(path_601295, "AccountNumber", newJInt(AccountNumber))
+  add(query_601296, "Version", newJString(Version))
+  result = call_601294.call(path_601295, query_601296, nil, nil, nil)
 
-var getDeleteQueue* = Call_GetDeleteQueue_773444(name: "getDeleteQueue",
+var getDeleteQueue* = Call_GetDeleteQueue_601279(name: "getDeleteQueue",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=DeleteQueue",
-    validator: validate_GetDeleteQueue_773445, base: "/", url: url_GetDeleteQueue_773446,
+    validator: validate_GetDeleteQueue_601280, base: "/", url: url_GetDeleteQueue_601281,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostGetQueueAttributes_773499 = ref object of OpenApiRestCall_772581
-proc url_PostGetQueueAttributes_773501(protocol: Scheme; host: string; base: string;
+  Call_PostGetQueueAttributes_601334 = ref object of OpenApiRestCall_600410
+proc url_PostGetQueueAttributes_601336(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -2527,7 +2527,7 @@ proc url_PostGetQueueAttributes_773501(protocol: Scheme; host: string; base: str
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostGetQueueAttributes_773500(path: JsonNode; query: JsonNode;
+proc validate_PostGetQueueAttributes_601335(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets attributes for the specified queue.</p> <note> <p>To determine whether a queue is <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html">FIFO</a>, you can check whether <code>QueueName</code> ends with the <code>.fifo</code> suffix.</p> </note> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
@@ -2540,31 +2540,31 @@ proc validate_PostGetQueueAttributes_773500(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773502 = path.getOrDefault("QueueName")
-  valid_773502 = validateParameter(valid_773502, JString, required = true,
+  var valid_601337 = path.getOrDefault("QueueName")
+  valid_601337 = validateParameter(valid_601337, JString, required = true,
                                  default = nil)
-  if valid_773502 != nil:
-    section.add "QueueName", valid_773502
-  var valid_773503 = path.getOrDefault("AccountNumber")
-  valid_773503 = validateParameter(valid_773503, JInt, required = true, default = nil)
-  if valid_773503 != nil:
-    section.add "AccountNumber", valid_773503
+  if valid_601337 != nil:
+    section.add "QueueName", valid_601337
+  var valid_601338 = path.getOrDefault("AccountNumber")
+  valid_601338 = validateParameter(valid_601338, JInt, required = true, default = nil)
+  if valid_601338 != nil:
+    section.add "AccountNumber", valid_601338
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773504 = query.getOrDefault("Action")
-  valid_773504 = validateParameter(valid_773504, JString, required = true,
+  var valid_601339 = query.getOrDefault("Action")
+  valid_601339 = validateParameter(valid_601339, JString, required = true,
                                  default = newJString("GetQueueAttributes"))
-  if valid_773504 != nil:
-    section.add "Action", valid_773504
-  var valid_773505 = query.getOrDefault("Version")
-  valid_773505 = validateParameter(valid_773505, JString, required = true,
+  if valid_601339 != nil:
+    section.add "Action", valid_601339
+  var valid_601340 = query.getOrDefault("Version")
+  valid_601340 = validateParameter(valid_601340, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773505 != nil:
-    section.add "Version", valid_773505
+  if valid_601340 != nil:
+    section.add "Version", valid_601340
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2575,41 +2575,41 @@ proc validate_PostGetQueueAttributes_773500(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773506 = header.getOrDefault("X-Amz-Date")
-  valid_773506 = validateParameter(valid_773506, JString, required = false,
+  var valid_601341 = header.getOrDefault("X-Amz-Date")
+  valid_601341 = validateParameter(valid_601341, JString, required = false,
                                  default = nil)
-  if valid_773506 != nil:
-    section.add "X-Amz-Date", valid_773506
-  var valid_773507 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773507 = validateParameter(valid_773507, JString, required = false,
+  if valid_601341 != nil:
+    section.add "X-Amz-Date", valid_601341
+  var valid_601342 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601342 = validateParameter(valid_601342, JString, required = false,
                                  default = nil)
-  if valid_773507 != nil:
-    section.add "X-Amz-Security-Token", valid_773507
-  var valid_773508 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773508 = validateParameter(valid_773508, JString, required = false,
+  if valid_601342 != nil:
+    section.add "X-Amz-Security-Token", valid_601342
+  var valid_601343 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601343 = validateParameter(valid_601343, JString, required = false,
                                  default = nil)
-  if valid_773508 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773508
-  var valid_773509 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773509 = validateParameter(valid_773509, JString, required = false,
+  if valid_601343 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601343
+  var valid_601344 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601344 = validateParameter(valid_601344, JString, required = false,
                                  default = nil)
-  if valid_773509 != nil:
-    section.add "X-Amz-Algorithm", valid_773509
-  var valid_773510 = header.getOrDefault("X-Amz-Signature")
-  valid_773510 = validateParameter(valid_773510, JString, required = false,
+  if valid_601344 != nil:
+    section.add "X-Amz-Algorithm", valid_601344
+  var valid_601345 = header.getOrDefault("X-Amz-Signature")
+  valid_601345 = validateParameter(valid_601345, JString, required = false,
                                  default = nil)
-  if valid_773510 != nil:
-    section.add "X-Amz-Signature", valid_773510
-  var valid_773511 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773511 = validateParameter(valid_773511, JString, required = false,
+  if valid_601345 != nil:
+    section.add "X-Amz-Signature", valid_601345
+  var valid_601346 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601346 = validateParameter(valid_601346, JString, required = false,
                                  default = nil)
-  if valid_773511 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773511
-  var valid_773512 = header.getOrDefault("X-Amz-Credential")
-  valid_773512 = validateParameter(valid_773512, JString, required = false,
+  if valid_601346 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601346
+  var valid_601347 = header.getOrDefault("X-Amz-Credential")
+  valid_601347 = validateParameter(valid_601347, JString, required = false,
                                  default = nil)
-  if valid_773512 != nil:
-    section.add "X-Amz-Credential", valid_773512
+  if valid_601347 != nil:
+    section.add "X-Amz-Credential", valid_601347
   result.add "header", section
   ## parameters in `formData` object:
   ##   AttributeNames: JArray
@@ -2624,28 +2624,28 @@ proc validate_PostGetQueueAttributes_773500(path: JsonNode; query: JsonNode;
   ## href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html">FIFO</a>, you can check whether <code>QueueName</code> ends with the <code>.fifo</code> suffix.</p> </note> </li> <li> <p> <code>ContentBasedDeduplication</code> - Returns whether content-based deduplication is enabled for the queue. For more information, see <a 
   ## href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html#FIFO-queues-exactly-once-processing">Exactly-Once Processing</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> </li> </ul>
   section = newJObject()
-  var valid_773513 = formData.getOrDefault("AttributeNames")
-  valid_773513 = validateParameter(valid_773513, JArray, required = false,
+  var valid_601348 = formData.getOrDefault("AttributeNames")
+  valid_601348 = validateParameter(valid_601348, JArray, required = false,
                                  default = nil)
-  if valid_773513 != nil:
-    section.add "AttributeNames", valid_773513
+  if valid_601348 != nil:
+    section.add "AttributeNames", valid_601348
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773514: Call_PostGetQueueAttributes_773499; path: JsonNode;
+proc call*(call_601349: Call_PostGetQueueAttributes_601334; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets attributes for the specified queue.</p> <note> <p>To determine whether a queue is <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html">FIFO</a>, you can check whether <code>QueueName</code> ends with the <code>.fifo</code> suffix.</p> </note> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
-  let valid = call_773514.validator(path, query, header, formData, body)
-  let scheme = call_773514.pickScheme
+  let valid = call_601349.validator(path, query, header, formData, body)
+  let scheme = call_601349.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773514.url(scheme.get, call_773514.host, call_773514.base,
-                         call_773514.route, valid.getOrDefault("path"))
-  result = hook(call_773514, url, valid)
+  let url = call_601349.url(scheme.get, call_601349.host, call_601349.base,
+                         call_601349.route, valid.getOrDefault("path"))
+  result = hook(call_601349, url, valid)
 
-proc call*(call_773515: Call_PostGetQueueAttributes_773499; QueueName: string;
+proc call*(call_601350: Call_PostGetQueueAttributes_601334; QueueName: string;
           AccountNumber: int; Action: string = "GetQueueAttributes";
           AttributeNames: JsonNode = nil; Version: string = "2012-11-05"): Recallable =
   ## postGetQueueAttributes
@@ -2667,26 +2667,26 @@ proc call*(call_773515: Call_PostGetQueueAttributes_773499; QueueName: string;
   ## href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html">FIFO</a>, you can check whether <code>QueueName</code> ends with the <code>.fifo</code> suffix.</p> </note> </li> <li> <p> <code>ContentBasedDeduplication</code> - Returns whether content-based deduplication is enabled for the queue. For more information, see <a 
   ## href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html#FIFO-queues-exactly-once-processing">Exactly-Once Processing</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> </li> </ul>
   ##   Version: string (required)
-  var path_773516 = newJObject()
-  var query_773517 = newJObject()
-  var formData_773518 = newJObject()
-  add(path_773516, "QueueName", newJString(QueueName))
-  add(query_773517, "Action", newJString(Action))
-  add(path_773516, "AccountNumber", newJInt(AccountNumber))
+  var path_601351 = newJObject()
+  var query_601352 = newJObject()
+  var formData_601353 = newJObject()
+  add(path_601351, "QueueName", newJString(QueueName))
+  add(query_601352, "Action", newJString(Action))
+  add(path_601351, "AccountNumber", newJInt(AccountNumber))
   if AttributeNames != nil:
-    formData_773518.add "AttributeNames", AttributeNames
-  add(query_773517, "Version", newJString(Version))
-  result = call_773515.call(path_773516, query_773517, nil, formData_773518, nil)
+    formData_601353.add "AttributeNames", AttributeNames
+  add(query_601352, "Version", newJString(Version))
+  result = call_601350.call(path_601351, query_601352, nil, formData_601353, nil)
 
-var postGetQueueAttributes* = Call_PostGetQueueAttributes_773499(
+var postGetQueueAttributes* = Call_PostGetQueueAttributes_601334(
     name: "postGetQueueAttributes", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=GetQueueAttributes",
-    validator: validate_PostGetQueueAttributes_773500, base: "/",
-    url: url_PostGetQueueAttributes_773501, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostGetQueueAttributes_601335, base: "/",
+    url: url_PostGetQueueAttributes_601336, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGetQueueAttributes_773480 = ref object of OpenApiRestCall_772581
-proc url_GetGetQueueAttributes_773482(protocol: Scheme; host: string; base: string;
+  Call_GetGetQueueAttributes_601315 = ref object of OpenApiRestCall_600410
+proc url_GetGetQueueAttributes_601317(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -2702,7 +2702,7 @@ proc url_GetGetQueueAttributes_773482(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetGetQueueAttributes_773481(path: JsonNode; query: JsonNode;
+proc validate_GetGetQueueAttributes_601316(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets attributes for the specified queue.</p> <note> <p>To determine whether a queue is <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html">FIFO</a>, you can check whether <code>QueueName</code> ends with the <code>.fifo</code> suffix.</p> </note> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
@@ -2715,15 +2715,15 @@ proc validate_GetGetQueueAttributes_773481(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773483 = path.getOrDefault("QueueName")
-  valid_773483 = validateParameter(valid_773483, JString, required = true,
+  var valid_601318 = path.getOrDefault("QueueName")
+  valid_601318 = validateParameter(valid_601318, JString, required = true,
                                  default = nil)
-  if valid_773483 != nil:
-    section.add "QueueName", valid_773483
-  var valid_773484 = path.getOrDefault("AccountNumber")
-  valid_773484 = validateParameter(valid_773484, JInt, required = true, default = nil)
-  if valid_773484 != nil:
-    section.add "AccountNumber", valid_773484
+  if valid_601318 != nil:
+    section.add "QueueName", valid_601318
+  var valid_601319 = path.getOrDefault("AccountNumber")
+  valid_601319 = validateParameter(valid_601319, JInt, required = true, default = nil)
+  if valid_601319 != nil:
+    section.add "AccountNumber", valid_601319
   result.add "path", section
   ## parameters in `query` object:
   ##   AttributeNames: JArray
@@ -2740,22 +2740,22 @@ proc validate_GetGetQueueAttributes_773481(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_773485 = query.getOrDefault("AttributeNames")
-  valid_773485 = validateParameter(valid_773485, JArray, required = false,
+  var valid_601320 = query.getOrDefault("AttributeNames")
+  valid_601320 = validateParameter(valid_601320, JArray, required = false,
                                  default = nil)
-  if valid_773485 != nil:
-    section.add "AttributeNames", valid_773485
+  if valid_601320 != nil:
+    section.add "AttributeNames", valid_601320
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773486 = query.getOrDefault("Action")
-  valid_773486 = validateParameter(valid_773486, JString, required = true,
+  var valid_601321 = query.getOrDefault("Action")
+  valid_601321 = validateParameter(valid_601321, JString, required = true,
                                  default = newJString("GetQueueAttributes"))
-  if valid_773486 != nil:
-    section.add "Action", valid_773486
-  var valid_773487 = query.getOrDefault("Version")
-  valid_773487 = validateParameter(valid_773487, JString, required = true,
+  if valid_601321 != nil:
+    section.add "Action", valid_601321
+  var valid_601322 = query.getOrDefault("Version")
+  valid_601322 = validateParameter(valid_601322, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773487 != nil:
-    section.add "Version", valid_773487
+  if valid_601322 != nil:
+    section.add "Version", valid_601322
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2766,60 +2766,60 @@ proc validate_GetGetQueueAttributes_773481(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773488 = header.getOrDefault("X-Amz-Date")
-  valid_773488 = validateParameter(valid_773488, JString, required = false,
+  var valid_601323 = header.getOrDefault("X-Amz-Date")
+  valid_601323 = validateParameter(valid_601323, JString, required = false,
                                  default = nil)
-  if valid_773488 != nil:
-    section.add "X-Amz-Date", valid_773488
-  var valid_773489 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773489 = validateParameter(valid_773489, JString, required = false,
+  if valid_601323 != nil:
+    section.add "X-Amz-Date", valid_601323
+  var valid_601324 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601324 = validateParameter(valid_601324, JString, required = false,
                                  default = nil)
-  if valid_773489 != nil:
-    section.add "X-Amz-Security-Token", valid_773489
-  var valid_773490 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773490 = validateParameter(valid_773490, JString, required = false,
+  if valid_601324 != nil:
+    section.add "X-Amz-Security-Token", valid_601324
+  var valid_601325 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601325 = validateParameter(valid_601325, JString, required = false,
                                  default = nil)
-  if valid_773490 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773490
-  var valid_773491 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773491 = validateParameter(valid_773491, JString, required = false,
+  if valid_601325 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601325
+  var valid_601326 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601326 = validateParameter(valid_601326, JString, required = false,
                                  default = nil)
-  if valid_773491 != nil:
-    section.add "X-Amz-Algorithm", valid_773491
-  var valid_773492 = header.getOrDefault("X-Amz-Signature")
-  valid_773492 = validateParameter(valid_773492, JString, required = false,
+  if valid_601326 != nil:
+    section.add "X-Amz-Algorithm", valid_601326
+  var valid_601327 = header.getOrDefault("X-Amz-Signature")
+  valid_601327 = validateParameter(valid_601327, JString, required = false,
                                  default = nil)
-  if valid_773492 != nil:
-    section.add "X-Amz-Signature", valid_773492
-  var valid_773493 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773493 = validateParameter(valid_773493, JString, required = false,
+  if valid_601327 != nil:
+    section.add "X-Amz-Signature", valid_601327
+  var valid_601328 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601328 = validateParameter(valid_601328, JString, required = false,
                                  default = nil)
-  if valid_773493 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773493
-  var valid_773494 = header.getOrDefault("X-Amz-Credential")
-  valid_773494 = validateParameter(valid_773494, JString, required = false,
+  if valid_601328 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601328
+  var valid_601329 = header.getOrDefault("X-Amz-Credential")
+  valid_601329 = validateParameter(valid_601329, JString, required = false,
                                  default = nil)
-  if valid_773494 != nil:
-    section.add "X-Amz-Credential", valid_773494
+  if valid_601329 != nil:
+    section.add "X-Amz-Credential", valid_601329
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773495: Call_GetGetQueueAttributes_773480; path: JsonNode;
+proc call*(call_601330: Call_GetGetQueueAttributes_601315; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets attributes for the specified queue.</p> <note> <p>To determine whether a queue is <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html">FIFO</a>, you can check whether <code>QueueName</code> ends with the <code>.fifo</code> suffix.</p> </note> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
-  let valid = call_773495.validator(path, query, header, formData, body)
-  let scheme = call_773495.pickScheme
+  let valid = call_601330.validator(path, query, header, formData, body)
+  let scheme = call_601330.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773495.url(scheme.get, call_773495.host, call_773495.base,
-                         call_773495.route, valid.getOrDefault("path"))
-  result = hook(call_773495, url, valid)
+  let url = call_601330.url(scheme.get, call_601330.host, call_601330.base,
+                         call_601330.route, valid.getOrDefault("path"))
+  result = hook(call_601330, url, valid)
 
-proc call*(call_773496: Call_GetGetQueueAttributes_773480; QueueName: string;
+proc call*(call_601331: Call_GetGetQueueAttributes_601315; QueueName: string;
           AccountNumber: int; AttributeNames: JsonNode = nil;
           Action: string = "GetQueueAttributes"; Version: string = "2012-11-05"): Recallable =
   ## getGetQueueAttributes
@@ -2841,29 +2841,29 @@ proc call*(call_773496: Call_GetGetQueueAttributes_773480; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773497 = newJObject()
-  var query_773498 = newJObject()
+  var path_601332 = newJObject()
+  var query_601333 = newJObject()
   if AttributeNames != nil:
-    query_773498.add "AttributeNames", AttributeNames
-  add(path_773497, "QueueName", newJString(QueueName))
-  add(query_773498, "Action", newJString(Action))
-  add(path_773497, "AccountNumber", newJInt(AccountNumber))
-  add(query_773498, "Version", newJString(Version))
-  result = call_773496.call(path_773497, query_773498, nil, nil, nil)
+    query_601333.add "AttributeNames", AttributeNames
+  add(path_601332, "QueueName", newJString(QueueName))
+  add(query_601333, "Action", newJString(Action))
+  add(path_601332, "AccountNumber", newJInt(AccountNumber))
+  add(query_601333, "Version", newJString(Version))
+  result = call_601331.call(path_601332, query_601333, nil, nil, nil)
 
-var getGetQueueAttributes* = Call_GetGetQueueAttributes_773480(
+var getGetQueueAttributes* = Call_GetGetQueueAttributes_601315(
     name: "getGetQueueAttributes", meth: HttpMethod.HttpGet,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=GetQueueAttributes",
-    validator: validate_GetGetQueueAttributes_773481, base: "/",
-    url: url_GetGetQueueAttributes_773482, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetGetQueueAttributes_601316, base: "/",
+    url: url_GetGetQueueAttributes_601317, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostGetQueueUrl_773536 = ref object of OpenApiRestCall_772581
-proc url_PostGetQueueUrl_773538(protocol: Scheme; host: string; base: string;
+  Call_PostGetQueueUrl_601371 = ref object of OpenApiRestCall_600410
+proc url_PostGetQueueUrl_601373(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostGetQueueUrl_773537(path: JsonNode; query: JsonNode;
+proc validate_PostGetQueueUrl_601372(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Returns the URL of an existing Amazon SQS queue.</p> <p>To access a queue that belongs to another AWS account, use the <code>QueueOwnerAWSAccountId</code> parameter to specify the account ID of the queue's owner. The queue's owner must grant you permission to access the queue. For more information about shared queue access, see <code> <a>AddPermission</a> </code> or see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-writing-an-sqs-policy.html#write-messages-to-shared-queue">Allow Developers to Write Messages to a Shared Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p>
@@ -2877,16 +2877,16 @@ proc validate_PostGetQueueUrl_773537(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773539 = query.getOrDefault("Action")
-  valid_773539 = validateParameter(valid_773539, JString, required = true,
+  var valid_601374 = query.getOrDefault("Action")
+  valid_601374 = validateParameter(valid_601374, JString, required = true,
                                  default = newJString("GetQueueUrl"))
-  if valid_773539 != nil:
-    section.add "Action", valid_773539
-  var valid_773540 = query.getOrDefault("Version")
-  valid_773540 = validateParameter(valid_773540, JString, required = true,
+  if valid_601374 != nil:
+    section.add "Action", valid_601374
+  var valid_601375 = query.getOrDefault("Version")
+  valid_601375 = validateParameter(valid_601375, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773540 != nil:
-    section.add "Version", valid_773540
+  if valid_601375 != nil:
+    section.add "Version", valid_601375
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2897,41 +2897,41 @@ proc validate_PostGetQueueUrl_773537(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773541 = header.getOrDefault("X-Amz-Date")
-  valid_773541 = validateParameter(valid_773541, JString, required = false,
+  var valid_601376 = header.getOrDefault("X-Amz-Date")
+  valid_601376 = validateParameter(valid_601376, JString, required = false,
                                  default = nil)
-  if valid_773541 != nil:
-    section.add "X-Amz-Date", valid_773541
-  var valid_773542 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773542 = validateParameter(valid_773542, JString, required = false,
+  if valid_601376 != nil:
+    section.add "X-Amz-Date", valid_601376
+  var valid_601377 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601377 = validateParameter(valid_601377, JString, required = false,
                                  default = nil)
-  if valid_773542 != nil:
-    section.add "X-Amz-Security-Token", valid_773542
-  var valid_773543 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773543 = validateParameter(valid_773543, JString, required = false,
+  if valid_601377 != nil:
+    section.add "X-Amz-Security-Token", valid_601377
+  var valid_601378 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601378 = validateParameter(valid_601378, JString, required = false,
                                  default = nil)
-  if valid_773543 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773543
-  var valid_773544 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773544 = validateParameter(valid_773544, JString, required = false,
+  if valid_601378 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601378
+  var valid_601379 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601379 = validateParameter(valid_601379, JString, required = false,
                                  default = nil)
-  if valid_773544 != nil:
-    section.add "X-Amz-Algorithm", valid_773544
-  var valid_773545 = header.getOrDefault("X-Amz-Signature")
-  valid_773545 = validateParameter(valid_773545, JString, required = false,
+  if valid_601379 != nil:
+    section.add "X-Amz-Algorithm", valid_601379
+  var valid_601380 = header.getOrDefault("X-Amz-Signature")
+  valid_601380 = validateParameter(valid_601380, JString, required = false,
                                  default = nil)
-  if valid_773545 != nil:
-    section.add "X-Amz-Signature", valid_773545
-  var valid_773546 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773546 = validateParameter(valid_773546, JString, required = false,
+  if valid_601380 != nil:
+    section.add "X-Amz-Signature", valid_601380
+  var valid_601381 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601381 = validateParameter(valid_601381, JString, required = false,
                                  default = nil)
-  if valid_773546 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773546
-  var valid_773547 = header.getOrDefault("X-Amz-Credential")
-  valid_773547 = validateParameter(valid_773547, JString, required = false,
+  if valid_601381 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601381
+  var valid_601382 = header.getOrDefault("X-Amz-Credential")
+  valid_601382 = validateParameter(valid_601382, JString, required = false,
                                  default = nil)
-  if valid_773547 != nil:
-    section.add "X-Amz-Credential", valid_773547
+  if valid_601382 != nil:
+    section.add "X-Amz-Credential", valid_601382
   result.add "header", section
   ## parameters in `formData` object:
   ##   QueueOwnerAWSAccountId: JString
@@ -2939,35 +2939,35 @@ proc validate_PostGetQueueUrl_773537(path: JsonNode; query: JsonNode;
   ##   QueueName: JString (required)
   ##            : <p>The name of the queue whose URL must be fetched. Maximum 80 characters. Valid values: alphanumeric characters, hyphens (<code>-</code>), and underscores (<code>_</code>).</p> <p>Queue URLs and names are case-sensitive.</p>
   section = newJObject()
-  var valid_773548 = formData.getOrDefault("QueueOwnerAWSAccountId")
-  valid_773548 = validateParameter(valid_773548, JString, required = false,
+  var valid_601383 = formData.getOrDefault("QueueOwnerAWSAccountId")
+  valid_601383 = validateParameter(valid_601383, JString, required = false,
                                  default = nil)
-  if valid_773548 != nil:
-    section.add "QueueOwnerAWSAccountId", valid_773548
+  if valid_601383 != nil:
+    section.add "QueueOwnerAWSAccountId", valid_601383
   assert formData != nil,
         "formData argument is necessary due to required `QueueName` field"
-  var valid_773549 = formData.getOrDefault("QueueName")
-  valid_773549 = validateParameter(valid_773549, JString, required = true,
+  var valid_601384 = formData.getOrDefault("QueueName")
+  valid_601384 = validateParameter(valid_601384, JString, required = true,
                                  default = nil)
-  if valid_773549 != nil:
-    section.add "QueueName", valid_773549
+  if valid_601384 != nil:
+    section.add "QueueName", valid_601384
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773550: Call_PostGetQueueUrl_773536; path: JsonNode; query: JsonNode;
+proc call*(call_601385: Call_PostGetQueueUrl_601371; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the URL of an existing Amazon SQS queue.</p> <p>To access a queue that belongs to another AWS account, use the <code>QueueOwnerAWSAccountId</code> parameter to specify the account ID of the queue's owner. The queue's owner must grant you permission to access the queue. For more information about shared queue access, see <code> <a>AddPermission</a> </code> or see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-writing-an-sqs-policy.html#write-messages-to-shared-queue">Allow Developers to Write Messages to a Shared Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p>
   ## 
-  let valid = call_773550.validator(path, query, header, formData, body)
-  let scheme = call_773550.pickScheme
+  let valid = call_601385.validator(path, query, header, formData, body)
+  let scheme = call_601385.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773550.url(scheme.get, call_773550.host, call_773550.base,
-                         call_773550.route, valid.getOrDefault("path"))
-  result = hook(call_773550, url, valid)
+  let url = call_601385.url(scheme.get, call_601385.host, call_601385.base,
+                         call_601385.route, valid.getOrDefault("path"))
+  result = hook(call_601385, url, valid)
 
-proc call*(call_773551: Call_PostGetQueueUrl_773536; QueueName: string;
+proc call*(call_601386: Call_PostGetQueueUrl_601371; QueueName: string;
           QueueOwnerAWSAccountId: string = ""; Action: string = "GetQueueUrl";
           Version: string = "2012-11-05"): Recallable =
   ## postGetQueueUrl
@@ -2978,26 +2978,26 @@ proc call*(call_773551: Call_PostGetQueueUrl_773536; QueueName: string;
   ##   QueueName: string (required)
   ##            : <p>The name of the queue whose URL must be fetched. Maximum 80 characters. Valid values: alphanumeric characters, hyphens (<code>-</code>), and underscores (<code>_</code>).</p> <p>Queue URLs and names are case-sensitive.</p>
   ##   Version: string (required)
-  var query_773552 = newJObject()
-  var formData_773553 = newJObject()
-  add(formData_773553, "QueueOwnerAWSAccountId",
+  var query_601387 = newJObject()
+  var formData_601388 = newJObject()
+  add(formData_601388, "QueueOwnerAWSAccountId",
       newJString(QueueOwnerAWSAccountId))
-  add(query_773552, "Action", newJString(Action))
-  add(formData_773553, "QueueName", newJString(QueueName))
-  add(query_773552, "Version", newJString(Version))
-  result = call_773551.call(nil, query_773552, nil, formData_773553, nil)
+  add(query_601387, "Action", newJString(Action))
+  add(formData_601388, "QueueName", newJString(QueueName))
+  add(query_601387, "Version", newJString(Version))
+  result = call_601386.call(nil, query_601387, nil, formData_601388, nil)
 
-var postGetQueueUrl* = Call_PostGetQueueUrl_773536(name: "postGetQueueUrl",
+var postGetQueueUrl* = Call_PostGetQueueUrl_601371(name: "postGetQueueUrl",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
-    route: "/#Action=GetQueueUrl", validator: validate_PostGetQueueUrl_773537,
-    base: "/", url: url_PostGetQueueUrl_773538, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=GetQueueUrl", validator: validate_PostGetQueueUrl_601372,
+    base: "/", url: url_PostGetQueueUrl_601373, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGetQueueUrl_773519 = ref object of OpenApiRestCall_772581
-proc url_GetGetQueueUrl_773521(protocol: Scheme; host: string; base: string;
+  Call_GetGetQueueUrl_601354 = ref object of OpenApiRestCall_600410
+proc url_GetGetQueueUrl_601356(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetGetQueueUrl_773520(path: JsonNode; query: JsonNode;
+proc validate_GetGetQueueUrl_601355(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns the URL of an existing Amazon SQS queue.</p> <p>To access a queue that belongs to another AWS account, use the <code>QueueOwnerAWSAccountId</code> parameter to specify the account ID of the queue's owner. The queue's owner must grant you permission to access the queue. For more information about shared queue access, see <code> <a>AddPermission</a> </code> or see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-writing-an-sqs-policy.html#write-messages-to-shared-queue">Allow Developers to Write Messages to a Shared Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p>
@@ -3015,26 +3015,26 @@ proc validate_GetGetQueueUrl_773520(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773522 = query.getOrDefault("Action")
-  valid_773522 = validateParameter(valid_773522, JString, required = true,
+  var valid_601357 = query.getOrDefault("Action")
+  valid_601357 = validateParameter(valid_601357, JString, required = true,
                                  default = newJString("GetQueueUrl"))
-  if valid_773522 != nil:
-    section.add "Action", valid_773522
-  var valid_773523 = query.getOrDefault("QueueOwnerAWSAccountId")
-  valid_773523 = validateParameter(valid_773523, JString, required = false,
+  if valid_601357 != nil:
+    section.add "Action", valid_601357
+  var valid_601358 = query.getOrDefault("QueueOwnerAWSAccountId")
+  valid_601358 = validateParameter(valid_601358, JString, required = false,
                                  default = nil)
-  if valid_773523 != nil:
-    section.add "QueueOwnerAWSAccountId", valid_773523
-  var valid_773524 = query.getOrDefault("QueueName")
-  valid_773524 = validateParameter(valid_773524, JString, required = true,
+  if valid_601358 != nil:
+    section.add "QueueOwnerAWSAccountId", valid_601358
+  var valid_601359 = query.getOrDefault("QueueName")
+  valid_601359 = validateParameter(valid_601359, JString, required = true,
                                  default = nil)
-  if valid_773524 != nil:
-    section.add "QueueName", valid_773524
-  var valid_773525 = query.getOrDefault("Version")
-  valid_773525 = validateParameter(valid_773525, JString, required = true,
+  if valid_601359 != nil:
+    section.add "QueueName", valid_601359
+  var valid_601360 = query.getOrDefault("Version")
+  valid_601360 = validateParameter(valid_601360, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773525 != nil:
-    section.add "Version", valid_773525
+  if valid_601360 != nil:
+    section.add "Version", valid_601360
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3045,60 +3045,60 @@ proc validate_GetGetQueueUrl_773520(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773526 = header.getOrDefault("X-Amz-Date")
-  valid_773526 = validateParameter(valid_773526, JString, required = false,
+  var valid_601361 = header.getOrDefault("X-Amz-Date")
+  valid_601361 = validateParameter(valid_601361, JString, required = false,
                                  default = nil)
-  if valid_773526 != nil:
-    section.add "X-Amz-Date", valid_773526
-  var valid_773527 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773527 = validateParameter(valid_773527, JString, required = false,
+  if valid_601361 != nil:
+    section.add "X-Amz-Date", valid_601361
+  var valid_601362 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601362 = validateParameter(valid_601362, JString, required = false,
                                  default = nil)
-  if valid_773527 != nil:
-    section.add "X-Amz-Security-Token", valid_773527
-  var valid_773528 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773528 = validateParameter(valid_773528, JString, required = false,
+  if valid_601362 != nil:
+    section.add "X-Amz-Security-Token", valid_601362
+  var valid_601363 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601363 = validateParameter(valid_601363, JString, required = false,
                                  default = nil)
-  if valid_773528 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773528
-  var valid_773529 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773529 = validateParameter(valid_773529, JString, required = false,
+  if valid_601363 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601363
+  var valid_601364 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601364 = validateParameter(valid_601364, JString, required = false,
                                  default = nil)
-  if valid_773529 != nil:
-    section.add "X-Amz-Algorithm", valid_773529
-  var valid_773530 = header.getOrDefault("X-Amz-Signature")
-  valid_773530 = validateParameter(valid_773530, JString, required = false,
+  if valid_601364 != nil:
+    section.add "X-Amz-Algorithm", valid_601364
+  var valid_601365 = header.getOrDefault("X-Amz-Signature")
+  valid_601365 = validateParameter(valid_601365, JString, required = false,
                                  default = nil)
-  if valid_773530 != nil:
-    section.add "X-Amz-Signature", valid_773530
-  var valid_773531 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773531 = validateParameter(valid_773531, JString, required = false,
+  if valid_601365 != nil:
+    section.add "X-Amz-Signature", valid_601365
+  var valid_601366 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601366 = validateParameter(valid_601366, JString, required = false,
                                  default = nil)
-  if valid_773531 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773531
-  var valid_773532 = header.getOrDefault("X-Amz-Credential")
-  valid_773532 = validateParameter(valid_773532, JString, required = false,
+  if valid_601366 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601366
+  var valid_601367 = header.getOrDefault("X-Amz-Credential")
+  valid_601367 = validateParameter(valid_601367, JString, required = false,
                                  default = nil)
-  if valid_773532 != nil:
-    section.add "X-Amz-Credential", valid_773532
+  if valid_601367 != nil:
+    section.add "X-Amz-Credential", valid_601367
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773533: Call_GetGetQueueUrl_773519; path: JsonNode; query: JsonNode;
+proc call*(call_601368: Call_GetGetQueueUrl_601354; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the URL of an existing Amazon SQS queue.</p> <p>To access a queue that belongs to another AWS account, use the <code>QueueOwnerAWSAccountId</code> parameter to specify the account ID of the queue's owner. The queue's owner must grant you permission to access the queue. For more information about shared queue access, see <code> <a>AddPermission</a> </code> or see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-writing-an-sqs-policy.html#write-messages-to-shared-queue">Allow Developers to Write Messages to a Shared Queue</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p>
   ## 
-  let valid = call_773533.validator(path, query, header, formData, body)
-  let scheme = call_773533.pickScheme
+  let valid = call_601368.validator(path, query, header, formData, body)
+  let scheme = call_601368.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773533.url(scheme.get, call_773533.host, call_773533.base,
-                         call_773533.route, valid.getOrDefault("path"))
-  result = hook(call_773533, url, valid)
+  let url = call_601368.url(scheme.get, call_601368.host, call_601368.base,
+                         call_601368.route, valid.getOrDefault("path"))
+  result = hook(call_601368, url, valid)
 
-proc call*(call_773534: Call_GetGetQueueUrl_773519; QueueName: string;
+proc call*(call_601369: Call_GetGetQueueUrl_601354; QueueName: string;
           Action: string = "GetQueueUrl"; QueueOwnerAWSAccountId: string = "";
           Version: string = "2012-11-05"): Recallable =
   ## getGetQueueUrl
@@ -3109,20 +3109,20 @@ proc call*(call_773534: Call_GetGetQueueUrl_773519; QueueName: string;
   ##   QueueName: string (required)
   ##            : <p>The name of the queue whose URL must be fetched. Maximum 80 characters. Valid values: alphanumeric characters, hyphens (<code>-</code>), and underscores (<code>_</code>).</p> <p>Queue URLs and names are case-sensitive.</p>
   ##   Version: string (required)
-  var query_773535 = newJObject()
-  add(query_773535, "Action", newJString(Action))
-  add(query_773535, "QueueOwnerAWSAccountId", newJString(QueueOwnerAWSAccountId))
-  add(query_773535, "QueueName", newJString(QueueName))
-  add(query_773535, "Version", newJString(Version))
-  result = call_773534.call(nil, query_773535, nil, nil, nil)
+  var query_601370 = newJObject()
+  add(query_601370, "Action", newJString(Action))
+  add(query_601370, "QueueOwnerAWSAccountId", newJString(QueueOwnerAWSAccountId))
+  add(query_601370, "QueueName", newJString(QueueName))
+  add(query_601370, "Version", newJString(Version))
+  result = call_601369.call(nil, query_601370, nil, nil, nil)
 
-var getGetQueueUrl* = Call_GetGetQueueUrl_773519(name: "getGetQueueUrl",
+var getGetQueueUrl* = Call_GetGetQueueUrl_601354(name: "getGetQueueUrl",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
-    route: "/#Action=GetQueueUrl", validator: validate_GetGetQueueUrl_773520,
-    base: "/", url: url_GetGetQueueUrl_773521, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=GetQueueUrl", validator: validate_GetGetQueueUrl_601355,
+    base: "/", url: url_GetGetQueueUrl_601356, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostListDeadLetterSourceQueues_773572 = ref object of OpenApiRestCall_772581
-proc url_PostListDeadLetterSourceQueues_773574(protocol: Scheme; host: string;
+  Call_PostListDeadLetterSourceQueues_601407 = ref object of OpenApiRestCall_600410
+proc url_PostListDeadLetterSourceQueues_601409(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -3138,7 +3138,7 @@ proc url_PostListDeadLetterSourceQueues_773574(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostListDeadLetterSourceQueues_773573(path: JsonNode;
+proc validate_PostListDeadLetterSourceQueues_601408(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of your queues that have the <code>RedrivePolicy</code> queue attribute configured with a dead-letter queue.</p> <p>For more information about using dead-letter queues, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html">Using Amazon SQS Dead-Letter Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p>
   ## 
@@ -3151,31 +3151,31 @@ proc validate_PostListDeadLetterSourceQueues_773573(path: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773575 = path.getOrDefault("QueueName")
-  valid_773575 = validateParameter(valid_773575, JString, required = true,
+  var valid_601410 = path.getOrDefault("QueueName")
+  valid_601410 = validateParameter(valid_601410, JString, required = true,
                                  default = nil)
-  if valid_773575 != nil:
-    section.add "QueueName", valid_773575
-  var valid_773576 = path.getOrDefault("AccountNumber")
-  valid_773576 = validateParameter(valid_773576, JInt, required = true, default = nil)
-  if valid_773576 != nil:
-    section.add "AccountNumber", valid_773576
+  if valid_601410 != nil:
+    section.add "QueueName", valid_601410
+  var valid_601411 = path.getOrDefault("AccountNumber")
+  valid_601411 = validateParameter(valid_601411, JInt, required = true, default = nil)
+  if valid_601411 != nil:
+    section.add "AccountNumber", valid_601411
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773577 = query.getOrDefault("Action")
-  valid_773577 = validateParameter(valid_773577, JString, required = true, default = newJString(
+  var valid_601412 = query.getOrDefault("Action")
+  valid_601412 = validateParameter(valid_601412, JString, required = true, default = newJString(
       "ListDeadLetterSourceQueues"))
-  if valid_773577 != nil:
-    section.add "Action", valid_773577
-  var valid_773578 = query.getOrDefault("Version")
-  valid_773578 = validateParameter(valid_773578, JString, required = true,
+  if valid_601412 != nil:
+    section.add "Action", valid_601412
+  var valid_601413 = query.getOrDefault("Version")
+  valid_601413 = validateParameter(valid_601413, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773578 != nil:
-    section.add "Version", valid_773578
+  if valid_601413 != nil:
+    section.add "Version", valid_601413
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3186,60 +3186,60 @@ proc validate_PostListDeadLetterSourceQueues_773573(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773579 = header.getOrDefault("X-Amz-Date")
-  valid_773579 = validateParameter(valid_773579, JString, required = false,
+  var valid_601414 = header.getOrDefault("X-Amz-Date")
+  valid_601414 = validateParameter(valid_601414, JString, required = false,
                                  default = nil)
-  if valid_773579 != nil:
-    section.add "X-Amz-Date", valid_773579
-  var valid_773580 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773580 = validateParameter(valid_773580, JString, required = false,
+  if valid_601414 != nil:
+    section.add "X-Amz-Date", valid_601414
+  var valid_601415 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601415 = validateParameter(valid_601415, JString, required = false,
                                  default = nil)
-  if valid_773580 != nil:
-    section.add "X-Amz-Security-Token", valid_773580
-  var valid_773581 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773581 = validateParameter(valid_773581, JString, required = false,
+  if valid_601415 != nil:
+    section.add "X-Amz-Security-Token", valid_601415
+  var valid_601416 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601416 = validateParameter(valid_601416, JString, required = false,
                                  default = nil)
-  if valid_773581 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773581
-  var valid_773582 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773582 = validateParameter(valid_773582, JString, required = false,
+  if valid_601416 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601416
+  var valid_601417 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601417 = validateParameter(valid_601417, JString, required = false,
                                  default = nil)
-  if valid_773582 != nil:
-    section.add "X-Amz-Algorithm", valid_773582
-  var valid_773583 = header.getOrDefault("X-Amz-Signature")
-  valid_773583 = validateParameter(valid_773583, JString, required = false,
+  if valid_601417 != nil:
+    section.add "X-Amz-Algorithm", valid_601417
+  var valid_601418 = header.getOrDefault("X-Amz-Signature")
+  valid_601418 = validateParameter(valid_601418, JString, required = false,
                                  default = nil)
-  if valid_773583 != nil:
-    section.add "X-Amz-Signature", valid_773583
-  var valid_773584 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773584 = validateParameter(valid_773584, JString, required = false,
+  if valid_601418 != nil:
+    section.add "X-Amz-Signature", valid_601418
+  var valid_601419 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601419 = validateParameter(valid_601419, JString, required = false,
                                  default = nil)
-  if valid_773584 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773584
-  var valid_773585 = header.getOrDefault("X-Amz-Credential")
-  valid_773585 = validateParameter(valid_773585, JString, required = false,
+  if valid_601419 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601419
+  var valid_601420 = header.getOrDefault("X-Amz-Credential")
+  valid_601420 = validateParameter(valid_601420, JString, required = false,
                                  default = nil)
-  if valid_773585 != nil:
-    section.add "X-Amz-Credential", valid_773585
+  if valid_601420 != nil:
+    section.add "X-Amz-Credential", valid_601420
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773586: Call_PostListDeadLetterSourceQueues_773572; path: JsonNode;
+proc call*(call_601421: Call_PostListDeadLetterSourceQueues_601407; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of your queues that have the <code>RedrivePolicy</code> queue attribute configured with a dead-letter queue.</p> <p>For more information about using dead-letter queues, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html">Using Amazon SQS Dead-Letter Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p>
   ## 
-  let valid = call_773586.validator(path, query, header, formData, body)
-  let scheme = call_773586.pickScheme
+  let valid = call_601421.validator(path, query, header, formData, body)
+  let scheme = call_601421.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773586.url(scheme.get, call_773586.host, call_773586.base,
-                         call_773586.route, valid.getOrDefault("path"))
-  result = hook(call_773586, url, valid)
+  let url = call_601421.url(scheme.get, call_601421.host, call_601421.base,
+                         call_601421.route, valid.getOrDefault("path"))
+  result = hook(call_601421, url, valid)
 
-proc call*(call_773587: Call_PostListDeadLetterSourceQueues_773572;
+proc call*(call_601422: Call_PostListDeadLetterSourceQueues_601407;
           QueueName: string; AccountNumber: int;
           Action: string = "ListDeadLetterSourceQueues";
           Version: string = "2012-11-05"): Recallable =
@@ -3251,24 +3251,24 @@ proc call*(call_773587: Call_PostListDeadLetterSourceQueues_773572;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773588 = newJObject()
-  var query_773589 = newJObject()
-  add(path_773588, "QueueName", newJString(QueueName))
-  add(query_773589, "Action", newJString(Action))
-  add(path_773588, "AccountNumber", newJInt(AccountNumber))
-  add(query_773589, "Version", newJString(Version))
-  result = call_773587.call(path_773588, query_773589, nil, nil, nil)
+  var path_601423 = newJObject()
+  var query_601424 = newJObject()
+  add(path_601423, "QueueName", newJString(QueueName))
+  add(query_601424, "Action", newJString(Action))
+  add(path_601423, "AccountNumber", newJInt(AccountNumber))
+  add(query_601424, "Version", newJString(Version))
+  result = call_601422.call(path_601423, query_601424, nil, nil, nil)
 
-var postListDeadLetterSourceQueues* = Call_PostListDeadLetterSourceQueues_773572(
+var postListDeadLetterSourceQueues* = Call_PostListDeadLetterSourceQueues_601407(
     name: "postListDeadLetterSourceQueues", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ListDeadLetterSourceQueues",
-    validator: validate_PostListDeadLetterSourceQueues_773573, base: "/",
-    url: url_PostListDeadLetterSourceQueues_773574,
+    validator: validate_PostListDeadLetterSourceQueues_601408, base: "/",
+    url: url_PostListDeadLetterSourceQueues_601409,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetListDeadLetterSourceQueues_773554 = ref object of OpenApiRestCall_772581
-proc url_GetListDeadLetterSourceQueues_773556(protocol: Scheme; host: string;
+  Call_GetListDeadLetterSourceQueues_601389 = ref object of OpenApiRestCall_600410
+proc url_GetListDeadLetterSourceQueues_601391(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -3284,7 +3284,7 @@ proc url_GetListDeadLetterSourceQueues_773556(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetListDeadLetterSourceQueues_773555(path: JsonNode; query: JsonNode;
+proc validate_GetListDeadLetterSourceQueues_601390(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of your queues that have the <code>RedrivePolicy</code> queue attribute configured with a dead-letter queue.</p> <p>For more information about using dead-letter queues, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html">Using Amazon SQS Dead-Letter Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p>
   ## 
@@ -3297,31 +3297,31 @@ proc validate_GetListDeadLetterSourceQueues_773555(path: JsonNode; query: JsonNo
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773557 = path.getOrDefault("QueueName")
-  valid_773557 = validateParameter(valid_773557, JString, required = true,
+  var valid_601392 = path.getOrDefault("QueueName")
+  valid_601392 = validateParameter(valid_601392, JString, required = true,
                                  default = nil)
-  if valid_773557 != nil:
-    section.add "QueueName", valid_773557
-  var valid_773558 = path.getOrDefault("AccountNumber")
-  valid_773558 = validateParameter(valid_773558, JInt, required = true, default = nil)
-  if valid_773558 != nil:
-    section.add "AccountNumber", valid_773558
+  if valid_601392 != nil:
+    section.add "QueueName", valid_601392
+  var valid_601393 = path.getOrDefault("AccountNumber")
+  valid_601393 = validateParameter(valid_601393, JInt, required = true, default = nil)
+  if valid_601393 != nil:
+    section.add "AccountNumber", valid_601393
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773559 = query.getOrDefault("Action")
-  valid_773559 = validateParameter(valid_773559, JString, required = true, default = newJString(
+  var valid_601394 = query.getOrDefault("Action")
+  valid_601394 = validateParameter(valid_601394, JString, required = true, default = newJString(
       "ListDeadLetterSourceQueues"))
-  if valid_773559 != nil:
-    section.add "Action", valid_773559
-  var valid_773560 = query.getOrDefault("Version")
-  valid_773560 = validateParameter(valid_773560, JString, required = true,
+  if valid_601394 != nil:
+    section.add "Action", valid_601394
+  var valid_601395 = query.getOrDefault("Version")
+  valid_601395 = validateParameter(valid_601395, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773560 != nil:
-    section.add "Version", valid_773560
+  if valid_601395 != nil:
+    section.add "Version", valid_601395
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3332,60 +3332,60 @@ proc validate_GetListDeadLetterSourceQueues_773555(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773561 = header.getOrDefault("X-Amz-Date")
-  valid_773561 = validateParameter(valid_773561, JString, required = false,
+  var valid_601396 = header.getOrDefault("X-Amz-Date")
+  valid_601396 = validateParameter(valid_601396, JString, required = false,
                                  default = nil)
-  if valid_773561 != nil:
-    section.add "X-Amz-Date", valid_773561
-  var valid_773562 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773562 = validateParameter(valid_773562, JString, required = false,
+  if valid_601396 != nil:
+    section.add "X-Amz-Date", valid_601396
+  var valid_601397 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601397 = validateParameter(valid_601397, JString, required = false,
                                  default = nil)
-  if valid_773562 != nil:
-    section.add "X-Amz-Security-Token", valid_773562
-  var valid_773563 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773563 = validateParameter(valid_773563, JString, required = false,
+  if valid_601397 != nil:
+    section.add "X-Amz-Security-Token", valid_601397
+  var valid_601398 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601398 = validateParameter(valid_601398, JString, required = false,
                                  default = nil)
-  if valid_773563 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773563
-  var valid_773564 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773564 = validateParameter(valid_773564, JString, required = false,
+  if valid_601398 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601398
+  var valid_601399 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601399 = validateParameter(valid_601399, JString, required = false,
                                  default = nil)
-  if valid_773564 != nil:
-    section.add "X-Amz-Algorithm", valid_773564
-  var valid_773565 = header.getOrDefault("X-Amz-Signature")
-  valid_773565 = validateParameter(valid_773565, JString, required = false,
+  if valid_601399 != nil:
+    section.add "X-Amz-Algorithm", valid_601399
+  var valid_601400 = header.getOrDefault("X-Amz-Signature")
+  valid_601400 = validateParameter(valid_601400, JString, required = false,
                                  default = nil)
-  if valid_773565 != nil:
-    section.add "X-Amz-Signature", valid_773565
-  var valid_773566 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773566 = validateParameter(valid_773566, JString, required = false,
+  if valid_601400 != nil:
+    section.add "X-Amz-Signature", valid_601400
+  var valid_601401 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601401 = validateParameter(valid_601401, JString, required = false,
                                  default = nil)
-  if valid_773566 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773566
-  var valid_773567 = header.getOrDefault("X-Amz-Credential")
-  valid_773567 = validateParameter(valid_773567, JString, required = false,
+  if valid_601401 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601401
+  var valid_601402 = header.getOrDefault("X-Amz-Credential")
+  valid_601402 = validateParameter(valid_601402, JString, required = false,
                                  default = nil)
-  if valid_773567 != nil:
-    section.add "X-Amz-Credential", valid_773567
+  if valid_601402 != nil:
+    section.add "X-Amz-Credential", valid_601402
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773568: Call_GetListDeadLetterSourceQueues_773554; path: JsonNode;
+proc call*(call_601403: Call_GetListDeadLetterSourceQueues_601389; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of your queues that have the <code>RedrivePolicy</code> queue attribute configured with a dead-letter queue.</p> <p>For more information about using dead-letter queues, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html">Using Amazon SQS Dead-Letter Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p>
   ## 
-  let valid = call_773568.validator(path, query, header, formData, body)
-  let scheme = call_773568.pickScheme
+  let valid = call_601403.validator(path, query, header, formData, body)
+  let scheme = call_601403.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773568.url(scheme.get, call_773568.host, call_773568.base,
-                         call_773568.route, valid.getOrDefault("path"))
-  result = hook(call_773568, url, valid)
+  let url = call_601403.url(scheme.get, call_601403.host, call_601403.base,
+                         call_601403.route, valid.getOrDefault("path"))
+  result = hook(call_601403, url, valid)
 
-proc call*(call_773569: Call_GetListDeadLetterSourceQueues_773554;
+proc call*(call_601404: Call_GetListDeadLetterSourceQueues_601389;
           QueueName: string; AccountNumber: int;
           Action: string = "ListDeadLetterSourceQueues";
           Version: string = "2012-11-05"): Recallable =
@@ -3397,24 +3397,24 @@ proc call*(call_773569: Call_GetListDeadLetterSourceQueues_773554;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773570 = newJObject()
-  var query_773571 = newJObject()
-  add(path_773570, "QueueName", newJString(QueueName))
-  add(query_773571, "Action", newJString(Action))
-  add(path_773570, "AccountNumber", newJInt(AccountNumber))
-  add(query_773571, "Version", newJString(Version))
-  result = call_773569.call(path_773570, query_773571, nil, nil, nil)
+  var path_601405 = newJObject()
+  var query_601406 = newJObject()
+  add(path_601405, "QueueName", newJString(QueueName))
+  add(query_601406, "Action", newJString(Action))
+  add(path_601405, "AccountNumber", newJInt(AccountNumber))
+  add(query_601406, "Version", newJString(Version))
+  result = call_601404.call(path_601405, query_601406, nil, nil, nil)
 
-var getListDeadLetterSourceQueues* = Call_GetListDeadLetterSourceQueues_773554(
+var getListDeadLetterSourceQueues* = Call_GetListDeadLetterSourceQueues_601389(
     name: "getListDeadLetterSourceQueues", meth: HttpMethod.HttpGet,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ListDeadLetterSourceQueues",
-    validator: validate_GetListDeadLetterSourceQueues_773555, base: "/",
-    url: url_GetListDeadLetterSourceQueues_773556,
+    validator: validate_GetListDeadLetterSourceQueues_601390, base: "/",
+    url: url_GetListDeadLetterSourceQueues_601391,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostListQueueTags_773608 = ref object of OpenApiRestCall_772581
-proc url_PostListQueueTags_773610(protocol: Scheme; host: string; base: string;
+  Call_PostListQueueTags_601443 = ref object of OpenApiRestCall_600410
+proc url_PostListQueueTags_601445(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -3430,7 +3430,7 @@ proc url_PostListQueueTags_773610(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostListQueueTags_773609(path: JsonNode; query: JsonNode;
+proc validate_PostListQueueTags_601444(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>List all cost allocation tags added to the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -3444,31 +3444,31 @@ proc validate_PostListQueueTags_773609(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773611 = path.getOrDefault("QueueName")
-  valid_773611 = validateParameter(valid_773611, JString, required = true,
+  var valid_601446 = path.getOrDefault("QueueName")
+  valid_601446 = validateParameter(valid_601446, JString, required = true,
                                  default = nil)
-  if valid_773611 != nil:
-    section.add "QueueName", valid_773611
-  var valid_773612 = path.getOrDefault("AccountNumber")
-  valid_773612 = validateParameter(valid_773612, JInt, required = true, default = nil)
-  if valid_773612 != nil:
-    section.add "AccountNumber", valid_773612
+  if valid_601446 != nil:
+    section.add "QueueName", valid_601446
+  var valid_601447 = path.getOrDefault("AccountNumber")
+  valid_601447 = validateParameter(valid_601447, JInt, required = true, default = nil)
+  if valid_601447 != nil:
+    section.add "AccountNumber", valid_601447
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773613 = query.getOrDefault("Action")
-  valid_773613 = validateParameter(valid_773613, JString, required = true,
+  var valid_601448 = query.getOrDefault("Action")
+  valid_601448 = validateParameter(valid_601448, JString, required = true,
                                  default = newJString("ListQueueTags"))
-  if valid_773613 != nil:
-    section.add "Action", valid_773613
-  var valid_773614 = query.getOrDefault("Version")
-  valid_773614 = validateParameter(valid_773614, JString, required = true,
+  if valid_601448 != nil:
+    section.add "Action", valid_601448
+  var valid_601449 = query.getOrDefault("Version")
+  valid_601449 = validateParameter(valid_601449, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773614 != nil:
-    section.add "Version", valid_773614
+  if valid_601449 != nil:
+    section.add "Version", valid_601449
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3479,60 +3479,60 @@ proc validate_PostListQueueTags_773609(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773615 = header.getOrDefault("X-Amz-Date")
-  valid_773615 = validateParameter(valid_773615, JString, required = false,
+  var valid_601450 = header.getOrDefault("X-Amz-Date")
+  valid_601450 = validateParameter(valid_601450, JString, required = false,
                                  default = nil)
-  if valid_773615 != nil:
-    section.add "X-Amz-Date", valid_773615
-  var valid_773616 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773616 = validateParameter(valid_773616, JString, required = false,
+  if valid_601450 != nil:
+    section.add "X-Amz-Date", valid_601450
+  var valid_601451 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601451 = validateParameter(valid_601451, JString, required = false,
                                  default = nil)
-  if valid_773616 != nil:
-    section.add "X-Amz-Security-Token", valid_773616
-  var valid_773617 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773617 = validateParameter(valid_773617, JString, required = false,
+  if valid_601451 != nil:
+    section.add "X-Amz-Security-Token", valid_601451
+  var valid_601452 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601452 = validateParameter(valid_601452, JString, required = false,
                                  default = nil)
-  if valid_773617 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773617
-  var valid_773618 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773618 = validateParameter(valid_773618, JString, required = false,
+  if valid_601452 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601452
+  var valid_601453 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601453 = validateParameter(valid_601453, JString, required = false,
                                  default = nil)
-  if valid_773618 != nil:
-    section.add "X-Amz-Algorithm", valid_773618
-  var valid_773619 = header.getOrDefault("X-Amz-Signature")
-  valid_773619 = validateParameter(valid_773619, JString, required = false,
+  if valid_601453 != nil:
+    section.add "X-Amz-Algorithm", valid_601453
+  var valid_601454 = header.getOrDefault("X-Amz-Signature")
+  valid_601454 = validateParameter(valid_601454, JString, required = false,
                                  default = nil)
-  if valid_773619 != nil:
-    section.add "X-Amz-Signature", valid_773619
-  var valid_773620 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773620 = validateParameter(valid_773620, JString, required = false,
+  if valid_601454 != nil:
+    section.add "X-Amz-Signature", valid_601454
+  var valid_601455 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601455 = validateParameter(valid_601455, JString, required = false,
                                  default = nil)
-  if valid_773620 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773620
-  var valid_773621 = header.getOrDefault("X-Amz-Credential")
-  valid_773621 = validateParameter(valid_773621, JString, required = false,
+  if valid_601455 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601455
+  var valid_601456 = header.getOrDefault("X-Amz-Credential")
+  valid_601456 = validateParameter(valid_601456, JString, required = false,
                                  default = nil)
-  if valid_773621 != nil:
-    section.add "X-Amz-Credential", valid_773621
+  if valid_601456 != nil:
+    section.add "X-Amz-Credential", valid_601456
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773622: Call_PostListQueueTags_773608; path: JsonNode;
+proc call*(call_601457: Call_PostListQueueTags_601443; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>List all cost allocation tags added to the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773622.validator(path, query, header, formData, body)
-  let scheme = call_773622.pickScheme
+  let valid = call_601457.validator(path, query, header, formData, body)
+  let scheme = call_601457.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773622.url(scheme.get, call_773622.host, call_773622.base,
-                         call_773622.route, valid.getOrDefault("path"))
-  result = hook(call_773622, url, valid)
+  let url = call_601457.url(scheme.get, call_601457.host, call_601457.base,
+                         call_601457.route, valid.getOrDefault("path"))
+  result = hook(call_601457, url, valid)
 
-proc call*(call_773623: Call_PostListQueueTags_773608; QueueName: string;
+proc call*(call_601458: Call_PostListQueueTags_601443; QueueName: string;
           AccountNumber: int; Action: string = "ListQueueTags";
           Version: string = "2012-11-05"): Recallable =
   ## postListQueueTags
@@ -3543,22 +3543,22 @@ proc call*(call_773623: Call_PostListQueueTags_773608; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773624 = newJObject()
-  var query_773625 = newJObject()
-  add(path_773624, "QueueName", newJString(QueueName))
-  add(query_773625, "Action", newJString(Action))
-  add(path_773624, "AccountNumber", newJInt(AccountNumber))
-  add(query_773625, "Version", newJString(Version))
-  result = call_773623.call(path_773624, query_773625, nil, nil, nil)
+  var path_601459 = newJObject()
+  var query_601460 = newJObject()
+  add(path_601459, "QueueName", newJString(QueueName))
+  add(query_601460, "Action", newJString(Action))
+  add(path_601459, "AccountNumber", newJInt(AccountNumber))
+  add(query_601460, "Version", newJString(Version))
+  result = call_601458.call(path_601459, query_601460, nil, nil, nil)
 
-var postListQueueTags* = Call_PostListQueueTags_773608(name: "postListQueueTags",
+var postListQueueTags* = Call_PostListQueueTags_601443(name: "postListQueueTags",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ListQueueTags",
-    validator: validate_PostListQueueTags_773609, base: "/",
-    url: url_PostListQueueTags_773610, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostListQueueTags_601444, base: "/",
+    url: url_PostListQueueTags_601445, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetListQueueTags_773590 = ref object of OpenApiRestCall_772581
-proc url_GetListQueueTags_773592(protocol: Scheme; host: string; base: string;
+  Call_GetListQueueTags_601425 = ref object of OpenApiRestCall_600410
+proc url_GetListQueueTags_601427(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -3574,7 +3574,7 @@ proc url_GetListQueueTags_773592(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetListQueueTags_773591(path: JsonNode; query: JsonNode;
+proc validate_GetListQueueTags_601426(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>List all cost allocation tags added to the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -3588,31 +3588,31 @@ proc validate_GetListQueueTags_773591(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773593 = path.getOrDefault("QueueName")
-  valid_773593 = validateParameter(valid_773593, JString, required = true,
+  var valid_601428 = path.getOrDefault("QueueName")
+  valid_601428 = validateParameter(valid_601428, JString, required = true,
                                  default = nil)
-  if valid_773593 != nil:
-    section.add "QueueName", valid_773593
-  var valid_773594 = path.getOrDefault("AccountNumber")
-  valid_773594 = validateParameter(valid_773594, JInt, required = true, default = nil)
-  if valid_773594 != nil:
-    section.add "AccountNumber", valid_773594
+  if valid_601428 != nil:
+    section.add "QueueName", valid_601428
+  var valid_601429 = path.getOrDefault("AccountNumber")
+  valid_601429 = validateParameter(valid_601429, JInt, required = true, default = nil)
+  if valid_601429 != nil:
+    section.add "AccountNumber", valid_601429
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773595 = query.getOrDefault("Action")
-  valid_773595 = validateParameter(valid_773595, JString, required = true,
+  var valid_601430 = query.getOrDefault("Action")
+  valid_601430 = validateParameter(valid_601430, JString, required = true,
                                  default = newJString("ListQueueTags"))
-  if valid_773595 != nil:
-    section.add "Action", valid_773595
-  var valid_773596 = query.getOrDefault("Version")
-  valid_773596 = validateParameter(valid_773596, JString, required = true,
+  if valid_601430 != nil:
+    section.add "Action", valid_601430
+  var valid_601431 = query.getOrDefault("Version")
+  valid_601431 = validateParameter(valid_601431, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773596 != nil:
-    section.add "Version", valid_773596
+  if valid_601431 != nil:
+    section.add "Version", valid_601431
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3623,60 +3623,60 @@ proc validate_GetListQueueTags_773591(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773597 = header.getOrDefault("X-Amz-Date")
-  valid_773597 = validateParameter(valid_773597, JString, required = false,
+  var valid_601432 = header.getOrDefault("X-Amz-Date")
+  valid_601432 = validateParameter(valid_601432, JString, required = false,
                                  default = nil)
-  if valid_773597 != nil:
-    section.add "X-Amz-Date", valid_773597
-  var valid_773598 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773598 = validateParameter(valid_773598, JString, required = false,
+  if valid_601432 != nil:
+    section.add "X-Amz-Date", valid_601432
+  var valid_601433 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601433 = validateParameter(valid_601433, JString, required = false,
                                  default = nil)
-  if valid_773598 != nil:
-    section.add "X-Amz-Security-Token", valid_773598
-  var valid_773599 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773599 = validateParameter(valid_773599, JString, required = false,
+  if valid_601433 != nil:
+    section.add "X-Amz-Security-Token", valid_601433
+  var valid_601434 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601434 = validateParameter(valid_601434, JString, required = false,
                                  default = nil)
-  if valid_773599 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773599
-  var valid_773600 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773600 = validateParameter(valid_773600, JString, required = false,
+  if valid_601434 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601434
+  var valid_601435 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601435 = validateParameter(valid_601435, JString, required = false,
                                  default = nil)
-  if valid_773600 != nil:
-    section.add "X-Amz-Algorithm", valid_773600
-  var valid_773601 = header.getOrDefault("X-Amz-Signature")
-  valid_773601 = validateParameter(valid_773601, JString, required = false,
+  if valid_601435 != nil:
+    section.add "X-Amz-Algorithm", valid_601435
+  var valid_601436 = header.getOrDefault("X-Amz-Signature")
+  valid_601436 = validateParameter(valid_601436, JString, required = false,
                                  default = nil)
-  if valid_773601 != nil:
-    section.add "X-Amz-Signature", valid_773601
-  var valid_773602 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773602 = validateParameter(valid_773602, JString, required = false,
+  if valid_601436 != nil:
+    section.add "X-Amz-Signature", valid_601436
+  var valid_601437 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601437 = validateParameter(valid_601437, JString, required = false,
                                  default = nil)
-  if valid_773602 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773602
-  var valid_773603 = header.getOrDefault("X-Amz-Credential")
-  valid_773603 = validateParameter(valid_773603, JString, required = false,
+  if valid_601437 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601437
+  var valid_601438 = header.getOrDefault("X-Amz-Credential")
+  valid_601438 = validateParameter(valid_601438, JString, required = false,
                                  default = nil)
-  if valid_773603 != nil:
-    section.add "X-Amz-Credential", valid_773603
+  if valid_601438 != nil:
+    section.add "X-Amz-Credential", valid_601438
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773604: Call_GetListQueueTags_773590; path: JsonNode;
+proc call*(call_601439: Call_GetListQueueTags_601425; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>List all cost allocation tags added to the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773604.validator(path, query, header, formData, body)
-  let scheme = call_773604.pickScheme
+  let valid = call_601439.validator(path, query, header, formData, body)
+  let scheme = call_601439.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773604.url(scheme.get, call_773604.host, call_773604.base,
-                         call_773604.route, valid.getOrDefault("path"))
-  result = hook(call_773604, url, valid)
+  let url = call_601439.url(scheme.get, call_601439.host, call_601439.base,
+                         call_601439.route, valid.getOrDefault("path"))
+  result = hook(call_601439, url, valid)
 
-proc call*(call_773605: Call_GetListQueueTags_773590; QueueName: string;
+proc call*(call_601440: Call_GetListQueueTags_601425; QueueName: string;
           AccountNumber: int; Action: string = "ListQueueTags";
           Version: string = "2012-11-05"): Recallable =
   ## getListQueueTags
@@ -3687,26 +3687,26 @@ proc call*(call_773605: Call_GetListQueueTags_773590; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773606 = newJObject()
-  var query_773607 = newJObject()
-  add(path_773606, "QueueName", newJString(QueueName))
-  add(query_773607, "Action", newJString(Action))
-  add(path_773606, "AccountNumber", newJInt(AccountNumber))
-  add(query_773607, "Version", newJString(Version))
-  result = call_773605.call(path_773606, query_773607, nil, nil, nil)
+  var path_601441 = newJObject()
+  var query_601442 = newJObject()
+  add(path_601441, "QueueName", newJString(QueueName))
+  add(query_601442, "Action", newJString(Action))
+  add(path_601441, "AccountNumber", newJInt(AccountNumber))
+  add(query_601442, "Version", newJString(Version))
+  result = call_601440.call(path_601441, query_601442, nil, nil, nil)
 
-var getListQueueTags* = Call_GetListQueueTags_773590(name: "getListQueueTags",
+var getListQueueTags* = Call_GetListQueueTags_601425(name: "getListQueueTags",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ListQueueTags",
-    validator: validate_GetListQueueTags_773591, base: "/",
-    url: url_GetListQueueTags_773592, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetListQueueTags_601426, base: "/",
+    url: url_GetListQueueTags_601427, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostListQueues_773642 = ref object of OpenApiRestCall_772581
-proc url_PostListQueues_773644(protocol: Scheme; host: string; base: string;
+  Call_PostListQueues_601477 = ref object of OpenApiRestCall_600410
+proc url_PostListQueues_601479(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostListQueues_773643(path: JsonNode; query: JsonNode;
+proc validate_PostListQueues_601478(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns a list of your queues. The maximum number of queues that can be returned is 1,000. If you specify a value for the optional <code>QueueNamePrefix</code> parameter, only queues with a name that begins with the specified value are returned.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -3720,16 +3720,16 @@ proc validate_PostListQueues_773643(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773645 = query.getOrDefault("Action")
-  valid_773645 = validateParameter(valid_773645, JString, required = true,
+  var valid_601480 = query.getOrDefault("Action")
+  valid_601480 = validateParameter(valid_601480, JString, required = true,
                                  default = newJString("ListQueues"))
-  if valid_773645 != nil:
-    section.add "Action", valid_773645
-  var valid_773646 = query.getOrDefault("Version")
-  valid_773646 = validateParameter(valid_773646, JString, required = true,
+  if valid_601480 != nil:
+    section.add "Action", valid_601480
+  var valid_601481 = query.getOrDefault("Version")
+  valid_601481 = validateParameter(valid_601481, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773646 != nil:
-    section.add "Version", valid_773646
+  if valid_601481 != nil:
+    section.add "Version", valid_601481
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3740,68 +3740,68 @@ proc validate_PostListQueues_773643(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773647 = header.getOrDefault("X-Amz-Date")
-  valid_773647 = validateParameter(valid_773647, JString, required = false,
+  var valid_601482 = header.getOrDefault("X-Amz-Date")
+  valid_601482 = validateParameter(valid_601482, JString, required = false,
                                  default = nil)
-  if valid_773647 != nil:
-    section.add "X-Amz-Date", valid_773647
-  var valid_773648 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773648 = validateParameter(valid_773648, JString, required = false,
+  if valid_601482 != nil:
+    section.add "X-Amz-Date", valid_601482
+  var valid_601483 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601483 = validateParameter(valid_601483, JString, required = false,
                                  default = nil)
-  if valid_773648 != nil:
-    section.add "X-Amz-Security-Token", valid_773648
-  var valid_773649 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773649 = validateParameter(valid_773649, JString, required = false,
+  if valid_601483 != nil:
+    section.add "X-Amz-Security-Token", valid_601483
+  var valid_601484 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601484 = validateParameter(valid_601484, JString, required = false,
                                  default = nil)
-  if valid_773649 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773649
-  var valid_773650 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773650 = validateParameter(valid_773650, JString, required = false,
+  if valid_601484 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601484
+  var valid_601485 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601485 = validateParameter(valid_601485, JString, required = false,
                                  default = nil)
-  if valid_773650 != nil:
-    section.add "X-Amz-Algorithm", valid_773650
-  var valid_773651 = header.getOrDefault("X-Amz-Signature")
-  valid_773651 = validateParameter(valid_773651, JString, required = false,
+  if valid_601485 != nil:
+    section.add "X-Amz-Algorithm", valid_601485
+  var valid_601486 = header.getOrDefault("X-Amz-Signature")
+  valid_601486 = validateParameter(valid_601486, JString, required = false,
                                  default = nil)
-  if valid_773651 != nil:
-    section.add "X-Amz-Signature", valid_773651
-  var valid_773652 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773652 = validateParameter(valid_773652, JString, required = false,
+  if valid_601486 != nil:
+    section.add "X-Amz-Signature", valid_601486
+  var valid_601487 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601487 = validateParameter(valid_601487, JString, required = false,
                                  default = nil)
-  if valid_773652 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773652
-  var valid_773653 = header.getOrDefault("X-Amz-Credential")
-  valid_773653 = validateParameter(valid_773653, JString, required = false,
+  if valid_601487 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601487
+  var valid_601488 = header.getOrDefault("X-Amz-Credential")
+  valid_601488 = validateParameter(valid_601488, JString, required = false,
                                  default = nil)
-  if valid_773653 != nil:
-    section.add "X-Amz-Credential", valid_773653
+  if valid_601488 != nil:
+    section.add "X-Amz-Credential", valid_601488
   result.add "header", section
   ## parameters in `formData` object:
   ##   QueueNamePrefix: JString
   ##                  : <p>A string to use for filtering the list results. Only those queues whose name begins with the specified string are returned.</p> <p>Queue URLs and names are case-sensitive.</p>
   section = newJObject()
-  var valid_773654 = formData.getOrDefault("QueueNamePrefix")
-  valid_773654 = validateParameter(valid_773654, JString, required = false,
+  var valid_601489 = formData.getOrDefault("QueueNamePrefix")
+  valid_601489 = validateParameter(valid_601489, JString, required = false,
                                  default = nil)
-  if valid_773654 != nil:
-    section.add "QueueNamePrefix", valid_773654
+  if valid_601489 != nil:
+    section.add "QueueNamePrefix", valid_601489
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773655: Call_PostListQueues_773642; path: JsonNode; query: JsonNode;
+proc call*(call_601490: Call_PostListQueues_601477; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of your queues. The maximum number of queues that can be returned is 1,000. If you specify a value for the optional <code>QueueNamePrefix</code> parameter, only queues with a name that begins with the specified value are returned.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773655.validator(path, query, header, formData, body)
-  let scheme = call_773655.pickScheme
+  let valid = call_601490.validator(path, query, header, formData, body)
+  let scheme = call_601490.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773655.url(scheme.get, call_773655.host, call_773655.base,
-                         call_773655.route, valid.getOrDefault("path"))
-  result = hook(call_773655, url, valid)
+  let url = call_601490.url(scheme.get, call_601490.host, call_601490.base,
+                         call_601490.route, valid.getOrDefault("path"))
+  result = hook(call_601490, url, valid)
 
-proc call*(call_773656: Call_PostListQueues_773642; QueueNamePrefix: string = "";
+proc call*(call_601491: Call_PostListQueues_601477; QueueNamePrefix: string = "";
           Action: string = "ListQueues"; Version: string = "2012-11-05"): Recallable =
   ## postListQueues
   ## <p>Returns a list of your queues. The maximum number of queues that can be returned is 1,000. If you specify a value for the optional <code>QueueNamePrefix</code> parameter, only queues with a name that begins with the specified value are returned.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -3809,24 +3809,24 @@ proc call*(call_773656: Call_PostListQueues_773642; QueueNamePrefix: string = ""
   ##                  : <p>A string to use for filtering the list results. Only those queues whose name begins with the specified string are returned.</p> <p>Queue URLs and names are case-sensitive.</p>
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_773657 = newJObject()
-  var formData_773658 = newJObject()
-  add(formData_773658, "QueueNamePrefix", newJString(QueueNamePrefix))
-  add(query_773657, "Action", newJString(Action))
-  add(query_773657, "Version", newJString(Version))
-  result = call_773656.call(nil, query_773657, nil, formData_773658, nil)
+  var query_601492 = newJObject()
+  var formData_601493 = newJObject()
+  add(formData_601493, "QueueNamePrefix", newJString(QueueNamePrefix))
+  add(query_601492, "Action", newJString(Action))
+  add(query_601492, "Version", newJString(Version))
+  result = call_601491.call(nil, query_601492, nil, formData_601493, nil)
 
-var postListQueues* = Call_PostListQueues_773642(name: "postListQueues",
+var postListQueues* = Call_PostListQueues_601477(name: "postListQueues",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
-    route: "/#Action=ListQueues", validator: validate_PostListQueues_773643,
-    base: "/", url: url_PostListQueues_773644, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=ListQueues", validator: validate_PostListQueues_601478,
+    base: "/", url: url_PostListQueues_601479, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetListQueues_773626 = ref object of OpenApiRestCall_772581
-proc url_GetListQueues_773628(protocol: Scheme; host: string; base: string;
+  Call_GetListQueues_601461 = ref object of OpenApiRestCall_600410
+proc url_GetListQueues_601463(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetListQueues_773627(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetListQueues_601462(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of your queues. The maximum number of queues that can be returned is 1,000. If you specify a value for the optional <code>QueueNamePrefix</code> parameter, only queues with a name that begins with the specified value are returned.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
@@ -3841,21 +3841,21 @@ proc validate_GetListQueues_773627(path: JsonNode; query: JsonNode; header: Json
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773629 = query.getOrDefault("Action")
-  valid_773629 = validateParameter(valid_773629, JString, required = true,
+  var valid_601464 = query.getOrDefault("Action")
+  valid_601464 = validateParameter(valid_601464, JString, required = true,
                                  default = newJString("ListQueues"))
-  if valid_773629 != nil:
-    section.add "Action", valid_773629
-  var valid_773630 = query.getOrDefault("QueueNamePrefix")
-  valid_773630 = validateParameter(valid_773630, JString, required = false,
+  if valid_601464 != nil:
+    section.add "Action", valid_601464
+  var valid_601465 = query.getOrDefault("QueueNamePrefix")
+  valid_601465 = validateParameter(valid_601465, JString, required = false,
                                  default = nil)
-  if valid_773630 != nil:
-    section.add "QueueNamePrefix", valid_773630
-  var valid_773631 = query.getOrDefault("Version")
-  valid_773631 = validateParameter(valid_773631, JString, required = true,
+  if valid_601465 != nil:
+    section.add "QueueNamePrefix", valid_601465
+  var valid_601466 = query.getOrDefault("Version")
+  valid_601466 = validateParameter(valid_601466, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773631 != nil:
-    section.add "Version", valid_773631
+  if valid_601466 != nil:
+    section.add "Version", valid_601466
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3866,60 +3866,60 @@ proc validate_GetListQueues_773627(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773632 = header.getOrDefault("X-Amz-Date")
-  valid_773632 = validateParameter(valid_773632, JString, required = false,
+  var valid_601467 = header.getOrDefault("X-Amz-Date")
+  valid_601467 = validateParameter(valid_601467, JString, required = false,
                                  default = nil)
-  if valid_773632 != nil:
-    section.add "X-Amz-Date", valid_773632
-  var valid_773633 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773633 = validateParameter(valid_773633, JString, required = false,
+  if valid_601467 != nil:
+    section.add "X-Amz-Date", valid_601467
+  var valid_601468 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601468 = validateParameter(valid_601468, JString, required = false,
                                  default = nil)
-  if valid_773633 != nil:
-    section.add "X-Amz-Security-Token", valid_773633
-  var valid_773634 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773634 = validateParameter(valid_773634, JString, required = false,
+  if valid_601468 != nil:
+    section.add "X-Amz-Security-Token", valid_601468
+  var valid_601469 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601469 = validateParameter(valid_601469, JString, required = false,
                                  default = nil)
-  if valid_773634 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773634
-  var valid_773635 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773635 = validateParameter(valid_773635, JString, required = false,
+  if valid_601469 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601469
+  var valid_601470 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601470 = validateParameter(valid_601470, JString, required = false,
                                  default = nil)
-  if valid_773635 != nil:
-    section.add "X-Amz-Algorithm", valid_773635
-  var valid_773636 = header.getOrDefault("X-Amz-Signature")
-  valid_773636 = validateParameter(valid_773636, JString, required = false,
+  if valid_601470 != nil:
+    section.add "X-Amz-Algorithm", valid_601470
+  var valid_601471 = header.getOrDefault("X-Amz-Signature")
+  valid_601471 = validateParameter(valid_601471, JString, required = false,
                                  default = nil)
-  if valid_773636 != nil:
-    section.add "X-Amz-Signature", valid_773636
-  var valid_773637 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773637 = validateParameter(valid_773637, JString, required = false,
+  if valid_601471 != nil:
+    section.add "X-Amz-Signature", valid_601471
+  var valid_601472 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601472 = validateParameter(valid_601472, JString, required = false,
                                  default = nil)
-  if valid_773637 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773637
-  var valid_773638 = header.getOrDefault("X-Amz-Credential")
-  valid_773638 = validateParameter(valid_773638, JString, required = false,
+  if valid_601472 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601472
+  var valid_601473 = header.getOrDefault("X-Amz-Credential")
+  valid_601473 = validateParameter(valid_601473, JString, required = false,
                                  default = nil)
-  if valid_773638 != nil:
-    section.add "X-Amz-Credential", valid_773638
+  if valid_601473 != nil:
+    section.add "X-Amz-Credential", valid_601473
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773639: Call_GetListQueues_773626; path: JsonNode; query: JsonNode;
+proc call*(call_601474: Call_GetListQueues_601461; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of your queues. The maximum number of queues that can be returned is 1,000. If you specify a value for the optional <code>QueueNamePrefix</code> parameter, only queues with a name that begins with the specified value are returned.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773639.validator(path, query, header, formData, body)
-  let scheme = call_773639.pickScheme
+  let valid = call_601474.validator(path, query, header, formData, body)
+  let scheme = call_601474.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773639.url(scheme.get, call_773639.host, call_773639.base,
-                         call_773639.route, valid.getOrDefault("path"))
-  result = hook(call_773639, url, valid)
+  let url = call_601474.url(scheme.get, call_601474.host, call_601474.base,
+                         call_601474.route, valid.getOrDefault("path"))
+  result = hook(call_601474, url, valid)
 
-proc call*(call_773640: Call_GetListQueues_773626; Action: string = "ListQueues";
+proc call*(call_601475: Call_GetListQueues_601461; Action: string = "ListQueues";
           QueueNamePrefix: string = ""; Version: string = "2012-11-05"): Recallable =
   ## getListQueues
   ## <p>Returns a list of your queues. The maximum number of queues that can be returned is 1,000. If you specify a value for the optional <code>QueueNamePrefix</code> parameter, only queues with a name that begins with the specified value are returned.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -3927,19 +3927,19 @@ proc call*(call_773640: Call_GetListQueues_773626; Action: string = "ListQueues"
   ##   QueueNamePrefix: string
   ##                  : <p>A string to use for filtering the list results. Only those queues whose name begins with the specified string are returned.</p> <p>Queue URLs and names are case-sensitive.</p>
   ##   Version: string (required)
-  var query_773641 = newJObject()
-  add(query_773641, "Action", newJString(Action))
-  add(query_773641, "QueueNamePrefix", newJString(QueueNamePrefix))
-  add(query_773641, "Version", newJString(Version))
-  result = call_773640.call(nil, query_773641, nil, nil, nil)
+  var query_601476 = newJObject()
+  add(query_601476, "Action", newJString(Action))
+  add(query_601476, "QueueNamePrefix", newJString(QueueNamePrefix))
+  add(query_601476, "Version", newJString(Version))
+  result = call_601475.call(nil, query_601476, nil, nil, nil)
 
-var getListQueues* = Call_GetListQueues_773626(name: "getListQueues",
+var getListQueues* = Call_GetListQueues_601461(name: "getListQueues",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
-    route: "/#Action=ListQueues", validator: validate_GetListQueues_773627,
-    base: "/", url: url_GetListQueues_773628, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=ListQueues", validator: validate_GetListQueues_601462,
+    base: "/", url: url_GetListQueues_601463, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostPurgeQueue_773677 = ref object of OpenApiRestCall_772581
-proc url_PostPurgeQueue_773679(protocol: Scheme; host: string; base: string;
+  Call_PostPurgeQueue_601512 = ref object of OpenApiRestCall_600410
+proc url_PostPurgeQueue_601514(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -3955,7 +3955,7 @@ proc url_PostPurgeQueue_773679(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostPurgeQueue_773678(path: JsonNode; query: JsonNode;
+proc validate_PostPurgeQueue_601513(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Deletes the messages in a queue specified by the <code>QueueURL</code> parameter.</p> <important> <p>When you use the <code>PurgeQueue</code> action, you can't retrieve any messages deleted from a queue.</p> <p>The message deletion process takes up to 60 seconds. We recommend waiting for 60 seconds regardless of your queue's size. </p> </important> <p>Messages sent to the queue <i>before</i> you call <code>PurgeQueue</code> might be received but are deleted within the next minute.</p> <p>Messages sent to the queue <i>after</i> you call <code>PurgeQueue</code> might be deleted while the queue is being purged.</p>
@@ -3969,31 +3969,31 @@ proc validate_PostPurgeQueue_773678(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773680 = path.getOrDefault("QueueName")
-  valid_773680 = validateParameter(valid_773680, JString, required = true,
+  var valid_601515 = path.getOrDefault("QueueName")
+  valid_601515 = validateParameter(valid_601515, JString, required = true,
                                  default = nil)
-  if valid_773680 != nil:
-    section.add "QueueName", valid_773680
-  var valid_773681 = path.getOrDefault("AccountNumber")
-  valid_773681 = validateParameter(valid_773681, JInt, required = true, default = nil)
-  if valid_773681 != nil:
-    section.add "AccountNumber", valid_773681
+  if valid_601515 != nil:
+    section.add "QueueName", valid_601515
+  var valid_601516 = path.getOrDefault("AccountNumber")
+  valid_601516 = validateParameter(valid_601516, JInt, required = true, default = nil)
+  if valid_601516 != nil:
+    section.add "AccountNumber", valid_601516
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773682 = query.getOrDefault("Action")
-  valid_773682 = validateParameter(valid_773682, JString, required = true,
+  var valid_601517 = query.getOrDefault("Action")
+  valid_601517 = validateParameter(valid_601517, JString, required = true,
                                  default = newJString("PurgeQueue"))
-  if valid_773682 != nil:
-    section.add "Action", valid_773682
-  var valid_773683 = query.getOrDefault("Version")
-  valid_773683 = validateParameter(valid_773683, JString, required = true,
+  if valid_601517 != nil:
+    section.add "Action", valid_601517
+  var valid_601518 = query.getOrDefault("Version")
+  valid_601518 = validateParameter(valid_601518, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773683 != nil:
-    section.add "Version", valid_773683
+  if valid_601518 != nil:
+    section.add "Version", valid_601518
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4004,60 +4004,60 @@ proc validate_PostPurgeQueue_773678(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773684 = header.getOrDefault("X-Amz-Date")
-  valid_773684 = validateParameter(valid_773684, JString, required = false,
+  var valid_601519 = header.getOrDefault("X-Amz-Date")
+  valid_601519 = validateParameter(valid_601519, JString, required = false,
                                  default = nil)
-  if valid_773684 != nil:
-    section.add "X-Amz-Date", valid_773684
-  var valid_773685 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773685 = validateParameter(valid_773685, JString, required = false,
+  if valid_601519 != nil:
+    section.add "X-Amz-Date", valid_601519
+  var valid_601520 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601520 = validateParameter(valid_601520, JString, required = false,
                                  default = nil)
-  if valid_773685 != nil:
-    section.add "X-Amz-Security-Token", valid_773685
-  var valid_773686 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773686 = validateParameter(valid_773686, JString, required = false,
+  if valid_601520 != nil:
+    section.add "X-Amz-Security-Token", valid_601520
+  var valid_601521 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601521 = validateParameter(valid_601521, JString, required = false,
                                  default = nil)
-  if valid_773686 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773686
-  var valid_773687 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773687 = validateParameter(valid_773687, JString, required = false,
+  if valid_601521 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601521
+  var valid_601522 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601522 = validateParameter(valid_601522, JString, required = false,
                                  default = nil)
-  if valid_773687 != nil:
-    section.add "X-Amz-Algorithm", valid_773687
-  var valid_773688 = header.getOrDefault("X-Amz-Signature")
-  valid_773688 = validateParameter(valid_773688, JString, required = false,
+  if valid_601522 != nil:
+    section.add "X-Amz-Algorithm", valid_601522
+  var valid_601523 = header.getOrDefault("X-Amz-Signature")
+  valid_601523 = validateParameter(valid_601523, JString, required = false,
                                  default = nil)
-  if valid_773688 != nil:
-    section.add "X-Amz-Signature", valid_773688
-  var valid_773689 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773689 = validateParameter(valid_773689, JString, required = false,
+  if valid_601523 != nil:
+    section.add "X-Amz-Signature", valid_601523
+  var valid_601524 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601524 = validateParameter(valid_601524, JString, required = false,
                                  default = nil)
-  if valid_773689 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773689
-  var valid_773690 = header.getOrDefault("X-Amz-Credential")
-  valid_773690 = validateParameter(valid_773690, JString, required = false,
+  if valid_601524 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601524
+  var valid_601525 = header.getOrDefault("X-Amz-Credential")
+  valid_601525 = validateParameter(valid_601525, JString, required = false,
                                  default = nil)
-  if valid_773690 != nil:
-    section.add "X-Amz-Credential", valid_773690
+  if valid_601525 != nil:
+    section.add "X-Amz-Credential", valid_601525
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773691: Call_PostPurgeQueue_773677; path: JsonNode; query: JsonNode;
+proc call*(call_601526: Call_PostPurgeQueue_601512; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the messages in a queue specified by the <code>QueueURL</code> parameter.</p> <important> <p>When you use the <code>PurgeQueue</code> action, you can't retrieve any messages deleted from a queue.</p> <p>The message deletion process takes up to 60 seconds. We recommend waiting for 60 seconds regardless of your queue's size. </p> </important> <p>Messages sent to the queue <i>before</i> you call <code>PurgeQueue</code> might be received but are deleted within the next minute.</p> <p>Messages sent to the queue <i>after</i> you call <code>PurgeQueue</code> might be deleted while the queue is being purged.</p>
   ## 
-  let valid = call_773691.validator(path, query, header, formData, body)
-  let scheme = call_773691.pickScheme
+  let valid = call_601526.validator(path, query, header, formData, body)
+  let scheme = call_601526.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773691.url(scheme.get, call_773691.host, call_773691.base,
-                         call_773691.route, valid.getOrDefault("path"))
-  result = hook(call_773691, url, valid)
+  let url = call_601526.url(scheme.get, call_601526.host, call_601526.base,
+                         call_601526.route, valid.getOrDefault("path"))
+  result = hook(call_601526, url, valid)
 
-proc call*(call_773692: Call_PostPurgeQueue_773677; QueueName: string;
+proc call*(call_601527: Call_PostPurgeQueue_601512; QueueName: string;
           AccountNumber: int; Action: string = "PurgeQueue";
           Version: string = "2012-11-05"): Recallable =
   ## postPurgeQueue
@@ -4068,22 +4068,22 @@ proc call*(call_773692: Call_PostPurgeQueue_773677; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773693 = newJObject()
-  var query_773694 = newJObject()
-  add(path_773693, "QueueName", newJString(QueueName))
-  add(query_773694, "Action", newJString(Action))
-  add(path_773693, "AccountNumber", newJInt(AccountNumber))
-  add(query_773694, "Version", newJString(Version))
-  result = call_773692.call(path_773693, query_773694, nil, nil, nil)
+  var path_601528 = newJObject()
+  var query_601529 = newJObject()
+  add(path_601528, "QueueName", newJString(QueueName))
+  add(query_601529, "Action", newJString(Action))
+  add(path_601528, "AccountNumber", newJInt(AccountNumber))
+  add(query_601529, "Version", newJString(Version))
+  result = call_601527.call(path_601528, query_601529, nil, nil, nil)
 
-var postPurgeQueue* = Call_PostPurgeQueue_773677(name: "postPurgeQueue",
+var postPurgeQueue* = Call_PostPurgeQueue_601512(name: "postPurgeQueue",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=PurgeQueue",
-    validator: validate_PostPurgeQueue_773678, base: "/", url: url_PostPurgeQueue_773679,
+    validator: validate_PostPurgeQueue_601513, base: "/", url: url_PostPurgeQueue_601514,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetPurgeQueue_773659 = ref object of OpenApiRestCall_772581
-proc url_GetPurgeQueue_773661(protocol: Scheme; host: string; base: string;
+  Call_GetPurgeQueue_601494 = ref object of OpenApiRestCall_600410
+proc url_GetPurgeQueue_601496(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -4099,7 +4099,7 @@ proc url_GetPurgeQueue_773661(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetPurgeQueue_773660(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetPurgeQueue_601495(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the messages in a queue specified by the <code>QueueURL</code> parameter.</p> <important> <p>When you use the <code>PurgeQueue</code> action, you can't retrieve any messages deleted from a queue.</p> <p>The message deletion process takes up to 60 seconds. We recommend waiting for 60 seconds regardless of your queue's size. </p> </important> <p>Messages sent to the queue <i>before</i> you call <code>PurgeQueue</code> might be received but are deleted within the next minute.</p> <p>Messages sent to the queue <i>after</i> you call <code>PurgeQueue</code> might be deleted while the queue is being purged.</p>
   ## 
@@ -4112,31 +4112,31 @@ proc validate_GetPurgeQueue_773660(path: JsonNode; query: JsonNode; header: Json
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773662 = path.getOrDefault("QueueName")
-  valid_773662 = validateParameter(valid_773662, JString, required = true,
+  var valid_601497 = path.getOrDefault("QueueName")
+  valid_601497 = validateParameter(valid_601497, JString, required = true,
                                  default = nil)
-  if valid_773662 != nil:
-    section.add "QueueName", valid_773662
-  var valid_773663 = path.getOrDefault("AccountNumber")
-  valid_773663 = validateParameter(valid_773663, JInt, required = true, default = nil)
-  if valid_773663 != nil:
-    section.add "AccountNumber", valid_773663
+  if valid_601497 != nil:
+    section.add "QueueName", valid_601497
+  var valid_601498 = path.getOrDefault("AccountNumber")
+  valid_601498 = validateParameter(valid_601498, JInt, required = true, default = nil)
+  if valid_601498 != nil:
+    section.add "AccountNumber", valid_601498
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773664 = query.getOrDefault("Action")
-  valid_773664 = validateParameter(valid_773664, JString, required = true,
+  var valid_601499 = query.getOrDefault("Action")
+  valid_601499 = validateParameter(valid_601499, JString, required = true,
                                  default = newJString("PurgeQueue"))
-  if valid_773664 != nil:
-    section.add "Action", valid_773664
-  var valid_773665 = query.getOrDefault("Version")
-  valid_773665 = validateParameter(valid_773665, JString, required = true,
+  if valid_601499 != nil:
+    section.add "Action", valid_601499
+  var valid_601500 = query.getOrDefault("Version")
+  valid_601500 = validateParameter(valid_601500, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773665 != nil:
-    section.add "Version", valid_773665
+  if valid_601500 != nil:
+    section.add "Version", valid_601500
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4147,60 +4147,60 @@ proc validate_GetPurgeQueue_773660(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773666 = header.getOrDefault("X-Amz-Date")
-  valid_773666 = validateParameter(valid_773666, JString, required = false,
+  var valid_601501 = header.getOrDefault("X-Amz-Date")
+  valid_601501 = validateParameter(valid_601501, JString, required = false,
                                  default = nil)
-  if valid_773666 != nil:
-    section.add "X-Amz-Date", valid_773666
-  var valid_773667 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773667 = validateParameter(valid_773667, JString, required = false,
+  if valid_601501 != nil:
+    section.add "X-Amz-Date", valid_601501
+  var valid_601502 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601502 = validateParameter(valid_601502, JString, required = false,
                                  default = nil)
-  if valid_773667 != nil:
-    section.add "X-Amz-Security-Token", valid_773667
-  var valid_773668 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773668 = validateParameter(valid_773668, JString, required = false,
+  if valid_601502 != nil:
+    section.add "X-Amz-Security-Token", valid_601502
+  var valid_601503 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601503 = validateParameter(valid_601503, JString, required = false,
                                  default = nil)
-  if valid_773668 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773668
-  var valid_773669 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773669 = validateParameter(valid_773669, JString, required = false,
+  if valid_601503 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601503
+  var valid_601504 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601504 = validateParameter(valid_601504, JString, required = false,
                                  default = nil)
-  if valid_773669 != nil:
-    section.add "X-Amz-Algorithm", valid_773669
-  var valid_773670 = header.getOrDefault("X-Amz-Signature")
-  valid_773670 = validateParameter(valid_773670, JString, required = false,
+  if valid_601504 != nil:
+    section.add "X-Amz-Algorithm", valid_601504
+  var valid_601505 = header.getOrDefault("X-Amz-Signature")
+  valid_601505 = validateParameter(valid_601505, JString, required = false,
                                  default = nil)
-  if valid_773670 != nil:
-    section.add "X-Amz-Signature", valid_773670
-  var valid_773671 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773671 = validateParameter(valid_773671, JString, required = false,
+  if valid_601505 != nil:
+    section.add "X-Amz-Signature", valid_601505
+  var valid_601506 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601506 = validateParameter(valid_601506, JString, required = false,
                                  default = nil)
-  if valid_773671 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773671
-  var valid_773672 = header.getOrDefault("X-Amz-Credential")
-  valid_773672 = validateParameter(valid_773672, JString, required = false,
+  if valid_601506 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601506
+  var valid_601507 = header.getOrDefault("X-Amz-Credential")
+  valid_601507 = validateParameter(valid_601507, JString, required = false,
                                  default = nil)
-  if valid_773672 != nil:
-    section.add "X-Amz-Credential", valid_773672
+  if valid_601507 != nil:
+    section.add "X-Amz-Credential", valid_601507
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773673: Call_GetPurgeQueue_773659; path: JsonNode; query: JsonNode;
+proc call*(call_601508: Call_GetPurgeQueue_601494; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the messages in a queue specified by the <code>QueueURL</code> parameter.</p> <important> <p>When you use the <code>PurgeQueue</code> action, you can't retrieve any messages deleted from a queue.</p> <p>The message deletion process takes up to 60 seconds. We recommend waiting for 60 seconds regardless of your queue's size. </p> </important> <p>Messages sent to the queue <i>before</i> you call <code>PurgeQueue</code> might be received but are deleted within the next minute.</p> <p>Messages sent to the queue <i>after</i> you call <code>PurgeQueue</code> might be deleted while the queue is being purged.</p>
   ## 
-  let valid = call_773673.validator(path, query, header, formData, body)
-  let scheme = call_773673.pickScheme
+  let valid = call_601508.validator(path, query, header, formData, body)
+  let scheme = call_601508.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773673.url(scheme.get, call_773673.host, call_773673.base,
-                         call_773673.route, valid.getOrDefault("path"))
-  result = hook(call_773673, url, valid)
+  let url = call_601508.url(scheme.get, call_601508.host, call_601508.base,
+                         call_601508.route, valid.getOrDefault("path"))
+  result = hook(call_601508, url, valid)
 
-proc call*(call_773674: Call_GetPurgeQueue_773659; QueueName: string;
+proc call*(call_601509: Call_GetPurgeQueue_601494; QueueName: string;
           AccountNumber: int; Action: string = "PurgeQueue";
           Version: string = "2012-11-05"): Recallable =
   ## getPurgeQueue
@@ -4211,22 +4211,22 @@ proc call*(call_773674: Call_GetPurgeQueue_773659; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773675 = newJObject()
-  var query_773676 = newJObject()
-  add(path_773675, "QueueName", newJString(QueueName))
-  add(query_773676, "Action", newJString(Action))
-  add(path_773675, "AccountNumber", newJInt(AccountNumber))
-  add(query_773676, "Version", newJString(Version))
-  result = call_773674.call(path_773675, query_773676, nil, nil, nil)
+  var path_601510 = newJObject()
+  var query_601511 = newJObject()
+  add(path_601510, "QueueName", newJString(QueueName))
+  add(query_601511, "Action", newJString(Action))
+  add(path_601510, "AccountNumber", newJInt(AccountNumber))
+  add(query_601511, "Version", newJString(Version))
+  result = call_601509.call(path_601510, query_601511, nil, nil, nil)
 
-var getPurgeQueue* = Call_GetPurgeQueue_773659(name: "getPurgeQueue",
+var getPurgeQueue* = Call_GetPurgeQueue_601494(name: "getPurgeQueue",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=PurgeQueue",
-    validator: validate_GetPurgeQueue_773660, base: "/", url: url_GetPurgeQueue_773661,
+    validator: validate_GetPurgeQueue_601495, base: "/", url: url_GetPurgeQueue_601496,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostReceiveMessage_773719 = ref object of OpenApiRestCall_772581
-proc url_PostReceiveMessage_773721(protocol: Scheme; host: string; base: string;
+  Call_PostReceiveMessage_601554 = ref object of OpenApiRestCall_600410
+proc url_PostReceiveMessage_601556(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -4242,7 +4242,7 @@ proc url_PostReceiveMessage_773721(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostReceiveMessage_773720(path: JsonNode; query: JsonNode;
+proc validate_PostReceiveMessage_601555(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Retrieves one or more messages (up to 10), from the specified queue. Using the <code>WaitTimeSeconds</code> parameter enables long-poll support. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html">Amazon SQS Long Polling</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> <p>Short poll is the default behavior where a weighted random set of machines is sampled on a <code>ReceiveMessage</code> call. Thus, only the messages on the sampled machines are returned. If the number of messages in the queue is small (fewer than 1,000), you most likely get fewer messages than you requested per <code>ReceiveMessage</code> call. If the number of messages in the queue is extremely small, you might not receive any messages in a particular <code>ReceiveMessage</code> response. If this happens, repeat the request. </p> <p>For each message returned, the response includes the following:</p> <ul> <li> <p>The message body.</p> </li> <li> <p>An MD5 digest of the message body. For information about MD5, see <a href="https://www.ietf.org/rfc/rfc1321.txt">RFC1321</a>.</p> </li> <li> <p>The <code>MessageId</code> you received when you sent the message to the queue.</p> </li> <li> <p>The receipt handle.</p> </li> <li> <p>The message attributes.</p> </li> <li> <p>An MD5 digest of the message attributes.</p> </li> </ul> <p>The receipt handle is the identifier you must provide when deleting the message. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html">Queue and Message Identifiers</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>You can provide the <code>VisibilityTimeout</code> parameter in your request. The parameter is applied to the messages that Amazon SQS returns in the response. If you don't include the parameter, the overall visibility timeout for the queue is used for the returned messages. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Visibility Timeout</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>A message that isn't deleted or a message whose visibility isn't extended before the visibility timeout expires counts as a failed receive. Depending on the configuration of the queue, the message might be sent to the dead-letter queue.</p> <note> <p>In the future, new attributes might be added. If you write code that calls this action, we recommend that you structure your code so that it can handle new attributes gracefully.</p> </note>
@@ -4256,31 +4256,31 @@ proc validate_PostReceiveMessage_773720(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773722 = path.getOrDefault("QueueName")
-  valid_773722 = validateParameter(valid_773722, JString, required = true,
+  var valid_601557 = path.getOrDefault("QueueName")
+  valid_601557 = validateParameter(valid_601557, JString, required = true,
                                  default = nil)
-  if valid_773722 != nil:
-    section.add "QueueName", valid_773722
-  var valid_773723 = path.getOrDefault("AccountNumber")
-  valid_773723 = validateParameter(valid_773723, JInt, required = true, default = nil)
-  if valid_773723 != nil:
-    section.add "AccountNumber", valid_773723
+  if valid_601557 != nil:
+    section.add "QueueName", valid_601557
+  var valid_601558 = path.getOrDefault("AccountNumber")
+  valid_601558 = validateParameter(valid_601558, JInt, required = true, default = nil)
+  if valid_601558 != nil:
+    section.add "AccountNumber", valid_601558
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773724 = query.getOrDefault("Action")
-  valid_773724 = validateParameter(valid_773724, JString, required = true,
+  var valid_601559 = query.getOrDefault("Action")
+  valid_601559 = validateParameter(valid_601559, JString, required = true,
                                  default = newJString("ReceiveMessage"))
-  if valid_773724 != nil:
-    section.add "Action", valid_773724
-  var valid_773725 = query.getOrDefault("Version")
-  valid_773725 = validateParameter(valid_773725, JString, required = true,
+  if valid_601559 != nil:
+    section.add "Action", valid_601559
+  var valid_601560 = query.getOrDefault("Version")
+  valid_601560 = validateParameter(valid_601560, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773725 != nil:
-    section.add "Version", valid_773725
+  if valid_601560 != nil:
+    section.add "Version", valid_601560
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4291,41 +4291,41 @@ proc validate_PostReceiveMessage_773720(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773726 = header.getOrDefault("X-Amz-Date")
-  valid_773726 = validateParameter(valid_773726, JString, required = false,
+  var valid_601561 = header.getOrDefault("X-Amz-Date")
+  valid_601561 = validateParameter(valid_601561, JString, required = false,
                                  default = nil)
-  if valid_773726 != nil:
-    section.add "X-Amz-Date", valid_773726
-  var valid_773727 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773727 = validateParameter(valid_773727, JString, required = false,
+  if valid_601561 != nil:
+    section.add "X-Amz-Date", valid_601561
+  var valid_601562 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601562 = validateParameter(valid_601562, JString, required = false,
                                  default = nil)
-  if valid_773727 != nil:
-    section.add "X-Amz-Security-Token", valid_773727
-  var valid_773728 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773728 = validateParameter(valid_773728, JString, required = false,
+  if valid_601562 != nil:
+    section.add "X-Amz-Security-Token", valid_601562
+  var valid_601563 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601563 = validateParameter(valid_601563, JString, required = false,
                                  default = nil)
-  if valid_773728 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773728
-  var valid_773729 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773729 = validateParameter(valid_773729, JString, required = false,
+  if valid_601563 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601563
+  var valid_601564 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601564 = validateParameter(valid_601564, JString, required = false,
                                  default = nil)
-  if valid_773729 != nil:
-    section.add "X-Amz-Algorithm", valid_773729
-  var valid_773730 = header.getOrDefault("X-Amz-Signature")
-  valid_773730 = validateParameter(valid_773730, JString, required = false,
+  if valid_601564 != nil:
+    section.add "X-Amz-Algorithm", valid_601564
+  var valid_601565 = header.getOrDefault("X-Amz-Signature")
+  valid_601565 = validateParameter(valid_601565, JString, required = false,
                                  default = nil)
-  if valid_773730 != nil:
-    section.add "X-Amz-Signature", valid_773730
-  var valid_773731 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773731 = validateParameter(valid_773731, JString, required = false,
+  if valid_601565 != nil:
+    section.add "X-Amz-Signature", valid_601565
+  var valid_601566 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601566 = validateParameter(valid_601566, JString, required = false,
                                  default = nil)
-  if valid_773731 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773731
-  var valid_773732 = header.getOrDefault("X-Amz-Credential")
-  valid_773732 = validateParameter(valid_773732, JString, required = false,
+  if valid_601566 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601566
+  var valid_601567 = header.getOrDefault("X-Amz-Credential")
+  valid_601567 = validateParameter(valid_601567, JString, required = false,
                                  default = nil)
-  if valid_773732 != nil:
-    section.add "X-Amz-Credential", valid_773732
+  if valid_601567 != nil:
+    section.add "X-Amz-Credential", valid_601567
   result.add "header", section
   ## parameters in `formData` object:
   ##   VisibilityTimeout: JInt
@@ -4343,50 +4343,50 @@ proc validate_PostReceiveMessage_773720(path: JsonNode; query: JsonNode;
   ##   WaitTimeSeconds: JInt
   ##                  : The duration (in seconds) for which the call waits for a message to arrive in the queue before returning. If a message is available, the call returns sooner than <code>WaitTimeSeconds</code>. If no messages are available and the wait time expires, the call returns successfully with an empty list of messages.
   section = newJObject()
-  var valid_773733 = formData.getOrDefault("VisibilityTimeout")
-  valid_773733 = validateParameter(valid_773733, JInt, required = false, default = nil)
-  if valid_773733 != nil:
-    section.add "VisibilityTimeout", valid_773733
-  var valid_773734 = formData.getOrDefault("MaxNumberOfMessages")
-  valid_773734 = validateParameter(valid_773734, JInt, required = false, default = nil)
-  if valid_773734 != nil:
-    section.add "MaxNumberOfMessages", valid_773734
-  var valid_773735 = formData.getOrDefault("ReceiveRequestAttemptId")
-  valid_773735 = validateParameter(valid_773735, JString, required = false,
+  var valid_601568 = formData.getOrDefault("VisibilityTimeout")
+  valid_601568 = validateParameter(valid_601568, JInt, required = false, default = nil)
+  if valid_601568 != nil:
+    section.add "VisibilityTimeout", valid_601568
+  var valid_601569 = formData.getOrDefault("MaxNumberOfMessages")
+  valid_601569 = validateParameter(valid_601569, JInt, required = false, default = nil)
+  if valid_601569 != nil:
+    section.add "MaxNumberOfMessages", valid_601569
+  var valid_601570 = formData.getOrDefault("ReceiveRequestAttemptId")
+  valid_601570 = validateParameter(valid_601570, JString, required = false,
                                  default = nil)
-  if valid_773735 != nil:
-    section.add "ReceiveRequestAttemptId", valid_773735
-  var valid_773736 = formData.getOrDefault("MessageAttributeNames")
-  valid_773736 = validateParameter(valid_773736, JArray, required = false,
+  if valid_601570 != nil:
+    section.add "ReceiveRequestAttemptId", valid_601570
+  var valid_601571 = formData.getOrDefault("MessageAttributeNames")
+  valid_601571 = validateParameter(valid_601571, JArray, required = false,
                                  default = nil)
-  if valid_773736 != nil:
-    section.add "MessageAttributeNames", valid_773736
-  var valid_773737 = formData.getOrDefault("AttributeNames")
-  valid_773737 = validateParameter(valid_773737, JArray, required = false,
+  if valid_601571 != nil:
+    section.add "MessageAttributeNames", valid_601571
+  var valid_601572 = formData.getOrDefault("AttributeNames")
+  valid_601572 = validateParameter(valid_601572, JArray, required = false,
                                  default = nil)
-  if valid_773737 != nil:
-    section.add "AttributeNames", valid_773737
-  var valid_773738 = formData.getOrDefault("WaitTimeSeconds")
-  valid_773738 = validateParameter(valid_773738, JInt, required = false, default = nil)
-  if valid_773738 != nil:
-    section.add "WaitTimeSeconds", valid_773738
+  if valid_601572 != nil:
+    section.add "AttributeNames", valid_601572
+  var valid_601573 = formData.getOrDefault("WaitTimeSeconds")
+  valid_601573 = validateParameter(valid_601573, JInt, required = false, default = nil)
+  if valid_601573 != nil:
+    section.add "WaitTimeSeconds", valid_601573
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773739: Call_PostReceiveMessage_773719; path: JsonNode;
+proc call*(call_601574: Call_PostReceiveMessage_601554; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves one or more messages (up to 10), from the specified queue. Using the <code>WaitTimeSeconds</code> parameter enables long-poll support. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html">Amazon SQS Long Polling</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> <p>Short poll is the default behavior where a weighted random set of machines is sampled on a <code>ReceiveMessage</code> call. Thus, only the messages on the sampled machines are returned. If the number of messages in the queue is small (fewer than 1,000), you most likely get fewer messages than you requested per <code>ReceiveMessage</code> call. If the number of messages in the queue is extremely small, you might not receive any messages in a particular <code>ReceiveMessage</code> response. If this happens, repeat the request. </p> <p>For each message returned, the response includes the following:</p> <ul> <li> <p>The message body.</p> </li> <li> <p>An MD5 digest of the message body. For information about MD5, see <a href="https://www.ietf.org/rfc/rfc1321.txt">RFC1321</a>.</p> </li> <li> <p>The <code>MessageId</code> you received when you sent the message to the queue.</p> </li> <li> <p>The receipt handle.</p> </li> <li> <p>The message attributes.</p> </li> <li> <p>An MD5 digest of the message attributes.</p> </li> </ul> <p>The receipt handle is the identifier you must provide when deleting the message. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html">Queue and Message Identifiers</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>You can provide the <code>VisibilityTimeout</code> parameter in your request. The parameter is applied to the messages that Amazon SQS returns in the response. If you don't include the parameter, the overall visibility timeout for the queue is used for the returned messages. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Visibility Timeout</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>A message that isn't deleted or a message whose visibility isn't extended before the visibility timeout expires counts as a failed receive. Depending on the configuration of the queue, the message might be sent to the dead-letter queue.</p> <note> <p>In the future, new attributes might be added. If you write code that calls this action, we recommend that you structure your code so that it can handle new attributes gracefully.</p> </note>
   ## 
-  let valid = call_773739.validator(path, query, header, formData, body)
-  let scheme = call_773739.pickScheme
+  let valid = call_601574.validator(path, query, header, formData, body)
+  let scheme = call_601574.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773739.url(scheme.get, call_773739.host, call_773739.base,
-                         call_773739.route, valid.getOrDefault("path"))
-  result = hook(call_773739, url, valid)
+  let url = call_601574.url(scheme.get, call_601574.host, call_601574.base,
+                         call_601574.route, valid.getOrDefault("path"))
+  result = hook(call_601574, url, valid)
 
-proc call*(call_773740: Call_PostReceiveMessage_773719; QueueName: string;
+proc call*(call_601575: Call_PostReceiveMessage_601554; QueueName: string;
           AccountNumber: int; VisibilityTimeout: int = 0;
           MaxNumberOfMessages: int = 0; ReceiveRequestAttemptId: string = "";
           Action: string = "ReceiveMessage"; MessageAttributeNames: JsonNode = nil;
@@ -4414,33 +4414,33 @@ proc call*(call_773740: Call_PostReceiveMessage_773719; QueueName: string;
   ##   Version: string (required)
   ##   WaitTimeSeconds: int
   ##                  : The duration (in seconds) for which the call waits for a message to arrive in the queue before returning. If a message is available, the call returns sooner than <code>WaitTimeSeconds</code>. If no messages are available and the wait time expires, the call returns successfully with an empty list of messages.
-  var path_773741 = newJObject()
-  var query_773742 = newJObject()
-  var formData_773743 = newJObject()
-  add(formData_773743, "VisibilityTimeout", newJInt(VisibilityTimeout))
-  add(formData_773743, "MaxNumberOfMessages", newJInt(MaxNumberOfMessages))
-  add(formData_773743, "ReceiveRequestAttemptId",
+  var path_601576 = newJObject()
+  var query_601577 = newJObject()
+  var formData_601578 = newJObject()
+  add(formData_601578, "VisibilityTimeout", newJInt(VisibilityTimeout))
+  add(formData_601578, "MaxNumberOfMessages", newJInt(MaxNumberOfMessages))
+  add(formData_601578, "ReceiveRequestAttemptId",
       newJString(ReceiveRequestAttemptId))
-  add(path_773741, "QueueName", newJString(QueueName))
-  add(query_773742, "Action", newJString(Action))
+  add(path_601576, "QueueName", newJString(QueueName))
+  add(query_601577, "Action", newJString(Action))
   if MessageAttributeNames != nil:
-    formData_773743.add "MessageAttributeNames", MessageAttributeNames
-  add(path_773741, "AccountNumber", newJInt(AccountNumber))
+    formData_601578.add "MessageAttributeNames", MessageAttributeNames
+  add(path_601576, "AccountNumber", newJInt(AccountNumber))
   if AttributeNames != nil:
-    formData_773743.add "AttributeNames", AttributeNames
-  add(query_773742, "Version", newJString(Version))
-  add(formData_773743, "WaitTimeSeconds", newJInt(WaitTimeSeconds))
-  result = call_773740.call(path_773741, query_773742, nil, formData_773743, nil)
+    formData_601578.add "AttributeNames", AttributeNames
+  add(query_601577, "Version", newJString(Version))
+  add(formData_601578, "WaitTimeSeconds", newJInt(WaitTimeSeconds))
+  result = call_601575.call(path_601576, query_601577, nil, formData_601578, nil)
 
-var postReceiveMessage* = Call_PostReceiveMessage_773719(
+var postReceiveMessage* = Call_PostReceiveMessage_601554(
     name: "postReceiveMessage", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ReceiveMessage",
-    validator: validate_PostReceiveMessage_773720, base: "/",
-    url: url_PostReceiveMessage_773721, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostReceiveMessage_601555, base: "/",
+    url: url_PostReceiveMessage_601556, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetReceiveMessage_773695 = ref object of OpenApiRestCall_772581
-proc url_GetReceiveMessage_773697(protocol: Scheme; host: string; base: string;
+  Call_GetReceiveMessage_601530 = ref object of OpenApiRestCall_600410
+proc url_GetReceiveMessage_601532(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -4456,7 +4456,7 @@ proc url_GetReceiveMessage_773697(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetReceiveMessage_773696(path: JsonNode; query: JsonNode;
+proc validate_GetReceiveMessage_601531(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Retrieves one or more messages (up to 10), from the specified queue. Using the <code>WaitTimeSeconds</code> parameter enables long-poll support. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html">Amazon SQS Long Polling</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> <p>Short poll is the default behavior where a weighted random set of machines is sampled on a <code>ReceiveMessage</code> call. Thus, only the messages on the sampled machines are returned. If the number of messages in the queue is small (fewer than 1,000), you most likely get fewer messages than you requested per <code>ReceiveMessage</code> call. If the number of messages in the queue is extremely small, you might not receive any messages in a particular <code>ReceiveMessage</code> response. If this happens, repeat the request. </p> <p>For each message returned, the response includes the following:</p> <ul> <li> <p>The message body.</p> </li> <li> <p>An MD5 digest of the message body. For information about MD5, see <a href="https://www.ietf.org/rfc/rfc1321.txt">RFC1321</a>.</p> </li> <li> <p>The <code>MessageId</code> you received when you sent the message to the queue.</p> </li> <li> <p>The receipt handle.</p> </li> <li> <p>The message attributes.</p> </li> <li> <p>An MD5 digest of the message attributes.</p> </li> </ul> <p>The receipt handle is the identifier you must provide when deleting the message. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html">Queue and Message Identifiers</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>You can provide the <code>VisibilityTimeout</code> parameter in your request. The parameter is applied to the messages that Amazon SQS returns in the response. If you don't include the parameter, the overall visibility timeout for the queue is used for the returned messages. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Visibility Timeout</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>A message that isn't deleted or a message whose visibility isn't extended before the visibility timeout expires counts as a failed receive. Depending on the configuration of the queue, the message might be sent to the dead-letter queue.</p> <note> <p>In the future, new attributes might be added. If you write code that calls this action, we recommend that you structure your code so that it can handle new attributes gracefully.</p> </note>
@@ -4470,15 +4470,15 @@ proc validate_GetReceiveMessage_773696(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773698 = path.getOrDefault("QueueName")
-  valid_773698 = validateParameter(valid_773698, JString, required = true,
+  var valid_601533 = path.getOrDefault("QueueName")
+  valid_601533 = validateParameter(valid_601533, JString, required = true,
                                  default = nil)
-  if valid_773698 != nil:
-    section.add "QueueName", valid_773698
-  var valid_773699 = path.getOrDefault("AccountNumber")
-  valid_773699 = validateParameter(valid_773699, JInt, required = true, default = nil)
-  if valid_773699 != nil:
-    section.add "AccountNumber", valid_773699
+  if valid_601533 != nil:
+    section.add "QueueName", valid_601533
+  var valid_601534 = path.getOrDefault("AccountNumber")
+  valid_601534 = validateParameter(valid_601534, JInt, required = true, default = nil)
+  if valid_601534 != nil:
+    section.add "AccountNumber", valid_601534
   result.add "path", section
   ## parameters in `query` object:
   ##   ReceiveRequestAttemptId: JString
@@ -4498,44 +4498,44 @@ proc validate_GetReceiveMessage_773696(path: JsonNode; query: JsonNode;
   ##   VisibilityTimeout: JInt
   ##                    : The duration (in seconds) that the received messages are hidden from subsequent retrieve requests after being retrieved by a <code>ReceiveMessage</code> request.
   section = newJObject()
-  var valid_773700 = query.getOrDefault("ReceiveRequestAttemptId")
-  valid_773700 = validateParameter(valid_773700, JString, required = false,
+  var valid_601535 = query.getOrDefault("ReceiveRequestAttemptId")
+  valid_601535 = validateParameter(valid_601535, JString, required = false,
                                  default = nil)
-  if valid_773700 != nil:
-    section.add "ReceiveRequestAttemptId", valid_773700
-  var valid_773701 = query.getOrDefault("AttributeNames")
-  valid_773701 = validateParameter(valid_773701, JArray, required = false,
+  if valid_601535 != nil:
+    section.add "ReceiveRequestAttemptId", valid_601535
+  var valid_601536 = query.getOrDefault("AttributeNames")
+  valid_601536 = validateParameter(valid_601536, JArray, required = false,
                                  default = nil)
-  if valid_773701 != nil:
-    section.add "AttributeNames", valid_773701
-  var valid_773702 = query.getOrDefault("WaitTimeSeconds")
-  valid_773702 = validateParameter(valid_773702, JInt, required = false, default = nil)
-  if valid_773702 != nil:
-    section.add "WaitTimeSeconds", valid_773702
-  var valid_773703 = query.getOrDefault("MessageAttributeNames")
-  valid_773703 = validateParameter(valid_773703, JArray, required = false,
+  if valid_601536 != nil:
+    section.add "AttributeNames", valid_601536
+  var valid_601537 = query.getOrDefault("WaitTimeSeconds")
+  valid_601537 = validateParameter(valid_601537, JInt, required = false, default = nil)
+  if valid_601537 != nil:
+    section.add "WaitTimeSeconds", valid_601537
+  var valid_601538 = query.getOrDefault("MessageAttributeNames")
+  valid_601538 = validateParameter(valid_601538, JArray, required = false,
                                  default = nil)
-  if valid_773703 != nil:
-    section.add "MessageAttributeNames", valid_773703
+  if valid_601538 != nil:
+    section.add "MessageAttributeNames", valid_601538
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773704 = query.getOrDefault("Action")
-  valid_773704 = validateParameter(valid_773704, JString, required = true,
+  var valid_601539 = query.getOrDefault("Action")
+  valid_601539 = validateParameter(valid_601539, JString, required = true,
                                  default = newJString("ReceiveMessage"))
-  if valid_773704 != nil:
-    section.add "Action", valid_773704
-  var valid_773705 = query.getOrDefault("MaxNumberOfMessages")
-  valid_773705 = validateParameter(valid_773705, JInt, required = false, default = nil)
-  if valid_773705 != nil:
-    section.add "MaxNumberOfMessages", valid_773705
-  var valid_773706 = query.getOrDefault("Version")
-  valid_773706 = validateParameter(valid_773706, JString, required = true,
+  if valid_601539 != nil:
+    section.add "Action", valid_601539
+  var valid_601540 = query.getOrDefault("MaxNumberOfMessages")
+  valid_601540 = validateParameter(valid_601540, JInt, required = false, default = nil)
+  if valid_601540 != nil:
+    section.add "MaxNumberOfMessages", valid_601540
+  var valid_601541 = query.getOrDefault("Version")
+  valid_601541 = validateParameter(valid_601541, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773706 != nil:
-    section.add "Version", valid_773706
-  var valid_773707 = query.getOrDefault("VisibilityTimeout")
-  valid_773707 = validateParameter(valid_773707, JInt, required = false, default = nil)
-  if valid_773707 != nil:
-    section.add "VisibilityTimeout", valid_773707
+  if valid_601541 != nil:
+    section.add "Version", valid_601541
+  var valid_601542 = query.getOrDefault("VisibilityTimeout")
+  valid_601542 = validateParameter(valid_601542, JInt, required = false, default = nil)
+  if valid_601542 != nil:
+    section.add "VisibilityTimeout", valid_601542
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4546,60 +4546,60 @@ proc validate_GetReceiveMessage_773696(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773708 = header.getOrDefault("X-Amz-Date")
-  valid_773708 = validateParameter(valid_773708, JString, required = false,
+  var valid_601543 = header.getOrDefault("X-Amz-Date")
+  valid_601543 = validateParameter(valid_601543, JString, required = false,
                                  default = nil)
-  if valid_773708 != nil:
-    section.add "X-Amz-Date", valid_773708
-  var valid_773709 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773709 = validateParameter(valid_773709, JString, required = false,
+  if valid_601543 != nil:
+    section.add "X-Amz-Date", valid_601543
+  var valid_601544 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601544 = validateParameter(valid_601544, JString, required = false,
                                  default = nil)
-  if valid_773709 != nil:
-    section.add "X-Amz-Security-Token", valid_773709
-  var valid_773710 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773710 = validateParameter(valid_773710, JString, required = false,
+  if valid_601544 != nil:
+    section.add "X-Amz-Security-Token", valid_601544
+  var valid_601545 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601545 = validateParameter(valid_601545, JString, required = false,
                                  default = nil)
-  if valid_773710 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773710
-  var valid_773711 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773711 = validateParameter(valid_773711, JString, required = false,
+  if valid_601545 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601545
+  var valid_601546 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601546 = validateParameter(valid_601546, JString, required = false,
                                  default = nil)
-  if valid_773711 != nil:
-    section.add "X-Amz-Algorithm", valid_773711
-  var valid_773712 = header.getOrDefault("X-Amz-Signature")
-  valid_773712 = validateParameter(valid_773712, JString, required = false,
+  if valid_601546 != nil:
+    section.add "X-Amz-Algorithm", valid_601546
+  var valid_601547 = header.getOrDefault("X-Amz-Signature")
+  valid_601547 = validateParameter(valid_601547, JString, required = false,
                                  default = nil)
-  if valid_773712 != nil:
-    section.add "X-Amz-Signature", valid_773712
-  var valid_773713 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773713 = validateParameter(valid_773713, JString, required = false,
+  if valid_601547 != nil:
+    section.add "X-Amz-Signature", valid_601547
+  var valid_601548 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601548 = validateParameter(valid_601548, JString, required = false,
                                  default = nil)
-  if valid_773713 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773713
-  var valid_773714 = header.getOrDefault("X-Amz-Credential")
-  valid_773714 = validateParameter(valid_773714, JString, required = false,
+  if valid_601548 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601548
+  var valid_601549 = header.getOrDefault("X-Amz-Credential")
+  valid_601549 = validateParameter(valid_601549, JString, required = false,
                                  default = nil)
-  if valid_773714 != nil:
-    section.add "X-Amz-Credential", valid_773714
+  if valid_601549 != nil:
+    section.add "X-Amz-Credential", valid_601549
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773715: Call_GetReceiveMessage_773695; path: JsonNode;
+proc call*(call_601550: Call_GetReceiveMessage_601530; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves one or more messages (up to 10), from the specified queue. Using the <code>WaitTimeSeconds</code> parameter enables long-poll support. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html">Amazon SQS Long Polling</a> in the <i>Amazon Simple Queue Service Developer Guide</i>. </p> <p>Short poll is the default behavior where a weighted random set of machines is sampled on a <code>ReceiveMessage</code> call. Thus, only the messages on the sampled machines are returned. If the number of messages in the queue is small (fewer than 1,000), you most likely get fewer messages than you requested per <code>ReceiveMessage</code> call. If the number of messages in the queue is extremely small, you might not receive any messages in a particular <code>ReceiveMessage</code> response. If this happens, repeat the request. </p> <p>For each message returned, the response includes the following:</p> <ul> <li> <p>The message body.</p> </li> <li> <p>An MD5 digest of the message body. For information about MD5, see <a href="https://www.ietf.org/rfc/rfc1321.txt">RFC1321</a>.</p> </li> <li> <p>The <code>MessageId</code> you received when you sent the message to the queue.</p> </li> <li> <p>The receipt handle.</p> </li> <li> <p>The message attributes.</p> </li> <li> <p>An MD5 digest of the message attributes.</p> </li> </ul> <p>The receipt handle is the identifier you must provide when deleting the message. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html">Queue and Message Identifiers</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>You can provide the <code>VisibilityTimeout</code> parameter in your request. The parameter is applied to the messages that Amazon SQS returns in the response. If you don't include the parameter, the overall visibility timeout for the queue is used for the returned messages. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html">Visibility Timeout</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>A message that isn't deleted or a message whose visibility isn't extended before the visibility timeout expires counts as a failed receive. Depending on the configuration of the queue, the message might be sent to the dead-letter queue.</p> <note> <p>In the future, new attributes might be added. If you write code that calls this action, we recommend that you structure your code so that it can handle new attributes gracefully.</p> </note>
   ## 
-  let valid = call_773715.validator(path, query, header, formData, body)
-  let scheme = call_773715.pickScheme
+  let valid = call_601550.validator(path, query, header, formData, body)
+  let scheme = call_601550.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773715.url(scheme.get, call_773715.host, call_773715.base,
-                         call_773715.route, valid.getOrDefault("path"))
-  result = hook(call_773715, url, valid)
+  let url = call_601550.url(scheme.get, call_601550.host, call_601550.base,
+                         call_601550.route, valid.getOrDefault("path"))
+  result = hook(call_601550, url, valid)
 
-proc call*(call_773716: Call_GetReceiveMessage_773695; QueueName: string;
+proc call*(call_601551: Call_GetReceiveMessage_601530; QueueName: string;
           AccountNumber: int; ReceiveRequestAttemptId: string = "";
           AttributeNames: JsonNode = nil; WaitTimeSeconds: int = 0;
           MessageAttributeNames: JsonNode = nil; Action: string = "ReceiveMessage";
@@ -4627,30 +4627,30 @@ proc call*(call_773716: Call_GetReceiveMessage_773695; QueueName: string;
   ##   Version: string (required)
   ##   VisibilityTimeout: int
   ##                    : The duration (in seconds) that the received messages are hidden from subsequent retrieve requests after being retrieved by a <code>ReceiveMessage</code> request.
-  var path_773717 = newJObject()
-  var query_773718 = newJObject()
-  add(query_773718, "ReceiveRequestAttemptId", newJString(ReceiveRequestAttemptId))
+  var path_601552 = newJObject()
+  var query_601553 = newJObject()
+  add(query_601553, "ReceiveRequestAttemptId", newJString(ReceiveRequestAttemptId))
   if AttributeNames != nil:
-    query_773718.add "AttributeNames", AttributeNames
-  add(path_773717, "QueueName", newJString(QueueName))
-  add(query_773718, "WaitTimeSeconds", newJInt(WaitTimeSeconds))
+    query_601553.add "AttributeNames", AttributeNames
+  add(path_601552, "QueueName", newJString(QueueName))
+  add(query_601553, "WaitTimeSeconds", newJInt(WaitTimeSeconds))
   if MessageAttributeNames != nil:
-    query_773718.add "MessageAttributeNames", MessageAttributeNames
-  add(query_773718, "Action", newJString(Action))
-  add(path_773717, "AccountNumber", newJInt(AccountNumber))
-  add(query_773718, "MaxNumberOfMessages", newJInt(MaxNumberOfMessages))
-  add(query_773718, "Version", newJString(Version))
-  add(query_773718, "VisibilityTimeout", newJInt(VisibilityTimeout))
-  result = call_773716.call(path_773717, query_773718, nil, nil, nil)
+    query_601553.add "MessageAttributeNames", MessageAttributeNames
+  add(query_601553, "Action", newJString(Action))
+  add(path_601552, "AccountNumber", newJInt(AccountNumber))
+  add(query_601553, "MaxNumberOfMessages", newJInt(MaxNumberOfMessages))
+  add(query_601553, "Version", newJString(Version))
+  add(query_601553, "VisibilityTimeout", newJInt(VisibilityTimeout))
+  result = call_601551.call(path_601552, query_601553, nil, nil, nil)
 
-var getReceiveMessage* = Call_GetReceiveMessage_773695(name: "getReceiveMessage",
+var getReceiveMessage* = Call_GetReceiveMessage_601530(name: "getReceiveMessage",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=ReceiveMessage",
-    validator: validate_GetReceiveMessage_773696, base: "/",
-    url: url_GetReceiveMessage_773697, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetReceiveMessage_601531, base: "/",
+    url: url_GetReceiveMessage_601532, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostRemovePermission_773763 = ref object of OpenApiRestCall_772581
-proc url_PostRemovePermission_773765(protocol: Scheme; host: string; base: string;
+  Call_PostRemovePermission_601598 = ref object of OpenApiRestCall_600410
+proc url_PostRemovePermission_601600(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -4666,7 +4666,7 @@ proc url_PostRemovePermission_773765(protocol: Scheme; host: string; base: strin
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostRemovePermission_773764(path: JsonNode; query: JsonNode;
+proc validate_PostRemovePermission_601599(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Revokes any permissions in the queue policy that matches the specified <code>Label</code> parameter.</p> <note> <ul> <li> <p>Only the owner of a queue can remove permissions from it.</p> </li> <li> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note>
   ## 
@@ -4679,31 +4679,31 @@ proc validate_PostRemovePermission_773764(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773766 = path.getOrDefault("QueueName")
-  valid_773766 = validateParameter(valid_773766, JString, required = true,
+  var valid_601601 = path.getOrDefault("QueueName")
+  valid_601601 = validateParameter(valid_601601, JString, required = true,
                                  default = nil)
-  if valid_773766 != nil:
-    section.add "QueueName", valid_773766
-  var valid_773767 = path.getOrDefault("AccountNumber")
-  valid_773767 = validateParameter(valid_773767, JInt, required = true, default = nil)
-  if valid_773767 != nil:
-    section.add "AccountNumber", valid_773767
+  if valid_601601 != nil:
+    section.add "QueueName", valid_601601
+  var valid_601602 = path.getOrDefault("AccountNumber")
+  valid_601602 = validateParameter(valid_601602, JInt, required = true, default = nil)
+  if valid_601602 != nil:
+    section.add "AccountNumber", valid_601602
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773768 = query.getOrDefault("Action")
-  valid_773768 = validateParameter(valid_773768, JString, required = true,
+  var valid_601603 = query.getOrDefault("Action")
+  valid_601603 = validateParameter(valid_601603, JString, required = true,
                                  default = newJString("RemovePermission"))
-  if valid_773768 != nil:
-    section.add "Action", valid_773768
-  var valid_773769 = query.getOrDefault("Version")
-  valid_773769 = validateParameter(valid_773769, JString, required = true,
+  if valid_601603 != nil:
+    section.add "Action", valid_601603
+  var valid_601604 = query.getOrDefault("Version")
+  valid_601604 = validateParameter(valid_601604, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773769 != nil:
-    section.add "Version", valid_773769
+  if valid_601604 != nil:
+    section.add "Version", valid_601604
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4714,41 +4714,41 @@ proc validate_PostRemovePermission_773764(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773770 = header.getOrDefault("X-Amz-Date")
-  valid_773770 = validateParameter(valid_773770, JString, required = false,
+  var valid_601605 = header.getOrDefault("X-Amz-Date")
+  valid_601605 = validateParameter(valid_601605, JString, required = false,
                                  default = nil)
-  if valid_773770 != nil:
-    section.add "X-Amz-Date", valid_773770
-  var valid_773771 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773771 = validateParameter(valid_773771, JString, required = false,
+  if valid_601605 != nil:
+    section.add "X-Amz-Date", valid_601605
+  var valid_601606 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601606 = validateParameter(valid_601606, JString, required = false,
                                  default = nil)
-  if valid_773771 != nil:
-    section.add "X-Amz-Security-Token", valid_773771
-  var valid_773772 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773772 = validateParameter(valid_773772, JString, required = false,
+  if valid_601606 != nil:
+    section.add "X-Amz-Security-Token", valid_601606
+  var valid_601607 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601607 = validateParameter(valid_601607, JString, required = false,
                                  default = nil)
-  if valid_773772 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773772
-  var valid_773773 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773773 = validateParameter(valid_773773, JString, required = false,
+  if valid_601607 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601607
+  var valid_601608 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601608 = validateParameter(valid_601608, JString, required = false,
                                  default = nil)
-  if valid_773773 != nil:
-    section.add "X-Amz-Algorithm", valid_773773
-  var valid_773774 = header.getOrDefault("X-Amz-Signature")
-  valid_773774 = validateParameter(valid_773774, JString, required = false,
+  if valid_601608 != nil:
+    section.add "X-Amz-Algorithm", valid_601608
+  var valid_601609 = header.getOrDefault("X-Amz-Signature")
+  valid_601609 = validateParameter(valid_601609, JString, required = false,
                                  default = nil)
-  if valid_773774 != nil:
-    section.add "X-Amz-Signature", valid_773774
-  var valid_773775 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773775 = validateParameter(valid_773775, JString, required = false,
+  if valid_601609 != nil:
+    section.add "X-Amz-Signature", valid_601609
+  var valid_601610 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601610 = validateParameter(valid_601610, JString, required = false,
                                  default = nil)
-  if valid_773775 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773775
-  var valid_773776 = header.getOrDefault("X-Amz-Credential")
-  valid_773776 = validateParameter(valid_773776, JString, required = false,
+  if valid_601610 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601610
+  var valid_601611 = header.getOrDefault("X-Amz-Credential")
+  valid_601611 = validateParameter(valid_601611, JString, required = false,
                                  default = nil)
-  if valid_773776 != nil:
-    section.add "X-Amz-Credential", valid_773776
+  if valid_601611 != nil:
+    section.add "X-Amz-Credential", valid_601611
   result.add "header", section
   ## parameters in `formData` object:
   ##   Label: JString (required)
@@ -4756,28 +4756,28 @@ proc validate_PostRemovePermission_773764(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Label` field"
-  var valid_773777 = formData.getOrDefault("Label")
-  valid_773777 = validateParameter(valid_773777, JString, required = true,
+  var valid_601612 = formData.getOrDefault("Label")
+  valid_601612 = validateParameter(valid_601612, JString, required = true,
                                  default = nil)
-  if valid_773777 != nil:
-    section.add "Label", valid_773777
+  if valid_601612 != nil:
+    section.add "Label", valid_601612
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773778: Call_PostRemovePermission_773763; path: JsonNode;
+proc call*(call_601613: Call_PostRemovePermission_601598; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Revokes any permissions in the queue policy that matches the specified <code>Label</code> parameter.</p> <note> <ul> <li> <p>Only the owner of a queue can remove permissions from it.</p> </li> <li> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note>
   ## 
-  let valid = call_773778.validator(path, query, header, formData, body)
-  let scheme = call_773778.pickScheme
+  let valid = call_601613.validator(path, query, header, formData, body)
+  let scheme = call_601613.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773778.url(scheme.get, call_773778.host, call_773778.base,
-                         call_773778.route, valid.getOrDefault("path"))
-  result = hook(call_773778, url, valid)
+  let url = call_601613.url(scheme.get, call_601613.host, call_601613.base,
+                         call_601613.route, valid.getOrDefault("path"))
+  result = hook(call_601613, url, valid)
 
-proc call*(call_773779: Call_PostRemovePermission_773763; Label: string;
+proc call*(call_601614: Call_PostRemovePermission_601598; Label: string;
           QueueName: string; AccountNumber: int;
           Action: string = "RemovePermission"; Version: string = "2012-11-05"): Recallable =
   ## postRemovePermission
@@ -4790,25 +4790,25 @@ proc call*(call_773779: Call_PostRemovePermission_773763; Label: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773780 = newJObject()
-  var query_773781 = newJObject()
-  var formData_773782 = newJObject()
-  add(formData_773782, "Label", newJString(Label))
-  add(path_773780, "QueueName", newJString(QueueName))
-  add(query_773781, "Action", newJString(Action))
-  add(path_773780, "AccountNumber", newJInt(AccountNumber))
-  add(query_773781, "Version", newJString(Version))
-  result = call_773779.call(path_773780, query_773781, nil, formData_773782, nil)
+  var path_601615 = newJObject()
+  var query_601616 = newJObject()
+  var formData_601617 = newJObject()
+  add(formData_601617, "Label", newJString(Label))
+  add(path_601615, "QueueName", newJString(QueueName))
+  add(query_601616, "Action", newJString(Action))
+  add(path_601615, "AccountNumber", newJInt(AccountNumber))
+  add(query_601616, "Version", newJString(Version))
+  result = call_601614.call(path_601615, query_601616, nil, formData_601617, nil)
 
-var postRemovePermission* = Call_PostRemovePermission_773763(
+var postRemovePermission* = Call_PostRemovePermission_601598(
     name: "postRemovePermission", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=RemovePermission",
-    validator: validate_PostRemovePermission_773764, base: "/",
-    url: url_PostRemovePermission_773765, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostRemovePermission_601599, base: "/",
+    url: url_PostRemovePermission_601600, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRemovePermission_773744 = ref object of OpenApiRestCall_772581
-proc url_GetRemovePermission_773746(protocol: Scheme; host: string; base: string;
+  Call_GetRemovePermission_601579 = ref object of OpenApiRestCall_600410
+proc url_GetRemovePermission_601581(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -4824,7 +4824,7 @@ proc url_GetRemovePermission_773746(protocol: Scheme; host: string; base: string
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetRemovePermission_773745(path: JsonNode; query: JsonNode;
+proc validate_GetRemovePermission_601580(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Revokes any permissions in the queue policy that matches the specified <code>Label</code> parameter.</p> <note> <ul> <li> <p>Only the owner of a queue can remove permissions from it.</p> </li> <li> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note>
@@ -4838,15 +4838,15 @@ proc validate_GetRemovePermission_773745(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773747 = path.getOrDefault("QueueName")
-  valid_773747 = validateParameter(valid_773747, JString, required = true,
+  var valid_601582 = path.getOrDefault("QueueName")
+  valid_601582 = validateParameter(valid_601582, JString, required = true,
                                  default = nil)
-  if valid_773747 != nil:
-    section.add "QueueName", valid_773747
-  var valid_773748 = path.getOrDefault("AccountNumber")
-  valid_773748 = validateParameter(valid_773748, JInt, required = true, default = nil)
-  if valid_773748 != nil:
-    section.add "AccountNumber", valid_773748
+  if valid_601582 != nil:
+    section.add "QueueName", valid_601582
+  var valid_601583 = path.getOrDefault("AccountNumber")
+  valid_601583 = validateParameter(valid_601583, JInt, required = true, default = nil)
+  if valid_601583 != nil:
+    section.add "AccountNumber", valid_601583
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
@@ -4855,21 +4855,21 @@ proc validate_GetRemovePermission_773745(path: JsonNode; query: JsonNode;
   ##        : The identification of the permission to remove. This is the label added using the <code> <a>AddPermission</a> </code> action.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773749 = query.getOrDefault("Action")
-  valid_773749 = validateParameter(valid_773749, JString, required = true,
+  var valid_601584 = query.getOrDefault("Action")
+  valid_601584 = validateParameter(valid_601584, JString, required = true,
                                  default = newJString("RemovePermission"))
-  if valid_773749 != nil:
-    section.add "Action", valid_773749
-  var valid_773750 = query.getOrDefault("Version")
-  valid_773750 = validateParameter(valid_773750, JString, required = true,
+  if valid_601584 != nil:
+    section.add "Action", valid_601584
+  var valid_601585 = query.getOrDefault("Version")
+  valid_601585 = validateParameter(valid_601585, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773750 != nil:
-    section.add "Version", valid_773750
-  var valid_773751 = query.getOrDefault("Label")
-  valid_773751 = validateParameter(valid_773751, JString, required = true,
+  if valid_601585 != nil:
+    section.add "Version", valid_601585
+  var valid_601586 = query.getOrDefault("Label")
+  valid_601586 = validateParameter(valid_601586, JString, required = true,
                                  default = nil)
-  if valid_773751 != nil:
-    section.add "Label", valid_773751
+  if valid_601586 != nil:
+    section.add "Label", valid_601586
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4880,60 +4880,60 @@ proc validate_GetRemovePermission_773745(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773752 = header.getOrDefault("X-Amz-Date")
-  valid_773752 = validateParameter(valid_773752, JString, required = false,
+  var valid_601587 = header.getOrDefault("X-Amz-Date")
+  valid_601587 = validateParameter(valid_601587, JString, required = false,
                                  default = nil)
-  if valid_773752 != nil:
-    section.add "X-Amz-Date", valid_773752
-  var valid_773753 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773753 = validateParameter(valid_773753, JString, required = false,
+  if valid_601587 != nil:
+    section.add "X-Amz-Date", valid_601587
+  var valid_601588 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601588 = validateParameter(valid_601588, JString, required = false,
                                  default = nil)
-  if valid_773753 != nil:
-    section.add "X-Amz-Security-Token", valid_773753
-  var valid_773754 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773754 = validateParameter(valid_773754, JString, required = false,
+  if valid_601588 != nil:
+    section.add "X-Amz-Security-Token", valid_601588
+  var valid_601589 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601589 = validateParameter(valid_601589, JString, required = false,
                                  default = nil)
-  if valid_773754 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773754
-  var valid_773755 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773755 = validateParameter(valid_773755, JString, required = false,
+  if valid_601589 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601589
+  var valid_601590 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601590 = validateParameter(valid_601590, JString, required = false,
                                  default = nil)
-  if valid_773755 != nil:
-    section.add "X-Amz-Algorithm", valid_773755
-  var valid_773756 = header.getOrDefault("X-Amz-Signature")
-  valid_773756 = validateParameter(valid_773756, JString, required = false,
+  if valid_601590 != nil:
+    section.add "X-Amz-Algorithm", valid_601590
+  var valid_601591 = header.getOrDefault("X-Amz-Signature")
+  valid_601591 = validateParameter(valid_601591, JString, required = false,
                                  default = nil)
-  if valid_773756 != nil:
-    section.add "X-Amz-Signature", valid_773756
-  var valid_773757 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773757 = validateParameter(valid_773757, JString, required = false,
+  if valid_601591 != nil:
+    section.add "X-Amz-Signature", valid_601591
+  var valid_601592 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601592 = validateParameter(valid_601592, JString, required = false,
                                  default = nil)
-  if valid_773757 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773757
-  var valid_773758 = header.getOrDefault("X-Amz-Credential")
-  valid_773758 = validateParameter(valid_773758, JString, required = false,
+  if valid_601592 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601592
+  var valid_601593 = header.getOrDefault("X-Amz-Credential")
+  valid_601593 = validateParameter(valid_601593, JString, required = false,
                                  default = nil)
-  if valid_773758 != nil:
-    section.add "X-Amz-Credential", valid_773758
+  if valid_601593 != nil:
+    section.add "X-Amz-Credential", valid_601593
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773759: Call_GetRemovePermission_773744; path: JsonNode;
+proc call*(call_601594: Call_GetRemovePermission_601579; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Revokes any permissions in the queue policy that matches the specified <code>Label</code> parameter.</p> <note> <ul> <li> <p>Only the owner of a queue can remove permissions from it.</p> </li> <li> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note>
   ## 
-  let valid = call_773759.validator(path, query, header, formData, body)
-  let scheme = call_773759.pickScheme
+  let valid = call_601594.validator(path, query, header, formData, body)
+  let scheme = call_601594.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773759.url(scheme.get, call_773759.host, call_773759.base,
-                         call_773759.route, valid.getOrDefault("path"))
-  result = hook(call_773759, url, valid)
+  let url = call_601594.url(scheme.get, call_601594.host, call_601594.base,
+                         call_601594.route, valid.getOrDefault("path"))
+  result = hook(call_601594, url, valid)
 
-proc call*(call_773760: Call_GetRemovePermission_773744; QueueName: string;
+proc call*(call_601595: Call_GetRemovePermission_601579; QueueName: string;
           AccountNumber: int; Label: string; Action: string = "RemovePermission";
           Version: string = "2012-11-05"): Recallable =
   ## getRemovePermission
@@ -4946,24 +4946,24 @@ proc call*(call_773760: Call_GetRemovePermission_773744; QueueName: string;
   ##   Version: string (required)
   ##   Label: string (required)
   ##        : The identification of the permission to remove. This is the label added using the <code> <a>AddPermission</a> </code> action.
-  var path_773761 = newJObject()
-  var query_773762 = newJObject()
-  add(path_773761, "QueueName", newJString(QueueName))
-  add(query_773762, "Action", newJString(Action))
-  add(path_773761, "AccountNumber", newJInt(AccountNumber))
-  add(query_773762, "Version", newJString(Version))
-  add(query_773762, "Label", newJString(Label))
-  result = call_773760.call(path_773761, query_773762, nil, nil, nil)
+  var path_601596 = newJObject()
+  var query_601597 = newJObject()
+  add(path_601596, "QueueName", newJString(QueueName))
+  add(query_601597, "Action", newJString(Action))
+  add(path_601596, "AccountNumber", newJInt(AccountNumber))
+  add(query_601597, "Version", newJString(Version))
+  add(query_601597, "Label", newJString(Label))
+  result = call_601595.call(path_601596, query_601597, nil, nil, nil)
 
-var getRemovePermission* = Call_GetRemovePermission_773744(
+var getRemovePermission* = Call_GetRemovePermission_601579(
     name: "getRemovePermission", meth: HttpMethod.HttpGet,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=RemovePermission",
-    validator: validate_GetRemovePermission_773745, base: "/",
-    url: url_GetRemovePermission_773746, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRemovePermission_601580, base: "/",
+    url: url_GetRemovePermission_601581, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSendMessage_773817 = ref object of OpenApiRestCall_772581
-proc url_PostSendMessage_773819(protocol: Scheme; host: string; base: string;
+  Call_PostSendMessage_601652 = ref object of OpenApiRestCall_600410
+proc url_PostSendMessage_601654(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -4979,7 +4979,7 @@ proc url_PostSendMessage_773819(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostSendMessage_773818(path: JsonNode; query: JsonNode;
+proc validate_PostSendMessage_601653(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Delivers a message to the specified queue.</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important>
@@ -4993,31 +4993,31 @@ proc validate_PostSendMessage_773818(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773820 = path.getOrDefault("QueueName")
-  valid_773820 = validateParameter(valid_773820, JString, required = true,
+  var valid_601655 = path.getOrDefault("QueueName")
+  valid_601655 = validateParameter(valid_601655, JString, required = true,
                                  default = nil)
-  if valid_773820 != nil:
-    section.add "QueueName", valid_773820
-  var valid_773821 = path.getOrDefault("AccountNumber")
-  valid_773821 = validateParameter(valid_773821, JInt, required = true, default = nil)
-  if valid_773821 != nil:
-    section.add "AccountNumber", valid_773821
+  if valid_601655 != nil:
+    section.add "QueueName", valid_601655
+  var valid_601656 = path.getOrDefault("AccountNumber")
+  valid_601656 = validateParameter(valid_601656, JInt, required = true, default = nil)
+  if valid_601656 != nil:
+    section.add "AccountNumber", valid_601656
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773822 = query.getOrDefault("Action")
-  valid_773822 = validateParameter(valid_773822, JString, required = true,
+  var valid_601657 = query.getOrDefault("Action")
+  valid_601657 = validateParameter(valid_601657, JString, required = true,
                                  default = newJString("SendMessage"))
-  if valid_773822 != nil:
-    section.add "Action", valid_773822
-  var valid_773823 = query.getOrDefault("Version")
-  valid_773823 = validateParameter(valid_773823, JString, required = true,
+  if valid_601657 != nil:
+    section.add "Action", valid_601657
+  var valid_601658 = query.getOrDefault("Version")
+  valid_601658 = validateParameter(valid_601658, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773823 != nil:
-    section.add "Version", valid_773823
+  if valid_601658 != nil:
+    section.add "Version", valid_601658
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -5028,41 +5028,41 @@ proc validate_PostSendMessage_773818(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773824 = header.getOrDefault("X-Amz-Date")
-  valid_773824 = validateParameter(valid_773824, JString, required = false,
+  var valid_601659 = header.getOrDefault("X-Amz-Date")
+  valid_601659 = validateParameter(valid_601659, JString, required = false,
                                  default = nil)
-  if valid_773824 != nil:
-    section.add "X-Amz-Date", valid_773824
-  var valid_773825 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773825 = validateParameter(valid_773825, JString, required = false,
+  if valid_601659 != nil:
+    section.add "X-Amz-Date", valid_601659
+  var valid_601660 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601660 = validateParameter(valid_601660, JString, required = false,
                                  default = nil)
-  if valid_773825 != nil:
-    section.add "X-Amz-Security-Token", valid_773825
-  var valid_773826 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773826 = validateParameter(valid_773826, JString, required = false,
+  if valid_601660 != nil:
+    section.add "X-Amz-Security-Token", valid_601660
+  var valid_601661 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601661 = validateParameter(valid_601661, JString, required = false,
                                  default = nil)
-  if valid_773826 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773826
-  var valid_773827 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773827 = validateParameter(valid_773827, JString, required = false,
+  if valid_601661 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601661
+  var valid_601662 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601662 = validateParameter(valid_601662, JString, required = false,
                                  default = nil)
-  if valid_773827 != nil:
-    section.add "X-Amz-Algorithm", valid_773827
-  var valid_773828 = header.getOrDefault("X-Amz-Signature")
-  valid_773828 = validateParameter(valid_773828, JString, required = false,
+  if valid_601662 != nil:
+    section.add "X-Amz-Algorithm", valid_601662
+  var valid_601663 = header.getOrDefault("X-Amz-Signature")
+  valid_601663 = validateParameter(valid_601663, JString, required = false,
                                  default = nil)
-  if valid_773828 != nil:
-    section.add "X-Amz-Signature", valid_773828
-  var valid_773829 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773829 = validateParameter(valid_773829, JString, required = false,
+  if valid_601663 != nil:
+    section.add "X-Amz-Signature", valid_601663
+  var valid_601664 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601664 = validateParameter(valid_601664, JString, required = false,
                                  default = nil)
-  if valid_773829 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773829
-  var valid_773830 = header.getOrDefault("X-Amz-Credential")
-  valid_773830 = validateParameter(valid_773830, JString, required = false,
+  if valid_601664 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601664
+  var valid_601665 = header.getOrDefault("X-Amz-Credential")
+  valid_601665 = validateParameter(valid_601665, JString, required = false,
                                  default = nil)
-  if valid_773830 != nil:
-    section.add "X-Amz-Credential", valid_773830
+  if valid_601665 != nil:
+    section.add "X-Amz-Credential", valid_601665
   result.add "header", section
   ## parameters in `formData` object:
   ##   MessageSystemAttribute.1.value: JString
@@ -5089,104 +5089,104 @@ proc validate_PostSendMessage_773818(path: JsonNode; query: JsonNode;
   ##   MessageAttribute.2.value: JString
   ##   MessageSystemAttribute.1.key: JString
   section = newJObject()
-  var valid_773831 = formData.getOrDefault("MessageSystemAttribute.1.value")
-  valid_773831 = validateParameter(valid_773831, JString, required = false,
+  var valid_601666 = formData.getOrDefault("MessageSystemAttribute.1.value")
+  valid_601666 = validateParameter(valid_601666, JString, required = false,
                                  default = nil)
-  if valid_773831 != nil:
-    section.add "MessageSystemAttribute.1.value", valid_773831
-  var valid_773832 = formData.getOrDefault("MessageAttribute.1.key")
-  valid_773832 = validateParameter(valid_773832, JString, required = false,
+  if valid_601666 != nil:
+    section.add "MessageSystemAttribute.1.value", valid_601666
+  var valid_601667 = formData.getOrDefault("MessageAttribute.1.key")
+  valid_601667 = validateParameter(valid_601667, JString, required = false,
                                  default = nil)
-  if valid_773832 != nil:
-    section.add "MessageAttribute.1.key", valid_773832
-  var valid_773833 = formData.getOrDefault("DelaySeconds")
-  valid_773833 = validateParameter(valid_773833, JInt, required = false, default = nil)
-  if valid_773833 != nil:
-    section.add "DelaySeconds", valid_773833
-  var valid_773834 = formData.getOrDefault("MessageGroupId")
-  valid_773834 = validateParameter(valid_773834, JString, required = false,
+  if valid_601667 != nil:
+    section.add "MessageAttribute.1.key", valid_601667
+  var valid_601668 = formData.getOrDefault("DelaySeconds")
+  valid_601668 = validateParameter(valid_601668, JInt, required = false, default = nil)
+  if valid_601668 != nil:
+    section.add "DelaySeconds", valid_601668
+  var valid_601669 = formData.getOrDefault("MessageGroupId")
+  valid_601669 = validateParameter(valid_601669, JString, required = false,
                                  default = nil)
-  if valid_773834 != nil:
-    section.add "MessageGroupId", valid_773834
-  var valid_773835 = formData.getOrDefault("MessageAttribute.0.value")
-  valid_773835 = validateParameter(valid_773835, JString, required = false,
+  if valid_601669 != nil:
+    section.add "MessageGroupId", valid_601669
+  var valid_601670 = formData.getOrDefault("MessageAttribute.0.value")
+  valid_601670 = validateParameter(valid_601670, JString, required = false,
                                  default = nil)
-  if valid_773835 != nil:
-    section.add "MessageAttribute.0.value", valid_773835
-  var valid_773836 = formData.getOrDefault("MessageSystemAttribute.2.key")
-  valid_773836 = validateParameter(valid_773836, JString, required = false,
+  if valid_601670 != nil:
+    section.add "MessageAttribute.0.value", valid_601670
+  var valid_601671 = formData.getOrDefault("MessageSystemAttribute.2.key")
+  valid_601671 = validateParameter(valid_601671, JString, required = false,
                                  default = nil)
-  if valid_773836 != nil:
-    section.add "MessageSystemAttribute.2.key", valid_773836
-  var valid_773837 = formData.getOrDefault("MessageDeduplicationId")
-  valid_773837 = validateParameter(valid_773837, JString, required = false,
+  if valid_601671 != nil:
+    section.add "MessageSystemAttribute.2.key", valid_601671
+  var valid_601672 = formData.getOrDefault("MessageDeduplicationId")
+  valid_601672 = validateParameter(valid_601672, JString, required = false,
                                  default = nil)
-  if valid_773837 != nil:
-    section.add "MessageDeduplicationId", valid_773837
-  var valid_773838 = formData.getOrDefault("MessageAttribute.2.key")
-  valid_773838 = validateParameter(valid_773838, JString, required = false,
+  if valid_601672 != nil:
+    section.add "MessageDeduplicationId", valid_601672
+  var valid_601673 = formData.getOrDefault("MessageAttribute.2.key")
+  valid_601673 = validateParameter(valid_601673, JString, required = false,
                                  default = nil)
-  if valid_773838 != nil:
-    section.add "MessageAttribute.2.key", valid_773838
-  var valid_773839 = formData.getOrDefault("MessageSystemAttribute.0.key")
-  valid_773839 = validateParameter(valid_773839, JString, required = false,
+  if valid_601673 != nil:
+    section.add "MessageAttribute.2.key", valid_601673
+  var valid_601674 = formData.getOrDefault("MessageSystemAttribute.0.key")
+  valid_601674 = validateParameter(valid_601674, JString, required = false,
                                  default = nil)
-  if valid_773839 != nil:
-    section.add "MessageSystemAttribute.0.key", valid_773839
+  if valid_601674 != nil:
+    section.add "MessageSystemAttribute.0.key", valid_601674
   assert formData != nil,
         "formData argument is necessary due to required `MessageBody` field"
-  var valid_773840 = formData.getOrDefault("MessageBody")
-  valid_773840 = validateParameter(valid_773840, JString, required = true,
+  var valid_601675 = formData.getOrDefault("MessageBody")
+  valid_601675 = validateParameter(valid_601675, JString, required = true,
                                  default = nil)
-  if valid_773840 != nil:
-    section.add "MessageBody", valid_773840
-  var valid_773841 = formData.getOrDefault("MessageAttribute.0.key")
-  valid_773841 = validateParameter(valid_773841, JString, required = false,
+  if valid_601675 != nil:
+    section.add "MessageBody", valid_601675
+  var valid_601676 = formData.getOrDefault("MessageAttribute.0.key")
+  valid_601676 = validateParameter(valid_601676, JString, required = false,
                                  default = nil)
-  if valid_773841 != nil:
-    section.add "MessageAttribute.0.key", valid_773841
-  var valid_773842 = formData.getOrDefault("MessageSystemAttribute.2.value")
-  valid_773842 = validateParameter(valid_773842, JString, required = false,
+  if valid_601676 != nil:
+    section.add "MessageAttribute.0.key", valid_601676
+  var valid_601677 = formData.getOrDefault("MessageSystemAttribute.2.value")
+  valid_601677 = validateParameter(valid_601677, JString, required = false,
                                  default = nil)
-  if valid_773842 != nil:
-    section.add "MessageSystemAttribute.2.value", valid_773842
-  var valid_773843 = formData.getOrDefault("MessageAttribute.1.value")
-  valid_773843 = validateParameter(valid_773843, JString, required = false,
+  if valid_601677 != nil:
+    section.add "MessageSystemAttribute.2.value", valid_601677
+  var valid_601678 = formData.getOrDefault("MessageAttribute.1.value")
+  valid_601678 = validateParameter(valid_601678, JString, required = false,
                                  default = nil)
-  if valid_773843 != nil:
-    section.add "MessageAttribute.1.value", valid_773843
-  var valid_773844 = formData.getOrDefault("MessageSystemAttribute.0.value")
-  valid_773844 = validateParameter(valid_773844, JString, required = false,
+  if valid_601678 != nil:
+    section.add "MessageAttribute.1.value", valid_601678
+  var valid_601679 = formData.getOrDefault("MessageSystemAttribute.0.value")
+  valid_601679 = validateParameter(valid_601679, JString, required = false,
                                  default = nil)
-  if valid_773844 != nil:
-    section.add "MessageSystemAttribute.0.value", valid_773844
-  var valid_773845 = formData.getOrDefault("MessageAttribute.2.value")
-  valid_773845 = validateParameter(valid_773845, JString, required = false,
+  if valid_601679 != nil:
+    section.add "MessageSystemAttribute.0.value", valid_601679
+  var valid_601680 = formData.getOrDefault("MessageAttribute.2.value")
+  valid_601680 = validateParameter(valid_601680, JString, required = false,
                                  default = nil)
-  if valid_773845 != nil:
-    section.add "MessageAttribute.2.value", valid_773845
-  var valid_773846 = formData.getOrDefault("MessageSystemAttribute.1.key")
-  valid_773846 = validateParameter(valid_773846, JString, required = false,
+  if valid_601680 != nil:
+    section.add "MessageAttribute.2.value", valid_601680
+  var valid_601681 = formData.getOrDefault("MessageSystemAttribute.1.key")
+  valid_601681 = validateParameter(valid_601681, JString, required = false,
                                  default = nil)
-  if valid_773846 != nil:
-    section.add "MessageSystemAttribute.1.key", valid_773846
+  if valid_601681 != nil:
+    section.add "MessageSystemAttribute.1.key", valid_601681
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773847: Call_PostSendMessage_773817; path: JsonNode; query: JsonNode;
+proc call*(call_601682: Call_PostSendMessage_601652; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Delivers a message to the specified queue.</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important>
   ## 
-  let valid = call_773847.validator(path, query, header, formData, body)
-  let scheme = call_773847.pickScheme
+  let valid = call_601682.validator(path, query, header, formData, body)
+  let scheme = call_601682.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773847.url(scheme.get, call_773847.host, call_773847.base,
-                         call_773847.route, valid.getOrDefault("path"))
-  result = hook(call_773847, url, valid)
+  let url = call_601682.url(scheme.get, call_601682.host, call_601682.base,
+                         call_601682.route, valid.getOrDefault("path"))
+  result = hook(call_601682, url, valid)
 
-proc call*(call_773848: Call_PostSendMessage_773817; QueueName: string;
+proc call*(call_601683: Call_PostSendMessage_601652; QueueName: string;
           MessageBody: string; AccountNumber: int;
           MessageSystemAttribute1Value: string = "";
           MessageAttribute1Key: string = ""; DelaySeconds: int = 0;
@@ -5231,49 +5231,49 @@ proc call*(call_773848: Call_PostSendMessage_773817; QueueName: string;
   ##                : The AWS account number
   ##   Version: string (required)
   ##   MessageSystemAttribute1Key: string
-  var path_773849 = newJObject()
-  var query_773850 = newJObject()
-  var formData_773851 = newJObject()
-  add(formData_773851, "MessageSystemAttribute.1.value",
+  var path_601684 = newJObject()
+  var query_601685 = newJObject()
+  var formData_601686 = newJObject()
+  add(formData_601686, "MessageSystemAttribute.1.value",
       newJString(MessageSystemAttribute1Value))
-  add(formData_773851, "MessageAttribute.1.key", newJString(MessageAttribute1Key))
-  add(formData_773851, "DelaySeconds", newJInt(DelaySeconds))
-  add(formData_773851, "MessageGroupId", newJString(MessageGroupId))
-  add(formData_773851, "MessageAttribute.0.value",
+  add(formData_601686, "MessageAttribute.1.key", newJString(MessageAttribute1Key))
+  add(formData_601686, "DelaySeconds", newJInt(DelaySeconds))
+  add(formData_601686, "MessageGroupId", newJString(MessageGroupId))
+  add(formData_601686, "MessageAttribute.0.value",
       newJString(MessageAttribute0Value))
-  add(formData_773851, "MessageSystemAttribute.2.key",
+  add(formData_601686, "MessageSystemAttribute.2.key",
       newJString(MessageSystemAttribute2Key))
-  add(formData_773851, "MessageDeduplicationId",
+  add(formData_601686, "MessageDeduplicationId",
       newJString(MessageDeduplicationId))
-  add(path_773849, "QueueName", newJString(QueueName))
-  add(formData_773851, "MessageAttribute.2.key", newJString(MessageAttribute2Key))
-  add(formData_773851, "MessageSystemAttribute.0.key",
+  add(path_601684, "QueueName", newJString(QueueName))
+  add(formData_601686, "MessageAttribute.2.key", newJString(MessageAttribute2Key))
+  add(formData_601686, "MessageSystemAttribute.0.key",
       newJString(MessageSystemAttribute0Key))
-  add(formData_773851, "MessageBody", newJString(MessageBody))
-  add(query_773850, "Action", newJString(Action))
-  add(formData_773851, "MessageAttribute.0.key", newJString(MessageAttribute0Key))
-  add(formData_773851, "MessageSystemAttribute.2.value",
+  add(formData_601686, "MessageBody", newJString(MessageBody))
+  add(query_601685, "Action", newJString(Action))
+  add(formData_601686, "MessageAttribute.0.key", newJString(MessageAttribute0Key))
+  add(formData_601686, "MessageSystemAttribute.2.value",
       newJString(MessageSystemAttribute2Value))
-  add(formData_773851, "MessageAttribute.1.value",
+  add(formData_601686, "MessageAttribute.1.value",
       newJString(MessageAttribute1Value))
-  add(formData_773851, "MessageSystemAttribute.0.value",
+  add(formData_601686, "MessageSystemAttribute.0.value",
       newJString(MessageSystemAttribute0Value))
-  add(formData_773851, "MessageAttribute.2.value",
+  add(formData_601686, "MessageAttribute.2.value",
       newJString(MessageAttribute2Value))
-  add(path_773849, "AccountNumber", newJInt(AccountNumber))
-  add(query_773850, "Version", newJString(Version))
-  add(formData_773851, "MessageSystemAttribute.1.key",
+  add(path_601684, "AccountNumber", newJInt(AccountNumber))
+  add(query_601685, "Version", newJString(Version))
+  add(formData_601686, "MessageSystemAttribute.1.key",
       newJString(MessageSystemAttribute1Key))
-  result = call_773848.call(path_773849, query_773850, nil, formData_773851, nil)
+  result = call_601683.call(path_601684, query_601685, nil, formData_601686, nil)
 
-var postSendMessage* = Call_PostSendMessage_773817(name: "postSendMessage",
+var postSendMessage* = Call_PostSendMessage_601652(name: "postSendMessage",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=SendMessage",
-    validator: validate_PostSendMessage_773818, base: "/", url: url_PostSendMessage_773819,
+    validator: validate_PostSendMessage_601653, base: "/", url: url_PostSendMessage_601654,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSendMessage_773783 = ref object of OpenApiRestCall_772581
-proc url_GetSendMessage_773785(protocol: Scheme; host: string; base: string;
+  Call_GetSendMessage_601618 = ref object of OpenApiRestCall_600410
+proc url_GetSendMessage_601620(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -5289,7 +5289,7 @@ proc url_GetSendMessage_773785(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetSendMessage_773784(path: JsonNode; query: JsonNode;
+proc validate_GetSendMessage_601619(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Delivers a message to the specified queue.</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important>
@@ -5303,15 +5303,15 @@ proc validate_GetSendMessage_773784(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773786 = path.getOrDefault("QueueName")
-  valid_773786 = validateParameter(valid_773786, JString, required = true,
+  var valid_601621 = path.getOrDefault("QueueName")
+  valid_601621 = validateParameter(valid_601621, JString, required = true,
                                  default = nil)
-  if valid_773786 != nil:
-    section.add "QueueName", valid_773786
-  var valid_773787 = path.getOrDefault("AccountNumber")
-  valid_773787 = validateParameter(valid_773787, JInt, required = true, default = nil)
-  if valid_773787 != nil:
-    section.add "AccountNumber", valid_773787
+  if valid_601621 != nil:
+    section.add "QueueName", valid_601621
+  var valid_601622 = path.getOrDefault("AccountNumber")
+  valid_601622 = validateParameter(valid_601622, JInt, required = true, default = nil)
+  if valid_601622 != nil:
+    section.add "AccountNumber", valid_601622
   result.add "path", section
   ## parameters in `query` object:
   ##   MessageAttribute.0.key: JString
@@ -5340,96 +5340,96 @@ proc validate_GetSendMessage_773784(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   ##   MessageAttribute.1.key: JString
   section = newJObject()
-  var valid_773788 = query.getOrDefault("MessageAttribute.0.key")
-  valid_773788 = validateParameter(valid_773788, JString, required = false,
+  var valid_601623 = query.getOrDefault("MessageAttribute.0.key")
+  valid_601623 = validateParameter(valid_601623, JString, required = false,
                                  default = nil)
-  if valid_773788 != nil:
-    section.add "MessageAttribute.0.key", valid_773788
-  var valid_773789 = query.getOrDefault("MessageSystemAttribute.1.key")
-  valid_773789 = validateParameter(valid_773789, JString, required = false,
+  if valid_601623 != nil:
+    section.add "MessageAttribute.0.key", valid_601623
+  var valid_601624 = query.getOrDefault("MessageSystemAttribute.1.key")
+  valid_601624 = validateParameter(valid_601624, JString, required = false,
                                  default = nil)
-  if valid_773789 != nil:
-    section.add "MessageSystemAttribute.1.key", valid_773789
-  var valid_773790 = query.getOrDefault("MessageSystemAttribute.0.value")
-  valid_773790 = validateParameter(valid_773790, JString, required = false,
+  if valid_601624 != nil:
+    section.add "MessageSystemAttribute.1.key", valid_601624
+  var valid_601625 = query.getOrDefault("MessageSystemAttribute.0.value")
+  valid_601625 = validateParameter(valid_601625, JString, required = false,
                                  default = nil)
-  if valid_773790 != nil:
-    section.add "MessageSystemAttribute.0.value", valid_773790
-  var valid_773791 = query.getOrDefault("MessageGroupId")
-  valid_773791 = validateParameter(valid_773791, JString, required = false,
+  if valid_601625 != nil:
+    section.add "MessageSystemAttribute.0.value", valid_601625
+  var valid_601626 = query.getOrDefault("MessageGroupId")
+  valid_601626 = validateParameter(valid_601626, JString, required = false,
                                  default = nil)
-  if valid_773791 != nil:
-    section.add "MessageGroupId", valid_773791
-  var valid_773792 = query.getOrDefault("MessageSystemAttribute.2.value")
-  valid_773792 = validateParameter(valid_773792, JString, required = false,
+  if valid_601626 != nil:
+    section.add "MessageGroupId", valid_601626
+  var valid_601627 = query.getOrDefault("MessageSystemAttribute.2.value")
+  valid_601627 = validateParameter(valid_601627, JString, required = false,
                                  default = nil)
-  if valid_773792 != nil:
-    section.add "MessageSystemAttribute.2.value", valid_773792
-  var valid_773793 = query.getOrDefault("MessageAttribute.2.key")
-  valid_773793 = validateParameter(valid_773793, JString, required = false,
+  if valid_601627 != nil:
+    section.add "MessageSystemAttribute.2.value", valid_601627
+  var valid_601628 = query.getOrDefault("MessageAttribute.2.key")
+  valid_601628 = validateParameter(valid_601628, JString, required = false,
                                  default = nil)
-  if valid_773793 != nil:
-    section.add "MessageAttribute.2.key", valid_773793
-  var valid_773794 = query.getOrDefault("MessageSystemAttribute.2.key")
-  valid_773794 = validateParameter(valid_773794, JString, required = false,
+  if valid_601628 != nil:
+    section.add "MessageAttribute.2.key", valid_601628
+  var valid_601629 = query.getOrDefault("MessageSystemAttribute.2.key")
+  valid_601629 = validateParameter(valid_601629, JString, required = false,
                                  default = nil)
-  if valid_773794 != nil:
-    section.add "MessageSystemAttribute.2.key", valid_773794
-  var valid_773795 = query.getOrDefault("MessageDeduplicationId")
-  valid_773795 = validateParameter(valid_773795, JString, required = false,
+  if valid_601629 != nil:
+    section.add "MessageSystemAttribute.2.key", valid_601629
+  var valid_601630 = query.getOrDefault("MessageDeduplicationId")
+  valid_601630 = validateParameter(valid_601630, JString, required = false,
                                  default = nil)
-  if valid_773795 != nil:
-    section.add "MessageDeduplicationId", valid_773795
-  var valid_773796 = query.getOrDefault("MessageAttribute.2.value")
-  valid_773796 = validateParameter(valid_773796, JString, required = false,
+  if valid_601630 != nil:
+    section.add "MessageDeduplicationId", valid_601630
+  var valid_601631 = query.getOrDefault("MessageAttribute.2.value")
+  valid_601631 = validateParameter(valid_601631, JString, required = false,
                                  default = nil)
-  if valid_773796 != nil:
-    section.add "MessageAttribute.2.value", valid_773796
-  var valid_773797 = query.getOrDefault("MessageSystemAttribute.1.value")
-  valid_773797 = validateParameter(valid_773797, JString, required = false,
+  if valid_601631 != nil:
+    section.add "MessageAttribute.2.value", valid_601631
+  var valid_601632 = query.getOrDefault("MessageSystemAttribute.1.value")
+  valid_601632 = validateParameter(valid_601632, JString, required = false,
                                  default = nil)
-  if valid_773797 != nil:
-    section.add "MessageSystemAttribute.1.value", valid_773797
-  var valid_773798 = query.getOrDefault("MessageSystemAttribute.0.key")
-  valid_773798 = validateParameter(valid_773798, JString, required = false,
+  if valid_601632 != nil:
+    section.add "MessageSystemAttribute.1.value", valid_601632
+  var valid_601633 = query.getOrDefault("MessageSystemAttribute.0.key")
+  valid_601633 = validateParameter(valid_601633, JString, required = false,
                                  default = nil)
-  if valid_773798 != nil:
-    section.add "MessageSystemAttribute.0.key", valid_773798
+  if valid_601633 != nil:
+    section.add "MessageSystemAttribute.0.key", valid_601633
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773799 = query.getOrDefault("Action")
-  valid_773799 = validateParameter(valid_773799, JString, required = true,
+  var valid_601634 = query.getOrDefault("Action")
+  valid_601634 = validateParameter(valid_601634, JString, required = true,
                                  default = newJString("SendMessage"))
-  if valid_773799 != nil:
-    section.add "Action", valid_773799
-  var valid_773800 = query.getOrDefault("MessageAttribute.1.value")
-  valid_773800 = validateParameter(valid_773800, JString, required = false,
+  if valid_601634 != nil:
+    section.add "Action", valid_601634
+  var valid_601635 = query.getOrDefault("MessageAttribute.1.value")
+  valid_601635 = validateParameter(valid_601635, JString, required = false,
                                  default = nil)
-  if valid_773800 != nil:
-    section.add "MessageAttribute.1.value", valid_773800
-  var valid_773801 = query.getOrDefault("DelaySeconds")
-  valid_773801 = validateParameter(valid_773801, JInt, required = false, default = nil)
-  if valid_773801 != nil:
-    section.add "DelaySeconds", valid_773801
-  var valid_773802 = query.getOrDefault("MessageAttribute.0.value")
-  valid_773802 = validateParameter(valid_773802, JString, required = false,
+  if valid_601635 != nil:
+    section.add "MessageAttribute.1.value", valid_601635
+  var valid_601636 = query.getOrDefault("DelaySeconds")
+  valid_601636 = validateParameter(valid_601636, JInt, required = false, default = nil)
+  if valid_601636 != nil:
+    section.add "DelaySeconds", valid_601636
+  var valid_601637 = query.getOrDefault("MessageAttribute.0.value")
+  valid_601637 = validateParameter(valid_601637, JString, required = false,
                                  default = nil)
-  if valid_773802 != nil:
-    section.add "MessageAttribute.0.value", valid_773802
-  var valid_773803 = query.getOrDefault("MessageBody")
-  valid_773803 = validateParameter(valid_773803, JString, required = true,
+  if valid_601637 != nil:
+    section.add "MessageAttribute.0.value", valid_601637
+  var valid_601638 = query.getOrDefault("MessageBody")
+  valid_601638 = validateParameter(valid_601638, JString, required = true,
                                  default = nil)
-  if valid_773803 != nil:
-    section.add "MessageBody", valid_773803
-  var valid_773804 = query.getOrDefault("Version")
-  valid_773804 = validateParameter(valid_773804, JString, required = true,
+  if valid_601638 != nil:
+    section.add "MessageBody", valid_601638
+  var valid_601639 = query.getOrDefault("Version")
+  valid_601639 = validateParameter(valid_601639, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773804 != nil:
-    section.add "Version", valid_773804
-  var valid_773805 = query.getOrDefault("MessageAttribute.1.key")
-  valid_773805 = validateParameter(valid_773805, JString, required = false,
+  if valid_601639 != nil:
+    section.add "Version", valid_601639
+  var valid_601640 = query.getOrDefault("MessageAttribute.1.key")
+  valid_601640 = validateParameter(valid_601640, JString, required = false,
                                  default = nil)
-  if valid_773805 != nil:
-    section.add "MessageAttribute.1.key", valid_773805
+  if valid_601640 != nil:
+    section.add "MessageAttribute.1.key", valid_601640
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -5440,60 +5440,60 @@ proc validate_GetSendMessage_773784(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773806 = header.getOrDefault("X-Amz-Date")
-  valid_773806 = validateParameter(valid_773806, JString, required = false,
+  var valid_601641 = header.getOrDefault("X-Amz-Date")
+  valid_601641 = validateParameter(valid_601641, JString, required = false,
                                  default = nil)
-  if valid_773806 != nil:
-    section.add "X-Amz-Date", valid_773806
-  var valid_773807 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773807 = validateParameter(valid_773807, JString, required = false,
+  if valid_601641 != nil:
+    section.add "X-Amz-Date", valid_601641
+  var valid_601642 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601642 = validateParameter(valid_601642, JString, required = false,
                                  default = nil)
-  if valid_773807 != nil:
-    section.add "X-Amz-Security-Token", valid_773807
-  var valid_773808 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773808 = validateParameter(valid_773808, JString, required = false,
+  if valid_601642 != nil:
+    section.add "X-Amz-Security-Token", valid_601642
+  var valid_601643 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601643 = validateParameter(valid_601643, JString, required = false,
                                  default = nil)
-  if valid_773808 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773808
-  var valid_773809 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773809 = validateParameter(valid_773809, JString, required = false,
+  if valid_601643 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601643
+  var valid_601644 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601644 = validateParameter(valid_601644, JString, required = false,
                                  default = nil)
-  if valid_773809 != nil:
-    section.add "X-Amz-Algorithm", valid_773809
-  var valid_773810 = header.getOrDefault("X-Amz-Signature")
-  valid_773810 = validateParameter(valid_773810, JString, required = false,
+  if valid_601644 != nil:
+    section.add "X-Amz-Algorithm", valid_601644
+  var valid_601645 = header.getOrDefault("X-Amz-Signature")
+  valid_601645 = validateParameter(valid_601645, JString, required = false,
                                  default = nil)
-  if valid_773810 != nil:
-    section.add "X-Amz-Signature", valid_773810
-  var valid_773811 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773811 = validateParameter(valid_773811, JString, required = false,
+  if valid_601645 != nil:
+    section.add "X-Amz-Signature", valid_601645
+  var valid_601646 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601646 = validateParameter(valid_601646, JString, required = false,
                                  default = nil)
-  if valid_773811 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773811
-  var valid_773812 = header.getOrDefault("X-Amz-Credential")
-  valid_773812 = validateParameter(valid_773812, JString, required = false,
+  if valid_601646 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601646
+  var valid_601647 = header.getOrDefault("X-Amz-Credential")
+  valid_601647 = validateParameter(valid_601647, JString, required = false,
                                  default = nil)
-  if valid_773812 != nil:
-    section.add "X-Amz-Credential", valid_773812
+  if valid_601647 != nil:
+    section.add "X-Amz-Credential", valid_601647
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773813: Call_GetSendMessage_773783; path: JsonNode; query: JsonNode;
+proc call*(call_601648: Call_GetSendMessage_601618; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Delivers a message to the specified queue.</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important>
   ## 
-  let valid = call_773813.validator(path, query, header, formData, body)
-  let scheme = call_773813.pickScheme
+  let valid = call_601648.validator(path, query, header, formData, body)
+  let scheme = call_601648.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773813.url(scheme.get, call_773813.host, call_773813.base,
-                         call_773813.route, valid.getOrDefault("path"))
-  result = hook(call_773813, url, valid)
+  let url = call_601648.url(scheme.get, call_601648.host, call_601648.base,
+                         call_601648.route, valid.getOrDefault("path"))
+  result = hook(call_601648, url, valid)
 
-proc call*(call_773814: Call_GetSendMessage_773783; QueueName: string;
+proc call*(call_601649: Call_GetSendMessage_601618; QueueName: string;
           AccountNumber: int; MessageBody: string;
           MessageAttribute0Key: string = "";
           MessageSystemAttribute1Key: string = "";
@@ -5538,44 +5538,44 @@ proc call*(call_773814: Call_GetSendMessage_773783; QueueName: string;
   ##              : <p>The message to send. The maximum string size is 256 KB.</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important>
   ##   Version: string (required)
   ##   MessageAttribute1Key: string
-  var path_773815 = newJObject()
-  var query_773816 = newJObject()
-  add(query_773816, "MessageAttribute.0.key", newJString(MessageAttribute0Key))
-  add(query_773816, "MessageSystemAttribute.1.key",
+  var path_601650 = newJObject()
+  var query_601651 = newJObject()
+  add(query_601651, "MessageAttribute.0.key", newJString(MessageAttribute0Key))
+  add(query_601651, "MessageSystemAttribute.1.key",
       newJString(MessageSystemAttribute1Key))
-  add(query_773816, "MessageSystemAttribute.0.value",
+  add(query_601651, "MessageSystemAttribute.0.value",
       newJString(MessageSystemAttribute0Value))
-  add(query_773816, "MessageGroupId", newJString(MessageGroupId))
-  add(query_773816, "MessageSystemAttribute.2.value",
+  add(query_601651, "MessageGroupId", newJString(MessageGroupId))
+  add(query_601651, "MessageSystemAttribute.2.value",
       newJString(MessageSystemAttribute2Value))
-  add(query_773816, "MessageAttribute.2.key", newJString(MessageAttribute2Key))
-  add(query_773816, "MessageSystemAttribute.2.key",
+  add(query_601651, "MessageAttribute.2.key", newJString(MessageAttribute2Key))
+  add(query_601651, "MessageSystemAttribute.2.key",
       newJString(MessageSystemAttribute2Key))
-  add(query_773816, "MessageDeduplicationId", newJString(MessageDeduplicationId))
-  add(path_773815, "QueueName", newJString(QueueName))
-  add(query_773816, "MessageAttribute.2.value", newJString(MessageAttribute2Value))
-  add(query_773816, "MessageSystemAttribute.1.value",
+  add(query_601651, "MessageDeduplicationId", newJString(MessageDeduplicationId))
+  add(path_601650, "QueueName", newJString(QueueName))
+  add(query_601651, "MessageAttribute.2.value", newJString(MessageAttribute2Value))
+  add(query_601651, "MessageSystemAttribute.1.value",
       newJString(MessageSystemAttribute1Value))
-  add(query_773816, "MessageSystemAttribute.0.key",
+  add(query_601651, "MessageSystemAttribute.0.key",
       newJString(MessageSystemAttribute0Key))
-  add(query_773816, "Action", newJString(Action))
-  add(query_773816, "MessageAttribute.1.value", newJString(MessageAttribute1Value))
-  add(query_773816, "DelaySeconds", newJInt(DelaySeconds))
-  add(path_773815, "AccountNumber", newJInt(AccountNumber))
-  add(query_773816, "MessageAttribute.0.value", newJString(MessageAttribute0Value))
-  add(query_773816, "MessageBody", newJString(MessageBody))
-  add(query_773816, "Version", newJString(Version))
-  add(query_773816, "MessageAttribute.1.key", newJString(MessageAttribute1Key))
-  result = call_773814.call(path_773815, query_773816, nil, nil, nil)
+  add(query_601651, "Action", newJString(Action))
+  add(query_601651, "MessageAttribute.1.value", newJString(MessageAttribute1Value))
+  add(query_601651, "DelaySeconds", newJInt(DelaySeconds))
+  add(path_601650, "AccountNumber", newJInt(AccountNumber))
+  add(query_601651, "MessageAttribute.0.value", newJString(MessageAttribute0Value))
+  add(query_601651, "MessageBody", newJString(MessageBody))
+  add(query_601651, "Version", newJString(Version))
+  add(query_601651, "MessageAttribute.1.key", newJString(MessageAttribute1Key))
+  result = call_601649.call(path_601650, query_601651, nil, nil, nil)
 
-var getSendMessage* = Call_GetSendMessage_773783(name: "getSendMessage",
+var getSendMessage* = Call_GetSendMessage_601618(name: "getSendMessage",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=SendMessage",
-    validator: validate_GetSendMessage_773784, base: "/", url: url_GetSendMessage_773785,
+    validator: validate_GetSendMessage_601619, base: "/", url: url_GetSendMessage_601620,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSendMessageBatch_773871 = ref object of OpenApiRestCall_772581
-proc url_PostSendMessageBatch_773873(protocol: Scheme; host: string; base: string;
+  Call_PostSendMessageBatch_601706 = ref object of OpenApiRestCall_600410
+proc url_PostSendMessageBatch_601708(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -5591,7 +5591,7 @@ proc url_PostSendMessageBatch_773873(protocol: Scheme; host: string; base: strin
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostSendMessageBatch_773872(path: JsonNode; query: JsonNode;
+proc validate_PostSendMessageBatch_601707(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Delivers up to ten messages to the specified queue. This is a batch version of <code> <a>SendMessage</a>.</code> For a FIFO queue, multiple messages within a single batch are enqueued in the order they are sent.</p> <p>The result of sending each message is reported individually in the response. Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> <p>The maximum allowed individual message size and the maximum total payload size (the sum of the individual lengths of all of the batched messages) are both 256 KB (262,144 bytes).</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important> <p>If you don't specify the <code>DelaySeconds</code> parameter for an entry, Amazon SQS uses the default value for the queue.</p> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
@@ -5604,31 +5604,31 @@ proc validate_PostSendMessageBatch_773872(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773874 = path.getOrDefault("QueueName")
-  valid_773874 = validateParameter(valid_773874, JString, required = true,
+  var valid_601709 = path.getOrDefault("QueueName")
+  valid_601709 = validateParameter(valid_601709, JString, required = true,
                                  default = nil)
-  if valid_773874 != nil:
-    section.add "QueueName", valid_773874
-  var valid_773875 = path.getOrDefault("AccountNumber")
-  valid_773875 = validateParameter(valid_773875, JInt, required = true, default = nil)
-  if valid_773875 != nil:
-    section.add "AccountNumber", valid_773875
+  if valid_601709 != nil:
+    section.add "QueueName", valid_601709
+  var valid_601710 = path.getOrDefault("AccountNumber")
+  valid_601710 = validateParameter(valid_601710, JInt, required = true, default = nil)
+  if valid_601710 != nil:
+    section.add "AccountNumber", valid_601710
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773876 = query.getOrDefault("Action")
-  valid_773876 = validateParameter(valid_773876, JString, required = true,
+  var valid_601711 = query.getOrDefault("Action")
+  valid_601711 = validateParameter(valid_601711, JString, required = true,
                                  default = newJString("SendMessageBatch"))
-  if valid_773876 != nil:
-    section.add "Action", valid_773876
-  var valid_773877 = query.getOrDefault("Version")
-  valid_773877 = validateParameter(valid_773877, JString, required = true,
+  if valid_601711 != nil:
+    section.add "Action", valid_601711
+  var valid_601712 = query.getOrDefault("Version")
+  valid_601712 = validateParameter(valid_601712, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773877 != nil:
-    section.add "Version", valid_773877
+  if valid_601712 != nil:
+    section.add "Version", valid_601712
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -5639,41 +5639,41 @@ proc validate_PostSendMessageBatch_773872(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773878 = header.getOrDefault("X-Amz-Date")
-  valid_773878 = validateParameter(valid_773878, JString, required = false,
+  var valid_601713 = header.getOrDefault("X-Amz-Date")
+  valid_601713 = validateParameter(valid_601713, JString, required = false,
                                  default = nil)
-  if valid_773878 != nil:
-    section.add "X-Amz-Date", valid_773878
-  var valid_773879 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773879 = validateParameter(valid_773879, JString, required = false,
+  if valid_601713 != nil:
+    section.add "X-Amz-Date", valid_601713
+  var valid_601714 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601714 = validateParameter(valid_601714, JString, required = false,
                                  default = nil)
-  if valid_773879 != nil:
-    section.add "X-Amz-Security-Token", valid_773879
-  var valid_773880 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773880 = validateParameter(valid_773880, JString, required = false,
+  if valid_601714 != nil:
+    section.add "X-Amz-Security-Token", valid_601714
+  var valid_601715 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601715 = validateParameter(valid_601715, JString, required = false,
                                  default = nil)
-  if valid_773880 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773880
-  var valid_773881 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773881 = validateParameter(valid_773881, JString, required = false,
+  if valid_601715 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601715
+  var valid_601716 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601716 = validateParameter(valid_601716, JString, required = false,
                                  default = nil)
-  if valid_773881 != nil:
-    section.add "X-Amz-Algorithm", valid_773881
-  var valid_773882 = header.getOrDefault("X-Amz-Signature")
-  valid_773882 = validateParameter(valid_773882, JString, required = false,
+  if valid_601716 != nil:
+    section.add "X-Amz-Algorithm", valid_601716
+  var valid_601717 = header.getOrDefault("X-Amz-Signature")
+  valid_601717 = validateParameter(valid_601717, JString, required = false,
                                  default = nil)
-  if valid_773882 != nil:
-    section.add "X-Amz-Signature", valid_773882
-  var valid_773883 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773883 = validateParameter(valid_773883, JString, required = false,
+  if valid_601717 != nil:
+    section.add "X-Amz-Signature", valid_601717
+  var valid_601718 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601718 = validateParameter(valid_601718, JString, required = false,
                                  default = nil)
-  if valid_773883 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773883
-  var valid_773884 = header.getOrDefault("X-Amz-Credential")
-  valid_773884 = validateParameter(valid_773884, JString, required = false,
+  if valid_601718 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601718
+  var valid_601719 = header.getOrDefault("X-Amz-Credential")
+  valid_601719 = validateParameter(valid_601719, JString, required = false,
                                  default = nil)
-  if valid_773884 != nil:
-    section.add "X-Amz-Credential", valid_773884
+  if valid_601719 != nil:
+    section.add "X-Amz-Credential", valid_601719
   result.add "header", section
   ## parameters in `formData` object:
   ##   Entries: JArray (required)
@@ -5681,27 +5681,27 @@ proc validate_PostSendMessageBatch_773872(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Entries` field"
-  var valid_773885 = formData.getOrDefault("Entries")
-  valid_773885 = validateParameter(valid_773885, JArray, required = true, default = nil)
-  if valid_773885 != nil:
-    section.add "Entries", valid_773885
+  var valid_601720 = formData.getOrDefault("Entries")
+  valid_601720 = validateParameter(valid_601720, JArray, required = true, default = nil)
+  if valid_601720 != nil:
+    section.add "Entries", valid_601720
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773886: Call_PostSendMessageBatch_773871; path: JsonNode;
+proc call*(call_601721: Call_PostSendMessageBatch_601706; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Delivers up to ten messages to the specified queue. This is a batch version of <code> <a>SendMessage</a>.</code> For a FIFO queue, multiple messages within a single batch are enqueued in the order they are sent.</p> <p>The result of sending each message is reported individually in the response. Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> <p>The maximum allowed individual message size and the maximum total payload size (the sum of the individual lengths of all of the batched messages) are both 256 KB (262,144 bytes).</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important> <p>If you don't specify the <code>DelaySeconds</code> parameter for an entry, Amazon SQS uses the default value for the queue.</p> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
-  let valid = call_773886.validator(path, query, header, formData, body)
-  let scheme = call_773886.pickScheme
+  let valid = call_601721.validator(path, query, header, formData, body)
+  let scheme = call_601721.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773886.url(scheme.get, call_773886.host, call_773886.base,
-                         call_773886.route, valid.getOrDefault("path"))
-  result = hook(call_773886, url, valid)
+  let url = call_601721.url(scheme.get, call_601721.host, call_601721.base,
+                         call_601721.route, valid.getOrDefault("path"))
+  result = hook(call_601721, url, valid)
 
-proc call*(call_773887: Call_PostSendMessageBatch_773871; Entries: JsonNode;
+proc call*(call_601722: Call_PostSendMessageBatch_601706; Entries: JsonNode;
           QueueName: string; AccountNumber: int;
           Action: string = "SendMessageBatch"; Version: string = "2012-11-05"): Recallable =
   ## postSendMessageBatch
@@ -5714,26 +5714,26 @@ proc call*(call_773887: Call_PostSendMessageBatch_773871; Entries: JsonNode;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773888 = newJObject()
-  var query_773889 = newJObject()
-  var formData_773890 = newJObject()
+  var path_601723 = newJObject()
+  var query_601724 = newJObject()
+  var formData_601725 = newJObject()
   if Entries != nil:
-    formData_773890.add "Entries", Entries
-  add(path_773888, "QueueName", newJString(QueueName))
-  add(query_773889, "Action", newJString(Action))
-  add(path_773888, "AccountNumber", newJInt(AccountNumber))
-  add(query_773889, "Version", newJString(Version))
-  result = call_773887.call(path_773888, query_773889, nil, formData_773890, nil)
+    formData_601725.add "Entries", Entries
+  add(path_601723, "QueueName", newJString(QueueName))
+  add(query_601724, "Action", newJString(Action))
+  add(path_601723, "AccountNumber", newJInt(AccountNumber))
+  add(query_601724, "Version", newJString(Version))
+  result = call_601722.call(path_601723, query_601724, nil, formData_601725, nil)
 
-var postSendMessageBatch* = Call_PostSendMessageBatch_773871(
+var postSendMessageBatch* = Call_PostSendMessageBatch_601706(
     name: "postSendMessageBatch", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=SendMessageBatch",
-    validator: validate_PostSendMessageBatch_773872, base: "/",
-    url: url_PostSendMessageBatch_773873, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostSendMessageBatch_601707, base: "/",
+    url: url_PostSendMessageBatch_601708, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSendMessageBatch_773852 = ref object of OpenApiRestCall_772581
-proc url_GetSendMessageBatch_773854(protocol: Scheme; host: string; base: string;
+  Call_GetSendMessageBatch_601687 = ref object of OpenApiRestCall_600410
+proc url_GetSendMessageBatch_601689(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -5749,7 +5749,7 @@ proc url_GetSendMessageBatch_773854(protocol: Scheme; host: string; base: string
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetSendMessageBatch_773853(path: JsonNode; query: JsonNode;
+proc validate_GetSendMessageBatch_601688(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Delivers up to ten messages to the specified queue. This is a batch version of <code> <a>SendMessage</a>.</code> For a FIFO queue, multiple messages within a single batch are enqueued in the order they are sent.</p> <p>The result of sending each message is reported individually in the response. Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> <p>The maximum allowed individual message size and the maximum total payload size (the sum of the individual lengths of all of the batched messages) are both 256 KB (262,144 bytes).</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important> <p>If you don't specify the <code>DelaySeconds</code> parameter for an entry, Amazon SQS uses the default value for the queue.</p> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
@@ -5763,15 +5763,15 @@ proc validate_GetSendMessageBatch_773853(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773855 = path.getOrDefault("QueueName")
-  valid_773855 = validateParameter(valid_773855, JString, required = true,
+  var valid_601690 = path.getOrDefault("QueueName")
+  valid_601690 = validateParameter(valid_601690, JString, required = true,
                                  default = nil)
-  if valid_773855 != nil:
-    section.add "QueueName", valid_773855
-  var valid_773856 = path.getOrDefault("AccountNumber")
-  valid_773856 = validateParameter(valid_773856, JInt, required = true, default = nil)
-  if valid_773856 != nil:
-    section.add "AccountNumber", valid_773856
+  if valid_601690 != nil:
+    section.add "QueueName", valid_601690
+  var valid_601691 = path.getOrDefault("AccountNumber")
+  valid_601691 = validateParameter(valid_601691, JInt, required = true, default = nil)
+  if valid_601691 != nil:
+    section.add "AccountNumber", valid_601691
   result.add "path", section
   ## parameters in `query` object:
   ##   Entries: JArray (required)
@@ -5780,20 +5780,20 @@ proc validate_GetSendMessageBatch_773853(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Entries` field"
-  var valid_773857 = query.getOrDefault("Entries")
-  valid_773857 = validateParameter(valid_773857, JArray, required = true, default = nil)
-  if valid_773857 != nil:
-    section.add "Entries", valid_773857
-  var valid_773858 = query.getOrDefault("Action")
-  valid_773858 = validateParameter(valid_773858, JString, required = true,
+  var valid_601692 = query.getOrDefault("Entries")
+  valid_601692 = validateParameter(valid_601692, JArray, required = true, default = nil)
+  if valid_601692 != nil:
+    section.add "Entries", valid_601692
+  var valid_601693 = query.getOrDefault("Action")
+  valid_601693 = validateParameter(valid_601693, JString, required = true,
                                  default = newJString("SendMessageBatch"))
-  if valid_773858 != nil:
-    section.add "Action", valid_773858
-  var valid_773859 = query.getOrDefault("Version")
-  valid_773859 = validateParameter(valid_773859, JString, required = true,
+  if valid_601693 != nil:
+    section.add "Action", valid_601693
+  var valid_601694 = query.getOrDefault("Version")
+  valid_601694 = validateParameter(valid_601694, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773859 != nil:
-    section.add "Version", valid_773859
+  if valid_601694 != nil:
+    section.add "Version", valid_601694
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -5804,60 +5804,60 @@ proc validate_GetSendMessageBatch_773853(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773860 = header.getOrDefault("X-Amz-Date")
-  valid_773860 = validateParameter(valid_773860, JString, required = false,
+  var valid_601695 = header.getOrDefault("X-Amz-Date")
+  valid_601695 = validateParameter(valid_601695, JString, required = false,
                                  default = nil)
-  if valid_773860 != nil:
-    section.add "X-Amz-Date", valid_773860
-  var valid_773861 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773861 = validateParameter(valid_773861, JString, required = false,
+  if valid_601695 != nil:
+    section.add "X-Amz-Date", valid_601695
+  var valid_601696 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601696 = validateParameter(valid_601696, JString, required = false,
                                  default = nil)
-  if valid_773861 != nil:
-    section.add "X-Amz-Security-Token", valid_773861
-  var valid_773862 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773862 = validateParameter(valid_773862, JString, required = false,
+  if valid_601696 != nil:
+    section.add "X-Amz-Security-Token", valid_601696
+  var valid_601697 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601697 = validateParameter(valid_601697, JString, required = false,
                                  default = nil)
-  if valid_773862 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773862
-  var valid_773863 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773863 = validateParameter(valid_773863, JString, required = false,
+  if valid_601697 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601697
+  var valid_601698 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601698 = validateParameter(valid_601698, JString, required = false,
                                  default = nil)
-  if valid_773863 != nil:
-    section.add "X-Amz-Algorithm", valid_773863
-  var valid_773864 = header.getOrDefault("X-Amz-Signature")
-  valid_773864 = validateParameter(valid_773864, JString, required = false,
+  if valid_601698 != nil:
+    section.add "X-Amz-Algorithm", valid_601698
+  var valid_601699 = header.getOrDefault("X-Amz-Signature")
+  valid_601699 = validateParameter(valid_601699, JString, required = false,
                                  default = nil)
-  if valid_773864 != nil:
-    section.add "X-Amz-Signature", valid_773864
-  var valid_773865 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773865 = validateParameter(valid_773865, JString, required = false,
+  if valid_601699 != nil:
+    section.add "X-Amz-Signature", valid_601699
+  var valid_601700 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601700 = validateParameter(valid_601700, JString, required = false,
                                  default = nil)
-  if valid_773865 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773865
-  var valid_773866 = header.getOrDefault("X-Amz-Credential")
-  valid_773866 = validateParameter(valid_773866, JString, required = false,
+  if valid_601700 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601700
+  var valid_601701 = header.getOrDefault("X-Amz-Credential")
+  valid_601701 = validateParameter(valid_601701, JString, required = false,
                                  default = nil)
-  if valid_773866 != nil:
-    section.add "X-Amz-Credential", valid_773866
+  if valid_601701 != nil:
+    section.add "X-Amz-Credential", valid_601701
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773867: Call_GetSendMessageBatch_773852; path: JsonNode;
+proc call*(call_601702: Call_GetSendMessageBatch_601687; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Delivers up to ten messages to the specified queue. This is a batch version of <code> <a>SendMessage</a>.</code> For a FIFO queue, multiple messages within a single batch are enqueued in the order they are sent.</p> <p>The result of sending each message is reported individually in the response. Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of <code>200</code>.</p> <p>The maximum allowed individual message size and the maximum total payload size (the sum of the individual lengths of all of the batched messages) are both 256 KB (262,144 bytes).</p> <important> <p>A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:</p> <p> <code>#x9</code> | <code>#xA</code> | <code>#xD</code> | <code>#x20</code> to <code>#xD7FF</code> | <code>#xE000</code> to <code>#xFFFD</code> | <code>#x10000</code> to <code>#x10FFFF</code> </p> <p>Any characters not included in this list will be rejected. For more information, see the <a href="http://www.w3.org/TR/REC-xml/#charsets">W3C specification for characters</a>.</p> </important> <p>If you don't specify the <code>DelaySeconds</code> parameter for an entry, Amazon SQS uses the default value for the queue.</p> <p>Some actions take lists of parameters. These lists are specified using the <code>param.n</code> notation. Values of <code>n</code> are integers starting from 1. For example, a parameter list with two elements looks like this:</p> <p> <code>&amp;Attribute.1=first</code> </p> <p> <code>&amp;Attribute.2=second</code> </p>
   ## 
-  let valid = call_773867.validator(path, query, header, formData, body)
-  let scheme = call_773867.pickScheme
+  let valid = call_601702.validator(path, query, header, formData, body)
+  let scheme = call_601702.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773867.url(scheme.get, call_773867.host, call_773867.base,
-                         call_773867.route, valid.getOrDefault("path"))
-  result = hook(call_773867, url, valid)
+  let url = call_601702.url(scheme.get, call_601702.host, call_601702.base,
+                         call_601702.route, valid.getOrDefault("path"))
+  result = hook(call_601702, url, valid)
 
-proc call*(call_773868: Call_GetSendMessageBatch_773852; QueueName: string;
+proc call*(call_601703: Call_GetSendMessageBatch_601687; QueueName: string;
           Entries: JsonNode; AccountNumber: int;
           Action: string = "SendMessageBatch"; Version: string = "2012-11-05"): Recallable =
   ## getSendMessageBatch
@@ -5870,25 +5870,25 @@ proc call*(call_773868: Call_GetSendMessageBatch_773852; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_773869 = newJObject()
-  var query_773870 = newJObject()
-  add(path_773869, "QueueName", newJString(QueueName))
+  var path_601704 = newJObject()
+  var query_601705 = newJObject()
+  add(path_601704, "QueueName", newJString(QueueName))
   if Entries != nil:
-    query_773870.add "Entries", Entries
-  add(query_773870, "Action", newJString(Action))
-  add(path_773869, "AccountNumber", newJInt(AccountNumber))
-  add(query_773870, "Version", newJString(Version))
-  result = call_773868.call(path_773869, query_773870, nil, nil, nil)
+    query_601705.add "Entries", Entries
+  add(query_601705, "Action", newJString(Action))
+  add(path_601704, "AccountNumber", newJInt(AccountNumber))
+  add(query_601705, "Version", newJString(Version))
+  result = call_601703.call(path_601704, query_601705, nil, nil, nil)
 
-var getSendMessageBatch* = Call_GetSendMessageBatch_773852(
+var getSendMessageBatch* = Call_GetSendMessageBatch_601687(
     name: "getSendMessageBatch", meth: HttpMethod.HttpGet,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=SendMessageBatch",
-    validator: validate_GetSendMessageBatch_773853, base: "/",
-    url: url_GetSendMessageBatch_773854, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSendMessageBatch_601688, base: "/",
+    url: url_GetSendMessageBatch_601689, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSetQueueAttributes_773915 = ref object of OpenApiRestCall_772581
-proc url_PostSetQueueAttributes_773917(protocol: Scheme; host: string; base: string;
+  Call_PostSetQueueAttributes_601750 = ref object of OpenApiRestCall_600410
+proc url_PostSetQueueAttributes_601752(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -5904,7 +5904,7 @@ proc url_PostSetQueueAttributes_773917(protocol: Scheme; host: string; base: str
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostSetQueueAttributes_773916(path: JsonNode; query: JsonNode;
+proc validate_PostSetQueueAttributes_601751(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the value of one or more queue attributes. When you change a queue's attributes, the change can take up to 60 seconds for most of the attributes to propagate throughout the Amazon SQS system. Changes made to the <code>MessageRetentionPeriod</code> attribute can take up to 15 minutes.</p> <note> <ul> <li> <p>In the future, new attributes might be added. If you write code that calls this action, we recommend that you structure your code so that it can handle new attributes gracefully.</p> </li> <li> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note>
   ## 
@@ -5917,31 +5917,31 @@ proc validate_PostSetQueueAttributes_773916(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773918 = path.getOrDefault("QueueName")
-  valid_773918 = validateParameter(valid_773918, JString, required = true,
+  var valid_601753 = path.getOrDefault("QueueName")
+  valid_601753 = validateParameter(valid_601753, JString, required = true,
                                  default = nil)
-  if valid_773918 != nil:
-    section.add "QueueName", valid_773918
-  var valid_773919 = path.getOrDefault("AccountNumber")
-  valid_773919 = validateParameter(valid_773919, JInt, required = true, default = nil)
-  if valid_773919 != nil:
-    section.add "AccountNumber", valid_773919
+  if valid_601753 != nil:
+    section.add "QueueName", valid_601753
+  var valid_601754 = path.getOrDefault("AccountNumber")
+  valid_601754 = validateParameter(valid_601754, JInt, required = true, default = nil)
+  if valid_601754 != nil:
+    section.add "AccountNumber", valid_601754
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773920 = query.getOrDefault("Action")
-  valid_773920 = validateParameter(valid_773920, JString, required = true,
+  var valid_601755 = query.getOrDefault("Action")
+  valid_601755 = validateParameter(valid_601755, JString, required = true,
                                  default = newJString("SetQueueAttributes"))
-  if valid_773920 != nil:
-    section.add "Action", valid_773920
-  var valid_773921 = query.getOrDefault("Version")
-  valid_773921 = validateParameter(valid_773921, JString, required = true,
+  if valid_601755 != nil:
+    section.add "Action", valid_601755
+  var valid_601756 = query.getOrDefault("Version")
+  valid_601756 = validateParameter(valid_601756, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773921 != nil:
-    section.add "Version", valid_773921
+  if valid_601756 != nil:
+    section.add "Version", valid_601756
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -5952,41 +5952,41 @@ proc validate_PostSetQueueAttributes_773916(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773922 = header.getOrDefault("X-Amz-Date")
-  valid_773922 = validateParameter(valid_773922, JString, required = false,
+  var valid_601757 = header.getOrDefault("X-Amz-Date")
+  valid_601757 = validateParameter(valid_601757, JString, required = false,
                                  default = nil)
-  if valid_773922 != nil:
-    section.add "X-Amz-Date", valid_773922
-  var valid_773923 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773923 = validateParameter(valid_773923, JString, required = false,
+  if valid_601757 != nil:
+    section.add "X-Amz-Date", valid_601757
+  var valid_601758 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601758 = validateParameter(valid_601758, JString, required = false,
                                  default = nil)
-  if valid_773923 != nil:
-    section.add "X-Amz-Security-Token", valid_773923
-  var valid_773924 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773924 = validateParameter(valid_773924, JString, required = false,
+  if valid_601758 != nil:
+    section.add "X-Amz-Security-Token", valid_601758
+  var valid_601759 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601759 = validateParameter(valid_601759, JString, required = false,
                                  default = nil)
-  if valid_773924 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773924
-  var valid_773925 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773925 = validateParameter(valid_773925, JString, required = false,
+  if valid_601759 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601759
+  var valid_601760 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601760 = validateParameter(valid_601760, JString, required = false,
                                  default = nil)
-  if valid_773925 != nil:
-    section.add "X-Amz-Algorithm", valid_773925
-  var valid_773926 = header.getOrDefault("X-Amz-Signature")
-  valid_773926 = validateParameter(valid_773926, JString, required = false,
+  if valid_601760 != nil:
+    section.add "X-Amz-Algorithm", valid_601760
+  var valid_601761 = header.getOrDefault("X-Amz-Signature")
+  valid_601761 = validateParameter(valid_601761, JString, required = false,
                                  default = nil)
-  if valid_773926 != nil:
-    section.add "X-Amz-Signature", valid_773926
-  var valid_773927 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773927 = validateParameter(valid_773927, JString, required = false,
+  if valid_601761 != nil:
+    section.add "X-Amz-Signature", valid_601761
+  var valid_601762 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601762 = validateParameter(valid_601762, JString, required = false,
                                  default = nil)
-  if valid_773927 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773927
-  var valid_773928 = header.getOrDefault("X-Amz-Credential")
-  valid_773928 = validateParameter(valid_773928, JString, required = false,
+  if valid_601762 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601762
+  var valid_601763 = header.getOrDefault("X-Amz-Credential")
+  valid_601763 = validateParameter(valid_601763, JString, required = false,
                                  default = nil)
-  if valid_773928 != nil:
-    section.add "X-Amz-Credential", valid_773928
+  if valid_601763 != nil:
+    section.add "X-Amz-Credential", valid_601763
   result.add "header", section
   ## parameters in `formData` object:
   ##   Attribute.0.key: JString
@@ -5996,53 +5996,53 @@ proc validate_PostSetQueueAttributes_773916(path: JsonNode; query: JsonNode;
   ##   Attribute.2.value: JString
   ##   Attribute.2.key: JString
   section = newJObject()
-  var valid_773929 = formData.getOrDefault("Attribute.0.key")
-  valid_773929 = validateParameter(valid_773929, JString, required = false,
+  var valid_601764 = formData.getOrDefault("Attribute.0.key")
+  valid_601764 = validateParameter(valid_601764, JString, required = false,
                                  default = nil)
-  if valid_773929 != nil:
-    section.add "Attribute.0.key", valid_773929
-  var valid_773930 = formData.getOrDefault("Attribute.0.value")
-  valid_773930 = validateParameter(valid_773930, JString, required = false,
+  if valid_601764 != nil:
+    section.add "Attribute.0.key", valid_601764
+  var valid_601765 = formData.getOrDefault("Attribute.0.value")
+  valid_601765 = validateParameter(valid_601765, JString, required = false,
                                  default = nil)
-  if valid_773930 != nil:
-    section.add "Attribute.0.value", valid_773930
-  var valid_773931 = formData.getOrDefault("Attribute.1.value")
-  valid_773931 = validateParameter(valid_773931, JString, required = false,
+  if valid_601765 != nil:
+    section.add "Attribute.0.value", valid_601765
+  var valid_601766 = formData.getOrDefault("Attribute.1.value")
+  valid_601766 = validateParameter(valid_601766, JString, required = false,
                                  default = nil)
-  if valid_773931 != nil:
-    section.add "Attribute.1.value", valid_773931
-  var valid_773932 = formData.getOrDefault("Attribute.1.key")
-  valid_773932 = validateParameter(valid_773932, JString, required = false,
+  if valid_601766 != nil:
+    section.add "Attribute.1.value", valid_601766
+  var valid_601767 = formData.getOrDefault("Attribute.1.key")
+  valid_601767 = validateParameter(valid_601767, JString, required = false,
                                  default = nil)
-  if valid_773932 != nil:
-    section.add "Attribute.1.key", valid_773932
-  var valid_773933 = formData.getOrDefault("Attribute.2.value")
-  valid_773933 = validateParameter(valid_773933, JString, required = false,
+  if valid_601767 != nil:
+    section.add "Attribute.1.key", valid_601767
+  var valid_601768 = formData.getOrDefault("Attribute.2.value")
+  valid_601768 = validateParameter(valid_601768, JString, required = false,
                                  default = nil)
-  if valid_773933 != nil:
-    section.add "Attribute.2.value", valid_773933
-  var valid_773934 = formData.getOrDefault("Attribute.2.key")
-  valid_773934 = validateParameter(valid_773934, JString, required = false,
+  if valid_601768 != nil:
+    section.add "Attribute.2.value", valid_601768
+  var valid_601769 = formData.getOrDefault("Attribute.2.key")
+  valid_601769 = validateParameter(valid_601769, JString, required = false,
                                  default = nil)
-  if valid_773934 != nil:
-    section.add "Attribute.2.key", valid_773934
+  if valid_601769 != nil:
+    section.add "Attribute.2.key", valid_601769
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773935: Call_PostSetQueueAttributes_773915; path: JsonNode;
+proc call*(call_601770: Call_PostSetQueueAttributes_601750; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the value of one or more queue attributes. When you change a queue's attributes, the change can take up to 60 seconds for most of the attributes to propagate throughout the Amazon SQS system. Changes made to the <code>MessageRetentionPeriod</code> attribute can take up to 15 minutes.</p> <note> <ul> <li> <p>In the future, new attributes might be added. If you write code that calls this action, we recommend that you structure your code so that it can handle new attributes gracefully.</p> </li> <li> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note>
   ## 
-  let valid = call_773935.validator(path, query, header, formData, body)
-  let scheme = call_773935.pickScheme
+  let valid = call_601770.validator(path, query, header, formData, body)
+  let scheme = call_601770.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773935.url(scheme.get, call_773935.host, call_773935.base,
-                         call_773935.route, valid.getOrDefault("path"))
-  result = hook(call_773935, url, valid)
+  let url = call_601770.url(scheme.get, call_601770.host, call_601770.base,
+                         call_601770.route, valid.getOrDefault("path"))
+  result = hook(call_601770, url, valid)
 
-proc call*(call_773936: Call_PostSetQueueAttributes_773915; QueueName: string;
+proc call*(call_601771: Call_PostSetQueueAttributes_601750; QueueName: string;
           AccountNumber: int; Attribute0Key: string = "";
           Attribute0Value: string = ""; Attribute1Value: string = "";
           Action: string = "SetQueueAttributes"; Attribute1Key: string = "";
@@ -6062,30 +6062,30 @@ proc call*(call_773936: Call_PostSetQueueAttributes_773915; QueueName: string;
   ##   Attribute2Value: string
   ##   Version: string (required)
   ##   Attribute2Key: string
-  var path_773937 = newJObject()
-  var query_773938 = newJObject()
-  var formData_773939 = newJObject()
-  add(formData_773939, "Attribute.0.key", newJString(Attribute0Key))
-  add(formData_773939, "Attribute.0.value", newJString(Attribute0Value))
-  add(path_773937, "QueueName", newJString(QueueName))
-  add(formData_773939, "Attribute.1.value", newJString(Attribute1Value))
-  add(query_773938, "Action", newJString(Action))
-  add(formData_773939, "Attribute.1.key", newJString(Attribute1Key))
-  add(path_773937, "AccountNumber", newJInt(AccountNumber))
-  add(formData_773939, "Attribute.2.value", newJString(Attribute2Value))
-  add(query_773938, "Version", newJString(Version))
-  add(formData_773939, "Attribute.2.key", newJString(Attribute2Key))
-  result = call_773936.call(path_773937, query_773938, nil, formData_773939, nil)
+  var path_601772 = newJObject()
+  var query_601773 = newJObject()
+  var formData_601774 = newJObject()
+  add(formData_601774, "Attribute.0.key", newJString(Attribute0Key))
+  add(formData_601774, "Attribute.0.value", newJString(Attribute0Value))
+  add(path_601772, "QueueName", newJString(QueueName))
+  add(formData_601774, "Attribute.1.value", newJString(Attribute1Value))
+  add(query_601773, "Action", newJString(Action))
+  add(formData_601774, "Attribute.1.key", newJString(Attribute1Key))
+  add(path_601772, "AccountNumber", newJInt(AccountNumber))
+  add(formData_601774, "Attribute.2.value", newJString(Attribute2Value))
+  add(query_601773, "Version", newJString(Version))
+  add(formData_601774, "Attribute.2.key", newJString(Attribute2Key))
+  result = call_601771.call(path_601772, query_601773, nil, formData_601774, nil)
 
-var postSetQueueAttributes* = Call_PostSetQueueAttributes_773915(
+var postSetQueueAttributes* = Call_PostSetQueueAttributes_601750(
     name: "postSetQueueAttributes", meth: HttpMethod.HttpPost,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=SetQueueAttributes",
-    validator: validate_PostSetQueueAttributes_773916, base: "/",
-    url: url_PostSetQueueAttributes_773917, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostSetQueueAttributes_601751, base: "/",
+    url: url_PostSetQueueAttributes_601752, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSetQueueAttributes_773891 = ref object of OpenApiRestCall_772581
-proc url_GetSetQueueAttributes_773893(protocol: Scheme; host: string; base: string;
+  Call_GetSetQueueAttributes_601726 = ref object of OpenApiRestCall_600410
+proc url_GetSetQueueAttributes_601728(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -6101,7 +6101,7 @@ proc url_GetSetQueueAttributes_773893(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetSetQueueAttributes_773892(path: JsonNode; query: JsonNode;
+proc validate_GetSetQueueAttributes_601727(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the value of one or more queue attributes. When you change a queue's attributes, the change can take up to 60 seconds for most of the attributes to propagate throughout the Amazon SQS system. Changes made to the <code>MessageRetentionPeriod</code> attribute can take up to 15 minutes.</p> <note> <ul> <li> <p>In the future, new attributes might be added. If you write code that calls this action, we recommend that you structure your code so that it can handle new attributes gracefully.</p> </li> <li> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note>
   ## 
@@ -6114,15 +6114,15 @@ proc validate_GetSetQueueAttributes_773892(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773894 = path.getOrDefault("QueueName")
-  valid_773894 = validateParameter(valid_773894, JString, required = true,
+  var valid_601729 = path.getOrDefault("QueueName")
+  valid_601729 = validateParameter(valid_601729, JString, required = true,
                                  default = nil)
-  if valid_773894 != nil:
-    section.add "QueueName", valid_773894
-  var valid_773895 = path.getOrDefault("AccountNumber")
-  valid_773895 = validateParameter(valid_773895, JInt, required = true, default = nil)
-  if valid_773895 != nil:
-    section.add "AccountNumber", valid_773895
+  if valid_601729 != nil:
+    section.add "QueueName", valid_601729
+  var valid_601730 = path.getOrDefault("AccountNumber")
+  valid_601730 = validateParameter(valid_601730, JInt, required = true, default = nil)
+  if valid_601730 != nil:
+    section.add "AccountNumber", valid_601730
   result.add "path", section
   ## parameters in `query` object:
   ##   Attribute.2.value: JString
@@ -6134,47 +6134,47 @@ proc validate_GetSetQueueAttributes_773892(path: JsonNode; query: JsonNode;
   ##   Attribute.0.value: JString
   ##   Version: JString (required)
   section = newJObject()
-  var valid_773896 = query.getOrDefault("Attribute.2.value")
-  valid_773896 = validateParameter(valid_773896, JString, required = false,
+  var valid_601731 = query.getOrDefault("Attribute.2.value")
+  valid_601731 = validateParameter(valid_601731, JString, required = false,
                                  default = nil)
-  if valid_773896 != nil:
-    section.add "Attribute.2.value", valid_773896
-  var valid_773897 = query.getOrDefault("Attribute.0.key")
-  valid_773897 = validateParameter(valid_773897, JString, required = false,
+  if valid_601731 != nil:
+    section.add "Attribute.2.value", valid_601731
+  var valid_601732 = query.getOrDefault("Attribute.0.key")
+  valid_601732 = validateParameter(valid_601732, JString, required = false,
                                  default = nil)
-  if valid_773897 != nil:
-    section.add "Attribute.0.key", valid_773897
-  var valid_773898 = query.getOrDefault("Attribute.1.value")
-  valid_773898 = validateParameter(valid_773898, JString, required = false,
+  if valid_601732 != nil:
+    section.add "Attribute.0.key", valid_601732
+  var valid_601733 = query.getOrDefault("Attribute.1.value")
+  valid_601733 = validateParameter(valid_601733, JString, required = false,
                                  default = nil)
-  if valid_773898 != nil:
-    section.add "Attribute.1.value", valid_773898
-  var valid_773899 = query.getOrDefault("Attribute.1.key")
-  valid_773899 = validateParameter(valid_773899, JString, required = false,
+  if valid_601733 != nil:
+    section.add "Attribute.1.value", valid_601733
+  var valid_601734 = query.getOrDefault("Attribute.1.key")
+  valid_601734 = validateParameter(valid_601734, JString, required = false,
                                  default = nil)
-  if valid_773899 != nil:
-    section.add "Attribute.1.key", valid_773899
+  if valid_601734 != nil:
+    section.add "Attribute.1.key", valid_601734
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773900 = query.getOrDefault("Action")
-  valid_773900 = validateParameter(valid_773900, JString, required = true,
+  var valid_601735 = query.getOrDefault("Action")
+  valid_601735 = validateParameter(valid_601735, JString, required = true,
                                  default = newJString("SetQueueAttributes"))
-  if valid_773900 != nil:
-    section.add "Action", valid_773900
-  var valid_773901 = query.getOrDefault("Attribute.2.key")
-  valid_773901 = validateParameter(valid_773901, JString, required = false,
+  if valid_601735 != nil:
+    section.add "Action", valid_601735
+  var valid_601736 = query.getOrDefault("Attribute.2.key")
+  valid_601736 = validateParameter(valid_601736, JString, required = false,
                                  default = nil)
-  if valid_773901 != nil:
-    section.add "Attribute.2.key", valid_773901
-  var valid_773902 = query.getOrDefault("Attribute.0.value")
-  valid_773902 = validateParameter(valid_773902, JString, required = false,
+  if valid_601736 != nil:
+    section.add "Attribute.2.key", valid_601736
+  var valid_601737 = query.getOrDefault("Attribute.0.value")
+  valid_601737 = validateParameter(valid_601737, JString, required = false,
                                  default = nil)
-  if valid_773902 != nil:
-    section.add "Attribute.0.value", valid_773902
-  var valid_773903 = query.getOrDefault("Version")
-  valid_773903 = validateParameter(valid_773903, JString, required = true,
+  if valid_601737 != nil:
+    section.add "Attribute.0.value", valid_601737
+  var valid_601738 = query.getOrDefault("Version")
+  valid_601738 = validateParameter(valid_601738, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773903 != nil:
-    section.add "Version", valid_773903
+  if valid_601738 != nil:
+    section.add "Version", valid_601738
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -6185,60 +6185,60 @@ proc validate_GetSetQueueAttributes_773892(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773904 = header.getOrDefault("X-Amz-Date")
-  valid_773904 = validateParameter(valid_773904, JString, required = false,
+  var valid_601739 = header.getOrDefault("X-Amz-Date")
+  valid_601739 = validateParameter(valid_601739, JString, required = false,
                                  default = nil)
-  if valid_773904 != nil:
-    section.add "X-Amz-Date", valid_773904
-  var valid_773905 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773905 = validateParameter(valid_773905, JString, required = false,
+  if valid_601739 != nil:
+    section.add "X-Amz-Date", valid_601739
+  var valid_601740 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601740 = validateParameter(valid_601740, JString, required = false,
                                  default = nil)
-  if valid_773905 != nil:
-    section.add "X-Amz-Security-Token", valid_773905
-  var valid_773906 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773906 = validateParameter(valid_773906, JString, required = false,
+  if valid_601740 != nil:
+    section.add "X-Amz-Security-Token", valid_601740
+  var valid_601741 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601741 = validateParameter(valid_601741, JString, required = false,
                                  default = nil)
-  if valid_773906 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773906
-  var valid_773907 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773907 = validateParameter(valid_773907, JString, required = false,
+  if valid_601741 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601741
+  var valid_601742 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601742 = validateParameter(valid_601742, JString, required = false,
                                  default = nil)
-  if valid_773907 != nil:
-    section.add "X-Amz-Algorithm", valid_773907
-  var valid_773908 = header.getOrDefault("X-Amz-Signature")
-  valid_773908 = validateParameter(valid_773908, JString, required = false,
+  if valid_601742 != nil:
+    section.add "X-Amz-Algorithm", valid_601742
+  var valid_601743 = header.getOrDefault("X-Amz-Signature")
+  valid_601743 = validateParameter(valid_601743, JString, required = false,
                                  default = nil)
-  if valid_773908 != nil:
-    section.add "X-Amz-Signature", valid_773908
-  var valid_773909 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773909 = validateParameter(valid_773909, JString, required = false,
+  if valid_601743 != nil:
+    section.add "X-Amz-Signature", valid_601743
+  var valid_601744 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601744 = validateParameter(valid_601744, JString, required = false,
                                  default = nil)
-  if valid_773909 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773909
-  var valid_773910 = header.getOrDefault("X-Amz-Credential")
-  valid_773910 = validateParameter(valid_773910, JString, required = false,
+  if valid_601744 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601744
+  var valid_601745 = header.getOrDefault("X-Amz-Credential")
+  valid_601745 = validateParameter(valid_601745, JString, required = false,
                                  default = nil)
-  if valid_773910 != nil:
-    section.add "X-Amz-Credential", valid_773910
+  if valid_601745 != nil:
+    section.add "X-Amz-Credential", valid_601745
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773911: Call_GetSetQueueAttributes_773891; path: JsonNode;
+proc call*(call_601746: Call_GetSetQueueAttributes_601726; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the value of one or more queue attributes. When you change a queue's attributes, the change can take up to 60 seconds for most of the attributes to propagate throughout the Amazon SQS system. Changes made to the <code>MessageRetentionPeriod</code> attribute can take up to 15 minutes.</p> <note> <ul> <li> <p>In the future, new attributes might be added. If you write code that calls this action, we recommend that you structure your code so that it can handle new attributes gracefully.</p> </li> <li> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </li> <li> <p>To remove the ability to change queue permissions, you must deny permission to the <code>AddPermission</code>, <code>RemovePermission</code>, and <code>SetQueueAttributes</code> actions in your IAM policy.</p> </li> </ul> </note>
   ## 
-  let valid = call_773911.validator(path, query, header, formData, body)
-  let scheme = call_773911.pickScheme
+  let valid = call_601746.validator(path, query, header, formData, body)
+  let scheme = call_601746.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773911.url(scheme.get, call_773911.host, call_773911.base,
-                         call_773911.route, valid.getOrDefault("path"))
-  result = hook(call_773911, url, valid)
+  let url = call_601746.url(scheme.get, call_601746.host, call_601746.base,
+                         call_601746.route, valid.getOrDefault("path"))
+  result = hook(call_601746, url, valid)
 
-proc call*(call_773912: Call_GetSetQueueAttributes_773891; QueueName: string;
+proc call*(call_601747: Call_GetSetQueueAttributes_601726; QueueName: string;
           AccountNumber: int; Attribute2Value: string = "";
           Attribute0Key: string = ""; Attribute1Value: string = "";
           Attribute1Key: string = ""; Action: string = "SetQueueAttributes";
@@ -6258,29 +6258,29 @@ proc call*(call_773912: Call_GetSetQueueAttributes_773891; QueueName: string;
   ##                : The AWS account number
   ##   Attribute0Value: string
   ##   Version: string (required)
-  var path_773913 = newJObject()
-  var query_773914 = newJObject()
-  add(query_773914, "Attribute.2.value", newJString(Attribute2Value))
-  add(query_773914, "Attribute.0.key", newJString(Attribute0Key))
-  add(query_773914, "Attribute.1.value", newJString(Attribute1Value))
-  add(path_773913, "QueueName", newJString(QueueName))
-  add(query_773914, "Attribute.1.key", newJString(Attribute1Key))
-  add(query_773914, "Action", newJString(Action))
-  add(query_773914, "Attribute.2.key", newJString(Attribute2Key))
-  add(path_773913, "AccountNumber", newJInt(AccountNumber))
-  add(query_773914, "Attribute.0.value", newJString(Attribute0Value))
-  add(query_773914, "Version", newJString(Version))
-  result = call_773912.call(path_773913, query_773914, nil, nil, nil)
+  var path_601748 = newJObject()
+  var query_601749 = newJObject()
+  add(query_601749, "Attribute.2.value", newJString(Attribute2Value))
+  add(query_601749, "Attribute.0.key", newJString(Attribute0Key))
+  add(query_601749, "Attribute.1.value", newJString(Attribute1Value))
+  add(path_601748, "QueueName", newJString(QueueName))
+  add(query_601749, "Attribute.1.key", newJString(Attribute1Key))
+  add(query_601749, "Action", newJString(Action))
+  add(query_601749, "Attribute.2.key", newJString(Attribute2Key))
+  add(path_601748, "AccountNumber", newJInt(AccountNumber))
+  add(query_601749, "Attribute.0.value", newJString(Attribute0Value))
+  add(query_601749, "Version", newJString(Version))
+  result = call_601747.call(path_601748, query_601749, nil, nil, nil)
 
-var getSetQueueAttributes* = Call_GetSetQueueAttributes_773891(
+var getSetQueueAttributes* = Call_GetSetQueueAttributes_601726(
     name: "getSetQueueAttributes", meth: HttpMethod.HttpGet,
     host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=SetQueueAttributes",
-    validator: validate_GetSetQueueAttributes_773892, base: "/",
-    url: url_GetSetQueueAttributes_773893, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSetQueueAttributes_601727, base: "/",
+    url: url_GetSetQueueAttributes_601728, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostTagQueue_773964 = ref object of OpenApiRestCall_772581
-proc url_PostTagQueue_773966(protocol: Scheme; host: string; base: string;
+  Call_PostTagQueue_601799 = ref object of OpenApiRestCall_600410
+proc url_PostTagQueue_601801(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -6296,7 +6296,7 @@ proc url_PostTagQueue_773966(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostTagQueue_773965(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostTagQueue_601800(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Add cost allocation tags to the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>When you use queue tags, keep the following guidelines in mind:</p> <ul> <li> <p>Adding more than 50 tags to a queue isn't recommended.</p> </li> <li> <p>Tags don't have any semantic meaning. Amazon SQS interprets tags as character strings.</p> </li> <li> <p>Tags are case-sensitive.</p> </li> <li> <p>A new tag with a key identical to that of an existing tag overwrites the existing tag.</p> </li> </ul> <p>For a full list of tag restrictions, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-limits.html#limits-queues">Limits Related to Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
@@ -6309,31 +6309,31 @@ proc validate_PostTagQueue_773965(path: JsonNode; query: JsonNode; header: JsonN
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773967 = path.getOrDefault("QueueName")
-  valid_773967 = validateParameter(valid_773967, JString, required = true,
+  var valid_601802 = path.getOrDefault("QueueName")
+  valid_601802 = validateParameter(valid_601802, JString, required = true,
                                  default = nil)
-  if valid_773967 != nil:
-    section.add "QueueName", valid_773967
-  var valid_773968 = path.getOrDefault("AccountNumber")
-  valid_773968 = validateParameter(valid_773968, JInt, required = true, default = nil)
-  if valid_773968 != nil:
-    section.add "AccountNumber", valid_773968
+  if valid_601802 != nil:
+    section.add "QueueName", valid_601802
+  var valid_601803 = path.getOrDefault("AccountNumber")
+  valid_601803 = validateParameter(valid_601803, JInt, required = true, default = nil)
+  if valid_601803 != nil:
+    section.add "AccountNumber", valid_601803
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773969 = query.getOrDefault("Action")
-  valid_773969 = validateParameter(valid_773969, JString, required = true,
+  var valid_601804 = query.getOrDefault("Action")
+  valid_601804 = validateParameter(valid_601804, JString, required = true,
                                  default = newJString("TagQueue"))
-  if valid_773969 != nil:
-    section.add "Action", valid_773969
-  var valid_773970 = query.getOrDefault("Version")
-  valid_773970 = validateParameter(valid_773970, JString, required = true,
+  if valid_601804 != nil:
+    section.add "Action", valid_601804
+  var valid_601805 = query.getOrDefault("Version")
+  valid_601805 = validateParameter(valid_601805, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773970 != nil:
-    section.add "Version", valid_773970
+  if valid_601805 != nil:
+    section.add "Version", valid_601805
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -6344,41 +6344,41 @@ proc validate_PostTagQueue_773965(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773971 = header.getOrDefault("X-Amz-Date")
-  valid_773971 = validateParameter(valid_773971, JString, required = false,
+  var valid_601806 = header.getOrDefault("X-Amz-Date")
+  valid_601806 = validateParameter(valid_601806, JString, required = false,
                                  default = nil)
-  if valid_773971 != nil:
-    section.add "X-Amz-Date", valid_773971
-  var valid_773972 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773972 = validateParameter(valid_773972, JString, required = false,
+  if valid_601806 != nil:
+    section.add "X-Amz-Date", valid_601806
+  var valid_601807 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601807 = validateParameter(valid_601807, JString, required = false,
                                  default = nil)
-  if valid_773972 != nil:
-    section.add "X-Amz-Security-Token", valid_773972
-  var valid_773973 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773973 = validateParameter(valid_773973, JString, required = false,
+  if valid_601807 != nil:
+    section.add "X-Amz-Security-Token", valid_601807
+  var valid_601808 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601808 = validateParameter(valid_601808, JString, required = false,
                                  default = nil)
-  if valid_773973 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773973
-  var valid_773974 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773974 = validateParameter(valid_773974, JString, required = false,
+  if valid_601808 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601808
+  var valid_601809 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601809 = validateParameter(valid_601809, JString, required = false,
                                  default = nil)
-  if valid_773974 != nil:
-    section.add "X-Amz-Algorithm", valid_773974
-  var valid_773975 = header.getOrDefault("X-Amz-Signature")
-  valid_773975 = validateParameter(valid_773975, JString, required = false,
+  if valid_601809 != nil:
+    section.add "X-Amz-Algorithm", valid_601809
+  var valid_601810 = header.getOrDefault("X-Amz-Signature")
+  valid_601810 = validateParameter(valid_601810, JString, required = false,
                                  default = nil)
-  if valid_773975 != nil:
-    section.add "X-Amz-Signature", valid_773975
-  var valid_773976 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773976 = validateParameter(valid_773976, JString, required = false,
+  if valid_601810 != nil:
+    section.add "X-Amz-Signature", valid_601810
+  var valid_601811 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601811 = validateParameter(valid_601811, JString, required = false,
                                  default = nil)
-  if valid_773976 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773976
-  var valid_773977 = header.getOrDefault("X-Amz-Credential")
-  valid_773977 = validateParameter(valid_773977, JString, required = false,
+  if valid_601811 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601811
+  var valid_601812 = header.getOrDefault("X-Amz-Credential")
+  valid_601812 = validateParameter(valid_601812, JString, required = false,
                                  default = nil)
-  if valid_773977 != nil:
-    section.add "X-Amz-Credential", valid_773977
+  if valid_601812 != nil:
+    section.add "X-Amz-Credential", valid_601812
   result.add "header", section
   ## parameters in `formData` object:
   ##   Tags.0.key: JString
@@ -6388,53 +6388,53 @@ proc validate_PostTagQueue_773965(path: JsonNode; query: JsonNode; header: JsonN
   ##   Tags.2.key: JString
   ##   Tags.0.value: JString
   section = newJObject()
-  var valid_773978 = formData.getOrDefault("Tags.0.key")
-  valid_773978 = validateParameter(valid_773978, JString, required = false,
+  var valid_601813 = formData.getOrDefault("Tags.0.key")
+  valid_601813 = validateParameter(valid_601813, JString, required = false,
                                  default = nil)
-  if valid_773978 != nil:
-    section.add "Tags.0.key", valid_773978
-  var valid_773979 = formData.getOrDefault("Tags.1.key")
-  valid_773979 = validateParameter(valid_773979, JString, required = false,
+  if valid_601813 != nil:
+    section.add "Tags.0.key", valid_601813
+  var valid_601814 = formData.getOrDefault("Tags.1.key")
+  valid_601814 = validateParameter(valid_601814, JString, required = false,
                                  default = nil)
-  if valid_773979 != nil:
-    section.add "Tags.1.key", valid_773979
-  var valid_773980 = formData.getOrDefault("Tags.2.value")
-  valid_773980 = validateParameter(valid_773980, JString, required = false,
+  if valid_601814 != nil:
+    section.add "Tags.1.key", valid_601814
+  var valid_601815 = formData.getOrDefault("Tags.2.value")
+  valid_601815 = validateParameter(valid_601815, JString, required = false,
                                  default = nil)
-  if valid_773980 != nil:
-    section.add "Tags.2.value", valid_773980
-  var valid_773981 = formData.getOrDefault("Tags.1.value")
-  valid_773981 = validateParameter(valid_773981, JString, required = false,
+  if valid_601815 != nil:
+    section.add "Tags.2.value", valid_601815
+  var valid_601816 = formData.getOrDefault("Tags.1.value")
+  valid_601816 = validateParameter(valid_601816, JString, required = false,
                                  default = nil)
-  if valid_773981 != nil:
-    section.add "Tags.1.value", valid_773981
-  var valid_773982 = formData.getOrDefault("Tags.2.key")
-  valid_773982 = validateParameter(valid_773982, JString, required = false,
+  if valid_601816 != nil:
+    section.add "Tags.1.value", valid_601816
+  var valid_601817 = formData.getOrDefault("Tags.2.key")
+  valid_601817 = validateParameter(valid_601817, JString, required = false,
                                  default = nil)
-  if valid_773982 != nil:
-    section.add "Tags.2.key", valid_773982
-  var valid_773983 = formData.getOrDefault("Tags.0.value")
-  valid_773983 = validateParameter(valid_773983, JString, required = false,
+  if valid_601817 != nil:
+    section.add "Tags.2.key", valid_601817
+  var valid_601818 = formData.getOrDefault("Tags.0.value")
+  valid_601818 = validateParameter(valid_601818, JString, required = false,
                                  default = nil)
-  if valid_773983 != nil:
-    section.add "Tags.0.value", valid_773983
+  if valid_601818 != nil:
+    section.add "Tags.0.value", valid_601818
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773984: Call_PostTagQueue_773964; path: JsonNode; query: JsonNode;
+proc call*(call_601819: Call_PostTagQueue_601799; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Add cost allocation tags to the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>When you use queue tags, keep the following guidelines in mind:</p> <ul> <li> <p>Adding more than 50 tags to a queue isn't recommended.</p> </li> <li> <p>Tags don't have any semantic meaning. Amazon SQS interprets tags as character strings.</p> </li> <li> <p>Tags are case-sensitive.</p> </li> <li> <p>A new tag with a key identical to that of an existing tag overwrites the existing tag.</p> </li> </ul> <p>For a full list of tag restrictions, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-limits.html#limits-queues">Limits Related to Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773984.validator(path, query, header, formData, body)
-  let scheme = call_773984.pickScheme
+  let valid = call_601819.validator(path, query, header, formData, body)
+  let scheme = call_601819.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773984.url(scheme.get, call_773984.host, call_773984.base,
-                         call_773984.route, valid.getOrDefault("path"))
-  result = hook(call_773984, url, valid)
+  let url = call_601819.url(scheme.get, call_601819.host, call_601819.base,
+                         call_601819.route, valid.getOrDefault("path"))
+  result = hook(call_601819, url, valid)
 
-proc call*(call_773985: Call_PostTagQueue_773964; QueueName: string;
+proc call*(call_601820: Call_PostTagQueue_601799; QueueName: string;
           AccountNumber: int; Tags0Key: string = ""; Tags1Key: string = "";
           Tags2Value: string = ""; Action: string = "TagQueue"; Tags1Value: string = "";
           Tags2Key: string = ""; Version: string = "2012-11-05"; Tags0Value: string = ""): Recallable =
@@ -6452,29 +6452,29 @@ proc call*(call_773985: Call_PostTagQueue_773964; QueueName: string;
   ##   Tags2Key: string
   ##   Version: string (required)
   ##   Tags0Value: string
-  var path_773986 = newJObject()
-  var query_773987 = newJObject()
-  var formData_773988 = newJObject()
-  add(formData_773988, "Tags.0.key", newJString(Tags0Key))
-  add(formData_773988, "Tags.1.key", newJString(Tags1Key))
-  add(path_773986, "QueueName", newJString(QueueName))
-  add(formData_773988, "Tags.2.value", newJString(Tags2Value))
-  add(query_773987, "Action", newJString(Action))
-  add(formData_773988, "Tags.1.value", newJString(Tags1Value))
-  add(path_773986, "AccountNumber", newJInt(AccountNumber))
-  add(formData_773988, "Tags.2.key", newJString(Tags2Key))
-  add(query_773987, "Version", newJString(Version))
-  add(formData_773988, "Tags.0.value", newJString(Tags0Value))
-  result = call_773985.call(path_773986, query_773987, nil, formData_773988, nil)
+  var path_601821 = newJObject()
+  var query_601822 = newJObject()
+  var formData_601823 = newJObject()
+  add(formData_601823, "Tags.0.key", newJString(Tags0Key))
+  add(formData_601823, "Tags.1.key", newJString(Tags1Key))
+  add(path_601821, "QueueName", newJString(QueueName))
+  add(formData_601823, "Tags.2.value", newJString(Tags2Value))
+  add(query_601822, "Action", newJString(Action))
+  add(formData_601823, "Tags.1.value", newJString(Tags1Value))
+  add(path_601821, "AccountNumber", newJInt(AccountNumber))
+  add(formData_601823, "Tags.2.key", newJString(Tags2Key))
+  add(query_601822, "Version", newJString(Version))
+  add(formData_601823, "Tags.0.value", newJString(Tags0Value))
+  result = call_601820.call(path_601821, query_601822, nil, formData_601823, nil)
 
-var postTagQueue* = Call_PostTagQueue_773964(name: "postTagQueue",
+var postTagQueue* = Call_PostTagQueue_601799(name: "postTagQueue",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=TagQueue",
-    validator: validate_PostTagQueue_773965, base: "/", url: url_PostTagQueue_773966,
+    validator: validate_PostTagQueue_601800, base: "/", url: url_PostTagQueue_601801,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTagQueue_773940 = ref object of OpenApiRestCall_772581
-proc url_GetTagQueue_773942(protocol: Scheme; host: string; base: string;
+  Call_GetTagQueue_601775 = ref object of OpenApiRestCall_600410
+proc url_GetTagQueue_601777(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -6490,7 +6490,7 @@ proc url_GetTagQueue_773942(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetTagQueue_773941(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetTagQueue_601776(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Add cost allocation tags to the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>When you use queue tags, keep the following guidelines in mind:</p> <ul> <li> <p>Adding more than 50 tags to a queue isn't recommended.</p> </li> <li> <p>Tags don't have any semantic meaning. Amazon SQS interprets tags as character strings.</p> </li> <li> <p>Tags are case-sensitive.</p> </li> <li> <p>A new tag with a key identical to that of an existing tag overwrites the existing tag.</p> </li> </ul> <p>For a full list of tag restrictions, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-limits.html#limits-queues">Limits Related to Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
@@ -6503,15 +6503,15 @@ proc validate_GetTagQueue_773941(path: JsonNode; query: JsonNode; header: JsonNo
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773943 = path.getOrDefault("QueueName")
-  valid_773943 = validateParameter(valid_773943, JString, required = true,
+  var valid_601778 = path.getOrDefault("QueueName")
+  valid_601778 = validateParameter(valid_601778, JString, required = true,
                                  default = nil)
-  if valid_773943 != nil:
-    section.add "QueueName", valid_773943
-  var valid_773944 = path.getOrDefault("AccountNumber")
-  valid_773944 = validateParameter(valid_773944, JInt, required = true, default = nil)
-  if valid_773944 != nil:
-    section.add "AccountNumber", valid_773944
+  if valid_601778 != nil:
+    section.add "QueueName", valid_601778
+  var valid_601779 = path.getOrDefault("AccountNumber")
+  valid_601779 = validateParameter(valid_601779, JInt, required = true, default = nil)
+  if valid_601779 != nil:
+    section.add "AccountNumber", valid_601779
   result.add "path", section
   ## parameters in `query` object:
   ##   Tags.2.value: JString
@@ -6523,47 +6523,47 @@ proc validate_GetTagQueue_773941(path: JsonNode; query: JsonNode; header: JsonNo
   ##   Tags.0.value: JString
   ##   Version: JString (required)
   section = newJObject()
-  var valid_773945 = query.getOrDefault("Tags.2.value")
-  valid_773945 = validateParameter(valid_773945, JString, required = false,
+  var valid_601780 = query.getOrDefault("Tags.2.value")
+  valid_601780 = validateParameter(valid_601780, JString, required = false,
                                  default = nil)
-  if valid_773945 != nil:
-    section.add "Tags.2.value", valid_773945
-  var valid_773946 = query.getOrDefault("Tags.2.key")
-  valid_773946 = validateParameter(valid_773946, JString, required = false,
+  if valid_601780 != nil:
+    section.add "Tags.2.value", valid_601780
+  var valid_601781 = query.getOrDefault("Tags.2.key")
+  valid_601781 = validateParameter(valid_601781, JString, required = false,
                                  default = nil)
-  if valid_773946 != nil:
-    section.add "Tags.2.key", valid_773946
-  var valid_773947 = query.getOrDefault("Tags.1.value")
-  valid_773947 = validateParameter(valid_773947, JString, required = false,
+  if valid_601781 != nil:
+    section.add "Tags.2.key", valid_601781
+  var valid_601782 = query.getOrDefault("Tags.1.value")
+  valid_601782 = validateParameter(valid_601782, JString, required = false,
                                  default = nil)
-  if valid_773947 != nil:
-    section.add "Tags.1.value", valid_773947
+  if valid_601782 != nil:
+    section.add "Tags.1.value", valid_601782
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773948 = query.getOrDefault("Action")
-  valid_773948 = validateParameter(valid_773948, JString, required = true,
+  var valid_601783 = query.getOrDefault("Action")
+  valid_601783 = validateParameter(valid_601783, JString, required = true,
                                  default = newJString("TagQueue"))
-  if valid_773948 != nil:
-    section.add "Action", valid_773948
-  var valid_773949 = query.getOrDefault("Tags.0.key")
-  valid_773949 = validateParameter(valid_773949, JString, required = false,
+  if valid_601783 != nil:
+    section.add "Action", valid_601783
+  var valid_601784 = query.getOrDefault("Tags.0.key")
+  valid_601784 = validateParameter(valid_601784, JString, required = false,
                                  default = nil)
-  if valid_773949 != nil:
-    section.add "Tags.0.key", valid_773949
-  var valid_773950 = query.getOrDefault("Tags.1.key")
-  valid_773950 = validateParameter(valid_773950, JString, required = false,
+  if valid_601784 != nil:
+    section.add "Tags.0.key", valid_601784
+  var valid_601785 = query.getOrDefault("Tags.1.key")
+  valid_601785 = validateParameter(valid_601785, JString, required = false,
                                  default = nil)
-  if valid_773950 != nil:
-    section.add "Tags.1.key", valid_773950
-  var valid_773951 = query.getOrDefault("Tags.0.value")
-  valid_773951 = validateParameter(valid_773951, JString, required = false,
+  if valid_601785 != nil:
+    section.add "Tags.1.key", valid_601785
+  var valid_601786 = query.getOrDefault("Tags.0.value")
+  valid_601786 = validateParameter(valid_601786, JString, required = false,
                                  default = nil)
-  if valid_773951 != nil:
-    section.add "Tags.0.value", valid_773951
-  var valid_773952 = query.getOrDefault("Version")
-  valid_773952 = validateParameter(valid_773952, JString, required = true,
+  if valid_601786 != nil:
+    section.add "Tags.0.value", valid_601786
+  var valid_601787 = query.getOrDefault("Version")
+  valid_601787 = validateParameter(valid_601787, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773952 != nil:
-    section.add "Version", valid_773952
+  if valid_601787 != nil:
+    section.add "Version", valid_601787
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -6574,60 +6574,60 @@ proc validate_GetTagQueue_773941(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773953 = header.getOrDefault("X-Amz-Date")
-  valid_773953 = validateParameter(valid_773953, JString, required = false,
+  var valid_601788 = header.getOrDefault("X-Amz-Date")
+  valid_601788 = validateParameter(valid_601788, JString, required = false,
                                  default = nil)
-  if valid_773953 != nil:
-    section.add "X-Amz-Date", valid_773953
-  var valid_773954 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773954 = validateParameter(valid_773954, JString, required = false,
+  if valid_601788 != nil:
+    section.add "X-Amz-Date", valid_601788
+  var valid_601789 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601789 = validateParameter(valid_601789, JString, required = false,
                                  default = nil)
-  if valid_773954 != nil:
-    section.add "X-Amz-Security-Token", valid_773954
-  var valid_773955 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773955 = validateParameter(valid_773955, JString, required = false,
+  if valid_601789 != nil:
+    section.add "X-Amz-Security-Token", valid_601789
+  var valid_601790 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601790 = validateParameter(valid_601790, JString, required = false,
                                  default = nil)
-  if valid_773955 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773955
-  var valid_773956 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773956 = validateParameter(valid_773956, JString, required = false,
+  if valid_601790 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601790
+  var valid_601791 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601791 = validateParameter(valid_601791, JString, required = false,
                                  default = nil)
-  if valid_773956 != nil:
-    section.add "X-Amz-Algorithm", valid_773956
-  var valid_773957 = header.getOrDefault("X-Amz-Signature")
-  valid_773957 = validateParameter(valid_773957, JString, required = false,
+  if valid_601791 != nil:
+    section.add "X-Amz-Algorithm", valid_601791
+  var valid_601792 = header.getOrDefault("X-Amz-Signature")
+  valid_601792 = validateParameter(valid_601792, JString, required = false,
                                  default = nil)
-  if valid_773957 != nil:
-    section.add "X-Amz-Signature", valid_773957
-  var valid_773958 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773958 = validateParameter(valid_773958, JString, required = false,
+  if valid_601792 != nil:
+    section.add "X-Amz-Signature", valid_601792
+  var valid_601793 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601793 = validateParameter(valid_601793, JString, required = false,
                                  default = nil)
-  if valid_773958 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773958
-  var valid_773959 = header.getOrDefault("X-Amz-Credential")
-  valid_773959 = validateParameter(valid_773959, JString, required = false,
+  if valid_601793 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601793
+  var valid_601794 = header.getOrDefault("X-Amz-Credential")
+  valid_601794 = validateParameter(valid_601794, JString, required = false,
                                  default = nil)
-  if valid_773959 != nil:
-    section.add "X-Amz-Credential", valid_773959
+  if valid_601794 != nil:
+    section.add "X-Amz-Credential", valid_601794
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773960: Call_GetTagQueue_773940; path: JsonNode; query: JsonNode;
+proc call*(call_601795: Call_GetTagQueue_601775; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Add cost allocation tags to the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <p>When you use queue tags, keep the following guidelines in mind:</p> <ul> <li> <p>Adding more than 50 tags to a queue isn't recommended.</p> </li> <li> <p>Tags don't have any semantic meaning. Amazon SQS interprets tags as character strings.</p> </li> <li> <p>Tags are case-sensitive.</p> </li> <li> <p>A new tag with a key identical to that of an existing tag overwrites the existing tag.</p> </li> </ul> <p>For a full list of tag restrictions, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-limits.html#limits-queues">Limits Related to Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_773960.validator(path, query, header, formData, body)
-  let scheme = call_773960.pickScheme
+  let valid = call_601795.validator(path, query, header, formData, body)
+  let scheme = call_601795.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773960.url(scheme.get, call_773960.host, call_773960.base,
-                         call_773960.route, valid.getOrDefault("path"))
-  result = hook(call_773960, url, valid)
+  let url = call_601795.url(scheme.get, call_601795.host, call_601795.base,
+                         call_601795.route, valid.getOrDefault("path"))
+  result = hook(call_601795, url, valid)
 
-proc call*(call_773961: Call_GetTagQueue_773940; QueueName: string;
+proc call*(call_601796: Call_GetTagQueue_601775; QueueName: string;
           AccountNumber: int; Tags2Value: string = ""; Tags2Key: string = "";
           Tags1Value: string = ""; Action: string = "TagQueue"; Tags0Key: string = "";
           Tags1Key: string = ""; Tags0Value: string = ""; Version: string = "2012-11-05"): Recallable =
@@ -6645,29 +6645,29 @@ proc call*(call_773961: Call_GetTagQueue_773940; QueueName: string;
   ##   Tags1Key: string
   ##   Tags0Value: string
   ##   Version: string (required)
-  var path_773962 = newJObject()
-  var query_773963 = newJObject()
-  add(query_773963, "Tags.2.value", newJString(Tags2Value))
-  add(query_773963, "Tags.2.key", newJString(Tags2Key))
-  add(query_773963, "Tags.1.value", newJString(Tags1Value))
-  add(path_773962, "QueueName", newJString(QueueName))
-  add(query_773963, "Action", newJString(Action))
-  add(query_773963, "Tags.0.key", newJString(Tags0Key))
-  add(path_773962, "AccountNumber", newJInt(AccountNumber))
-  add(query_773963, "Tags.1.key", newJString(Tags1Key))
-  add(query_773963, "Tags.0.value", newJString(Tags0Value))
-  add(query_773963, "Version", newJString(Version))
-  result = call_773961.call(path_773962, query_773963, nil, nil, nil)
+  var path_601797 = newJObject()
+  var query_601798 = newJObject()
+  add(query_601798, "Tags.2.value", newJString(Tags2Value))
+  add(query_601798, "Tags.2.key", newJString(Tags2Key))
+  add(query_601798, "Tags.1.value", newJString(Tags1Value))
+  add(path_601797, "QueueName", newJString(QueueName))
+  add(query_601798, "Action", newJString(Action))
+  add(query_601798, "Tags.0.key", newJString(Tags0Key))
+  add(path_601797, "AccountNumber", newJInt(AccountNumber))
+  add(query_601798, "Tags.1.key", newJString(Tags1Key))
+  add(query_601798, "Tags.0.value", newJString(Tags0Value))
+  add(query_601798, "Version", newJString(Version))
+  result = call_601796.call(path_601797, query_601798, nil, nil, nil)
 
-var getTagQueue* = Call_GetTagQueue_773940(name: "getTagQueue",
+var getTagQueue* = Call_GetTagQueue_601775(name: "getTagQueue",
                                         meth: HttpMethod.HttpGet,
                                         host: "sqs.amazonaws.com", route: "/{AccountNumber}/{QueueName}/#Action=TagQueue",
-                                        validator: validate_GetTagQueue_773941,
-                                        base: "/", url: url_GetTagQueue_773942,
+                                        validator: validate_GetTagQueue_601776,
+                                        base: "/", url: url_GetTagQueue_601777,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostUntagQueue_774008 = ref object of OpenApiRestCall_772581
-proc url_PostUntagQueue_774010(protocol: Scheme; host: string; base: string;
+  Call_PostUntagQueue_601843 = ref object of OpenApiRestCall_600410
+proc url_PostUntagQueue_601845(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -6683,7 +6683,7 @@ proc url_PostUntagQueue_774010(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_PostUntagQueue_774009(path: JsonNode; query: JsonNode;
+proc validate_PostUntagQueue_601844(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Remove cost allocation tags from the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
@@ -6697,31 +6697,31 @@ proc validate_PostUntagQueue_774009(path: JsonNode; query: JsonNode;
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_774011 = path.getOrDefault("QueueName")
-  valid_774011 = validateParameter(valid_774011, JString, required = true,
+  var valid_601846 = path.getOrDefault("QueueName")
+  valid_601846 = validateParameter(valid_601846, JString, required = true,
                                  default = nil)
-  if valid_774011 != nil:
-    section.add "QueueName", valid_774011
-  var valid_774012 = path.getOrDefault("AccountNumber")
-  valid_774012 = validateParameter(valid_774012, JInt, required = true, default = nil)
-  if valid_774012 != nil:
-    section.add "AccountNumber", valid_774012
+  if valid_601846 != nil:
+    section.add "QueueName", valid_601846
+  var valid_601847 = path.getOrDefault("AccountNumber")
+  valid_601847 = validateParameter(valid_601847, JInt, required = true, default = nil)
+  if valid_601847 != nil:
+    section.add "AccountNumber", valid_601847
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_774013 = query.getOrDefault("Action")
-  valid_774013 = validateParameter(valid_774013, JString, required = true,
+  var valid_601848 = query.getOrDefault("Action")
+  valid_601848 = validateParameter(valid_601848, JString, required = true,
                                  default = newJString("UntagQueue"))
-  if valid_774013 != nil:
-    section.add "Action", valid_774013
-  var valid_774014 = query.getOrDefault("Version")
-  valid_774014 = validateParameter(valid_774014, JString, required = true,
+  if valid_601848 != nil:
+    section.add "Action", valid_601848
+  var valid_601849 = query.getOrDefault("Version")
+  valid_601849 = validateParameter(valid_601849, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_774014 != nil:
-    section.add "Version", valid_774014
+  if valid_601849 != nil:
+    section.add "Version", valid_601849
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -6732,41 +6732,41 @@ proc validate_PostUntagQueue_774009(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_774015 = header.getOrDefault("X-Amz-Date")
-  valid_774015 = validateParameter(valid_774015, JString, required = false,
+  var valid_601850 = header.getOrDefault("X-Amz-Date")
+  valid_601850 = validateParameter(valid_601850, JString, required = false,
                                  default = nil)
-  if valid_774015 != nil:
-    section.add "X-Amz-Date", valid_774015
-  var valid_774016 = header.getOrDefault("X-Amz-Security-Token")
-  valid_774016 = validateParameter(valid_774016, JString, required = false,
+  if valid_601850 != nil:
+    section.add "X-Amz-Date", valid_601850
+  var valid_601851 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601851 = validateParameter(valid_601851, JString, required = false,
                                  default = nil)
-  if valid_774016 != nil:
-    section.add "X-Amz-Security-Token", valid_774016
-  var valid_774017 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_774017 = validateParameter(valid_774017, JString, required = false,
+  if valid_601851 != nil:
+    section.add "X-Amz-Security-Token", valid_601851
+  var valid_601852 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601852 = validateParameter(valid_601852, JString, required = false,
                                  default = nil)
-  if valid_774017 != nil:
-    section.add "X-Amz-Content-Sha256", valid_774017
-  var valid_774018 = header.getOrDefault("X-Amz-Algorithm")
-  valid_774018 = validateParameter(valid_774018, JString, required = false,
+  if valid_601852 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601852
+  var valid_601853 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601853 = validateParameter(valid_601853, JString, required = false,
                                  default = nil)
-  if valid_774018 != nil:
-    section.add "X-Amz-Algorithm", valid_774018
-  var valid_774019 = header.getOrDefault("X-Amz-Signature")
-  valid_774019 = validateParameter(valid_774019, JString, required = false,
+  if valid_601853 != nil:
+    section.add "X-Amz-Algorithm", valid_601853
+  var valid_601854 = header.getOrDefault("X-Amz-Signature")
+  valid_601854 = validateParameter(valid_601854, JString, required = false,
                                  default = nil)
-  if valid_774019 != nil:
-    section.add "X-Amz-Signature", valid_774019
-  var valid_774020 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_774020 = validateParameter(valid_774020, JString, required = false,
+  if valid_601854 != nil:
+    section.add "X-Amz-Signature", valid_601854
+  var valid_601855 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601855 = validateParameter(valid_601855, JString, required = false,
                                  default = nil)
-  if valid_774020 != nil:
-    section.add "X-Amz-SignedHeaders", valid_774020
-  var valid_774021 = header.getOrDefault("X-Amz-Credential")
-  valid_774021 = validateParameter(valid_774021, JString, required = false,
+  if valid_601855 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601855
+  var valid_601856 = header.getOrDefault("X-Amz-Credential")
+  valid_601856 = validateParameter(valid_601856, JString, required = false,
                                  default = nil)
-  if valid_774021 != nil:
-    section.add "X-Amz-Credential", valid_774021
+  if valid_601856 != nil:
+    section.add "X-Amz-Credential", valid_601856
   result.add "header", section
   ## parameters in `formData` object:
   ##   TagKeys: JArray (required)
@@ -6774,27 +6774,27 @@ proc validate_PostUntagQueue_774009(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `TagKeys` field"
-  var valid_774022 = formData.getOrDefault("TagKeys")
-  valid_774022 = validateParameter(valid_774022, JArray, required = true, default = nil)
-  if valid_774022 != nil:
-    section.add "TagKeys", valid_774022
+  var valid_601857 = formData.getOrDefault("TagKeys")
+  valid_601857 = validateParameter(valid_601857, JArray, required = true, default = nil)
+  if valid_601857 != nil:
+    section.add "TagKeys", valid_601857
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_774023: Call_PostUntagQueue_774008; path: JsonNode; query: JsonNode;
+proc call*(call_601858: Call_PostUntagQueue_601843; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Remove cost allocation tags from the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_774023.validator(path, query, header, formData, body)
-  let scheme = call_774023.pickScheme
+  let valid = call_601858.validator(path, query, header, formData, body)
+  let scheme = call_601858.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_774023.url(scheme.get, call_774023.host, call_774023.base,
-                         call_774023.route, valid.getOrDefault("path"))
-  result = hook(call_774023, url, valid)
+  let url = call_601858.url(scheme.get, call_601858.host, call_601858.base,
+                         call_601858.route, valid.getOrDefault("path"))
+  result = hook(call_601858, url, valid)
 
-proc call*(call_774024: Call_PostUntagQueue_774008; QueueName: string;
+proc call*(call_601859: Call_PostUntagQueue_601843; QueueName: string;
           TagKeys: JsonNode; AccountNumber: int; Action: string = "UntagQueue";
           Version: string = "2012-11-05"): Recallable =
   ## postUntagQueue
@@ -6807,25 +6807,25 @@ proc call*(call_774024: Call_PostUntagQueue_774008; QueueName: string;
   ##   AccountNumber: int (required)
   ##                : The AWS account number
   ##   Version: string (required)
-  var path_774025 = newJObject()
-  var query_774026 = newJObject()
-  var formData_774027 = newJObject()
-  add(path_774025, "QueueName", newJString(QueueName))
-  add(query_774026, "Action", newJString(Action))
+  var path_601860 = newJObject()
+  var query_601861 = newJObject()
+  var formData_601862 = newJObject()
+  add(path_601860, "QueueName", newJString(QueueName))
+  add(query_601861, "Action", newJString(Action))
   if TagKeys != nil:
-    formData_774027.add "TagKeys", TagKeys
-  add(path_774025, "AccountNumber", newJInt(AccountNumber))
-  add(query_774026, "Version", newJString(Version))
-  result = call_774024.call(path_774025, query_774026, nil, formData_774027, nil)
+    formData_601862.add "TagKeys", TagKeys
+  add(path_601860, "AccountNumber", newJInt(AccountNumber))
+  add(query_601861, "Version", newJString(Version))
+  result = call_601859.call(path_601860, query_601861, nil, formData_601862, nil)
 
-var postUntagQueue* = Call_PostUntagQueue_774008(name: "postUntagQueue",
+var postUntagQueue* = Call_PostUntagQueue_601843(name: "postUntagQueue",
     meth: HttpMethod.HttpPost, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=UntagQueue",
-    validator: validate_PostUntagQueue_774009, base: "/", url: url_PostUntagQueue_774010,
+    validator: validate_PostUntagQueue_601844, base: "/", url: url_PostUntagQueue_601845,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetUntagQueue_773989 = ref object of OpenApiRestCall_772581
-proc url_GetUntagQueue_773991(protocol: Scheme; host: string; base: string;
+  Call_GetUntagQueue_601824 = ref object of OpenApiRestCall_600410
+proc url_GetUntagQueue_601826(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "AccountNumber" in path, "`AccountNumber` is a required path parameter"
@@ -6841,7 +6841,7 @@ proc url_GetUntagQueue_773991(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetUntagQueue_773990(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetUntagQueue_601825(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Remove cost allocation tags from the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
@@ -6854,15 +6854,15 @@ proc validate_GetUntagQueue_773990(path: JsonNode; query: JsonNode; header: Json
   ##                : The AWS account number
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `QueueName` field"
-  var valid_773992 = path.getOrDefault("QueueName")
-  valid_773992 = validateParameter(valid_773992, JString, required = true,
+  var valid_601827 = path.getOrDefault("QueueName")
+  valid_601827 = validateParameter(valid_601827, JString, required = true,
                                  default = nil)
-  if valid_773992 != nil:
-    section.add "QueueName", valid_773992
-  var valid_773993 = path.getOrDefault("AccountNumber")
-  valid_773993 = validateParameter(valid_773993, JInt, required = true, default = nil)
-  if valid_773993 != nil:
-    section.add "AccountNumber", valid_773993
+  if valid_601827 != nil:
+    section.add "QueueName", valid_601827
+  var valid_601828 = path.getOrDefault("AccountNumber")
+  valid_601828 = validateParameter(valid_601828, JInt, required = true, default = nil)
+  if valid_601828 != nil:
+    section.add "AccountNumber", valid_601828
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
@@ -6871,20 +6871,20 @@ proc validate_GetUntagQueue_773990(path: JsonNode; query: JsonNode; header: Json
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_773994 = query.getOrDefault("Action")
-  valid_773994 = validateParameter(valid_773994, JString, required = true,
+  var valid_601829 = query.getOrDefault("Action")
+  valid_601829 = validateParameter(valid_601829, JString, required = true,
                                  default = newJString("UntagQueue"))
-  if valid_773994 != nil:
-    section.add "Action", valid_773994
-  var valid_773995 = query.getOrDefault("TagKeys")
-  valid_773995 = validateParameter(valid_773995, JArray, required = true, default = nil)
-  if valid_773995 != nil:
-    section.add "TagKeys", valid_773995
-  var valid_773996 = query.getOrDefault("Version")
-  valid_773996 = validateParameter(valid_773996, JString, required = true,
+  if valid_601829 != nil:
+    section.add "Action", valid_601829
+  var valid_601830 = query.getOrDefault("TagKeys")
+  valid_601830 = validateParameter(valid_601830, JArray, required = true, default = nil)
+  if valid_601830 != nil:
+    section.add "TagKeys", valid_601830
+  var valid_601831 = query.getOrDefault("Version")
+  valid_601831 = validateParameter(valid_601831, JString, required = true,
                                  default = newJString("2012-11-05"))
-  if valid_773996 != nil:
-    section.add "Version", valid_773996
+  if valid_601831 != nil:
+    section.add "Version", valid_601831
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -6895,60 +6895,60 @@ proc validate_GetUntagQueue_773990(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773997 = header.getOrDefault("X-Amz-Date")
-  valid_773997 = validateParameter(valid_773997, JString, required = false,
+  var valid_601832 = header.getOrDefault("X-Amz-Date")
+  valid_601832 = validateParameter(valid_601832, JString, required = false,
                                  default = nil)
-  if valid_773997 != nil:
-    section.add "X-Amz-Date", valid_773997
-  var valid_773998 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773998 = validateParameter(valid_773998, JString, required = false,
+  if valid_601832 != nil:
+    section.add "X-Amz-Date", valid_601832
+  var valid_601833 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601833 = validateParameter(valid_601833, JString, required = false,
                                  default = nil)
-  if valid_773998 != nil:
-    section.add "X-Amz-Security-Token", valid_773998
-  var valid_773999 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773999 = validateParameter(valid_773999, JString, required = false,
+  if valid_601833 != nil:
+    section.add "X-Amz-Security-Token", valid_601833
+  var valid_601834 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601834 = validateParameter(valid_601834, JString, required = false,
                                  default = nil)
-  if valid_773999 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773999
-  var valid_774000 = header.getOrDefault("X-Amz-Algorithm")
-  valid_774000 = validateParameter(valid_774000, JString, required = false,
+  if valid_601834 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601834
+  var valid_601835 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601835 = validateParameter(valid_601835, JString, required = false,
                                  default = nil)
-  if valid_774000 != nil:
-    section.add "X-Amz-Algorithm", valid_774000
-  var valid_774001 = header.getOrDefault("X-Amz-Signature")
-  valid_774001 = validateParameter(valid_774001, JString, required = false,
+  if valid_601835 != nil:
+    section.add "X-Amz-Algorithm", valid_601835
+  var valid_601836 = header.getOrDefault("X-Amz-Signature")
+  valid_601836 = validateParameter(valid_601836, JString, required = false,
                                  default = nil)
-  if valid_774001 != nil:
-    section.add "X-Amz-Signature", valid_774001
-  var valid_774002 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_774002 = validateParameter(valid_774002, JString, required = false,
+  if valid_601836 != nil:
+    section.add "X-Amz-Signature", valid_601836
+  var valid_601837 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601837 = validateParameter(valid_601837, JString, required = false,
                                  default = nil)
-  if valid_774002 != nil:
-    section.add "X-Amz-SignedHeaders", valid_774002
-  var valid_774003 = header.getOrDefault("X-Amz-Credential")
-  valid_774003 = validateParameter(valid_774003, JString, required = false,
+  if valid_601837 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601837
+  var valid_601838 = header.getOrDefault("X-Amz-Credential")
+  valid_601838 = validateParameter(valid_601838, JString, required = false,
                                  default = nil)
-  if valid_774003 != nil:
-    section.add "X-Amz-Credential", valid_774003
+  if valid_601838 != nil:
+    section.add "X-Amz-Credential", valid_601838
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_774004: Call_GetUntagQueue_773989; path: JsonNode; query: JsonNode;
+proc call*(call_601839: Call_GetUntagQueue_601824; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Remove cost allocation tags from the specified Amazon SQS queue. For an overview, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html">Tagging Your Amazon SQS Queues</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> <note> <p>Cross-account permissions don't apply to this action. For more information, see <a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-customer-managed-policy-examples.html#grant-cross-account-permissions-to-role-and-user-name">Grant Cross-Account Permissions to a Role and a User Name</a> in the <i>Amazon Simple Queue Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_774004.validator(path, query, header, formData, body)
-  let scheme = call_774004.pickScheme
+  let valid = call_601839.validator(path, query, header, formData, body)
+  let scheme = call_601839.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_774004.url(scheme.get, call_774004.host, call_774004.base,
-                         call_774004.route, valid.getOrDefault("path"))
-  result = hook(call_774004, url, valid)
+  let url = call_601839.url(scheme.get, call_601839.host, call_601839.base,
+                         call_601839.route, valid.getOrDefault("path"))
+  result = hook(call_601839, url, valid)
 
-proc call*(call_774005: Call_GetUntagQueue_773989; QueueName: string;
+proc call*(call_601840: Call_GetUntagQueue_601824; QueueName: string;
           AccountNumber: int; TagKeys: JsonNode; Action: string = "UntagQueue";
           Version: string = "2012-11-05"): Recallable =
   ## getUntagQueue
@@ -6961,21 +6961,24 @@ proc call*(call_774005: Call_GetUntagQueue_773989; QueueName: string;
   ##   TagKeys: JArray (required)
   ##          : The list of tags to be removed from the specified queue.
   ##   Version: string (required)
-  var path_774006 = newJObject()
-  var query_774007 = newJObject()
-  add(path_774006, "QueueName", newJString(QueueName))
-  add(query_774007, "Action", newJString(Action))
-  add(path_774006, "AccountNumber", newJInt(AccountNumber))
+  var path_601841 = newJObject()
+  var query_601842 = newJObject()
+  add(path_601841, "QueueName", newJString(QueueName))
+  add(query_601842, "Action", newJString(Action))
+  add(path_601841, "AccountNumber", newJInt(AccountNumber))
   if TagKeys != nil:
-    query_774007.add "TagKeys", TagKeys
-  add(query_774007, "Version", newJString(Version))
-  result = call_774005.call(path_774006, query_774007, nil, nil, nil)
+    query_601842.add "TagKeys", TagKeys
+  add(query_601842, "Version", newJString(Version))
+  result = call_601840.call(path_601841, query_601842, nil, nil, nil)
 
-var getUntagQueue* = Call_GetUntagQueue_773989(name: "getUntagQueue",
+var getUntagQueue* = Call_GetUntagQueue_601824(name: "getUntagQueue",
     meth: HttpMethod.HttpGet, host: "sqs.amazonaws.com",
     route: "/{AccountNumber}/{QueueName}/#Action=UntagQueue",
-    validator: validate_GetUntagQueue_773990, base: "/", url: url_GetUntagQueue_773991,
+    validator: validate_GetUntagQueue_601825, base: "/", url: url_GetUntagQueue_601826,
     schemes: {Scheme.Https, Scheme.Http})
+export
+  rest
+
 proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()

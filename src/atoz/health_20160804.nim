@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode): string
 
-  OpenApiRestCall_772597 = ref object of OpenApiRestCall
+  OpenApiRestCall_600426 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_772597](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600426](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_772597): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600426): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -104,12 +104,12 @@ const
   awsServiceName = "health"
 method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
 type
-  Call_DescribeAffectedEntities_772933 = ref object of OpenApiRestCall_772597
-proc url_DescribeAffectedEntities_772935(protocol: Scheme; host: string;
+  Call_DescribeAffectedEntities_600768 = ref object of OpenApiRestCall_600426
+proc url_DescribeAffectedEntities_600770(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeAffectedEntities_772934(path: JsonNode; query: JsonNode;
+proc validate_DescribeAffectedEntities_600769(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of entities that have been affected by the specified events, based on the specified filter criteria. Entities can refer to individual customer resources, groups of customer resources, or any other construct, depending on the AWS service. Events that have impact beyond that of the affected entities, or where the extent of impact is unknown, include at least one entity indicating this.</p> <p>At least one event ARN is required. Results are sorted by the <code>lastUpdatedTime</code> of the entity, starting with the most recent.</p>
   ## 
@@ -123,16 +123,16 @@ proc validate_DescribeAffectedEntities_772934(path: JsonNode; query: JsonNode;
   ##   nextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_773047 = query.getOrDefault("maxResults")
-  valid_773047 = validateParameter(valid_773047, JString, required = false,
+  var valid_600882 = query.getOrDefault("maxResults")
+  valid_600882 = validateParameter(valid_600882, JString, required = false,
                                  default = nil)
-  if valid_773047 != nil:
-    section.add "maxResults", valid_773047
-  var valid_773048 = query.getOrDefault("nextToken")
-  valid_773048 = validateParameter(valid_773048, JString, required = false,
+  if valid_600882 != nil:
+    section.add "maxResults", valid_600882
+  var valid_600883 = query.getOrDefault("nextToken")
+  valid_600883 = validateParameter(valid_600883, JString, required = false,
                                  default = nil)
-  if valid_773048 != nil:
-    section.add "nextToken", valid_773048
+  if valid_600883 != nil:
+    section.add "nextToken", valid_600883
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -144,48 +144,48 @@ proc validate_DescribeAffectedEntities_772934(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773049 = header.getOrDefault("X-Amz-Date")
-  valid_773049 = validateParameter(valid_773049, JString, required = false,
+  var valid_600884 = header.getOrDefault("X-Amz-Date")
+  valid_600884 = validateParameter(valid_600884, JString, required = false,
                                  default = nil)
-  if valid_773049 != nil:
-    section.add "X-Amz-Date", valid_773049
-  var valid_773050 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773050 = validateParameter(valid_773050, JString, required = false,
+  if valid_600884 != nil:
+    section.add "X-Amz-Date", valid_600884
+  var valid_600885 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600885 = validateParameter(valid_600885, JString, required = false,
                                  default = nil)
-  if valid_773050 != nil:
-    section.add "X-Amz-Security-Token", valid_773050
+  if valid_600885 != nil:
+    section.add "X-Amz-Security-Token", valid_600885
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773064 = header.getOrDefault("X-Amz-Target")
-  valid_773064 = validateParameter(valid_773064, JString, required = true, default = newJString(
+  var valid_600899 = header.getOrDefault("X-Amz-Target")
+  valid_600899 = validateParameter(valid_600899, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeAffectedEntities"))
-  if valid_773064 != nil:
-    section.add "X-Amz-Target", valid_773064
-  var valid_773065 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773065 = validateParameter(valid_773065, JString, required = false,
+  if valid_600899 != nil:
+    section.add "X-Amz-Target", valid_600899
+  var valid_600900 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600900 = validateParameter(valid_600900, JString, required = false,
                                  default = nil)
-  if valid_773065 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773065
-  var valid_773066 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773066 = validateParameter(valid_773066, JString, required = false,
+  if valid_600900 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600900
+  var valid_600901 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600901 = validateParameter(valid_600901, JString, required = false,
                                  default = nil)
-  if valid_773066 != nil:
-    section.add "X-Amz-Algorithm", valid_773066
-  var valid_773067 = header.getOrDefault("X-Amz-Signature")
-  valid_773067 = validateParameter(valid_773067, JString, required = false,
+  if valid_600901 != nil:
+    section.add "X-Amz-Algorithm", valid_600901
+  var valid_600902 = header.getOrDefault("X-Amz-Signature")
+  valid_600902 = validateParameter(valid_600902, JString, required = false,
                                  default = nil)
-  if valid_773067 != nil:
-    section.add "X-Amz-Signature", valid_773067
-  var valid_773068 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773068 = validateParameter(valid_773068, JString, required = false,
+  if valid_600902 != nil:
+    section.add "X-Amz-Signature", valid_600902
+  var valid_600903 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600903 = validateParameter(valid_600903, JString, required = false,
                                  default = nil)
-  if valid_773068 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773068
-  var valid_773069 = header.getOrDefault("X-Amz-Credential")
-  valid_773069 = validateParameter(valid_773069, JString, required = false,
+  if valid_600903 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600903
+  var valid_600904 = header.getOrDefault("X-Amz-Credential")
+  valid_600904 = validateParameter(valid_600904, JString, required = false,
                                  default = nil)
-  if valid_773069 != nil:
-    section.add "X-Amz-Credential", valid_773069
+  if valid_600904 != nil:
+    section.add "X-Amz-Credential", valid_600904
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -196,19 +196,19 @@ proc validate_DescribeAffectedEntities_772934(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773093: Call_DescribeAffectedEntities_772933; path: JsonNode;
+proc call*(call_600928: Call_DescribeAffectedEntities_600768; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of entities that have been affected by the specified events, based on the specified filter criteria. Entities can refer to individual customer resources, groups of customer resources, or any other construct, depending on the AWS service. Events that have impact beyond that of the affected entities, or where the extent of impact is unknown, include at least one entity indicating this.</p> <p>At least one event ARN is required. Results are sorted by the <code>lastUpdatedTime</code> of the entity, starting with the most recent.</p>
   ## 
-  let valid = call_773093.validator(path, query, header, formData, body)
-  let scheme = call_773093.pickScheme
+  let valid = call_600928.validator(path, query, header, formData, body)
+  let scheme = call_600928.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773093.url(scheme.get, call_773093.host, call_773093.base,
-                         call_773093.route, valid.getOrDefault("path"))
-  result = hook(call_773093, url, valid)
+  let url = call_600928.url(scheme.get, call_600928.host, call_600928.base,
+                         call_600928.route, valid.getOrDefault("path"))
+  result = hook(call_600928, url, valid)
 
-proc call*(call_773164: Call_DescribeAffectedEntities_772933; body: JsonNode;
+proc call*(call_600999: Call_DescribeAffectedEntities_600768; body: JsonNode;
           maxResults: string = ""; nextToken: string = ""): Recallable =
   ## describeAffectedEntities
   ## <p>Returns a list of entities that have been affected by the specified events, based on the specified filter criteria. Entities can refer to individual customer resources, groups of customer resources, or any other construct, depending on the AWS service. Events that have impact beyond that of the affected entities, or where the extent of impact is unknown, include at least one entity indicating this.</p> <p>At least one event ARN is required. Results are sorted by the <code>lastUpdatedTime</code> of the entity, starting with the most recent.</p>
@@ -217,27 +217,27 @@ proc call*(call_773164: Call_DescribeAffectedEntities_772933; body: JsonNode;
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_773165 = newJObject()
-  var body_773167 = newJObject()
-  add(query_773165, "maxResults", newJString(maxResults))
-  add(query_773165, "nextToken", newJString(nextToken))
+  var query_601000 = newJObject()
+  var body_601002 = newJObject()
+  add(query_601000, "maxResults", newJString(maxResults))
+  add(query_601000, "nextToken", newJString(nextToken))
   if body != nil:
-    body_773167 = body
-  result = call_773164.call(nil, query_773165, nil, nil, body_773167)
+    body_601002 = body
+  result = call_600999.call(nil, query_601000, nil, nil, body_601002)
 
-var describeAffectedEntities* = Call_DescribeAffectedEntities_772933(
+var describeAffectedEntities* = Call_DescribeAffectedEntities_600768(
     name: "describeAffectedEntities", meth: HttpMethod.HttpPost,
     host: "health.amazonaws.com",
     route: "/#X-Amz-Target=AWSHealth_20160804.DescribeAffectedEntities",
-    validator: validate_DescribeAffectedEntities_772934, base: "/",
-    url: url_DescribeAffectedEntities_772935, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeAffectedEntities_600769, base: "/",
+    url: url_DescribeAffectedEntities_600770, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEntityAggregates_773206 = ref object of OpenApiRestCall_772597
-proc url_DescribeEntityAggregates_773208(protocol: Scheme; host: string;
+  Call_DescribeEntityAggregates_601041 = ref object of OpenApiRestCall_600426
+proc url_DescribeEntityAggregates_601043(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeEntityAggregates_773207(path: JsonNode; query: JsonNode;
+proc validate_DescribeEntityAggregates_601042(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the number of entities that are affected by each of the specified events. If no events are specified, the counts of all affected entities are returned.
   ## 
@@ -257,48 +257,48 @@ proc validate_DescribeEntityAggregates_773207(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773209 = header.getOrDefault("X-Amz-Date")
-  valid_773209 = validateParameter(valid_773209, JString, required = false,
+  var valid_601044 = header.getOrDefault("X-Amz-Date")
+  valid_601044 = validateParameter(valid_601044, JString, required = false,
                                  default = nil)
-  if valid_773209 != nil:
-    section.add "X-Amz-Date", valid_773209
-  var valid_773210 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773210 = validateParameter(valid_773210, JString, required = false,
+  if valid_601044 != nil:
+    section.add "X-Amz-Date", valid_601044
+  var valid_601045 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601045 = validateParameter(valid_601045, JString, required = false,
                                  default = nil)
-  if valid_773210 != nil:
-    section.add "X-Amz-Security-Token", valid_773210
+  if valid_601045 != nil:
+    section.add "X-Amz-Security-Token", valid_601045
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773211 = header.getOrDefault("X-Amz-Target")
-  valid_773211 = validateParameter(valid_773211, JString, required = true, default = newJString(
+  var valid_601046 = header.getOrDefault("X-Amz-Target")
+  valid_601046 = validateParameter(valid_601046, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEntityAggregates"))
-  if valid_773211 != nil:
-    section.add "X-Amz-Target", valid_773211
-  var valid_773212 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773212 = validateParameter(valid_773212, JString, required = false,
+  if valid_601046 != nil:
+    section.add "X-Amz-Target", valid_601046
+  var valid_601047 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601047 = validateParameter(valid_601047, JString, required = false,
                                  default = nil)
-  if valid_773212 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773212
-  var valid_773213 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773213 = validateParameter(valid_773213, JString, required = false,
+  if valid_601047 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601047
+  var valid_601048 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601048 = validateParameter(valid_601048, JString, required = false,
                                  default = nil)
-  if valid_773213 != nil:
-    section.add "X-Amz-Algorithm", valid_773213
-  var valid_773214 = header.getOrDefault("X-Amz-Signature")
-  valid_773214 = validateParameter(valid_773214, JString, required = false,
+  if valid_601048 != nil:
+    section.add "X-Amz-Algorithm", valid_601048
+  var valid_601049 = header.getOrDefault("X-Amz-Signature")
+  valid_601049 = validateParameter(valid_601049, JString, required = false,
                                  default = nil)
-  if valid_773214 != nil:
-    section.add "X-Amz-Signature", valid_773214
-  var valid_773215 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773215 = validateParameter(valid_773215, JString, required = false,
+  if valid_601049 != nil:
+    section.add "X-Amz-Signature", valid_601049
+  var valid_601050 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601050 = validateParameter(valid_601050, JString, required = false,
                                  default = nil)
-  if valid_773215 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773215
-  var valid_773216 = header.getOrDefault("X-Amz-Credential")
-  valid_773216 = validateParameter(valid_773216, JString, required = false,
+  if valid_601050 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601050
+  var valid_601051 = header.getOrDefault("X-Amz-Credential")
+  valid_601051 = validateParameter(valid_601051, JString, required = false,
                                  default = nil)
-  if valid_773216 != nil:
-    section.add "X-Amz-Credential", valid_773216
+  if valid_601051 != nil:
+    section.add "X-Amz-Credential", valid_601051
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -309,40 +309,40 @@ proc validate_DescribeEntityAggregates_773207(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773218: Call_DescribeEntityAggregates_773206; path: JsonNode;
+proc call*(call_601053: Call_DescribeEntityAggregates_601041; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the number of entities that are affected by each of the specified events. If no events are specified, the counts of all affected entities are returned.
   ## 
-  let valid = call_773218.validator(path, query, header, formData, body)
-  let scheme = call_773218.pickScheme
+  let valid = call_601053.validator(path, query, header, formData, body)
+  let scheme = call_601053.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773218.url(scheme.get, call_773218.host, call_773218.base,
-                         call_773218.route, valid.getOrDefault("path"))
-  result = hook(call_773218, url, valid)
+  let url = call_601053.url(scheme.get, call_601053.host, call_601053.base,
+                         call_601053.route, valid.getOrDefault("path"))
+  result = hook(call_601053, url, valid)
 
-proc call*(call_773219: Call_DescribeEntityAggregates_773206; body: JsonNode): Recallable =
+proc call*(call_601054: Call_DescribeEntityAggregates_601041; body: JsonNode): Recallable =
   ## describeEntityAggregates
   ## Returns the number of entities that are affected by each of the specified events. If no events are specified, the counts of all affected entities are returned.
   ##   body: JObject (required)
-  var body_773220 = newJObject()
+  var body_601055 = newJObject()
   if body != nil:
-    body_773220 = body
-  result = call_773219.call(nil, nil, nil, nil, body_773220)
+    body_601055 = body
+  result = call_601054.call(nil, nil, nil, nil, body_601055)
 
-var describeEntityAggregates* = Call_DescribeEntityAggregates_773206(
+var describeEntityAggregates* = Call_DescribeEntityAggregates_601041(
     name: "describeEntityAggregates", meth: HttpMethod.HttpPost,
     host: "health.amazonaws.com",
     route: "/#X-Amz-Target=AWSHealth_20160804.DescribeEntityAggregates",
-    validator: validate_DescribeEntityAggregates_773207, base: "/",
-    url: url_DescribeEntityAggregates_773208, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeEntityAggregates_601042, base: "/",
+    url: url_DescribeEntityAggregates_601043, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEventAggregates_773221 = ref object of OpenApiRestCall_772597
-proc url_DescribeEventAggregates_773223(protocol: Scheme; host: string; base: string;
+  Call_DescribeEventAggregates_601056 = ref object of OpenApiRestCall_600426
+proc url_DescribeEventAggregates_601058(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeEventAggregates_773222(path: JsonNode; query: JsonNode;
+proc validate_DescribeEventAggregates_601057(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the number of events of each event type (issue, scheduled change, and account notification). If no filter is specified, the counts of all events in each category are returned.
   ## 
@@ -356,16 +356,16 @@ proc validate_DescribeEventAggregates_773222(path: JsonNode; query: JsonNode;
   ##   nextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_773224 = query.getOrDefault("maxResults")
-  valid_773224 = validateParameter(valid_773224, JString, required = false,
+  var valid_601059 = query.getOrDefault("maxResults")
+  valid_601059 = validateParameter(valid_601059, JString, required = false,
                                  default = nil)
-  if valid_773224 != nil:
-    section.add "maxResults", valid_773224
-  var valid_773225 = query.getOrDefault("nextToken")
-  valid_773225 = validateParameter(valid_773225, JString, required = false,
+  if valid_601059 != nil:
+    section.add "maxResults", valid_601059
+  var valid_601060 = query.getOrDefault("nextToken")
+  valid_601060 = validateParameter(valid_601060, JString, required = false,
                                  default = nil)
-  if valid_773225 != nil:
-    section.add "nextToken", valid_773225
+  if valid_601060 != nil:
+    section.add "nextToken", valid_601060
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -377,48 +377,48 @@ proc validate_DescribeEventAggregates_773222(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773226 = header.getOrDefault("X-Amz-Date")
-  valid_773226 = validateParameter(valid_773226, JString, required = false,
+  var valid_601061 = header.getOrDefault("X-Amz-Date")
+  valid_601061 = validateParameter(valid_601061, JString, required = false,
                                  default = nil)
-  if valid_773226 != nil:
-    section.add "X-Amz-Date", valid_773226
-  var valid_773227 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773227 = validateParameter(valid_773227, JString, required = false,
+  if valid_601061 != nil:
+    section.add "X-Amz-Date", valid_601061
+  var valid_601062 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601062 = validateParameter(valid_601062, JString, required = false,
                                  default = nil)
-  if valid_773227 != nil:
-    section.add "X-Amz-Security-Token", valid_773227
+  if valid_601062 != nil:
+    section.add "X-Amz-Security-Token", valid_601062
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773228 = header.getOrDefault("X-Amz-Target")
-  valid_773228 = validateParameter(valid_773228, JString, required = true, default = newJString(
+  var valid_601063 = header.getOrDefault("X-Amz-Target")
+  valid_601063 = validateParameter(valid_601063, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEventAggregates"))
-  if valid_773228 != nil:
-    section.add "X-Amz-Target", valid_773228
-  var valid_773229 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773229 = validateParameter(valid_773229, JString, required = false,
+  if valid_601063 != nil:
+    section.add "X-Amz-Target", valid_601063
+  var valid_601064 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601064 = validateParameter(valid_601064, JString, required = false,
                                  default = nil)
-  if valid_773229 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773229
-  var valid_773230 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773230 = validateParameter(valid_773230, JString, required = false,
+  if valid_601064 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601064
+  var valid_601065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601065 = validateParameter(valid_601065, JString, required = false,
                                  default = nil)
-  if valid_773230 != nil:
-    section.add "X-Amz-Algorithm", valid_773230
-  var valid_773231 = header.getOrDefault("X-Amz-Signature")
-  valid_773231 = validateParameter(valid_773231, JString, required = false,
+  if valid_601065 != nil:
+    section.add "X-Amz-Algorithm", valid_601065
+  var valid_601066 = header.getOrDefault("X-Amz-Signature")
+  valid_601066 = validateParameter(valid_601066, JString, required = false,
                                  default = nil)
-  if valid_773231 != nil:
-    section.add "X-Amz-Signature", valid_773231
-  var valid_773232 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773232 = validateParameter(valid_773232, JString, required = false,
+  if valid_601066 != nil:
+    section.add "X-Amz-Signature", valid_601066
+  var valid_601067 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601067 = validateParameter(valid_601067, JString, required = false,
                                  default = nil)
-  if valid_773232 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773232
-  var valid_773233 = header.getOrDefault("X-Amz-Credential")
-  valid_773233 = validateParameter(valid_773233, JString, required = false,
+  if valid_601067 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601067
+  var valid_601068 = header.getOrDefault("X-Amz-Credential")
+  valid_601068 = validateParameter(valid_601068, JString, required = false,
                                  default = nil)
-  if valid_773233 != nil:
-    section.add "X-Amz-Credential", valid_773233
+  if valid_601068 != nil:
+    section.add "X-Amz-Credential", valid_601068
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -429,19 +429,19 @@ proc validate_DescribeEventAggregates_773222(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773235: Call_DescribeEventAggregates_773221; path: JsonNode;
+proc call*(call_601070: Call_DescribeEventAggregates_601056; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the number of events of each event type (issue, scheduled change, and account notification). If no filter is specified, the counts of all events in each category are returned.
   ## 
-  let valid = call_773235.validator(path, query, header, formData, body)
-  let scheme = call_773235.pickScheme
+  let valid = call_601070.validator(path, query, header, formData, body)
+  let scheme = call_601070.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773235.url(scheme.get, call_773235.host, call_773235.base,
-                         call_773235.route, valid.getOrDefault("path"))
-  result = hook(call_773235, url, valid)
+  let url = call_601070.url(scheme.get, call_601070.host, call_601070.base,
+                         call_601070.route, valid.getOrDefault("path"))
+  result = hook(call_601070, url, valid)
 
-proc call*(call_773236: Call_DescribeEventAggregates_773221; body: JsonNode;
+proc call*(call_601071: Call_DescribeEventAggregates_601056; body: JsonNode;
           maxResults: string = ""; nextToken: string = ""): Recallable =
   ## describeEventAggregates
   ## Returns the number of events of each event type (issue, scheduled change, and account notification). If no filter is specified, the counts of all events in each category are returned.
@@ -450,27 +450,27 @@ proc call*(call_773236: Call_DescribeEventAggregates_773221; body: JsonNode;
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_773237 = newJObject()
-  var body_773238 = newJObject()
-  add(query_773237, "maxResults", newJString(maxResults))
-  add(query_773237, "nextToken", newJString(nextToken))
+  var query_601072 = newJObject()
+  var body_601073 = newJObject()
+  add(query_601072, "maxResults", newJString(maxResults))
+  add(query_601072, "nextToken", newJString(nextToken))
   if body != nil:
-    body_773238 = body
-  result = call_773236.call(nil, query_773237, nil, nil, body_773238)
+    body_601073 = body
+  result = call_601071.call(nil, query_601072, nil, nil, body_601073)
 
-var describeEventAggregates* = Call_DescribeEventAggregates_773221(
+var describeEventAggregates* = Call_DescribeEventAggregates_601056(
     name: "describeEventAggregates", meth: HttpMethod.HttpPost,
     host: "health.amazonaws.com",
     route: "/#X-Amz-Target=AWSHealth_20160804.DescribeEventAggregates",
-    validator: validate_DescribeEventAggregates_773222, base: "/",
-    url: url_DescribeEventAggregates_773223, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeEventAggregates_601057, base: "/",
+    url: url_DescribeEventAggregates_601058, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEventDetails_773239 = ref object of OpenApiRestCall_772597
-proc url_DescribeEventDetails_773241(protocol: Scheme; host: string; base: string;
+  Call_DescribeEventDetails_601074 = ref object of OpenApiRestCall_600426
+proc url_DescribeEventDetails_601076(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeEventDetails_773240(path: JsonNode; query: JsonNode;
+proc validate_DescribeEventDetails_601075(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns detailed information about one or more specified events. Information includes standard event data (region, service, etc., as returned by <a>DescribeEvents</a>), a detailed event description, and possible additional metadata that depends upon the nature of the event. Affected entities are not included; to retrieve those, use the <a>DescribeAffectedEntities</a> operation.</p> <p>If a specified event cannot be retrieved, an error message is returned for that event.</p>
   ## 
@@ -490,48 +490,48 @@ proc validate_DescribeEventDetails_773240(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773242 = header.getOrDefault("X-Amz-Date")
-  valid_773242 = validateParameter(valid_773242, JString, required = false,
+  var valid_601077 = header.getOrDefault("X-Amz-Date")
+  valid_601077 = validateParameter(valid_601077, JString, required = false,
                                  default = nil)
-  if valid_773242 != nil:
-    section.add "X-Amz-Date", valid_773242
-  var valid_773243 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773243 = validateParameter(valid_773243, JString, required = false,
+  if valid_601077 != nil:
+    section.add "X-Amz-Date", valid_601077
+  var valid_601078 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601078 = validateParameter(valid_601078, JString, required = false,
                                  default = nil)
-  if valid_773243 != nil:
-    section.add "X-Amz-Security-Token", valid_773243
+  if valid_601078 != nil:
+    section.add "X-Amz-Security-Token", valid_601078
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773244 = header.getOrDefault("X-Amz-Target")
-  valid_773244 = validateParameter(valid_773244, JString, required = true, default = newJString(
+  var valid_601079 = header.getOrDefault("X-Amz-Target")
+  valid_601079 = validateParameter(valid_601079, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEventDetails"))
-  if valid_773244 != nil:
-    section.add "X-Amz-Target", valid_773244
-  var valid_773245 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773245 = validateParameter(valid_773245, JString, required = false,
+  if valid_601079 != nil:
+    section.add "X-Amz-Target", valid_601079
+  var valid_601080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601080 = validateParameter(valid_601080, JString, required = false,
                                  default = nil)
-  if valid_773245 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773245
-  var valid_773246 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773246 = validateParameter(valid_773246, JString, required = false,
+  if valid_601080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601080
+  var valid_601081 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601081 = validateParameter(valid_601081, JString, required = false,
                                  default = nil)
-  if valid_773246 != nil:
-    section.add "X-Amz-Algorithm", valid_773246
-  var valid_773247 = header.getOrDefault("X-Amz-Signature")
-  valid_773247 = validateParameter(valid_773247, JString, required = false,
+  if valid_601081 != nil:
+    section.add "X-Amz-Algorithm", valid_601081
+  var valid_601082 = header.getOrDefault("X-Amz-Signature")
+  valid_601082 = validateParameter(valid_601082, JString, required = false,
                                  default = nil)
-  if valid_773247 != nil:
-    section.add "X-Amz-Signature", valid_773247
-  var valid_773248 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773248 = validateParameter(valid_773248, JString, required = false,
+  if valid_601082 != nil:
+    section.add "X-Amz-Signature", valid_601082
+  var valid_601083 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601083 = validateParameter(valid_601083, JString, required = false,
                                  default = nil)
-  if valid_773248 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773248
-  var valid_773249 = header.getOrDefault("X-Amz-Credential")
-  valid_773249 = validateParameter(valid_773249, JString, required = false,
+  if valid_601083 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601083
+  var valid_601084 = header.getOrDefault("X-Amz-Credential")
+  valid_601084 = validateParameter(valid_601084, JString, required = false,
                                  default = nil)
-  if valid_773249 != nil:
-    section.add "X-Amz-Credential", valid_773249
+  if valid_601084 != nil:
+    section.add "X-Amz-Credential", valid_601084
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -542,40 +542,40 @@ proc validate_DescribeEventDetails_773240(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773251: Call_DescribeEventDetails_773239; path: JsonNode;
+proc call*(call_601086: Call_DescribeEventDetails_601074; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns detailed information about one or more specified events. Information includes standard event data (region, service, etc., as returned by <a>DescribeEvents</a>), a detailed event description, and possible additional metadata that depends upon the nature of the event. Affected entities are not included; to retrieve those, use the <a>DescribeAffectedEntities</a> operation.</p> <p>If a specified event cannot be retrieved, an error message is returned for that event.</p>
   ## 
-  let valid = call_773251.validator(path, query, header, formData, body)
-  let scheme = call_773251.pickScheme
+  let valid = call_601086.validator(path, query, header, formData, body)
+  let scheme = call_601086.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773251.url(scheme.get, call_773251.host, call_773251.base,
-                         call_773251.route, valid.getOrDefault("path"))
-  result = hook(call_773251, url, valid)
+  let url = call_601086.url(scheme.get, call_601086.host, call_601086.base,
+                         call_601086.route, valid.getOrDefault("path"))
+  result = hook(call_601086, url, valid)
 
-proc call*(call_773252: Call_DescribeEventDetails_773239; body: JsonNode): Recallable =
+proc call*(call_601087: Call_DescribeEventDetails_601074; body: JsonNode): Recallable =
   ## describeEventDetails
   ## <p>Returns detailed information about one or more specified events. Information includes standard event data (region, service, etc., as returned by <a>DescribeEvents</a>), a detailed event description, and possible additional metadata that depends upon the nature of the event. Affected entities are not included; to retrieve those, use the <a>DescribeAffectedEntities</a> operation.</p> <p>If a specified event cannot be retrieved, an error message is returned for that event.</p>
   ##   body: JObject (required)
-  var body_773253 = newJObject()
+  var body_601088 = newJObject()
   if body != nil:
-    body_773253 = body
-  result = call_773252.call(nil, nil, nil, nil, body_773253)
+    body_601088 = body
+  result = call_601087.call(nil, nil, nil, nil, body_601088)
 
-var describeEventDetails* = Call_DescribeEventDetails_773239(
+var describeEventDetails* = Call_DescribeEventDetails_601074(
     name: "describeEventDetails", meth: HttpMethod.HttpPost,
     host: "health.amazonaws.com",
     route: "/#X-Amz-Target=AWSHealth_20160804.DescribeEventDetails",
-    validator: validate_DescribeEventDetails_773240, base: "/",
-    url: url_DescribeEventDetails_773241, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeEventDetails_601075, base: "/",
+    url: url_DescribeEventDetails_601076, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEventTypes_773254 = ref object of OpenApiRestCall_772597
-proc url_DescribeEventTypes_773256(protocol: Scheme; host: string; base: string;
+  Call_DescribeEventTypes_601089 = ref object of OpenApiRestCall_600426
+proc url_DescribeEventTypes_601091(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeEventTypes_773255(path: JsonNode; query: JsonNode;
+proc validate_DescribeEventTypes_601090(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns the event types that meet the specified filter criteria. If no filter criteria are specified, all event types are returned, in no particular order.
@@ -590,16 +590,16 @@ proc validate_DescribeEventTypes_773255(path: JsonNode; query: JsonNode;
   ##   nextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_773257 = query.getOrDefault("maxResults")
-  valid_773257 = validateParameter(valid_773257, JString, required = false,
+  var valid_601092 = query.getOrDefault("maxResults")
+  valid_601092 = validateParameter(valid_601092, JString, required = false,
                                  default = nil)
-  if valid_773257 != nil:
-    section.add "maxResults", valid_773257
-  var valid_773258 = query.getOrDefault("nextToken")
-  valid_773258 = validateParameter(valid_773258, JString, required = false,
+  if valid_601092 != nil:
+    section.add "maxResults", valid_601092
+  var valid_601093 = query.getOrDefault("nextToken")
+  valid_601093 = validateParameter(valid_601093, JString, required = false,
                                  default = nil)
-  if valid_773258 != nil:
-    section.add "nextToken", valid_773258
+  if valid_601093 != nil:
+    section.add "nextToken", valid_601093
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -611,48 +611,48 @@ proc validate_DescribeEventTypes_773255(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773259 = header.getOrDefault("X-Amz-Date")
-  valid_773259 = validateParameter(valid_773259, JString, required = false,
+  var valid_601094 = header.getOrDefault("X-Amz-Date")
+  valid_601094 = validateParameter(valid_601094, JString, required = false,
                                  default = nil)
-  if valid_773259 != nil:
-    section.add "X-Amz-Date", valid_773259
-  var valid_773260 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773260 = validateParameter(valid_773260, JString, required = false,
+  if valid_601094 != nil:
+    section.add "X-Amz-Date", valid_601094
+  var valid_601095 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601095 = validateParameter(valid_601095, JString, required = false,
                                  default = nil)
-  if valid_773260 != nil:
-    section.add "X-Amz-Security-Token", valid_773260
+  if valid_601095 != nil:
+    section.add "X-Amz-Security-Token", valid_601095
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773261 = header.getOrDefault("X-Amz-Target")
-  valid_773261 = validateParameter(valid_773261, JString, required = true, default = newJString(
+  var valid_601096 = header.getOrDefault("X-Amz-Target")
+  valid_601096 = validateParameter(valid_601096, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEventTypes"))
-  if valid_773261 != nil:
-    section.add "X-Amz-Target", valid_773261
-  var valid_773262 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773262 = validateParameter(valid_773262, JString, required = false,
+  if valid_601096 != nil:
+    section.add "X-Amz-Target", valid_601096
+  var valid_601097 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601097 = validateParameter(valid_601097, JString, required = false,
                                  default = nil)
-  if valid_773262 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773262
-  var valid_773263 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773263 = validateParameter(valid_773263, JString, required = false,
+  if valid_601097 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601097
+  var valid_601098 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601098 = validateParameter(valid_601098, JString, required = false,
                                  default = nil)
-  if valid_773263 != nil:
-    section.add "X-Amz-Algorithm", valid_773263
-  var valid_773264 = header.getOrDefault("X-Amz-Signature")
-  valid_773264 = validateParameter(valid_773264, JString, required = false,
+  if valid_601098 != nil:
+    section.add "X-Amz-Algorithm", valid_601098
+  var valid_601099 = header.getOrDefault("X-Amz-Signature")
+  valid_601099 = validateParameter(valid_601099, JString, required = false,
                                  default = nil)
-  if valid_773264 != nil:
-    section.add "X-Amz-Signature", valid_773264
-  var valid_773265 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773265 = validateParameter(valid_773265, JString, required = false,
+  if valid_601099 != nil:
+    section.add "X-Amz-Signature", valid_601099
+  var valid_601100 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601100 = validateParameter(valid_601100, JString, required = false,
                                  default = nil)
-  if valid_773265 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773265
-  var valid_773266 = header.getOrDefault("X-Amz-Credential")
-  valid_773266 = validateParameter(valid_773266, JString, required = false,
+  if valid_601100 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601100
+  var valid_601101 = header.getOrDefault("X-Amz-Credential")
+  valid_601101 = validateParameter(valid_601101, JString, required = false,
                                  default = nil)
-  if valid_773266 != nil:
-    section.add "X-Amz-Credential", valid_773266
+  if valid_601101 != nil:
+    section.add "X-Amz-Credential", valid_601101
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -663,19 +663,19 @@ proc validate_DescribeEventTypes_773255(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773268: Call_DescribeEventTypes_773254; path: JsonNode;
+proc call*(call_601103: Call_DescribeEventTypes_601089; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the event types that meet the specified filter criteria. If no filter criteria are specified, all event types are returned, in no particular order.
   ## 
-  let valid = call_773268.validator(path, query, header, formData, body)
-  let scheme = call_773268.pickScheme
+  let valid = call_601103.validator(path, query, header, formData, body)
+  let scheme = call_601103.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773268.url(scheme.get, call_773268.host, call_773268.base,
-                         call_773268.route, valid.getOrDefault("path"))
-  result = hook(call_773268, url, valid)
+  let url = call_601103.url(scheme.get, call_601103.host, call_601103.base,
+                         call_601103.route, valid.getOrDefault("path"))
+  result = hook(call_601103, url, valid)
 
-proc call*(call_773269: Call_DescribeEventTypes_773254; body: JsonNode;
+proc call*(call_601104: Call_DescribeEventTypes_601089; body: JsonNode;
           maxResults: string = ""; nextToken: string = ""): Recallable =
   ## describeEventTypes
   ## Returns the event types that meet the specified filter criteria. If no filter criteria are specified, all event types are returned, in no particular order.
@@ -684,27 +684,27 @@ proc call*(call_773269: Call_DescribeEventTypes_773254; body: JsonNode;
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_773270 = newJObject()
-  var body_773271 = newJObject()
-  add(query_773270, "maxResults", newJString(maxResults))
-  add(query_773270, "nextToken", newJString(nextToken))
+  var query_601105 = newJObject()
+  var body_601106 = newJObject()
+  add(query_601105, "maxResults", newJString(maxResults))
+  add(query_601105, "nextToken", newJString(nextToken))
   if body != nil:
-    body_773271 = body
-  result = call_773269.call(nil, query_773270, nil, nil, body_773271)
+    body_601106 = body
+  result = call_601104.call(nil, query_601105, nil, nil, body_601106)
 
-var describeEventTypes* = Call_DescribeEventTypes_773254(
+var describeEventTypes* = Call_DescribeEventTypes_601089(
     name: "describeEventTypes", meth: HttpMethod.HttpPost,
     host: "health.amazonaws.com",
     route: "/#X-Amz-Target=AWSHealth_20160804.DescribeEventTypes",
-    validator: validate_DescribeEventTypes_773255, base: "/",
-    url: url_DescribeEventTypes_773256, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeEventTypes_601090, base: "/",
+    url: url_DescribeEventTypes_601091, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEvents_773272 = ref object of OpenApiRestCall_772597
-proc url_DescribeEvents_773274(protocol: Scheme; host: string; base: string;
+  Call_DescribeEvents_601107 = ref object of OpenApiRestCall_600426
+proc url_DescribeEvents_601109(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeEvents_773273(path: JsonNode; query: JsonNode;
+proc validate_DescribeEvents_601108(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns information about events that meet the specified filter criteria. Events are returned in a summary form and do not include the detailed description, any additional metadata that depends on the event type, or any affected resources. To retrieve that information, use the <a>DescribeEventDetails</a> and <a>DescribeAffectedEntities</a> operations.</p> <p>If no filter criteria are specified, all events are returned. Results are sorted by <code>lastModifiedTime</code>, starting with the most recent.</p>
@@ -719,16 +719,16 @@ proc validate_DescribeEvents_773273(path: JsonNode; query: JsonNode;
   ##   nextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_773275 = query.getOrDefault("maxResults")
-  valid_773275 = validateParameter(valid_773275, JString, required = false,
+  var valid_601110 = query.getOrDefault("maxResults")
+  valid_601110 = validateParameter(valid_601110, JString, required = false,
                                  default = nil)
-  if valid_773275 != nil:
-    section.add "maxResults", valid_773275
-  var valid_773276 = query.getOrDefault("nextToken")
-  valid_773276 = validateParameter(valid_773276, JString, required = false,
+  if valid_601110 != nil:
+    section.add "maxResults", valid_601110
+  var valid_601111 = query.getOrDefault("nextToken")
+  valid_601111 = validateParameter(valid_601111, JString, required = false,
                                  default = nil)
-  if valid_773276 != nil:
-    section.add "nextToken", valid_773276
+  if valid_601111 != nil:
+    section.add "nextToken", valid_601111
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -740,48 +740,48 @@ proc validate_DescribeEvents_773273(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773277 = header.getOrDefault("X-Amz-Date")
-  valid_773277 = validateParameter(valid_773277, JString, required = false,
+  var valid_601112 = header.getOrDefault("X-Amz-Date")
+  valid_601112 = validateParameter(valid_601112, JString, required = false,
                                  default = nil)
-  if valid_773277 != nil:
-    section.add "X-Amz-Date", valid_773277
-  var valid_773278 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773278 = validateParameter(valid_773278, JString, required = false,
+  if valid_601112 != nil:
+    section.add "X-Amz-Date", valid_601112
+  var valid_601113 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601113 = validateParameter(valid_601113, JString, required = false,
                                  default = nil)
-  if valid_773278 != nil:
-    section.add "X-Amz-Security-Token", valid_773278
+  if valid_601113 != nil:
+    section.add "X-Amz-Security-Token", valid_601113
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773279 = header.getOrDefault("X-Amz-Target")
-  valid_773279 = validateParameter(valid_773279, JString, required = true, default = newJString(
+  var valid_601114 = header.getOrDefault("X-Amz-Target")
+  valid_601114 = validateParameter(valid_601114, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEvents"))
-  if valid_773279 != nil:
-    section.add "X-Amz-Target", valid_773279
-  var valid_773280 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773280 = validateParameter(valid_773280, JString, required = false,
+  if valid_601114 != nil:
+    section.add "X-Amz-Target", valid_601114
+  var valid_601115 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601115 = validateParameter(valid_601115, JString, required = false,
                                  default = nil)
-  if valid_773280 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773280
-  var valid_773281 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773281 = validateParameter(valid_773281, JString, required = false,
+  if valid_601115 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601115
+  var valid_601116 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601116 = validateParameter(valid_601116, JString, required = false,
                                  default = nil)
-  if valid_773281 != nil:
-    section.add "X-Amz-Algorithm", valid_773281
-  var valid_773282 = header.getOrDefault("X-Amz-Signature")
-  valid_773282 = validateParameter(valid_773282, JString, required = false,
+  if valid_601116 != nil:
+    section.add "X-Amz-Algorithm", valid_601116
+  var valid_601117 = header.getOrDefault("X-Amz-Signature")
+  valid_601117 = validateParameter(valid_601117, JString, required = false,
                                  default = nil)
-  if valid_773282 != nil:
-    section.add "X-Amz-Signature", valid_773282
-  var valid_773283 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773283 = validateParameter(valid_773283, JString, required = false,
+  if valid_601117 != nil:
+    section.add "X-Amz-Signature", valid_601117
+  var valid_601118 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601118 = validateParameter(valid_601118, JString, required = false,
                                  default = nil)
-  if valid_773283 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773283
-  var valid_773284 = header.getOrDefault("X-Amz-Credential")
-  valid_773284 = validateParameter(valid_773284, JString, required = false,
+  if valid_601118 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601118
+  var valid_601119 = header.getOrDefault("X-Amz-Credential")
+  valid_601119 = validateParameter(valid_601119, JString, required = false,
                                  default = nil)
-  if valid_773284 != nil:
-    section.add "X-Amz-Credential", valid_773284
+  if valid_601119 != nil:
+    section.add "X-Amz-Credential", valid_601119
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -792,19 +792,19 @@ proc validate_DescribeEvents_773273(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773286: Call_DescribeEvents_773272; path: JsonNode; query: JsonNode;
+proc call*(call_601121: Call_DescribeEvents_601107; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about events that meet the specified filter criteria. Events are returned in a summary form and do not include the detailed description, any additional metadata that depends on the event type, or any affected resources. To retrieve that information, use the <a>DescribeEventDetails</a> and <a>DescribeAffectedEntities</a> operations.</p> <p>If no filter criteria are specified, all events are returned. Results are sorted by <code>lastModifiedTime</code>, starting with the most recent.</p>
   ## 
-  let valid = call_773286.validator(path, query, header, formData, body)
-  let scheme = call_773286.pickScheme
+  let valid = call_601121.validator(path, query, header, formData, body)
+  let scheme = call_601121.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773286.url(scheme.get, call_773286.host, call_773286.base,
-                         call_773286.route, valid.getOrDefault("path"))
-  result = hook(call_773286, url, valid)
+  let url = call_601121.url(scheme.get, call_601121.host, call_601121.base,
+                         call_601121.route, valid.getOrDefault("path"))
+  result = hook(call_601121, url, valid)
 
-proc call*(call_773287: Call_DescribeEvents_773272; body: JsonNode;
+proc call*(call_601122: Call_DescribeEvents_601107; body: JsonNode;
           maxResults: string = ""; nextToken: string = ""): Recallable =
   ## describeEvents
   ## <p>Returns information about events that meet the specified filter criteria. Events are returned in a summary form and do not include the detailed description, any additional metadata that depends on the event type, or any affected resources. To retrieve that information, use the <a>DescribeEventDetails</a> and <a>DescribeAffectedEntities</a> operations.</p> <p>If no filter criteria are specified, all events are returned. Results are sorted by <code>lastModifiedTime</code>, starting with the most recent.</p>
@@ -813,19 +813,22 @@ proc call*(call_773287: Call_DescribeEvents_773272; body: JsonNode;
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_773288 = newJObject()
-  var body_773289 = newJObject()
-  add(query_773288, "maxResults", newJString(maxResults))
-  add(query_773288, "nextToken", newJString(nextToken))
+  var query_601123 = newJObject()
+  var body_601124 = newJObject()
+  add(query_601123, "maxResults", newJString(maxResults))
+  add(query_601123, "nextToken", newJString(nextToken))
   if body != nil:
-    body_773289 = body
-  result = call_773287.call(nil, query_773288, nil, nil, body_773289)
+    body_601124 = body
+  result = call_601122.call(nil, query_601123, nil, nil, body_601124)
 
-var describeEvents* = Call_DescribeEvents_773272(name: "describeEvents",
+var describeEvents* = Call_DescribeEvents_601107(name: "describeEvents",
     meth: HttpMethod.HttpPost, host: "health.amazonaws.com",
     route: "/#X-Amz-Target=AWSHealth_20160804.DescribeEvents",
-    validator: validate_DescribeEvents_773273, base: "/", url: url_DescribeEvents_773274,
+    validator: validate_DescribeEvents_601108, base: "/", url: url_DescribeEvents_601109,
     schemes: {Scheme.Https, Scheme.Http})
+export
+  rest
+
 proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()

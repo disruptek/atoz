@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode): string
 
-  OpenApiRestCall_772597 = ref object of OpenApiRestCall
+  OpenApiRestCall_600426 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_772597](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600426](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_772597): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600426): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -132,12 +132,12 @@ const
   awsServiceName = "forecast"
 method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateDataset_772933 = ref object of OpenApiRestCall_772597
-proc url_CreateDataset_772935(protocol: Scheme; host: string; base: string;
+  Call_CreateDataset_600768 = ref object of OpenApiRestCall_600426
+proc url_CreateDataset_600770(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateDataset_772934(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateDataset_600769(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an Amazon Forecast dataset. The information about the dataset that you provide helps Forecast understand how to consume the data for model training. This includes the following:</p> <ul> <li> <p> <i> <code>DataFrequency</code> </i> - How frequently your historical time-series data is collected. Amazon Forecast uses this information when training the model and generating a forecast.</p> </li> <li> <p> <i> <code>Domain</code> </i> and <i> <code>DatasetType</code> </i> - Each dataset has an associated dataset domain and a type within the domain. Amazon Forecast provides a list of predefined domains and types within each domain. For each unique dataset domain and type within the domain, Amazon Forecast requires your data to include a minimum set of predefined fields.</p> </li> <li> <p> <i> <code>Schema</code> </i> - A schema specifies the fields of the dataset, including the field name and data type.</p> </li> </ul> <p>After creating a dataset, you import your training data into the dataset and add the dataset to a dataset group. You then use the dataset group to create a predictor. For more information, see <a>howitworks-datasets-groups</a>.</p> <p>To get a list of all your datasets, use the <a>ListDatasets</a> operation.</p> <note> <p>The <code>Status</code> of a dataset must be <code>ACTIVE</code> before you can import training data. Use the <a>DescribeDataset</a> operation to get the status.</p> </note>
   ## 
@@ -157,48 +157,48 @@ proc validate_CreateDataset_772934(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773047 = header.getOrDefault("X-Amz-Date")
-  valid_773047 = validateParameter(valid_773047, JString, required = false,
+  var valid_600882 = header.getOrDefault("X-Amz-Date")
+  valid_600882 = validateParameter(valid_600882, JString, required = false,
                                  default = nil)
-  if valid_773047 != nil:
-    section.add "X-Amz-Date", valid_773047
-  var valid_773048 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773048 = validateParameter(valid_773048, JString, required = false,
+  if valid_600882 != nil:
+    section.add "X-Amz-Date", valid_600882
+  var valid_600883 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600883 = validateParameter(valid_600883, JString, required = false,
                                  default = nil)
-  if valid_773048 != nil:
-    section.add "X-Amz-Security-Token", valid_773048
+  if valid_600883 != nil:
+    section.add "X-Amz-Security-Token", valid_600883
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773062 = header.getOrDefault("X-Amz-Target")
-  valid_773062 = validateParameter(valid_773062, JString, required = true, default = newJString(
+  var valid_600897 = header.getOrDefault("X-Amz-Target")
+  valid_600897 = validateParameter(valid_600897, JString, required = true, default = newJString(
       "AmazonForecast.CreateDataset"))
-  if valid_773062 != nil:
-    section.add "X-Amz-Target", valid_773062
-  var valid_773063 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773063 = validateParameter(valid_773063, JString, required = false,
+  if valid_600897 != nil:
+    section.add "X-Amz-Target", valid_600897
+  var valid_600898 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600898 = validateParameter(valid_600898, JString, required = false,
                                  default = nil)
-  if valid_773063 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773063
-  var valid_773064 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773064 = validateParameter(valid_773064, JString, required = false,
+  if valid_600898 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600898
+  var valid_600899 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600899 = validateParameter(valid_600899, JString, required = false,
                                  default = nil)
-  if valid_773064 != nil:
-    section.add "X-Amz-Algorithm", valid_773064
-  var valid_773065 = header.getOrDefault("X-Amz-Signature")
-  valid_773065 = validateParameter(valid_773065, JString, required = false,
+  if valid_600899 != nil:
+    section.add "X-Amz-Algorithm", valid_600899
+  var valid_600900 = header.getOrDefault("X-Amz-Signature")
+  valid_600900 = validateParameter(valid_600900, JString, required = false,
                                  default = nil)
-  if valid_773065 != nil:
-    section.add "X-Amz-Signature", valid_773065
-  var valid_773066 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773066 = validateParameter(valid_773066, JString, required = false,
+  if valid_600900 != nil:
+    section.add "X-Amz-Signature", valid_600900
+  var valid_600901 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600901 = validateParameter(valid_600901, JString, required = false,
                                  default = nil)
-  if valid_773066 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773066
-  var valid_773067 = header.getOrDefault("X-Amz-Credential")
-  valid_773067 = validateParameter(valid_773067, JString, required = false,
+  if valid_600901 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600901
+  var valid_600902 = header.getOrDefault("X-Amz-Credential")
+  valid_600902 = validateParameter(valid_600902, JString, required = false,
                                  default = nil)
-  if valid_773067 != nil:
-    section.add "X-Amz-Credential", valid_773067
+  if valid_600902 != nil:
+    section.add "X-Amz-Credential", valid_600902
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -209,39 +209,39 @@ proc validate_CreateDataset_772934(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_773091: Call_CreateDataset_772933; path: JsonNode; query: JsonNode;
+proc call*(call_600926: Call_CreateDataset_600768; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an Amazon Forecast dataset. The information about the dataset that you provide helps Forecast understand how to consume the data for model training. This includes the following:</p> <ul> <li> <p> <i> <code>DataFrequency</code> </i> - How frequently your historical time-series data is collected. Amazon Forecast uses this information when training the model and generating a forecast.</p> </li> <li> <p> <i> <code>Domain</code> </i> and <i> <code>DatasetType</code> </i> - Each dataset has an associated dataset domain and a type within the domain. Amazon Forecast provides a list of predefined domains and types within each domain. For each unique dataset domain and type within the domain, Amazon Forecast requires your data to include a minimum set of predefined fields.</p> </li> <li> <p> <i> <code>Schema</code> </i> - A schema specifies the fields of the dataset, including the field name and data type.</p> </li> </ul> <p>After creating a dataset, you import your training data into the dataset and add the dataset to a dataset group. You then use the dataset group to create a predictor. For more information, see <a>howitworks-datasets-groups</a>.</p> <p>To get a list of all your datasets, use the <a>ListDatasets</a> operation.</p> <note> <p>The <code>Status</code> of a dataset must be <code>ACTIVE</code> before you can import training data. Use the <a>DescribeDataset</a> operation to get the status.</p> </note>
   ## 
-  let valid = call_773091.validator(path, query, header, formData, body)
-  let scheme = call_773091.pickScheme
+  let valid = call_600926.validator(path, query, header, formData, body)
+  let scheme = call_600926.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773091.url(scheme.get, call_773091.host, call_773091.base,
-                         call_773091.route, valid.getOrDefault("path"))
-  result = hook(call_773091, url, valid)
+  let url = call_600926.url(scheme.get, call_600926.host, call_600926.base,
+                         call_600926.route, valid.getOrDefault("path"))
+  result = hook(call_600926, url, valid)
 
-proc call*(call_773162: Call_CreateDataset_772933; body: JsonNode): Recallable =
+proc call*(call_600997: Call_CreateDataset_600768; body: JsonNode): Recallable =
   ## createDataset
   ## <p>Creates an Amazon Forecast dataset. The information about the dataset that you provide helps Forecast understand how to consume the data for model training. This includes the following:</p> <ul> <li> <p> <i> <code>DataFrequency</code> </i> - How frequently your historical time-series data is collected. Amazon Forecast uses this information when training the model and generating a forecast.</p> </li> <li> <p> <i> <code>Domain</code> </i> and <i> <code>DatasetType</code> </i> - Each dataset has an associated dataset domain and a type within the domain. Amazon Forecast provides a list of predefined domains and types within each domain. For each unique dataset domain and type within the domain, Amazon Forecast requires your data to include a minimum set of predefined fields.</p> </li> <li> <p> <i> <code>Schema</code> </i> - A schema specifies the fields of the dataset, including the field name and data type.</p> </li> </ul> <p>After creating a dataset, you import your training data into the dataset and add the dataset to a dataset group. You then use the dataset group to create a predictor. For more information, see <a>howitworks-datasets-groups</a>.</p> <p>To get a list of all your datasets, use the <a>ListDatasets</a> operation.</p> <note> <p>The <code>Status</code> of a dataset must be <code>ACTIVE</code> before you can import training data. Use the <a>DescribeDataset</a> operation to get the status.</p> </note>
   ##   body: JObject (required)
-  var body_773163 = newJObject()
+  var body_600998 = newJObject()
   if body != nil:
-    body_773163 = body
-  result = call_773162.call(nil, nil, nil, nil, body_773163)
+    body_600998 = body
+  result = call_600997.call(nil, nil, nil, nil, body_600998)
 
-var createDataset* = Call_CreateDataset_772933(name: "createDataset",
+var createDataset* = Call_CreateDataset_600768(name: "createDataset",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.CreateDataset",
-    validator: validate_CreateDataset_772934, base: "/", url: url_CreateDataset_772935,
+    validator: validate_CreateDataset_600769, base: "/", url: url_CreateDataset_600770,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDatasetGroup_773202 = ref object of OpenApiRestCall_772597
-proc url_CreateDatasetGroup_773204(protocol: Scheme; host: string; base: string;
+  Call_CreateDatasetGroup_601037 = ref object of OpenApiRestCall_600426
+proc url_CreateDatasetGroup_601039(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateDatasetGroup_773203(path: JsonNode; query: JsonNode;
+proc validate_CreateDatasetGroup_601038(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Creates an Amazon Forecast dataset group, which holds a collection of related datasets. You can add datasets to the dataset group when you create the dataset group, or you can add datasets later with the <a>UpdateDatasetGroup</a> operation.</p> <p>After creating a dataset group and adding datasets, you use the dataset group when you create a predictor. For more information, see <a>howitworks-datasets-groups</a>.</p> <p>To get a list of all your datasets groups, use the <a>ListDatasetGroups</a> operation.</p> <note> <p>The <code>Status</code> of a dataset group must be <code>ACTIVE</code> before you can create a predictor using the dataset group. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> </note>
@@ -262,48 +262,48 @@ proc validate_CreateDatasetGroup_773203(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773205 = header.getOrDefault("X-Amz-Date")
-  valid_773205 = validateParameter(valid_773205, JString, required = false,
+  var valid_601040 = header.getOrDefault("X-Amz-Date")
+  valid_601040 = validateParameter(valid_601040, JString, required = false,
                                  default = nil)
-  if valid_773205 != nil:
-    section.add "X-Amz-Date", valid_773205
-  var valid_773206 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773206 = validateParameter(valid_773206, JString, required = false,
+  if valid_601040 != nil:
+    section.add "X-Amz-Date", valid_601040
+  var valid_601041 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601041 = validateParameter(valid_601041, JString, required = false,
                                  default = nil)
-  if valid_773206 != nil:
-    section.add "X-Amz-Security-Token", valid_773206
+  if valid_601041 != nil:
+    section.add "X-Amz-Security-Token", valid_601041
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773207 = header.getOrDefault("X-Amz-Target")
-  valid_773207 = validateParameter(valid_773207, JString, required = true, default = newJString(
+  var valid_601042 = header.getOrDefault("X-Amz-Target")
+  valid_601042 = validateParameter(valid_601042, JString, required = true, default = newJString(
       "AmazonForecast.CreateDatasetGroup"))
-  if valid_773207 != nil:
-    section.add "X-Amz-Target", valid_773207
-  var valid_773208 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773208 = validateParameter(valid_773208, JString, required = false,
+  if valid_601042 != nil:
+    section.add "X-Amz-Target", valid_601042
+  var valid_601043 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601043 = validateParameter(valid_601043, JString, required = false,
                                  default = nil)
-  if valid_773208 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773208
-  var valid_773209 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773209 = validateParameter(valid_773209, JString, required = false,
+  if valid_601043 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601043
+  var valid_601044 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601044 = validateParameter(valid_601044, JString, required = false,
                                  default = nil)
-  if valid_773209 != nil:
-    section.add "X-Amz-Algorithm", valid_773209
-  var valid_773210 = header.getOrDefault("X-Amz-Signature")
-  valid_773210 = validateParameter(valid_773210, JString, required = false,
+  if valid_601044 != nil:
+    section.add "X-Amz-Algorithm", valid_601044
+  var valid_601045 = header.getOrDefault("X-Amz-Signature")
+  valid_601045 = validateParameter(valid_601045, JString, required = false,
                                  default = nil)
-  if valid_773210 != nil:
-    section.add "X-Amz-Signature", valid_773210
-  var valid_773211 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773211 = validateParameter(valid_773211, JString, required = false,
+  if valid_601045 != nil:
+    section.add "X-Amz-Signature", valid_601045
+  var valid_601046 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601046 = validateParameter(valid_601046, JString, required = false,
                                  default = nil)
-  if valid_773211 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773211
-  var valid_773212 = header.getOrDefault("X-Amz-Credential")
-  valid_773212 = validateParameter(valid_773212, JString, required = false,
+  if valid_601046 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601046
+  var valid_601047 = header.getOrDefault("X-Amz-Credential")
+  valid_601047 = validateParameter(valid_601047, JString, required = false,
                                  default = nil)
-  if valid_773212 != nil:
-    section.add "X-Amz-Credential", valid_773212
+  if valid_601047 != nil:
+    section.add "X-Amz-Credential", valid_601047
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -314,40 +314,40 @@ proc validate_CreateDatasetGroup_773203(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773214: Call_CreateDatasetGroup_773202; path: JsonNode;
+proc call*(call_601049: Call_CreateDatasetGroup_601037; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an Amazon Forecast dataset group, which holds a collection of related datasets. You can add datasets to the dataset group when you create the dataset group, or you can add datasets later with the <a>UpdateDatasetGroup</a> operation.</p> <p>After creating a dataset group and adding datasets, you use the dataset group when you create a predictor. For more information, see <a>howitworks-datasets-groups</a>.</p> <p>To get a list of all your datasets groups, use the <a>ListDatasetGroups</a> operation.</p> <note> <p>The <code>Status</code> of a dataset group must be <code>ACTIVE</code> before you can create a predictor using the dataset group. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> </note>
   ## 
-  let valid = call_773214.validator(path, query, header, formData, body)
-  let scheme = call_773214.pickScheme
+  let valid = call_601049.validator(path, query, header, formData, body)
+  let scheme = call_601049.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773214.url(scheme.get, call_773214.host, call_773214.base,
-                         call_773214.route, valid.getOrDefault("path"))
-  result = hook(call_773214, url, valid)
+  let url = call_601049.url(scheme.get, call_601049.host, call_601049.base,
+                         call_601049.route, valid.getOrDefault("path"))
+  result = hook(call_601049, url, valid)
 
-proc call*(call_773215: Call_CreateDatasetGroup_773202; body: JsonNode): Recallable =
+proc call*(call_601050: Call_CreateDatasetGroup_601037; body: JsonNode): Recallable =
   ## createDatasetGroup
   ## <p>Creates an Amazon Forecast dataset group, which holds a collection of related datasets. You can add datasets to the dataset group when you create the dataset group, or you can add datasets later with the <a>UpdateDatasetGroup</a> operation.</p> <p>After creating a dataset group and adding datasets, you use the dataset group when you create a predictor. For more information, see <a>howitworks-datasets-groups</a>.</p> <p>To get a list of all your datasets groups, use the <a>ListDatasetGroups</a> operation.</p> <note> <p>The <code>Status</code> of a dataset group must be <code>ACTIVE</code> before you can create a predictor using the dataset group. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> </note>
   ##   body: JObject (required)
-  var body_773216 = newJObject()
+  var body_601051 = newJObject()
   if body != nil:
-    body_773216 = body
-  result = call_773215.call(nil, nil, nil, nil, body_773216)
+    body_601051 = body
+  result = call_601050.call(nil, nil, nil, nil, body_601051)
 
-var createDatasetGroup* = Call_CreateDatasetGroup_773202(
+var createDatasetGroup* = Call_CreateDatasetGroup_601037(
     name: "createDatasetGroup", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.CreateDatasetGroup",
-    validator: validate_CreateDatasetGroup_773203, base: "/",
-    url: url_CreateDatasetGroup_773204, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateDatasetGroup_601038, base: "/",
+    url: url_CreateDatasetGroup_601039, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDatasetImportJob_773217 = ref object of OpenApiRestCall_772597
-proc url_CreateDatasetImportJob_773219(protocol: Scheme; host: string; base: string;
+  Call_CreateDatasetImportJob_601052 = ref object of OpenApiRestCall_600426
+proc url_CreateDatasetImportJob_601054(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateDatasetImportJob_773218(path: JsonNode; query: JsonNode;
+proc validate_CreateDatasetImportJob_601053(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Imports your training data to an Amazon Forecast dataset. You provide the location of your training data in an Amazon Simple Storage Service (Amazon S3) bucket and the Amazon Resource Name (ARN) of the dataset that you want to import the data to.</p> <p>You must specify a <a>DataSource</a> object that includes an AWS Identity and Access Management (IAM) role that Amazon Forecast can assume to access the data. For more information, see <a>aws-forecast-iam-roles</a>.</p> <p>Two properties of the training data are optionally specified:</p> <ul> <li> <p>The delimiter that separates the data fields.</p> <p>The default delimiter is a comma (,), which is the only supported delimiter in this release.</p> </li> <li> <p>The format of timestamps.</p> <p>If the format is not specified, Amazon Forecast expects the format to be "yyyy-MM-dd HH:mm:ss".</p> </li> </ul> <p>When Amazon Forecast uploads your training data, it verifies that the data was collected at the <code>DataFrequency</code> specified when the target dataset was created. For more information, see <a>CreateDataset</a> and <a>howitworks-datasets-groups</a>. Amazon Forecast also verifies the delimiter and timestamp format.</p> <p>You can use the <a>ListDatasetImportJobs</a> operation to get a list of all your dataset import jobs, filtered by specified criteria.</p> <p>To get a list of all your dataset import jobs, filtered by the specified criteria, use the <a>ListDatasetGroups</a> operation.</p>
   ## 
@@ -367,48 +367,48 @@ proc validate_CreateDatasetImportJob_773218(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773220 = header.getOrDefault("X-Amz-Date")
-  valid_773220 = validateParameter(valid_773220, JString, required = false,
+  var valid_601055 = header.getOrDefault("X-Amz-Date")
+  valid_601055 = validateParameter(valid_601055, JString, required = false,
                                  default = nil)
-  if valid_773220 != nil:
-    section.add "X-Amz-Date", valid_773220
-  var valid_773221 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773221 = validateParameter(valid_773221, JString, required = false,
+  if valid_601055 != nil:
+    section.add "X-Amz-Date", valid_601055
+  var valid_601056 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601056 = validateParameter(valid_601056, JString, required = false,
                                  default = nil)
-  if valid_773221 != nil:
-    section.add "X-Amz-Security-Token", valid_773221
+  if valid_601056 != nil:
+    section.add "X-Amz-Security-Token", valid_601056
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773222 = header.getOrDefault("X-Amz-Target")
-  valid_773222 = validateParameter(valid_773222, JString, required = true, default = newJString(
+  var valid_601057 = header.getOrDefault("X-Amz-Target")
+  valid_601057 = validateParameter(valid_601057, JString, required = true, default = newJString(
       "AmazonForecast.CreateDatasetImportJob"))
-  if valid_773222 != nil:
-    section.add "X-Amz-Target", valid_773222
-  var valid_773223 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773223 = validateParameter(valid_773223, JString, required = false,
+  if valid_601057 != nil:
+    section.add "X-Amz-Target", valid_601057
+  var valid_601058 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601058 = validateParameter(valid_601058, JString, required = false,
                                  default = nil)
-  if valid_773223 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773223
-  var valid_773224 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773224 = validateParameter(valid_773224, JString, required = false,
+  if valid_601058 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601058
+  var valid_601059 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601059 = validateParameter(valid_601059, JString, required = false,
                                  default = nil)
-  if valid_773224 != nil:
-    section.add "X-Amz-Algorithm", valid_773224
-  var valid_773225 = header.getOrDefault("X-Amz-Signature")
-  valid_773225 = validateParameter(valid_773225, JString, required = false,
+  if valid_601059 != nil:
+    section.add "X-Amz-Algorithm", valid_601059
+  var valid_601060 = header.getOrDefault("X-Amz-Signature")
+  valid_601060 = validateParameter(valid_601060, JString, required = false,
                                  default = nil)
-  if valid_773225 != nil:
-    section.add "X-Amz-Signature", valid_773225
-  var valid_773226 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773226 = validateParameter(valid_773226, JString, required = false,
+  if valid_601060 != nil:
+    section.add "X-Amz-Signature", valid_601060
+  var valid_601061 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601061 = validateParameter(valid_601061, JString, required = false,
                                  default = nil)
-  if valid_773226 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773226
-  var valid_773227 = header.getOrDefault("X-Amz-Credential")
-  valid_773227 = validateParameter(valid_773227, JString, required = false,
+  if valid_601061 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601061
+  var valid_601062 = header.getOrDefault("X-Amz-Credential")
+  valid_601062 = validateParameter(valid_601062, JString, required = false,
                                  default = nil)
-  if valid_773227 != nil:
-    section.add "X-Amz-Credential", valid_773227
+  if valid_601062 != nil:
+    section.add "X-Amz-Credential", valid_601062
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -419,40 +419,40 @@ proc validate_CreateDatasetImportJob_773218(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773229: Call_CreateDatasetImportJob_773217; path: JsonNode;
+proc call*(call_601064: Call_CreateDatasetImportJob_601052; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Imports your training data to an Amazon Forecast dataset. You provide the location of your training data in an Amazon Simple Storage Service (Amazon S3) bucket and the Amazon Resource Name (ARN) of the dataset that you want to import the data to.</p> <p>You must specify a <a>DataSource</a> object that includes an AWS Identity and Access Management (IAM) role that Amazon Forecast can assume to access the data. For more information, see <a>aws-forecast-iam-roles</a>.</p> <p>Two properties of the training data are optionally specified:</p> <ul> <li> <p>The delimiter that separates the data fields.</p> <p>The default delimiter is a comma (,), which is the only supported delimiter in this release.</p> </li> <li> <p>The format of timestamps.</p> <p>If the format is not specified, Amazon Forecast expects the format to be "yyyy-MM-dd HH:mm:ss".</p> </li> </ul> <p>When Amazon Forecast uploads your training data, it verifies that the data was collected at the <code>DataFrequency</code> specified when the target dataset was created. For more information, see <a>CreateDataset</a> and <a>howitworks-datasets-groups</a>. Amazon Forecast also verifies the delimiter and timestamp format.</p> <p>You can use the <a>ListDatasetImportJobs</a> operation to get a list of all your dataset import jobs, filtered by specified criteria.</p> <p>To get a list of all your dataset import jobs, filtered by the specified criteria, use the <a>ListDatasetGroups</a> operation.</p>
   ## 
-  let valid = call_773229.validator(path, query, header, formData, body)
-  let scheme = call_773229.pickScheme
+  let valid = call_601064.validator(path, query, header, formData, body)
+  let scheme = call_601064.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773229.url(scheme.get, call_773229.host, call_773229.base,
-                         call_773229.route, valid.getOrDefault("path"))
-  result = hook(call_773229, url, valid)
+  let url = call_601064.url(scheme.get, call_601064.host, call_601064.base,
+                         call_601064.route, valid.getOrDefault("path"))
+  result = hook(call_601064, url, valid)
 
-proc call*(call_773230: Call_CreateDatasetImportJob_773217; body: JsonNode): Recallable =
+proc call*(call_601065: Call_CreateDatasetImportJob_601052; body: JsonNode): Recallable =
   ## createDatasetImportJob
   ## <p>Imports your training data to an Amazon Forecast dataset. You provide the location of your training data in an Amazon Simple Storage Service (Amazon S3) bucket and the Amazon Resource Name (ARN) of the dataset that you want to import the data to.</p> <p>You must specify a <a>DataSource</a> object that includes an AWS Identity and Access Management (IAM) role that Amazon Forecast can assume to access the data. For more information, see <a>aws-forecast-iam-roles</a>.</p> <p>Two properties of the training data are optionally specified:</p> <ul> <li> <p>The delimiter that separates the data fields.</p> <p>The default delimiter is a comma (,), which is the only supported delimiter in this release.</p> </li> <li> <p>The format of timestamps.</p> <p>If the format is not specified, Amazon Forecast expects the format to be "yyyy-MM-dd HH:mm:ss".</p> </li> </ul> <p>When Amazon Forecast uploads your training data, it verifies that the data was collected at the <code>DataFrequency</code> specified when the target dataset was created. For more information, see <a>CreateDataset</a> and <a>howitworks-datasets-groups</a>. Amazon Forecast also verifies the delimiter and timestamp format.</p> <p>You can use the <a>ListDatasetImportJobs</a> operation to get a list of all your dataset import jobs, filtered by specified criteria.</p> <p>To get a list of all your dataset import jobs, filtered by the specified criteria, use the <a>ListDatasetGroups</a> operation.</p>
   ##   body: JObject (required)
-  var body_773231 = newJObject()
+  var body_601066 = newJObject()
   if body != nil:
-    body_773231 = body
-  result = call_773230.call(nil, nil, nil, nil, body_773231)
+    body_601066 = body
+  result = call_601065.call(nil, nil, nil, nil, body_601066)
 
-var createDatasetImportJob* = Call_CreateDatasetImportJob_773217(
+var createDatasetImportJob* = Call_CreateDatasetImportJob_601052(
     name: "createDatasetImportJob", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.CreateDatasetImportJob",
-    validator: validate_CreateDatasetImportJob_773218, base: "/",
-    url: url_CreateDatasetImportJob_773219, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateDatasetImportJob_601053, base: "/",
+    url: url_CreateDatasetImportJob_601054, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateForecast_773232 = ref object of OpenApiRestCall_772597
-proc url_CreateForecast_773234(protocol: Scheme; host: string; base: string;
+  Call_CreateForecast_601067 = ref object of OpenApiRestCall_600426
+proc url_CreateForecast_601069(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateForecast_773233(path: JsonNode; query: JsonNode;
+proc validate_CreateForecast_601068(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Creates a forecast for each item in the <code>TARGET_TIME_SERIES</code> dataset that was used to train the predictor. This is known as inference. To retrieve the forecast for a single item at low latency, use the operation. To export the complete forecast into your Amazon Simple Storage Service (Amazon S3), use the <a>CreateForecastExportJob</a> operation.</p> <p>The range of the forecast is determined by the <code>ForecastHorizon</code>, specified in the <a>CreatePredictor</a> request, multiplied by the <code>DataFrequency</code>, specified in the <a>CreateDataset</a> request. When you query a forecast, you can request a specific date range within the complete forecast.</p> <p>To get a list of all your forecasts, use the <a>ListForecasts</a> operation.</p> <note> <p>The forecasts generated by Amazon Forecast are in the same timezone as the dataset that was used to create the predictor.</p> </note> <p>For more information, see <a>howitworks-forecast</a>.</p> <note> <p>The <code>Status</code> of the forecast must be <code>ACTIVE</code> before you can query or export the forecast. Use the <a>DescribeForecast</a> operation to get the status.</p> </note>
@@ -473,48 +473,48 @@ proc validate_CreateForecast_773233(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773235 = header.getOrDefault("X-Amz-Date")
-  valid_773235 = validateParameter(valid_773235, JString, required = false,
+  var valid_601070 = header.getOrDefault("X-Amz-Date")
+  valid_601070 = validateParameter(valid_601070, JString, required = false,
                                  default = nil)
-  if valid_773235 != nil:
-    section.add "X-Amz-Date", valid_773235
-  var valid_773236 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773236 = validateParameter(valid_773236, JString, required = false,
+  if valid_601070 != nil:
+    section.add "X-Amz-Date", valid_601070
+  var valid_601071 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601071 = validateParameter(valid_601071, JString, required = false,
                                  default = nil)
-  if valid_773236 != nil:
-    section.add "X-Amz-Security-Token", valid_773236
+  if valid_601071 != nil:
+    section.add "X-Amz-Security-Token", valid_601071
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773237 = header.getOrDefault("X-Amz-Target")
-  valid_773237 = validateParameter(valid_773237, JString, required = true, default = newJString(
+  var valid_601072 = header.getOrDefault("X-Amz-Target")
+  valid_601072 = validateParameter(valid_601072, JString, required = true, default = newJString(
       "AmazonForecast.CreateForecast"))
-  if valid_773237 != nil:
-    section.add "X-Amz-Target", valid_773237
-  var valid_773238 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773238 = validateParameter(valid_773238, JString, required = false,
+  if valid_601072 != nil:
+    section.add "X-Amz-Target", valid_601072
+  var valid_601073 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601073 = validateParameter(valid_601073, JString, required = false,
                                  default = nil)
-  if valid_773238 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773238
-  var valid_773239 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773239 = validateParameter(valid_773239, JString, required = false,
+  if valid_601073 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601073
+  var valid_601074 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601074 = validateParameter(valid_601074, JString, required = false,
                                  default = nil)
-  if valid_773239 != nil:
-    section.add "X-Amz-Algorithm", valid_773239
-  var valid_773240 = header.getOrDefault("X-Amz-Signature")
-  valid_773240 = validateParameter(valid_773240, JString, required = false,
+  if valid_601074 != nil:
+    section.add "X-Amz-Algorithm", valid_601074
+  var valid_601075 = header.getOrDefault("X-Amz-Signature")
+  valid_601075 = validateParameter(valid_601075, JString, required = false,
                                  default = nil)
-  if valid_773240 != nil:
-    section.add "X-Amz-Signature", valid_773240
-  var valid_773241 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773241 = validateParameter(valid_773241, JString, required = false,
+  if valid_601075 != nil:
+    section.add "X-Amz-Signature", valid_601075
+  var valid_601076 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601076 = validateParameter(valid_601076, JString, required = false,
                                  default = nil)
-  if valid_773241 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773241
-  var valid_773242 = header.getOrDefault("X-Amz-Credential")
-  valid_773242 = validateParameter(valid_773242, JString, required = false,
+  if valid_601076 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601076
+  var valid_601077 = header.getOrDefault("X-Amz-Credential")
+  valid_601077 = validateParameter(valid_601077, JString, required = false,
                                  default = nil)
-  if valid_773242 != nil:
-    section.add "X-Amz-Credential", valid_773242
+  if valid_601077 != nil:
+    section.add "X-Amz-Credential", valid_601077
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -525,39 +525,39 @@ proc validate_CreateForecast_773233(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773244: Call_CreateForecast_773232; path: JsonNode; query: JsonNode;
+proc call*(call_601079: Call_CreateForecast_601067; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a forecast for each item in the <code>TARGET_TIME_SERIES</code> dataset that was used to train the predictor. This is known as inference. To retrieve the forecast for a single item at low latency, use the operation. To export the complete forecast into your Amazon Simple Storage Service (Amazon S3), use the <a>CreateForecastExportJob</a> operation.</p> <p>The range of the forecast is determined by the <code>ForecastHorizon</code>, specified in the <a>CreatePredictor</a> request, multiplied by the <code>DataFrequency</code>, specified in the <a>CreateDataset</a> request. When you query a forecast, you can request a specific date range within the complete forecast.</p> <p>To get a list of all your forecasts, use the <a>ListForecasts</a> operation.</p> <note> <p>The forecasts generated by Amazon Forecast are in the same timezone as the dataset that was used to create the predictor.</p> </note> <p>For more information, see <a>howitworks-forecast</a>.</p> <note> <p>The <code>Status</code> of the forecast must be <code>ACTIVE</code> before you can query or export the forecast. Use the <a>DescribeForecast</a> operation to get the status.</p> </note>
   ## 
-  let valid = call_773244.validator(path, query, header, formData, body)
-  let scheme = call_773244.pickScheme
+  let valid = call_601079.validator(path, query, header, formData, body)
+  let scheme = call_601079.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773244.url(scheme.get, call_773244.host, call_773244.base,
-                         call_773244.route, valid.getOrDefault("path"))
-  result = hook(call_773244, url, valid)
+  let url = call_601079.url(scheme.get, call_601079.host, call_601079.base,
+                         call_601079.route, valid.getOrDefault("path"))
+  result = hook(call_601079, url, valid)
 
-proc call*(call_773245: Call_CreateForecast_773232; body: JsonNode): Recallable =
+proc call*(call_601080: Call_CreateForecast_601067; body: JsonNode): Recallable =
   ## createForecast
   ## <p>Creates a forecast for each item in the <code>TARGET_TIME_SERIES</code> dataset that was used to train the predictor. This is known as inference. To retrieve the forecast for a single item at low latency, use the operation. To export the complete forecast into your Amazon Simple Storage Service (Amazon S3), use the <a>CreateForecastExportJob</a> operation.</p> <p>The range of the forecast is determined by the <code>ForecastHorizon</code>, specified in the <a>CreatePredictor</a> request, multiplied by the <code>DataFrequency</code>, specified in the <a>CreateDataset</a> request. When you query a forecast, you can request a specific date range within the complete forecast.</p> <p>To get a list of all your forecasts, use the <a>ListForecasts</a> operation.</p> <note> <p>The forecasts generated by Amazon Forecast are in the same timezone as the dataset that was used to create the predictor.</p> </note> <p>For more information, see <a>howitworks-forecast</a>.</p> <note> <p>The <code>Status</code> of the forecast must be <code>ACTIVE</code> before you can query or export the forecast. Use the <a>DescribeForecast</a> operation to get the status.</p> </note>
   ##   body: JObject (required)
-  var body_773246 = newJObject()
+  var body_601081 = newJObject()
   if body != nil:
-    body_773246 = body
-  result = call_773245.call(nil, nil, nil, nil, body_773246)
+    body_601081 = body
+  result = call_601080.call(nil, nil, nil, nil, body_601081)
 
-var createForecast* = Call_CreateForecast_773232(name: "createForecast",
+var createForecast* = Call_CreateForecast_601067(name: "createForecast",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.CreateForecast",
-    validator: validate_CreateForecast_773233, base: "/", url: url_CreateForecast_773234,
+    validator: validate_CreateForecast_601068, base: "/", url: url_CreateForecast_601069,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateForecastExportJob_773247 = ref object of OpenApiRestCall_772597
-proc url_CreateForecastExportJob_773249(protocol: Scheme; host: string; base: string;
+  Call_CreateForecastExportJob_601082 = ref object of OpenApiRestCall_600426
+proc url_CreateForecastExportJob_601084(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateForecastExportJob_773248(path: JsonNode; query: JsonNode;
+proc validate_CreateForecastExportJob_601083(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Exports a forecast created by the <a>CreateForecast</a> operation to your Amazon Simple Storage Service (Amazon S3) bucket.</p> <p>You must specify a <a>DataDestination</a> object that includes an AWS Identity and Access Management (IAM) role that Amazon Forecast can assume to access the Amazon S3 bucket. For more information, see <a>aws-forecast-iam-roles</a>.</p> <p>For more information, see <a>howitworks-forecast</a>.</p> <p>To get a list of all your forecast export jobs, use the <a>ListForecastExportJobs</a> operation.</p> <note> <p>The <code>Status</code> of the forecast export job must be <code>ACTIVE</code> before you can access the forecast in your Amazon S3 bucket. Use the <a>DescribeForecastExportJob</a> operation to get the status.</p> </note>
   ## 
@@ -577,48 +577,48 @@ proc validate_CreateForecastExportJob_773248(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773250 = header.getOrDefault("X-Amz-Date")
-  valid_773250 = validateParameter(valid_773250, JString, required = false,
+  var valid_601085 = header.getOrDefault("X-Amz-Date")
+  valid_601085 = validateParameter(valid_601085, JString, required = false,
                                  default = nil)
-  if valid_773250 != nil:
-    section.add "X-Amz-Date", valid_773250
-  var valid_773251 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773251 = validateParameter(valid_773251, JString, required = false,
+  if valid_601085 != nil:
+    section.add "X-Amz-Date", valid_601085
+  var valid_601086 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601086 = validateParameter(valid_601086, JString, required = false,
                                  default = nil)
-  if valid_773251 != nil:
-    section.add "X-Amz-Security-Token", valid_773251
+  if valid_601086 != nil:
+    section.add "X-Amz-Security-Token", valid_601086
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773252 = header.getOrDefault("X-Amz-Target")
-  valid_773252 = validateParameter(valid_773252, JString, required = true, default = newJString(
+  var valid_601087 = header.getOrDefault("X-Amz-Target")
+  valid_601087 = validateParameter(valid_601087, JString, required = true, default = newJString(
       "AmazonForecast.CreateForecastExportJob"))
-  if valid_773252 != nil:
-    section.add "X-Amz-Target", valid_773252
-  var valid_773253 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773253 = validateParameter(valid_773253, JString, required = false,
+  if valid_601087 != nil:
+    section.add "X-Amz-Target", valid_601087
+  var valid_601088 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601088 = validateParameter(valid_601088, JString, required = false,
                                  default = nil)
-  if valid_773253 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773253
-  var valid_773254 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773254 = validateParameter(valid_773254, JString, required = false,
+  if valid_601088 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601088
+  var valid_601089 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601089 = validateParameter(valid_601089, JString, required = false,
                                  default = nil)
-  if valid_773254 != nil:
-    section.add "X-Amz-Algorithm", valid_773254
-  var valid_773255 = header.getOrDefault("X-Amz-Signature")
-  valid_773255 = validateParameter(valid_773255, JString, required = false,
+  if valid_601089 != nil:
+    section.add "X-Amz-Algorithm", valid_601089
+  var valid_601090 = header.getOrDefault("X-Amz-Signature")
+  valid_601090 = validateParameter(valid_601090, JString, required = false,
                                  default = nil)
-  if valid_773255 != nil:
-    section.add "X-Amz-Signature", valid_773255
-  var valid_773256 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773256 = validateParameter(valid_773256, JString, required = false,
+  if valid_601090 != nil:
+    section.add "X-Amz-Signature", valid_601090
+  var valid_601091 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601091 = validateParameter(valid_601091, JString, required = false,
                                  default = nil)
-  if valid_773256 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773256
-  var valid_773257 = header.getOrDefault("X-Amz-Credential")
-  valid_773257 = validateParameter(valid_773257, JString, required = false,
+  if valid_601091 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601091
+  var valid_601092 = header.getOrDefault("X-Amz-Credential")
+  valid_601092 = validateParameter(valid_601092, JString, required = false,
                                  default = nil)
-  if valid_773257 != nil:
-    section.add "X-Amz-Credential", valid_773257
+  if valid_601092 != nil:
+    section.add "X-Amz-Credential", valid_601092
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -629,40 +629,40 @@ proc validate_CreateForecastExportJob_773248(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773259: Call_CreateForecastExportJob_773247; path: JsonNode;
+proc call*(call_601094: Call_CreateForecastExportJob_601082; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Exports a forecast created by the <a>CreateForecast</a> operation to your Amazon Simple Storage Service (Amazon S3) bucket.</p> <p>You must specify a <a>DataDestination</a> object that includes an AWS Identity and Access Management (IAM) role that Amazon Forecast can assume to access the Amazon S3 bucket. For more information, see <a>aws-forecast-iam-roles</a>.</p> <p>For more information, see <a>howitworks-forecast</a>.</p> <p>To get a list of all your forecast export jobs, use the <a>ListForecastExportJobs</a> operation.</p> <note> <p>The <code>Status</code> of the forecast export job must be <code>ACTIVE</code> before you can access the forecast in your Amazon S3 bucket. Use the <a>DescribeForecastExportJob</a> operation to get the status.</p> </note>
   ## 
-  let valid = call_773259.validator(path, query, header, formData, body)
-  let scheme = call_773259.pickScheme
+  let valid = call_601094.validator(path, query, header, formData, body)
+  let scheme = call_601094.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773259.url(scheme.get, call_773259.host, call_773259.base,
-                         call_773259.route, valid.getOrDefault("path"))
-  result = hook(call_773259, url, valid)
+  let url = call_601094.url(scheme.get, call_601094.host, call_601094.base,
+                         call_601094.route, valid.getOrDefault("path"))
+  result = hook(call_601094, url, valid)
 
-proc call*(call_773260: Call_CreateForecastExportJob_773247; body: JsonNode): Recallable =
+proc call*(call_601095: Call_CreateForecastExportJob_601082; body: JsonNode): Recallable =
   ## createForecastExportJob
   ## <p>Exports a forecast created by the <a>CreateForecast</a> operation to your Amazon Simple Storage Service (Amazon S3) bucket.</p> <p>You must specify a <a>DataDestination</a> object that includes an AWS Identity and Access Management (IAM) role that Amazon Forecast can assume to access the Amazon S3 bucket. For more information, see <a>aws-forecast-iam-roles</a>.</p> <p>For more information, see <a>howitworks-forecast</a>.</p> <p>To get a list of all your forecast export jobs, use the <a>ListForecastExportJobs</a> operation.</p> <note> <p>The <code>Status</code> of the forecast export job must be <code>ACTIVE</code> before you can access the forecast in your Amazon S3 bucket. Use the <a>DescribeForecastExportJob</a> operation to get the status.</p> </note>
   ##   body: JObject (required)
-  var body_773261 = newJObject()
+  var body_601096 = newJObject()
   if body != nil:
-    body_773261 = body
-  result = call_773260.call(nil, nil, nil, nil, body_773261)
+    body_601096 = body
+  result = call_601095.call(nil, nil, nil, nil, body_601096)
 
-var createForecastExportJob* = Call_CreateForecastExportJob_773247(
+var createForecastExportJob* = Call_CreateForecastExportJob_601082(
     name: "createForecastExportJob", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.CreateForecastExportJob",
-    validator: validate_CreateForecastExportJob_773248, base: "/",
-    url: url_CreateForecastExportJob_773249, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateForecastExportJob_601083, base: "/",
+    url: url_CreateForecastExportJob_601084, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreatePredictor_773262 = ref object of OpenApiRestCall_772597
-proc url_CreatePredictor_773264(protocol: Scheme; host: string; base: string;
+  Call_CreatePredictor_601097 = ref object of OpenApiRestCall_600426
+proc url_CreatePredictor_601099(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreatePredictor_773263(path: JsonNode; query: JsonNode;
+proc validate_CreatePredictor_601098(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Creates an Amazon Forecast predictor.</p> <p>In the request, you provide a dataset group and either specify an algorithm or let Amazon Forecast choose the algorithm for you using AutoML. If you specify an algorithm, you also can override algorithm-specific hyperparameters.</p> <p>Amazon Forecast uses the chosen algorithm to train a model using the latest version of the datasets in the specified dataset group. The result is called a predictor. You then generate a forecast using the <a>CreateForecast</a> operation.</p> <p>After training a model, the <code>CreatePredictor</code> operation also evaluates it. To see the evaluation metrics, use the <a>GetAccuracyMetrics</a> operation. Always review the evaluation metrics before deciding to use the predictor to generate a forecast.</p> <p>Optionally, you can specify a featurization configuration to fill and aggragate the data fields in the <code>TARGET_TIME_SERIES</code> dataset to improve model training. For more information, see <a>FeaturizationConfig</a>.</p> <p> <b>AutoML</b> </p> <p>If you set <code>PerformAutoML</code> to <code>true</code>, Amazon Forecast evaluates each algorithm and chooses the one that minimizes the <code>objective function</code>. The <code>objective function</code> is defined as the mean of the weighted p10, p50, and p90 quantile losses. For more information, see <a>EvaluationResult</a>.</p> <p>When AutoML is enabled, the following properties are disallowed:</p> <ul> <li> <p> <code>AlgorithmArn</code> </p> </li> <li> <p> <code>HPOConfig</code> </p> </li> <li> <p> <code>PerformHPO</code> </p> </li> <li> <p> <code>TrainingParameters</code> </p> </li> </ul> <p>To get a list of all your predictors, use the <a>ListPredictors</a> operation.</p> <note> <p>The <code>Status</code> of the predictor must be <code>ACTIVE</code>, signifying that training has completed, before you can use the predictor to create a forecast. Use the <a>DescribePredictor</a> operation to get the status.</p> </note>
@@ -683,48 +683,48 @@ proc validate_CreatePredictor_773263(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773265 = header.getOrDefault("X-Amz-Date")
-  valid_773265 = validateParameter(valid_773265, JString, required = false,
+  var valid_601100 = header.getOrDefault("X-Amz-Date")
+  valid_601100 = validateParameter(valid_601100, JString, required = false,
                                  default = nil)
-  if valid_773265 != nil:
-    section.add "X-Amz-Date", valid_773265
-  var valid_773266 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773266 = validateParameter(valid_773266, JString, required = false,
+  if valid_601100 != nil:
+    section.add "X-Amz-Date", valid_601100
+  var valid_601101 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601101 = validateParameter(valid_601101, JString, required = false,
                                  default = nil)
-  if valid_773266 != nil:
-    section.add "X-Amz-Security-Token", valid_773266
+  if valid_601101 != nil:
+    section.add "X-Amz-Security-Token", valid_601101
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773267 = header.getOrDefault("X-Amz-Target")
-  valid_773267 = validateParameter(valid_773267, JString, required = true, default = newJString(
+  var valid_601102 = header.getOrDefault("X-Amz-Target")
+  valid_601102 = validateParameter(valid_601102, JString, required = true, default = newJString(
       "AmazonForecast.CreatePredictor"))
-  if valid_773267 != nil:
-    section.add "X-Amz-Target", valid_773267
-  var valid_773268 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773268 = validateParameter(valid_773268, JString, required = false,
+  if valid_601102 != nil:
+    section.add "X-Amz-Target", valid_601102
+  var valid_601103 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601103 = validateParameter(valid_601103, JString, required = false,
                                  default = nil)
-  if valid_773268 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773268
-  var valid_773269 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773269 = validateParameter(valid_773269, JString, required = false,
+  if valid_601103 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601103
+  var valid_601104 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601104 = validateParameter(valid_601104, JString, required = false,
                                  default = nil)
-  if valid_773269 != nil:
-    section.add "X-Amz-Algorithm", valid_773269
-  var valid_773270 = header.getOrDefault("X-Amz-Signature")
-  valid_773270 = validateParameter(valid_773270, JString, required = false,
+  if valid_601104 != nil:
+    section.add "X-Amz-Algorithm", valid_601104
+  var valid_601105 = header.getOrDefault("X-Amz-Signature")
+  valid_601105 = validateParameter(valid_601105, JString, required = false,
                                  default = nil)
-  if valid_773270 != nil:
-    section.add "X-Amz-Signature", valid_773270
-  var valid_773271 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773271 = validateParameter(valid_773271, JString, required = false,
+  if valid_601105 != nil:
+    section.add "X-Amz-Signature", valid_601105
+  var valid_601106 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601106 = validateParameter(valid_601106, JString, required = false,
                                  default = nil)
-  if valid_773271 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773271
-  var valid_773272 = header.getOrDefault("X-Amz-Credential")
-  valid_773272 = validateParameter(valid_773272, JString, required = false,
+  if valid_601106 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601106
+  var valid_601107 = header.getOrDefault("X-Amz-Credential")
+  valid_601107 = validateParameter(valid_601107, JString, required = false,
                                  default = nil)
-  if valid_773272 != nil:
-    section.add "X-Amz-Credential", valid_773272
+  if valid_601107 != nil:
+    section.add "X-Amz-Credential", valid_601107
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -735,39 +735,39 @@ proc validate_CreatePredictor_773263(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773274: Call_CreatePredictor_773262; path: JsonNode; query: JsonNode;
+proc call*(call_601109: Call_CreatePredictor_601097; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an Amazon Forecast predictor.</p> <p>In the request, you provide a dataset group and either specify an algorithm or let Amazon Forecast choose the algorithm for you using AutoML. If you specify an algorithm, you also can override algorithm-specific hyperparameters.</p> <p>Amazon Forecast uses the chosen algorithm to train a model using the latest version of the datasets in the specified dataset group. The result is called a predictor. You then generate a forecast using the <a>CreateForecast</a> operation.</p> <p>After training a model, the <code>CreatePredictor</code> operation also evaluates it. To see the evaluation metrics, use the <a>GetAccuracyMetrics</a> operation. Always review the evaluation metrics before deciding to use the predictor to generate a forecast.</p> <p>Optionally, you can specify a featurization configuration to fill and aggragate the data fields in the <code>TARGET_TIME_SERIES</code> dataset to improve model training. For more information, see <a>FeaturizationConfig</a>.</p> <p> <b>AutoML</b> </p> <p>If you set <code>PerformAutoML</code> to <code>true</code>, Amazon Forecast evaluates each algorithm and chooses the one that minimizes the <code>objective function</code>. The <code>objective function</code> is defined as the mean of the weighted p10, p50, and p90 quantile losses. For more information, see <a>EvaluationResult</a>.</p> <p>When AutoML is enabled, the following properties are disallowed:</p> <ul> <li> <p> <code>AlgorithmArn</code> </p> </li> <li> <p> <code>HPOConfig</code> </p> </li> <li> <p> <code>PerformHPO</code> </p> </li> <li> <p> <code>TrainingParameters</code> </p> </li> </ul> <p>To get a list of all your predictors, use the <a>ListPredictors</a> operation.</p> <note> <p>The <code>Status</code> of the predictor must be <code>ACTIVE</code>, signifying that training has completed, before you can use the predictor to create a forecast. Use the <a>DescribePredictor</a> operation to get the status.</p> </note>
   ## 
-  let valid = call_773274.validator(path, query, header, formData, body)
-  let scheme = call_773274.pickScheme
+  let valid = call_601109.validator(path, query, header, formData, body)
+  let scheme = call_601109.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773274.url(scheme.get, call_773274.host, call_773274.base,
-                         call_773274.route, valid.getOrDefault("path"))
-  result = hook(call_773274, url, valid)
+  let url = call_601109.url(scheme.get, call_601109.host, call_601109.base,
+                         call_601109.route, valid.getOrDefault("path"))
+  result = hook(call_601109, url, valid)
 
-proc call*(call_773275: Call_CreatePredictor_773262; body: JsonNode): Recallable =
+proc call*(call_601110: Call_CreatePredictor_601097; body: JsonNode): Recallable =
   ## createPredictor
   ## <p>Creates an Amazon Forecast predictor.</p> <p>In the request, you provide a dataset group and either specify an algorithm or let Amazon Forecast choose the algorithm for you using AutoML. If you specify an algorithm, you also can override algorithm-specific hyperparameters.</p> <p>Amazon Forecast uses the chosen algorithm to train a model using the latest version of the datasets in the specified dataset group. The result is called a predictor. You then generate a forecast using the <a>CreateForecast</a> operation.</p> <p>After training a model, the <code>CreatePredictor</code> operation also evaluates it. To see the evaluation metrics, use the <a>GetAccuracyMetrics</a> operation. Always review the evaluation metrics before deciding to use the predictor to generate a forecast.</p> <p>Optionally, you can specify a featurization configuration to fill and aggragate the data fields in the <code>TARGET_TIME_SERIES</code> dataset to improve model training. For more information, see <a>FeaturizationConfig</a>.</p> <p> <b>AutoML</b> </p> <p>If you set <code>PerformAutoML</code> to <code>true</code>, Amazon Forecast evaluates each algorithm and chooses the one that minimizes the <code>objective function</code>. The <code>objective function</code> is defined as the mean of the weighted p10, p50, and p90 quantile losses. For more information, see <a>EvaluationResult</a>.</p> <p>When AutoML is enabled, the following properties are disallowed:</p> <ul> <li> <p> <code>AlgorithmArn</code> </p> </li> <li> <p> <code>HPOConfig</code> </p> </li> <li> <p> <code>PerformHPO</code> </p> </li> <li> <p> <code>TrainingParameters</code> </p> </li> </ul> <p>To get a list of all your predictors, use the <a>ListPredictors</a> operation.</p> <note> <p>The <code>Status</code> of the predictor must be <code>ACTIVE</code>, signifying that training has completed, before you can use the predictor to create a forecast. Use the <a>DescribePredictor</a> operation to get the status.</p> </note>
   ##   body: JObject (required)
-  var body_773276 = newJObject()
+  var body_601111 = newJObject()
   if body != nil:
-    body_773276 = body
-  result = call_773275.call(nil, nil, nil, nil, body_773276)
+    body_601111 = body
+  result = call_601110.call(nil, nil, nil, nil, body_601111)
 
-var createPredictor* = Call_CreatePredictor_773262(name: "createPredictor",
+var createPredictor* = Call_CreatePredictor_601097(name: "createPredictor",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.CreatePredictor",
-    validator: validate_CreatePredictor_773263, base: "/", url: url_CreatePredictor_773264,
+    validator: validate_CreatePredictor_601098, base: "/", url: url_CreatePredictor_601099,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDataset_773277 = ref object of OpenApiRestCall_772597
-proc url_DeleteDataset_773279(protocol: Scheme; host: string; base: string;
+  Call_DeleteDataset_601112 = ref object of OpenApiRestCall_600426
+proc url_DeleteDataset_601114(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteDataset_773278(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteDataset_601113(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes an Amazon Forecast dataset created using the <a>CreateDataset</a> operation. To be deleted, the dataset must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeDataset</a> operation to get the status.
   ## 
@@ -787,48 +787,48 @@ proc validate_DeleteDataset_773278(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773280 = header.getOrDefault("X-Amz-Date")
-  valid_773280 = validateParameter(valid_773280, JString, required = false,
+  var valid_601115 = header.getOrDefault("X-Amz-Date")
+  valid_601115 = validateParameter(valid_601115, JString, required = false,
                                  default = nil)
-  if valid_773280 != nil:
-    section.add "X-Amz-Date", valid_773280
-  var valid_773281 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773281 = validateParameter(valid_773281, JString, required = false,
+  if valid_601115 != nil:
+    section.add "X-Amz-Date", valid_601115
+  var valid_601116 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601116 = validateParameter(valid_601116, JString, required = false,
                                  default = nil)
-  if valid_773281 != nil:
-    section.add "X-Amz-Security-Token", valid_773281
+  if valid_601116 != nil:
+    section.add "X-Amz-Security-Token", valid_601116
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773282 = header.getOrDefault("X-Amz-Target")
-  valid_773282 = validateParameter(valid_773282, JString, required = true, default = newJString(
+  var valid_601117 = header.getOrDefault("X-Amz-Target")
+  valid_601117 = validateParameter(valid_601117, JString, required = true, default = newJString(
       "AmazonForecast.DeleteDataset"))
-  if valid_773282 != nil:
-    section.add "X-Amz-Target", valid_773282
-  var valid_773283 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773283 = validateParameter(valid_773283, JString, required = false,
+  if valid_601117 != nil:
+    section.add "X-Amz-Target", valid_601117
+  var valid_601118 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601118 = validateParameter(valid_601118, JString, required = false,
                                  default = nil)
-  if valid_773283 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773283
-  var valid_773284 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773284 = validateParameter(valid_773284, JString, required = false,
+  if valid_601118 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601118
+  var valid_601119 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601119 = validateParameter(valid_601119, JString, required = false,
                                  default = nil)
-  if valid_773284 != nil:
-    section.add "X-Amz-Algorithm", valid_773284
-  var valid_773285 = header.getOrDefault("X-Amz-Signature")
-  valid_773285 = validateParameter(valid_773285, JString, required = false,
+  if valid_601119 != nil:
+    section.add "X-Amz-Algorithm", valid_601119
+  var valid_601120 = header.getOrDefault("X-Amz-Signature")
+  valid_601120 = validateParameter(valid_601120, JString, required = false,
                                  default = nil)
-  if valid_773285 != nil:
-    section.add "X-Amz-Signature", valid_773285
-  var valid_773286 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773286 = validateParameter(valid_773286, JString, required = false,
+  if valid_601120 != nil:
+    section.add "X-Amz-Signature", valid_601120
+  var valid_601121 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601121 = validateParameter(valid_601121, JString, required = false,
                                  default = nil)
-  if valid_773286 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773286
-  var valid_773287 = header.getOrDefault("X-Amz-Credential")
-  valid_773287 = validateParameter(valid_773287, JString, required = false,
+  if valid_601121 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601121
+  var valid_601122 = header.getOrDefault("X-Amz-Credential")
+  valid_601122 = validateParameter(valid_601122, JString, required = false,
                                  default = nil)
-  if valid_773287 != nil:
-    section.add "X-Amz-Credential", valid_773287
+  if valid_601122 != nil:
+    section.add "X-Amz-Credential", valid_601122
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -839,39 +839,39 @@ proc validate_DeleteDataset_773278(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_773289: Call_DeleteDataset_773277; path: JsonNode; query: JsonNode;
+proc call*(call_601124: Call_DeleteDataset_601112; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes an Amazon Forecast dataset created using the <a>CreateDataset</a> operation. To be deleted, the dataset must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeDataset</a> operation to get the status.
   ## 
-  let valid = call_773289.validator(path, query, header, formData, body)
-  let scheme = call_773289.pickScheme
+  let valid = call_601124.validator(path, query, header, formData, body)
+  let scheme = call_601124.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773289.url(scheme.get, call_773289.host, call_773289.base,
-                         call_773289.route, valid.getOrDefault("path"))
-  result = hook(call_773289, url, valid)
+  let url = call_601124.url(scheme.get, call_601124.host, call_601124.base,
+                         call_601124.route, valid.getOrDefault("path"))
+  result = hook(call_601124, url, valid)
 
-proc call*(call_773290: Call_DeleteDataset_773277; body: JsonNode): Recallable =
+proc call*(call_601125: Call_DeleteDataset_601112; body: JsonNode): Recallable =
   ## deleteDataset
   ## Deletes an Amazon Forecast dataset created using the <a>CreateDataset</a> operation. To be deleted, the dataset must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeDataset</a> operation to get the status.
   ##   body: JObject (required)
-  var body_773291 = newJObject()
+  var body_601126 = newJObject()
   if body != nil:
-    body_773291 = body
-  result = call_773290.call(nil, nil, nil, nil, body_773291)
+    body_601126 = body
+  result = call_601125.call(nil, nil, nil, nil, body_601126)
 
-var deleteDataset* = Call_DeleteDataset_773277(name: "deleteDataset",
+var deleteDataset* = Call_DeleteDataset_601112(name: "deleteDataset",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DeleteDataset",
-    validator: validate_DeleteDataset_773278, base: "/", url: url_DeleteDataset_773279,
+    validator: validate_DeleteDataset_601113, base: "/", url: url_DeleteDataset_601114,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDatasetGroup_773292 = ref object of OpenApiRestCall_772597
-proc url_DeleteDatasetGroup_773294(protocol: Scheme; host: string; base: string;
+  Call_DeleteDatasetGroup_601127 = ref object of OpenApiRestCall_600426
+proc url_DeleteDatasetGroup_601129(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteDatasetGroup_773293(path: JsonNode; query: JsonNode;
+proc validate_DeleteDatasetGroup_601128(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Deletes a dataset group created using the <a>CreateDatasetGroup</a> operation. To be deleted, the dataset group must have a status of <code>ACTIVE</code>, <code>CREATE_FAILED</code>, or <code>UPDATE_FAILED</code>. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> <p>The operation deletes only the dataset group, not the datasets in the group.</p>
@@ -892,48 +892,48 @@ proc validate_DeleteDatasetGroup_773293(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773295 = header.getOrDefault("X-Amz-Date")
-  valid_773295 = validateParameter(valid_773295, JString, required = false,
+  var valid_601130 = header.getOrDefault("X-Amz-Date")
+  valid_601130 = validateParameter(valid_601130, JString, required = false,
                                  default = nil)
-  if valid_773295 != nil:
-    section.add "X-Amz-Date", valid_773295
-  var valid_773296 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773296 = validateParameter(valid_773296, JString, required = false,
+  if valid_601130 != nil:
+    section.add "X-Amz-Date", valid_601130
+  var valid_601131 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601131 = validateParameter(valid_601131, JString, required = false,
                                  default = nil)
-  if valid_773296 != nil:
-    section.add "X-Amz-Security-Token", valid_773296
+  if valid_601131 != nil:
+    section.add "X-Amz-Security-Token", valid_601131
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773297 = header.getOrDefault("X-Amz-Target")
-  valid_773297 = validateParameter(valid_773297, JString, required = true, default = newJString(
+  var valid_601132 = header.getOrDefault("X-Amz-Target")
+  valid_601132 = validateParameter(valid_601132, JString, required = true, default = newJString(
       "AmazonForecast.DeleteDatasetGroup"))
-  if valid_773297 != nil:
-    section.add "X-Amz-Target", valid_773297
-  var valid_773298 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773298 = validateParameter(valid_773298, JString, required = false,
+  if valid_601132 != nil:
+    section.add "X-Amz-Target", valid_601132
+  var valid_601133 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601133 = validateParameter(valid_601133, JString, required = false,
                                  default = nil)
-  if valid_773298 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773298
-  var valid_773299 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773299 = validateParameter(valid_773299, JString, required = false,
+  if valid_601133 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601133
+  var valid_601134 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601134 = validateParameter(valid_601134, JString, required = false,
                                  default = nil)
-  if valid_773299 != nil:
-    section.add "X-Amz-Algorithm", valid_773299
-  var valid_773300 = header.getOrDefault("X-Amz-Signature")
-  valid_773300 = validateParameter(valid_773300, JString, required = false,
+  if valid_601134 != nil:
+    section.add "X-Amz-Algorithm", valid_601134
+  var valid_601135 = header.getOrDefault("X-Amz-Signature")
+  valid_601135 = validateParameter(valid_601135, JString, required = false,
                                  default = nil)
-  if valid_773300 != nil:
-    section.add "X-Amz-Signature", valid_773300
-  var valid_773301 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773301 = validateParameter(valid_773301, JString, required = false,
+  if valid_601135 != nil:
+    section.add "X-Amz-Signature", valid_601135
+  var valid_601136 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601136 = validateParameter(valid_601136, JString, required = false,
                                  default = nil)
-  if valid_773301 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773301
-  var valid_773302 = header.getOrDefault("X-Amz-Credential")
-  valid_773302 = validateParameter(valid_773302, JString, required = false,
+  if valid_601136 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601136
+  var valid_601137 = header.getOrDefault("X-Amz-Credential")
+  valid_601137 = validateParameter(valid_601137, JString, required = false,
                                  default = nil)
-  if valid_773302 != nil:
-    section.add "X-Amz-Credential", valid_773302
+  if valid_601137 != nil:
+    section.add "X-Amz-Credential", valid_601137
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -944,40 +944,40 @@ proc validate_DeleteDatasetGroup_773293(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773304: Call_DeleteDatasetGroup_773292; path: JsonNode;
+proc call*(call_601139: Call_DeleteDatasetGroup_601127; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a dataset group created using the <a>CreateDatasetGroup</a> operation. To be deleted, the dataset group must have a status of <code>ACTIVE</code>, <code>CREATE_FAILED</code>, or <code>UPDATE_FAILED</code>. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> <p>The operation deletes only the dataset group, not the datasets in the group.</p>
   ## 
-  let valid = call_773304.validator(path, query, header, formData, body)
-  let scheme = call_773304.pickScheme
+  let valid = call_601139.validator(path, query, header, formData, body)
+  let scheme = call_601139.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773304.url(scheme.get, call_773304.host, call_773304.base,
-                         call_773304.route, valid.getOrDefault("path"))
-  result = hook(call_773304, url, valid)
+  let url = call_601139.url(scheme.get, call_601139.host, call_601139.base,
+                         call_601139.route, valid.getOrDefault("path"))
+  result = hook(call_601139, url, valid)
 
-proc call*(call_773305: Call_DeleteDatasetGroup_773292; body: JsonNode): Recallable =
+proc call*(call_601140: Call_DeleteDatasetGroup_601127; body: JsonNode): Recallable =
   ## deleteDatasetGroup
   ## <p>Deletes a dataset group created using the <a>CreateDatasetGroup</a> operation. To be deleted, the dataset group must have a status of <code>ACTIVE</code>, <code>CREATE_FAILED</code>, or <code>UPDATE_FAILED</code>. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> <p>The operation deletes only the dataset group, not the datasets in the group.</p>
   ##   body: JObject (required)
-  var body_773306 = newJObject()
+  var body_601141 = newJObject()
   if body != nil:
-    body_773306 = body
-  result = call_773305.call(nil, nil, nil, nil, body_773306)
+    body_601141 = body
+  result = call_601140.call(nil, nil, nil, nil, body_601141)
 
-var deleteDatasetGroup* = Call_DeleteDatasetGroup_773292(
+var deleteDatasetGroup* = Call_DeleteDatasetGroup_601127(
     name: "deleteDatasetGroup", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DeleteDatasetGroup",
-    validator: validate_DeleteDatasetGroup_773293, base: "/",
-    url: url_DeleteDatasetGroup_773294, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteDatasetGroup_601128, base: "/",
+    url: url_DeleteDatasetGroup_601129, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDatasetImportJob_773307 = ref object of OpenApiRestCall_772597
-proc url_DeleteDatasetImportJob_773309(protocol: Scheme; host: string; base: string;
+  Call_DeleteDatasetImportJob_601142 = ref object of OpenApiRestCall_600426
+proc url_DeleteDatasetImportJob_601144(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteDatasetImportJob_773308(path: JsonNode; query: JsonNode;
+proc validate_DeleteDatasetImportJob_601143(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes a dataset import job created using the <a>CreateDatasetImportJob</a> operation. To be deleted, the import job must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeDatasetImportJob</a> operation to get the status.
   ## 
@@ -997,48 +997,48 @@ proc validate_DeleteDatasetImportJob_773308(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773310 = header.getOrDefault("X-Amz-Date")
-  valid_773310 = validateParameter(valid_773310, JString, required = false,
+  var valid_601145 = header.getOrDefault("X-Amz-Date")
+  valid_601145 = validateParameter(valid_601145, JString, required = false,
                                  default = nil)
-  if valid_773310 != nil:
-    section.add "X-Amz-Date", valid_773310
-  var valid_773311 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773311 = validateParameter(valid_773311, JString, required = false,
+  if valid_601145 != nil:
+    section.add "X-Amz-Date", valid_601145
+  var valid_601146 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601146 = validateParameter(valid_601146, JString, required = false,
                                  default = nil)
-  if valid_773311 != nil:
-    section.add "X-Amz-Security-Token", valid_773311
+  if valid_601146 != nil:
+    section.add "X-Amz-Security-Token", valid_601146
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773312 = header.getOrDefault("X-Amz-Target")
-  valid_773312 = validateParameter(valid_773312, JString, required = true, default = newJString(
+  var valid_601147 = header.getOrDefault("X-Amz-Target")
+  valid_601147 = validateParameter(valid_601147, JString, required = true, default = newJString(
       "AmazonForecast.DeleteDatasetImportJob"))
-  if valid_773312 != nil:
-    section.add "X-Amz-Target", valid_773312
-  var valid_773313 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773313 = validateParameter(valid_773313, JString, required = false,
+  if valid_601147 != nil:
+    section.add "X-Amz-Target", valid_601147
+  var valid_601148 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601148 = validateParameter(valid_601148, JString, required = false,
                                  default = nil)
-  if valid_773313 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773313
-  var valid_773314 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773314 = validateParameter(valid_773314, JString, required = false,
+  if valid_601148 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601148
+  var valid_601149 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601149 = validateParameter(valid_601149, JString, required = false,
                                  default = nil)
-  if valid_773314 != nil:
-    section.add "X-Amz-Algorithm", valid_773314
-  var valid_773315 = header.getOrDefault("X-Amz-Signature")
-  valid_773315 = validateParameter(valid_773315, JString, required = false,
+  if valid_601149 != nil:
+    section.add "X-Amz-Algorithm", valid_601149
+  var valid_601150 = header.getOrDefault("X-Amz-Signature")
+  valid_601150 = validateParameter(valid_601150, JString, required = false,
                                  default = nil)
-  if valid_773315 != nil:
-    section.add "X-Amz-Signature", valid_773315
-  var valid_773316 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773316 = validateParameter(valid_773316, JString, required = false,
+  if valid_601150 != nil:
+    section.add "X-Amz-Signature", valid_601150
+  var valid_601151 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601151 = validateParameter(valid_601151, JString, required = false,
                                  default = nil)
-  if valid_773316 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773316
-  var valid_773317 = header.getOrDefault("X-Amz-Credential")
-  valid_773317 = validateParameter(valid_773317, JString, required = false,
+  if valid_601151 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601151
+  var valid_601152 = header.getOrDefault("X-Amz-Credential")
+  valid_601152 = validateParameter(valid_601152, JString, required = false,
                                  default = nil)
-  if valid_773317 != nil:
-    section.add "X-Amz-Credential", valid_773317
+  if valid_601152 != nil:
+    section.add "X-Amz-Credential", valid_601152
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1049,40 +1049,40 @@ proc validate_DeleteDatasetImportJob_773308(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773319: Call_DeleteDatasetImportJob_773307; path: JsonNode;
+proc call*(call_601154: Call_DeleteDatasetImportJob_601142; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a dataset import job created using the <a>CreateDatasetImportJob</a> operation. To be deleted, the import job must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeDatasetImportJob</a> operation to get the status.
   ## 
-  let valid = call_773319.validator(path, query, header, formData, body)
-  let scheme = call_773319.pickScheme
+  let valid = call_601154.validator(path, query, header, formData, body)
+  let scheme = call_601154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773319.url(scheme.get, call_773319.host, call_773319.base,
-                         call_773319.route, valid.getOrDefault("path"))
-  result = hook(call_773319, url, valid)
+  let url = call_601154.url(scheme.get, call_601154.host, call_601154.base,
+                         call_601154.route, valid.getOrDefault("path"))
+  result = hook(call_601154, url, valid)
 
-proc call*(call_773320: Call_DeleteDatasetImportJob_773307; body: JsonNode): Recallable =
+proc call*(call_601155: Call_DeleteDatasetImportJob_601142; body: JsonNode): Recallable =
   ## deleteDatasetImportJob
   ## Deletes a dataset import job created using the <a>CreateDatasetImportJob</a> operation. To be deleted, the import job must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeDatasetImportJob</a> operation to get the status.
   ##   body: JObject (required)
-  var body_773321 = newJObject()
+  var body_601156 = newJObject()
   if body != nil:
-    body_773321 = body
-  result = call_773320.call(nil, nil, nil, nil, body_773321)
+    body_601156 = body
+  result = call_601155.call(nil, nil, nil, nil, body_601156)
 
-var deleteDatasetImportJob* = Call_DeleteDatasetImportJob_773307(
+var deleteDatasetImportJob* = Call_DeleteDatasetImportJob_601142(
     name: "deleteDatasetImportJob", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DeleteDatasetImportJob",
-    validator: validate_DeleteDatasetImportJob_773308, base: "/",
-    url: url_DeleteDatasetImportJob_773309, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteDatasetImportJob_601143, base: "/",
+    url: url_DeleteDatasetImportJob_601144, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteForecast_773322 = ref object of OpenApiRestCall_772597
-proc url_DeleteForecast_773324(protocol: Scheme; host: string; base: string;
+  Call_DeleteForecast_601157 = ref object of OpenApiRestCall_600426
+proc url_DeleteForecast_601159(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteForecast_773323(path: JsonNode; query: JsonNode;
+proc validate_DeleteForecast_601158(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Deletes a forecast created using the <a>CreateForecast</a> operation. To be deleted, the forecast must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeForecast</a> operation to get the status.</p> <p>You can't delete a forecast while it is being exported.</p>
@@ -1103,48 +1103,48 @@ proc validate_DeleteForecast_773323(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773325 = header.getOrDefault("X-Amz-Date")
-  valid_773325 = validateParameter(valid_773325, JString, required = false,
+  var valid_601160 = header.getOrDefault("X-Amz-Date")
+  valid_601160 = validateParameter(valid_601160, JString, required = false,
                                  default = nil)
-  if valid_773325 != nil:
-    section.add "X-Amz-Date", valid_773325
-  var valid_773326 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773326 = validateParameter(valid_773326, JString, required = false,
+  if valid_601160 != nil:
+    section.add "X-Amz-Date", valid_601160
+  var valid_601161 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601161 = validateParameter(valid_601161, JString, required = false,
                                  default = nil)
-  if valid_773326 != nil:
-    section.add "X-Amz-Security-Token", valid_773326
+  if valid_601161 != nil:
+    section.add "X-Amz-Security-Token", valid_601161
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773327 = header.getOrDefault("X-Amz-Target")
-  valid_773327 = validateParameter(valid_773327, JString, required = true, default = newJString(
+  var valid_601162 = header.getOrDefault("X-Amz-Target")
+  valid_601162 = validateParameter(valid_601162, JString, required = true, default = newJString(
       "AmazonForecast.DeleteForecast"))
-  if valid_773327 != nil:
-    section.add "X-Amz-Target", valid_773327
-  var valid_773328 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773328 = validateParameter(valid_773328, JString, required = false,
+  if valid_601162 != nil:
+    section.add "X-Amz-Target", valid_601162
+  var valid_601163 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601163 = validateParameter(valid_601163, JString, required = false,
                                  default = nil)
-  if valid_773328 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773328
-  var valid_773329 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773329 = validateParameter(valid_773329, JString, required = false,
+  if valid_601163 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601163
+  var valid_601164 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601164 = validateParameter(valid_601164, JString, required = false,
                                  default = nil)
-  if valid_773329 != nil:
-    section.add "X-Amz-Algorithm", valid_773329
-  var valid_773330 = header.getOrDefault("X-Amz-Signature")
-  valid_773330 = validateParameter(valid_773330, JString, required = false,
+  if valid_601164 != nil:
+    section.add "X-Amz-Algorithm", valid_601164
+  var valid_601165 = header.getOrDefault("X-Amz-Signature")
+  valid_601165 = validateParameter(valid_601165, JString, required = false,
                                  default = nil)
-  if valid_773330 != nil:
-    section.add "X-Amz-Signature", valid_773330
-  var valid_773331 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773331 = validateParameter(valid_773331, JString, required = false,
+  if valid_601165 != nil:
+    section.add "X-Amz-Signature", valid_601165
+  var valid_601166 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601166 = validateParameter(valid_601166, JString, required = false,
                                  default = nil)
-  if valid_773331 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773331
-  var valid_773332 = header.getOrDefault("X-Amz-Credential")
-  valid_773332 = validateParameter(valid_773332, JString, required = false,
+  if valid_601166 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601166
+  var valid_601167 = header.getOrDefault("X-Amz-Credential")
+  valid_601167 = validateParameter(valid_601167, JString, required = false,
                                  default = nil)
-  if valid_773332 != nil:
-    section.add "X-Amz-Credential", valid_773332
+  if valid_601167 != nil:
+    section.add "X-Amz-Credential", valid_601167
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1155,39 +1155,39 @@ proc validate_DeleteForecast_773323(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773334: Call_DeleteForecast_773322; path: JsonNode; query: JsonNode;
+proc call*(call_601169: Call_DeleteForecast_601157; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a forecast created using the <a>CreateForecast</a> operation. To be deleted, the forecast must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeForecast</a> operation to get the status.</p> <p>You can't delete a forecast while it is being exported.</p>
   ## 
-  let valid = call_773334.validator(path, query, header, formData, body)
-  let scheme = call_773334.pickScheme
+  let valid = call_601169.validator(path, query, header, formData, body)
+  let scheme = call_601169.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773334.url(scheme.get, call_773334.host, call_773334.base,
-                         call_773334.route, valid.getOrDefault("path"))
-  result = hook(call_773334, url, valid)
+  let url = call_601169.url(scheme.get, call_601169.host, call_601169.base,
+                         call_601169.route, valid.getOrDefault("path"))
+  result = hook(call_601169, url, valid)
 
-proc call*(call_773335: Call_DeleteForecast_773322; body: JsonNode): Recallable =
+proc call*(call_601170: Call_DeleteForecast_601157; body: JsonNode): Recallable =
   ## deleteForecast
   ## <p>Deletes a forecast created using the <a>CreateForecast</a> operation. To be deleted, the forecast must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeForecast</a> operation to get the status.</p> <p>You can't delete a forecast while it is being exported.</p>
   ##   body: JObject (required)
-  var body_773336 = newJObject()
+  var body_601171 = newJObject()
   if body != nil:
-    body_773336 = body
-  result = call_773335.call(nil, nil, nil, nil, body_773336)
+    body_601171 = body
+  result = call_601170.call(nil, nil, nil, nil, body_601171)
 
-var deleteForecast* = Call_DeleteForecast_773322(name: "deleteForecast",
+var deleteForecast* = Call_DeleteForecast_601157(name: "deleteForecast",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DeleteForecast",
-    validator: validate_DeleteForecast_773323, base: "/", url: url_DeleteForecast_773324,
+    validator: validate_DeleteForecast_601158, base: "/", url: url_DeleteForecast_601159,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteForecastExportJob_773337 = ref object of OpenApiRestCall_772597
-proc url_DeleteForecastExportJob_773339(protocol: Scheme; host: string; base: string;
+  Call_DeleteForecastExportJob_601172 = ref object of OpenApiRestCall_600426
+proc url_DeleteForecastExportJob_601174(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteForecastExportJob_773338(path: JsonNode; query: JsonNode;
+proc validate_DeleteForecastExportJob_601173(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes a forecast export job created using the <a>CreateForecastExportJob</a> operation. To be deleted, the export job must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeForecastExportJob</a> operation to get the status.
   ## 
@@ -1207,48 +1207,48 @@ proc validate_DeleteForecastExportJob_773338(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773340 = header.getOrDefault("X-Amz-Date")
-  valid_773340 = validateParameter(valid_773340, JString, required = false,
+  var valid_601175 = header.getOrDefault("X-Amz-Date")
+  valid_601175 = validateParameter(valid_601175, JString, required = false,
                                  default = nil)
-  if valid_773340 != nil:
-    section.add "X-Amz-Date", valid_773340
-  var valid_773341 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773341 = validateParameter(valid_773341, JString, required = false,
+  if valid_601175 != nil:
+    section.add "X-Amz-Date", valid_601175
+  var valid_601176 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601176 = validateParameter(valid_601176, JString, required = false,
                                  default = nil)
-  if valid_773341 != nil:
-    section.add "X-Amz-Security-Token", valid_773341
+  if valid_601176 != nil:
+    section.add "X-Amz-Security-Token", valid_601176
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773342 = header.getOrDefault("X-Amz-Target")
-  valid_773342 = validateParameter(valid_773342, JString, required = true, default = newJString(
+  var valid_601177 = header.getOrDefault("X-Amz-Target")
+  valid_601177 = validateParameter(valid_601177, JString, required = true, default = newJString(
       "AmazonForecast.DeleteForecastExportJob"))
-  if valid_773342 != nil:
-    section.add "X-Amz-Target", valid_773342
-  var valid_773343 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773343 = validateParameter(valid_773343, JString, required = false,
+  if valid_601177 != nil:
+    section.add "X-Amz-Target", valid_601177
+  var valid_601178 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601178 = validateParameter(valid_601178, JString, required = false,
                                  default = nil)
-  if valid_773343 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773343
-  var valid_773344 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773344 = validateParameter(valid_773344, JString, required = false,
+  if valid_601178 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601178
+  var valid_601179 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601179 = validateParameter(valid_601179, JString, required = false,
                                  default = nil)
-  if valid_773344 != nil:
-    section.add "X-Amz-Algorithm", valid_773344
-  var valid_773345 = header.getOrDefault("X-Amz-Signature")
-  valid_773345 = validateParameter(valid_773345, JString, required = false,
+  if valid_601179 != nil:
+    section.add "X-Amz-Algorithm", valid_601179
+  var valid_601180 = header.getOrDefault("X-Amz-Signature")
+  valid_601180 = validateParameter(valid_601180, JString, required = false,
                                  default = nil)
-  if valid_773345 != nil:
-    section.add "X-Amz-Signature", valid_773345
-  var valid_773346 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773346 = validateParameter(valid_773346, JString, required = false,
+  if valid_601180 != nil:
+    section.add "X-Amz-Signature", valid_601180
+  var valid_601181 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601181 = validateParameter(valid_601181, JString, required = false,
                                  default = nil)
-  if valid_773346 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773346
-  var valid_773347 = header.getOrDefault("X-Amz-Credential")
-  valid_773347 = validateParameter(valid_773347, JString, required = false,
+  if valid_601181 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601181
+  var valid_601182 = header.getOrDefault("X-Amz-Credential")
+  valid_601182 = validateParameter(valid_601182, JString, required = false,
                                  default = nil)
-  if valid_773347 != nil:
-    section.add "X-Amz-Credential", valid_773347
+  if valid_601182 != nil:
+    section.add "X-Amz-Credential", valid_601182
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1259,40 +1259,40 @@ proc validate_DeleteForecastExportJob_773338(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773349: Call_DeleteForecastExportJob_773337; path: JsonNode;
+proc call*(call_601184: Call_DeleteForecastExportJob_601172; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a forecast export job created using the <a>CreateForecastExportJob</a> operation. To be deleted, the export job must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeForecastExportJob</a> operation to get the status.
   ## 
-  let valid = call_773349.validator(path, query, header, formData, body)
-  let scheme = call_773349.pickScheme
+  let valid = call_601184.validator(path, query, header, formData, body)
+  let scheme = call_601184.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773349.url(scheme.get, call_773349.host, call_773349.base,
-                         call_773349.route, valid.getOrDefault("path"))
-  result = hook(call_773349, url, valid)
+  let url = call_601184.url(scheme.get, call_601184.host, call_601184.base,
+                         call_601184.route, valid.getOrDefault("path"))
+  result = hook(call_601184, url, valid)
 
-proc call*(call_773350: Call_DeleteForecastExportJob_773337; body: JsonNode): Recallable =
+proc call*(call_601185: Call_DeleteForecastExportJob_601172; body: JsonNode): Recallable =
   ## deleteForecastExportJob
   ## Deletes a forecast export job created using the <a>CreateForecastExportJob</a> operation. To be deleted, the export job must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribeForecastExportJob</a> operation to get the status.
   ##   body: JObject (required)
-  var body_773351 = newJObject()
+  var body_601186 = newJObject()
   if body != nil:
-    body_773351 = body
-  result = call_773350.call(nil, nil, nil, nil, body_773351)
+    body_601186 = body
+  result = call_601185.call(nil, nil, nil, nil, body_601186)
 
-var deleteForecastExportJob* = Call_DeleteForecastExportJob_773337(
+var deleteForecastExportJob* = Call_DeleteForecastExportJob_601172(
     name: "deleteForecastExportJob", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DeleteForecastExportJob",
-    validator: validate_DeleteForecastExportJob_773338, base: "/",
-    url: url_DeleteForecastExportJob_773339, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteForecastExportJob_601173, base: "/",
+    url: url_DeleteForecastExportJob_601174, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeletePredictor_773352 = ref object of OpenApiRestCall_772597
-proc url_DeletePredictor_773354(protocol: Scheme; host: string; base: string;
+  Call_DeletePredictor_601187 = ref object of OpenApiRestCall_600426
+proc url_DeletePredictor_601189(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeletePredictor_773353(path: JsonNode; query: JsonNode;
+proc validate_DeletePredictor_601188(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Deletes a predictor created using the <a>CreatePredictor</a> operation. To be deleted, the predictor must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribePredictor</a> operation to get the status.</p> <p>Any forecasts generated by the predictor will no longer be available.</p>
@@ -1313,48 +1313,48 @@ proc validate_DeletePredictor_773353(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773355 = header.getOrDefault("X-Amz-Date")
-  valid_773355 = validateParameter(valid_773355, JString, required = false,
+  var valid_601190 = header.getOrDefault("X-Amz-Date")
+  valid_601190 = validateParameter(valid_601190, JString, required = false,
                                  default = nil)
-  if valid_773355 != nil:
-    section.add "X-Amz-Date", valid_773355
-  var valid_773356 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773356 = validateParameter(valid_773356, JString, required = false,
+  if valid_601190 != nil:
+    section.add "X-Amz-Date", valid_601190
+  var valid_601191 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601191 = validateParameter(valid_601191, JString, required = false,
                                  default = nil)
-  if valid_773356 != nil:
-    section.add "X-Amz-Security-Token", valid_773356
+  if valid_601191 != nil:
+    section.add "X-Amz-Security-Token", valid_601191
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773357 = header.getOrDefault("X-Amz-Target")
-  valid_773357 = validateParameter(valid_773357, JString, required = true, default = newJString(
+  var valid_601192 = header.getOrDefault("X-Amz-Target")
+  valid_601192 = validateParameter(valid_601192, JString, required = true, default = newJString(
       "AmazonForecast.DeletePredictor"))
-  if valid_773357 != nil:
-    section.add "X-Amz-Target", valid_773357
-  var valid_773358 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773358 = validateParameter(valid_773358, JString, required = false,
+  if valid_601192 != nil:
+    section.add "X-Amz-Target", valid_601192
+  var valid_601193 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601193 = validateParameter(valid_601193, JString, required = false,
                                  default = nil)
-  if valid_773358 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773358
-  var valid_773359 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773359 = validateParameter(valid_773359, JString, required = false,
+  if valid_601193 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601193
+  var valid_601194 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601194 = validateParameter(valid_601194, JString, required = false,
                                  default = nil)
-  if valid_773359 != nil:
-    section.add "X-Amz-Algorithm", valid_773359
-  var valid_773360 = header.getOrDefault("X-Amz-Signature")
-  valid_773360 = validateParameter(valid_773360, JString, required = false,
+  if valid_601194 != nil:
+    section.add "X-Amz-Algorithm", valid_601194
+  var valid_601195 = header.getOrDefault("X-Amz-Signature")
+  valid_601195 = validateParameter(valid_601195, JString, required = false,
                                  default = nil)
-  if valid_773360 != nil:
-    section.add "X-Amz-Signature", valid_773360
-  var valid_773361 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773361 = validateParameter(valid_773361, JString, required = false,
+  if valid_601195 != nil:
+    section.add "X-Amz-Signature", valid_601195
+  var valid_601196 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601196 = validateParameter(valid_601196, JString, required = false,
                                  default = nil)
-  if valid_773361 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773361
-  var valid_773362 = header.getOrDefault("X-Amz-Credential")
-  valid_773362 = validateParameter(valid_773362, JString, required = false,
+  if valid_601196 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601196
+  var valid_601197 = header.getOrDefault("X-Amz-Credential")
+  valid_601197 = validateParameter(valid_601197, JString, required = false,
                                  default = nil)
-  if valid_773362 != nil:
-    section.add "X-Amz-Credential", valid_773362
+  if valid_601197 != nil:
+    section.add "X-Amz-Credential", valid_601197
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1365,39 +1365,39 @@ proc validate_DeletePredictor_773353(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773364: Call_DeletePredictor_773352; path: JsonNode; query: JsonNode;
+proc call*(call_601199: Call_DeletePredictor_601187; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a predictor created using the <a>CreatePredictor</a> operation. To be deleted, the predictor must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribePredictor</a> operation to get the status.</p> <p>Any forecasts generated by the predictor will no longer be available.</p>
   ## 
-  let valid = call_773364.validator(path, query, header, formData, body)
-  let scheme = call_773364.pickScheme
+  let valid = call_601199.validator(path, query, header, formData, body)
+  let scheme = call_601199.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773364.url(scheme.get, call_773364.host, call_773364.base,
-                         call_773364.route, valid.getOrDefault("path"))
-  result = hook(call_773364, url, valid)
+  let url = call_601199.url(scheme.get, call_601199.host, call_601199.base,
+                         call_601199.route, valid.getOrDefault("path"))
+  result = hook(call_601199, url, valid)
 
-proc call*(call_773365: Call_DeletePredictor_773352; body: JsonNode): Recallable =
+proc call*(call_601200: Call_DeletePredictor_601187; body: JsonNode): Recallable =
   ## deletePredictor
   ## <p>Deletes a predictor created using the <a>CreatePredictor</a> operation. To be deleted, the predictor must have a status of <code>ACTIVE</code> or <code>CREATE_FAILED</code>. Use the <a>DescribePredictor</a> operation to get the status.</p> <p>Any forecasts generated by the predictor will no longer be available.</p>
   ##   body: JObject (required)
-  var body_773366 = newJObject()
+  var body_601201 = newJObject()
   if body != nil:
-    body_773366 = body
-  result = call_773365.call(nil, nil, nil, nil, body_773366)
+    body_601201 = body
+  result = call_601200.call(nil, nil, nil, nil, body_601201)
 
-var deletePredictor* = Call_DeletePredictor_773352(name: "deletePredictor",
+var deletePredictor* = Call_DeletePredictor_601187(name: "deletePredictor",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DeletePredictor",
-    validator: validate_DeletePredictor_773353, base: "/", url: url_DeletePredictor_773354,
+    validator: validate_DeletePredictor_601188, base: "/", url: url_DeletePredictor_601189,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDataset_773367 = ref object of OpenApiRestCall_772597
-proc url_DescribeDataset_773369(protocol: Scheme; host: string; base: string;
+  Call_DescribeDataset_601202 = ref object of OpenApiRestCall_600426
+proc url_DescribeDataset_601204(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeDataset_773368(path: JsonNode; query: JsonNode;
+proc validate_DescribeDataset_601203(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Describes an Amazon Forecast dataset created using the <a>CreateDataset</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDataset</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> </ul>
@@ -1418,48 +1418,48 @@ proc validate_DescribeDataset_773368(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773370 = header.getOrDefault("X-Amz-Date")
-  valid_773370 = validateParameter(valid_773370, JString, required = false,
+  var valid_601205 = header.getOrDefault("X-Amz-Date")
+  valid_601205 = validateParameter(valid_601205, JString, required = false,
                                  default = nil)
-  if valid_773370 != nil:
-    section.add "X-Amz-Date", valid_773370
-  var valid_773371 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773371 = validateParameter(valid_773371, JString, required = false,
+  if valid_601205 != nil:
+    section.add "X-Amz-Date", valid_601205
+  var valid_601206 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601206 = validateParameter(valid_601206, JString, required = false,
                                  default = nil)
-  if valid_773371 != nil:
-    section.add "X-Amz-Security-Token", valid_773371
+  if valid_601206 != nil:
+    section.add "X-Amz-Security-Token", valid_601206
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773372 = header.getOrDefault("X-Amz-Target")
-  valid_773372 = validateParameter(valid_773372, JString, required = true, default = newJString(
+  var valid_601207 = header.getOrDefault("X-Amz-Target")
+  valid_601207 = validateParameter(valid_601207, JString, required = true, default = newJString(
       "AmazonForecast.DescribeDataset"))
-  if valid_773372 != nil:
-    section.add "X-Amz-Target", valid_773372
-  var valid_773373 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773373 = validateParameter(valid_773373, JString, required = false,
+  if valid_601207 != nil:
+    section.add "X-Amz-Target", valid_601207
+  var valid_601208 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601208 = validateParameter(valid_601208, JString, required = false,
                                  default = nil)
-  if valid_773373 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773373
-  var valid_773374 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773374 = validateParameter(valid_773374, JString, required = false,
+  if valid_601208 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601208
+  var valid_601209 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601209 = validateParameter(valid_601209, JString, required = false,
                                  default = nil)
-  if valid_773374 != nil:
-    section.add "X-Amz-Algorithm", valid_773374
-  var valid_773375 = header.getOrDefault("X-Amz-Signature")
-  valid_773375 = validateParameter(valid_773375, JString, required = false,
+  if valid_601209 != nil:
+    section.add "X-Amz-Algorithm", valid_601209
+  var valid_601210 = header.getOrDefault("X-Amz-Signature")
+  valid_601210 = validateParameter(valid_601210, JString, required = false,
                                  default = nil)
-  if valid_773375 != nil:
-    section.add "X-Amz-Signature", valid_773375
-  var valid_773376 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773376 = validateParameter(valid_773376, JString, required = false,
+  if valid_601210 != nil:
+    section.add "X-Amz-Signature", valid_601210
+  var valid_601211 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601211 = validateParameter(valid_601211, JString, required = false,
                                  default = nil)
-  if valid_773376 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773376
-  var valid_773377 = header.getOrDefault("X-Amz-Credential")
-  valid_773377 = validateParameter(valid_773377, JString, required = false,
+  if valid_601211 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601211
+  var valid_601212 = header.getOrDefault("X-Amz-Credential")
+  valid_601212 = validateParameter(valid_601212, JString, required = false,
                                  default = nil)
-  if valid_773377 != nil:
-    section.add "X-Amz-Credential", valid_773377
+  if valid_601212 != nil:
+    section.add "X-Amz-Credential", valid_601212
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1470,39 +1470,39 @@ proc validate_DescribeDataset_773368(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773379: Call_DescribeDataset_773367; path: JsonNode; query: JsonNode;
+proc call*(call_601214: Call_DescribeDataset_601202; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes an Amazon Forecast dataset created using the <a>CreateDataset</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDataset</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> </ul>
   ## 
-  let valid = call_773379.validator(path, query, header, formData, body)
-  let scheme = call_773379.pickScheme
+  let valid = call_601214.validator(path, query, header, formData, body)
+  let scheme = call_601214.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773379.url(scheme.get, call_773379.host, call_773379.base,
-                         call_773379.route, valid.getOrDefault("path"))
-  result = hook(call_773379, url, valid)
+  let url = call_601214.url(scheme.get, call_601214.host, call_601214.base,
+                         call_601214.route, valid.getOrDefault("path"))
+  result = hook(call_601214, url, valid)
 
-proc call*(call_773380: Call_DescribeDataset_773367; body: JsonNode): Recallable =
+proc call*(call_601215: Call_DescribeDataset_601202; body: JsonNode): Recallable =
   ## describeDataset
   ## <p>Describes an Amazon Forecast dataset created using the <a>CreateDataset</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDataset</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> </ul>
   ##   body: JObject (required)
-  var body_773381 = newJObject()
+  var body_601216 = newJObject()
   if body != nil:
-    body_773381 = body
-  result = call_773380.call(nil, nil, nil, nil, body_773381)
+    body_601216 = body
+  result = call_601215.call(nil, nil, nil, nil, body_601216)
 
-var describeDataset* = Call_DescribeDataset_773367(name: "describeDataset",
+var describeDataset* = Call_DescribeDataset_601202(name: "describeDataset",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DescribeDataset",
-    validator: validate_DescribeDataset_773368, base: "/", url: url_DescribeDataset_773369,
+    validator: validate_DescribeDataset_601203, base: "/", url: url_DescribeDataset_601204,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDatasetGroup_773382 = ref object of OpenApiRestCall_772597
-proc url_DescribeDatasetGroup_773384(protocol: Scheme; host: string; base: string;
+  Call_DescribeDatasetGroup_601217 = ref object of OpenApiRestCall_600426
+proc url_DescribeDatasetGroup_601219(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeDatasetGroup_773383(path: JsonNode; query: JsonNode;
+proc validate_DescribeDatasetGroup_601218(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes a dataset group created using the <a>CreateDatasetGroup</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDatasetGroup</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetArns</code> - The datasets belonging to the group.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> </ul>
   ## 
@@ -1522,48 +1522,48 @@ proc validate_DescribeDatasetGroup_773383(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773385 = header.getOrDefault("X-Amz-Date")
-  valid_773385 = validateParameter(valid_773385, JString, required = false,
+  var valid_601220 = header.getOrDefault("X-Amz-Date")
+  valid_601220 = validateParameter(valid_601220, JString, required = false,
                                  default = nil)
-  if valid_773385 != nil:
-    section.add "X-Amz-Date", valid_773385
-  var valid_773386 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773386 = validateParameter(valid_773386, JString, required = false,
+  if valid_601220 != nil:
+    section.add "X-Amz-Date", valid_601220
+  var valid_601221 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601221 = validateParameter(valid_601221, JString, required = false,
                                  default = nil)
-  if valid_773386 != nil:
-    section.add "X-Amz-Security-Token", valid_773386
+  if valid_601221 != nil:
+    section.add "X-Amz-Security-Token", valid_601221
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773387 = header.getOrDefault("X-Amz-Target")
-  valid_773387 = validateParameter(valid_773387, JString, required = true, default = newJString(
+  var valid_601222 = header.getOrDefault("X-Amz-Target")
+  valid_601222 = validateParameter(valid_601222, JString, required = true, default = newJString(
       "AmazonForecast.DescribeDatasetGroup"))
-  if valid_773387 != nil:
-    section.add "X-Amz-Target", valid_773387
-  var valid_773388 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773388 = validateParameter(valid_773388, JString, required = false,
+  if valid_601222 != nil:
+    section.add "X-Amz-Target", valid_601222
+  var valid_601223 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601223 = validateParameter(valid_601223, JString, required = false,
                                  default = nil)
-  if valid_773388 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773388
-  var valid_773389 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773389 = validateParameter(valid_773389, JString, required = false,
+  if valid_601223 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601223
+  var valid_601224 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601224 = validateParameter(valid_601224, JString, required = false,
                                  default = nil)
-  if valid_773389 != nil:
-    section.add "X-Amz-Algorithm", valid_773389
-  var valid_773390 = header.getOrDefault("X-Amz-Signature")
-  valid_773390 = validateParameter(valid_773390, JString, required = false,
+  if valid_601224 != nil:
+    section.add "X-Amz-Algorithm", valid_601224
+  var valid_601225 = header.getOrDefault("X-Amz-Signature")
+  valid_601225 = validateParameter(valid_601225, JString, required = false,
                                  default = nil)
-  if valid_773390 != nil:
-    section.add "X-Amz-Signature", valid_773390
-  var valid_773391 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773391 = validateParameter(valid_773391, JString, required = false,
+  if valid_601225 != nil:
+    section.add "X-Amz-Signature", valid_601225
+  var valid_601226 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601226 = validateParameter(valid_601226, JString, required = false,
                                  default = nil)
-  if valid_773391 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773391
-  var valid_773392 = header.getOrDefault("X-Amz-Credential")
-  valid_773392 = validateParameter(valid_773392, JString, required = false,
+  if valid_601226 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601226
+  var valid_601227 = header.getOrDefault("X-Amz-Credential")
+  valid_601227 = validateParameter(valid_601227, JString, required = false,
                                  default = nil)
-  if valid_773392 != nil:
-    section.add "X-Amz-Credential", valid_773392
+  if valid_601227 != nil:
+    section.add "X-Amz-Credential", valid_601227
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1574,40 +1574,40 @@ proc validate_DescribeDatasetGroup_773383(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773394: Call_DescribeDatasetGroup_773382; path: JsonNode;
+proc call*(call_601229: Call_DescribeDatasetGroup_601217; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a dataset group created using the <a>CreateDatasetGroup</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDatasetGroup</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetArns</code> - The datasets belonging to the group.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> </ul>
   ## 
-  let valid = call_773394.validator(path, query, header, formData, body)
-  let scheme = call_773394.pickScheme
+  let valid = call_601229.validator(path, query, header, formData, body)
+  let scheme = call_601229.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773394.url(scheme.get, call_773394.host, call_773394.base,
-                         call_773394.route, valid.getOrDefault("path"))
-  result = hook(call_773394, url, valid)
+  let url = call_601229.url(scheme.get, call_601229.host, call_601229.base,
+                         call_601229.route, valid.getOrDefault("path"))
+  result = hook(call_601229, url, valid)
 
-proc call*(call_773395: Call_DescribeDatasetGroup_773382; body: JsonNode): Recallable =
+proc call*(call_601230: Call_DescribeDatasetGroup_601217; body: JsonNode): Recallable =
   ## describeDatasetGroup
   ## <p>Describes a dataset group created using the <a>CreateDatasetGroup</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDatasetGroup</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetArns</code> - The datasets belonging to the group.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> </ul>
   ##   body: JObject (required)
-  var body_773396 = newJObject()
+  var body_601231 = newJObject()
   if body != nil:
-    body_773396 = body
-  result = call_773395.call(nil, nil, nil, nil, body_773396)
+    body_601231 = body
+  result = call_601230.call(nil, nil, nil, nil, body_601231)
 
-var describeDatasetGroup* = Call_DescribeDatasetGroup_773382(
+var describeDatasetGroup* = Call_DescribeDatasetGroup_601217(
     name: "describeDatasetGroup", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DescribeDatasetGroup",
-    validator: validate_DescribeDatasetGroup_773383, base: "/",
-    url: url_DescribeDatasetGroup_773384, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeDatasetGroup_601218, base: "/",
+    url: url_DescribeDatasetGroup_601219, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDatasetImportJob_773397 = ref object of OpenApiRestCall_772597
-proc url_DescribeDatasetImportJob_773399(protocol: Scheme; host: string;
+  Call_DescribeDatasetImportJob_601232 = ref object of OpenApiRestCall_600426
+proc url_DescribeDatasetImportJob_601234(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeDatasetImportJob_773398(path: JsonNode; query: JsonNode;
+proc validate_DescribeDatasetImportJob_601233(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes a dataset import job created using the <a>CreateDatasetImportJob</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDatasetImportJob</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>DataSize</code> </p> </li> <li> <p> <code>FieldStatistics</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ## 
@@ -1627,48 +1627,48 @@ proc validate_DescribeDatasetImportJob_773398(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773400 = header.getOrDefault("X-Amz-Date")
-  valid_773400 = validateParameter(valid_773400, JString, required = false,
+  var valid_601235 = header.getOrDefault("X-Amz-Date")
+  valid_601235 = validateParameter(valid_601235, JString, required = false,
                                  default = nil)
-  if valid_773400 != nil:
-    section.add "X-Amz-Date", valid_773400
-  var valid_773401 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773401 = validateParameter(valid_773401, JString, required = false,
+  if valid_601235 != nil:
+    section.add "X-Amz-Date", valid_601235
+  var valid_601236 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601236 = validateParameter(valid_601236, JString, required = false,
                                  default = nil)
-  if valid_773401 != nil:
-    section.add "X-Amz-Security-Token", valid_773401
+  if valid_601236 != nil:
+    section.add "X-Amz-Security-Token", valid_601236
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773402 = header.getOrDefault("X-Amz-Target")
-  valid_773402 = validateParameter(valid_773402, JString, required = true, default = newJString(
+  var valid_601237 = header.getOrDefault("X-Amz-Target")
+  valid_601237 = validateParameter(valid_601237, JString, required = true, default = newJString(
       "AmazonForecast.DescribeDatasetImportJob"))
-  if valid_773402 != nil:
-    section.add "X-Amz-Target", valid_773402
-  var valid_773403 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773403 = validateParameter(valid_773403, JString, required = false,
+  if valid_601237 != nil:
+    section.add "X-Amz-Target", valid_601237
+  var valid_601238 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601238 = validateParameter(valid_601238, JString, required = false,
                                  default = nil)
-  if valid_773403 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773403
-  var valid_773404 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773404 = validateParameter(valid_773404, JString, required = false,
+  if valid_601238 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601238
+  var valid_601239 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601239 = validateParameter(valid_601239, JString, required = false,
                                  default = nil)
-  if valid_773404 != nil:
-    section.add "X-Amz-Algorithm", valid_773404
-  var valid_773405 = header.getOrDefault("X-Amz-Signature")
-  valid_773405 = validateParameter(valid_773405, JString, required = false,
+  if valid_601239 != nil:
+    section.add "X-Amz-Algorithm", valid_601239
+  var valid_601240 = header.getOrDefault("X-Amz-Signature")
+  valid_601240 = validateParameter(valid_601240, JString, required = false,
                                  default = nil)
-  if valid_773405 != nil:
-    section.add "X-Amz-Signature", valid_773405
-  var valid_773406 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773406 = validateParameter(valid_773406, JString, required = false,
+  if valid_601240 != nil:
+    section.add "X-Amz-Signature", valid_601240
+  var valid_601241 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601241 = validateParameter(valid_601241, JString, required = false,
                                  default = nil)
-  if valid_773406 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773406
-  var valid_773407 = header.getOrDefault("X-Amz-Credential")
-  valid_773407 = validateParameter(valid_773407, JString, required = false,
+  if valid_601241 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601241
+  var valid_601242 = header.getOrDefault("X-Amz-Credential")
+  valid_601242 = validateParameter(valid_601242, JString, required = false,
                                  default = nil)
-  if valid_773407 != nil:
-    section.add "X-Amz-Credential", valid_773407
+  if valid_601242 != nil:
+    section.add "X-Amz-Credential", valid_601242
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1679,40 +1679,40 @@ proc validate_DescribeDatasetImportJob_773398(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773409: Call_DescribeDatasetImportJob_773397; path: JsonNode;
+proc call*(call_601244: Call_DescribeDatasetImportJob_601232; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a dataset import job created using the <a>CreateDatasetImportJob</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDatasetImportJob</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>DataSize</code> </p> </li> <li> <p> <code>FieldStatistics</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ## 
-  let valid = call_773409.validator(path, query, header, formData, body)
-  let scheme = call_773409.pickScheme
+  let valid = call_601244.validator(path, query, header, formData, body)
+  let scheme = call_601244.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773409.url(scheme.get, call_773409.host, call_773409.base,
-                         call_773409.route, valid.getOrDefault("path"))
-  result = hook(call_773409, url, valid)
+  let url = call_601244.url(scheme.get, call_601244.host, call_601244.base,
+                         call_601244.route, valid.getOrDefault("path"))
+  result = hook(call_601244, url, valid)
 
-proc call*(call_773410: Call_DescribeDatasetImportJob_773397; body: JsonNode): Recallable =
+proc call*(call_601245: Call_DescribeDatasetImportJob_601232; body: JsonNode): Recallable =
   ## describeDatasetImportJob
   ## <p>Describes a dataset import job created using the <a>CreateDatasetImportJob</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateDatasetImportJob</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>DataSize</code> </p> </li> <li> <p> <code>FieldStatistics</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_773411 = newJObject()
+  var body_601246 = newJObject()
   if body != nil:
-    body_773411 = body
-  result = call_773410.call(nil, nil, nil, nil, body_773411)
+    body_601246 = body
+  result = call_601245.call(nil, nil, nil, nil, body_601246)
 
-var describeDatasetImportJob* = Call_DescribeDatasetImportJob_773397(
+var describeDatasetImportJob* = Call_DescribeDatasetImportJob_601232(
     name: "describeDatasetImportJob", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DescribeDatasetImportJob",
-    validator: validate_DescribeDatasetImportJob_773398, base: "/",
-    url: url_DescribeDatasetImportJob_773399, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeDatasetImportJob_601233, base: "/",
+    url: url_DescribeDatasetImportJob_601234, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeForecast_773412 = ref object of OpenApiRestCall_772597
-proc url_DescribeForecast_773414(protocol: Scheme; host: string; base: string;
+  Call_DescribeForecast_601247 = ref object of OpenApiRestCall_600426
+proc url_DescribeForecast_601249(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeForecast_773413(path: JsonNode; query: JsonNode;
+proc validate_DescribeForecast_601248(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Describes a forecast created using the <a>CreateForecast</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateForecast</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetGroupArn</code> - The dataset group that provided the training data.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
@@ -1733,48 +1733,48 @@ proc validate_DescribeForecast_773413(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773415 = header.getOrDefault("X-Amz-Date")
-  valid_773415 = validateParameter(valid_773415, JString, required = false,
+  var valid_601250 = header.getOrDefault("X-Amz-Date")
+  valid_601250 = validateParameter(valid_601250, JString, required = false,
                                  default = nil)
-  if valid_773415 != nil:
-    section.add "X-Amz-Date", valid_773415
-  var valid_773416 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773416 = validateParameter(valid_773416, JString, required = false,
+  if valid_601250 != nil:
+    section.add "X-Amz-Date", valid_601250
+  var valid_601251 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601251 = validateParameter(valid_601251, JString, required = false,
                                  default = nil)
-  if valid_773416 != nil:
-    section.add "X-Amz-Security-Token", valid_773416
+  if valid_601251 != nil:
+    section.add "X-Amz-Security-Token", valid_601251
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773417 = header.getOrDefault("X-Amz-Target")
-  valid_773417 = validateParameter(valid_773417, JString, required = true, default = newJString(
+  var valid_601252 = header.getOrDefault("X-Amz-Target")
+  valid_601252 = validateParameter(valid_601252, JString, required = true, default = newJString(
       "AmazonForecast.DescribeForecast"))
-  if valid_773417 != nil:
-    section.add "X-Amz-Target", valid_773417
-  var valid_773418 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773418 = validateParameter(valid_773418, JString, required = false,
+  if valid_601252 != nil:
+    section.add "X-Amz-Target", valid_601252
+  var valid_601253 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601253 = validateParameter(valid_601253, JString, required = false,
                                  default = nil)
-  if valid_773418 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773418
-  var valid_773419 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773419 = validateParameter(valid_773419, JString, required = false,
+  if valid_601253 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601253
+  var valid_601254 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601254 = validateParameter(valid_601254, JString, required = false,
                                  default = nil)
-  if valid_773419 != nil:
-    section.add "X-Amz-Algorithm", valid_773419
-  var valid_773420 = header.getOrDefault("X-Amz-Signature")
-  valid_773420 = validateParameter(valid_773420, JString, required = false,
+  if valid_601254 != nil:
+    section.add "X-Amz-Algorithm", valid_601254
+  var valid_601255 = header.getOrDefault("X-Amz-Signature")
+  valid_601255 = validateParameter(valid_601255, JString, required = false,
                                  default = nil)
-  if valid_773420 != nil:
-    section.add "X-Amz-Signature", valid_773420
-  var valid_773421 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773421 = validateParameter(valid_773421, JString, required = false,
+  if valid_601255 != nil:
+    section.add "X-Amz-Signature", valid_601255
+  var valid_601256 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601256 = validateParameter(valid_601256, JString, required = false,
                                  default = nil)
-  if valid_773421 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773421
-  var valid_773422 = header.getOrDefault("X-Amz-Credential")
-  valid_773422 = validateParameter(valid_773422, JString, required = false,
+  if valid_601256 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601256
+  var valid_601257 = header.getOrDefault("X-Amz-Credential")
+  valid_601257 = validateParameter(valid_601257, JString, required = false,
                                  default = nil)
-  if valid_773422 != nil:
-    section.add "X-Amz-Credential", valid_773422
+  if valid_601257 != nil:
+    section.add "X-Amz-Credential", valid_601257
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1785,39 +1785,39 @@ proc validate_DescribeForecast_773413(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773424: Call_DescribeForecast_773412; path: JsonNode;
+proc call*(call_601259: Call_DescribeForecast_601247; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a forecast created using the <a>CreateForecast</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateForecast</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetGroupArn</code> - The dataset group that provided the training data.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ## 
-  let valid = call_773424.validator(path, query, header, formData, body)
-  let scheme = call_773424.pickScheme
+  let valid = call_601259.validator(path, query, header, formData, body)
+  let scheme = call_601259.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773424.url(scheme.get, call_773424.host, call_773424.base,
-                         call_773424.route, valid.getOrDefault("path"))
-  result = hook(call_773424, url, valid)
+  let url = call_601259.url(scheme.get, call_601259.host, call_601259.base,
+                         call_601259.route, valid.getOrDefault("path"))
+  result = hook(call_601259, url, valid)
 
-proc call*(call_773425: Call_DescribeForecast_773412; body: JsonNode): Recallable =
+proc call*(call_601260: Call_DescribeForecast_601247; body: JsonNode): Recallable =
   ## describeForecast
   ## <p>Describes a forecast created using the <a>CreateForecast</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateForecast</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetGroupArn</code> - The dataset group that provided the training data.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_773426 = newJObject()
+  var body_601261 = newJObject()
   if body != nil:
-    body_773426 = body
-  result = call_773425.call(nil, nil, nil, nil, body_773426)
+    body_601261 = body
+  result = call_601260.call(nil, nil, nil, nil, body_601261)
 
-var describeForecast* = Call_DescribeForecast_773412(name: "describeForecast",
+var describeForecast* = Call_DescribeForecast_601247(name: "describeForecast",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DescribeForecast",
-    validator: validate_DescribeForecast_773413, base: "/",
-    url: url_DescribeForecast_773414, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeForecast_601248, base: "/",
+    url: url_DescribeForecast_601249, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeForecastExportJob_773427 = ref object of OpenApiRestCall_772597
-proc url_DescribeForecastExportJob_773429(protocol: Scheme; host: string;
+  Call_DescribeForecastExportJob_601262 = ref object of OpenApiRestCall_600426
+proc url_DescribeForecastExportJob_601264(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeForecastExportJob_773428(path: JsonNode; query: JsonNode;
+proc validate_DescribeForecastExportJob_601263(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes a forecast export job created using the <a>CreateForecastExportJob</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateForecastExportJob</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ## 
@@ -1837,48 +1837,48 @@ proc validate_DescribeForecastExportJob_773428(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773430 = header.getOrDefault("X-Amz-Date")
-  valid_773430 = validateParameter(valid_773430, JString, required = false,
+  var valid_601265 = header.getOrDefault("X-Amz-Date")
+  valid_601265 = validateParameter(valid_601265, JString, required = false,
                                  default = nil)
-  if valid_773430 != nil:
-    section.add "X-Amz-Date", valid_773430
-  var valid_773431 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773431 = validateParameter(valid_773431, JString, required = false,
+  if valid_601265 != nil:
+    section.add "X-Amz-Date", valid_601265
+  var valid_601266 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601266 = validateParameter(valid_601266, JString, required = false,
                                  default = nil)
-  if valid_773431 != nil:
-    section.add "X-Amz-Security-Token", valid_773431
+  if valid_601266 != nil:
+    section.add "X-Amz-Security-Token", valid_601266
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773432 = header.getOrDefault("X-Amz-Target")
-  valid_773432 = validateParameter(valid_773432, JString, required = true, default = newJString(
+  var valid_601267 = header.getOrDefault("X-Amz-Target")
+  valid_601267 = validateParameter(valid_601267, JString, required = true, default = newJString(
       "AmazonForecast.DescribeForecastExportJob"))
-  if valid_773432 != nil:
-    section.add "X-Amz-Target", valid_773432
-  var valid_773433 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773433 = validateParameter(valid_773433, JString, required = false,
+  if valid_601267 != nil:
+    section.add "X-Amz-Target", valid_601267
+  var valid_601268 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601268 = validateParameter(valid_601268, JString, required = false,
                                  default = nil)
-  if valid_773433 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773433
-  var valid_773434 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773434 = validateParameter(valid_773434, JString, required = false,
+  if valid_601268 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601268
+  var valid_601269 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601269 = validateParameter(valid_601269, JString, required = false,
                                  default = nil)
-  if valid_773434 != nil:
-    section.add "X-Amz-Algorithm", valid_773434
-  var valid_773435 = header.getOrDefault("X-Amz-Signature")
-  valid_773435 = validateParameter(valid_773435, JString, required = false,
+  if valid_601269 != nil:
+    section.add "X-Amz-Algorithm", valid_601269
+  var valid_601270 = header.getOrDefault("X-Amz-Signature")
+  valid_601270 = validateParameter(valid_601270, JString, required = false,
                                  default = nil)
-  if valid_773435 != nil:
-    section.add "X-Amz-Signature", valid_773435
-  var valid_773436 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773436 = validateParameter(valid_773436, JString, required = false,
+  if valid_601270 != nil:
+    section.add "X-Amz-Signature", valid_601270
+  var valid_601271 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601271 = validateParameter(valid_601271, JString, required = false,
                                  default = nil)
-  if valid_773436 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773436
-  var valid_773437 = header.getOrDefault("X-Amz-Credential")
-  valid_773437 = validateParameter(valid_773437, JString, required = false,
+  if valid_601271 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601271
+  var valid_601272 = header.getOrDefault("X-Amz-Credential")
+  valid_601272 = validateParameter(valid_601272, JString, required = false,
                                  default = nil)
-  if valid_773437 != nil:
-    section.add "X-Amz-Credential", valid_773437
+  if valid_601272 != nil:
+    section.add "X-Amz-Credential", valid_601272
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1889,41 +1889,41 @@ proc validate_DescribeForecastExportJob_773428(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773439: Call_DescribeForecastExportJob_773427; path: JsonNode;
+proc call*(call_601274: Call_DescribeForecastExportJob_601262; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a forecast export job created using the <a>CreateForecastExportJob</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateForecastExportJob</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ## 
-  let valid = call_773439.validator(path, query, header, formData, body)
-  let scheme = call_773439.pickScheme
+  let valid = call_601274.validator(path, query, header, formData, body)
+  let scheme = call_601274.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773439.url(scheme.get, call_773439.host, call_773439.base,
-                         call_773439.route, valid.getOrDefault("path"))
-  result = hook(call_773439, url, valid)
+  let url = call_601274.url(scheme.get, call_601274.host, call_601274.base,
+                         call_601274.route, valid.getOrDefault("path"))
+  result = hook(call_601274, url, valid)
 
-proc call*(call_773440: Call_DescribeForecastExportJob_773427; body: JsonNode): Recallable =
+proc call*(call_601275: Call_DescribeForecastExportJob_601262; body: JsonNode): Recallable =
   ## describeForecastExportJob
   ## <p>Describes a forecast export job created using the <a>CreateForecastExportJob</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreateForecastExportJob</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_773441 = newJObject()
+  var body_601276 = newJObject()
   if body != nil:
-    body_773441 = body
-  result = call_773440.call(nil, nil, nil, nil, body_773441)
+    body_601276 = body
+  result = call_601275.call(nil, nil, nil, nil, body_601276)
 
-var describeForecastExportJob* = Call_DescribeForecastExportJob_773427(
+var describeForecastExportJob* = Call_DescribeForecastExportJob_601262(
     name: "describeForecastExportJob", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DescribeForecastExportJob",
-    validator: validate_DescribeForecastExportJob_773428, base: "/",
-    url: url_DescribeForecastExportJob_773429,
+    validator: validate_DescribeForecastExportJob_601263, base: "/",
+    url: url_DescribeForecastExportJob_601264,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribePredictor_773442 = ref object of OpenApiRestCall_772597
-proc url_DescribePredictor_773444(protocol: Scheme; host: string; base: string;
+  Call_DescribePredictor_601277 = ref object of OpenApiRestCall_600426
+proc url_DescribePredictor_601279(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribePredictor_773443(path: JsonNode; query: JsonNode;
+proc validate_DescribePredictor_601278(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Describes a predictor created using the <a>CreatePredictor</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreatePredictor</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetImportJobArns</code> - The dataset import jobs used to import training data.</p> </li> <li> <p> <code>AutoMLAlgorithmArns</code> - If AutoML is performed, the algorithms evaluated.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
@@ -1944,48 +1944,48 @@ proc validate_DescribePredictor_773443(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773445 = header.getOrDefault("X-Amz-Date")
-  valid_773445 = validateParameter(valid_773445, JString, required = false,
+  var valid_601280 = header.getOrDefault("X-Amz-Date")
+  valid_601280 = validateParameter(valid_601280, JString, required = false,
                                  default = nil)
-  if valid_773445 != nil:
-    section.add "X-Amz-Date", valid_773445
-  var valid_773446 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773446 = validateParameter(valid_773446, JString, required = false,
+  if valid_601280 != nil:
+    section.add "X-Amz-Date", valid_601280
+  var valid_601281 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601281 = validateParameter(valid_601281, JString, required = false,
                                  default = nil)
-  if valid_773446 != nil:
-    section.add "X-Amz-Security-Token", valid_773446
+  if valid_601281 != nil:
+    section.add "X-Amz-Security-Token", valid_601281
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773447 = header.getOrDefault("X-Amz-Target")
-  valid_773447 = validateParameter(valid_773447, JString, required = true, default = newJString(
+  var valid_601282 = header.getOrDefault("X-Amz-Target")
+  valid_601282 = validateParameter(valid_601282, JString, required = true, default = newJString(
       "AmazonForecast.DescribePredictor"))
-  if valid_773447 != nil:
-    section.add "X-Amz-Target", valid_773447
-  var valid_773448 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773448 = validateParameter(valid_773448, JString, required = false,
+  if valid_601282 != nil:
+    section.add "X-Amz-Target", valid_601282
+  var valid_601283 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601283 = validateParameter(valid_601283, JString, required = false,
                                  default = nil)
-  if valid_773448 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773448
-  var valid_773449 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773449 = validateParameter(valid_773449, JString, required = false,
+  if valid_601283 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601283
+  var valid_601284 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601284 = validateParameter(valid_601284, JString, required = false,
                                  default = nil)
-  if valid_773449 != nil:
-    section.add "X-Amz-Algorithm", valid_773449
-  var valid_773450 = header.getOrDefault("X-Amz-Signature")
-  valid_773450 = validateParameter(valid_773450, JString, required = false,
+  if valid_601284 != nil:
+    section.add "X-Amz-Algorithm", valid_601284
+  var valid_601285 = header.getOrDefault("X-Amz-Signature")
+  valid_601285 = validateParameter(valid_601285, JString, required = false,
                                  default = nil)
-  if valid_773450 != nil:
-    section.add "X-Amz-Signature", valid_773450
-  var valid_773451 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773451 = validateParameter(valid_773451, JString, required = false,
+  if valid_601285 != nil:
+    section.add "X-Amz-Signature", valid_601285
+  var valid_601286 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601286 = validateParameter(valid_601286, JString, required = false,
                                  default = nil)
-  if valid_773451 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773451
-  var valid_773452 = header.getOrDefault("X-Amz-Credential")
-  valid_773452 = validateParameter(valid_773452, JString, required = false,
+  if valid_601286 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601286
+  var valid_601287 = header.getOrDefault("X-Amz-Credential")
+  valid_601287 = validateParameter(valid_601287, JString, required = false,
                                  default = nil)
-  if valid_773452 != nil:
-    section.add "X-Amz-Credential", valid_773452
+  if valid_601287 != nil:
+    section.add "X-Amz-Credential", valid_601287
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1996,39 +1996,39 @@ proc validate_DescribePredictor_773443(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773454: Call_DescribePredictor_773442; path: JsonNode;
+proc call*(call_601289: Call_DescribePredictor_601277; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a predictor created using the <a>CreatePredictor</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreatePredictor</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetImportJobArns</code> - The dataset import jobs used to import training data.</p> </li> <li> <p> <code>AutoMLAlgorithmArns</code> - If AutoML is performed, the algorithms evaluated.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ## 
-  let valid = call_773454.validator(path, query, header, formData, body)
-  let scheme = call_773454.pickScheme
+  let valid = call_601289.validator(path, query, header, formData, body)
+  let scheme = call_601289.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773454.url(scheme.get, call_773454.host, call_773454.base,
-                         call_773454.route, valid.getOrDefault("path"))
-  result = hook(call_773454, url, valid)
+  let url = call_601289.url(scheme.get, call_601289.host, call_601289.base,
+                         call_601289.route, valid.getOrDefault("path"))
+  result = hook(call_601289, url, valid)
 
-proc call*(call_773455: Call_DescribePredictor_773442; body: JsonNode): Recallable =
+proc call*(call_601290: Call_DescribePredictor_601277; body: JsonNode): Recallable =
   ## describePredictor
   ## <p>Describes a predictor created using the <a>CreatePredictor</a> operation.</p> <p>In addition to listing the properties provided by the user in the <code>CreatePredictor</code> request, this operation includes the following properties:</p> <ul> <li> <p> <code>DatasetImportJobArns</code> - The dataset import jobs used to import training data.</p> </li> <li> <p> <code>AutoMLAlgorithmArns</code> - If AutoML is performed, the algorithms evaluated.</p> </li> <li> <p> <code>CreationTime</code> </p> </li> <li> <p> <code>LastModificationTime</code> </p> </li> <li> <p> <code>Status</code> </p> </li> <li> <p> <code>Message</code> - If an error occurred, information about the error.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_773456 = newJObject()
+  var body_601291 = newJObject()
   if body != nil:
-    body_773456 = body
-  result = call_773455.call(nil, nil, nil, nil, body_773456)
+    body_601291 = body
+  result = call_601290.call(nil, nil, nil, nil, body_601291)
 
-var describePredictor* = Call_DescribePredictor_773442(name: "describePredictor",
+var describePredictor* = Call_DescribePredictor_601277(name: "describePredictor",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.DescribePredictor",
-    validator: validate_DescribePredictor_773443, base: "/",
-    url: url_DescribePredictor_773444, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribePredictor_601278, base: "/",
+    url: url_DescribePredictor_601279, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAccuracyMetrics_773457 = ref object of OpenApiRestCall_772597
-proc url_GetAccuracyMetrics_773459(protocol: Scheme; host: string; base: string;
+  Call_GetAccuracyMetrics_601292 = ref object of OpenApiRestCall_600426
+proc url_GetAccuracyMetrics_601294(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetAccuracyMetrics_773458(path: JsonNode; query: JsonNode;
+proc validate_GetAccuracyMetrics_601293(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Provides metrics on the accuracy of the models that were trained by the <a>CreatePredictor</a> operation. Use metrics to see how well the model performed and to decide whether to use the predictor to generate a forecast.</p> <p>Metrics are generated for each backtest window evaluated. For more information, see <a>EvaluationParameters</a>.</p> <p>The parameters of the <code>filling</code> method determine which items contribute to the metrics. If <code>zero</code> is specified, all items contribute. If <code>nan</code> is specified, only those items that have complete data in the range being evaluated contribute. For more information, see <a>FeaturizationMethod</a>.</p> <p>For an example of how to train a model and review metrics, see <a>getting-started</a>.</p>
@@ -2049,48 +2049,48 @@ proc validate_GetAccuracyMetrics_773458(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773460 = header.getOrDefault("X-Amz-Date")
-  valid_773460 = validateParameter(valid_773460, JString, required = false,
+  var valid_601295 = header.getOrDefault("X-Amz-Date")
+  valid_601295 = validateParameter(valid_601295, JString, required = false,
                                  default = nil)
-  if valid_773460 != nil:
-    section.add "X-Amz-Date", valid_773460
-  var valid_773461 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773461 = validateParameter(valid_773461, JString, required = false,
+  if valid_601295 != nil:
+    section.add "X-Amz-Date", valid_601295
+  var valid_601296 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601296 = validateParameter(valid_601296, JString, required = false,
                                  default = nil)
-  if valid_773461 != nil:
-    section.add "X-Amz-Security-Token", valid_773461
+  if valid_601296 != nil:
+    section.add "X-Amz-Security-Token", valid_601296
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773462 = header.getOrDefault("X-Amz-Target")
-  valid_773462 = validateParameter(valid_773462, JString, required = true, default = newJString(
+  var valid_601297 = header.getOrDefault("X-Amz-Target")
+  valid_601297 = validateParameter(valid_601297, JString, required = true, default = newJString(
       "AmazonForecast.GetAccuracyMetrics"))
-  if valid_773462 != nil:
-    section.add "X-Amz-Target", valid_773462
-  var valid_773463 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773463 = validateParameter(valid_773463, JString, required = false,
+  if valid_601297 != nil:
+    section.add "X-Amz-Target", valid_601297
+  var valid_601298 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601298 = validateParameter(valid_601298, JString, required = false,
                                  default = nil)
-  if valid_773463 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773463
-  var valid_773464 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773464 = validateParameter(valid_773464, JString, required = false,
+  if valid_601298 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601298
+  var valid_601299 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601299 = validateParameter(valid_601299, JString, required = false,
                                  default = nil)
-  if valid_773464 != nil:
-    section.add "X-Amz-Algorithm", valid_773464
-  var valid_773465 = header.getOrDefault("X-Amz-Signature")
-  valid_773465 = validateParameter(valid_773465, JString, required = false,
+  if valid_601299 != nil:
+    section.add "X-Amz-Algorithm", valid_601299
+  var valid_601300 = header.getOrDefault("X-Amz-Signature")
+  valid_601300 = validateParameter(valid_601300, JString, required = false,
                                  default = nil)
-  if valid_773465 != nil:
-    section.add "X-Amz-Signature", valid_773465
-  var valid_773466 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773466 = validateParameter(valid_773466, JString, required = false,
+  if valid_601300 != nil:
+    section.add "X-Amz-Signature", valid_601300
+  var valid_601301 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601301 = validateParameter(valid_601301, JString, required = false,
                                  default = nil)
-  if valid_773466 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773466
-  var valid_773467 = header.getOrDefault("X-Amz-Credential")
-  valid_773467 = validateParameter(valid_773467, JString, required = false,
+  if valid_601301 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601301
+  var valid_601302 = header.getOrDefault("X-Amz-Credential")
+  valid_601302 = validateParameter(valid_601302, JString, required = false,
                                  default = nil)
-  if valid_773467 != nil:
-    section.add "X-Amz-Credential", valid_773467
+  if valid_601302 != nil:
+    section.add "X-Amz-Credential", valid_601302
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2101,40 +2101,40 @@ proc validate_GetAccuracyMetrics_773458(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773469: Call_GetAccuracyMetrics_773457; path: JsonNode;
+proc call*(call_601304: Call_GetAccuracyMetrics_601292; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Provides metrics on the accuracy of the models that were trained by the <a>CreatePredictor</a> operation. Use metrics to see how well the model performed and to decide whether to use the predictor to generate a forecast.</p> <p>Metrics are generated for each backtest window evaluated. For more information, see <a>EvaluationParameters</a>.</p> <p>The parameters of the <code>filling</code> method determine which items contribute to the metrics. If <code>zero</code> is specified, all items contribute. If <code>nan</code> is specified, only those items that have complete data in the range being evaluated contribute. For more information, see <a>FeaturizationMethod</a>.</p> <p>For an example of how to train a model and review metrics, see <a>getting-started</a>.</p>
   ## 
-  let valid = call_773469.validator(path, query, header, formData, body)
-  let scheme = call_773469.pickScheme
+  let valid = call_601304.validator(path, query, header, formData, body)
+  let scheme = call_601304.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773469.url(scheme.get, call_773469.host, call_773469.base,
-                         call_773469.route, valid.getOrDefault("path"))
-  result = hook(call_773469, url, valid)
+  let url = call_601304.url(scheme.get, call_601304.host, call_601304.base,
+                         call_601304.route, valid.getOrDefault("path"))
+  result = hook(call_601304, url, valid)
 
-proc call*(call_773470: Call_GetAccuracyMetrics_773457; body: JsonNode): Recallable =
+proc call*(call_601305: Call_GetAccuracyMetrics_601292; body: JsonNode): Recallable =
   ## getAccuracyMetrics
   ## <p>Provides metrics on the accuracy of the models that were trained by the <a>CreatePredictor</a> operation. Use metrics to see how well the model performed and to decide whether to use the predictor to generate a forecast.</p> <p>Metrics are generated for each backtest window evaluated. For more information, see <a>EvaluationParameters</a>.</p> <p>The parameters of the <code>filling</code> method determine which items contribute to the metrics. If <code>zero</code> is specified, all items contribute. If <code>nan</code> is specified, only those items that have complete data in the range being evaluated contribute. For more information, see <a>FeaturizationMethod</a>.</p> <p>For an example of how to train a model and review metrics, see <a>getting-started</a>.</p>
   ##   body: JObject (required)
-  var body_773471 = newJObject()
+  var body_601306 = newJObject()
   if body != nil:
-    body_773471 = body
-  result = call_773470.call(nil, nil, nil, nil, body_773471)
+    body_601306 = body
+  result = call_601305.call(nil, nil, nil, nil, body_601306)
 
-var getAccuracyMetrics* = Call_GetAccuracyMetrics_773457(
+var getAccuracyMetrics* = Call_GetAccuracyMetrics_601292(
     name: "getAccuracyMetrics", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.GetAccuracyMetrics",
-    validator: validate_GetAccuracyMetrics_773458, base: "/",
-    url: url_GetAccuracyMetrics_773459, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetAccuracyMetrics_601293, base: "/",
+    url: url_GetAccuracyMetrics_601294, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDatasetGroups_773472 = ref object of OpenApiRestCall_772597
-proc url_ListDatasetGroups_773474(protocol: Scheme; host: string; base: string;
+  Call_ListDatasetGroups_601307 = ref object of OpenApiRestCall_600426
+proc url_ListDatasetGroups_601309(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListDatasetGroups_773473(path: JsonNode; query: JsonNode;
+proc validate_ListDatasetGroups_601308(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Returns a list of dataset groups created using the <a>CreateDatasetGroup</a> operation. For each dataset group, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDatasetGroup</a> operation.
@@ -2149,16 +2149,16 @@ proc validate_ListDatasetGroups_773473(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_773475 = query.getOrDefault("NextToken")
-  valid_773475 = validateParameter(valid_773475, JString, required = false,
+  var valid_601310 = query.getOrDefault("NextToken")
+  valid_601310 = validateParameter(valid_601310, JString, required = false,
                                  default = nil)
-  if valid_773475 != nil:
-    section.add "NextToken", valid_773475
-  var valid_773476 = query.getOrDefault("MaxResults")
-  valid_773476 = validateParameter(valid_773476, JString, required = false,
+  if valid_601310 != nil:
+    section.add "NextToken", valid_601310
+  var valid_601311 = query.getOrDefault("MaxResults")
+  valid_601311 = validateParameter(valid_601311, JString, required = false,
                                  default = nil)
-  if valid_773476 != nil:
-    section.add "MaxResults", valid_773476
+  if valid_601311 != nil:
+    section.add "MaxResults", valid_601311
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2170,48 +2170,48 @@ proc validate_ListDatasetGroups_773473(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773477 = header.getOrDefault("X-Amz-Date")
-  valid_773477 = validateParameter(valid_773477, JString, required = false,
+  var valid_601312 = header.getOrDefault("X-Amz-Date")
+  valid_601312 = validateParameter(valid_601312, JString, required = false,
                                  default = nil)
-  if valid_773477 != nil:
-    section.add "X-Amz-Date", valid_773477
-  var valid_773478 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773478 = validateParameter(valid_773478, JString, required = false,
+  if valid_601312 != nil:
+    section.add "X-Amz-Date", valid_601312
+  var valid_601313 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601313 = validateParameter(valid_601313, JString, required = false,
                                  default = nil)
-  if valid_773478 != nil:
-    section.add "X-Amz-Security-Token", valid_773478
+  if valid_601313 != nil:
+    section.add "X-Amz-Security-Token", valid_601313
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773479 = header.getOrDefault("X-Amz-Target")
-  valid_773479 = validateParameter(valid_773479, JString, required = true, default = newJString(
+  var valid_601314 = header.getOrDefault("X-Amz-Target")
+  valid_601314 = validateParameter(valid_601314, JString, required = true, default = newJString(
       "AmazonForecast.ListDatasetGroups"))
-  if valid_773479 != nil:
-    section.add "X-Amz-Target", valid_773479
-  var valid_773480 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773480 = validateParameter(valid_773480, JString, required = false,
+  if valid_601314 != nil:
+    section.add "X-Amz-Target", valid_601314
+  var valid_601315 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601315 = validateParameter(valid_601315, JString, required = false,
                                  default = nil)
-  if valid_773480 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773480
-  var valid_773481 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773481 = validateParameter(valid_773481, JString, required = false,
+  if valid_601315 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601315
+  var valid_601316 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601316 = validateParameter(valid_601316, JString, required = false,
                                  default = nil)
-  if valid_773481 != nil:
-    section.add "X-Amz-Algorithm", valid_773481
-  var valid_773482 = header.getOrDefault("X-Amz-Signature")
-  valid_773482 = validateParameter(valid_773482, JString, required = false,
+  if valid_601316 != nil:
+    section.add "X-Amz-Algorithm", valid_601316
+  var valid_601317 = header.getOrDefault("X-Amz-Signature")
+  valid_601317 = validateParameter(valid_601317, JString, required = false,
                                  default = nil)
-  if valid_773482 != nil:
-    section.add "X-Amz-Signature", valid_773482
-  var valid_773483 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773483 = validateParameter(valid_773483, JString, required = false,
+  if valid_601317 != nil:
+    section.add "X-Amz-Signature", valid_601317
+  var valid_601318 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601318 = validateParameter(valid_601318, JString, required = false,
                                  default = nil)
-  if valid_773483 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773483
-  var valid_773484 = header.getOrDefault("X-Amz-Credential")
-  valid_773484 = validateParameter(valid_773484, JString, required = false,
+  if valid_601318 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601318
+  var valid_601319 = header.getOrDefault("X-Amz-Credential")
+  valid_601319 = validateParameter(valid_601319, JString, required = false,
                                  default = nil)
-  if valid_773484 != nil:
-    section.add "X-Amz-Credential", valid_773484
+  if valid_601319 != nil:
+    section.add "X-Amz-Credential", valid_601319
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2222,19 +2222,19 @@ proc validate_ListDatasetGroups_773473(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773486: Call_ListDatasetGroups_773472; path: JsonNode;
+proc call*(call_601321: Call_ListDatasetGroups_601307; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of dataset groups created using the <a>CreateDatasetGroup</a> operation. For each dataset group, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDatasetGroup</a> operation.
   ## 
-  let valid = call_773486.validator(path, query, header, formData, body)
-  let scheme = call_773486.pickScheme
+  let valid = call_601321.validator(path, query, header, formData, body)
+  let scheme = call_601321.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773486.url(scheme.get, call_773486.host, call_773486.base,
-                         call_773486.route, valid.getOrDefault("path"))
-  result = hook(call_773486, url, valid)
+  let url = call_601321.url(scheme.get, call_601321.host, call_601321.base,
+                         call_601321.route, valid.getOrDefault("path"))
+  result = hook(call_601321, url, valid)
 
-proc call*(call_773487: Call_ListDatasetGroups_773472; body: JsonNode;
+proc call*(call_601322: Call_ListDatasetGroups_601307; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listDatasetGroups
   ## Returns a list of dataset groups created using the <a>CreateDatasetGroup</a> operation. For each dataset group, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDatasetGroup</a> operation.
@@ -2243,26 +2243,26 @@ proc call*(call_773487: Call_ListDatasetGroups_773472; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_773488 = newJObject()
-  var body_773489 = newJObject()
-  add(query_773488, "NextToken", newJString(NextToken))
+  var query_601323 = newJObject()
+  var body_601324 = newJObject()
+  add(query_601323, "NextToken", newJString(NextToken))
   if body != nil:
-    body_773489 = body
-  add(query_773488, "MaxResults", newJString(MaxResults))
-  result = call_773487.call(nil, query_773488, nil, nil, body_773489)
+    body_601324 = body
+  add(query_601323, "MaxResults", newJString(MaxResults))
+  result = call_601322.call(nil, query_601323, nil, nil, body_601324)
 
-var listDatasetGroups* = Call_ListDatasetGroups_773472(name: "listDatasetGroups",
+var listDatasetGroups* = Call_ListDatasetGroups_601307(name: "listDatasetGroups",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.ListDatasetGroups",
-    validator: validate_ListDatasetGroups_773473, base: "/",
-    url: url_ListDatasetGroups_773474, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListDatasetGroups_601308, base: "/",
+    url: url_ListDatasetGroups_601309, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDatasetImportJobs_773491 = ref object of OpenApiRestCall_772597
-proc url_ListDatasetImportJobs_773493(protocol: Scheme; host: string; base: string;
+  Call_ListDatasetImportJobs_601326 = ref object of OpenApiRestCall_600426
+proc url_ListDatasetImportJobs_601328(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListDatasetImportJobs_773492(path: JsonNode; query: JsonNode;
+proc validate_ListDatasetImportJobs_601327(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of dataset import jobs created using the <a>CreateDatasetImportJob</a> operation. For each import job, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDatasetImportJob</a> operation. You can filter the list by providing an array of <a>Filter</a> objects.
   ## 
@@ -2276,16 +2276,16 @@ proc validate_ListDatasetImportJobs_773492(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_773494 = query.getOrDefault("NextToken")
-  valid_773494 = validateParameter(valid_773494, JString, required = false,
+  var valid_601329 = query.getOrDefault("NextToken")
+  valid_601329 = validateParameter(valid_601329, JString, required = false,
                                  default = nil)
-  if valid_773494 != nil:
-    section.add "NextToken", valid_773494
-  var valid_773495 = query.getOrDefault("MaxResults")
-  valid_773495 = validateParameter(valid_773495, JString, required = false,
+  if valid_601329 != nil:
+    section.add "NextToken", valid_601329
+  var valid_601330 = query.getOrDefault("MaxResults")
+  valid_601330 = validateParameter(valid_601330, JString, required = false,
                                  default = nil)
-  if valid_773495 != nil:
-    section.add "MaxResults", valid_773495
+  if valid_601330 != nil:
+    section.add "MaxResults", valid_601330
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2297,48 +2297,48 @@ proc validate_ListDatasetImportJobs_773492(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773496 = header.getOrDefault("X-Amz-Date")
-  valid_773496 = validateParameter(valid_773496, JString, required = false,
+  var valid_601331 = header.getOrDefault("X-Amz-Date")
+  valid_601331 = validateParameter(valid_601331, JString, required = false,
                                  default = nil)
-  if valid_773496 != nil:
-    section.add "X-Amz-Date", valid_773496
-  var valid_773497 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773497 = validateParameter(valid_773497, JString, required = false,
+  if valid_601331 != nil:
+    section.add "X-Amz-Date", valid_601331
+  var valid_601332 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601332 = validateParameter(valid_601332, JString, required = false,
                                  default = nil)
-  if valid_773497 != nil:
-    section.add "X-Amz-Security-Token", valid_773497
+  if valid_601332 != nil:
+    section.add "X-Amz-Security-Token", valid_601332
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773498 = header.getOrDefault("X-Amz-Target")
-  valid_773498 = validateParameter(valid_773498, JString, required = true, default = newJString(
+  var valid_601333 = header.getOrDefault("X-Amz-Target")
+  valid_601333 = validateParameter(valid_601333, JString, required = true, default = newJString(
       "AmazonForecast.ListDatasetImportJobs"))
-  if valid_773498 != nil:
-    section.add "X-Amz-Target", valid_773498
-  var valid_773499 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773499 = validateParameter(valid_773499, JString, required = false,
+  if valid_601333 != nil:
+    section.add "X-Amz-Target", valid_601333
+  var valid_601334 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601334 = validateParameter(valid_601334, JString, required = false,
                                  default = nil)
-  if valid_773499 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773499
-  var valid_773500 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773500 = validateParameter(valid_773500, JString, required = false,
+  if valid_601334 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601334
+  var valid_601335 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601335 = validateParameter(valid_601335, JString, required = false,
                                  default = nil)
-  if valid_773500 != nil:
-    section.add "X-Amz-Algorithm", valid_773500
-  var valid_773501 = header.getOrDefault("X-Amz-Signature")
-  valid_773501 = validateParameter(valid_773501, JString, required = false,
+  if valid_601335 != nil:
+    section.add "X-Amz-Algorithm", valid_601335
+  var valid_601336 = header.getOrDefault("X-Amz-Signature")
+  valid_601336 = validateParameter(valid_601336, JString, required = false,
                                  default = nil)
-  if valid_773501 != nil:
-    section.add "X-Amz-Signature", valid_773501
-  var valid_773502 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773502 = validateParameter(valid_773502, JString, required = false,
+  if valid_601336 != nil:
+    section.add "X-Amz-Signature", valid_601336
+  var valid_601337 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601337 = validateParameter(valid_601337, JString, required = false,
                                  default = nil)
-  if valid_773502 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773502
-  var valid_773503 = header.getOrDefault("X-Amz-Credential")
-  valid_773503 = validateParameter(valid_773503, JString, required = false,
+  if valid_601337 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601337
+  var valid_601338 = header.getOrDefault("X-Amz-Credential")
+  valid_601338 = validateParameter(valid_601338, JString, required = false,
                                  default = nil)
-  if valid_773503 != nil:
-    section.add "X-Amz-Credential", valid_773503
+  if valid_601338 != nil:
+    section.add "X-Amz-Credential", valid_601338
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2349,19 +2349,19 @@ proc validate_ListDatasetImportJobs_773492(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773505: Call_ListDatasetImportJobs_773491; path: JsonNode;
+proc call*(call_601340: Call_ListDatasetImportJobs_601326; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of dataset import jobs created using the <a>CreateDatasetImportJob</a> operation. For each import job, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDatasetImportJob</a> operation. You can filter the list by providing an array of <a>Filter</a> objects.
   ## 
-  let valid = call_773505.validator(path, query, header, formData, body)
-  let scheme = call_773505.pickScheme
+  let valid = call_601340.validator(path, query, header, formData, body)
+  let scheme = call_601340.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773505.url(scheme.get, call_773505.host, call_773505.base,
-                         call_773505.route, valid.getOrDefault("path"))
-  result = hook(call_773505, url, valid)
+  let url = call_601340.url(scheme.get, call_601340.host, call_601340.base,
+                         call_601340.route, valid.getOrDefault("path"))
+  result = hook(call_601340, url, valid)
 
-proc call*(call_773506: Call_ListDatasetImportJobs_773491; body: JsonNode;
+proc call*(call_601341: Call_ListDatasetImportJobs_601326; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listDatasetImportJobs
   ## Returns a list of dataset import jobs created using the <a>CreateDatasetImportJob</a> operation. For each import job, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDatasetImportJob</a> operation. You can filter the list by providing an array of <a>Filter</a> objects.
@@ -2370,27 +2370,27 @@ proc call*(call_773506: Call_ListDatasetImportJobs_773491; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_773507 = newJObject()
-  var body_773508 = newJObject()
-  add(query_773507, "NextToken", newJString(NextToken))
+  var query_601342 = newJObject()
+  var body_601343 = newJObject()
+  add(query_601342, "NextToken", newJString(NextToken))
   if body != nil:
-    body_773508 = body
-  add(query_773507, "MaxResults", newJString(MaxResults))
-  result = call_773506.call(nil, query_773507, nil, nil, body_773508)
+    body_601343 = body
+  add(query_601342, "MaxResults", newJString(MaxResults))
+  result = call_601341.call(nil, query_601342, nil, nil, body_601343)
 
-var listDatasetImportJobs* = Call_ListDatasetImportJobs_773491(
+var listDatasetImportJobs* = Call_ListDatasetImportJobs_601326(
     name: "listDatasetImportJobs", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.ListDatasetImportJobs",
-    validator: validate_ListDatasetImportJobs_773492, base: "/",
-    url: url_ListDatasetImportJobs_773493, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListDatasetImportJobs_601327, base: "/",
+    url: url_ListDatasetImportJobs_601328, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDatasets_773509 = ref object of OpenApiRestCall_772597
-proc url_ListDatasets_773511(protocol: Scheme; host: string; base: string;
+  Call_ListDatasets_601344 = ref object of OpenApiRestCall_600426
+proc url_ListDatasets_601346(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListDatasets_773510(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListDatasets_601345(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of datasets created using the <a>CreateDataset</a> operation. For each dataset, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDataset</a> operation.
   ## 
@@ -2404,16 +2404,16 @@ proc validate_ListDatasets_773510(path: JsonNode; query: JsonNode; header: JsonN
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_773512 = query.getOrDefault("NextToken")
-  valid_773512 = validateParameter(valid_773512, JString, required = false,
+  var valid_601347 = query.getOrDefault("NextToken")
+  valid_601347 = validateParameter(valid_601347, JString, required = false,
                                  default = nil)
-  if valid_773512 != nil:
-    section.add "NextToken", valid_773512
-  var valid_773513 = query.getOrDefault("MaxResults")
-  valid_773513 = validateParameter(valid_773513, JString, required = false,
+  if valid_601347 != nil:
+    section.add "NextToken", valid_601347
+  var valid_601348 = query.getOrDefault("MaxResults")
+  valid_601348 = validateParameter(valid_601348, JString, required = false,
                                  default = nil)
-  if valid_773513 != nil:
-    section.add "MaxResults", valid_773513
+  if valid_601348 != nil:
+    section.add "MaxResults", valid_601348
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2425,48 +2425,48 @@ proc validate_ListDatasets_773510(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773514 = header.getOrDefault("X-Amz-Date")
-  valid_773514 = validateParameter(valid_773514, JString, required = false,
+  var valid_601349 = header.getOrDefault("X-Amz-Date")
+  valid_601349 = validateParameter(valid_601349, JString, required = false,
                                  default = nil)
-  if valid_773514 != nil:
-    section.add "X-Amz-Date", valid_773514
-  var valid_773515 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773515 = validateParameter(valid_773515, JString, required = false,
+  if valid_601349 != nil:
+    section.add "X-Amz-Date", valid_601349
+  var valid_601350 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601350 = validateParameter(valid_601350, JString, required = false,
                                  default = nil)
-  if valid_773515 != nil:
-    section.add "X-Amz-Security-Token", valid_773515
+  if valid_601350 != nil:
+    section.add "X-Amz-Security-Token", valid_601350
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773516 = header.getOrDefault("X-Amz-Target")
-  valid_773516 = validateParameter(valid_773516, JString, required = true, default = newJString(
+  var valid_601351 = header.getOrDefault("X-Amz-Target")
+  valid_601351 = validateParameter(valid_601351, JString, required = true, default = newJString(
       "AmazonForecast.ListDatasets"))
-  if valid_773516 != nil:
-    section.add "X-Amz-Target", valid_773516
-  var valid_773517 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773517 = validateParameter(valid_773517, JString, required = false,
+  if valid_601351 != nil:
+    section.add "X-Amz-Target", valid_601351
+  var valid_601352 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601352 = validateParameter(valid_601352, JString, required = false,
                                  default = nil)
-  if valid_773517 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773517
-  var valid_773518 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773518 = validateParameter(valid_773518, JString, required = false,
+  if valid_601352 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601352
+  var valid_601353 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601353 = validateParameter(valid_601353, JString, required = false,
                                  default = nil)
-  if valid_773518 != nil:
-    section.add "X-Amz-Algorithm", valid_773518
-  var valid_773519 = header.getOrDefault("X-Amz-Signature")
-  valid_773519 = validateParameter(valid_773519, JString, required = false,
+  if valid_601353 != nil:
+    section.add "X-Amz-Algorithm", valid_601353
+  var valid_601354 = header.getOrDefault("X-Amz-Signature")
+  valid_601354 = validateParameter(valid_601354, JString, required = false,
                                  default = nil)
-  if valid_773519 != nil:
-    section.add "X-Amz-Signature", valid_773519
-  var valid_773520 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773520 = validateParameter(valid_773520, JString, required = false,
+  if valid_601354 != nil:
+    section.add "X-Amz-Signature", valid_601354
+  var valid_601355 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601355 = validateParameter(valid_601355, JString, required = false,
                                  default = nil)
-  if valid_773520 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773520
-  var valid_773521 = header.getOrDefault("X-Amz-Credential")
-  valid_773521 = validateParameter(valid_773521, JString, required = false,
+  if valid_601355 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601355
+  var valid_601356 = header.getOrDefault("X-Amz-Credential")
+  valid_601356 = validateParameter(valid_601356, JString, required = false,
                                  default = nil)
-  if valid_773521 != nil:
-    section.add "X-Amz-Credential", valid_773521
+  if valid_601356 != nil:
+    section.add "X-Amz-Credential", valid_601356
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2477,19 +2477,19 @@ proc validate_ListDatasets_773510(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_773523: Call_ListDatasets_773509; path: JsonNode; query: JsonNode;
+proc call*(call_601358: Call_ListDatasets_601344; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of datasets created using the <a>CreateDataset</a> operation. For each dataset, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDataset</a> operation.
   ## 
-  let valid = call_773523.validator(path, query, header, formData, body)
-  let scheme = call_773523.pickScheme
+  let valid = call_601358.validator(path, query, header, formData, body)
+  let scheme = call_601358.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773523.url(scheme.get, call_773523.host, call_773523.base,
-                         call_773523.route, valid.getOrDefault("path"))
-  result = hook(call_773523, url, valid)
+  let url = call_601358.url(scheme.get, call_601358.host, call_601358.base,
+                         call_601358.route, valid.getOrDefault("path"))
+  result = hook(call_601358, url, valid)
 
-proc call*(call_773524: Call_ListDatasets_773509; body: JsonNode;
+proc call*(call_601359: Call_ListDatasets_601344; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listDatasets
   ## Returns a list of datasets created using the <a>CreateDataset</a> operation. For each dataset, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeDataset</a> operation.
@@ -2498,26 +2498,26 @@ proc call*(call_773524: Call_ListDatasets_773509; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_773525 = newJObject()
-  var body_773526 = newJObject()
-  add(query_773525, "NextToken", newJString(NextToken))
+  var query_601360 = newJObject()
+  var body_601361 = newJObject()
+  add(query_601360, "NextToken", newJString(NextToken))
   if body != nil:
-    body_773526 = body
-  add(query_773525, "MaxResults", newJString(MaxResults))
-  result = call_773524.call(nil, query_773525, nil, nil, body_773526)
+    body_601361 = body
+  add(query_601360, "MaxResults", newJString(MaxResults))
+  result = call_601359.call(nil, query_601360, nil, nil, body_601361)
 
-var listDatasets* = Call_ListDatasets_773509(name: "listDatasets",
+var listDatasets* = Call_ListDatasets_601344(name: "listDatasets",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.ListDatasets",
-    validator: validate_ListDatasets_773510, base: "/", url: url_ListDatasets_773511,
+    validator: validate_ListDatasets_601345, base: "/", url: url_ListDatasets_601346,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListForecastExportJobs_773527 = ref object of OpenApiRestCall_772597
-proc url_ListForecastExportJobs_773529(protocol: Scheme; host: string; base: string;
+  Call_ListForecastExportJobs_601362 = ref object of OpenApiRestCall_600426
+proc url_ListForecastExportJobs_601364(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListForecastExportJobs_773528(path: JsonNode; query: JsonNode;
+proc validate_ListForecastExportJobs_601363(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of forecast export jobs created using the <a>CreateForecastExportJob</a> operation. For each forecast export job, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeForecastExportJob</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
   ## 
@@ -2531,16 +2531,16 @@ proc validate_ListForecastExportJobs_773528(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_773530 = query.getOrDefault("NextToken")
-  valid_773530 = validateParameter(valid_773530, JString, required = false,
+  var valid_601365 = query.getOrDefault("NextToken")
+  valid_601365 = validateParameter(valid_601365, JString, required = false,
                                  default = nil)
-  if valid_773530 != nil:
-    section.add "NextToken", valid_773530
-  var valid_773531 = query.getOrDefault("MaxResults")
-  valid_773531 = validateParameter(valid_773531, JString, required = false,
+  if valid_601365 != nil:
+    section.add "NextToken", valid_601365
+  var valid_601366 = query.getOrDefault("MaxResults")
+  valid_601366 = validateParameter(valid_601366, JString, required = false,
                                  default = nil)
-  if valid_773531 != nil:
-    section.add "MaxResults", valid_773531
+  if valid_601366 != nil:
+    section.add "MaxResults", valid_601366
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2552,48 +2552,48 @@ proc validate_ListForecastExportJobs_773528(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773532 = header.getOrDefault("X-Amz-Date")
-  valid_773532 = validateParameter(valid_773532, JString, required = false,
+  var valid_601367 = header.getOrDefault("X-Amz-Date")
+  valid_601367 = validateParameter(valid_601367, JString, required = false,
                                  default = nil)
-  if valid_773532 != nil:
-    section.add "X-Amz-Date", valid_773532
-  var valid_773533 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773533 = validateParameter(valid_773533, JString, required = false,
+  if valid_601367 != nil:
+    section.add "X-Amz-Date", valid_601367
+  var valid_601368 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601368 = validateParameter(valid_601368, JString, required = false,
                                  default = nil)
-  if valid_773533 != nil:
-    section.add "X-Amz-Security-Token", valid_773533
+  if valid_601368 != nil:
+    section.add "X-Amz-Security-Token", valid_601368
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773534 = header.getOrDefault("X-Amz-Target")
-  valid_773534 = validateParameter(valid_773534, JString, required = true, default = newJString(
+  var valid_601369 = header.getOrDefault("X-Amz-Target")
+  valid_601369 = validateParameter(valid_601369, JString, required = true, default = newJString(
       "AmazonForecast.ListForecastExportJobs"))
-  if valid_773534 != nil:
-    section.add "X-Amz-Target", valid_773534
-  var valid_773535 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773535 = validateParameter(valid_773535, JString, required = false,
+  if valid_601369 != nil:
+    section.add "X-Amz-Target", valid_601369
+  var valid_601370 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601370 = validateParameter(valid_601370, JString, required = false,
                                  default = nil)
-  if valid_773535 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773535
-  var valid_773536 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773536 = validateParameter(valid_773536, JString, required = false,
+  if valid_601370 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601370
+  var valid_601371 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601371 = validateParameter(valid_601371, JString, required = false,
                                  default = nil)
-  if valid_773536 != nil:
-    section.add "X-Amz-Algorithm", valid_773536
-  var valid_773537 = header.getOrDefault("X-Amz-Signature")
-  valid_773537 = validateParameter(valid_773537, JString, required = false,
+  if valid_601371 != nil:
+    section.add "X-Amz-Algorithm", valid_601371
+  var valid_601372 = header.getOrDefault("X-Amz-Signature")
+  valid_601372 = validateParameter(valid_601372, JString, required = false,
                                  default = nil)
-  if valid_773537 != nil:
-    section.add "X-Amz-Signature", valid_773537
-  var valid_773538 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773538 = validateParameter(valid_773538, JString, required = false,
+  if valid_601372 != nil:
+    section.add "X-Amz-Signature", valid_601372
+  var valid_601373 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601373 = validateParameter(valid_601373, JString, required = false,
                                  default = nil)
-  if valid_773538 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773538
-  var valid_773539 = header.getOrDefault("X-Amz-Credential")
-  valid_773539 = validateParameter(valid_773539, JString, required = false,
+  if valid_601373 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601373
+  var valid_601374 = header.getOrDefault("X-Amz-Credential")
+  valid_601374 = validateParameter(valid_601374, JString, required = false,
                                  default = nil)
-  if valid_773539 != nil:
-    section.add "X-Amz-Credential", valid_773539
+  if valid_601374 != nil:
+    section.add "X-Amz-Credential", valid_601374
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2604,19 +2604,19 @@ proc validate_ListForecastExportJobs_773528(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773541: Call_ListForecastExportJobs_773527; path: JsonNode;
+proc call*(call_601376: Call_ListForecastExportJobs_601362; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of forecast export jobs created using the <a>CreateForecastExportJob</a> operation. For each forecast export job, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeForecastExportJob</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
   ## 
-  let valid = call_773541.validator(path, query, header, formData, body)
-  let scheme = call_773541.pickScheme
+  let valid = call_601376.validator(path, query, header, formData, body)
+  let scheme = call_601376.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773541.url(scheme.get, call_773541.host, call_773541.base,
-                         call_773541.route, valid.getOrDefault("path"))
-  result = hook(call_773541, url, valid)
+  let url = call_601376.url(scheme.get, call_601376.host, call_601376.base,
+                         call_601376.route, valid.getOrDefault("path"))
+  result = hook(call_601376, url, valid)
 
-proc call*(call_773542: Call_ListForecastExportJobs_773527; body: JsonNode;
+proc call*(call_601377: Call_ListForecastExportJobs_601362; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listForecastExportJobs
   ## Returns a list of forecast export jobs created using the <a>CreateForecastExportJob</a> operation. For each forecast export job, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeForecastExportJob</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
@@ -2625,27 +2625,27 @@ proc call*(call_773542: Call_ListForecastExportJobs_773527; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_773543 = newJObject()
-  var body_773544 = newJObject()
-  add(query_773543, "NextToken", newJString(NextToken))
+  var query_601378 = newJObject()
+  var body_601379 = newJObject()
+  add(query_601378, "NextToken", newJString(NextToken))
   if body != nil:
-    body_773544 = body
-  add(query_773543, "MaxResults", newJString(MaxResults))
-  result = call_773542.call(nil, query_773543, nil, nil, body_773544)
+    body_601379 = body
+  add(query_601378, "MaxResults", newJString(MaxResults))
+  result = call_601377.call(nil, query_601378, nil, nil, body_601379)
 
-var listForecastExportJobs* = Call_ListForecastExportJobs_773527(
+var listForecastExportJobs* = Call_ListForecastExportJobs_601362(
     name: "listForecastExportJobs", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.ListForecastExportJobs",
-    validator: validate_ListForecastExportJobs_773528, base: "/",
-    url: url_ListForecastExportJobs_773529, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListForecastExportJobs_601363, base: "/",
+    url: url_ListForecastExportJobs_601364, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListForecasts_773545 = ref object of OpenApiRestCall_772597
-proc url_ListForecasts_773547(protocol: Scheme; host: string; base: string;
+  Call_ListForecasts_601380 = ref object of OpenApiRestCall_600426
+proc url_ListForecasts_601382(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListForecasts_773546(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListForecasts_601381(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of forecasts created using the <a>CreateForecast</a> operation. For each forecast, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeForecast</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
   ## 
@@ -2659,16 +2659,16 @@ proc validate_ListForecasts_773546(path: JsonNode; query: JsonNode; header: Json
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_773548 = query.getOrDefault("NextToken")
-  valid_773548 = validateParameter(valid_773548, JString, required = false,
+  var valid_601383 = query.getOrDefault("NextToken")
+  valid_601383 = validateParameter(valid_601383, JString, required = false,
                                  default = nil)
-  if valid_773548 != nil:
-    section.add "NextToken", valid_773548
-  var valid_773549 = query.getOrDefault("MaxResults")
-  valid_773549 = validateParameter(valid_773549, JString, required = false,
+  if valid_601383 != nil:
+    section.add "NextToken", valid_601383
+  var valid_601384 = query.getOrDefault("MaxResults")
+  valid_601384 = validateParameter(valid_601384, JString, required = false,
                                  default = nil)
-  if valid_773549 != nil:
-    section.add "MaxResults", valid_773549
+  if valid_601384 != nil:
+    section.add "MaxResults", valid_601384
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2680,48 +2680,48 @@ proc validate_ListForecasts_773546(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773550 = header.getOrDefault("X-Amz-Date")
-  valid_773550 = validateParameter(valid_773550, JString, required = false,
+  var valid_601385 = header.getOrDefault("X-Amz-Date")
+  valid_601385 = validateParameter(valid_601385, JString, required = false,
                                  default = nil)
-  if valid_773550 != nil:
-    section.add "X-Amz-Date", valid_773550
-  var valid_773551 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773551 = validateParameter(valid_773551, JString, required = false,
+  if valid_601385 != nil:
+    section.add "X-Amz-Date", valid_601385
+  var valid_601386 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601386 = validateParameter(valid_601386, JString, required = false,
                                  default = nil)
-  if valid_773551 != nil:
-    section.add "X-Amz-Security-Token", valid_773551
+  if valid_601386 != nil:
+    section.add "X-Amz-Security-Token", valid_601386
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773552 = header.getOrDefault("X-Amz-Target")
-  valid_773552 = validateParameter(valid_773552, JString, required = true, default = newJString(
+  var valid_601387 = header.getOrDefault("X-Amz-Target")
+  valid_601387 = validateParameter(valid_601387, JString, required = true, default = newJString(
       "AmazonForecast.ListForecasts"))
-  if valid_773552 != nil:
-    section.add "X-Amz-Target", valid_773552
-  var valid_773553 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773553 = validateParameter(valid_773553, JString, required = false,
+  if valid_601387 != nil:
+    section.add "X-Amz-Target", valid_601387
+  var valid_601388 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601388 = validateParameter(valid_601388, JString, required = false,
                                  default = nil)
-  if valid_773553 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773553
-  var valid_773554 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773554 = validateParameter(valid_773554, JString, required = false,
+  if valid_601388 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601388
+  var valid_601389 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601389 = validateParameter(valid_601389, JString, required = false,
                                  default = nil)
-  if valid_773554 != nil:
-    section.add "X-Amz-Algorithm", valid_773554
-  var valid_773555 = header.getOrDefault("X-Amz-Signature")
-  valid_773555 = validateParameter(valid_773555, JString, required = false,
+  if valid_601389 != nil:
+    section.add "X-Amz-Algorithm", valid_601389
+  var valid_601390 = header.getOrDefault("X-Amz-Signature")
+  valid_601390 = validateParameter(valid_601390, JString, required = false,
                                  default = nil)
-  if valid_773555 != nil:
-    section.add "X-Amz-Signature", valid_773555
-  var valid_773556 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773556 = validateParameter(valid_773556, JString, required = false,
+  if valid_601390 != nil:
+    section.add "X-Amz-Signature", valid_601390
+  var valid_601391 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601391 = validateParameter(valid_601391, JString, required = false,
                                  default = nil)
-  if valid_773556 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773556
-  var valid_773557 = header.getOrDefault("X-Amz-Credential")
-  valid_773557 = validateParameter(valid_773557, JString, required = false,
+  if valid_601391 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601391
+  var valid_601392 = header.getOrDefault("X-Amz-Credential")
+  valid_601392 = validateParameter(valid_601392, JString, required = false,
                                  default = nil)
-  if valid_773557 != nil:
-    section.add "X-Amz-Credential", valid_773557
+  if valid_601392 != nil:
+    section.add "X-Amz-Credential", valid_601392
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2732,19 +2732,19 @@ proc validate_ListForecasts_773546(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_773559: Call_ListForecasts_773545; path: JsonNode; query: JsonNode;
+proc call*(call_601394: Call_ListForecasts_601380; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of forecasts created using the <a>CreateForecast</a> operation. For each forecast, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeForecast</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
   ## 
-  let valid = call_773559.validator(path, query, header, formData, body)
-  let scheme = call_773559.pickScheme
+  let valid = call_601394.validator(path, query, header, formData, body)
+  let scheme = call_601394.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773559.url(scheme.get, call_773559.host, call_773559.base,
-                         call_773559.route, valid.getOrDefault("path"))
-  result = hook(call_773559, url, valid)
+  let url = call_601394.url(scheme.get, call_601394.host, call_601394.base,
+                         call_601394.route, valid.getOrDefault("path"))
+  result = hook(call_601394, url, valid)
 
-proc call*(call_773560: Call_ListForecasts_773545; body: JsonNode;
+proc call*(call_601395: Call_ListForecasts_601380; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listForecasts
   ## Returns a list of forecasts created using the <a>CreateForecast</a> operation. For each forecast, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribeForecast</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
@@ -2753,26 +2753,26 @@ proc call*(call_773560: Call_ListForecasts_773545; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_773561 = newJObject()
-  var body_773562 = newJObject()
-  add(query_773561, "NextToken", newJString(NextToken))
+  var query_601396 = newJObject()
+  var body_601397 = newJObject()
+  add(query_601396, "NextToken", newJString(NextToken))
   if body != nil:
-    body_773562 = body
-  add(query_773561, "MaxResults", newJString(MaxResults))
-  result = call_773560.call(nil, query_773561, nil, nil, body_773562)
+    body_601397 = body
+  add(query_601396, "MaxResults", newJString(MaxResults))
+  result = call_601395.call(nil, query_601396, nil, nil, body_601397)
 
-var listForecasts* = Call_ListForecasts_773545(name: "listForecasts",
+var listForecasts* = Call_ListForecasts_601380(name: "listForecasts",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.ListForecasts",
-    validator: validate_ListForecasts_773546, base: "/", url: url_ListForecasts_773547,
+    validator: validate_ListForecasts_601381, base: "/", url: url_ListForecasts_601382,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPredictors_773563 = ref object of OpenApiRestCall_772597
-proc url_ListPredictors_773565(protocol: Scheme; host: string; base: string;
+  Call_ListPredictors_601398 = ref object of OpenApiRestCall_600426
+proc url_ListPredictors_601400(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListPredictors_773564(path: JsonNode; query: JsonNode;
+proc validate_ListPredictors_601399(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns a list of predictors created using the <a>CreatePredictor</a> operation. For each predictor, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribePredictor</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
@@ -2787,16 +2787,16 @@ proc validate_ListPredictors_773564(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_773566 = query.getOrDefault("NextToken")
-  valid_773566 = validateParameter(valid_773566, JString, required = false,
+  var valid_601401 = query.getOrDefault("NextToken")
+  valid_601401 = validateParameter(valid_601401, JString, required = false,
                                  default = nil)
-  if valid_773566 != nil:
-    section.add "NextToken", valid_773566
-  var valid_773567 = query.getOrDefault("MaxResults")
-  valid_773567 = validateParameter(valid_773567, JString, required = false,
+  if valid_601401 != nil:
+    section.add "NextToken", valid_601401
+  var valid_601402 = query.getOrDefault("MaxResults")
+  valid_601402 = validateParameter(valid_601402, JString, required = false,
                                  default = nil)
-  if valid_773567 != nil:
-    section.add "MaxResults", valid_773567
+  if valid_601402 != nil:
+    section.add "MaxResults", valid_601402
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2808,48 +2808,48 @@ proc validate_ListPredictors_773564(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773568 = header.getOrDefault("X-Amz-Date")
-  valid_773568 = validateParameter(valid_773568, JString, required = false,
+  var valid_601403 = header.getOrDefault("X-Amz-Date")
+  valid_601403 = validateParameter(valid_601403, JString, required = false,
                                  default = nil)
-  if valid_773568 != nil:
-    section.add "X-Amz-Date", valid_773568
-  var valid_773569 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773569 = validateParameter(valid_773569, JString, required = false,
+  if valid_601403 != nil:
+    section.add "X-Amz-Date", valid_601403
+  var valid_601404 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601404 = validateParameter(valid_601404, JString, required = false,
                                  default = nil)
-  if valid_773569 != nil:
-    section.add "X-Amz-Security-Token", valid_773569
+  if valid_601404 != nil:
+    section.add "X-Amz-Security-Token", valid_601404
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773570 = header.getOrDefault("X-Amz-Target")
-  valid_773570 = validateParameter(valid_773570, JString, required = true, default = newJString(
+  var valid_601405 = header.getOrDefault("X-Amz-Target")
+  valid_601405 = validateParameter(valid_601405, JString, required = true, default = newJString(
       "AmazonForecast.ListPredictors"))
-  if valid_773570 != nil:
-    section.add "X-Amz-Target", valid_773570
-  var valid_773571 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773571 = validateParameter(valid_773571, JString, required = false,
+  if valid_601405 != nil:
+    section.add "X-Amz-Target", valid_601405
+  var valid_601406 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601406 = validateParameter(valid_601406, JString, required = false,
                                  default = nil)
-  if valid_773571 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773571
-  var valid_773572 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773572 = validateParameter(valid_773572, JString, required = false,
+  if valid_601406 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601406
+  var valid_601407 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601407 = validateParameter(valid_601407, JString, required = false,
                                  default = nil)
-  if valid_773572 != nil:
-    section.add "X-Amz-Algorithm", valid_773572
-  var valid_773573 = header.getOrDefault("X-Amz-Signature")
-  valid_773573 = validateParameter(valid_773573, JString, required = false,
+  if valid_601407 != nil:
+    section.add "X-Amz-Algorithm", valid_601407
+  var valid_601408 = header.getOrDefault("X-Amz-Signature")
+  valid_601408 = validateParameter(valid_601408, JString, required = false,
                                  default = nil)
-  if valid_773573 != nil:
-    section.add "X-Amz-Signature", valid_773573
-  var valid_773574 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773574 = validateParameter(valid_773574, JString, required = false,
+  if valid_601408 != nil:
+    section.add "X-Amz-Signature", valid_601408
+  var valid_601409 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601409 = validateParameter(valid_601409, JString, required = false,
                                  default = nil)
-  if valid_773574 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773574
-  var valid_773575 = header.getOrDefault("X-Amz-Credential")
-  valid_773575 = validateParameter(valid_773575, JString, required = false,
+  if valid_601409 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601409
+  var valid_601410 = header.getOrDefault("X-Amz-Credential")
+  valid_601410 = validateParameter(valid_601410, JString, required = false,
                                  default = nil)
-  if valid_773575 != nil:
-    section.add "X-Amz-Credential", valid_773575
+  if valid_601410 != nil:
+    section.add "X-Amz-Credential", valid_601410
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2860,19 +2860,19 @@ proc validate_ListPredictors_773564(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773577: Call_ListPredictors_773563; path: JsonNode; query: JsonNode;
+proc call*(call_601412: Call_ListPredictors_601398; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of predictors created using the <a>CreatePredictor</a> operation. For each predictor, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribePredictor</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
   ## 
-  let valid = call_773577.validator(path, query, header, formData, body)
-  let scheme = call_773577.pickScheme
+  let valid = call_601412.validator(path, query, header, formData, body)
+  let scheme = call_601412.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773577.url(scheme.get, call_773577.host, call_773577.base,
-                         call_773577.route, valid.getOrDefault("path"))
-  result = hook(call_773577, url, valid)
+  let url = call_601412.url(scheme.get, call_601412.host, call_601412.base,
+                         call_601412.route, valid.getOrDefault("path"))
+  result = hook(call_601412, url, valid)
 
-proc call*(call_773578: Call_ListPredictors_773563; body: JsonNode;
+proc call*(call_601413: Call_ListPredictors_601398; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listPredictors
   ## Returns a list of predictors created using the <a>CreatePredictor</a> operation. For each predictor, a summary of its properties, including its Amazon Resource Name (ARN), is returned. You can retrieve the complete set of properties by using the ARN with the <a>DescribePredictor</a> operation. The list can be filtered using an array of <a>Filter</a> objects.
@@ -2881,26 +2881,26 @@ proc call*(call_773578: Call_ListPredictors_773563; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_773579 = newJObject()
-  var body_773580 = newJObject()
-  add(query_773579, "NextToken", newJString(NextToken))
+  var query_601414 = newJObject()
+  var body_601415 = newJObject()
+  add(query_601414, "NextToken", newJString(NextToken))
   if body != nil:
-    body_773580 = body
-  add(query_773579, "MaxResults", newJString(MaxResults))
-  result = call_773578.call(nil, query_773579, nil, nil, body_773580)
+    body_601415 = body
+  add(query_601414, "MaxResults", newJString(MaxResults))
+  result = call_601413.call(nil, query_601414, nil, nil, body_601415)
 
-var listPredictors* = Call_ListPredictors_773563(name: "listPredictors",
+var listPredictors* = Call_ListPredictors_601398(name: "listPredictors",
     meth: HttpMethod.HttpPost, host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.ListPredictors",
-    validator: validate_ListPredictors_773564, base: "/", url: url_ListPredictors_773565,
+    validator: validate_ListPredictors_601399, base: "/", url: url_ListPredictors_601400,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateDatasetGroup_773581 = ref object of OpenApiRestCall_772597
-proc url_UpdateDatasetGroup_773583(protocol: Scheme; host: string; base: string;
+  Call_UpdateDatasetGroup_601416 = ref object of OpenApiRestCall_600426
+proc url_UpdateDatasetGroup_601418(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_UpdateDatasetGroup_773582(path: JsonNode; query: JsonNode;
+proc validate_UpdateDatasetGroup_601417(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Replaces any existing datasets in the dataset group with the specified datasets.</p> <note> <p>The <code>Status</code> of the dataset group must be <code>ACTIVE</code> before creating a predictor using the dataset group. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> </note>
@@ -2921,48 +2921,48 @@ proc validate_UpdateDatasetGroup_773582(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773584 = header.getOrDefault("X-Amz-Date")
-  valid_773584 = validateParameter(valid_773584, JString, required = false,
+  var valid_601419 = header.getOrDefault("X-Amz-Date")
+  valid_601419 = validateParameter(valid_601419, JString, required = false,
                                  default = nil)
-  if valid_773584 != nil:
-    section.add "X-Amz-Date", valid_773584
-  var valid_773585 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773585 = validateParameter(valid_773585, JString, required = false,
+  if valid_601419 != nil:
+    section.add "X-Amz-Date", valid_601419
+  var valid_601420 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601420 = validateParameter(valid_601420, JString, required = false,
                                  default = nil)
-  if valid_773585 != nil:
-    section.add "X-Amz-Security-Token", valid_773585
+  if valid_601420 != nil:
+    section.add "X-Amz-Security-Token", valid_601420
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773586 = header.getOrDefault("X-Amz-Target")
-  valid_773586 = validateParameter(valid_773586, JString, required = true, default = newJString(
+  var valid_601421 = header.getOrDefault("X-Amz-Target")
+  valid_601421 = validateParameter(valid_601421, JString, required = true, default = newJString(
       "AmazonForecast.UpdateDatasetGroup"))
-  if valid_773586 != nil:
-    section.add "X-Amz-Target", valid_773586
-  var valid_773587 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773587 = validateParameter(valid_773587, JString, required = false,
+  if valid_601421 != nil:
+    section.add "X-Amz-Target", valid_601421
+  var valid_601422 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601422 = validateParameter(valid_601422, JString, required = false,
                                  default = nil)
-  if valid_773587 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773587
-  var valid_773588 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773588 = validateParameter(valid_773588, JString, required = false,
+  if valid_601422 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601422
+  var valid_601423 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601423 = validateParameter(valid_601423, JString, required = false,
                                  default = nil)
-  if valid_773588 != nil:
-    section.add "X-Amz-Algorithm", valid_773588
-  var valid_773589 = header.getOrDefault("X-Amz-Signature")
-  valid_773589 = validateParameter(valid_773589, JString, required = false,
+  if valid_601423 != nil:
+    section.add "X-Amz-Algorithm", valid_601423
+  var valid_601424 = header.getOrDefault("X-Amz-Signature")
+  valid_601424 = validateParameter(valid_601424, JString, required = false,
                                  default = nil)
-  if valid_773589 != nil:
-    section.add "X-Amz-Signature", valid_773589
-  var valid_773590 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773590 = validateParameter(valid_773590, JString, required = false,
+  if valid_601424 != nil:
+    section.add "X-Amz-Signature", valid_601424
+  var valid_601425 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601425 = validateParameter(valid_601425, JString, required = false,
                                  default = nil)
-  if valid_773590 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773590
-  var valid_773591 = header.getOrDefault("X-Amz-Credential")
-  valid_773591 = validateParameter(valid_773591, JString, required = false,
+  if valid_601425 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601425
+  var valid_601426 = header.getOrDefault("X-Amz-Credential")
+  valid_601426 = validateParameter(valid_601426, JString, required = false,
                                  default = nil)
-  if valid_773591 != nil:
-    section.add "X-Amz-Credential", valid_773591
+  if valid_601426 != nil:
+    section.add "X-Amz-Credential", valid_601426
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2973,33 +2973,36 @@ proc validate_UpdateDatasetGroup_773582(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773593: Call_UpdateDatasetGroup_773581; path: JsonNode;
+proc call*(call_601428: Call_UpdateDatasetGroup_601416; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Replaces any existing datasets in the dataset group with the specified datasets.</p> <note> <p>The <code>Status</code> of the dataset group must be <code>ACTIVE</code> before creating a predictor using the dataset group. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> </note>
   ## 
-  let valid = call_773593.validator(path, query, header, formData, body)
-  let scheme = call_773593.pickScheme
+  let valid = call_601428.validator(path, query, header, formData, body)
+  let scheme = call_601428.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773593.url(scheme.get, call_773593.host, call_773593.base,
-                         call_773593.route, valid.getOrDefault("path"))
-  result = hook(call_773593, url, valid)
+  let url = call_601428.url(scheme.get, call_601428.host, call_601428.base,
+                         call_601428.route, valid.getOrDefault("path"))
+  result = hook(call_601428, url, valid)
 
-proc call*(call_773594: Call_UpdateDatasetGroup_773581; body: JsonNode): Recallable =
+proc call*(call_601429: Call_UpdateDatasetGroup_601416; body: JsonNode): Recallable =
   ## updateDatasetGroup
   ## <p>Replaces any existing datasets in the dataset group with the specified datasets.</p> <note> <p>The <code>Status</code> of the dataset group must be <code>ACTIVE</code> before creating a predictor using the dataset group. Use the <a>DescribeDatasetGroup</a> operation to get the status.</p> </note>
   ##   body: JObject (required)
-  var body_773595 = newJObject()
+  var body_601430 = newJObject()
   if body != nil:
-    body_773595 = body
-  result = call_773594.call(nil, nil, nil, nil, body_773595)
+    body_601430 = body
+  result = call_601429.call(nil, nil, nil, nil, body_601430)
 
-var updateDatasetGroup* = Call_UpdateDatasetGroup_773581(
+var updateDatasetGroup* = Call_UpdateDatasetGroup_601416(
     name: "updateDatasetGroup", meth: HttpMethod.HttpPost,
     host: "forecast.amazonaws.com",
     route: "/#X-Amz-Target=AmazonForecast.UpdateDatasetGroup",
-    validator: validate_UpdateDatasetGroup_773582, base: "/",
-    url: url_UpdateDatasetGroup_773583, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateDatasetGroup_601417, base: "/",
+    url: url_UpdateDatasetGroup_601418, schemes: {Scheme.Https, Scheme.Http})
+export
+  rest
+
 proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()

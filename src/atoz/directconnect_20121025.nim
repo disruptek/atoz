@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode): string
 
-  OpenApiRestCall_772597 = ref object of OpenApiRestCall
+  OpenApiRestCall_600426 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_772597](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600426](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_772597): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600426): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -122,12 +122,12 @@ const
   awsServiceName = "directconnect"
 method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
 type
-  Call_AcceptDirectConnectGatewayAssociationProposal_772933 = ref object of OpenApiRestCall_772597
-proc url_AcceptDirectConnectGatewayAssociationProposal_772935(protocol: Scheme;
+  Call_AcceptDirectConnectGatewayAssociationProposal_600768 = ref object of OpenApiRestCall_600426
+proc url_AcceptDirectConnectGatewayAssociationProposal_600770(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AcceptDirectConnectGatewayAssociationProposal_772934(
+proc validate_AcceptDirectConnectGatewayAssociationProposal_600769(
     path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
     body: JsonNode): JsonNode =
   ## Accepts a proposal request to attach a virtual private gateway or transit gateway to a Direct Connect gateway.
@@ -148,48 +148,48 @@ proc validate_AcceptDirectConnectGatewayAssociationProposal_772934(
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773047 = header.getOrDefault("X-Amz-Date")
-  valid_773047 = validateParameter(valid_773047, JString, required = false,
+  var valid_600882 = header.getOrDefault("X-Amz-Date")
+  valid_600882 = validateParameter(valid_600882, JString, required = false,
                                  default = nil)
-  if valid_773047 != nil:
-    section.add "X-Amz-Date", valid_773047
-  var valid_773048 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773048 = validateParameter(valid_773048, JString, required = false,
+  if valid_600882 != nil:
+    section.add "X-Amz-Date", valid_600882
+  var valid_600883 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600883 = validateParameter(valid_600883, JString, required = false,
                                  default = nil)
-  if valid_773048 != nil:
-    section.add "X-Amz-Security-Token", valid_773048
+  if valid_600883 != nil:
+    section.add "X-Amz-Security-Token", valid_600883
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773062 = header.getOrDefault("X-Amz-Target")
-  valid_773062 = validateParameter(valid_773062, JString, required = true, default = newJString(
+  var valid_600897 = header.getOrDefault("X-Amz-Target")
+  valid_600897 = validateParameter(valid_600897, JString, required = true, default = newJString(
       "OvertureService.AcceptDirectConnectGatewayAssociationProposal"))
-  if valid_773062 != nil:
-    section.add "X-Amz-Target", valid_773062
-  var valid_773063 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773063 = validateParameter(valid_773063, JString, required = false,
+  if valid_600897 != nil:
+    section.add "X-Amz-Target", valid_600897
+  var valid_600898 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600898 = validateParameter(valid_600898, JString, required = false,
                                  default = nil)
-  if valid_773063 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773063
-  var valid_773064 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773064 = validateParameter(valid_773064, JString, required = false,
+  if valid_600898 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600898
+  var valid_600899 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600899 = validateParameter(valid_600899, JString, required = false,
                                  default = nil)
-  if valid_773064 != nil:
-    section.add "X-Amz-Algorithm", valid_773064
-  var valid_773065 = header.getOrDefault("X-Amz-Signature")
-  valid_773065 = validateParameter(valid_773065, JString, required = false,
+  if valid_600899 != nil:
+    section.add "X-Amz-Algorithm", valid_600899
+  var valid_600900 = header.getOrDefault("X-Amz-Signature")
+  valid_600900 = validateParameter(valid_600900, JString, required = false,
                                  default = nil)
-  if valid_773065 != nil:
-    section.add "X-Amz-Signature", valid_773065
-  var valid_773066 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773066 = validateParameter(valid_773066, JString, required = false,
+  if valid_600900 != nil:
+    section.add "X-Amz-Signature", valid_600900
+  var valid_600901 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600901 = validateParameter(valid_600901, JString, required = false,
                                  default = nil)
-  if valid_773066 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773066
-  var valid_773067 = header.getOrDefault("X-Amz-Credential")
-  valid_773067 = validateParameter(valid_773067, JString, required = false,
+  if valid_600901 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600901
+  var valid_600902 = header.getOrDefault("X-Amz-Credential")
+  valid_600902 = validateParameter(valid_600902, JString, required = false,
                                  default = nil)
-  if valid_773067 != nil:
-    section.add "X-Amz-Credential", valid_773067
+  if valid_600902 != nil:
+    section.add "X-Amz-Credential", valid_600902
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -200,42 +200,42 @@ proc validate_AcceptDirectConnectGatewayAssociationProposal_772934(
   if body != nil:
     result.add "body", body
 
-proc call*(call_773091: Call_AcceptDirectConnectGatewayAssociationProposal_772933;
+proc call*(call_600926: Call_AcceptDirectConnectGatewayAssociationProposal_600768;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Accepts a proposal request to attach a virtual private gateway or transit gateway to a Direct Connect gateway.
   ## 
-  let valid = call_773091.validator(path, query, header, formData, body)
-  let scheme = call_773091.pickScheme
+  let valid = call_600926.validator(path, query, header, formData, body)
+  let scheme = call_600926.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773091.url(scheme.get, call_773091.host, call_773091.base,
-                         call_773091.route, valid.getOrDefault("path"))
-  result = hook(call_773091, url, valid)
+  let url = call_600926.url(scheme.get, call_600926.host, call_600926.base,
+                         call_600926.route, valid.getOrDefault("path"))
+  result = hook(call_600926, url, valid)
 
-proc call*(call_773162: Call_AcceptDirectConnectGatewayAssociationProposal_772933;
+proc call*(call_600997: Call_AcceptDirectConnectGatewayAssociationProposal_600768;
           body: JsonNode): Recallable =
   ## acceptDirectConnectGatewayAssociationProposal
   ## Accepts a proposal request to attach a virtual private gateway or transit gateway to a Direct Connect gateway.
   ##   body: JObject (required)
-  var body_773163 = newJObject()
+  var body_600998 = newJObject()
   if body != nil:
-    body_773163 = body
-  result = call_773162.call(nil, nil, nil, nil, body_773163)
+    body_600998 = body
+  result = call_600997.call(nil, nil, nil, nil, body_600998)
 
-var acceptDirectConnectGatewayAssociationProposal* = Call_AcceptDirectConnectGatewayAssociationProposal_772933(
+var acceptDirectConnectGatewayAssociationProposal* = Call_AcceptDirectConnectGatewayAssociationProposal_600768(
     name: "acceptDirectConnectGatewayAssociationProposal",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.AcceptDirectConnectGatewayAssociationProposal",
-    validator: validate_AcceptDirectConnectGatewayAssociationProposal_772934,
-    base: "/", url: url_AcceptDirectConnectGatewayAssociationProposal_772935,
+    validator: validate_AcceptDirectConnectGatewayAssociationProposal_600769,
+    base: "/", url: url_AcceptDirectConnectGatewayAssociationProposal_600770,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AllocateConnectionOnInterconnect_773202 = ref object of OpenApiRestCall_772597
-proc url_AllocateConnectionOnInterconnect_773204(protocol: Scheme; host: string;
+  Call_AllocateConnectionOnInterconnect_601037 = ref object of OpenApiRestCall_600426
+proc url_AllocateConnectionOnInterconnect_601039(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AllocateConnectionOnInterconnect_773203(path: JsonNode;
+proc validate_AllocateConnectionOnInterconnect_601038(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deprecated. Use <a>AllocateHostedConnection</a> instead.</p> <p>Creates a hosted connection on an interconnect.</p> <p>Allocates a VLAN number and a specified amount of bandwidth for use by a hosted connection on the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
@@ -255,48 +255,48 @@ proc validate_AllocateConnectionOnInterconnect_773203(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773205 = header.getOrDefault("X-Amz-Date")
-  valid_773205 = validateParameter(valid_773205, JString, required = false,
+  var valid_601040 = header.getOrDefault("X-Amz-Date")
+  valid_601040 = validateParameter(valid_601040, JString, required = false,
                                  default = nil)
-  if valid_773205 != nil:
-    section.add "X-Amz-Date", valid_773205
-  var valid_773206 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773206 = validateParameter(valid_773206, JString, required = false,
+  if valid_601040 != nil:
+    section.add "X-Amz-Date", valid_601040
+  var valid_601041 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601041 = validateParameter(valid_601041, JString, required = false,
                                  default = nil)
-  if valid_773206 != nil:
-    section.add "X-Amz-Security-Token", valid_773206
+  if valid_601041 != nil:
+    section.add "X-Amz-Security-Token", valid_601041
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773207 = header.getOrDefault("X-Amz-Target")
-  valid_773207 = validateParameter(valid_773207, JString, required = true, default = newJString(
+  var valid_601042 = header.getOrDefault("X-Amz-Target")
+  valid_601042 = validateParameter(valid_601042, JString, required = true, default = newJString(
       "OvertureService.AllocateConnectionOnInterconnect"))
-  if valid_773207 != nil:
-    section.add "X-Amz-Target", valid_773207
-  var valid_773208 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773208 = validateParameter(valid_773208, JString, required = false,
+  if valid_601042 != nil:
+    section.add "X-Amz-Target", valid_601042
+  var valid_601043 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601043 = validateParameter(valid_601043, JString, required = false,
                                  default = nil)
-  if valid_773208 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773208
-  var valid_773209 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773209 = validateParameter(valid_773209, JString, required = false,
+  if valid_601043 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601043
+  var valid_601044 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601044 = validateParameter(valid_601044, JString, required = false,
                                  default = nil)
-  if valid_773209 != nil:
-    section.add "X-Amz-Algorithm", valid_773209
-  var valid_773210 = header.getOrDefault("X-Amz-Signature")
-  valid_773210 = validateParameter(valid_773210, JString, required = false,
+  if valid_601044 != nil:
+    section.add "X-Amz-Algorithm", valid_601044
+  var valid_601045 = header.getOrDefault("X-Amz-Signature")
+  valid_601045 = validateParameter(valid_601045, JString, required = false,
                                  default = nil)
-  if valid_773210 != nil:
-    section.add "X-Amz-Signature", valid_773210
-  var valid_773211 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773211 = validateParameter(valid_773211, JString, required = false,
+  if valid_601045 != nil:
+    section.add "X-Amz-Signature", valid_601045
+  var valid_601046 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601046 = validateParameter(valid_601046, JString, required = false,
                                  default = nil)
-  if valid_773211 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773211
-  var valid_773212 = header.getOrDefault("X-Amz-Credential")
-  valid_773212 = validateParameter(valid_773212, JString, required = false,
+  if valid_601046 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601046
+  var valid_601047 = header.getOrDefault("X-Amz-Credential")
+  valid_601047 = validateParameter(valid_601047, JString, required = false,
                                  default = nil)
-  if valid_773212 != nil:
-    section.add "X-Amz-Credential", valid_773212
+  if valid_601047 != nil:
+    section.add "X-Amz-Credential", valid_601047
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -307,43 +307,43 @@ proc validate_AllocateConnectionOnInterconnect_773203(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773214: Call_AllocateConnectionOnInterconnect_773202;
+proc call*(call_601049: Call_AllocateConnectionOnInterconnect_601037;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Deprecated. Use <a>AllocateHostedConnection</a> instead.</p> <p>Creates a hosted connection on an interconnect.</p> <p>Allocates a VLAN number and a specified amount of bandwidth for use by a hosted connection on the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
-  let valid = call_773214.validator(path, query, header, formData, body)
-  let scheme = call_773214.pickScheme
+  let valid = call_601049.validator(path, query, header, formData, body)
+  let scheme = call_601049.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773214.url(scheme.get, call_773214.host, call_773214.base,
-                         call_773214.route, valid.getOrDefault("path"))
-  result = hook(call_773214, url, valid)
+  let url = call_601049.url(scheme.get, call_601049.host, call_601049.base,
+                         call_601049.route, valid.getOrDefault("path"))
+  result = hook(call_601049, url, valid)
 
-proc call*(call_773215: Call_AllocateConnectionOnInterconnect_773202;
+proc call*(call_601050: Call_AllocateConnectionOnInterconnect_601037;
           body: JsonNode): Recallable =
   ## allocateConnectionOnInterconnect
   ## <p>Deprecated. Use <a>AllocateHostedConnection</a> instead.</p> <p>Creates a hosted connection on an interconnect.</p> <p>Allocates a VLAN number and a specified amount of bandwidth for use by a hosted connection on the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ##   body: JObject (required)
-  var body_773216 = newJObject()
+  var body_601051 = newJObject()
   if body != nil:
-    body_773216 = body
-  result = call_773215.call(nil, nil, nil, nil, body_773216)
+    body_601051 = body
+  result = call_601050.call(nil, nil, nil, nil, body_601051)
 
-var allocateConnectionOnInterconnect* = Call_AllocateConnectionOnInterconnect_773202(
+var allocateConnectionOnInterconnect* = Call_AllocateConnectionOnInterconnect_601037(
     name: "allocateConnectionOnInterconnect", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.AllocateConnectionOnInterconnect",
-    validator: validate_AllocateConnectionOnInterconnect_773203, base: "/",
-    url: url_AllocateConnectionOnInterconnect_773204,
+    validator: validate_AllocateConnectionOnInterconnect_601038, base: "/",
+    url: url_AllocateConnectionOnInterconnect_601039,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AllocateHostedConnection_773217 = ref object of OpenApiRestCall_772597
-proc url_AllocateHostedConnection_773219(protocol: Scheme; host: string;
+  Call_AllocateHostedConnection_601052 = ref object of OpenApiRestCall_600426
+proc url_AllocateHostedConnection_601054(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AllocateHostedConnection_773218(path: JsonNode; query: JsonNode;
+proc validate_AllocateHostedConnection_601053(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a hosted connection on the specified interconnect or a link aggregation group (LAG) of interconnects.</p> <p>Allocates a VLAN number and a specified amount of capacity (bandwidth) for use by a hosted connection on the specified interconnect or LAG of interconnects. AWS polices the hosted connection for the specified capacity and the AWS Direct Connect Partner must also police the hosted connection for the specified capacity.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
@@ -363,48 +363,48 @@ proc validate_AllocateHostedConnection_773218(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773220 = header.getOrDefault("X-Amz-Date")
-  valid_773220 = validateParameter(valid_773220, JString, required = false,
+  var valid_601055 = header.getOrDefault("X-Amz-Date")
+  valid_601055 = validateParameter(valid_601055, JString, required = false,
                                  default = nil)
-  if valid_773220 != nil:
-    section.add "X-Amz-Date", valid_773220
-  var valid_773221 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773221 = validateParameter(valid_773221, JString, required = false,
+  if valid_601055 != nil:
+    section.add "X-Amz-Date", valid_601055
+  var valid_601056 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601056 = validateParameter(valid_601056, JString, required = false,
                                  default = nil)
-  if valid_773221 != nil:
-    section.add "X-Amz-Security-Token", valid_773221
+  if valid_601056 != nil:
+    section.add "X-Amz-Security-Token", valid_601056
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773222 = header.getOrDefault("X-Amz-Target")
-  valid_773222 = validateParameter(valid_773222, JString, required = true, default = newJString(
+  var valid_601057 = header.getOrDefault("X-Amz-Target")
+  valid_601057 = validateParameter(valid_601057, JString, required = true, default = newJString(
       "OvertureService.AllocateHostedConnection"))
-  if valid_773222 != nil:
-    section.add "X-Amz-Target", valid_773222
-  var valid_773223 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773223 = validateParameter(valid_773223, JString, required = false,
+  if valid_601057 != nil:
+    section.add "X-Amz-Target", valid_601057
+  var valid_601058 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601058 = validateParameter(valid_601058, JString, required = false,
                                  default = nil)
-  if valid_773223 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773223
-  var valid_773224 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773224 = validateParameter(valid_773224, JString, required = false,
+  if valid_601058 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601058
+  var valid_601059 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601059 = validateParameter(valid_601059, JString, required = false,
                                  default = nil)
-  if valid_773224 != nil:
-    section.add "X-Amz-Algorithm", valid_773224
-  var valid_773225 = header.getOrDefault("X-Amz-Signature")
-  valid_773225 = validateParameter(valid_773225, JString, required = false,
+  if valid_601059 != nil:
+    section.add "X-Amz-Algorithm", valid_601059
+  var valid_601060 = header.getOrDefault("X-Amz-Signature")
+  valid_601060 = validateParameter(valid_601060, JString, required = false,
                                  default = nil)
-  if valid_773225 != nil:
-    section.add "X-Amz-Signature", valid_773225
-  var valid_773226 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773226 = validateParameter(valid_773226, JString, required = false,
+  if valid_601060 != nil:
+    section.add "X-Amz-Signature", valid_601060
+  var valid_601061 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601061 = validateParameter(valid_601061, JString, required = false,
                                  default = nil)
-  if valid_773226 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773226
-  var valid_773227 = header.getOrDefault("X-Amz-Credential")
-  valid_773227 = validateParameter(valid_773227, JString, required = false,
+  if valid_601061 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601061
+  var valid_601062 = header.getOrDefault("X-Amz-Credential")
+  valid_601062 = validateParameter(valid_601062, JString, required = false,
                                  default = nil)
-  if valid_773227 != nil:
-    section.add "X-Amz-Credential", valid_773227
+  if valid_601062 != nil:
+    section.add "X-Amz-Credential", valid_601062
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -415,40 +415,40 @@ proc validate_AllocateHostedConnection_773218(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773229: Call_AllocateHostedConnection_773217; path: JsonNode;
+proc call*(call_601064: Call_AllocateHostedConnection_601052; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a hosted connection on the specified interconnect or a link aggregation group (LAG) of interconnects.</p> <p>Allocates a VLAN number and a specified amount of capacity (bandwidth) for use by a hosted connection on the specified interconnect or LAG of interconnects. AWS polices the hosted connection for the specified capacity and the AWS Direct Connect Partner must also police the hosted connection for the specified capacity.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
-  let valid = call_773229.validator(path, query, header, formData, body)
-  let scheme = call_773229.pickScheme
+  let valid = call_601064.validator(path, query, header, formData, body)
+  let scheme = call_601064.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773229.url(scheme.get, call_773229.host, call_773229.base,
-                         call_773229.route, valid.getOrDefault("path"))
-  result = hook(call_773229, url, valid)
+  let url = call_601064.url(scheme.get, call_601064.host, call_601064.base,
+                         call_601064.route, valid.getOrDefault("path"))
+  result = hook(call_601064, url, valid)
 
-proc call*(call_773230: Call_AllocateHostedConnection_773217; body: JsonNode): Recallable =
+proc call*(call_601065: Call_AllocateHostedConnection_601052; body: JsonNode): Recallable =
   ## allocateHostedConnection
   ## <p>Creates a hosted connection on the specified interconnect or a link aggregation group (LAG) of interconnects.</p> <p>Allocates a VLAN number and a specified amount of capacity (bandwidth) for use by a hosted connection on the specified interconnect or LAG of interconnects. AWS polices the hosted connection for the specified capacity and the AWS Direct Connect Partner must also police the hosted connection for the specified capacity.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ##   body: JObject (required)
-  var body_773231 = newJObject()
+  var body_601066 = newJObject()
   if body != nil:
-    body_773231 = body
-  result = call_773230.call(nil, nil, nil, nil, body_773231)
+    body_601066 = body
+  result = call_601065.call(nil, nil, nil, nil, body_601066)
 
-var allocateHostedConnection* = Call_AllocateHostedConnection_773217(
+var allocateHostedConnection* = Call_AllocateHostedConnection_601052(
     name: "allocateHostedConnection", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.AllocateHostedConnection",
-    validator: validate_AllocateHostedConnection_773218, base: "/",
-    url: url_AllocateHostedConnection_773219, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AllocateHostedConnection_601053, base: "/",
+    url: url_AllocateHostedConnection_601054, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AllocatePrivateVirtualInterface_773232 = ref object of OpenApiRestCall_772597
-proc url_AllocatePrivateVirtualInterface_773234(protocol: Scheme; host: string;
+  Call_AllocatePrivateVirtualInterface_601067 = ref object of OpenApiRestCall_600426
+proc url_AllocatePrivateVirtualInterface_601069(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AllocatePrivateVirtualInterface_773233(path: JsonNode;
+proc validate_AllocatePrivateVirtualInterface_601068(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Provisions a private virtual interface to be owned by the specified AWS account.</p> <p>Virtual interfaces created using this action must be confirmed by the owner using <a>ConfirmPrivateVirtualInterface</a>. Until then, the virtual interface is in the <code>Confirming</code> state and is not available to handle traffic.</p>
   ## 
@@ -468,48 +468,48 @@ proc validate_AllocatePrivateVirtualInterface_773233(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773235 = header.getOrDefault("X-Amz-Date")
-  valid_773235 = validateParameter(valid_773235, JString, required = false,
+  var valid_601070 = header.getOrDefault("X-Amz-Date")
+  valid_601070 = validateParameter(valid_601070, JString, required = false,
                                  default = nil)
-  if valid_773235 != nil:
-    section.add "X-Amz-Date", valid_773235
-  var valid_773236 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773236 = validateParameter(valid_773236, JString, required = false,
+  if valid_601070 != nil:
+    section.add "X-Amz-Date", valid_601070
+  var valid_601071 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601071 = validateParameter(valid_601071, JString, required = false,
                                  default = nil)
-  if valid_773236 != nil:
-    section.add "X-Amz-Security-Token", valid_773236
+  if valid_601071 != nil:
+    section.add "X-Amz-Security-Token", valid_601071
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773237 = header.getOrDefault("X-Amz-Target")
-  valid_773237 = validateParameter(valid_773237, JString, required = true, default = newJString(
+  var valid_601072 = header.getOrDefault("X-Amz-Target")
+  valid_601072 = validateParameter(valid_601072, JString, required = true, default = newJString(
       "OvertureService.AllocatePrivateVirtualInterface"))
-  if valid_773237 != nil:
-    section.add "X-Amz-Target", valid_773237
-  var valid_773238 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773238 = validateParameter(valid_773238, JString, required = false,
+  if valid_601072 != nil:
+    section.add "X-Amz-Target", valid_601072
+  var valid_601073 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601073 = validateParameter(valid_601073, JString, required = false,
                                  default = nil)
-  if valid_773238 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773238
-  var valid_773239 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773239 = validateParameter(valid_773239, JString, required = false,
+  if valid_601073 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601073
+  var valid_601074 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601074 = validateParameter(valid_601074, JString, required = false,
                                  default = nil)
-  if valid_773239 != nil:
-    section.add "X-Amz-Algorithm", valid_773239
-  var valid_773240 = header.getOrDefault("X-Amz-Signature")
-  valid_773240 = validateParameter(valid_773240, JString, required = false,
+  if valid_601074 != nil:
+    section.add "X-Amz-Algorithm", valid_601074
+  var valid_601075 = header.getOrDefault("X-Amz-Signature")
+  valid_601075 = validateParameter(valid_601075, JString, required = false,
                                  default = nil)
-  if valid_773240 != nil:
-    section.add "X-Amz-Signature", valid_773240
-  var valid_773241 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773241 = validateParameter(valid_773241, JString, required = false,
+  if valid_601075 != nil:
+    section.add "X-Amz-Signature", valid_601075
+  var valid_601076 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601076 = validateParameter(valid_601076, JString, required = false,
                                  default = nil)
-  if valid_773241 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773241
-  var valid_773242 = header.getOrDefault("X-Amz-Credential")
-  valid_773242 = validateParameter(valid_773242, JString, required = false,
+  if valid_601076 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601076
+  var valid_601077 = header.getOrDefault("X-Amz-Credential")
+  valid_601077 = validateParameter(valid_601077, JString, required = false,
                                  default = nil)
-  if valid_773242 != nil:
-    section.add "X-Amz-Credential", valid_773242
+  if valid_601077 != nil:
+    section.add "X-Amz-Credential", valid_601077
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -520,42 +520,42 @@ proc validate_AllocatePrivateVirtualInterface_773233(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773244: Call_AllocatePrivateVirtualInterface_773232;
+proc call*(call_601079: Call_AllocatePrivateVirtualInterface_601067;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Provisions a private virtual interface to be owned by the specified AWS account.</p> <p>Virtual interfaces created using this action must be confirmed by the owner using <a>ConfirmPrivateVirtualInterface</a>. Until then, the virtual interface is in the <code>Confirming</code> state and is not available to handle traffic.</p>
   ## 
-  let valid = call_773244.validator(path, query, header, formData, body)
-  let scheme = call_773244.pickScheme
+  let valid = call_601079.validator(path, query, header, formData, body)
+  let scheme = call_601079.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773244.url(scheme.get, call_773244.host, call_773244.base,
-                         call_773244.route, valid.getOrDefault("path"))
-  result = hook(call_773244, url, valid)
+  let url = call_601079.url(scheme.get, call_601079.host, call_601079.base,
+                         call_601079.route, valid.getOrDefault("path"))
+  result = hook(call_601079, url, valid)
 
-proc call*(call_773245: Call_AllocatePrivateVirtualInterface_773232; body: JsonNode): Recallable =
+proc call*(call_601080: Call_AllocatePrivateVirtualInterface_601067; body: JsonNode): Recallable =
   ## allocatePrivateVirtualInterface
   ## <p>Provisions a private virtual interface to be owned by the specified AWS account.</p> <p>Virtual interfaces created using this action must be confirmed by the owner using <a>ConfirmPrivateVirtualInterface</a>. Until then, the virtual interface is in the <code>Confirming</code> state and is not available to handle traffic.</p>
   ##   body: JObject (required)
-  var body_773246 = newJObject()
+  var body_601081 = newJObject()
   if body != nil:
-    body_773246 = body
-  result = call_773245.call(nil, nil, nil, nil, body_773246)
+    body_601081 = body
+  result = call_601080.call(nil, nil, nil, nil, body_601081)
 
-var allocatePrivateVirtualInterface* = Call_AllocatePrivateVirtualInterface_773232(
+var allocatePrivateVirtualInterface* = Call_AllocatePrivateVirtualInterface_601067(
     name: "allocatePrivateVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.AllocatePrivateVirtualInterface",
-    validator: validate_AllocatePrivateVirtualInterface_773233, base: "/",
-    url: url_AllocatePrivateVirtualInterface_773234,
+    validator: validate_AllocatePrivateVirtualInterface_601068, base: "/",
+    url: url_AllocatePrivateVirtualInterface_601069,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AllocatePublicVirtualInterface_773247 = ref object of OpenApiRestCall_772597
-proc url_AllocatePublicVirtualInterface_773249(protocol: Scheme; host: string;
+  Call_AllocatePublicVirtualInterface_601082 = ref object of OpenApiRestCall_600426
+proc url_AllocatePublicVirtualInterface_601084(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AllocatePublicVirtualInterface_773248(path: JsonNode;
+proc validate_AllocatePublicVirtualInterface_601083(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Provisions a public virtual interface to be owned by the specified AWS account.</p> <p>The owner of a connection calls this function to provision a public virtual interface to be owned by the specified AWS account.</p> <p>Virtual interfaces created using this function must be confirmed by the owner using <a>ConfirmPublicVirtualInterface</a>. Until this step has been completed, the virtual interface is in the <code>confirming</code> state and is not available to handle traffic.</p> <p>When creating an IPv6 public virtual interface, omit the Amazon address and customer address. IPv6 addresses are automatically assigned from the Amazon pool of IPv6 addresses; you cannot specify custom IPv6 addresses.</p>
   ## 
@@ -575,48 +575,48 @@ proc validate_AllocatePublicVirtualInterface_773248(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773250 = header.getOrDefault("X-Amz-Date")
-  valid_773250 = validateParameter(valid_773250, JString, required = false,
+  var valid_601085 = header.getOrDefault("X-Amz-Date")
+  valid_601085 = validateParameter(valid_601085, JString, required = false,
                                  default = nil)
-  if valid_773250 != nil:
-    section.add "X-Amz-Date", valid_773250
-  var valid_773251 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773251 = validateParameter(valid_773251, JString, required = false,
+  if valid_601085 != nil:
+    section.add "X-Amz-Date", valid_601085
+  var valid_601086 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601086 = validateParameter(valid_601086, JString, required = false,
                                  default = nil)
-  if valid_773251 != nil:
-    section.add "X-Amz-Security-Token", valid_773251
+  if valid_601086 != nil:
+    section.add "X-Amz-Security-Token", valid_601086
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773252 = header.getOrDefault("X-Amz-Target")
-  valid_773252 = validateParameter(valid_773252, JString, required = true, default = newJString(
+  var valid_601087 = header.getOrDefault("X-Amz-Target")
+  valid_601087 = validateParameter(valid_601087, JString, required = true, default = newJString(
       "OvertureService.AllocatePublicVirtualInterface"))
-  if valid_773252 != nil:
-    section.add "X-Amz-Target", valid_773252
-  var valid_773253 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773253 = validateParameter(valid_773253, JString, required = false,
+  if valid_601087 != nil:
+    section.add "X-Amz-Target", valid_601087
+  var valid_601088 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601088 = validateParameter(valid_601088, JString, required = false,
                                  default = nil)
-  if valid_773253 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773253
-  var valid_773254 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773254 = validateParameter(valid_773254, JString, required = false,
+  if valid_601088 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601088
+  var valid_601089 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601089 = validateParameter(valid_601089, JString, required = false,
                                  default = nil)
-  if valid_773254 != nil:
-    section.add "X-Amz-Algorithm", valid_773254
-  var valid_773255 = header.getOrDefault("X-Amz-Signature")
-  valid_773255 = validateParameter(valid_773255, JString, required = false,
+  if valid_601089 != nil:
+    section.add "X-Amz-Algorithm", valid_601089
+  var valid_601090 = header.getOrDefault("X-Amz-Signature")
+  valid_601090 = validateParameter(valid_601090, JString, required = false,
                                  default = nil)
-  if valid_773255 != nil:
-    section.add "X-Amz-Signature", valid_773255
-  var valid_773256 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773256 = validateParameter(valid_773256, JString, required = false,
+  if valid_601090 != nil:
+    section.add "X-Amz-Signature", valid_601090
+  var valid_601091 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601091 = validateParameter(valid_601091, JString, required = false,
                                  default = nil)
-  if valid_773256 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773256
-  var valid_773257 = header.getOrDefault("X-Amz-Credential")
-  valid_773257 = validateParameter(valid_773257, JString, required = false,
+  if valid_601091 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601091
+  var valid_601092 = header.getOrDefault("X-Amz-Credential")
+  valid_601092 = validateParameter(valid_601092, JString, required = false,
                                  default = nil)
-  if valid_773257 != nil:
-    section.add "X-Amz-Credential", valid_773257
+  if valid_601092 != nil:
+    section.add "X-Amz-Credential", valid_601092
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -627,41 +627,41 @@ proc validate_AllocatePublicVirtualInterface_773248(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773259: Call_AllocatePublicVirtualInterface_773247; path: JsonNode;
+proc call*(call_601094: Call_AllocatePublicVirtualInterface_601082; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Provisions a public virtual interface to be owned by the specified AWS account.</p> <p>The owner of a connection calls this function to provision a public virtual interface to be owned by the specified AWS account.</p> <p>Virtual interfaces created using this function must be confirmed by the owner using <a>ConfirmPublicVirtualInterface</a>. Until this step has been completed, the virtual interface is in the <code>confirming</code> state and is not available to handle traffic.</p> <p>When creating an IPv6 public virtual interface, omit the Amazon address and customer address. IPv6 addresses are automatically assigned from the Amazon pool of IPv6 addresses; you cannot specify custom IPv6 addresses.</p>
   ## 
-  let valid = call_773259.validator(path, query, header, formData, body)
-  let scheme = call_773259.pickScheme
+  let valid = call_601094.validator(path, query, header, formData, body)
+  let scheme = call_601094.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773259.url(scheme.get, call_773259.host, call_773259.base,
-                         call_773259.route, valid.getOrDefault("path"))
-  result = hook(call_773259, url, valid)
+  let url = call_601094.url(scheme.get, call_601094.host, call_601094.base,
+                         call_601094.route, valid.getOrDefault("path"))
+  result = hook(call_601094, url, valid)
 
-proc call*(call_773260: Call_AllocatePublicVirtualInterface_773247; body: JsonNode): Recallable =
+proc call*(call_601095: Call_AllocatePublicVirtualInterface_601082; body: JsonNode): Recallable =
   ## allocatePublicVirtualInterface
   ## <p>Provisions a public virtual interface to be owned by the specified AWS account.</p> <p>The owner of a connection calls this function to provision a public virtual interface to be owned by the specified AWS account.</p> <p>Virtual interfaces created using this function must be confirmed by the owner using <a>ConfirmPublicVirtualInterface</a>. Until this step has been completed, the virtual interface is in the <code>confirming</code> state and is not available to handle traffic.</p> <p>When creating an IPv6 public virtual interface, omit the Amazon address and customer address. IPv6 addresses are automatically assigned from the Amazon pool of IPv6 addresses; you cannot specify custom IPv6 addresses.</p>
   ##   body: JObject (required)
-  var body_773261 = newJObject()
+  var body_601096 = newJObject()
   if body != nil:
-    body_773261 = body
-  result = call_773260.call(nil, nil, nil, nil, body_773261)
+    body_601096 = body
+  result = call_601095.call(nil, nil, nil, nil, body_601096)
 
-var allocatePublicVirtualInterface* = Call_AllocatePublicVirtualInterface_773247(
+var allocatePublicVirtualInterface* = Call_AllocatePublicVirtualInterface_601082(
     name: "allocatePublicVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.AllocatePublicVirtualInterface",
-    validator: validate_AllocatePublicVirtualInterface_773248, base: "/",
-    url: url_AllocatePublicVirtualInterface_773249,
+    validator: validate_AllocatePublicVirtualInterface_601083, base: "/",
+    url: url_AllocatePublicVirtualInterface_601084,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AllocateTransitVirtualInterface_773262 = ref object of OpenApiRestCall_772597
-proc url_AllocateTransitVirtualInterface_773264(protocol: Scheme; host: string;
+  Call_AllocateTransitVirtualInterface_601097 = ref object of OpenApiRestCall_600426
+proc url_AllocateTransitVirtualInterface_601099(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AllocateTransitVirtualInterface_773263(path: JsonNode;
+proc validate_AllocateTransitVirtualInterface_601098(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Provisions a transit virtual interface to be owned by the specified AWS account. Use this type of interface to connect a transit gateway to your Direct Connect gateway.</p> <p>The owner of a connection provisions a transit virtual interface to be owned by the specified AWS account.</p> <p>After you create a transit virtual interface, it must be confirmed by the owner using <a>ConfirmTransitVirtualInterface</a>. Until this step has been completed, the transit virtual interface is in the <code>requested</code> state and is not available to handle traffic.</p>
   ## 
@@ -681,48 +681,48 @@ proc validate_AllocateTransitVirtualInterface_773263(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773265 = header.getOrDefault("X-Amz-Date")
-  valid_773265 = validateParameter(valid_773265, JString, required = false,
+  var valid_601100 = header.getOrDefault("X-Amz-Date")
+  valid_601100 = validateParameter(valid_601100, JString, required = false,
                                  default = nil)
-  if valid_773265 != nil:
-    section.add "X-Amz-Date", valid_773265
-  var valid_773266 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773266 = validateParameter(valid_773266, JString, required = false,
+  if valid_601100 != nil:
+    section.add "X-Amz-Date", valid_601100
+  var valid_601101 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601101 = validateParameter(valid_601101, JString, required = false,
                                  default = nil)
-  if valid_773266 != nil:
-    section.add "X-Amz-Security-Token", valid_773266
+  if valid_601101 != nil:
+    section.add "X-Amz-Security-Token", valid_601101
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773267 = header.getOrDefault("X-Amz-Target")
-  valid_773267 = validateParameter(valid_773267, JString, required = true, default = newJString(
+  var valid_601102 = header.getOrDefault("X-Amz-Target")
+  valid_601102 = validateParameter(valid_601102, JString, required = true, default = newJString(
       "OvertureService.AllocateTransitVirtualInterface"))
-  if valid_773267 != nil:
-    section.add "X-Amz-Target", valid_773267
-  var valid_773268 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773268 = validateParameter(valid_773268, JString, required = false,
+  if valid_601102 != nil:
+    section.add "X-Amz-Target", valid_601102
+  var valid_601103 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601103 = validateParameter(valid_601103, JString, required = false,
                                  default = nil)
-  if valid_773268 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773268
-  var valid_773269 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773269 = validateParameter(valid_773269, JString, required = false,
+  if valid_601103 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601103
+  var valid_601104 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601104 = validateParameter(valid_601104, JString, required = false,
                                  default = nil)
-  if valid_773269 != nil:
-    section.add "X-Amz-Algorithm", valid_773269
-  var valid_773270 = header.getOrDefault("X-Amz-Signature")
-  valid_773270 = validateParameter(valid_773270, JString, required = false,
+  if valid_601104 != nil:
+    section.add "X-Amz-Algorithm", valid_601104
+  var valid_601105 = header.getOrDefault("X-Amz-Signature")
+  valid_601105 = validateParameter(valid_601105, JString, required = false,
                                  default = nil)
-  if valid_773270 != nil:
-    section.add "X-Amz-Signature", valid_773270
-  var valid_773271 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773271 = validateParameter(valid_773271, JString, required = false,
+  if valid_601105 != nil:
+    section.add "X-Amz-Signature", valid_601105
+  var valid_601106 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601106 = validateParameter(valid_601106, JString, required = false,
                                  default = nil)
-  if valid_773271 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773271
-  var valid_773272 = header.getOrDefault("X-Amz-Credential")
-  valid_773272 = validateParameter(valid_773272, JString, required = false,
+  if valid_601106 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601106
+  var valid_601107 = header.getOrDefault("X-Amz-Credential")
+  valid_601107 = validateParameter(valid_601107, JString, required = false,
                                  default = nil)
-  if valid_773272 != nil:
-    section.add "X-Amz-Credential", valid_773272
+  if valid_601107 != nil:
+    section.add "X-Amz-Credential", valid_601107
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -733,42 +733,42 @@ proc validate_AllocateTransitVirtualInterface_773263(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773274: Call_AllocateTransitVirtualInterface_773262;
+proc call*(call_601109: Call_AllocateTransitVirtualInterface_601097;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Provisions a transit virtual interface to be owned by the specified AWS account. Use this type of interface to connect a transit gateway to your Direct Connect gateway.</p> <p>The owner of a connection provisions a transit virtual interface to be owned by the specified AWS account.</p> <p>After you create a transit virtual interface, it must be confirmed by the owner using <a>ConfirmTransitVirtualInterface</a>. Until this step has been completed, the transit virtual interface is in the <code>requested</code> state and is not available to handle traffic.</p>
   ## 
-  let valid = call_773274.validator(path, query, header, formData, body)
-  let scheme = call_773274.pickScheme
+  let valid = call_601109.validator(path, query, header, formData, body)
+  let scheme = call_601109.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773274.url(scheme.get, call_773274.host, call_773274.base,
-                         call_773274.route, valid.getOrDefault("path"))
-  result = hook(call_773274, url, valid)
+  let url = call_601109.url(scheme.get, call_601109.host, call_601109.base,
+                         call_601109.route, valid.getOrDefault("path"))
+  result = hook(call_601109, url, valid)
 
-proc call*(call_773275: Call_AllocateTransitVirtualInterface_773262; body: JsonNode): Recallable =
+proc call*(call_601110: Call_AllocateTransitVirtualInterface_601097; body: JsonNode): Recallable =
   ## allocateTransitVirtualInterface
   ## <p>Provisions a transit virtual interface to be owned by the specified AWS account. Use this type of interface to connect a transit gateway to your Direct Connect gateway.</p> <p>The owner of a connection provisions a transit virtual interface to be owned by the specified AWS account.</p> <p>After you create a transit virtual interface, it must be confirmed by the owner using <a>ConfirmTransitVirtualInterface</a>. Until this step has been completed, the transit virtual interface is in the <code>requested</code> state and is not available to handle traffic.</p>
   ##   body: JObject (required)
-  var body_773276 = newJObject()
+  var body_601111 = newJObject()
   if body != nil:
-    body_773276 = body
-  result = call_773275.call(nil, nil, nil, nil, body_773276)
+    body_601111 = body
+  result = call_601110.call(nil, nil, nil, nil, body_601111)
 
-var allocateTransitVirtualInterface* = Call_AllocateTransitVirtualInterface_773262(
+var allocateTransitVirtualInterface* = Call_AllocateTransitVirtualInterface_601097(
     name: "allocateTransitVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.AllocateTransitVirtualInterface",
-    validator: validate_AllocateTransitVirtualInterface_773263, base: "/",
-    url: url_AllocateTransitVirtualInterface_773264,
+    validator: validate_AllocateTransitVirtualInterface_601098, base: "/",
+    url: url_AllocateTransitVirtualInterface_601099,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AssociateConnectionWithLag_773277 = ref object of OpenApiRestCall_772597
-proc url_AssociateConnectionWithLag_773279(protocol: Scheme; host: string;
+  Call_AssociateConnectionWithLag_601112 = ref object of OpenApiRestCall_600426
+proc url_AssociateConnectionWithLag_601114(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AssociateConnectionWithLag_773278(path: JsonNode; query: JsonNode;
+proc validate_AssociateConnectionWithLag_601113(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Associates an existing connection with a link aggregation group (LAG). The connection is interrupted and re-established as a member of the LAG (connectivity to AWS is interrupted). The connection must be hosted on the same AWS Direct Connect endpoint as the LAG, and its bandwidth must match the bandwidth for the LAG. You can re-associate a connection that's currently associated with a different LAG; however, if removing the connection would cause the original LAG to fall below its setting for minimum number of operational connections, the request fails.</p> <p>Any virtual interfaces that are directly associated with the connection are automatically re-associated with the LAG. If the connection was originally associated with a different LAG, the virtual interfaces remain associated with the original LAG.</p> <p>For interconnects, any hosted connections are automatically re-associated with the LAG. If the interconnect was originally associated with a different LAG, the hosted connections remain associated with the original LAG.</p>
   ## 
@@ -788,48 +788,48 @@ proc validate_AssociateConnectionWithLag_773278(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773280 = header.getOrDefault("X-Amz-Date")
-  valid_773280 = validateParameter(valid_773280, JString, required = false,
+  var valid_601115 = header.getOrDefault("X-Amz-Date")
+  valid_601115 = validateParameter(valid_601115, JString, required = false,
                                  default = nil)
-  if valid_773280 != nil:
-    section.add "X-Amz-Date", valid_773280
-  var valid_773281 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773281 = validateParameter(valid_773281, JString, required = false,
+  if valid_601115 != nil:
+    section.add "X-Amz-Date", valid_601115
+  var valid_601116 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601116 = validateParameter(valid_601116, JString, required = false,
                                  default = nil)
-  if valid_773281 != nil:
-    section.add "X-Amz-Security-Token", valid_773281
+  if valid_601116 != nil:
+    section.add "X-Amz-Security-Token", valid_601116
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773282 = header.getOrDefault("X-Amz-Target")
-  valid_773282 = validateParameter(valid_773282, JString, required = true, default = newJString(
+  var valid_601117 = header.getOrDefault("X-Amz-Target")
+  valid_601117 = validateParameter(valid_601117, JString, required = true, default = newJString(
       "OvertureService.AssociateConnectionWithLag"))
-  if valid_773282 != nil:
-    section.add "X-Amz-Target", valid_773282
-  var valid_773283 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773283 = validateParameter(valid_773283, JString, required = false,
+  if valid_601117 != nil:
+    section.add "X-Amz-Target", valid_601117
+  var valid_601118 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601118 = validateParameter(valid_601118, JString, required = false,
                                  default = nil)
-  if valid_773283 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773283
-  var valid_773284 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773284 = validateParameter(valid_773284, JString, required = false,
+  if valid_601118 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601118
+  var valid_601119 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601119 = validateParameter(valid_601119, JString, required = false,
                                  default = nil)
-  if valid_773284 != nil:
-    section.add "X-Amz-Algorithm", valid_773284
-  var valid_773285 = header.getOrDefault("X-Amz-Signature")
-  valid_773285 = validateParameter(valid_773285, JString, required = false,
+  if valid_601119 != nil:
+    section.add "X-Amz-Algorithm", valid_601119
+  var valid_601120 = header.getOrDefault("X-Amz-Signature")
+  valid_601120 = validateParameter(valid_601120, JString, required = false,
                                  default = nil)
-  if valid_773285 != nil:
-    section.add "X-Amz-Signature", valid_773285
-  var valid_773286 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773286 = validateParameter(valid_773286, JString, required = false,
+  if valid_601120 != nil:
+    section.add "X-Amz-Signature", valid_601120
+  var valid_601121 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601121 = validateParameter(valid_601121, JString, required = false,
                                  default = nil)
-  if valid_773286 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773286
-  var valid_773287 = header.getOrDefault("X-Amz-Credential")
-  valid_773287 = validateParameter(valid_773287, JString, required = false,
+  if valid_601121 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601121
+  var valid_601122 = header.getOrDefault("X-Amz-Credential")
+  valid_601122 = validateParameter(valid_601122, JString, required = false,
                                  default = nil)
-  if valid_773287 != nil:
-    section.add "X-Amz-Credential", valid_773287
+  if valid_601122 != nil:
+    section.add "X-Amz-Credential", valid_601122
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -840,41 +840,41 @@ proc validate_AssociateConnectionWithLag_773278(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773289: Call_AssociateConnectionWithLag_773277; path: JsonNode;
+proc call*(call_601124: Call_AssociateConnectionWithLag_601112; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Associates an existing connection with a link aggregation group (LAG). The connection is interrupted and re-established as a member of the LAG (connectivity to AWS is interrupted). The connection must be hosted on the same AWS Direct Connect endpoint as the LAG, and its bandwidth must match the bandwidth for the LAG. You can re-associate a connection that's currently associated with a different LAG; however, if removing the connection would cause the original LAG to fall below its setting for minimum number of operational connections, the request fails.</p> <p>Any virtual interfaces that are directly associated with the connection are automatically re-associated with the LAG. If the connection was originally associated with a different LAG, the virtual interfaces remain associated with the original LAG.</p> <p>For interconnects, any hosted connections are automatically re-associated with the LAG. If the interconnect was originally associated with a different LAG, the hosted connections remain associated with the original LAG.</p>
   ## 
-  let valid = call_773289.validator(path, query, header, formData, body)
-  let scheme = call_773289.pickScheme
+  let valid = call_601124.validator(path, query, header, formData, body)
+  let scheme = call_601124.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773289.url(scheme.get, call_773289.host, call_773289.base,
-                         call_773289.route, valid.getOrDefault("path"))
-  result = hook(call_773289, url, valid)
+  let url = call_601124.url(scheme.get, call_601124.host, call_601124.base,
+                         call_601124.route, valid.getOrDefault("path"))
+  result = hook(call_601124, url, valid)
 
-proc call*(call_773290: Call_AssociateConnectionWithLag_773277; body: JsonNode): Recallable =
+proc call*(call_601125: Call_AssociateConnectionWithLag_601112; body: JsonNode): Recallable =
   ## associateConnectionWithLag
   ## <p>Associates an existing connection with a link aggregation group (LAG). The connection is interrupted and re-established as a member of the LAG (connectivity to AWS is interrupted). The connection must be hosted on the same AWS Direct Connect endpoint as the LAG, and its bandwidth must match the bandwidth for the LAG. You can re-associate a connection that's currently associated with a different LAG; however, if removing the connection would cause the original LAG to fall below its setting for minimum number of operational connections, the request fails.</p> <p>Any virtual interfaces that are directly associated with the connection are automatically re-associated with the LAG. If the connection was originally associated with a different LAG, the virtual interfaces remain associated with the original LAG.</p> <p>For interconnects, any hosted connections are automatically re-associated with the LAG. If the interconnect was originally associated with a different LAG, the hosted connections remain associated with the original LAG.</p>
   ##   body: JObject (required)
-  var body_773291 = newJObject()
+  var body_601126 = newJObject()
   if body != nil:
-    body_773291 = body
-  result = call_773290.call(nil, nil, nil, nil, body_773291)
+    body_601126 = body
+  result = call_601125.call(nil, nil, nil, nil, body_601126)
 
-var associateConnectionWithLag* = Call_AssociateConnectionWithLag_773277(
+var associateConnectionWithLag* = Call_AssociateConnectionWithLag_601112(
     name: "associateConnectionWithLag", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.AssociateConnectionWithLag",
-    validator: validate_AssociateConnectionWithLag_773278, base: "/",
-    url: url_AssociateConnectionWithLag_773279,
+    validator: validate_AssociateConnectionWithLag_601113, base: "/",
+    url: url_AssociateConnectionWithLag_601114,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AssociateHostedConnection_773292 = ref object of OpenApiRestCall_772597
-proc url_AssociateHostedConnection_773294(protocol: Scheme; host: string;
+  Call_AssociateHostedConnection_601127 = ref object of OpenApiRestCall_600426
+proc url_AssociateHostedConnection_601129(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AssociateHostedConnection_773293(path: JsonNode; query: JsonNode;
+proc validate_AssociateHostedConnection_601128(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Associates a hosted connection and its virtual interfaces with a link aggregation group (LAG) or interconnect. If the target interconnect or LAG has an existing hosted connection with a conflicting VLAN number or IP address, the operation fails. This action temporarily interrupts the hosted connection's connectivity to AWS as it is being migrated.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
@@ -894,48 +894,48 @@ proc validate_AssociateHostedConnection_773293(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773295 = header.getOrDefault("X-Amz-Date")
-  valid_773295 = validateParameter(valid_773295, JString, required = false,
+  var valid_601130 = header.getOrDefault("X-Amz-Date")
+  valid_601130 = validateParameter(valid_601130, JString, required = false,
                                  default = nil)
-  if valid_773295 != nil:
-    section.add "X-Amz-Date", valid_773295
-  var valid_773296 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773296 = validateParameter(valid_773296, JString, required = false,
+  if valid_601130 != nil:
+    section.add "X-Amz-Date", valid_601130
+  var valid_601131 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601131 = validateParameter(valid_601131, JString, required = false,
                                  default = nil)
-  if valid_773296 != nil:
-    section.add "X-Amz-Security-Token", valid_773296
+  if valid_601131 != nil:
+    section.add "X-Amz-Security-Token", valid_601131
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773297 = header.getOrDefault("X-Amz-Target")
-  valid_773297 = validateParameter(valid_773297, JString, required = true, default = newJString(
+  var valid_601132 = header.getOrDefault("X-Amz-Target")
+  valid_601132 = validateParameter(valid_601132, JString, required = true, default = newJString(
       "OvertureService.AssociateHostedConnection"))
-  if valid_773297 != nil:
-    section.add "X-Amz-Target", valid_773297
-  var valid_773298 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773298 = validateParameter(valid_773298, JString, required = false,
+  if valid_601132 != nil:
+    section.add "X-Amz-Target", valid_601132
+  var valid_601133 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601133 = validateParameter(valid_601133, JString, required = false,
                                  default = nil)
-  if valid_773298 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773298
-  var valid_773299 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773299 = validateParameter(valid_773299, JString, required = false,
+  if valid_601133 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601133
+  var valid_601134 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601134 = validateParameter(valid_601134, JString, required = false,
                                  default = nil)
-  if valid_773299 != nil:
-    section.add "X-Amz-Algorithm", valid_773299
-  var valid_773300 = header.getOrDefault("X-Amz-Signature")
-  valid_773300 = validateParameter(valid_773300, JString, required = false,
+  if valid_601134 != nil:
+    section.add "X-Amz-Algorithm", valid_601134
+  var valid_601135 = header.getOrDefault("X-Amz-Signature")
+  valid_601135 = validateParameter(valid_601135, JString, required = false,
                                  default = nil)
-  if valid_773300 != nil:
-    section.add "X-Amz-Signature", valid_773300
-  var valid_773301 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773301 = validateParameter(valid_773301, JString, required = false,
+  if valid_601135 != nil:
+    section.add "X-Amz-Signature", valid_601135
+  var valid_601136 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601136 = validateParameter(valid_601136, JString, required = false,
                                  default = nil)
-  if valid_773301 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773301
-  var valid_773302 = header.getOrDefault("X-Amz-Credential")
-  valid_773302 = validateParameter(valid_773302, JString, required = false,
+  if valid_601136 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601136
+  var valid_601137 = header.getOrDefault("X-Amz-Credential")
+  valid_601137 = validateParameter(valid_601137, JString, required = false,
                                  default = nil)
-  if valid_773302 != nil:
-    section.add "X-Amz-Credential", valid_773302
+  if valid_601137 != nil:
+    section.add "X-Amz-Credential", valid_601137
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -946,41 +946,41 @@ proc validate_AssociateHostedConnection_773293(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773304: Call_AssociateHostedConnection_773292; path: JsonNode;
+proc call*(call_601139: Call_AssociateHostedConnection_601127; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Associates a hosted connection and its virtual interfaces with a link aggregation group (LAG) or interconnect. If the target interconnect or LAG has an existing hosted connection with a conflicting VLAN number or IP address, the operation fails. This action temporarily interrupts the hosted connection's connectivity to AWS as it is being migrated.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
-  let valid = call_773304.validator(path, query, header, formData, body)
-  let scheme = call_773304.pickScheme
+  let valid = call_601139.validator(path, query, header, formData, body)
+  let scheme = call_601139.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773304.url(scheme.get, call_773304.host, call_773304.base,
-                         call_773304.route, valid.getOrDefault("path"))
-  result = hook(call_773304, url, valid)
+  let url = call_601139.url(scheme.get, call_601139.host, call_601139.base,
+                         call_601139.route, valid.getOrDefault("path"))
+  result = hook(call_601139, url, valid)
 
-proc call*(call_773305: Call_AssociateHostedConnection_773292; body: JsonNode): Recallable =
+proc call*(call_601140: Call_AssociateHostedConnection_601127; body: JsonNode): Recallable =
   ## associateHostedConnection
   ## <p>Associates a hosted connection and its virtual interfaces with a link aggregation group (LAG) or interconnect. If the target interconnect or LAG has an existing hosted connection with a conflicting VLAN number or IP address, the operation fails. This action temporarily interrupts the hosted connection's connectivity to AWS as it is being migrated.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ##   body: JObject (required)
-  var body_773306 = newJObject()
+  var body_601141 = newJObject()
   if body != nil:
-    body_773306 = body
-  result = call_773305.call(nil, nil, nil, nil, body_773306)
+    body_601141 = body
+  result = call_601140.call(nil, nil, nil, nil, body_601141)
 
-var associateHostedConnection* = Call_AssociateHostedConnection_773292(
+var associateHostedConnection* = Call_AssociateHostedConnection_601127(
     name: "associateHostedConnection", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.AssociateHostedConnection",
-    validator: validate_AssociateHostedConnection_773293, base: "/",
-    url: url_AssociateHostedConnection_773294,
+    validator: validate_AssociateHostedConnection_601128, base: "/",
+    url: url_AssociateHostedConnection_601129,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AssociateVirtualInterface_773307 = ref object of OpenApiRestCall_772597
-proc url_AssociateVirtualInterface_773309(protocol: Scheme; host: string;
+  Call_AssociateVirtualInterface_601142 = ref object of OpenApiRestCall_600426
+proc url_AssociateVirtualInterface_601144(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_AssociateVirtualInterface_773308(path: JsonNode; query: JsonNode;
+proc validate_AssociateVirtualInterface_601143(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Associates a virtual interface with a specified link aggregation group (LAG) or connection. Connectivity to AWS is temporarily interrupted as the virtual interface is being migrated. If the target connection or LAG has an associated virtual interface with a conflicting VLAN number or a conflicting IP address, the operation fails.</p> <p>Virtual interfaces associated with a hosted connection cannot be associated with a LAG; hosted connections must be migrated along with their virtual interfaces using <a>AssociateHostedConnection</a>.</p> <p>To reassociate a virtual interface to a new connection or LAG, the requester must own either the virtual interface itself or the connection to which the virtual interface is currently associated. Additionally, the requester must own the connection or LAG for the association.</p>
   ## 
@@ -1000,48 +1000,48 @@ proc validate_AssociateVirtualInterface_773308(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773310 = header.getOrDefault("X-Amz-Date")
-  valid_773310 = validateParameter(valid_773310, JString, required = false,
+  var valid_601145 = header.getOrDefault("X-Amz-Date")
+  valid_601145 = validateParameter(valid_601145, JString, required = false,
                                  default = nil)
-  if valid_773310 != nil:
-    section.add "X-Amz-Date", valid_773310
-  var valid_773311 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773311 = validateParameter(valid_773311, JString, required = false,
+  if valid_601145 != nil:
+    section.add "X-Amz-Date", valid_601145
+  var valid_601146 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601146 = validateParameter(valid_601146, JString, required = false,
                                  default = nil)
-  if valid_773311 != nil:
-    section.add "X-Amz-Security-Token", valid_773311
+  if valid_601146 != nil:
+    section.add "X-Amz-Security-Token", valid_601146
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773312 = header.getOrDefault("X-Amz-Target")
-  valid_773312 = validateParameter(valid_773312, JString, required = true, default = newJString(
+  var valid_601147 = header.getOrDefault("X-Amz-Target")
+  valid_601147 = validateParameter(valid_601147, JString, required = true, default = newJString(
       "OvertureService.AssociateVirtualInterface"))
-  if valid_773312 != nil:
-    section.add "X-Amz-Target", valid_773312
-  var valid_773313 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773313 = validateParameter(valid_773313, JString, required = false,
+  if valid_601147 != nil:
+    section.add "X-Amz-Target", valid_601147
+  var valid_601148 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601148 = validateParameter(valid_601148, JString, required = false,
                                  default = nil)
-  if valid_773313 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773313
-  var valid_773314 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773314 = validateParameter(valid_773314, JString, required = false,
+  if valid_601148 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601148
+  var valid_601149 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601149 = validateParameter(valid_601149, JString, required = false,
                                  default = nil)
-  if valid_773314 != nil:
-    section.add "X-Amz-Algorithm", valid_773314
-  var valid_773315 = header.getOrDefault("X-Amz-Signature")
-  valid_773315 = validateParameter(valid_773315, JString, required = false,
+  if valid_601149 != nil:
+    section.add "X-Amz-Algorithm", valid_601149
+  var valid_601150 = header.getOrDefault("X-Amz-Signature")
+  valid_601150 = validateParameter(valid_601150, JString, required = false,
                                  default = nil)
-  if valid_773315 != nil:
-    section.add "X-Amz-Signature", valid_773315
-  var valid_773316 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773316 = validateParameter(valid_773316, JString, required = false,
+  if valid_601150 != nil:
+    section.add "X-Amz-Signature", valid_601150
+  var valid_601151 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601151 = validateParameter(valid_601151, JString, required = false,
                                  default = nil)
-  if valid_773316 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773316
-  var valid_773317 = header.getOrDefault("X-Amz-Credential")
-  valid_773317 = validateParameter(valid_773317, JString, required = false,
+  if valid_601151 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601151
+  var valid_601152 = header.getOrDefault("X-Amz-Credential")
+  valid_601152 = validateParameter(valid_601152, JString, required = false,
                                  default = nil)
-  if valid_773317 != nil:
-    section.add "X-Amz-Credential", valid_773317
+  if valid_601152 != nil:
+    section.add "X-Amz-Credential", valid_601152
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1052,41 +1052,41 @@ proc validate_AssociateVirtualInterface_773308(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773319: Call_AssociateVirtualInterface_773307; path: JsonNode;
+proc call*(call_601154: Call_AssociateVirtualInterface_601142; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Associates a virtual interface with a specified link aggregation group (LAG) or connection. Connectivity to AWS is temporarily interrupted as the virtual interface is being migrated. If the target connection or LAG has an associated virtual interface with a conflicting VLAN number or a conflicting IP address, the operation fails.</p> <p>Virtual interfaces associated with a hosted connection cannot be associated with a LAG; hosted connections must be migrated along with their virtual interfaces using <a>AssociateHostedConnection</a>.</p> <p>To reassociate a virtual interface to a new connection or LAG, the requester must own either the virtual interface itself or the connection to which the virtual interface is currently associated. Additionally, the requester must own the connection or LAG for the association.</p>
   ## 
-  let valid = call_773319.validator(path, query, header, formData, body)
-  let scheme = call_773319.pickScheme
+  let valid = call_601154.validator(path, query, header, formData, body)
+  let scheme = call_601154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773319.url(scheme.get, call_773319.host, call_773319.base,
-                         call_773319.route, valid.getOrDefault("path"))
-  result = hook(call_773319, url, valid)
+  let url = call_601154.url(scheme.get, call_601154.host, call_601154.base,
+                         call_601154.route, valid.getOrDefault("path"))
+  result = hook(call_601154, url, valid)
 
-proc call*(call_773320: Call_AssociateVirtualInterface_773307; body: JsonNode): Recallable =
+proc call*(call_601155: Call_AssociateVirtualInterface_601142; body: JsonNode): Recallable =
   ## associateVirtualInterface
   ## <p>Associates a virtual interface with a specified link aggregation group (LAG) or connection. Connectivity to AWS is temporarily interrupted as the virtual interface is being migrated. If the target connection or LAG has an associated virtual interface with a conflicting VLAN number or a conflicting IP address, the operation fails.</p> <p>Virtual interfaces associated with a hosted connection cannot be associated with a LAG; hosted connections must be migrated along with their virtual interfaces using <a>AssociateHostedConnection</a>.</p> <p>To reassociate a virtual interface to a new connection or LAG, the requester must own either the virtual interface itself or the connection to which the virtual interface is currently associated. Additionally, the requester must own the connection or LAG for the association.</p>
   ##   body: JObject (required)
-  var body_773321 = newJObject()
+  var body_601156 = newJObject()
   if body != nil:
-    body_773321 = body
-  result = call_773320.call(nil, nil, nil, nil, body_773321)
+    body_601156 = body
+  result = call_601155.call(nil, nil, nil, nil, body_601156)
 
-var associateVirtualInterface* = Call_AssociateVirtualInterface_773307(
+var associateVirtualInterface* = Call_AssociateVirtualInterface_601142(
     name: "associateVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.AssociateVirtualInterface",
-    validator: validate_AssociateVirtualInterface_773308, base: "/",
-    url: url_AssociateVirtualInterface_773309,
+    validator: validate_AssociateVirtualInterface_601143, base: "/",
+    url: url_AssociateVirtualInterface_601144,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ConfirmConnection_773322 = ref object of OpenApiRestCall_772597
-proc url_ConfirmConnection_773324(protocol: Scheme; host: string; base: string;
+  Call_ConfirmConnection_601157 = ref object of OpenApiRestCall_600426
+proc url_ConfirmConnection_601159(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ConfirmConnection_773323(path: JsonNode; query: JsonNode;
+proc validate_ConfirmConnection_601158(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Confirms the creation of the specified hosted connection on an interconnect.</p> <p>Upon creation, the hosted connection is initially in the <code>Ordering</code> state, and remains in this state until the owner confirms creation of the hosted connection.</p>
@@ -1107,48 +1107,48 @@ proc validate_ConfirmConnection_773323(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773325 = header.getOrDefault("X-Amz-Date")
-  valid_773325 = validateParameter(valid_773325, JString, required = false,
+  var valid_601160 = header.getOrDefault("X-Amz-Date")
+  valid_601160 = validateParameter(valid_601160, JString, required = false,
                                  default = nil)
-  if valid_773325 != nil:
-    section.add "X-Amz-Date", valid_773325
-  var valid_773326 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773326 = validateParameter(valid_773326, JString, required = false,
+  if valid_601160 != nil:
+    section.add "X-Amz-Date", valid_601160
+  var valid_601161 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601161 = validateParameter(valid_601161, JString, required = false,
                                  default = nil)
-  if valid_773326 != nil:
-    section.add "X-Amz-Security-Token", valid_773326
+  if valid_601161 != nil:
+    section.add "X-Amz-Security-Token", valid_601161
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773327 = header.getOrDefault("X-Amz-Target")
-  valid_773327 = validateParameter(valid_773327, JString, required = true, default = newJString(
+  var valid_601162 = header.getOrDefault("X-Amz-Target")
+  valid_601162 = validateParameter(valid_601162, JString, required = true, default = newJString(
       "OvertureService.ConfirmConnection"))
-  if valid_773327 != nil:
-    section.add "X-Amz-Target", valid_773327
-  var valid_773328 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773328 = validateParameter(valid_773328, JString, required = false,
+  if valid_601162 != nil:
+    section.add "X-Amz-Target", valid_601162
+  var valid_601163 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601163 = validateParameter(valid_601163, JString, required = false,
                                  default = nil)
-  if valid_773328 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773328
-  var valid_773329 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773329 = validateParameter(valid_773329, JString, required = false,
+  if valid_601163 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601163
+  var valid_601164 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601164 = validateParameter(valid_601164, JString, required = false,
                                  default = nil)
-  if valid_773329 != nil:
-    section.add "X-Amz-Algorithm", valid_773329
-  var valid_773330 = header.getOrDefault("X-Amz-Signature")
-  valid_773330 = validateParameter(valid_773330, JString, required = false,
+  if valid_601164 != nil:
+    section.add "X-Amz-Algorithm", valid_601164
+  var valid_601165 = header.getOrDefault("X-Amz-Signature")
+  valid_601165 = validateParameter(valid_601165, JString, required = false,
                                  default = nil)
-  if valid_773330 != nil:
-    section.add "X-Amz-Signature", valid_773330
-  var valid_773331 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773331 = validateParameter(valid_773331, JString, required = false,
+  if valid_601165 != nil:
+    section.add "X-Amz-Signature", valid_601165
+  var valid_601166 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601166 = validateParameter(valid_601166, JString, required = false,
                                  default = nil)
-  if valid_773331 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773331
-  var valid_773332 = header.getOrDefault("X-Amz-Credential")
-  valid_773332 = validateParameter(valid_773332, JString, required = false,
+  if valid_601166 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601166
+  var valid_601167 = header.getOrDefault("X-Amz-Credential")
+  valid_601167 = validateParameter(valid_601167, JString, required = false,
                                  default = nil)
-  if valid_773332 != nil:
-    section.add "X-Amz-Credential", valid_773332
+  if valid_601167 != nil:
+    section.add "X-Amz-Credential", valid_601167
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1159,39 +1159,39 @@ proc validate_ConfirmConnection_773323(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773334: Call_ConfirmConnection_773322; path: JsonNode;
+proc call*(call_601169: Call_ConfirmConnection_601157; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Confirms the creation of the specified hosted connection on an interconnect.</p> <p>Upon creation, the hosted connection is initially in the <code>Ordering</code> state, and remains in this state until the owner confirms creation of the hosted connection.</p>
   ## 
-  let valid = call_773334.validator(path, query, header, formData, body)
-  let scheme = call_773334.pickScheme
+  let valid = call_601169.validator(path, query, header, formData, body)
+  let scheme = call_601169.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773334.url(scheme.get, call_773334.host, call_773334.base,
-                         call_773334.route, valid.getOrDefault("path"))
-  result = hook(call_773334, url, valid)
+  let url = call_601169.url(scheme.get, call_601169.host, call_601169.base,
+                         call_601169.route, valid.getOrDefault("path"))
+  result = hook(call_601169, url, valid)
 
-proc call*(call_773335: Call_ConfirmConnection_773322; body: JsonNode): Recallable =
+proc call*(call_601170: Call_ConfirmConnection_601157; body: JsonNode): Recallable =
   ## confirmConnection
   ## <p>Confirms the creation of the specified hosted connection on an interconnect.</p> <p>Upon creation, the hosted connection is initially in the <code>Ordering</code> state, and remains in this state until the owner confirms creation of the hosted connection.</p>
   ##   body: JObject (required)
-  var body_773336 = newJObject()
+  var body_601171 = newJObject()
   if body != nil:
-    body_773336 = body
-  result = call_773335.call(nil, nil, nil, nil, body_773336)
+    body_601171 = body
+  result = call_601170.call(nil, nil, nil, nil, body_601171)
 
-var confirmConnection* = Call_ConfirmConnection_773322(name: "confirmConnection",
+var confirmConnection* = Call_ConfirmConnection_601157(name: "confirmConnection",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.ConfirmConnection",
-    validator: validate_ConfirmConnection_773323, base: "/",
-    url: url_ConfirmConnection_773324, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ConfirmConnection_601158, base: "/",
+    url: url_ConfirmConnection_601159, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ConfirmPrivateVirtualInterface_773337 = ref object of OpenApiRestCall_772597
-proc url_ConfirmPrivateVirtualInterface_773339(protocol: Scheme; host: string;
+  Call_ConfirmPrivateVirtualInterface_601172 = ref object of OpenApiRestCall_600426
+proc url_ConfirmPrivateVirtualInterface_601174(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ConfirmPrivateVirtualInterface_773338(path: JsonNode;
+proc validate_ConfirmPrivateVirtualInterface_601173(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Accepts ownership of a private virtual interface created by another AWS account.</p> <p>After the virtual interface owner makes this call, the virtual interface is created and attached to the specified virtual private gateway or Direct Connect gateway, and is made available to handle traffic.</p>
   ## 
@@ -1211,48 +1211,48 @@ proc validate_ConfirmPrivateVirtualInterface_773338(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773340 = header.getOrDefault("X-Amz-Date")
-  valid_773340 = validateParameter(valid_773340, JString, required = false,
+  var valid_601175 = header.getOrDefault("X-Amz-Date")
+  valid_601175 = validateParameter(valid_601175, JString, required = false,
                                  default = nil)
-  if valid_773340 != nil:
-    section.add "X-Amz-Date", valid_773340
-  var valid_773341 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773341 = validateParameter(valid_773341, JString, required = false,
+  if valid_601175 != nil:
+    section.add "X-Amz-Date", valid_601175
+  var valid_601176 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601176 = validateParameter(valid_601176, JString, required = false,
                                  default = nil)
-  if valid_773341 != nil:
-    section.add "X-Amz-Security-Token", valid_773341
+  if valid_601176 != nil:
+    section.add "X-Amz-Security-Token", valid_601176
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773342 = header.getOrDefault("X-Amz-Target")
-  valid_773342 = validateParameter(valid_773342, JString, required = true, default = newJString(
+  var valid_601177 = header.getOrDefault("X-Amz-Target")
+  valid_601177 = validateParameter(valid_601177, JString, required = true, default = newJString(
       "OvertureService.ConfirmPrivateVirtualInterface"))
-  if valid_773342 != nil:
-    section.add "X-Amz-Target", valid_773342
-  var valid_773343 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773343 = validateParameter(valid_773343, JString, required = false,
+  if valid_601177 != nil:
+    section.add "X-Amz-Target", valid_601177
+  var valid_601178 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601178 = validateParameter(valid_601178, JString, required = false,
                                  default = nil)
-  if valid_773343 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773343
-  var valid_773344 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773344 = validateParameter(valid_773344, JString, required = false,
+  if valid_601178 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601178
+  var valid_601179 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601179 = validateParameter(valid_601179, JString, required = false,
                                  default = nil)
-  if valid_773344 != nil:
-    section.add "X-Amz-Algorithm", valid_773344
-  var valid_773345 = header.getOrDefault("X-Amz-Signature")
-  valid_773345 = validateParameter(valid_773345, JString, required = false,
+  if valid_601179 != nil:
+    section.add "X-Amz-Algorithm", valid_601179
+  var valid_601180 = header.getOrDefault("X-Amz-Signature")
+  valid_601180 = validateParameter(valid_601180, JString, required = false,
                                  default = nil)
-  if valid_773345 != nil:
-    section.add "X-Amz-Signature", valid_773345
-  var valid_773346 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773346 = validateParameter(valid_773346, JString, required = false,
+  if valid_601180 != nil:
+    section.add "X-Amz-Signature", valid_601180
+  var valid_601181 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601181 = validateParameter(valid_601181, JString, required = false,
                                  default = nil)
-  if valid_773346 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773346
-  var valid_773347 = header.getOrDefault("X-Amz-Credential")
-  valid_773347 = validateParameter(valid_773347, JString, required = false,
+  if valid_601181 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601181
+  var valid_601182 = header.getOrDefault("X-Amz-Credential")
+  valid_601182 = validateParameter(valid_601182, JString, required = false,
                                  default = nil)
-  if valid_773347 != nil:
-    section.add "X-Amz-Credential", valid_773347
+  if valid_601182 != nil:
+    section.add "X-Amz-Credential", valid_601182
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1263,41 +1263,41 @@ proc validate_ConfirmPrivateVirtualInterface_773338(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773349: Call_ConfirmPrivateVirtualInterface_773337; path: JsonNode;
+proc call*(call_601184: Call_ConfirmPrivateVirtualInterface_601172; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Accepts ownership of a private virtual interface created by another AWS account.</p> <p>After the virtual interface owner makes this call, the virtual interface is created and attached to the specified virtual private gateway or Direct Connect gateway, and is made available to handle traffic.</p>
   ## 
-  let valid = call_773349.validator(path, query, header, formData, body)
-  let scheme = call_773349.pickScheme
+  let valid = call_601184.validator(path, query, header, formData, body)
+  let scheme = call_601184.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773349.url(scheme.get, call_773349.host, call_773349.base,
-                         call_773349.route, valid.getOrDefault("path"))
-  result = hook(call_773349, url, valid)
+  let url = call_601184.url(scheme.get, call_601184.host, call_601184.base,
+                         call_601184.route, valid.getOrDefault("path"))
+  result = hook(call_601184, url, valid)
 
-proc call*(call_773350: Call_ConfirmPrivateVirtualInterface_773337; body: JsonNode): Recallable =
+proc call*(call_601185: Call_ConfirmPrivateVirtualInterface_601172; body: JsonNode): Recallable =
   ## confirmPrivateVirtualInterface
   ## <p>Accepts ownership of a private virtual interface created by another AWS account.</p> <p>After the virtual interface owner makes this call, the virtual interface is created and attached to the specified virtual private gateway or Direct Connect gateway, and is made available to handle traffic.</p>
   ##   body: JObject (required)
-  var body_773351 = newJObject()
+  var body_601186 = newJObject()
   if body != nil:
-    body_773351 = body
-  result = call_773350.call(nil, nil, nil, nil, body_773351)
+    body_601186 = body
+  result = call_601185.call(nil, nil, nil, nil, body_601186)
 
-var confirmPrivateVirtualInterface* = Call_ConfirmPrivateVirtualInterface_773337(
+var confirmPrivateVirtualInterface* = Call_ConfirmPrivateVirtualInterface_601172(
     name: "confirmPrivateVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.ConfirmPrivateVirtualInterface",
-    validator: validate_ConfirmPrivateVirtualInterface_773338, base: "/",
-    url: url_ConfirmPrivateVirtualInterface_773339,
+    validator: validate_ConfirmPrivateVirtualInterface_601173, base: "/",
+    url: url_ConfirmPrivateVirtualInterface_601174,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ConfirmPublicVirtualInterface_773352 = ref object of OpenApiRestCall_772597
-proc url_ConfirmPublicVirtualInterface_773354(protocol: Scheme; host: string;
+  Call_ConfirmPublicVirtualInterface_601187 = ref object of OpenApiRestCall_600426
+proc url_ConfirmPublicVirtualInterface_601189(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ConfirmPublicVirtualInterface_773353(path: JsonNode; query: JsonNode;
+proc validate_ConfirmPublicVirtualInterface_601188(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Accepts ownership of a public virtual interface created by another AWS account.</p> <p>After the virtual interface owner makes this call, the specified virtual interface is created and made available to handle traffic.</p>
   ## 
@@ -1317,48 +1317,48 @@ proc validate_ConfirmPublicVirtualInterface_773353(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773355 = header.getOrDefault("X-Amz-Date")
-  valid_773355 = validateParameter(valid_773355, JString, required = false,
+  var valid_601190 = header.getOrDefault("X-Amz-Date")
+  valid_601190 = validateParameter(valid_601190, JString, required = false,
                                  default = nil)
-  if valid_773355 != nil:
-    section.add "X-Amz-Date", valid_773355
-  var valid_773356 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773356 = validateParameter(valid_773356, JString, required = false,
+  if valid_601190 != nil:
+    section.add "X-Amz-Date", valid_601190
+  var valid_601191 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601191 = validateParameter(valid_601191, JString, required = false,
                                  default = nil)
-  if valid_773356 != nil:
-    section.add "X-Amz-Security-Token", valid_773356
+  if valid_601191 != nil:
+    section.add "X-Amz-Security-Token", valid_601191
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773357 = header.getOrDefault("X-Amz-Target")
-  valid_773357 = validateParameter(valid_773357, JString, required = true, default = newJString(
+  var valid_601192 = header.getOrDefault("X-Amz-Target")
+  valid_601192 = validateParameter(valid_601192, JString, required = true, default = newJString(
       "OvertureService.ConfirmPublicVirtualInterface"))
-  if valid_773357 != nil:
-    section.add "X-Amz-Target", valid_773357
-  var valid_773358 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773358 = validateParameter(valid_773358, JString, required = false,
+  if valid_601192 != nil:
+    section.add "X-Amz-Target", valid_601192
+  var valid_601193 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601193 = validateParameter(valid_601193, JString, required = false,
                                  default = nil)
-  if valid_773358 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773358
-  var valid_773359 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773359 = validateParameter(valid_773359, JString, required = false,
+  if valid_601193 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601193
+  var valid_601194 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601194 = validateParameter(valid_601194, JString, required = false,
                                  default = nil)
-  if valid_773359 != nil:
-    section.add "X-Amz-Algorithm", valid_773359
-  var valid_773360 = header.getOrDefault("X-Amz-Signature")
-  valid_773360 = validateParameter(valid_773360, JString, required = false,
+  if valid_601194 != nil:
+    section.add "X-Amz-Algorithm", valid_601194
+  var valid_601195 = header.getOrDefault("X-Amz-Signature")
+  valid_601195 = validateParameter(valid_601195, JString, required = false,
                                  default = nil)
-  if valid_773360 != nil:
-    section.add "X-Amz-Signature", valid_773360
-  var valid_773361 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773361 = validateParameter(valid_773361, JString, required = false,
+  if valid_601195 != nil:
+    section.add "X-Amz-Signature", valid_601195
+  var valid_601196 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601196 = validateParameter(valid_601196, JString, required = false,
                                  default = nil)
-  if valid_773361 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773361
-  var valid_773362 = header.getOrDefault("X-Amz-Credential")
-  valid_773362 = validateParameter(valid_773362, JString, required = false,
+  if valid_601196 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601196
+  var valid_601197 = header.getOrDefault("X-Amz-Credential")
+  valid_601197 = validateParameter(valid_601197, JString, required = false,
                                  default = nil)
-  if valid_773362 != nil:
-    section.add "X-Amz-Credential", valid_773362
+  if valid_601197 != nil:
+    section.add "X-Amz-Credential", valid_601197
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1369,41 +1369,41 @@ proc validate_ConfirmPublicVirtualInterface_773353(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_773364: Call_ConfirmPublicVirtualInterface_773352; path: JsonNode;
+proc call*(call_601199: Call_ConfirmPublicVirtualInterface_601187; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Accepts ownership of a public virtual interface created by another AWS account.</p> <p>After the virtual interface owner makes this call, the specified virtual interface is created and made available to handle traffic.</p>
   ## 
-  let valid = call_773364.validator(path, query, header, formData, body)
-  let scheme = call_773364.pickScheme
+  let valid = call_601199.validator(path, query, header, formData, body)
+  let scheme = call_601199.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773364.url(scheme.get, call_773364.host, call_773364.base,
-                         call_773364.route, valid.getOrDefault("path"))
-  result = hook(call_773364, url, valid)
+  let url = call_601199.url(scheme.get, call_601199.host, call_601199.base,
+                         call_601199.route, valid.getOrDefault("path"))
+  result = hook(call_601199, url, valid)
 
-proc call*(call_773365: Call_ConfirmPublicVirtualInterface_773352; body: JsonNode): Recallable =
+proc call*(call_601200: Call_ConfirmPublicVirtualInterface_601187; body: JsonNode): Recallable =
   ## confirmPublicVirtualInterface
   ## <p>Accepts ownership of a public virtual interface created by another AWS account.</p> <p>After the virtual interface owner makes this call, the specified virtual interface is created and made available to handle traffic.</p>
   ##   body: JObject (required)
-  var body_773366 = newJObject()
+  var body_601201 = newJObject()
   if body != nil:
-    body_773366 = body
-  result = call_773365.call(nil, nil, nil, nil, body_773366)
+    body_601201 = body
+  result = call_601200.call(nil, nil, nil, nil, body_601201)
 
-var confirmPublicVirtualInterface* = Call_ConfirmPublicVirtualInterface_773352(
+var confirmPublicVirtualInterface* = Call_ConfirmPublicVirtualInterface_601187(
     name: "confirmPublicVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.ConfirmPublicVirtualInterface",
-    validator: validate_ConfirmPublicVirtualInterface_773353, base: "/",
-    url: url_ConfirmPublicVirtualInterface_773354,
+    validator: validate_ConfirmPublicVirtualInterface_601188, base: "/",
+    url: url_ConfirmPublicVirtualInterface_601189,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ConfirmTransitVirtualInterface_773367 = ref object of OpenApiRestCall_772597
-proc url_ConfirmTransitVirtualInterface_773369(protocol: Scheme; host: string;
+  Call_ConfirmTransitVirtualInterface_601202 = ref object of OpenApiRestCall_600426
+proc url_ConfirmTransitVirtualInterface_601204(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ConfirmTransitVirtualInterface_773368(path: JsonNode;
+proc validate_ConfirmTransitVirtualInterface_601203(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Accepts ownership of a transit virtual interface created by another AWS account.</p> <p> After the owner of the transit virtual interface makes this call, the specified transit virtual interface is created and made available to handle traffic.</p>
   ## 
@@ -1423,48 +1423,48 @@ proc validate_ConfirmTransitVirtualInterface_773368(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773370 = header.getOrDefault("X-Amz-Date")
-  valid_773370 = validateParameter(valid_773370, JString, required = false,
+  var valid_601205 = header.getOrDefault("X-Amz-Date")
+  valid_601205 = validateParameter(valid_601205, JString, required = false,
                                  default = nil)
-  if valid_773370 != nil:
-    section.add "X-Amz-Date", valid_773370
-  var valid_773371 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773371 = validateParameter(valid_773371, JString, required = false,
+  if valid_601205 != nil:
+    section.add "X-Amz-Date", valid_601205
+  var valid_601206 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601206 = validateParameter(valid_601206, JString, required = false,
                                  default = nil)
-  if valid_773371 != nil:
-    section.add "X-Amz-Security-Token", valid_773371
+  if valid_601206 != nil:
+    section.add "X-Amz-Security-Token", valid_601206
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773372 = header.getOrDefault("X-Amz-Target")
-  valid_773372 = validateParameter(valid_773372, JString, required = true, default = newJString(
+  var valid_601207 = header.getOrDefault("X-Amz-Target")
+  valid_601207 = validateParameter(valid_601207, JString, required = true, default = newJString(
       "OvertureService.ConfirmTransitVirtualInterface"))
-  if valid_773372 != nil:
-    section.add "X-Amz-Target", valid_773372
-  var valid_773373 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773373 = validateParameter(valid_773373, JString, required = false,
+  if valid_601207 != nil:
+    section.add "X-Amz-Target", valid_601207
+  var valid_601208 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601208 = validateParameter(valid_601208, JString, required = false,
                                  default = nil)
-  if valid_773373 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773373
-  var valid_773374 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773374 = validateParameter(valid_773374, JString, required = false,
+  if valid_601208 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601208
+  var valid_601209 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601209 = validateParameter(valid_601209, JString, required = false,
                                  default = nil)
-  if valid_773374 != nil:
-    section.add "X-Amz-Algorithm", valid_773374
-  var valid_773375 = header.getOrDefault("X-Amz-Signature")
-  valid_773375 = validateParameter(valid_773375, JString, required = false,
+  if valid_601209 != nil:
+    section.add "X-Amz-Algorithm", valid_601209
+  var valid_601210 = header.getOrDefault("X-Amz-Signature")
+  valid_601210 = validateParameter(valid_601210, JString, required = false,
                                  default = nil)
-  if valid_773375 != nil:
-    section.add "X-Amz-Signature", valid_773375
-  var valid_773376 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773376 = validateParameter(valid_773376, JString, required = false,
+  if valid_601210 != nil:
+    section.add "X-Amz-Signature", valid_601210
+  var valid_601211 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601211 = validateParameter(valid_601211, JString, required = false,
                                  default = nil)
-  if valid_773376 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773376
-  var valid_773377 = header.getOrDefault("X-Amz-Credential")
-  valid_773377 = validateParameter(valid_773377, JString, required = false,
+  if valid_601211 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601211
+  var valid_601212 = header.getOrDefault("X-Amz-Credential")
+  valid_601212 = validateParameter(valid_601212, JString, required = false,
                                  default = nil)
-  if valid_773377 != nil:
-    section.add "X-Amz-Credential", valid_773377
+  if valid_601212 != nil:
+    section.add "X-Amz-Credential", valid_601212
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1475,41 +1475,41 @@ proc validate_ConfirmTransitVirtualInterface_773368(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773379: Call_ConfirmTransitVirtualInterface_773367; path: JsonNode;
+proc call*(call_601214: Call_ConfirmTransitVirtualInterface_601202; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Accepts ownership of a transit virtual interface created by another AWS account.</p> <p> After the owner of the transit virtual interface makes this call, the specified transit virtual interface is created and made available to handle traffic.</p>
   ## 
-  let valid = call_773379.validator(path, query, header, formData, body)
-  let scheme = call_773379.pickScheme
+  let valid = call_601214.validator(path, query, header, formData, body)
+  let scheme = call_601214.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773379.url(scheme.get, call_773379.host, call_773379.base,
-                         call_773379.route, valid.getOrDefault("path"))
-  result = hook(call_773379, url, valid)
+  let url = call_601214.url(scheme.get, call_601214.host, call_601214.base,
+                         call_601214.route, valid.getOrDefault("path"))
+  result = hook(call_601214, url, valid)
 
-proc call*(call_773380: Call_ConfirmTransitVirtualInterface_773367; body: JsonNode): Recallable =
+proc call*(call_601215: Call_ConfirmTransitVirtualInterface_601202; body: JsonNode): Recallable =
   ## confirmTransitVirtualInterface
   ## <p>Accepts ownership of a transit virtual interface created by another AWS account.</p> <p> After the owner of the transit virtual interface makes this call, the specified transit virtual interface is created and made available to handle traffic.</p>
   ##   body: JObject (required)
-  var body_773381 = newJObject()
+  var body_601216 = newJObject()
   if body != nil:
-    body_773381 = body
-  result = call_773380.call(nil, nil, nil, nil, body_773381)
+    body_601216 = body
+  result = call_601215.call(nil, nil, nil, nil, body_601216)
 
-var confirmTransitVirtualInterface* = Call_ConfirmTransitVirtualInterface_773367(
+var confirmTransitVirtualInterface* = Call_ConfirmTransitVirtualInterface_601202(
     name: "confirmTransitVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.ConfirmTransitVirtualInterface",
-    validator: validate_ConfirmTransitVirtualInterface_773368, base: "/",
-    url: url_ConfirmTransitVirtualInterface_773369,
+    validator: validate_ConfirmTransitVirtualInterface_601203, base: "/",
+    url: url_ConfirmTransitVirtualInterface_601204,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateBGPPeer_773382 = ref object of OpenApiRestCall_772597
-proc url_CreateBGPPeer_773384(protocol: Scheme; host: string; base: string;
+  Call_CreateBGPPeer_601217 = ref object of OpenApiRestCall_600426
+proc url_CreateBGPPeer_601219(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateBGPPeer_773383(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateBGPPeer_601218(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a BGP peer on the specified virtual interface.</p> <p>You must create a BGP peer for the corresponding address family (IPv4/IPv6) in order to access AWS resources that also use that address family.</p> <p>If logical redundancy is not supported by the connection, interconnect, or LAG, the BGP peer cannot be in the same address family as an existing BGP peer on the virtual interface.</p> <p>When creating a IPv6 BGP peer, omit the Amazon address and customer address. IPv6 addresses are automatically assigned from the Amazon pool of IPv6 addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public virtual interface, the Autonomous System Number (ASN) must be private or already whitelisted for the virtual interface.</p>
   ## 
@@ -1529,48 +1529,48 @@ proc validate_CreateBGPPeer_773383(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773385 = header.getOrDefault("X-Amz-Date")
-  valid_773385 = validateParameter(valid_773385, JString, required = false,
+  var valid_601220 = header.getOrDefault("X-Amz-Date")
+  valid_601220 = validateParameter(valid_601220, JString, required = false,
                                  default = nil)
-  if valid_773385 != nil:
-    section.add "X-Amz-Date", valid_773385
-  var valid_773386 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773386 = validateParameter(valid_773386, JString, required = false,
+  if valid_601220 != nil:
+    section.add "X-Amz-Date", valid_601220
+  var valid_601221 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601221 = validateParameter(valid_601221, JString, required = false,
                                  default = nil)
-  if valid_773386 != nil:
-    section.add "X-Amz-Security-Token", valid_773386
+  if valid_601221 != nil:
+    section.add "X-Amz-Security-Token", valid_601221
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773387 = header.getOrDefault("X-Amz-Target")
-  valid_773387 = validateParameter(valid_773387, JString, required = true, default = newJString(
+  var valid_601222 = header.getOrDefault("X-Amz-Target")
+  valid_601222 = validateParameter(valid_601222, JString, required = true, default = newJString(
       "OvertureService.CreateBGPPeer"))
-  if valid_773387 != nil:
-    section.add "X-Amz-Target", valid_773387
-  var valid_773388 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773388 = validateParameter(valid_773388, JString, required = false,
+  if valid_601222 != nil:
+    section.add "X-Amz-Target", valid_601222
+  var valid_601223 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601223 = validateParameter(valid_601223, JString, required = false,
                                  default = nil)
-  if valid_773388 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773388
-  var valid_773389 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773389 = validateParameter(valid_773389, JString, required = false,
+  if valid_601223 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601223
+  var valid_601224 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601224 = validateParameter(valid_601224, JString, required = false,
                                  default = nil)
-  if valid_773389 != nil:
-    section.add "X-Amz-Algorithm", valid_773389
-  var valid_773390 = header.getOrDefault("X-Amz-Signature")
-  valid_773390 = validateParameter(valid_773390, JString, required = false,
+  if valid_601224 != nil:
+    section.add "X-Amz-Algorithm", valid_601224
+  var valid_601225 = header.getOrDefault("X-Amz-Signature")
+  valid_601225 = validateParameter(valid_601225, JString, required = false,
                                  default = nil)
-  if valid_773390 != nil:
-    section.add "X-Amz-Signature", valid_773390
-  var valid_773391 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773391 = validateParameter(valid_773391, JString, required = false,
+  if valid_601225 != nil:
+    section.add "X-Amz-Signature", valid_601225
+  var valid_601226 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601226 = validateParameter(valid_601226, JString, required = false,
                                  default = nil)
-  if valid_773391 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773391
-  var valid_773392 = header.getOrDefault("X-Amz-Credential")
-  valid_773392 = validateParameter(valid_773392, JString, required = false,
+  if valid_601226 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601226
+  var valid_601227 = header.getOrDefault("X-Amz-Credential")
+  valid_601227 = validateParameter(valid_601227, JString, required = false,
                                  default = nil)
-  if valid_773392 != nil:
-    section.add "X-Amz-Credential", valid_773392
+  if valid_601227 != nil:
+    section.add "X-Amz-Credential", valid_601227
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1581,39 +1581,39 @@ proc validate_CreateBGPPeer_773383(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_773394: Call_CreateBGPPeer_773382; path: JsonNode; query: JsonNode;
+proc call*(call_601229: Call_CreateBGPPeer_601217; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a BGP peer on the specified virtual interface.</p> <p>You must create a BGP peer for the corresponding address family (IPv4/IPv6) in order to access AWS resources that also use that address family.</p> <p>If logical redundancy is not supported by the connection, interconnect, or LAG, the BGP peer cannot be in the same address family as an existing BGP peer on the virtual interface.</p> <p>When creating a IPv6 BGP peer, omit the Amazon address and customer address. IPv6 addresses are automatically assigned from the Amazon pool of IPv6 addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public virtual interface, the Autonomous System Number (ASN) must be private or already whitelisted for the virtual interface.</p>
   ## 
-  let valid = call_773394.validator(path, query, header, formData, body)
-  let scheme = call_773394.pickScheme
+  let valid = call_601229.validator(path, query, header, formData, body)
+  let scheme = call_601229.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773394.url(scheme.get, call_773394.host, call_773394.base,
-                         call_773394.route, valid.getOrDefault("path"))
-  result = hook(call_773394, url, valid)
+  let url = call_601229.url(scheme.get, call_601229.host, call_601229.base,
+                         call_601229.route, valid.getOrDefault("path"))
+  result = hook(call_601229, url, valid)
 
-proc call*(call_773395: Call_CreateBGPPeer_773382; body: JsonNode): Recallable =
+proc call*(call_601230: Call_CreateBGPPeer_601217; body: JsonNode): Recallable =
   ## createBGPPeer
   ## <p>Creates a BGP peer on the specified virtual interface.</p> <p>You must create a BGP peer for the corresponding address family (IPv4/IPv6) in order to access AWS resources that also use that address family.</p> <p>If logical redundancy is not supported by the connection, interconnect, or LAG, the BGP peer cannot be in the same address family as an existing BGP peer on the virtual interface.</p> <p>When creating a IPv6 BGP peer, omit the Amazon address and customer address. IPv6 addresses are automatically assigned from the Amazon pool of IPv6 addresses; you cannot specify custom IPv6 addresses.</p> <p>For a public virtual interface, the Autonomous System Number (ASN) must be private or already whitelisted for the virtual interface.</p>
   ##   body: JObject (required)
-  var body_773396 = newJObject()
+  var body_601231 = newJObject()
   if body != nil:
-    body_773396 = body
-  result = call_773395.call(nil, nil, nil, nil, body_773396)
+    body_601231 = body
+  result = call_601230.call(nil, nil, nil, nil, body_601231)
 
-var createBGPPeer* = Call_CreateBGPPeer_773382(name: "createBGPPeer",
+var createBGPPeer* = Call_CreateBGPPeer_601217(name: "createBGPPeer",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.CreateBGPPeer",
-    validator: validate_CreateBGPPeer_773383, base: "/", url: url_CreateBGPPeer_773384,
+    validator: validate_CreateBGPPeer_601218, base: "/", url: url_CreateBGPPeer_601219,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateConnection_773397 = ref object of OpenApiRestCall_772597
-proc url_CreateConnection_773399(protocol: Scheme; host: string; base: string;
+  Call_CreateConnection_601232 = ref object of OpenApiRestCall_600426
+proc url_CreateConnection_601234(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateConnection_773398(path: JsonNode; query: JsonNode;
+proc validate_CreateConnection_601233(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates a connection between a customer network and a specific AWS Direct Connect location.</p> <p>A connection links your internal network to an AWS Direct Connect location over a standard Ethernet fiber-optic cable. One end of the cable is connected to your router, the other to an AWS Direct Connect router.</p> <p>To find the locations for your Region, use <a>DescribeLocations</a>.</p> <p>You can automatically add the new connection to a link aggregation group (LAG) by specifying a LAG ID in the request. This ensures that the new connection is allocated on the same AWS Direct Connect endpoint that hosts the specified LAG. If there are no available ports on the endpoint, the request fails and no connection is created.</p>
@@ -1634,48 +1634,48 @@ proc validate_CreateConnection_773398(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773400 = header.getOrDefault("X-Amz-Date")
-  valid_773400 = validateParameter(valid_773400, JString, required = false,
+  var valid_601235 = header.getOrDefault("X-Amz-Date")
+  valid_601235 = validateParameter(valid_601235, JString, required = false,
                                  default = nil)
-  if valid_773400 != nil:
-    section.add "X-Amz-Date", valid_773400
-  var valid_773401 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773401 = validateParameter(valid_773401, JString, required = false,
+  if valid_601235 != nil:
+    section.add "X-Amz-Date", valid_601235
+  var valid_601236 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601236 = validateParameter(valid_601236, JString, required = false,
                                  default = nil)
-  if valid_773401 != nil:
-    section.add "X-Amz-Security-Token", valid_773401
+  if valid_601236 != nil:
+    section.add "X-Amz-Security-Token", valid_601236
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773402 = header.getOrDefault("X-Amz-Target")
-  valid_773402 = validateParameter(valid_773402, JString, required = true, default = newJString(
+  var valid_601237 = header.getOrDefault("X-Amz-Target")
+  valid_601237 = validateParameter(valid_601237, JString, required = true, default = newJString(
       "OvertureService.CreateConnection"))
-  if valid_773402 != nil:
-    section.add "X-Amz-Target", valid_773402
-  var valid_773403 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773403 = validateParameter(valid_773403, JString, required = false,
+  if valid_601237 != nil:
+    section.add "X-Amz-Target", valid_601237
+  var valid_601238 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601238 = validateParameter(valid_601238, JString, required = false,
                                  default = nil)
-  if valid_773403 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773403
-  var valid_773404 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773404 = validateParameter(valid_773404, JString, required = false,
+  if valid_601238 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601238
+  var valid_601239 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601239 = validateParameter(valid_601239, JString, required = false,
                                  default = nil)
-  if valid_773404 != nil:
-    section.add "X-Amz-Algorithm", valid_773404
-  var valid_773405 = header.getOrDefault("X-Amz-Signature")
-  valid_773405 = validateParameter(valid_773405, JString, required = false,
+  if valid_601239 != nil:
+    section.add "X-Amz-Algorithm", valid_601239
+  var valid_601240 = header.getOrDefault("X-Amz-Signature")
+  valid_601240 = validateParameter(valid_601240, JString, required = false,
                                  default = nil)
-  if valid_773405 != nil:
-    section.add "X-Amz-Signature", valid_773405
-  var valid_773406 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773406 = validateParameter(valid_773406, JString, required = false,
+  if valid_601240 != nil:
+    section.add "X-Amz-Signature", valid_601240
+  var valid_601241 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601241 = validateParameter(valid_601241, JString, required = false,
                                  default = nil)
-  if valid_773406 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773406
-  var valid_773407 = header.getOrDefault("X-Amz-Credential")
-  valid_773407 = validateParameter(valid_773407, JString, required = false,
+  if valid_601241 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601241
+  var valid_601242 = header.getOrDefault("X-Amz-Credential")
+  valid_601242 = validateParameter(valid_601242, JString, required = false,
                                  default = nil)
-  if valid_773407 != nil:
-    section.add "X-Amz-Credential", valid_773407
+  if valid_601242 != nil:
+    section.add "X-Amz-Credential", valid_601242
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1686,39 +1686,39 @@ proc validate_CreateConnection_773398(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773409: Call_CreateConnection_773397; path: JsonNode;
+proc call*(call_601244: Call_CreateConnection_601232; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a connection between a customer network and a specific AWS Direct Connect location.</p> <p>A connection links your internal network to an AWS Direct Connect location over a standard Ethernet fiber-optic cable. One end of the cable is connected to your router, the other to an AWS Direct Connect router.</p> <p>To find the locations for your Region, use <a>DescribeLocations</a>.</p> <p>You can automatically add the new connection to a link aggregation group (LAG) by specifying a LAG ID in the request. This ensures that the new connection is allocated on the same AWS Direct Connect endpoint that hosts the specified LAG. If there are no available ports on the endpoint, the request fails and no connection is created.</p>
   ## 
-  let valid = call_773409.validator(path, query, header, formData, body)
-  let scheme = call_773409.pickScheme
+  let valid = call_601244.validator(path, query, header, formData, body)
+  let scheme = call_601244.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773409.url(scheme.get, call_773409.host, call_773409.base,
-                         call_773409.route, valid.getOrDefault("path"))
-  result = hook(call_773409, url, valid)
+  let url = call_601244.url(scheme.get, call_601244.host, call_601244.base,
+                         call_601244.route, valid.getOrDefault("path"))
+  result = hook(call_601244, url, valid)
 
-proc call*(call_773410: Call_CreateConnection_773397; body: JsonNode): Recallable =
+proc call*(call_601245: Call_CreateConnection_601232; body: JsonNode): Recallable =
   ## createConnection
   ## <p>Creates a connection between a customer network and a specific AWS Direct Connect location.</p> <p>A connection links your internal network to an AWS Direct Connect location over a standard Ethernet fiber-optic cable. One end of the cable is connected to your router, the other to an AWS Direct Connect router.</p> <p>To find the locations for your Region, use <a>DescribeLocations</a>.</p> <p>You can automatically add the new connection to a link aggregation group (LAG) by specifying a LAG ID in the request. This ensures that the new connection is allocated on the same AWS Direct Connect endpoint that hosts the specified LAG. If there are no available ports on the endpoint, the request fails and no connection is created.</p>
   ##   body: JObject (required)
-  var body_773411 = newJObject()
+  var body_601246 = newJObject()
   if body != nil:
-    body_773411 = body
-  result = call_773410.call(nil, nil, nil, nil, body_773411)
+    body_601246 = body
+  result = call_601245.call(nil, nil, nil, nil, body_601246)
 
-var createConnection* = Call_CreateConnection_773397(name: "createConnection",
+var createConnection* = Call_CreateConnection_601232(name: "createConnection",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.CreateConnection",
-    validator: validate_CreateConnection_773398, base: "/",
-    url: url_CreateConnection_773399, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateConnection_601233, base: "/",
+    url: url_CreateConnection_601234, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDirectConnectGateway_773412 = ref object of OpenApiRestCall_772597
-proc url_CreateDirectConnectGateway_773414(protocol: Scheme; host: string;
+  Call_CreateDirectConnectGateway_601247 = ref object of OpenApiRestCall_600426
+proc url_CreateDirectConnectGateway_601249(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateDirectConnectGateway_773413(path: JsonNode; query: JsonNode;
+proc validate_CreateDirectConnectGateway_601248(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a Direct Connect gateway, which is an intermediate object that enables you to connect a set of virtual interfaces and virtual private gateways. A Direct Connect gateway is global and visible in any AWS Region after it is created. The virtual interfaces and virtual private gateways that are connected through a Direct Connect gateway can be in different AWS Regions. This enables you to connect to a VPC in any Region, regardless of the Region in which the virtual interfaces are located, and pass traffic between them.
   ## 
@@ -1738,48 +1738,48 @@ proc validate_CreateDirectConnectGateway_773413(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773415 = header.getOrDefault("X-Amz-Date")
-  valid_773415 = validateParameter(valid_773415, JString, required = false,
+  var valid_601250 = header.getOrDefault("X-Amz-Date")
+  valid_601250 = validateParameter(valid_601250, JString, required = false,
                                  default = nil)
-  if valid_773415 != nil:
-    section.add "X-Amz-Date", valid_773415
-  var valid_773416 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773416 = validateParameter(valid_773416, JString, required = false,
+  if valid_601250 != nil:
+    section.add "X-Amz-Date", valid_601250
+  var valid_601251 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601251 = validateParameter(valid_601251, JString, required = false,
                                  default = nil)
-  if valid_773416 != nil:
-    section.add "X-Amz-Security-Token", valid_773416
+  if valid_601251 != nil:
+    section.add "X-Amz-Security-Token", valid_601251
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773417 = header.getOrDefault("X-Amz-Target")
-  valid_773417 = validateParameter(valid_773417, JString, required = true, default = newJString(
+  var valid_601252 = header.getOrDefault("X-Amz-Target")
+  valid_601252 = validateParameter(valid_601252, JString, required = true, default = newJString(
       "OvertureService.CreateDirectConnectGateway"))
-  if valid_773417 != nil:
-    section.add "X-Amz-Target", valid_773417
-  var valid_773418 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773418 = validateParameter(valid_773418, JString, required = false,
+  if valid_601252 != nil:
+    section.add "X-Amz-Target", valid_601252
+  var valid_601253 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601253 = validateParameter(valid_601253, JString, required = false,
                                  default = nil)
-  if valid_773418 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773418
-  var valid_773419 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773419 = validateParameter(valid_773419, JString, required = false,
+  if valid_601253 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601253
+  var valid_601254 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601254 = validateParameter(valid_601254, JString, required = false,
                                  default = nil)
-  if valid_773419 != nil:
-    section.add "X-Amz-Algorithm", valid_773419
-  var valid_773420 = header.getOrDefault("X-Amz-Signature")
-  valid_773420 = validateParameter(valid_773420, JString, required = false,
+  if valid_601254 != nil:
+    section.add "X-Amz-Algorithm", valid_601254
+  var valid_601255 = header.getOrDefault("X-Amz-Signature")
+  valid_601255 = validateParameter(valid_601255, JString, required = false,
                                  default = nil)
-  if valid_773420 != nil:
-    section.add "X-Amz-Signature", valid_773420
-  var valid_773421 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773421 = validateParameter(valid_773421, JString, required = false,
+  if valid_601255 != nil:
+    section.add "X-Amz-Signature", valid_601255
+  var valid_601256 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601256 = validateParameter(valid_601256, JString, required = false,
                                  default = nil)
-  if valid_773421 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773421
-  var valid_773422 = header.getOrDefault("X-Amz-Credential")
-  valid_773422 = validateParameter(valid_773422, JString, required = false,
+  if valid_601256 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601256
+  var valid_601257 = header.getOrDefault("X-Amz-Credential")
+  valid_601257 = validateParameter(valid_601257, JString, required = false,
                                  default = nil)
-  if valid_773422 != nil:
-    section.add "X-Amz-Credential", valid_773422
+  if valid_601257 != nil:
+    section.add "X-Amz-Credential", valid_601257
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1790,41 +1790,41 @@ proc validate_CreateDirectConnectGateway_773413(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773424: Call_CreateDirectConnectGateway_773412; path: JsonNode;
+proc call*(call_601259: Call_CreateDirectConnectGateway_601247; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a Direct Connect gateway, which is an intermediate object that enables you to connect a set of virtual interfaces and virtual private gateways. A Direct Connect gateway is global and visible in any AWS Region after it is created. The virtual interfaces and virtual private gateways that are connected through a Direct Connect gateway can be in different AWS Regions. This enables you to connect to a VPC in any Region, regardless of the Region in which the virtual interfaces are located, and pass traffic between them.
   ## 
-  let valid = call_773424.validator(path, query, header, formData, body)
-  let scheme = call_773424.pickScheme
+  let valid = call_601259.validator(path, query, header, formData, body)
+  let scheme = call_601259.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773424.url(scheme.get, call_773424.host, call_773424.base,
-                         call_773424.route, valid.getOrDefault("path"))
-  result = hook(call_773424, url, valid)
+  let url = call_601259.url(scheme.get, call_601259.host, call_601259.base,
+                         call_601259.route, valid.getOrDefault("path"))
+  result = hook(call_601259, url, valid)
 
-proc call*(call_773425: Call_CreateDirectConnectGateway_773412; body: JsonNode): Recallable =
+proc call*(call_601260: Call_CreateDirectConnectGateway_601247; body: JsonNode): Recallable =
   ## createDirectConnectGateway
   ## Creates a Direct Connect gateway, which is an intermediate object that enables you to connect a set of virtual interfaces and virtual private gateways. A Direct Connect gateway is global and visible in any AWS Region after it is created. The virtual interfaces and virtual private gateways that are connected through a Direct Connect gateway can be in different AWS Regions. This enables you to connect to a VPC in any Region, regardless of the Region in which the virtual interfaces are located, and pass traffic between them.
   ##   body: JObject (required)
-  var body_773426 = newJObject()
+  var body_601261 = newJObject()
   if body != nil:
-    body_773426 = body
-  result = call_773425.call(nil, nil, nil, nil, body_773426)
+    body_601261 = body
+  result = call_601260.call(nil, nil, nil, nil, body_601261)
 
-var createDirectConnectGateway* = Call_CreateDirectConnectGateway_773412(
+var createDirectConnectGateway* = Call_CreateDirectConnectGateway_601247(
     name: "createDirectConnectGateway", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.CreateDirectConnectGateway",
-    validator: validate_CreateDirectConnectGateway_773413, base: "/",
-    url: url_CreateDirectConnectGateway_773414,
+    validator: validate_CreateDirectConnectGateway_601248, base: "/",
+    url: url_CreateDirectConnectGateway_601249,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDirectConnectGatewayAssociation_773427 = ref object of OpenApiRestCall_772597
-proc url_CreateDirectConnectGatewayAssociation_773429(protocol: Scheme;
+  Call_CreateDirectConnectGatewayAssociation_601262 = ref object of OpenApiRestCall_600426
+proc url_CreateDirectConnectGatewayAssociation_601264(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateDirectConnectGatewayAssociation_773428(path: JsonNode;
+proc validate_CreateDirectConnectGatewayAssociation_601263(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates an association between a Direct Connect gateway and a virtual private gateway. The virtual private gateway must be attached to a VPC and must not be associated with another Direct Connect gateway.
   ## 
@@ -1844,48 +1844,48 @@ proc validate_CreateDirectConnectGatewayAssociation_773428(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773430 = header.getOrDefault("X-Amz-Date")
-  valid_773430 = validateParameter(valid_773430, JString, required = false,
+  var valid_601265 = header.getOrDefault("X-Amz-Date")
+  valid_601265 = validateParameter(valid_601265, JString, required = false,
                                  default = nil)
-  if valid_773430 != nil:
-    section.add "X-Amz-Date", valid_773430
-  var valid_773431 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773431 = validateParameter(valid_773431, JString, required = false,
+  if valid_601265 != nil:
+    section.add "X-Amz-Date", valid_601265
+  var valid_601266 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601266 = validateParameter(valid_601266, JString, required = false,
                                  default = nil)
-  if valid_773431 != nil:
-    section.add "X-Amz-Security-Token", valid_773431
+  if valid_601266 != nil:
+    section.add "X-Amz-Security-Token", valid_601266
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773432 = header.getOrDefault("X-Amz-Target")
-  valid_773432 = validateParameter(valid_773432, JString, required = true, default = newJString(
+  var valid_601267 = header.getOrDefault("X-Amz-Target")
+  valid_601267 = validateParameter(valid_601267, JString, required = true, default = newJString(
       "OvertureService.CreateDirectConnectGatewayAssociation"))
-  if valid_773432 != nil:
-    section.add "X-Amz-Target", valid_773432
-  var valid_773433 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773433 = validateParameter(valid_773433, JString, required = false,
+  if valid_601267 != nil:
+    section.add "X-Amz-Target", valid_601267
+  var valid_601268 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601268 = validateParameter(valid_601268, JString, required = false,
                                  default = nil)
-  if valid_773433 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773433
-  var valid_773434 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773434 = validateParameter(valid_773434, JString, required = false,
+  if valid_601268 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601268
+  var valid_601269 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601269 = validateParameter(valid_601269, JString, required = false,
                                  default = nil)
-  if valid_773434 != nil:
-    section.add "X-Amz-Algorithm", valid_773434
-  var valid_773435 = header.getOrDefault("X-Amz-Signature")
-  valid_773435 = validateParameter(valid_773435, JString, required = false,
+  if valid_601269 != nil:
+    section.add "X-Amz-Algorithm", valid_601269
+  var valid_601270 = header.getOrDefault("X-Amz-Signature")
+  valid_601270 = validateParameter(valid_601270, JString, required = false,
                                  default = nil)
-  if valid_773435 != nil:
-    section.add "X-Amz-Signature", valid_773435
-  var valid_773436 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773436 = validateParameter(valid_773436, JString, required = false,
+  if valid_601270 != nil:
+    section.add "X-Amz-Signature", valid_601270
+  var valid_601271 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601271 = validateParameter(valid_601271, JString, required = false,
                                  default = nil)
-  if valid_773436 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773436
-  var valid_773437 = header.getOrDefault("X-Amz-Credential")
-  valid_773437 = validateParameter(valid_773437, JString, required = false,
+  if valid_601271 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601271
+  var valid_601272 = header.getOrDefault("X-Amz-Credential")
+  valid_601272 = validateParameter(valid_601272, JString, required = false,
                                  default = nil)
-  if valid_773437 != nil:
-    section.add "X-Amz-Credential", valid_773437
+  if valid_601272 != nil:
+    section.add "X-Amz-Credential", valid_601272
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1896,42 +1896,42 @@ proc validate_CreateDirectConnectGatewayAssociation_773428(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773439: Call_CreateDirectConnectGatewayAssociation_773427;
+proc call*(call_601274: Call_CreateDirectConnectGatewayAssociation_601262;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Creates an association between a Direct Connect gateway and a virtual private gateway. The virtual private gateway must be attached to a VPC and must not be associated with another Direct Connect gateway.
   ## 
-  let valid = call_773439.validator(path, query, header, formData, body)
-  let scheme = call_773439.pickScheme
+  let valid = call_601274.validator(path, query, header, formData, body)
+  let scheme = call_601274.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773439.url(scheme.get, call_773439.host, call_773439.base,
-                         call_773439.route, valid.getOrDefault("path"))
-  result = hook(call_773439, url, valid)
+  let url = call_601274.url(scheme.get, call_601274.host, call_601274.base,
+                         call_601274.route, valid.getOrDefault("path"))
+  result = hook(call_601274, url, valid)
 
-proc call*(call_773440: Call_CreateDirectConnectGatewayAssociation_773427;
+proc call*(call_601275: Call_CreateDirectConnectGatewayAssociation_601262;
           body: JsonNode): Recallable =
   ## createDirectConnectGatewayAssociation
   ## Creates an association between a Direct Connect gateway and a virtual private gateway. The virtual private gateway must be attached to a VPC and must not be associated with another Direct Connect gateway.
   ##   body: JObject (required)
-  var body_773441 = newJObject()
+  var body_601276 = newJObject()
   if body != nil:
-    body_773441 = body
-  result = call_773440.call(nil, nil, nil, nil, body_773441)
+    body_601276 = body
+  result = call_601275.call(nil, nil, nil, nil, body_601276)
 
-var createDirectConnectGatewayAssociation* = Call_CreateDirectConnectGatewayAssociation_773427(
+var createDirectConnectGatewayAssociation* = Call_CreateDirectConnectGatewayAssociation_601262(
     name: "createDirectConnectGatewayAssociation", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.CreateDirectConnectGatewayAssociation",
-    validator: validate_CreateDirectConnectGatewayAssociation_773428, base: "/",
-    url: url_CreateDirectConnectGatewayAssociation_773429,
+    validator: validate_CreateDirectConnectGatewayAssociation_601263, base: "/",
+    url: url_CreateDirectConnectGatewayAssociation_601264,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDirectConnectGatewayAssociationProposal_773442 = ref object of OpenApiRestCall_772597
-proc url_CreateDirectConnectGatewayAssociationProposal_773444(protocol: Scheme;
+  Call_CreateDirectConnectGatewayAssociationProposal_601277 = ref object of OpenApiRestCall_600426
+proc url_CreateDirectConnectGatewayAssociationProposal_601279(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateDirectConnectGatewayAssociationProposal_773443(
+proc validate_CreateDirectConnectGatewayAssociationProposal_601278(
     path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
     body: JsonNode): JsonNode =
   ## <p>Creates a proposal to associate the specified virtual private gateway or transit gateway with the specified Direct Connect gateway.</p> <p>You can only associate a Direct Connect gateway and virtual private gateway or transit gateway when the account that owns the Direct Connect gateway and the account that owns the virtual private gateway or transit gateway have the same AWS Payer ID.</p>
@@ -1952,48 +1952,48 @@ proc validate_CreateDirectConnectGatewayAssociationProposal_773443(
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773445 = header.getOrDefault("X-Amz-Date")
-  valid_773445 = validateParameter(valid_773445, JString, required = false,
+  var valid_601280 = header.getOrDefault("X-Amz-Date")
+  valid_601280 = validateParameter(valid_601280, JString, required = false,
                                  default = nil)
-  if valid_773445 != nil:
-    section.add "X-Amz-Date", valid_773445
-  var valid_773446 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773446 = validateParameter(valid_773446, JString, required = false,
+  if valid_601280 != nil:
+    section.add "X-Amz-Date", valid_601280
+  var valid_601281 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601281 = validateParameter(valid_601281, JString, required = false,
                                  default = nil)
-  if valid_773446 != nil:
-    section.add "X-Amz-Security-Token", valid_773446
+  if valid_601281 != nil:
+    section.add "X-Amz-Security-Token", valid_601281
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773447 = header.getOrDefault("X-Amz-Target")
-  valid_773447 = validateParameter(valid_773447, JString, required = true, default = newJString(
+  var valid_601282 = header.getOrDefault("X-Amz-Target")
+  valid_601282 = validateParameter(valid_601282, JString, required = true, default = newJString(
       "OvertureService.CreateDirectConnectGatewayAssociationProposal"))
-  if valid_773447 != nil:
-    section.add "X-Amz-Target", valid_773447
-  var valid_773448 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773448 = validateParameter(valid_773448, JString, required = false,
+  if valid_601282 != nil:
+    section.add "X-Amz-Target", valid_601282
+  var valid_601283 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601283 = validateParameter(valid_601283, JString, required = false,
                                  default = nil)
-  if valid_773448 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773448
-  var valid_773449 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773449 = validateParameter(valid_773449, JString, required = false,
+  if valid_601283 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601283
+  var valid_601284 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601284 = validateParameter(valid_601284, JString, required = false,
                                  default = nil)
-  if valid_773449 != nil:
-    section.add "X-Amz-Algorithm", valid_773449
-  var valid_773450 = header.getOrDefault("X-Amz-Signature")
-  valid_773450 = validateParameter(valid_773450, JString, required = false,
+  if valid_601284 != nil:
+    section.add "X-Amz-Algorithm", valid_601284
+  var valid_601285 = header.getOrDefault("X-Amz-Signature")
+  valid_601285 = validateParameter(valid_601285, JString, required = false,
                                  default = nil)
-  if valid_773450 != nil:
-    section.add "X-Amz-Signature", valid_773450
-  var valid_773451 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773451 = validateParameter(valid_773451, JString, required = false,
+  if valid_601285 != nil:
+    section.add "X-Amz-Signature", valid_601285
+  var valid_601286 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601286 = validateParameter(valid_601286, JString, required = false,
                                  default = nil)
-  if valid_773451 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773451
-  var valid_773452 = header.getOrDefault("X-Amz-Credential")
-  valid_773452 = validateParameter(valid_773452, JString, required = false,
+  if valid_601286 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601286
+  var valid_601287 = header.getOrDefault("X-Amz-Credential")
+  valid_601287 = validateParameter(valid_601287, JString, required = false,
                                  default = nil)
-  if valid_773452 != nil:
-    section.add "X-Amz-Credential", valid_773452
+  if valid_601287 != nil:
+    section.add "X-Amz-Credential", valid_601287
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2004,42 +2004,42 @@ proc validate_CreateDirectConnectGatewayAssociationProposal_773443(
   if body != nil:
     result.add "body", body
 
-proc call*(call_773454: Call_CreateDirectConnectGatewayAssociationProposal_773442;
+proc call*(call_601289: Call_CreateDirectConnectGatewayAssociationProposal_601277;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Creates a proposal to associate the specified virtual private gateway or transit gateway with the specified Direct Connect gateway.</p> <p>You can only associate a Direct Connect gateway and virtual private gateway or transit gateway when the account that owns the Direct Connect gateway and the account that owns the virtual private gateway or transit gateway have the same AWS Payer ID.</p>
   ## 
-  let valid = call_773454.validator(path, query, header, formData, body)
-  let scheme = call_773454.pickScheme
+  let valid = call_601289.validator(path, query, header, formData, body)
+  let scheme = call_601289.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773454.url(scheme.get, call_773454.host, call_773454.base,
-                         call_773454.route, valid.getOrDefault("path"))
-  result = hook(call_773454, url, valid)
+  let url = call_601289.url(scheme.get, call_601289.host, call_601289.base,
+                         call_601289.route, valid.getOrDefault("path"))
+  result = hook(call_601289, url, valid)
 
-proc call*(call_773455: Call_CreateDirectConnectGatewayAssociationProposal_773442;
+proc call*(call_601290: Call_CreateDirectConnectGatewayAssociationProposal_601277;
           body: JsonNode): Recallable =
   ## createDirectConnectGatewayAssociationProposal
   ## <p>Creates a proposal to associate the specified virtual private gateway or transit gateway with the specified Direct Connect gateway.</p> <p>You can only associate a Direct Connect gateway and virtual private gateway or transit gateway when the account that owns the Direct Connect gateway and the account that owns the virtual private gateway or transit gateway have the same AWS Payer ID.</p>
   ##   body: JObject (required)
-  var body_773456 = newJObject()
+  var body_601291 = newJObject()
   if body != nil:
-    body_773456 = body
-  result = call_773455.call(nil, nil, nil, nil, body_773456)
+    body_601291 = body
+  result = call_601290.call(nil, nil, nil, nil, body_601291)
 
-var createDirectConnectGatewayAssociationProposal* = Call_CreateDirectConnectGatewayAssociationProposal_773442(
+var createDirectConnectGatewayAssociationProposal* = Call_CreateDirectConnectGatewayAssociationProposal_601277(
     name: "createDirectConnectGatewayAssociationProposal",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.CreateDirectConnectGatewayAssociationProposal",
-    validator: validate_CreateDirectConnectGatewayAssociationProposal_773443,
-    base: "/", url: url_CreateDirectConnectGatewayAssociationProposal_773444,
+    validator: validate_CreateDirectConnectGatewayAssociationProposal_601278,
+    base: "/", url: url_CreateDirectConnectGatewayAssociationProposal_601279,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateInterconnect_773457 = ref object of OpenApiRestCall_772597
-proc url_CreateInterconnect_773459(protocol: Scheme; host: string; base: string;
+  Call_CreateInterconnect_601292 = ref object of OpenApiRestCall_600426
+proc url_CreateInterconnect_601294(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateInterconnect_773458(path: JsonNode; query: JsonNode;
+proc validate_CreateInterconnect_601293(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Creates an interconnect between an AWS Direct Connect Partner's network and a specific AWS Direct Connect location.</p> <p>An interconnect is a connection that is capable of hosting other connections. The AWS Direct Connect partner can use an interconnect to provide AWS Direct Connect hosted connections to customers through their own network services. Like a standard connection, an interconnect links the partner's network to an AWS Direct Connect location over a standard Ethernet fiber-optic cable. One end is connected to the partner's router, the other to an AWS Direct Connect router.</p> <p>You can automatically add the new interconnect to a link aggregation group (LAG) by specifying a LAG ID in the request. This ensures that the new interconnect is allocated on the same AWS Direct Connect endpoint that hosts the specified LAG. If there are no available ports on the endpoint, the request fails and no interconnect is created.</p> <p>For each end customer, the AWS Direct Connect Partner provisions a connection on their interconnect by calling <a>AllocateHostedConnection</a>. The end customer can then connect to AWS resources by creating a virtual interface on their connection, using the VLAN assigned to them by the AWS Direct Connect Partner.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
@@ -2060,48 +2060,48 @@ proc validate_CreateInterconnect_773458(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773460 = header.getOrDefault("X-Amz-Date")
-  valid_773460 = validateParameter(valid_773460, JString, required = false,
+  var valid_601295 = header.getOrDefault("X-Amz-Date")
+  valid_601295 = validateParameter(valid_601295, JString, required = false,
                                  default = nil)
-  if valid_773460 != nil:
-    section.add "X-Amz-Date", valid_773460
-  var valid_773461 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773461 = validateParameter(valid_773461, JString, required = false,
+  if valid_601295 != nil:
+    section.add "X-Amz-Date", valid_601295
+  var valid_601296 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601296 = validateParameter(valid_601296, JString, required = false,
                                  default = nil)
-  if valid_773461 != nil:
-    section.add "X-Amz-Security-Token", valid_773461
+  if valid_601296 != nil:
+    section.add "X-Amz-Security-Token", valid_601296
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773462 = header.getOrDefault("X-Amz-Target")
-  valid_773462 = validateParameter(valid_773462, JString, required = true, default = newJString(
+  var valid_601297 = header.getOrDefault("X-Amz-Target")
+  valid_601297 = validateParameter(valid_601297, JString, required = true, default = newJString(
       "OvertureService.CreateInterconnect"))
-  if valid_773462 != nil:
-    section.add "X-Amz-Target", valid_773462
-  var valid_773463 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773463 = validateParameter(valid_773463, JString, required = false,
+  if valid_601297 != nil:
+    section.add "X-Amz-Target", valid_601297
+  var valid_601298 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601298 = validateParameter(valid_601298, JString, required = false,
                                  default = nil)
-  if valid_773463 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773463
-  var valid_773464 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773464 = validateParameter(valid_773464, JString, required = false,
+  if valid_601298 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601298
+  var valid_601299 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601299 = validateParameter(valid_601299, JString, required = false,
                                  default = nil)
-  if valid_773464 != nil:
-    section.add "X-Amz-Algorithm", valid_773464
-  var valid_773465 = header.getOrDefault("X-Amz-Signature")
-  valid_773465 = validateParameter(valid_773465, JString, required = false,
+  if valid_601299 != nil:
+    section.add "X-Amz-Algorithm", valid_601299
+  var valid_601300 = header.getOrDefault("X-Amz-Signature")
+  valid_601300 = validateParameter(valid_601300, JString, required = false,
                                  default = nil)
-  if valid_773465 != nil:
-    section.add "X-Amz-Signature", valid_773465
-  var valid_773466 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773466 = validateParameter(valid_773466, JString, required = false,
+  if valid_601300 != nil:
+    section.add "X-Amz-Signature", valid_601300
+  var valid_601301 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601301 = validateParameter(valid_601301, JString, required = false,
                                  default = nil)
-  if valid_773466 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773466
-  var valid_773467 = header.getOrDefault("X-Amz-Credential")
-  valid_773467 = validateParameter(valid_773467, JString, required = false,
+  if valid_601301 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601301
+  var valid_601302 = header.getOrDefault("X-Amz-Credential")
+  valid_601302 = validateParameter(valid_601302, JString, required = false,
                                  default = nil)
-  if valid_773467 != nil:
-    section.add "X-Amz-Credential", valid_773467
+  if valid_601302 != nil:
+    section.add "X-Amz-Credential", valid_601302
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2112,40 +2112,40 @@ proc validate_CreateInterconnect_773458(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773469: Call_CreateInterconnect_773457; path: JsonNode;
+proc call*(call_601304: Call_CreateInterconnect_601292; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an interconnect between an AWS Direct Connect Partner's network and a specific AWS Direct Connect location.</p> <p>An interconnect is a connection that is capable of hosting other connections. The AWS Direct Connect partner can use an interconnect to provide AWS Direct Connect hosted connections to customers through their own network services. Like a standard connection, an interconnect links the partner's network to an AWS Direct Connect location over a standard Ethernet fiber-optic cable. One end is connected to the partner's router, the other to an AWS Direct Connect router.</p> <p>You can automatically add the new interconnect to a link aggregation group (LAG) by specifying a LAG ID in the request. This ensures that the new interconnect is allocated on the same AWS Direct Connect endpoint that hosts the specified LAG. If there are no available ports on the endpoint, the request fails and no interconnect is created.</p> <p>For each end customer, the AWS Direct Connect Partner provisions a connection on their interconnect by calling <a>AllocateHostedConnection</a>. The end customer can then connect to AWS resources by creating a virtual interface on their connection, using the VLAN assigned to them by the AWS Direct Connect Partner.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
-  let valid = call_773469.validator(path, query, header, formData, body)
-  let scheme = call_773469.pickScheme
+  let valid = call_601304.validator(path, query, header, formData, body)
+  let scheme = call_601304.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773469.url(scheme.get, call_773469.host, call_773469.base,
-                         call_773469.route, valid.getOrDefault("path"))
-  result = hook(call_773469, url, valid)
+  let url = call_601304.url(scheme.get, call_601304.host, call_601304.base,
+                         call_601304.route, valid.getOrDefault("path"))
+  result = hook(call_601304, url, valid)
 
-proc call*(call_773470: Call_CreateInterconnect_773457; body: JsonNode): Recallable =
+proc call*(call_601305: Call_CreateInterconnect_601292; body: JsonNode): Recallable =
   ## createInterconnect
   ## <p>Creates an interconnect between an AWS Direct Connect Partner's network and a specific AWS Direct Connect location.</p> <p>An interconnect is a connection that is capable of hosting other connections. The AWS Direct Connect partner can use an interconnect to provide AWS Direct Connect hosted connections to customers through their own network services. Like a standard connection, an interconnect links the partner's network to an AWS Direct Connect location over a standard Ethernet fiber-optic cable. One end is connected to the partner's router, the other to an AWS Direct Connect router.</p> <p>You can automatically add the new interconnect to a link aggregation group (LAG) by specifying a LAG ID in the request. This ensures that the new interconnect is allocated on the same AWS Direct Connect endpoint that hosts the specified LAG. If there are no available ports on the endpoint, the request fails and no interconnect is created.</p> <p>For each end customer, the AWS Direct Connect Partner provisions a connection on their interconnect by calling <a>AllocateHostedConnection</a>. The end customer can then connect to AWS resources by creating a virtual interface on their connection, using the VLAN assigned to them by the AWS Direct Connect Partner.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ##   body: JObject (required)
-  var body_773471 = newJObject()
+  var body_601306 = newJObject()
   if body != nil:
-    body_773471 = body
-  result = call_773470.call(nil, nil, nil, nil, body_773471)
+    body_601306 = body
+  result = call_601305.call(nil, nil, nil, nil, body_601306)
 
-var createInterconnect* = Call_CreateInterconnect_773457(
+var createInterconnect* = Call_CreateInterconnect_601292(
     name: "createInterconnect", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.CreateInterconnect",
-    validator: validate_CreateInterconnect_773458, base: "/",
-    url: url_CreateInterconnect_773459, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateInterconnect_601293, base: "/",
+    url: url_CreateInterconnect_601294, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateLag_773472 = ref object of OpenApiRestCall_772597
-proc url_CreateLag_773474(protocol: Scheme; host: string; base: string; route: string;
+  Call_CreateLag_601307 = ref object of OpenApiRestCall_600426
+proc url_CreateLag_601309(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateLag_773473(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateLag_601308(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a link aggregation group (LAG) with the specified number of bundled physical connections between the customer network and a specific AWS Direct Connect location. A LAG is a logical interface that uses the Link Aggregation Control Protocol (LACP) to aggregate multiple interfaces, enabling you to treat them as a single interface.</p> <p>All connections in a LAG must use the same bandwidth and must terminate at the same AWS Direct Connect endpoint.</p> <p>You can have up to 10 connections per LAG. Regardless of this limit, if you request more connections for the LAG than AWS Direct Connect can allocate on a single endpoint, no LAG is created.</p> <p>You can specify an existing physical connection or interconnect to include in the LAG (which counts towards the total number of connections). Doing so interrupts the current physical connection or hosted connections, and re-establishes them as a member of the LAG. The LAG will be created on the same AWS Direct Connect endpoint to which the connection terminates. Any virtual interfaces associated with the connection are automatically disassociated and re-associated with the LAG. The connection ID does not change.</p> <p>If the AWS account used to create a LAG is a registered AWS Direct Connect Partner, the LAG is automatically enabled to host sub-connections. For a LAG owned by a partner, any associated virtual interfaces cannot be directly configured.</p>
   ## 
@@ -2165,48 +2165,48 @@ proc validate_CreateLag_773473(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773475 = header.getOrDefault("X-Amz-Date")
-  valid_773475 = validateParameter(valid_773475, JString, required = false,
+  var valid_601310 = header.getOrDefault("X-Amz-Date")
+  valid_601310 = validateParameter(valid_601310, JString, required = false,
                                  default = nil)
-  if valid_773475 != nil:
-    section.add "X-Amz-Date", valid_773475
-  var valid_773476 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773476 = validateParameter(valid_773476, JString, required = false,
+  if valid_601310 != nil:
+    section.add "X-Amz-Date", valid_601310
+  var valid_601311 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601311 = validateParameter(valid_601311, JString, required = false,
                                  default = nil)
-  if valid_773476 != nil:
-    section.add "X-Amz-Security-Token", valid_773476
+  if valid_601311 != nil:
+    section.add "X-Amz-Security-Token", valid_601311
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773477 = header.getOrDefault("X-Amz-Target")
-  valid_773477 = validateParameter(valid_773477, JString, required = true, default = newJString(
+  var valid_601312 = header.getOrDefault("X-Amz-Target")
+  valid_601312 = validateParameter(valid_601312, JString, required = true, default = newJString(
       "OvertureService.CreateLag"))
-  if valid_773477 != nil:
-    section.add "X-Amz-Target", valid_773477
-  var valid_773478 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773478 = validateParameter(valid_773478, JString, required = false,
+  if valid_601312 != nil:
+    section.add "X-Amz-Target", valid_601312
+  var valid_601313 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601313 = validateParameter(valid_601313, JString, required = false,
                                  default = nil)
-  if valid_773478 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773478
-  var valid_773479 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773479 = validateParameter(valid_773479, JString, required = false,
+  if valid_601313 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601313
+  var valid_601314 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601314 = validateParameter(valid_601314, JString, required = false,
                                  default = nil)
-  if valid_773479 != nil:
-    section.add "X-Amz-Algorithm", valid_773479
-  var valid_773480 = header.getOrDefault("X-Amz-Signature")
-  valid_773480 = validateParameter(valid_773480, JString, required = false,
+  if valid_601314 != nil:
+    section.add "X-Amz-Algorithm", valid_601314
+  var valid_601315 = header.getOrDefault("X-Amz-Signature")
+  valid_601315 = validateParameter(valid_601315, JString, required = false,
                                  default = nil)
-  if valid_773480 != nil:
-    section.add "X-Amz-Signature", valid_773480
-  var valid_773481 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773481 = validateParameter(valid_773481, JString, required = false,
+  if valid_601315 != nil:
+    section.add "X-Amz-Signature", valid_601315
+  var valid_601316 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601316 = validateParameter(valid_601316, JString, required = false,
                                  default = nil)
-  if valid_773481 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773481
-  var valid_773482 = header.getOrDefault("X-Amz-Credential")
-  valid_773482 = validateParameter(valid_773482, JString, required = false,
+  if valid_601316 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601316
+  var valid_601317 = header.getOrDefault("X-Amz-Credential")
+  valid_601317 = validateParameter(valid_601317, JString, required = false,
                                  default = nil)
-  if valid_773482 != nil:
-    section.add "X-Amz-Credential", valid_773482
+  if valid_601317 != nil:
+    section.add "X-Amz-Credential", valid_601317
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2217,39 +2217,39 @@ proc validate_CreateLag_773473(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_773484: Call_CreateLag_773472; path: JsonNode; query: JsonNode;
+proc call*(call_601319: Call_CreateLag_601307; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a link aggregation group (LAG) with the specified number of bundled physical connections between the customer network and a specific AWS Direct Connect location. A LAG is a logical interface that uses the Link Aggregation Control Protocol (LACP) to aggregate multiple interfaces, enabling you to treat them as a single interface.</p> <p>All connections in a LAG must use the same bandwidth and must terminate at the same AWS Direct Connect endpoint.</p> <p>You can have up to 10 connections per LAG. Regardless of this limit, if you request more connections for the LAG than AWS Direct Connect can allocate on a single endpoint, no LAG is created.</p> <p>You can specify an existing physical connection or interconnect to include in the LAG (which counts towards the total number of connections). Doing so interrupts the current physical connection or hosted connections, and re-establishes them as a member of the LAG. The LAG will be created on the same AWS Direct Connect endpoint to which the connection terminates. Any virtual interfaces associated with the connection are automatically disassociated and re-associated with the LAG. The connection ID does not change.</p> <p>If the AWS account used to create a LAG is a registered AWS Direct Connect Partner, the LAG is automatically enabled to host sub-connections. For a LAG owned by a partner, any associated virtual interfaces cannot be directly configured.</p>
   ## 
-  let valid = call_773484.validator(path, query, header, formData, body)
-  let scheme = call_773484.pickScheme
+  let valid = call_601319.validator(path, query, header, formData, body)
+  let scheme = call_601319.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773484.url(scheme.get, call_773484.host, call_773484.base,
-                         call_773484.route, valid.getOrDefault("path"))
-  result = hook(call_773484, url, valid)
+  let url = call_601319.url(scheme.get, call_601319.host, call_601319.base,
+                         call_601319.route, valid.getOrDefault("path"))
+  result = hook(call_601319, url, valid)
 
-proc call*(call_773485: Call_CreateLag_773472; body: JsonNode): Recallable =
+proc call*(call_601320: Call_CreateLag_601307; body: JsonNode): Recallable =
   ## createLag
   ## <p>Creates a link aggregation group (LAG) with the specified number of bundled physical connections between the customer network and a specific AWS Direct Connect location. A LAG is a logical interface that uses the Link Aggregation Control Protocol (LACP) to aggregate multiple interfaces, enabling you to treat them as a single interface.</p> <p>All connections in a LAG must use the same bandwidth and must terminate at the same AWS Direct Connect endpoint.</p> <p>You can have up to 10 connections per LAG. Regardless of this limit, if you request more connections for the LAG than AWS Direct Connect can allocate on a single endpoint, no LAG is created.</p> <p>You can specify an existing physical connection or interconnect to include in the LAG (which counts towards the total number of connections). Doing so interrupts the current physical connection or hosted connections, and re-establishes them as a member of the LAG. The LAG will be created on the same AWS Direct Connect endpoint to which the connection terminates. Any virtual interfaces associated with the connection are automatically disassociated and re-associated with the LAG. The connection ID does not change.</p> <p>If the AWS account used to create a LAG is a registered AWS Direct Connect Partner, the LAG is automatically enabled to host sub-connections. For a LAG owned by a partner, any associated virtual interfaces cannot be directly configured.</p>
   ##   body: JObject (required)
-  var body_773486 = newJObject()
+  var body_601321 = newJObject()
   if body != nil:
-    body_773486 = body
-  result = call_773485.call(nil, nil, nil, nil, body_773486)
+    body_601321 = body
+  result = call_601320.call(nil, nil, nil, nil, body_601321)
 
-var createLag* = Call_CreateLag_773472(name: "createLag", meth: HttpMethod.HttpPost,
+var createLag* = Call_CreateLag_601307(name: "createLag", meth: HttpMethod.HttpPost,
                                     host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.CreateLag",
-                                    validator: validate_CreateLag_773473,
-                                    base: "/", url: url_CreateLag_773474,
+                                    validator: validate_CreateLag_601308,
+                                    base: "/", url: url_CreateLag_601309,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreatePrivateVirtualInterface_773487 = ref object of OpenApiRestCall_772597
-proc url_CreatePrivateVirtualInterface_773489(protocol: Scheme; host: string;
+  Call_CreatePrivateVirtualInterface_601322 = ref object of OpenApiRestCall_600426
+proc url_CreatePrivateVirtualInterface_601324(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreatePrivateVirtualInterface_773488(path: JsonNode; query: JsonNode;
+proc validate_CreatePrivateVirtualInterface_601323(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a private virtual interface. A virtual interface is the VLAN that transports AWS Direct Connect traffic. A private virtual interface can be connected to either a Direct Connect gateway or a Virtual Private Gateway (VGW). Connecting the private virtual interface to a Direct Connect gateway enables the possibility for connecting to multiple VPCs, including VPCs in different AWS Regions. Connecting the private virtual interface to a VGW only provides access to a single VPC within the same Region.
   ## 
@@ -2269,48 +2269,48 @@ proc validate_CreatePrivateVirtualInterface_773488(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773490 = header.getOrDefault("X-Amz-Date")
-  valid_773490 = validateParameter(valid_773490, JString, required = false,
+  var valid_601325 = header.getOrDefault("X-Amz-Date")
+  valid_601325 = validateParameter(valid_601325, JString, required = false,
                                  default = nil)
-  if valid_773490 != nil:
-    section.add "X-Amz-Date", valid_773490
-  var valid_773491 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773491 = validateParameter(valid_773491, JString, required = false,
+  if valid_601325 != nil:
+    section.add "X-Amz-Date", valid_601325
+  var valid_601326 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601326 = validateParameter(valid_601326, JString, required = false,
                                  default = nil)
-  if valid_773491 != nil:
-    section.add "X-Amz-Security-Token", valid_773491
+  if valid_601326 != nil:
+    section.add "X-Amz-Security-Token", valid_601326
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773492 = header.getOrDefault("X-Amz-Target")
-  valid_773492 = validateParameter(valid_773492, JString, required = true, default = newJString(
+  var valid_601327 = header.getOrDefault("X-Amz-Target")
+  valid_601327 = validateParameter(valid_601327, JString, required = true, default = newJString(
       "OvertureService.CreatePrivateVirtualInterface"))
-  if valid_773492 != nil:
-    section.add "X-Amz-Target", valid_773492
-  var valid_773493 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773493 = validateParameter(valid_773493, JString, required = false,
+  if valid_601327 != nil:
+    section.add "X-Amz-Target", valid_601327
+  var valid_601328 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601328 = validateParameter(valid_601328, JString, required = false,
                                  default = nil)
-  if valid_773493 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773493
-  var valid_773494 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773494 = validateParameter(valid_773494, JString, required = false,
+  if valid_601328 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601328
+  var valid_601329 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601329 = validateParameter(valid_601329, JString, required = false,
                                  default = nil)
-  if valid_773494 != nil:
-    section.add "X-Amz-Algorithm", valid_773494
-  var valid_773495 = header.getOrDefault("X-Amz-Signature")
-  valid_773495 = validateParameter(valid_773495, JString, required = false,
+  if valid_601329 != nil:
+    section.add "X-Amz-Algorithm", valid_601329
+  var valid_601330 = header.getOrDefault("X-Amz-Signature")
+  valid_601330 = validateParameter(valid_601330, JString, required = false,
                                  default = nil)
-  if valid_773495 != nil:
-    section.add "X-Amz-Signature", valid_773495
-  var valid_773496 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773496 = validateParameter(valid_773496, JString, required = false,
+  if valid_601330 != nil:
+    section.add "X-Amz-Signature", valid_601330
+  var valid_601331 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601331 = validateParameter(valid_601331, JString, required = false,
                                  default = nil)
-  if valid_773496 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773496
-  var valid_773497 = header.getOrDefault("X-Amz-Credential")
-  valid_773497 = validateParameter(valid_773497, JString, required = false,
+  if valid_601331 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601331
+  var valid_601332 = header.getOrDefault("X-Amz-Credential")
+  valid_601332 = validateParameter(valid_601332, JString, required = false,
                                  default = nil)
-  if valid_773497 != nil:
-    section.add "X-Amz-Credential", valid_773497
+  if valid_601332 != nil:
+    section.add "X-Amz-Credential", valid_601332
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2321,41 +2321,41 @@ proc validate_CreatePrivateVirtualInterface_773488(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_773499: Call_CreatePrivateVirtualInterface_773487; path: JsonNode;
+proc call*(call_601334: Call_CreatePrivateVirtualInterface_601322; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a private virtual interface. A virtual interface is the VLAN that transports AWS Direct Connect traffic. A private virtual interface can be connected to either a Direct Connect gateway or a Virtual Private Gateway (VGW). Connecting the private virtual interface to a Direct Connect gateway enables the possibility for connecting to multiple VPCs, including VPCs in different AWS Regions. Connecting the private virtual interface to a VGW only provides access to a single VPC within the same Region.
   ## 
-  let valid = call_773499.validator(path, query, header, formData, body)
-  let scheme = call_773499.pickScheme
+  let valid = call_601334.validator(path, query, header, formData, body)
+  let scheme = call_601334.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773499.url(scheme.get, call_773499.host, call_773499.base,
-                         call_773499.route, valid.getOrDefault("path"))
-  result = hook(call_773499, url, valid)
+  let url = call_601334.url(scheme.get, call_601334.host, call_601334.base,
+                         call_601334.route, valid.getOrDefault("path"))
+  result = hook(call_601334, url, valid)
 
-proc call*(call_773500: Call_CreatePrivateVirtualInterface_773487; body: JsonNode): Recallable =
+proc call*(call_601335: Call_CreatePrivateVirtualInterface_601322; body: JsonNode): Recallable =
   ## createPrivateVirtualInterface
   ## Creates a private virtual interface. A virtual interface is the VLAN that transports AWS Direct Connect traffic. A private virtual interface can be connected to either a Direct Connect gateway or a Virtual Private Gateway (VGW). Connecting the private virtual interface to a Direct Connect gateway enables the possibility for connecting to multiple VPCs, including VPCs in different AWS Regions. Connecting the private virtual interface to a VGW only provides access to a single VPC within the same Region.
   ##   body: JObject (required)
-  var body_773501 = newJObject()
+  var body_601336 = newJObject()
   if body != nil:
-    body_773501 = body
-  result = call_773500.call(nil, nil, nil, nil, body_773501)
+    body_601336 = body
+  result = call_601335.call(nil, nil, nil, nil, body_601336)
 
-var createPrivateVirtualInterface* = Call_CreatePrivateVirtualInterface_773487(
+var createPrivateVirtualInterface* = Call_CreatePrivateVirtualInterface_601322(
     name: "createPrivateVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.CreatePrivateVirtualInterface",
-    validator: validate_CreatePrivateVirtualInterface_773488, base: "/",
-    url: url_CreatePrivateVirtualInterface_773489,
+    validator: validate_CreatePrivateVirtualInterface_601323, base: "/",
+    url: url_CreatePrivateVirtualInterface_601324,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreatePublicVirtualInterface_773502 = ref object of OpenApiRestCall_772597
-proc url_CreatePublicVirtualInterface_773504(protocol: Scheme; host: string;
+  Call_CreatePublicVirtualInterface_601337 = ref object of OpenApiRestCall_600426
+proc url_CreatePublicVirtualInterface_601339(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreatePublicVirtualInterface_773503(path: JsonNode; query: JsonNode;
+proc validate_CreatePublicVirtualInterface_601338(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a public virtual interface. A virtual interface is the VLAN that transports AWS Direct Connect traffic. A public virtual interface supports sending traffic to public services of AWS such as Amazon S3.</p> <p>When creating an IPv6 public virtual interface (<code>addressFamily</code> is <code>ipv6</code>), leave the <code>customer</code> and <code>amazon</code> address fields blank to use auto-assigned IPv6 space. Custom IPv6 addresses are not supported.</p>
   ## 
@@ -2375,48 +2375,48 @@ proc validate_CreatePublicVirtualInterface_773503(path: JsonNode; query: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773505 = header.getOrDefault("X-Amz-Date")
-  valid_773505 = validateParameter(valid_773505, JString, required = false,
+  var valid_601340 = header.getOrDefault("X-Amz-Date")
+  valid_601340 = validateParameter(valid_601340, JString, required = false,
                                  default = nil)
-  if valid_773505 != nil:
-    section.add "X-Amz-Date", valid_773505
-  var valid_773506 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773506 = validateParameter(valid_773506, JString, required = false,
+  if valid_601340 != nil:
+    section.add "X-Amz-Date", valid_601340
+  var valid_601341 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601341 = validateParameter(valid_601341, JString, required = false,
                                  default = nil)
-  if valid_773506 != nil:
-    section.add "X-Amz-Security-Token", valid_773506
+  if valid_601341 != nil:
+    section.add "X-Amz-Security-Token", valid_601341
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773507 = header.getOrDefault("X-Amz-Target")
-  valid_773507 = validateParameter(valid_773507, JString, required = true, default = newJString(
+  var valid_601342 = header.getOrDefault("X-Amz-Target")
+  valid_601342 = validateParameter(valid_601342, JString, required = true, default = newJString(
       "OvertureService.CreatePublicVirtualInterface"))
-  if valid_773507 != nil:
-    section.add "X-Amz-Target", valid_773507
-  var valid_773508 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773508 = validateParameter(valid_773508, JString, required = false,
+  if valid_601342 != nil:
+    section.add "X-Amz-Target", valid_601342
+  var valid_601343 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601343 = validateParameter(valid_601343, JString, required = false,
                                  default = nil)
-  if valid_773508 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773508
-  var valid_773509 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773509 = validateParameter(valid_773509, JString, required = false,
+  if valid_601343 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601343
+  var valid_601344 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601344 = validateParameter(valid_601344, JString, required = false,
                                  default = nil)
-  if valid_773509 != nil:
-    section.add "X-Amz-Algorithm", valid_773509
-  var valid_773510 = header.getOrDefault("X-Amz-Signature")
-  valid_773510 = validateParameter(valid_773510, JString, required = false,
+  if valid_601344 != nil:
+    section.add "X-Amz-Algorithm", valid_601344
+  var valid_601345 = header.getOrDefault("X-Amz-Signature")
+  valid_601345 = validateParameter(valid_601345, JString, required = false,
                                  default = nil)
-  if valid_773510 != nil:
-    section.add "X-Amz-Signature", valid_773510
-  var valid_773511 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773511 = validateParameter(valid_773511, JString, required = false,
+  if valid_601345 != nil:
+    section.add "X-Amz-Signature", valid_601345
+  var valid_601346 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601346 = validateParameter(valid_601346, JString, required = false,
                                  default = nil)
-  if valid_773511 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773511
-  var valid_773512 = header.getOrDefault("X-Amz-Credential")
-  valid_773512 = validateParameter(valid_773512, JString, required = false,
+  if valid_601346 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601346
+  var valid_601347 = header.getOrDefault("X-Amz-Credential")
+  valid_601347 = validateParameter(valid_601347, JString, required = false,
                                  default = nil)
-  if valid_773512 != nil:
-    section.add "X-Amz-Credential", valid_773512
+  if valid_601347 != nil:
+    section.add "X-Amz-Credential", valid_601347
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2427,41 +2427,41 @@ proc validate_CreatePublicVirtualInterface_773503(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_773514: Call_CreatePublicVirtualInterface_773502; path: JsonNode;
+proc call*(call_601349: Call_CreatePublicVirtualInterface_601337; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a public virtual interface. A virtual interface is the VLAN that transports AWS Direct Connect traffic. A public virtual interface supports sending traffic to public services of AWS such as Amazon S3.</p> <p>When creating an IPv6 public virtual interface (<code>addressFamily</code> is <code>ipv6</code>), leave the <code>customer</code> and <code>amazon</code> address fields blank to use auto-assigned IPv6 space. Custom IPv6 addresses are not supported.</p>
   ## 
-  let valid = call_773514.validator(path, query, header, formData, body)
-  let scheme = call_773514.pickScheme
+  let valid = call_601349.validator(path, query, header, formData, body)
+  let scheme = call_601349.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773514.url(scheme.get, call_773514.host, call_773514.base,
-                         call_773514.route, valid.getOrDefault("path"))
-  result = hook(call_773514, url, valid)
+  let url = call_601349.url(scheme.get, call_601349.host, call_601349.base,
+                         call_601349.route, valid.getOrDefault("path"))
+  result = hook(call_601349, url, valid)
 
-proc call*(call_773515: Call_CreatePublicVirtualInterface_773502; body: JsonNode): Recallable =
+proc call*(call_601350: Call_CreatePublicVirtualInterface_601337; body: JsonNode): Recallable =
   ## createPublicVirtualInterface
   ## <p>Creates a public virtual interface. A virtual interface is the VLAN that transports AWS Direct Connect traffic. A public virtual interface supports sending traffic to public services of AWS such as Amazon S3.</p> <p>When creating an IPv6 public virtual interface (<code>addressFamily</code> is <code>ipv6</code>), leave the <code>customer</code> and <code>amazon</code> address fields blank to use auto-assigned IPv6 space. Custom IPv6 addresses are not supported.</p>
   ##   body: JObject (required)
-  var body_773516 = newJObject()
+  var body_601351 = newJObject()
   if body != nil:
-    body_773516 = body
-  result = call_773515.call(nil, nil, nil, nil, body_773516)
+    body_601351 = body
+  result = call_601350.call(nil, nil, nil, nil, body_601351)
 
-var createPublicVirtualInterface* = Call_CreatePublicVirtualInterface_773502(
+var createPublicVirtualInterface* = Call_CreatePublicVirtualInterface_601337(
     name: "createPublicVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.CreatePublicVirtualInterface",
-    validator: validate_CreatePublicVirtualInterface_773503, base: "/",
-    url: url_CreatePublicVirtualInterface_773504,
+    validator: validate_CreatePublicVirtualInterface_601338, base: "/",
+    url: url_CreatePublicVirtualInterface_601339,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTransitVirtualInterface_773517 = ref object of OpenApiRestCall_772597
-proc url_CreateTransitVirtualInterface_773519(protocol: Scheme; host: string;
+  Call_CreateTransitVirtualInterface_601352 = ref object of OpenApiRestCall_600426
+proc url_CreateTransitVirtualInterface_601354(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_CreateTransitVirtualInterface_773518(path: JsonNode; query: JsonNode;
+proc validate_CreateTransitVirtualInterface_601353(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a transit virtual interface. A transit virtual interface should be used to access one or more transit gateways associated with Direct Connect gateways. A transit virtual interface enables the connection of multiple VPCs attached to a transit gateway to a Direct Connect gateway.</p> <important> <p>If you associate your transit gateway with one or more Direct Connect gateways, the Autonomous System Number (ASN) used by the transit gateway and the Direct Connect gateway must be different. For example, if you use the default ASN 64512 for both your the transit gateway and Direct Connect gateway, the association request fails.</p> </important>
   ## 
@@ -2481,48 +2481,48 @@ proc validate_CreateTransitVirtualInterface_773518(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773520 = header.getOrDefault("X-Amz-Date")
-  valid_773520 = validateParameter(valid_773520, JString, required = false,
+  var valid_601355 = header.getOrDefault("X-Amz-Date")
+  valid_601355 = validateParameter(valid_601355, JString, required = false,
                                  default = nil)
-  if valid_773520 != nil:
-    section.add "X-Amz-Date", valid_773520
-  var valid_773521 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773521 = validateParameter(valid_773521, JString, required = false,
+  if valid_601355 != nil:
+    section.add "X-Amz-Date", valid_601355
+  var valid_601356 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601356 = validateParameter(valid_601356, JString, required = false,
                                  default = nil)
-  if valid_773521 != nil:
-    section.add "X-Amz-Security-Token", valid_773521
+  if valid_601356 != nil:
+    section.add "X-Amz-Security-Token", valid_601356
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773522 = header.getOrDefault("X-Amz-Target")
-  valid_773522 = validateParameter(valid_773522, JString, required = true, default = newJString(
+  var valid_601357 = header.getOrDefault("X-Amz-Target")
+  valid_601357 = validateParameter(valid_601357, JString, required = true, default = newJString(
       "OvertureService.CreateTransitVirtualInterface"))
-  if valid_773522 != nil:
-    section.add "X-Amz-Target", valid_773522
-  var valid_773523 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773523 = validateParameter(valid_773523, JString, required = false,
+  if valid_601357 != nil:
+    section.add "X-Amz-Target", valid_601357
+  var valid_601358 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601358 = validateParameter(valid_601358, JString, required = false,
                                  default = nil)
-  if valid_773523 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773523
-  var valid_773524 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773524 = validateParameter(valid_773524, JString, required = false,
+  if valid_601358 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601358
+  var valid_601359 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601359 = validateParameter(valid_601359, JString, required = false,
                                  default = nil)
-  if valid_773524 != nil:
-    section.add "X-Amz-Algorithm", valid_773524
-  var valid_773525 = header.getOrDefault("X-Amz-Signature")
-  valid_773525 = validateParameter(valid_773525, JString, required = false,
+  if valid_601359 != nil:
+    section.add "X-Amz-Algorithm", valid_601359
+  var valid_601360 = header.getOrDefault("X-Amz-Signature")
+  valid_601360 = validateParameter(valid_601360, JString, required = false,
                                  default = nil)
-  if valid_773525 != nil:
-    section.add "X-Amz-Signature", valid_773525
-  var valid_773526 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773526 = validateParameter(valid_773526, JString, required = false,
+  if valid_601360 != nil:
+    section.add "X-Amz-Signature", valid_601360
+  var valid_601361 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601361 = validateParameter(valid_601361, JString, required = false,
                                  default = nil)
-  if valid_773526 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773526
-  var valid_773527 = header.getOrDefault("X-Amz-Credential")
-  valid_773527 = validateParameter(valid_773527, JString, required = false,
+  if valid_601361 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601361
+  var valid_601362 = header.getOrDefault("X-Amz-Credential")
+  valid_601362 = validateParameter(valid_601362, JString, required = false,
                                  default = nil)
-  if valid_773527 != nil:
-    section.add "X-Amz-Credential", valid_773527
+  if valid_601362 != nil:
+    section.add "X-Amz-Credential", valid_601362
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2533,41 +2533,41 @@ proc validate_CreateTransitVirtualInterface_773518(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_773529: Call_CreateTransitVirtualInterface_773517; path: JsonNode;
+proc call*(call_601364: Call_CreateTransitVirtualInterface_601352; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a transit virtual interface. A transit virtual interface should be used to access one or more transit gateways associated with Direct Connect gateways. A transit virtual interface enables the connection of multiple VPCs attached to a transit gateway to a Direct Connect gateway.</p> <important> <p>If you associate your transit gateway with one or more Direct Connect gateways, the Autonomous System Number (ASN) used by the transit gateway and the Direct Connect gateway must be different. For example, if you use the default ASN 64512 for both your the transit gateway and Direct Connect gateway, the association request fails.</p> </important>
   ## 
-  let valid = call_773529.validator(path, query, header, formData, body)
-  let scheme = call_773529.pickScheme
+  let valid = call_601364.validator(path, query, header, formData, body)
+  let scheme = call_601364.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773529.url(scheme.get, call_773529.host, call_773529.base,
-                         call_773529.route, valid.getOrDefault("path"))
-  result = hook(call_773529, url, valid)
+  let url = call_601364.url(scheme.get, call_601364.host, call_601364.base,
+                         call_601364.route, valid.getOrDefault("path"))
+  result = hook(call_601364, url, valid)
 
-proc call*(call_773530: Call_CreateTransitVirtualInterface_773517; body: JsonNode): Recallable =
+proc call*(call_601365: Call_CreateTransitVirtualInterface_601352; body: JsonNode): Recallable =
   ## createTransitVirtualInterface
   ## <p>Creates a transit virtual interface. A transit virtual interface should be used to access one or more transit gateways associated with Direct Connect gateways. A transit virtual interface enables the connection of multiple VPCs attached to a transit gateway to a Direct Connect gateway.</p> <important> <p>If you associate your transit gateway with one or more Direct Connect gateways, the Autonomous System Number (ASN) used by the transit gateway and the Direct Connect gateway must be different. For example, if you use the default ASN 64512 for both your the transit gateway and Direct Connect gateway, the association request fails.</p> </important>
   ##   body: JObject (required)
-  var body_773531 = newJObject()
+  var body_601366 = newJObject()
   if body != nil:
-    body_773531 = body
-  result = call_773530.call(nil, nil, nil, nil, body_773531)
+    body_601366 = body
+  result = call_601365.call(nil, nil, nil, nil, body_601366)
 
-var createTransitVirtualInterface* = Call_CreateTransitVirtualInterface_773517(
+var createTransitVirtualInterface* = Call_CreateTransitVirtualInterface_601352(
     name: "createTransitVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.CreateTransitVirtualInterface",
-    validator: validate_CreateTransitVirtualInterface_773518, base: "/",
-    url: url_CreateTransitVirtualInterface_773519,
+    validator: validate_CreateTransitVirtualInterface_601353, base: "/",
+    url: url_CreateTransitVirtualInterface_601354,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBGPPeer_773532 = ref object of OpenApiRestCall_772597
-proc url_DeleteBGPPeer_773534(protocol: Scheme; host: string; base: string;
+  Call_DeleteBGPPeer_601367 = ref object of OpenApiRestCall_600426
+proc url_DeleteBGPPeer_601369(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteBGPPeer_773533(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteBGPPeer_601368(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified BGP peer on the specified virtual interface with the specified customer address and ASN.</p> <p>You cannot delete the last BGP peer from a virtual interface.</p>
   ## 
@@ -2587,48 +2587,48 @@ proc validate_DeleteBGPPeer_773533(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773535 = header.getOrDefault("X-Amz-Date")
-  valid_773535 = validateParameter(valid_773535, JString, required = false,
+  var valid_601370 = header.getOrDefault("X-Amz-Date")
+  valid_601370 = validateParameter(valid_601370, JString, required = false,
                                  default = nil)
-  if valid_773535 != nil:
-    section.add "X-Amz-Date", valid_773535
-  var valid_773536 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773536 = validateParameter(valid_773536, JString, required = false,
+  if valid_601370 != nil:
+    section.add "X-Amz-Date", valid_601370
+  var valid_601371 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601371 = validateParameter(valid_601371, JString, required = false,
                                  default = nil)
-  if valid_773536 != nil:
-    section.add "X-Amz-Security-Token", valid_773536
+  if valid_601371 != nil:
+    section.add "X-Amz-Security-Token", valid_601371
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773537 = header.getOrDefault("X-Amz-Target")
-  valid_773537 = validateParameter(valid_773537, JString, required = true, default = newJString(
+  var valid_601372 = header.getOrDefault("X-Amz-Target")
+  valid_601372 = validateParameter(valid_601372, JString, required = true, default = newJString(
       "OvertureService.DeleteBGPPeer"))
-  if valid_773537 != nil:
-    section.add "X-Amz-Target", valid_773537
-  var valid_773538 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773538 = validateParameter(valid_773538, JString, required = false,
+  if valid_601372 != nil:
+    section.add "X-Amz-Target", valid_601372
+  var valid_601373 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601373 = validateParameter(valid_601373, JString, required = false,
                                  default = nil)
-  if valid_773538 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773538
-  var valid_773539 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773539 = validateParameter(valid_773539, JString, required = false,
+  if valid_601373 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601373
+  var valid_601374 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601374 = validateParameter(valid_601374, JString, required = false,
                                  default = nil)
-  if valid_773539 != nil:
-    section.add "X-Amz-Algorithm", valid_773539
-  var valid_773540 = header.getOrDefault("X-Amz-Signature")
-  valid_773540 = validateParameter(valid_773540, JString, required = false,
+  if valid_601374 != nil:
+    section.add "X-Amz-Algorithm", valid_601374
+  var valid_601375 = header.getOrDefault("X-Amz-Signature")
+  valid_601375 = validateParameter(valid_601375, JString, required = false,
                                  default = nil)
-  if valid_773540 != nil:
-    section.add "X-Amz-Signature", valid_773540
-  var valid_773541 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773541 = validateParameter(valid_773541, JString, required = false,
+  if valid_601375 != nil:
+    section.add "X-Amz-Signature", valid_601375
+  var valid_601376 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601376 = validateParameter(valid_601376, JString, required = false,
                                  default = nil)
-  if valid_773541 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773541
-  var valid_773542 = header.getOrDefault("X-Amz-Credential")
-  valid_773542 = validateParameter(valid_773542, JString, required = false,
+  if valid_601376 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601376
+  var valid_601377 = header.getOrDefault("X-Amz-Credential")
+  valid_601377 = validateParameter(valid_601377, JString, required = false,
                                  default = nil)
-  if valid_773542 != nil:
-    section.add "X-Amz-Credential", valid_773542
+  if valid_601377 != nil:
+    section.add "X-Amz-Credential", valid_601377
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2639,39 +2639,39 @@ proc validate_DeleteBGPPeer_773533(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_773544: Call_DeleteBGPPeer_773532; path: JsonNode; query: JsonNode;
+proc call*(call_601379: Call_DeleteBGPPeer_601367; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified BGP peer on the specified virtual interface with the specified customer address and ASN.</p> <p>You cannot delete the last BGP peer from a virtual interface.</p>
   ## 
-  let valid = call_773544.validator(path, query, header, formData, body)
-  let scheme = call_773544.pickScheme
+  let valid = call_601379.validator(path, query, header, formData, body)
+  let scheme = call_601379.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773544.url(scheme.get, call_773544.host, call_773544.base,
-                         call_773544.route, valid.getOrDefault("path"))
-  result = hook(call_773544, url, valid)
+  let url = call_601379.url(scheme.get, call_601379.host, call_601379.base,
+                         call_601379.route, valid.getOrDefault("path"))
+  result = hook(call_601379, url, valid)
 
-proc call*(call_773545: Call_DeleteBGPPeer_773532; body: JsonNode): Recallable =
+proc call*(call_601380: Call_DeleteBGPPeer_601367; body: JsonNode): Recallable =
   ## deleteBGPPeer
   ## <p>Deletes the specified BGP peer on the specified virtual interface with the specified customer address and ASN.</p> <p>You cannot delete the last BGP peer from a virtual interface.</p>
   ##   body: JObject (required)
-  var body_773546 = newJObject()
+  var body_601381 = newJObject()
   if body != nil:
-    body_773546 = body
-  result = call_773545.call(nil, nil, nil, nil, body_773546)
+    body_601381 = body
+  result = call_601380.call(nil, nil, nil, nil, body_601381)
 
-var deleteBGPPeer* = Call_DeleteBGPPeer_773532(name: "deleteBGPPeer",
+var deleteBGPPeer* = Call_DeleteBGPPeer_601367(name: "deleteBGPPeer",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DeleteBGPPeer",
-    validator: validate_DeleteBGPPeer_773533, base: "/", url: url_DeleteBGPPeer_773534,
+    validator: validate_DeleteBGPPeer_601368, base: "/", url: url_DeleteBGPPeer_601369,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteConnection_773547 = ref object of OpenApiRestCall_772597
-proc url_DeleteConnection_773549(protocol: Scheme; host: string; base: string;
+  Call_DeleteConnection_601382 = ref object of OpenApiRestCall_600426
+proc url_DeleteConnection_601384(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteConnection_773548(path: JsonNode; query: JsonNode;
+proc validate_DeleteConnection_601383(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes the specified connection.</p> <p>Deleting a connection only stops the AWS Direct Connect port hour and data transfer charges. If you are partnering with any third parties to connect with the AWS Direct Connect location, you must cancel your service with them separately.</p>
@@ -2692,48 +2692,48 @@ proc validate_DeleteConnection_773548(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773550 = header.getOrDefault("X-Amz-Date")
-  valid_773550 = validateParameter(valid_773550, JString, required = false,
+  var valid_601385 = header.getOrDefault("X-Amz-Date")
+  valid_601385 = validateParameter(valid_601385, JString, required = false,
                                  default = nil)
-  if valid_773550 != nil:
-    section.add "X-Amz-Date", valid_773550
-  var valid_773551 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773551 = validateParameter(valid_773551, JString, required = false,
+  if valid_601385 != nil:
+    section.add "X-Amz-Date", valid_601385
+  var valid_601386 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601386 = validateParameter(valid_601386, JString, required = false,
                                  default = nil)
-  if valid_773551 != nil:
-    section.add "X-Amz-Security-Token", valid_773551
+  if valid_601386 != nil:
+    section.add "X-Amz-Security-Token", valid_601386
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773552 = header.getOrDefault("X-Amz-Target")
-  valid_773552 = validateParameter(valid_773552, JString, required = true, default = newJString(
+  var valid_601387 = header.getOrDefault("X-Amz-Target")
+  valid_601387 = validateParameter(valid_601387, JString, required = true, default = newJString(
       "OvertureService.DeleteConnection"))
-  if valid_773552 != nil:
-    section.add "X-Amz-Target", valid_773552
-  var valid_773553 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773553 = validateParameter(valid_773553, JString, required = false,
+  if valid_601387 != nil:
+    section.add "X-Amz-Target", valid_601387
+  var valid_601388 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601388 = validateParameter(valid_601388, JString, required = false,
                                  default = nil)
-  if valid_773553 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773553
-  var valid_773554 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773554 = validateParameter(valid_773554, JString, required = false,
+  if valid_601388 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601388
+  var valid_601389 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601389 = validateParameter(valid_601389, JString, required = false,
                                  default = nil)
-  if valid_773554 != nil:
-    section.add "X-Amz-Algorithm", valid_773554
-  var valid_773555 = header.getOrDefault("X-Amz-Signature")
-  valid_773555 = validateParameter(valid_773555, JString, required = false,
+  if valid_601389 != nil:
+    section.add "X-Amz-Algorithm", valid_601389
+  var valid_601390 = header.getOrDefault("X-Amz-Signature")
+  valid_601390 = validateParameter(valid_601390, JString, required = false,
                                  default = nil)
-  if valid_773555 != nil:
-    section.add "X-Amz-Signature", valid_773555
-  var valid_773556 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773556 = validateParameter(valid_773556, JString, required = false,
+  if valid_601390 != nil:
+    section.add "X-Amz-Signature", valid_601390
+  var valid_601391 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601391 = validateParameter(valid_601391, JString, required = false,
                                  default = nil)
-  if valid_773556 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773556
-  var valid_773557 = header.getOrDefault("X-Amz-Credential")
-  valid_773557 = validateParameter(valid_773557, JString, required = false,
+  if valid_601391 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601391
+  var valid_601392 = header.getOrDefault("X-Amz-Credential")
+  valid_601392 = validateParameter(valid_601392, JString, required = false,
                                  default = nil)
-  if valid_773557 != nil:
-    section.add "X-Amz-Credential", valid_773557
+  if valid_601392 != nil:
+    section.add "X-Amz-Credential", valid_601392
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2744,39 +2744,39 @@ proc validate_DeleteConnection_773548(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773559: Call_DeleteConnection_773547; path: JsonNode;
+proc call*(call_601394: Call_DeleteConnection_601382; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified connection.</p> <p>Deleting a connection only stops the AWS Direct Connect port hour and data transfer charges. If you are partnering with any third parties to connect with the AWS Direct Connect location, you must cancel your service with them separately.</p>
   ## 
-  let valid = call_773559.validator(path, query, header, formData, body)
-  let scheme = call_773559.pickScheme
+  let valid = call_601394.validator(path, query, header, formData, body)
+  let scheme = call_601394.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773559.url(scheme.get, call_773559.host, call_773559.base,
-                         call_773559.route, valid.getOrDefault("path"))
-  result = hook(call_773559, url, valid)
+  let url = call_601394.url(scheme.get, call_601394.host, call_601394.base,
+                         call_601394.route, valid.getOrDefault("path"))
+  result = hook(call_601394, url, valid)
 
-proc call*(call_773560: Call_DeleteConnection_773547; body: JsonNode): Recallable =
+proc call*(call_601395: Call_DeleteConnection_601382; body: JsonNode): Recallable =
   ## deleteConnection
   ## <p>Deletes the specified connection.</p> <p>Deleting a connection only stops the AWS Direct Connect port hour and data transfer charges. If you are partnering with any third parties to connect with the AWS Direct Connect location, you must cancel your service with them separately.</p>
   ##   body: JObject (required)
-  var body_773561 = newJObject()
+  var body_601396 = newJObject()
   if body != nil:
-    body_773561 = body
-  result = call_773560.call(nil, nil, nil, nil, body_773561)
+    body_601396 = body
+  result = call_601395.call(nil, nil, nil, nil, body_601396)
 
-var deleteConnection* = Call_DeleteConnection_773547(name: "deleteConnection",
+var deleteConnection* = Call_DeleteConnection_601382(name: "deleteConnection",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DeleteConnection",
-    validator: validate_DeleteConnection_773548, base: "/",
-    url: url_DeleteConnection_773549, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteConnection_601383, base: "/",
+    url: url_DeleteConnection_601384, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDirectConnectGateway_773562 = ref object of OpenApiRestCall_772597
-proc url_DeleteDirectConnectGateway_773564(protocol: Scheme; host: string;
+  Call_DeleteDirectConnectGateway_601397 = ref object of OpenApiRestCall_600426
+proc url_DeleteDirectConnectGateway_601399(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteDirectConnectGateway_773563(path: JsonNode; query: JsonNode;
+proc validate_DeleteDirectConnectGateway_601398(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified Direct Connect gateway. You must first delete all virtual interfaces that are attached to the Direct Connect gateway and disassociate all virtual private gateways that are associated with the Direct Connect gateway.
   ## 
@@ -2796,48 +2796,48 @@ proc validate_DeleteDirectConnectGateway_773563(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773565 = header.getOrDefault("X-Amz-Date")
-  valid_773565 = validateParameter(valid_773565, JString, required = false,
+  var valid_601400 = header.getOrDefault("X-Amz-Date")
+  valid_601400 = validateParameter(valid_601400, JString, required = false,
                                  default = nil)
-  if valid_773565 != nil:
-    section.add "X-Amz-Date", valid_773565
-  var valid_773566 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773566 = validateParameter(valid_773566, JString, required = false,
+  if valid_601400 != nil:
+    section.add "X-Amz-Date", valid_601400
+  var valid_601401 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601401 = validateParameter(valid_601401, JString, required = false,
                                  default = nil)
-  if valid_773566 != nil:
-    section.add "X-Amz-Security-Token", valid_773566
+  if valid_601401 != nil:
+    section.add "X-Amz-Security-Token", valid_601401
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773567 = header.getOrDefault("X-Amz-Target")
-  valid_773567 = validateParameter(valid_773567, JString, required = true, default = newJString(
+  var valid_601402 = header.getOrDefault("X-Amz-Target")
+  valid_601402 = validateParameter(valid_601402, JString, required = true, default = newJString(
       "OvertureService.DeleteDirectConnectGateway"))
-  if valid_773567 != nil:
-    section.add "X-Amz-Target", valid_773567
-  var valid_773568 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773568 = validateParameter(valid_773568, JString, required = false,
+  if valid_601402 != nil:
+    section.add "X-Amz-Target", valid_601402
+  var valid_601403 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601403 = validateParameter(valid_601403, JString, required = false,
                                  default = nil)
-  if valid_773568 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773568
-  var valid_773569 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773569 = validateParameter(valid_773569, JString, required = false,
+  if valid_601403 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601403
+  var valid_601404 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601404 = validateParameter(valid_601404, JString, required = false,
                                  default = nil)
-  if valid_773569 != nil:
-    section.add "X-Amz-Algorithm", valid_773569
-  var valid_773570 = header.getOrDefault("X-Amz-Signature")
-  valid_773570 = validateParameter(valid_773570, JString, required = false,
+  if valid_601404 != nil:
+    section.add "X-Amz-Algorithm", valid_601404
+  var valid_601405 = header.getOrDefault("X-Amz-Signature")
+  valid_601405 = validateParameter(valid_601405, JString, required = false,
                                  default = nil)
-  if valid_773570 != nil:
-    section.add "X-Amz-Signature", valid_773570
-  var valid_773571 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773571 = validateParameter(valid_773571, JString, required = false,
+  if valid_601405 != nil:
+    section.add "X-Amz-Signature", valid_601405
+  var valid_601406 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601406 = validateParameter(valid_601406, JString, required = false,
                                  default = nil)
-  if valid_773571 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773571
-  var valid_773572 = header.getOrDefault("X-Amz-Credential")
-  valid_773572 = validateParameter(valid_773572, JString, required = false,
+  if valid_601406 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601406
+  var valid_601407 = header.getOrDefault("X-Amz-Credential")
+  valid_601407 = validateParameter(valid_601407, JString, required = false,
                                  default = nil)
-  if valid_773572 != nil:
-    section.add "X-Amz-Credential", valid_773572
+  if valid_601407 != nil:
+    section.add "X-Amz-Credential", valid_601407
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2848,41 +2848,41 @@ proc validate_DeleteDirectConnectGateway_773563(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773574: Call_DeleteDirectConnectGateway_773562; path: JsonNode;
+proc call*(call_601409: Call_DeleteDirectConnectGateway_601397; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified Direct Connect gateway. You must first delete all virtual interfaces that are attached to the Direct Connect gateway and disassociate all virtual private gateways that are associated with the Direct Connect gateway.
   ## 
-  let valid = call_773574.validator(path, query, header, formData, body)
-  let scheme = call_773574.pickScheme
+  let valid = call_601409.validator(path, query, header, formData, body)
+  let scheme = call_601409.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773574.url(scheme.get, call_773574.host, call_773574.base,
-                         call_773574.route, valid.getOrDefault("path"))
-  result = hook(call_773574, url, valid)
+  let url = call_601409.url(scheme.get, call_601409.host, call_601409.base,
+                         call_601409.route, valid.getOrDefault("path"))
+  result = hook(call_601409, url, valid)
 
-proc call*(call_773575: Call_DeleteDirectConnectGateway_773562; body: JsonNode): Recallable =
+proc call*(call_601410: Call_DeleteDirectConnectGateway_601397; body: JsonNode): Recallable =
   ## deleteDirectConnectGateway
   ## Deletes the specified Direct Connect gateway. You must first delete all virtual interfaces that are attached to the Direct Connect gateway and disassociate all virtual private gateways that are associated with the Direct Connect gateway.
   ##   body: JObject (required)
-  var body_773576 = newJObject()
+  var body_601411 = newJObject()
   if body != nil:
-    body_773576 = body
-  result = call_773575.call(nil, nil, nil, nil, body_773576)
+    body_601411 = body
+  result = call_601410.call(nil, nil, nil, nil, body_601411)
 
-var deleteDirectConnectGateway* = Call_DeleteDirectConnectGateway_773562(
+var deleteDirectConnectGateway* = Call_DeleteDirectConnectGateway_601397(
     name: "deleteDirectConnectGateway", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DeleteDirectConnectGateway",
-    validator: validate_DeleteDirectConnectGateway_773563, base: "/",
-    url: url_DeleteDirectConnectGateway_773564,
+    validator: validate_DeleteDirectConnectGateway_601398, base: "/",
+    url: url_DeleteDirectConnectGateway_601399,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDirectConnectGatewayAssociation_773577 = ref object of OpenApiRestCall_772597
-proc url_DeleteDirectConnectGatewayAssociation_773579(protocol: Scheme;
+  Call_DeleteDirectConnectGatewayAssociation_601412 = ref object of OpenApiRestCall_600426
+proc url_DeleteDirectConnectGatewayAssociation_601414(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteDirectConnectGatewayAssociation_773578(path: JsonNode;
+proc validate_DeleteDirectConnectGatewayAssociation_601413(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the association between the specified Direct Connect gateway and virtual private gateway.
   ## 
@@ -2902,48 +2902,48 @@ proc validate_DeleteDirectConnectGatewayAssociation_773578(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773580 = header.getOrDefault("X-Amz-Date")
-  valid_773580 = validateParameter(valid_773580, JString, required = false,
+  var valid_601415 = header.getOrDefault("X-Amz-Date")
+  valid_601415 = validateParameter(valid_601415, JString, required = false,
                                  default = nil)
-  if valid_773580 != nil:
-    section.add "X-Amz-Date", valid_773580
-  var valid_773581 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773581 = validateParameter(valid_773581, JString, required = false,
+  if valid_601415 != nil:
+    section.add "X-Amz-Date", valid_601415
+  var valid_601416 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601416 = validateParameter(valid_601416, JString, required = false,
                                  default = nil)
-  if valid_773581 != nil:
-    section.add "X-Amz-Security-Token", valid_773581
+  if valid_601416 != nil:
+    section.add "X-Amz-Security-Token", valid_601416
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773582 = header.getOrDefault("X-Amz-Target")
-  valid_773582 = validateParameter(valid_773582, JString, required = true, default = newJString(
+  var valid_601417 = header.getOrDefault("X-Amz-Target")
+  valid_601417 = validateParameter(valid_601417, JString, required = true, default = newJString(
       "OvertureService.DeleteDirectConnectGatewayAssociation"))
-  if valid_773582 != nil:
-    section.add "X-Amz-Target", valid_773582
-  var valid_773583 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773583 = validateParameter(valid_773583, JString, required = false,
+  if valid_601417 != nil:
+    section.add "X-Amz-Target", valid_601417
+  var valid_601418 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601418 = validateParameter(valid_601418, JString, required = false,
                                  default = nil)
-  if valid_773583 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773583
-  var valid_773584 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773584 = validateParameter(valid_773584, JString, required = false,
+  if valid_601418 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601418
+  var valid_601419 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601419 = validateParameter(valid_601419, JString, required = false,
                                  default = nil)
-  if valid_773584 != nil:
-    section.add "X-Amz-Algorithm", valid_773584
-  var valid_773585 = header.getOrDefault("X-Amz-Signature")
-  valid_773585 = validateParameter(valid_773585, JString, required = false,
+  if valid_601419 != nil:
+    section.add "X-Amz-Algorithm", valid_601419
+  var valid_601420 = header.getOrDefault("X-Amz-Signature")
+  valid_601420 = validateParameter(valid_601420, JString, required = false,
                                  default = nil)
-  if valid_773585 != nil:
-    section.add "X-Amz-Signature", valid_773585
-  var valid_773586 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773586 = validateParameter(valid_773586, JString, required = false,
+  if valid_601420 != nil:
+    section.add "X-Amz-Signature", valid_601420
+  var valid_601421 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601421 = validateParameter(valid_601421, JString, required = false,
                                  default = nil)
-  if valid_773586 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773586
-  var valid_773587 = header.getOrDefault("X-Amz-Credential")
-  valid_773587 = validateParameter(valid_773587, JString, required = false,
+  if valid_601421 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601421
+  var valid_601422 = header.getOrDefault("X-Amz-Credential")
+  valid_601422 = validateParameter(valid_601422, JString, required = false,
                                  default = nil)
-  if valid_773587 != nil:
-    section.add "X-Amz-Credential", valid_773587
+  if valid_601422 != nil:
+    section.add "X-Amz-Credential", valid_601422
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2954,42 +2954,42 @@ proc validate_DeleteDirectConnectGatewayAssociation_773578(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773589: Call_DeleteDirectConnectGatewayAssociation_773577;
+proc call*(call_601424: Call_DeleteDirectConnectGatewayAssociation_601412;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Deletes the association between the specified Direct Connect gateway and virtual private gateway.
   ## 
-  let valid = call_773589.validator(path, query, header, formData, body)
-  let scheme = call_773589.pickScheme
+  let valid = call_601424.validator(path, query, header, formData, body)
+  let scheme = call_601424.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773589.url(scheme.get, call_773589.host, call_773589.base,
-                         call_773589.route, valid.getOrDefault("path"))
-  result = hook(call_773589, url, valid)
+  let url = call_601424.url(scheme.get, call_601424.host, call_601424.base,
+                         call_601424.route, valid.getOrDefault("path"))
+  result = hook(call_601424, url, valid)
 
-proc call*(call_773590: Call_DeleteDirectConnectGatewayAssociation_773577;
+proc call*(call_601425: Call_DeleteDirectConnectGatewayAssociation_601412;
           body: JsonNode): Recallable =
   ## deleteDirectConnectGatewayAssociation
   ## Deletes the association between the specified Direct Connect gateway and virtual private gateway.
   ##   body: JObject (required)
-  var body_773591 = newJObject()
+  var body_601426 = newJObject()
   if body != nil:
-    body_773591 = body
-  result = call_773590.call(nil, nil, nil, nil, body_773591)
+    body_601426 = body
+  result = call_601425.call(nil, nil, nil, nil, body_601426)
 
-var deleteDirectConnectGatewayAssociation* = Call_DeleteDirectConnectGatewayAssociation_773577(
+var deleteDirectConnectGatewayAssociation* = Call_DeleteDirectConnectGatewayAssociation_601412(
     name: "deleteDirectConnectGatewayAssociation", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.DeleteDirectConnectGatewayAssociation",
-    validator: validate_DeleteDirectConnectGatewayAssociation_773578, base: "/",
-    url: url_DeleteDirectConnectGatewayAssociation_773579,
+    validator: validate_DeleteDirectConnectGatewayAssociation_601413, base: "/",
+    url: url_DeleteDirectConnectGatewayAssociation_601414,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDirectConnectGatewayAssociationProposal_773592 = ref object of OpenApiRestCall_772597
-proc url_DeleteDirectConnectGatewayAssociationProposal_773594(protocol: Scheme;
+  Call_DeleteDirectConnectGatewayAssociationProposal_601427 = ref object of OpenApiRestCall_600426
+proc url_DeleteDirectConnectGatewayAssociationProposal_601429(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteDirectConnectGatewayAssociationProposal_773593(
+proc validate_DeleteDirectConnectGatewayAssociationProposal_601428(
     path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
     body: JsonNode): JsonNode =
   ## Deletes the association proposal request between the specified Direct Connect gateway and virtual private gateway or transit gateway.
@@ -3010,48 +3010,48 @@ proc validate_DeleteDirectConnectGatewayAssociationProposal_773593(
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773595 = header.getOrDefault("X-Amz-Date")
-  valid_773595 = validateParameter(valid_773595, JString, required = false,
+  var valid_601430 = header.getOrDefault("X-Amz-Date")
+  valid_601430 = validateParameter(valid_601430, JString, required = false,
                                  default = nil)
-  if valid_773595 != nil:
-    section.add "X-Amz-Date", valid_773595
-  var valid_773596 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773596 = validateParameter(valid_773596, JString, required = false,
+  if valid_601430 != nil:
+    section.add "X-Amz-Date", valid_601430
+  var valid_601431 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601431 = validateParameter(valid_601431, JString, required = false,
                                  default = nil)
-  if valid_773596 != nil:
-    section.add "X-Amz-Security-Token", valid_773596
+  if valid_601431 != nil:
+    section.add "X-Amz-Security-Token", valid_601431
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773597 = header.getOrDefault("X-Amz-Target")
-  valid_773597 = validateParameter(valid_773597, JString, required = true, default = newJString(
+  var valid_601432 = header.getOrDefault("X-Amz-Target")
+  valid_601432 = validateParameter(valid_601432, JString, required = true, default = newJString(
       "OvertureService.DeleteDirectConnectGatewayAssociationProposal"))
-  if valid_773597 != nil:
-    section.add "X-Amz-Target", valid_773597
-  var valid_773598 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773598 = validateParameter(valid_773598, JString, required = false,
+  if valid_601432 != nil:
+    section.add "X-Amz-Target", valid_601432
+  var valid_601433 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601433 = validateParameter(valid_601433, JString, required = false,
                                  default = nil)
-  if valid_773598 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773598
-  var valid_773599 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773599 = validateParameter(valid_773599, JString, required = false,
+  if valid_601433 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601433
+  var valid_601434 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601434 = validateParameter(valid_601434, JString, required = false,
                                  default = nil)
-  if valid_773599 != nil:
-    section.add "X-Amz-Algorithm", valid_773599
-  var valid_773600 = header.getOrDefault("X-Amz-Signature")
-  valid_773600 = validateParameter(valid_773600, JString, required = false,
+  if valid_601434 != nil:
+    section.add "X-Amz-Algorithm", valid_601434
+  var valid_601435 = header.getOrDefault("X-Amz-Signature")
+  valid_601435 = validateParameter(valid_601435, JString, required = false,
                                  default = nil)
-  if valid_773600 != nil:
-    section.add "X-Amz-Signature", valid_773600
-  var valid_773601 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773601 = validateParameter(valid_773601, JString, required = false,
+  if valid_601435 != nil:
+    section.add "X-Amz-Signature", valid_601435
+  var valid_601436 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601436 = validateParameter(valid_601436, JString, required = false,
                                  default = nil)
-  if valid_773601 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773601
-  var valid_773602 = header.getOrDefault("X-Amz-Credential")
-  valid_773602 = validateParameter(valid_773602, JString, required = false,
+  if valid_601436 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601436
+  var valid_601437 = header.getOrDefault("X-Amz-Credential")
+  valid_601437 = validateParameter(valid_601437, JString, required = false,
                                  default = nil)
-  if valid_773602 != nil:
-    section.add "X-Amz-Credential", valid_773602
+  if valid_601437 != nil:
+    section.add "X-Amz-Credential", valid_601437
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3062,42 +3062,42 @@ proc validate_DeleteDirectConnectGatewayAssociationProposal_773593(
   if body != nil:
     result.add "body", body
 
-proc call*(call_773604: Call_DeleteDirectConnectGatewayAssociationProposal_773592;
+proc call*(call_601439: Call_DeleteDirectConnectGatewayAssociationProposal_601427;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Deletes the association proposal request between the specified Direct Connect gateway and virtual private gateway or transit gateway.
   ## 
-  let valid = call_773604.validator(path, query, header, formData, body)
-  let scheme = call_773604.pickScheme
+  let valid = call_601439.validator(path, query, header, formData, body)
+  let scheme = call_601439.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773604.url(scheme.get, call_773604.host, call_773604.base,
-                         call_773604.route, valid.getOrDefault("path"))
-  result = hook(call_773604, url, valid)
+  let url = call_601439.url(scheme.get, call_601439.host, call_601439.base,
+                         call_601439.route, valid.getOrDefault("path"))
+  result = hook(call_601439, url, valid)
 
-proc call*(call_773605: Call_DeleteDirectConnectGatewayAssociationProposal_773592;
+proc call*(call_601440: Call_DeleteDirectConnectGatewayAssociationProposal_601427;
           body: JsonNode): Recallable =
   ## deleteDirectConnectGatewayAssociationProposal
   ## Deletes the association proposal request between the specified Direct Connect gateway and virtual private gateway or transit gateway.
   ##   body: JObject (required)
-  var body_773606 = newJObject()
+  var body_601441 = newJObject()
   if body != nil:
-    body_773606 = body
-  result = call_773605.call(nil, nil, nil, nil, body_773606)
+    body_601441 = body
+  result = call_601440.call(nil, nil, nil, nil, body_601441)
 
-var deleteDirectConnectGatewayAssociationProposal* = Call_DeleteDirectConnectGatewayAssociationProposal_773592(
+var deleteDirectConnectGatewayAssociationProposal* = Call_DeleteDirectConnectGatewayAssociationProposal_601427(
     name: "deleteDirectConnectGatewayAssociationProposal",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.DeleteDirectConnectGatewayAssociationProposal",
-    validator: validate_DeleteDirectConnectGatewayAssociationProposal_773593,
-    base: "/", url: url_DeleteDirectConnectGatewayAssociationProposal_773594,
+    validator: validate_DeleteDirectConnectGatewayAssociationProposal_601428,
+    base: "/", url: url_DeleteDirectConnectGatewayAssociationProposal_601429,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteInterconnect_773607 = ref object of OpenApiRestCall_772597
-proc url_DeleteInterconnect_773609(protocol: Scheme; host: string; base: string;
+  Call_DeleteInterconnect_601442 = ref object of OpenApiRestCall_600426
+proc url_DeleteInterconnect_601444(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteInterconnect_773608(path: JsonNode; query: JsonNode;
+proc validate_DeleteInterconnect_601443(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Deletes the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
@@ -3118,48 +3118,48 @@ proc validate_DeleteInterconnect_773608(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773610 = header.getOrDefault("X-Amz-Date")
-  valid_773610 = validateParameter(valid_773610, JString, required = false,
+  var valid_601445 = header.getOrDefault("X-Amz-Date")
+  valid_601445 = validateParameter(valid_601445, JString, required = false,
                                  default = nil)
-  if valid_773610 != nil:
-    section.add "X-Amz-Date", valid_773610
-  var valid_773611 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773611 = validateParameter(valid_773611, JString, required = false,
+  if valid_601445 != nil:
+    section.add "X-Amz-Date", valid_601445
+  var valid_601446 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601446 = validateParameter(valid_601446, JString, required = false,
                                  default = nil)
-  if valid_773611 != nil:
-    section.add "X-Amz-Security-Token", valid_773611
+  if valid_601446 != nil:
+    section.add "X-Amz-Security-Token", valid_601446
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773612 = header.getOrDefault("X-Amz-Target")
-  valid_773612 = validateParameter(valid_773612, JString, required = true, default = newJString(
+  var valid_601447 = header.getOrDefault("X-Amz-Target")
+  valid_601447 = validateParameter(valid_601447, JString, required = true, default = newJString(
       "OvertureService.DeleteInterconnect"))
-  if valid_773612 != nil:
-    section.add "X-Amz-Target", valid_773612
-  var valid_773613 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773613 = validateParameter(valid_773613, JString, required = false,
+  if valid_601447 != nil:
+    section.add "X-Amz-Target", valid_601447
+  var valid_601448 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601448 = validateParameter(valid_601448, JString, required = false,
                                  default = nil)
-  if valid_773613 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773613
-  var valid_773614 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773614 = validateParameter(valid_773614, JString, required = false,
+  if valid_601448 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601448
+  var valid_601449 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601449 = validateParameter(valid_601449, JString, required = false,
                                  default = nil)
-  if valid_773614 != nil:
-    section.add "X-Amz-Algorithm", valid_773614
-  var valid_773615 = header.getOrDefault("X-Amz-Signature")
-  valid_773615 = validateParameter(valid_773615, JString, required = false,
+  if valid_601449 != nil:
+    section.add "X-Amz-Algorithm", valid_601449
+  var valid_601450 = header.getOrDefault("X-Amz-Signature")
+  valid_601450 = validateParameter(valid_601450, JString, required = false,
                                  default = nil)
-  if valid_773615 != nil:
-    section.add "X-Amz-Signature", valid_773615
-  var valid_773616 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773616 = validateParameter(valid_773616, JString, required = false,
+  if valid_601450 != nil:
+    section.add "X-Amz-Signature", valid_601450
+  var valid_601451 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601451 = validateParameter(valid_601451, JString, required = false,
                                  default = nil)
-  if valid_773616 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773616
-  var valid_773617 = header.getOrDefault("X-Amz-Credential")
-  valid_773617 = validateParameter(valid_773617, JString, required = false,
+  if valid_601451 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601451
+  var valid_601452 = header.getOrDefault("X-Amz-Credential")
+  valid_601452 = validateParameter(valid_601452, JString, required = false,
                                  default = nil)
-  if valid_773617 != nil:
-    section.add "X-Amz-Credential", valid_773617
+  if valid_601452 != nil:
+    section.add "X-Amz-Credential", valid_601452
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3170,40 +3170,40 @@ proc validate_DeleteInterconnect_773608(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773619: Call_DeleteInterconnect_773607; path: JsonNode;
+proc call*(call_601454: Call_DeleteInterconnect_601442; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
-  let valid = call_773619.validator(path, query, header, formData, body)
-  let scheme = call_773619.pickScheme
+  let valid = call_601454.validator(path, query, header, formData, body)
+  let scheme = call_601454.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773619.url(scheme.get, call_773619.host, call_773619.base,
-                         call_773619.route, valid.getOrDefault("path"))
-  result = hook(call_773619, url, valid)
+  let url = call_601454.url(scheme.get, call_601454.host, call_601454.base,
+                         call_601454.route, valid.getOrDefault("path"))
+  result = hook(call_601454, url, valid)
 
-proc call*(call_773620: Call_DeleteInterconnect_773607; body: JsonNode): Recallable =
+proc call*(call_601455: Call_DeleteInterconnect_601442; body: JsonNode): Recallable =
   ## deleteInterconnect
   ## <p>Deletes the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ##   body: JObject (required)
-  var body_773621 = newJObject()
+  var body_601456 = newJObject()
   if body != nil:
-    body_773621 = body
-  result = call_773620.call(nil, nil, nil, nil, body_773621)
+    body_601456 = body
+  result = call_601455.call(nil, nil, nil, nil, body_601456)
 
-var deleteInterconnect* = Call_DeleteInterconnect_773607(
+var deleteInterconnect* = Call_DeleteInterconnect_601442(
     name: "deleteInterconnect", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DeleteInterconnect",
-    validator: validate_DeleteInterconnect_773608, base: "/",
-    url: url_DeleteInterconnect_773609, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteInterconnect_601443, base: "/",
+    url: url_DeleteInterconnect_601444, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteLag_773622 = ref object of OpenApiRestCall_772597
-proc url_DeleteLag_773624(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteLag_601457 = ref object of OpenApiRestCall_600426
+proc url_DeleteLag_601459(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteLag_773623(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteLag_601458(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified link aggregation group (LAG). You cannot delete a LAG if it has active virtual interfaces or hosted connections.
   ## 
@@ -3223,48 +3223,48 @@ proc validate_DeleteLag_773623(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773625 = header.getOrDefault("X-Amz-Date")
-  valid_773625 = validateParameter(valid_773625, JString, required = false,
+  var valid_601460 = header.getOrDefault("X-Amz-Date")
+  valid_601460 = validateParameter(valid_601460, JString, required = false,
                                  default = nil)
-  if valid_773625 != nil:
-    section.add "X-Amz-Date", valid_773625
-  var valid_773626 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773626 = validateParameter(valid_773626, JString, required = false,
+  if valid_601460 != nil:
+    section.add "X-Amz-Date", valid_601460
+  var valid_601461 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601461 = validateParameter(valid_601461, JString, required = false,
                                  default = nil)
-  if valid_773626 != nil:
-    section.add "X-Amz-Security-Token", valid_773626
+  if valid_601461 != nil:
+    section.add "X-Amz-Security-Token", valid_601461
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773627 = header.getOrDefault("X-Amz-Target")
-  valid_773627 = validateParameter(valid_773627, JString, required = true, default = newJString(
+  var valid_601462 = header.getOrDefault("X-Amz-Target")
+  valid_601462 = validateParameter(valid_601462, JString, required = true, default = newJString(
       "OvertureService.DeleteLag"))
-  if valid_773627 != nil:
-    section.add "X-Amz-Target", valid_773627
-  var valid_773628 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773628 = validateParameter(valid_773628, JString, required = false,
+  if valid_601462 != nil:
+    section.add "X-Amz-Target", valid_601462
+  var valid_601463 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601463 = validateParameter(valid_601463, JString, required = false,
                                  default = nil)
-  if valid_773628 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773628
-  var valid_773629 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773629 = validateParameter(valid_773629, JString, required = false,
+  if valid_601463 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601463
+  var valid_601464 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601464 = validateParameter(valid_601464, JString, required = false,
                                  default = nil)
-  if valid_773629 != nil:
-    section.add "X-Amz-Algorithm", valid_773629
-  var valid_773630 = header.getOrDefault("X-Amz-Signature")
-  valid_773630 = validateParameter(valid_773630, JString, required = false,
+  if valid_601464 != nil:
+    section.add "X-Amz-Algorithm", valid_601464
+  var valid_601465 = header.getOrDefault("X-Amz-Signature")
+  valid_601465 = validateParameter(valid_601465, JString, required = false,
                                  default = nil)
-  if valid_773630 != nil:
-    section.add "X-Amz-Signature", valid_773630
-  var valid_773631 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773631 = validateParameter(valid_773631, JString, required = false,
+  if valid_601465 != nil:
+    section.add "X-Amz-Signature", valid_601465
+  var valid_601466 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601466 = validateParameter(valid_601466, JString, required = false,
                                  default = nil)
-  if valid_773631 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773631
-  var valid_773632 = header.getOrDefault("X-Amz-Credential")
-  valid_773632 = validateParameter(valid_773632, JString, required = false,
+  if valid_601466 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601466
+  var valid_601467 = header.getOrDefault("X-Amz-Credential")
+  valid_601467 = validateParameter(valid_601467, JString, required = false,
                                  default = nil)
-  if valid_773632 != nil:
-    section.add "X-Amz-Credential", valid_773632
+  if valid_601467 != nil:
+    section.add "X-Amz-Credential", valid_601467
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3275,39 +3275,39 @@ proc validate_DeleteLag_773623(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_773634: Call_DeleteLag_773622; path: JsonNode; query: JsonNode;
+proc call*(call_601469: Call_DeleteLag_601457; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified link aggregation group (LAG). You cannot delete a LAG if it has active virtual interfaces or hosted connections.
   ## 
-  let valid = call_773634.validator(path, query, header, formData, body)
-  let scheme = call_773634.pickScheme
+  let valid = call_601469.validator(path, query, header, formData, body)
+  let scheme = call_601469.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773634.url(scheme.get, call_773634.host, call_773634.base,
-                         call_773634.route, valid.getOrDefault("path"))
-  result = hook(call_773634, url, valid)
+  let url = call_601469.url(scheme.get, call_601469.host, call_601469.base,
+                         call_601469.route, valid.getOrDefault("path"))
+  result = hook(call_601469, url, valid)
 
-proc call*(call_773635: Call_DeleteLag_773622; body: JsonNode): Recallable =
+proc call*(call_601470: Call_DeleteLag_601457; body: JsonNode): Recallable =
   ## deleteLag
   ## Deletes the specified link aggregation group (LAG). You cannot delete a LAG if it has active virtual interfaces or hosted connections.
   ##   body: JObject (required)
-  var body_773636 = newJObject()
+  var body_601471 = newJObject()
   if body != nil:
-    body_773636 = body
-  result = call_773635.call(nil, nil, nil, nil, body_773636)
+    body_601471 = body
+  result = call_601470.call(nil, nil, nil, nil, body_601471)
 
-var deleteLag* = Call_DeleteLag_773622(name: "deleteLag", meth: HttpMethod.HttpPost,
+var deleteLag* = Call_DeleteLag_601457(name: "deleteLag", meth: HttpMethod.HttpPost,
                                     host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.DeleteLag",
-                                    validator: validate_DeleteLag_773623,
-                                    base: "/", url: url_DeleteLag_773624,
+                                    validator: validate_DeleteLag_601458,
+                                    base: "/", url: url_DeleteLag_601459,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteVirtualInterface_773637 = ref object of OpenApiRestCall_772597
-proc url_DeleteVirtualInterface_773639(protocol: Scheme; host: string; base: string;
+  Call_DeleteVirtualInterface_601472 = ref object of OpenApiRestCall_600426
+proc url_DeleteVirtualInterface_601474(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DeleteVirtualInterface_773638(path: JsonNode; query: JsonNode;
+proc validate_DeleteVirtualInterface_601473(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes a virtual interface.
   ## 
@@ -3327,48 +3327,48 @@ proc validate_DeleteVirtualInterface_773638(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773640 = header.getOrDefault("X-Amz-Date")
-  valid_773640 = validateParameter(valid_773640, JString, required = false,
+  var valid_601475 = header.getOrDefault("X-Amz-Date")
+  valid_601475 = validateParameter(valid_601475, JString, required = false,
                                  default = nil)
-  if valid_773640 != nil:
-    section.add "X-Amz-Date", valid_773640
-  var valid_773641 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773641 = validateParameter(valid_773641, JString, required = false,
+  if valid_601475 != nil:
+    section.add "X-Amz-Date", valid_601475
+  var valid_601476 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601476 = validateParameter(valid_601476, JString, required = false,
                                  default = nil)
-  if valid_773641 != nil:
-    section.add "X-Amz-Security-Token", valid_773641
+  if valid_601476 != nil:
+    section.add "X-Amz-Security-Token", valid_601476
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773642 = header.getOrDefault("X-Amz-Target")
-  valid_773642 = validateParameter(valid_773642, JString, required = true, default = newJString(
+  var valid_601477 = header.getOrDefault("X-Amz-Target")
+  valid_601477 = validateParameter(valid_601477, JString, required = true, default = newJString(
       "OvertureService.DeleteVirtualInterface"))
-  if valid_773642 != nil:
-    section.add "X-Amz-Target", valid_773642
-  var valid_773643 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773643 = validateParameter(valid_773643, JString, required = false,
+  if valid_601477 != nil:
+    section.add "X-Amz-Target", valid_601477
+  var valid_601478 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601478 = validateParameter(valid_601478, JString, required = false,
                                  default = nil)
-  if valid_773643 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773643
-  var valid_773644 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773644 = validateParameter(valid_773644, JString, required = false,
+  if valid_601478 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601478
+  var valid_601479 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601479 = validateParameter(valid_601479, JString, required = false,
                                  default = nil)
-  if valid_773644 != nil:
-    section.add "X-Amz-Algorithm", valid_773644
-  var valid_773645 = header.getOrDefault("X-Amz-Signature")
-  valid_773645 = validateParameter(valid_773645, JString, required = false,
+  if valid_601479 != nil:
+    section.add "X-Amz-Algorithm", valid_601479
+  var valid_601480 = header.getOrDefault("X-Amz-Signature")
+  valid_601480 = validateParameter(valid_601480, JString, required = false,
                                  default = nil)
-  if valid_773645 != nil:
-    section.add "X-Amz-Signature", valid_773645
-  var valid_773646 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773646 = validateParameter(valid_773646, JString, required = false,
+  if valid_601480 != nil:
+    section.add "X-Amz-Signature", valid_601480
+  var valid_601481 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601481 = validateParameter(valid_601481, JString, required = false,
                                  default = nil)
-  if valid_773646 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773646
-  var valid_773647 = header.getOrDefault("X-Amz-Credential")
-  valid_773647 = validateParameter(valid_773647, JString, required = false,
+  if valid_601481 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601481
+  var valid_601482 = header.getOrDefault("X-Amz-Credential")
+  valid_601482 = validateParameter(valid_601482, JString, required = false,
                                  default = nil)
-  if valid_773647 != nil:
-    section.add "X-Amz-Credential", valid_773647
+  if valid_601482 != nil:
+    section.add "X-Amz-Credential", valid_601482
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3379,40 +3379,40 @@ proc validate_DeleteVirtualInterface_773638(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773649: Call_DeleteVirtualInterface_773637; path: JsonNode;
+proc call*(call_601484: Call_DeleteVirtualInterface_601472; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a virtual interface.
   ## 
-  let valid = call_773649.validator(path, query, header, formData, body)
-  let scheme = call_773649.pickScheme
+  let valid = call_601484.validator(path, query, header, formData, body)
+  let scheme = call_601484.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773649.url(scheme.get, call_773649.host, call_773649.base,
-                         call_773649.route, valid.getOrDefault("path"))
-  result = hook(call_773649, url, valid)
+  let url = call_601484.url(scheme.get, call_601484.host, call_601484.base,
+                         call_601484.route, valid.getOrDefault("path"))
+  result = hook(call_601484, url, valid)
 
-proc call*(call_773650: Call_DeleteVirtualInterface_773637; body: JsonNode): Recallable =
+proc call*(call_601485: Call_DeleteVirtualInterface_601472; body: JsonNode): Recallable =
   ## deleteVirtualInterface
   ## Deletes a virtual interface.
   ##   body: JObject (required)
-  var body_773651 = newJObject()
+  var body_601486 = newJObject()
   if body != nil:
-    body_773651 = body
-  result = call_773650.call(nil, nil, nil, nil, body_773651)
+    body_601486 = body
+  result = call_601485.call(nil, nil, nil, nil, body_601486)
 
-var deleteVirtualInterface* = Call_DeleteVirtualInterface_773637(
+var deleteVirtualInterface* = Call_DeleteVirtualInterface_601472(
     name: "deleteVirtualInterface", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DeleteVirtualInterface",
-    validator: validate_DeleteVirtualInterface_773638, base: "/",
-    url: url_DeleteVirtualInterface_773639, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteVirtualInterface_601473, base: "/",
+    url: url_DeleteVirtualInterface_601474, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeConnectionLoa_773652 = ref object of OpenApiRestCall_772597
-proc url_DescribeConnectionLoa_773654(protocol: Scheme; host: string; base: string;
+  Call_DescribeConnectionLoa_601487 = ref object of OpenApiRestCall_600426
+proc url_DescribeConnectionLoa_601489(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeConnectionLoa_773653(path: JsonNode; query: JsonNode;
+proc validate_DescribeConnectionLoa_601488(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deprecated. Use <a>DescribeLoa</a> instead.</p> <p>Gets the LOA-CFA for a connection.</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that your APN partner or service provider uses when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ## 
@@ -3432,48 +3432,48 @@ proc validate_DescribeConnectionLoa_773653(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773655 = header.getOrDefault("X-Amz-Date")
-  valid_773655 = validateParameter(valid_773655, JString, required = false,
+  var valid_601490 = header.getOrDefault("X-Amz-Date")
+  valid_601490 = validateParameter(valid_601490, JString, required = false,
                                  default = nil)
-  if valid_773655 != nil:
-    section.add "X-Amz-Date", valid_773655
-  var valid_773656 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773656 = validateParameter(valid_773656, JString, required = false,
+  if valid_601490 != nil:
+    section.add "X-Amz-Date", valid_601490
+  var valid_601491 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601491 = validateParameter(valid_601491, JString, required = false,
                                  default = nil)
-  if valid_773656 != nil:
-    section.add "X-Amz-Security-Token", valid_773656
+  if valid_601491 != nil:
+    section.add "X-Amz-Security-Token", valid_601491
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773657 = header.getOrDefault("X-Amz-Target")
-  valid_773657 = validateParameter(valid_773657, JString, required = true, default = newJString(
+  var valid_601492 = header.getOrDefault("X-Amz-Target")
+  valid_601492 = validateParameter(valid_601492, JString, required = true, default = newJString(
       "OvertureService.DescribeConnectionLoa"))
-  if valid_773657 != nil:
-    section.add "X-Amz-Target", valid_773657
-  var valid_773658 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773658 = validateParameter(valid_773658, JString, required = false,
+  if valid_601492 != nil:
+    section.add "X-Amz-Target", valid_601492
+  var valid_601493 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601493 = validateParameter(valid_601493, JString, required = false,
                                  default = nil)
-  if valid_773658 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773658
-  var valid_773659 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773659 = validateParameter(valid_773659, JString, required = false,
+  if valid_601493 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601493
+  var valid_601494 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601494 = validateParameter(valid_601494, JString, required = false,
                                  default = nil)
-  if valid_773659 != nil:
-    section.add "X-Amz-Algorithm", valid_773659
-  var valid_773660 = header.getOrDefault("X-Amz-Signature")
-  valid_773660 = validateParameter(valid_773660, JString, required = false,
+  if valid_601494 != nil:
+    section.add "X-Amz-Algorithm", valid_601494
+  var valid_601495 = header.getOrDefault("X-Amz-Signature")
+  valid_601495 = validateParameter(valid_601495, JString, required = false,
                                  default = nil)
-  if valid_773660 != nil:
-    section.add "X-Amz-Signature", valid_773660
-  var valid_773661 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773661 = validateParameter(valid_773661, JString, required = false,
+  if valid_601495 != nil:
+    section.add "X-Amz-Signature", valid_601495
+  var valid_601496 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601496 = validateParameter(valid_601496, JString, required = false,
                                  default = nil)
-  if valid_773661 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773661
-  var valid_773662 = header.getOrDefault("X-Amz-Credential")
-  valid_773662 = validateParameter(valid_773662, JString, required = false,
+  if valid_601496 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601496
+  var valid_601497 = header.getOrDefault("X-Amz-Credential")
+  valid_601497 = validateParameter(valid_601497, JString, required = false,
                                  default = nil)
-  if valid_773662 != nil:
-    section.add "X-Amz-Credential", valid_773662
+  if valid_601497 != nil:
+    section.add "X-Amz-Credential", valid_601497
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3484,40 +3484,40 @@ proc validate_DescribeConnectionLoa_773653(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773664: Call_DescribeConnectionLoa_773652; path: JsonNode;
+proc call*(call_601499: Call_DescribeConnectionLoa_601487; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deprecated. Use <a>DescribeLoa</a> instead.</p> <p>Gets the LOA-CFA for a connection.</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that your APN partner or service provider uses when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ## 
-  let valid = call_773664.validator(path, query, header, formData, body)
-  let scheme = call_773664.pickScheme
+  let valid = call_601499.validator(path, query, header, formData, body)
+  let scheme = call_601499.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773664.url(scheme.get, call_773664.host, call_773664.base,
-                         call_773664.route, valid.getOrDefault("path"))
-  result = hook(call_773664, url, valid)
+  let url = call_601499.url(scheme.get, call_601499.host, call_601499.base,
+                         call_601499.route, valid.getOrDefault("path"))
+  result = hook(call_601499, url, valid)
 
-proc call*(call_773665: Call_DescribeConnectionLoa_773652; body: JsonNode): Recallable =
+proc call*(call_601500: Call_DescribeConnectionLoa_601487; body: JsonNode): Recallable =
   ## describeConnectionLoa
   ## <p>Deprecated. Use <a>DescribeLoa</a> instead.</p> <p>Gets the LOA-CFA for a connection.</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that your APN partner or service provider uses when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_773666 = newJObject()
+  var body_601501 = newJObject()
   if body != nil:
-    body_773666 = body
-  result = call_773665.call(nil, nil, nil, nil, body_773666)
+    body_601501 = body
+  result = call_601500.call(nil, nil, nil, nil, body_601501)
 
-var describeConnectionLoa* = Call_DescribeConnectionLoa_773652(
+var describeConnectionLoa* = Call_DescribeConnectionLoa_601487(
     name: "describeConnectionLoa", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeConnectionLoa",
-    validator: validate_DescribeConnectionLoa_773653, base: "/",
-    url: url_DescribeConnectionLoa_773654, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeConnectionLoa_601488, base: "/",
+    url: url_DescribeConnectionLoa_601489, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeConnections_773667 = ref object of OpenApiRestCall_772597
-proc url_DescribeConnections_773669(protocol: Scheme; host: string; base: string;
+  Call_DescribeConnections_601502 = ref object of OpenApiRestCall_600426
+proc url_DescribeConnections_601504(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeConnections_773668(path: JsonNode; query: JsonNode;
+proc validate_DescribeConnections_601503(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Displays the specified connection or all connections in this Region.
@@ -3538,48 +3538,48 @@ proc validate_DescribeConnections_773668(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773670 = header.getOrDefault("X-Amz-Date")
-  valid_773670 = validateParameter(valid_773670, JString, required = false,
+  var valid_601505 = header.getOrDefault("X-Amz-Date")
+  valid_601505 = validateParameter(valid_601505, JString, required = false,
                                  default = nil)
-  if valid_773670 != nil:
-    section.add "X-Amz-Date", valid_773670
-  var valid_773671 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773671 = validateParameter(valid_773671, JString, required = false,
+  if valid_601505 != nil:
+    section.add "X-Amz-Date", valid_601505
+  var valid_601506 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601506 = validateParameter(valid_601506, JString, required = false,
                                  default = nil)
-  if valid_773671 != nil:
-    section.add "X-Amz-Security-Token", valid_773671
+  if valid_601506 != nil:
+    section.add "X-Amz-Security-Token", valid_601506
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773672 = header.getOrDefault("X-Amz-Target")
-  valid_773672 = validateParameter(valid_773672, JString, required = true, default = newJString(
+  var valid_601507 = header.getOrDefault("X-Amz-Target")
+  valid_601507 = validateParameter(valid_601507, JString, required = true, default = newJString(
       "OvertureService.DescribeConnections"))
-  if valid_773672 != nil:
-    section.add "X-Amz-Target", valid_773672
-  var valid_773673 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773673 = validateParameter(valid_773673, JString, required = false,
+  if valid_601507 != nil:
+    section.add "X-Amz-Target", valid_601507
+  var valid_601508 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601508 = validateParameter(valid_601508, JString, required = false,
                                  default = nil)
-  if valid_773673 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773673
-  var valid_773674 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773674 = validateParameter(valid_773674, JString, required = false,
+  if valid_601508 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601508
+  var valid_601509 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601509 = validateParameter(valid_601509, JString, required = false,
                                  default = nil)
-  if valid_773674 != nil:
-    section.add "X-Amz-Algorithm", valid_773674
-  var valid_773675 = header.getOrDefault("X-Amz-Signature")
-  valid_773675 = validateParameter(valid_773675, JString, required = false,
+  if valid_601509 != nil:
+    section.add "X-Amz-Algorithm", valid_601509
+  var valid_601510 = header.getOrDefault("X-Amz-Signature")
+  valid_601510 = validateParameter(valid_601510, JString, required = false,
                                  default = nil)
-  if valid_773675 != nil:
-    section.add "X-Amz-Signature", valid_773675
-  var valid_773676 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773676 = validateParameter(valid_773676, JString, required = false,
+  if valid_601510 != nil:
+    section.add "X-Amz-Signature", valid_601510
+  var valid_601511 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601511 = validateParameter(valid_601511, JString, required = false,
                                  default = nil)
-  if valid_773676 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773676
-  var valid_773677 = header.getOrDefault("X-Amz-Credential")
-  valid_773677 = validateParameter(valid_773677, JString, required = false,
+  if valid_601511 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601511
+  var valid_601512 = header.getOrDefault("X-Amz-Credential")
+  valid_601512 = validateParameter(valid_601512, JString, required = false,
                                  default = nil)
-  if valid_773677 != nil:
-    section.add "X-Amz-Credential", valid_773677
+  if valid_601512 != nil:
+    section.add "X-Amz-Credential", valid_601512
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3590,40 +3590,40 @@ proc validate_DescribeConnections_773668(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773679: Call_DescribeConnections_773667; path: JsonNode;
+proc call*(call_601514: Call_DescribeConnections_601502; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Displays the specified connection or all connections in this Region.
   ## 
-  let valid = call_773679.validator(path, query, header, formData, body)
-  let scheme = call_773679.pickScheme
+  let valid = call_601514.validator(path, query, header, formData, body)
+  let scheme = call_601514.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773679.url(scheme.get, call_773679.host, call_773679.base,
-                         call_773679.route, valid.getOrDefault("path"))
-  result = hook(call_773679, url, valid)
+  let url = call_601514.url(scheme.get, call_601514.host, call_601514.base,
+                         call_601514.route, valid.getOrDefault("path"))
+  result = hook(call_601514, url, valid)
 
-proc call*(call_773680: Call_DescribeConnections_773667; body: JsonNode): Recallable =
+proc call*(call_601515: Call_DescribeConnections_601502; body: JsonNode): Recallable =
   ## describeConnections
   ## Displays the specified connection or all connections in this Region.
   ##   body: JObject (required)
-  var body_773681 = newJObject()
+  var body_601516 = newJObject()
   if body != nil:
-    body_773681 = body
-  result = call_773680.call(nil, nil, nil, nil, body_773681)
+    body_601516 = body
+  result = call_601515.call(nil, nil, nil, nil, body_601516)
 
-var describeConnections* = Call_DescribeConnections_773667(
+var describeConnections* = Call_DescribeConnections_601502(
     name: "describeConnections", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeConnections",
-    validator: validate_DescribeConnections_773668, base: "/",
-    url: url_DescribeConnections_773669, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeConnections_601503, base: "/",
+    url: url_DescribeConnections_601504, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeConnectionsOnInterconnect_773682 = ref object of OpenApiRestCall_772597
-proc url_DescribeConnectionsOnInterconnect_773684(protocol: Scheme; host: string;
+  Call_DescribeConnectionsOnInterconnect_601517 = ref object of OpenApiRestCall_600426
+proc url_DescribeConnectionsOnInterconnect_601519(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeConnectionsOnInterconnect_773683(path: JsonNode;
+proc validate_DescribeConnectionsOnInterconnect_601518(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deprecated. Use <a>DescribeHostedConnections</a> instead.</p> <p>Lists the connections that have been provisioned on the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
@@ -3643,48 +3643,48 @@ proc validate_DescribeConnectionsOnInterconnect_773683(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773685 = header.getOrDefault("X-Amz-Date")
-  valid_773685 = validateParameter(valid_773685, JString, required = false,
+  var valid_601520 = header.getOrDefault("X-Amz-Date")
+  valid_601520 = validateParameter(valid_601520, JString, required = false,
                                  default = nil)
-  if valid_773685 != nil:
-    section.add "X-Amz-Date", valid_773685
-  var valid_773686 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773686 = validateParameter(valid_773686, JString, required = false,
+  if valid_601520 != nil:
+    section.add "X-Amz-Date", valid_601520
+  var valid_601521 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601521 = validateParameter(valid_601521, JString, required = false,
                                  default = nil)
-  if valid_773686 != nil:
-    section.add "X-Amz-Security-Token", valid_773686
+  if valid_601521 != nil:
+    section.add "X-Amz-Security-Token", valid_601521
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773687 = header.getOrDefault("X-Amz-Target")
-  valid_773687 = validateParameter(valid_773687, JString, required = true, default = newJString(
+  var valid_601522 = header.getOrDefault("X-Amz-Target")
+  valid_601522 = validateParameter(valid_601522, JString, required = true, default = newJString(
       "OvertureService.DescribeConnectionsOnInterconnect"))
-  if valid_773687 != nil:
-    section.add "X-Amz-Target", valid_773687
-  var valid_773688 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773688 = validateParameter(valid_773688, JString, required = false,
+  if valid_601522 != nil:
+    section.add "X-Amz-Target", valid_601522
+  var valid_601523 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601523 = validateParameter(valid_601523, JString, required = false,
                                  default = nil)
-  if valid_773688 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773688
-  var valid_773689 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773689 = validateParameter(valid_773689, JString, required = false,
+  if valid_601523 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601523
+  var valid_601524 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601524 = validateParameter(valid_601524, JString, required = false,
                                  default = nil)
-  if valid_773689 != nil:
-    section.add "X-Amz-Algorithm", valid_773689
-  var valid_773690 = header.getOrDefault("X-Amz-Signature")
-  valid_773690 = validateParameter(valid_773690, JString, required = false,
+  if valid_601524 != nil:
+    section.add "X-Amz-Algorithm", valid_601524
+  var valid_601525 = header.getOrDefault("X-Amz-Signature")
+  valid_601525 = validateParameter(valid_601525, JString, required = false,
                                  default = nil)
-  if valid_773690 != nil:
-    section.add "X-Amz-Signature", valid_773690
-  var valid_773691 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773691 = validateParameter(valid_773691, JString, required = false,
+  if valid_601525 != nil:
+    section.add "X-Amz-Signature", valid_601525
+  var valid_601526 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601526 = validateParameter(valid_601526, JString, required = false,
                                  default = nil)
-  if valid_773691 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773691
-  var valid_773692 = header.getOrDefault("X-Amz-Credential")
-  valid_773692 = validateParameter(valid_773692, JString, required = false,
+  if valid_601526 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601526
+  var valid_601527 = header.getOrDefault("X-Amz-Credential")
+  valid_601527 = validateParameter(valid_601527, JString, required = false,
                                  default = nil)
-  if valid_773692 != nil:
-    section.add "X-Amz-Credential", valid_773692
+  if valid_601527 != nil:
+    section.add "X-Amz-Credential", valid_601527
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3695,43 +3695,43 @@ proc validate_DescribeConnectionsOnInterconnect_773683(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773694: Call_DescribeConnectionsOnInterconnect_773682;
+proc call*(call_601529: Call_DescribeConnectionsOnInterconnect_601517;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Deprecated. Use <a>DescribeHostedConnections</a> instead.</p> <p>Lists the connections that have been provisioned on the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
-  let valid = call_773694.validator(path, query, header, formData, body)
-  let scheme = call_773694.pickScheme
+  let valid = call_601529.validator(path, query, header, formData, body)
+  let scheme = call_601529.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773694.url(scheme.get, call_773694.host, call_773694.base,
-                         call_773694.route, valid.getOrDefault("path"))
-  result = hook(call_773694, url, valid)
+  let url = call_601529.url(scheme.get, call_601529.host, call_601529.base,
+                         call_601529.route, valid.getOrDefault("path"))
+  result = hook(call_601529, url, valid)
 
-proc call*(call_773695: Call_DescribeConnectionsOnInterconnect_773682;
+proc call*(call_601530: Call_DescribeConnectionsOnInterconnect_601517;
           body: JsonNode): Recallable =
   ## describeConnectionsOnInterconnect
   ## <p>Deprecated. Use <a>DescribeHostedConnections</a> instead.</p> <p>Lists the connections that have been provisioned on the specified interconnect.</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ##   body: JObject (required)
-  var body_773696 = newJObject()
+  var body_601531 = newJObject()
   if body != nil:
-    body_773696 = body
-  result = call_773695.call(nil, nil, nil, nil, body_773696)
+    body_601531 = body
+  result = call_601530.call(nil, nil, nil, nil, body_601531)
 
-var describeConnectionsOnInterconnect* = Call_DescribeConnectionsOnInterconnect_773682(
+var describeConnectionsOnInterconnect* = Call_DescribeConnectionsOnInterconnect_601517(
     name: "describeConnectionsOnInterconnect", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeConnectionsOnInterconnect",
-    validator: validate_DescribeConnectionsOnInterconnect_773683, base: "/",
-    url: url_DescribeConnectionsOnInterconnect_773684,
+    validator: validate_DescribeConnectionsOnInterconnect_601518, base: "/",
+    url: url_DescribeConnectionsOnInterconnect_601519,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDirectConnectGatewayAssociationProposals_773697 = ref object of OpenApiRestCall_772597
-proc url_DescribeDirectConnectGatewayAssociationProposals_773699(
+  Call_DescribeDirectConnectGatewayAssociationProposals_601532 = ref object of OpenApiRestCall_600426
+proc url_DescribeDirectConnectGatewayAssociationProposals_601534(
     protocol: Scheme; host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeDirectConnectGatewayAssociationProposals_773698(
+proc validate_DescribeDirectConnectGatewayAssociationProposals_601533(
     path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
     body: JsonNode): JsonNode =
   ## Describes one or more association proposals for connection between a virtual private gateway or transit gateway and a Direct Connect gateway. 
@@ -3752,48 +3752,48 @@ proc validate_DescribeDirectConnectGatewayAssociationProposals_773698(
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773700 = header.getOrDefault("X-Amz-Date")
-  valid_773700 = validateParameter(valid_773700, JString, required = false,
+  var valid_601535 = header.getOrDefault("X-Amz-Date")
+  valid_601535 = validateParameter(valid_601535, JString, required = false,
                                  default = nil)
-  if valid_773700 != nil:
-    section.add "X-Amz-Date", valid_773700
-  var valid_773701 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773701 = validateParameter(valid_773701, JString, required = false,
+  if valid_601535 != nil:
+    section.add "X-Amz-Date", valid_601535
+  var valid_601536 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601536 = validateParameter(valid_601536, JString, required = false,
                                  default = nil)
-  if valid_773701 != nil:
-    section.add "X-Amz-Security-Token", valid_773701
+  if valid_601536 != nil:
+    section.add "X-Amz-Security-Token", valid_601536
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773702 = header.getOrDefault("X-Amz-Target")
-  valid_773702 = validateParameter(valid_773702, JString, required = true, default = newJString(
+  var valid_601537 = header.getOrDefault("X-Amz-Target")
+  valid_601537 = validateParameter(valid_601537, JString, required = true, default = newJString(
       "OvertureService.DescribeDirectConnectGatewayAssociationProposals"))
-  if valid_773702 != nil:
-    section.add "X-Amz-Target", valid_773702
-  var valid_773703 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773703 = validateParameter(valid_773703, JString, required = false,
+  if valid_601537 != nil:
+    section.add "X-Amz-Target", valid_601537
+  var valid_601538 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601538 = validateParameter(valid_601538, JString, required = false,
                                  default = nil)
-  if valid_773703 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773703
-  var valid_773704 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773704 = validateParameter(valid_773704, JString, required = false,
+  if valid_601538 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601538
+  var valid_601539 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601539 = validateParameter(valid_601539, JString, required = false,
                                  default = nil)
-  if valid_773704 != nil:
-    section.add "X-Amz-Algorithm", valid_773704
-  var valid_773705 = header.getOrDefault("X-Amz-Signature")
-  valid_773705 = validateParameter(valid_773705, JString, required = false,
+  if valid_601539 != nil:
+    section.add "X-Amz-Algorithm", valid_601539
+  var valid_601540 = header.getOrDefault("X-Amz-Signature")
+  valid_601540 = validateParameter(valid_601540, JString, required = false,
                                  default = nil)
-  if valid_773705 != nil:
-    section.add "X-Amz-Signature", valid_773705
-  var valid_773706 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773706 = validateParameter(valid_773706, JString, required = false,
+  if valid_601540 != nil:
+    section.add "X-Amz-Signature", valid_601540
+  var valid_601541 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601541 = validateParameter(valid_601541, JString, required = false,
                                  default = nil)
-  if valid_773706 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773706
-  var valid_773707 = header.getOrDefault("X-Amz-Credential")
-  valid_773707 = validateParameter(valid_773707, JString, required = false,
+  if valid_601541 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601541
+  var valid_601542 = header.getOrDefault("X-Amz-Credential")
+  valid_601542 = validateParameter(valid_601542, JString, required = false,
                                  default = nil)
-  if valid_773707 != nil:
-    section.add "X-Amz-Credential", valid_773707
+  if valid_601542 != nil:
+    section.add "X-Amz-Credential", valid_601542
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3804,42 +3804,42 @@ proc validate_DescribeDirectConnectGatewayAssociationProposals_773698(
   if body != nil:
     result.add "body", body
 
-proc call*(call_773709: Call_DescribeDirectConnectGatewayAssociationProposals_773697;
+proc call*(call_601544: Call_DescribeDirectConnectGatewayAssociationProposals_601532;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Describes one or more association proposals for connection between a virtual private gateway or transit gateway and a Direct Connect gateway. 
   ## 
-  let valid = call_773709.validator(path, query, header, formData, body)
-  let scheme = call_773709.pickScheme
+  let valid = call_601544.validator(path, query, header, formData, body)
+  let scheme = call_601544.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773709.url(scheme.get, call_773709.host, call_773709.base,
-                         call_773709.route, valid.getOrDefault("path"))
-  result = hook(call_773709, url, valid)
+  let url = call_601544.url(scheme.get, call_601544.host, call_601544.base,
+                         call_601544.route, valid.getOrDefault("path"))
+  result = hook(call_601544, url, valid)
 
-proc call*(call_773710: Call_DescribeDirectConnectGatewayAssociationProposals_773697;
+proc call*(call_601545: Call_DescribeDirectConnectGatewayAssociationProposals_601532;
           body: JsonNode): Recallable =
   ## describeDirectConnectGatewayAssociationProposals
   ## Describes one or more association proposals for connection between a virtual private gateway or transit gateway and a Direct Connect gateway. 
   ##   body: JObject (required)
-  var body_773711 = newJObject()
+  var body_601546 = newJObject()
   if body != nil:
-    body_773711 = body
-  result = call_773710.call(nil, nil, nil, nil, body_773711)
+    body_601546 = body
+  result = call_601545.call(nil, nil, nil, nil, body_601546)
 
-var describeDirectConnectGatewayAssociationProposals* = Call_DescribeDirectConnectGatewayAssociationProposals_773697(
+var describeDirectConnectGatewayAssociationProposals* = Call_DescribeDirectConnectGatewayAssociationProposals_601532(
     name: "describeDirectConnectGatewayAssociationProposals",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.DescribeDirectConnectGatewayAssociationProposals",
-    validator: validate_DescribeDirectConnectGatewayAssociationProposals_773698,
-    base: "/", url: url_DescribeDirectConnectGatewayAssociationProposals_773699,
+    validator: validate_DescribeDirectConnectGatewayAssociationProposals_601533,
+    base: "/", url: url_DescribeDirectConnectGatewayAssociationProposals_601534,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDirectConnectGatewayAssociations_773712 = ref object of OpenApiRestCall_772597
-proc url_DescribeDirectConnectGatewayAssociations_773714(protocol: Scheme;
+  Call_DescribeDirectConnectGatewayAssociations_601547 = ref object of OpenApiRestCall_600426
+proc url_DescribeDirectConnectGatewayAssociations_601549(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeDirectConnectGatewayAssociations_773713(path: JsonNode;
+proc validate_DescribeDirectConnectGatewayAssociations_601548(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the associations between your Direct Connect gateways and virtual private gateways. You must specify a Direct Connect gateway, a virtual private gateway, or both. If you specify a Direct Connect gateway, the response contains all virtual private gateways associated with the Direct Connect gateway. If you specify a virtual private gateway, the response contains all Direct Connect gateways associated with the virtual private gateway. If you specify both, the response contains the association between the Direct Connect gateway and the virtual private gateway.
   ## 
@@ -3859,48 +3859,48 @@ proc validate_DescribeDirectConnectGatewayAssociations_773713(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773715 = header.getOrDefault("X-Amz-Date")
-  valid_773715 = validateParameter(valid_773715, JString, required = false,
+  var valid_601550 = header.getOrDefault("X-Amz-Date")
+  valid_601550 = validateParameter(valid_601550, JString, required = false,
                                  default = nil)
-  if valid_773715 != nil:
-    section.add "X-Amz-Date", valid_773715
-  var valid_773716 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773716 = validateParameter(valid_773716, JString, required = false,
+  if valid_601550 != nil:
+    section.add "X-Amz-Date", valid_601550
+  var valid_601551 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601551 = validateParameter(valid_601551, JString, required = false,
                                  default = nil)
-  if valid_773716 != nil:
-    section.add "X-Amz-Security-Token", valid_773716
+  if valid_601551 != nil:
+    section.add "X-Amz-Security-Token", valid_601551
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773717 = header.getOrDefault("X-Amz-Target")
-  valid_773717 = validateParameter(valid_773717, JString, required = true, default = newJString(
+  var valid_601552 = header.getOrDefault("X-Amz-Target")
+  valid_601552 = validateParameter(valid_601552, JString, required = true, default = newJString(
       "OvertureService.DescribeDirectConnectGatewayAssociations"))
-  if valid_773717 != nil:
-    section.add "X-Amz-Target", valid_773717
-  var valid_773718 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773718 = validateParameter(valid_773718, JString, required = false,
+  if valid_601552 != nil:
+    section.add "X-Amz-Target", valid_601552
+  var valid_601553 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601553 = validateParameter(valid_601553, JString, required = false,
                                  default = nil)
-  if valid_773718 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773718
-  var valid_773719 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773719 = validateParameter(valid_773719, JString, required = false,
+  if valid_601553 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601553
+  var valid_601554 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601554 = validateParameter(valid_601554, JString, required = false,
                                  default = nil)
-  if valid_773719 != nil:
-    section.add "X-Amz-Algorithm", valid_773719
-  var valid_773720 = header.getOrDefault("X-Amz-Signature")
-  valid_773720 = validateParameter(valid_773720, JString, required = false,
+  if valid_601554 != nil:
+    section.add "X-Amz-Algorithm", valid_601554
+  var valid_601555 = header.getOrDefault("X-Amz-Signature")
+  valid_601555 = validateParameter(valid_601555, JString, required = false,
                                  default = nil)
-  if valid_773720 != nil:
-    section.add "X-Amz-Signature", valid_773720
-  var valid_773721 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773721 = validateParameter(valid_773721, JString, required = false,
+  if valid_601555 != nil:
+    section.add "X-Amz-Signature", valid_601555
+  var valid_601556 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601556 = validateParameter(valid_601556, JString, required = false,
                                  default = nil)
-  if valid_773721 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773721
-  var valid_773722 = header.getOrDefault("X-Amz-Credential")
-  valid_773722 = validateParameter(valid_773722, JString, required = false,
+  if valid_601556 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601556
+  var valid_601557 = header.getOrDefault("X-Amz-Credential")
+  valid_601557 = validateParameter(valid_601557, JString, required = false,
                                  default = nil)
-  if valid_773722 != nil:
-    section.add "X-Amz-Credential", valid_773722
+  if valid_601557 != nil:
+    section.add "X-Amz-Credential", valid_601557
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3911,42 +3911,42 @@ proc validate_DescribeDirectConnectGatewayAssociations_773713(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773724: Call_DescribeDirectConnectGatewayAssociations_773712;
+proc call*(call_601559: Call_DescribeDirectConnectGatewayAssociations_601547;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Lists the associations between your Direct Connect gateways and virtual private gateways. You must specify a Direct Connect gateway, a virtual private gateway, or both. If you specify a Direct Connect gateway, the response contains all virtual private gateways associated with the Direct Connect gateway. If you specify a virtual private gateway, the response contains all Direct Connect gateways associated with the virtual private gateway. If you specify both, the response contains the association between the Direct Connect gateway and the virtual private gateway.
   ## 
-  let valid = call_773724.validator(path, query, header, formData, body)
-  let scheme = call_773724.pickScheme
+  let valid = call_601559.validator(path, query, header, formData, body)
+  let scheme = call_601559.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773724.url(scheme.get, call_773724.host, call_773724.base,
-                         call_773724.route, valid.getOrDefault("path"))
-  result = hook(call_773724, url, valid)
+  let url = call_601559.url(scheme.get, call_601559.host, call_601559.base,
+                         call_601559.route, valid.getOrDefault("path"))
+  result = hook(call_601559, url, valid)
 
-proc call*(call_773725: Call_DescribeDirectConnectGatewayAssociations_773712;
+proc call*(call_601560: Call_DescribeDirectConnectGatewayAssociations_601547;
           body: JsonNode): Recallable =
   ## describeDirectConnectGatewayAssociations
   ## Lists the associations between your Direct Connect gateways and virtual private gateways. You must specify a Direct Connect gateway, a virtual private gateway, or both. If you specify a Direct Connect gateway, the response contains all virtual private gateways associated with the Direct Connect gateway. If you specify a virtual private gateway, the response contains all Direct Connect gateways associated with the virtual private gateway. If you specify both, the response contains the association between the Direct Connect gateway and the virtual private gateway.
   ##   body: JObject (required)
-  var body_773726 = newJObject()
+  var body_601561 = newJObject()
   if body != nil:
-    body_773726 = body
-  result = call_773725.call(nil, nil, nil, nil, body_773726)
+    body_601561 = body
+  result = call_601560.call(nil, nil, nil, nil, body_601561)
 
-var describeDirectConnectGatewayAssociations* = Call_DescribeDirectConnectGatewayAssociations_773712(
+var describeDirectConnectGatewayAssociations* = Call_DescribeDirectConnectGatewayAssociations_601547(
     name: "describeDirectConnectGatewayAssociations", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.DescribeDirectConnectGatewayAssociations",
-    validator: validate_DescribeDirectConnectGatewayAssociations_773713,
-    base: "/", url: url_DescribeDirectConnectGatewayAssociations_773714,
+    validator: validate_DescribeDirectConnectGatewayAssociations_601548,
+    base: "/", url: url_DescribeDirectConnectGatewayAssociations_601549,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDirectConnectGatewayAttachments_773727 = ref object of OpenApiRestCall_772597
-proc url_DescribeDirectConnectGatewayAttachments_773729(protocol: Scheme;
+  Call_DescribeDirectConnectGatewayAttachments_601562 = ref object of OpenApiRestCall_600426
+proc url_DescribeDirectConnectGatewayAttachments_601564(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeDirectConnectGatewayAttachments_773728(path: JsonNode;
+proc validate_DescribeDirectConnectGatewayAttachments_601563(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the attachments between your Direct Connect gateways and virtual interfaces. You must specify a Direct Connect gateway, a virtual interface, or both. If you specify a Direct Connect gateway, the response contains all virtual interfaces attached to the Direct Connect gateway. If you specify a virtual interface, the response contains all Direct Connect gateways attached to the virtual interface. If you specify both, the response contains the attachment between the Direct Connect gateway and the virtual interface.
   ## 
@@ -3966,48 +3966,48 @@ proc validate_DescribeDirectConnectGatewayAttachments_773728(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773730 = header.getOrDefault("X-Amz-Date")
-  valid_773730 = validateParameter(valid_773730, JString, required = false,
+  var valid_601565 = header.getOrDefault("X-Amz-Date")
+  valid_601565 = validateParameter(valid_601565, JString, required = false,
                                  default = nil)
-  if valid_773730 != nil:
-    section.add "X-Amz-Date", valid_773730
-  var valid_773731 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773731 = validateParameter(valid_773731, JString, required = false,
+  if valid_601565 != nil:
+    section.add "X-Amz-Date", valid_601565
+  var valid_601566 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601566 = validateParameter(valid_601566, JString, required = false,
                                  default = nil)
-  if valid_773731 != nil:
-    section.add "X-Amz-Security-Token", valid_773731
+  if valid_601566 != nil:
+    section.add "X-Amz-Security-Token", valid_601566
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773732 = header.getOrDefault("X-Amz-Target")
-  valid_773732 = validateParameter(valid_773732, JString, required = true, default = newJString(
+  var valid_601567 = header.getOrDefault("X-Amz-Target")
+  valid_601567 = validateParameter(valid_601567, JString, required = true, default = newJString(
       "OvertureService.DescribeDirectConnectGatewayAttachments"))
-  if valid_773732 != nil:
-    section.add "X-Amz-Target", valid_773732
-  var valid_773733 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773733 = validateParameter(valid_773733, JString, required = false,
+  if valid_601567 != nil:
+    section.add "X-Amz-Target", valid_601567
+  var valid_601568 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601568 = validateParameter(valid_601568, JString, required = false,
                                  default = nil)
-  if valid_773733 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773733
-  var valid_773734 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773734 = validateParameter(valid_773734, JString, required = false,
+  if valid_601568 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601568
+  var valid_601569 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601569 = validateParameter(valid_601569, JString, required = false,
                                  default = nil)
-  if valid_773734 != nil:
-    section.add "X-Amz-Algorithm", valid_773734
-  var valid_773735 = header.getOrDefault("X-Amz-Signature")
-  valid_773735 = validateParameter(valid_773735, JString, required = false,
+  if valid_601569 != nil:
+    section.add "X-Amz-Algorithm", valid_601569
+  var valid_601570 = header.getOrDefault("X-Amz-Signature")
+  valid_601570 = validateParameter(valid_601570, JString, required = false,
                                  default = nil)
-  if valid_773735 != nil:
-    section.add "X-Amz-Signature", valid_773735
-  var valid_773736 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773736 = validateParameter(valid_773736, JString, required = false,
+  if valid_601570 != nil:
+    section.add "X-Amz-Signature", valid_601570
+  var valid_601571 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601571 = validateParameter(valid_601571, JString, required = false,
                                  default = nil)
-  if valid_773736 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773736
-  var valid_773737 = header.getOrDefault("X-Amz-Credential")
-  valid_773737 = validateParameter(valid_773737, JString, required = false,
+  if valid_601571 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601571
+  var valid_601572 = header.getOrDefault("X-Amz-Credential")
+  valid_601572 = validateParameter(valid_601572, JString, required = false,
                                  default = nil)
-  if valid_773737 != nil:
-    section.add "X-Amz-Credential", valid_773737
+  if valid_601572 != nil:
+    section.add "X-Amz-Credential", valid_601572
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4018,42 +4018,42 @@ proc validate_DescribeDirectConnectGatewayAttachments_773728(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773739: Call_DescribeDirectConnectGatewayAttachments_773727;
+proc call*(call_601574: Call_DescribeDirectConnectGatewayAttachments_601562;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Lists the attachments between your Direct Connect gateways and virtual interfaces. You must specify a Direct Connect gateway, a virtual interface, or both. If you specify a Direct Connect gateway, the response contains all virtual interfaces attached to the Direct Connect gateway. If you specify a virtual interface, the response contains all Direct Connect gateways attached to the virtual interface. If you specify both, the response contains the attachment between the Direct Connect gateway and the virtual interface.
   ## 
-  let valid = call_773739.validator(path, query, header, formData, body)
-  let scheme = call_773739.pickScheme
+  let valid = call_601574.validator(path, query, header, formData, body)
+  let scheme = call_601574.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773739.url(scheme.get, call_773739.host, call_773739.base,
-                         call_773739.route, valid.getOrDefault("path"))
-  result = hook(call_773739, url, valid)
+  let url = call_601574.url(scheme.get, call_601574.host, call_601574.base,
+                         call_601574.route, valid.getOrDefault("path"))
+  result = hook(call_601574, url, valid)
 
-proc call*(call_773740: Call_DescribeDirectConnectGatewayAttachments_773727;
+proc call*(call_601575: Call_DescribeDirectConnectGatewayAttachments_601562;
           body: JsonNode): Recallable =
   ## describeDirectConnectGatewayAttachments
   ## Lists the attachments between your Direct Connect gateways and virtual interfaces. You must specify a Direct Connect gateway, a virtual interface, or both. If you specify a Direct Connect gateway, the response contains all virtual interfaces attached to the Direct Connect gateway. If you specify a virtual interface, the response contains all Direct Connect gateways attached to the virtual interface. If you specify both, the response contains the attachment between the Direct Connect gateway and the virtual interface.
   ##   body: JObject (required)
-  var body_773741 = newJObject()
+  var body_601576 = newJObject()
   if body != nil:
-    body_773741 = body
-  result = call_773740.call(nil, nil, nil, nil, body_773741)
+    body_601576 = body
+  result = call_601575.call(nil, nil, nil, nil, body_601576)
 
-var describeDirectConnectGatewayAttachments* = Call_DescribeDirectConnectGatewayAttachments_773727(
+var describeDirectConnectGatewayAttachments* = Call_DescribeDirectConnectGatewayAttachments_601562(
     name: "describeDirectConnectGatewayAttachments", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.DescribeDirectConnectGatewayAttachments",
-    validator: validate_DescribeDirectConnectGatewayAttachments_773728, base: "/",
-    url: url_DescribeDirectConnectGatewayAttachments_773729,
+    validator: validate_DescribeDirectConnectGatewayAttachments_601563, base: "/",
+    url: url_DescribeDirectConnectGatewayAttachments_601564,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDirectConnectGateways_773742 = ref object of OpenApiRestCall_772597
-proc url_DescribeDirectConnectGateways_773744(protocol: Scheme; host: string;
+  Call_DescribeDirectConnectGateways_601577 = ref object of OpenApiRestCall_600426
+proc url_DescribeDirectConnectGateways_601579(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeDirectConnectGateways_773743(path: JsonNode; query: JsonNode;
+proc validate_DescribeDirectConnectGateways_601578(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists all your Direct Connect gateways or only the specified Direct Connect gateway. Deleted Direct Connect gateways are not returned.
   ## 
@@ -4073,48 +4073,48 @@ proc validate_DescribeDirectConnectGateways_773743(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773745 = header.getOrDefault("X-Amz-Date")
-  valid_773745 = validateParameter(valid_773745, JString, required = false,
+  var valid_601580 = header.getOrDefault("X-Amz-Date")
+  valid_601580 = validateParameter(valid_601580, JString, required = false,
                                  default = nil)
-  if valid_773745 != nil:
-    section.add "X-Amz-Date", valid_773745
-  var valid_773746 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773746 = validateParameter(valid_773746, JString, required = false,
+  if valid_601580 != nil:
+    section.add "X-Amz-Date", valid_601580
+  var valid_601581 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601581 = validateParameter(valid_601581, JString, required = false,
                                  default = nil)
-  if valid_773746 != nil:
-    section.add "X-Amz-Security-Token", valid_773746
+  if valid_601581 != nil:
+    section.add "X-Amz-Security-Token", valid_601581
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773747 = header.getOrDefault("X-Amz-Target")
-  valid_773747 = validateParameter(valid_773747, JString, required = true, default = newJString(
+  var valid_601582 = header.getOrDefault("X-Amz-Target")
+  valid_601582 = validateParameter(valid_601582, JString, required = true, default = newJString(
       "OvertureService.DescribeDirectConnectGateways"))
-  if valid_773747 != nil:
-    section.add "X-Amz-Target", valid_773747
-  var valid_773748 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773748 = validateParameter(valid_773748, JString, required = false,
+  if valid_601582 != nil:
+    section.add "X-Amz-Target", valid_601582
+  var valid_601583 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601583 = validateParameter(valid_601583, JString, required = false,
                                  default = nil)
-  if valid_773748 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773748
-  var valid_773749 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773749 = validateParameter(valid_773749, JString, required = false,
+  if valid_601583 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601583
+  var valid_601584 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601584 = validateParameter(valid_601584, JString, required = false,
                                  default = nil)
-  if valid_773749 != nil:
-    section.add "X-Amz-Algorithm", valid_773749
-  var valid_773750 = header.getOrDefault("X-Amz-Signature")
-  valid_773750 = validateParameter(valid_773750, JString, required = false,
+  if valid_601584 != nil:
+    section.add "X-Amz-Algorithm", valid_601584
+  var valid_601585 = header.getOrDefault("X-Amz-Signature")
+  valid_601585 = validateParameter(valid_601585, JString, required = false,
                                  default = nil)
-  if valid_773750 != nil:
-    section.add "X-Amz-Signature", valid_773750
-  var valid_773751 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773751 = validateParameter(valid_773751, JString, required = false,
+  if valid_601585 != nil:
+    section.add "X-Amz-Signature", valid_601585
+  var valid_601586 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601586 = validateParameter(valid_601586, JString, required = false,
                                  default = nil)
-  if valid_773751 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773751
-  var valid_773752 = header.getOrDefault("X-Amz-Credential")
-  valid_773752 = validateParameter(valid_773752, JString, required = false,
+  if valid_601586 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601586
+  var valid_601587 = header.getOrDefault("X-Amz-Credential")
+  valid_601587 = validateParameter(valid_601587, JString, required = false,
                                  default = nil)
-  if valid_773752 != nil:
-    section.add "X-Amz-Credential", valid_773752
+  if valid_601587 != nil:
+    section.add "X-Amz-Credential", valid_601587
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4125,41 +4125,41 @@ proc validate_DescribeDirectConnectGateways_773743(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_773754: Call_DescribeDirectConnectGateways_773742; path: JsonNode;
+proc call*(call_601589: Call_DescribeDirectConnectGateways_601577; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all your Direct Connect gateways or only the specified Direct Connect gateway. Deleted Direct Connect gateways are not returned.
   ## 
-  let valid = call_773754.validator(path, query, header, formData, body)
-  let scheme = call_773754.pickScheme
+  let valid = call_601589.validator(path, query, header, formData, body)
+  let scheme = call_601589.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773754.url(scheme.get, call_773754.host, call_773754.base,
-                         call_773754.route, valid.getOrDefault("path"))
-  result = hook(call_773754, url, valid)
+  let url = call_601589.url(scheme.get, call_601589.host, call_601589.base,
+                         call_601589.route, valid.getOrDefault("path"))
+  result = hook(call_601589, url, valid)
 
-proc call*(call_773755: Call_DescribeDirectConnectGateways_773742; body: JsonNode): Recallable =
+proc call*(call_601590: Call_DescribeDirectConnectGateways_601577; body: JsonNode): Recallable =
   ## describeDirectConnectGateways
   ## Lists all your Direct Connect gateways or only the specified Direct Connect gateway. Deleted Direct Connect gateways are not returned.
   ##   body: JObject (required)
-  var body_773756 = newJObject()
+  var body_601591 = newJObject()
   if body != nil:
-    body_773756 = body
-  result = call_773755.call(nil, nil, nil, nil, body_773756)
+    body_601591 = body
+  result = call_601590.call(nil, nil, nil, nil, body_601591)
 
-var describeDirectConnectGateways* = Call_DescribeDirectConnectGateways_773742(
+var describeDirectConnectGateways* = Call_DescribeDirectConnectGateways_601577(
     name: "describeDirectConnectGateways", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeDirectConnectGateways",
-    validator: validate_DescribeDirectConnectGateways_773743, base: "/",
-    url: url_DescribeDirectConnectGateways_773744,
+    validator: validate_DescribeDirectConnectGateways_601578, base: "/",
+    url: url_DescribeDirectConnectGateways_601579,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeHostedConnections_773757 = ref object of OpenApiRestCall_772597
-proc url_DescribeHostedConnections_773759(protocol: Scheme; host: string;
+  Call_DescribeHostedConnections_601592 = ref object of OpenApiRestCall_600426
+proc url_DescribeHostedConnections_601594(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeHostedConnections_773758(path: JsonNode; query: JsonNode;
+proc validate_DescribeHostedConnections_601593(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the hosted connections that have been provisioned on the specified interconnect or link aggregation group (LAG).</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
@@ -4179,48 +4179,48 @@ proc validate_DescribeHostedConnections_773758(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773760 = header.getOrDefault("X-Amz-Date")
-  valid_773760 = validateParameter(valid_773760, JString, required = false,
+  var valid_601595 = header.getOrDefault("X-Amz-Date")
+  valid_601595 = validateParameter(valid_601595, JString, required = false,
                                  default = nil)
-  if valid_773760 != nil:
-    section.add "X-Amz-Date", valid_773760
-  var valid_773761 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773761 = validateParameter(valid_773761, JString, required = false,
+  if valid_601595 != nil:
+    section.add "X-Amz-Date", valid_601595
+  var valid_601596 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601596 = validateParameter(valid_601596, JString, required = false,
                                  default = nil)
-  if valid_773761 != nil:
-    section.add "X-Amz-Security-Token", valid_773761
+  if valid_601596 != nil:
+    section.add "X-Amz-Security-Token", valid_601596
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773762 = header.getOrDefault("X-Amz-Target")
-  valid_773762 = validateParameter(valid_773762, JString, required = true, default = newJString(
+  var valid_601597 = header.getOrDefault("X-Amz-Target")
+  valid_601597 = validateParameter(valid_601597, JString, required = true, default = newJString(
       "OvertureService.DescribeHostedConnections"))
-  if valid_773762 != nil:
-    section.add "X-Amz-Target", valid_773762
-  var valid_773763 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773763 = validateParameter(valid_773763, JString, required = false,
+  if valid_601597 != nil:
+    section.add "X-Amz-Target", valid_601597
+  var valid_601598 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601598 = validateParameter(valid_601598, JString, required = false,
                                  default = nil)
-  if valid_773763 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773763
-  var valid_773764 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773764 = validateParameter(valid_773764, JString, required = false,
+  if valid_601598 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601598
+  var valid_601599 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601599 = validateParameter(valid_601599, JString, required = false,
                                  default = nil)
-  if valid_773764 != nil:
-    section.add "X-Amz-Algorithm", valid_773764
-  var valid_773765 = header.getOrDefault("X-Amz-Signature")
-  valid_773765 = validateParameter(valid_773765, JString, required = false,
+  if valid_601599 != nil:
+    section.add "X-Amz-Algorithm", valid_601599
+  var valid_601600 = header.getOrDefault("X-Amz-Signature")
+  valid_601600 = validateParameter(valid_601600, JString, required = false,
                                  default = nil)
-  if valid_773765 != nil:
-    section.add "X-Amz-Signature", valid_773765
-  var valid_773766 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773766 = validateParameter(valid_773766, JString, required = false,
+  if valid_601600 != nil:
+    section.add "X-Amz-Signature", valid_601600
+  var valid_601601 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601601 = validateParameter(valid_601601, JString, required = false,
                                  default = nil)
-  if valid_773766 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773766
-  var valid_773767 = header.getOrDefault("X-Amz-Credential")
-  valid_773767 = validateParameter(valid_773767, JString, required = false,
+  if valid_601601 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601601
+  var valid_601602 = header.getOrDefault("X-Amz-Credential")
+  valid_601602 = validateParameter(valid_601602, JString, required = false,
                                  default = nil)
-  if valid_773767 != nil:
-    section.add "X-Amz-Credential", valid_773767
+  if valid_601602 != nil:
+    section.add "X-Amz-Credential", valid_601602
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4231,41 +4231,41 @@ proc validate_DescribeHostedConnections_773758(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773769: Call_DescribeHostedConnections_773757; path: JsonNode;
+proc call*(call_601604: Call_DescribeHostedConnections_601592; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the hosted connections that have been provisioned on the specified interconnect or link aggregation group (LAG).</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ## 
-  let valid = call_773769.validator(path, query, header, formData, body)
-  let scheme = call_773769.pickScheme
+  let valid = call_601604.validator(path, query, header, formData, body)
+  let scheme = call_601604.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773769.url(scheme.get, call_773769.host, call_773769.base,
-                         call_773769.route, valid.getOrDefault("path"))
-  result = hook(call_773769, url, valid)
+  let url = call_601604.url(scheme.get, call_601604.host, call_601604.base,
+                         call_601604.route, valid.getOrDefault("path"))
+  result = hook(call_601604, url, valid)
 
-proc call*(call_773770: Call_DescribeHostedConnections_773757; body: JsonNode): Recallable =
+proc call*(call_601605: Call_DescribeHostedConnections_601592; body: JsonNode): Recallable =
   ## describeHostedConnections
   ## <p>Lists the hosted connections that have been provisioned on the specified interconnect or link aggregation group (LAG).</p> <note> <p>Intended for use by AWS Direct Connect Partners only.</p> </note>
   ##   body: JObject (required)
-  var body_773771 = newJObject()
+  var body_601606 = newJObject()
   if body != nil:
-    body_773771 = body
-  result = call_773770.call(nil, nil, nil, nil, body_773771)
+    body_601606 = body
+  result = call_601605.call(nil, nil, nil, nil, body_601606)
 
-var describeHostedConnections* = Call_DescribeHostedConnections_773757(
+var describeHostedConnections* = Call_DescribeHostedConnections_601592(
     name: "describeHostedConnections", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeHostedConnections",
-    validator: validate_DescribeHostedConnections_773758, base: "/",
-    url: url_DescribeHostedConnections_773759,
+    validator: validate_DescribeHostedConnections_601593, base: "/",
+    url: url_DescribeHostedConnections_601594,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeInterconnectLoa_773772 = ref object of OpenApiRestCall_772597
-proc url_DescribeInterconnectLoa_773774(protocol: Scheme; host: string; base: string;
+  Call_DescribeInterconnectLoa_601607 = ref object of OpenApiRestCall_600426
+proc url_DescribeInterconnectLoa_601609(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeInterconnectLoa_773773(path: JsonNode; query: JsonNode;
+proc validate_DescribeInterconnectLoa_601608(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deprecated. Use <a>DescribeLoa</a> instead.</p> <p>Gets the LOA-CFA for the specified interconnect.</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that is used when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ## 
@@ -4285,48 +4285,48 @@ proc validate_DescribeInterconnectLoa_773773(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773775 = header.getOrDefault("X-Amz-Date")
-  valid_773775 = validateParameter(valid_773775, JString, required = false,
+  var valid_601610 = header.getOrDefault("X-Amz-Date")
+  valid_601610 = validateParameter(valid_601610, JString, required = false,
                                  default = nil)
-  if valid_773775 != nil:
-    section.add "X-Amz-Date", valid_773775
-  var valid_773776 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773776 = validateParameter(valid_773776, JString, required = false,
+  if valid_601610 != nil:
+    section.add "X-Amz-Date", valid_601610
+  var valid_601611 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601611 = validateParameter(valid_601611, JString, required = false,
                                  default = nil)
-  if valid_773776 != nil:
-    section.add "X-Amz-Security-Token", valid_773776
+  if valid_601611 != nil:
+    section.add "X-Amz-Security-Token", valid_601611
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773777 = header.getOrDefault("X-Amz-Target")
-  valid_773777 = validateParameter(valid_773777, JString, required = true, default = newJString(
+  var valid_601612 = header.getOrDefault("X-Amz-Target")
+  valid_601612 = validateParameter(valid_601612, JString, required = true, default = newJString(
       "OvertureService.DescribeInterconnectLoa"))
-  if valid_773777 != nil:
-    section.add "X-Amz-Target", valid_773777
-  var valid_773778 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773778 = validateParameter(valid_773778, JString, required = false,
+  if valid_601612 != nil:
+    section.add "X-Amz-Target", valid_601612
+  var valid_601613 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601613 = validateParameter(valid_601613, JString, required = false,
                                  default = nil)
-  if valid_773778 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773778
-  var valid_773779 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773779 = validateParameter(valid_773779, JString, required = false,
+  if valid_601613 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601613
+  var valid_601614 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601614 = validateParameter(valid_601614, JString, required = false,
                                  default = nil)
-  if valid_773779 != nil:
-    section.add "X-Amz-Algorithm", valid_773779
-  var valid_773780 = header.getOrDefault("X-Amz-Signature")
-  valid_773780 = validateParameter(valid_773780, JString, required = false,
+  if valid_601614 != nil:
+    section.add "X-Amz-Algorithm", valid_601614
+  var valid_601615 = header.getOrDefault("X-Amz-Signature")
+  valid_601615 = validateParameter(valid_601615, JString, required = false,
                                  default = nil)
-  if valid_773780 != nil:
-    section.add "X-Amz-Signature", valid_773780
-  var valid_773781 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773781 = validateParameter(valid_773781, JString, required = false,
+  if valid_601615 != nil:
+    section.add "X-Amz-Signature", valid_601615
+  var valid_601616 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601616 = validateParameter(valid_601616, JString, required = false,
                                  default = nil)
-  if valid_773781 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773781
-  var valid_773782 = header.getOrDefault("X-Amz-Credential")
-  valid_773782 = validateParameter(valid_773782, JString, required = false,
+  if valid_601616 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601616
+  var valid_601617 = header.getOrDefault("X-Amz-Credential")
+  valid_601617 = validateParameter(valid_601617, JString, required = false,
                                  default = nil)
-  if valid_773782 != nil:
-    section.add "X-Amz-Credential", valid_773782
+  if valid_601617 != nil:
+    section.add "X-Amz-Credential", valid_601617
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4337,40 +4337,40 @@ proc validate_DescribeInterconnectLoa_773773(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773784: Call_DescribeInterconnectLoa_773772; path: JsonNode;
+proc call*(call_601619: Call_DescribeInterconnectLoa_601607; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deprecated. Use <a>DescribeLoa</a> instead.</p> <p>Gets the LOA-CFA for the specified interconnect.</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that is used when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ## 
-  let valid = call_773784.validator(path, query, header, formData, body)
-  let scheme = call_773784.pickScheme
+  let valid = call_601619.validator(path, query, header, formData, body)
+  let scheme = call_601619.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773784.url(scheme.get, call_773784.host, call_773784.base,
-                         call_773784.route, valid.getOrDefault("path"))
-  result = hook(call_773784, url, valid)
+  let url = call_601619.url(scheme.get, call_601619.host, call_601619.base,
+                         call_601619.route, valid.getOrDefault("path"))
+  result = hook(call_601619, url, valid)
 
-proc call*(call_773785: Call_DescribeInterconnectLoa_773772; body: JsonNode): Recallable =
+proc call*(call_601620: Call_DescribeInterconnectLoa_601607; body: JsonNode): Recallable =
   ## describeInterconnectLoa
   ## <p>Deprecated. Use <a>DescribeLoa</a> instead.</p> <p>Gets the LOA-CFA for the specified interconnect.</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that is used when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_773786 = newJObject()
+  var body_601621 = newJObject()
   if body != nil:
-    body_773786 = body
-  result = call_773785.call(nil, nil, nil, nil, body_773786)
+    body_601621 = body
+  result = call_601620.call(nil, nil, nil, nil, body_601621)
 
-var describeInterconnectLoa* = Call_DescribeInterconnectLoa_773772(
+var describeInterconnectLoa* = Call_DescribeInterconnectLoa_601607(
     name: "describeInterconnectLoa", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeInterconnectLoa",
-    validator: validate_DescribeInterconnectLoa_773773, base: "/",
-    url: url_DescribeInterconnectLoa_773774, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeInterconnectLoa_601608, base: "/",
+    url: url_DescribeInterconnectLoa_601609, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeInterconnects_773787 = ref object of OpenApiRestCall_772597
-proc url_DescribeInterconnects_773789(protocol: Scheme; host: string; base: string;
+  Call_DescribeInterconnects_601622 = ref object of OpenApiRestCall_600426
+proc url_DescribeInterconnects_601624(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeInterconnects_773788(path: JsonNode; query: JsonNode;
+proc validate_DescribeInterconnects_601623(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the interconnects owned by the AWS account or only the specified interconnect.
   ## 
@@ -4390,48 +4390,48 @@ proc validate_DescribeInterconnects_773788(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773790 = header.getOrDefault("X-Amz-Date")
-  valid_773790 = validateParameter(valid_773790, JString, required = false,
+  var valid_601625 = header.getOrDefault("X-Amz-Date")
+  valid_601625 = validateParameter(valid_601625, JString, required = false,
                                  default = nil)
-  if valid_773790 != nil:
-    section.add "X-Amz-Date", valid_773790
-  var valid_773791 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773791 = validateParameter(valid_773791, JString, required = false,
+  if valid_601625 != nil:
+    section.add "X-Amz-Date", valid_601625
+  var valid_601626 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601626 = validateParameter(valid_601626, JString, required = false,
                                  default = nil)
-  if valid_773791 != nil:
-    section.add "X-Amz-Security-Token", valid_773791
+  if valid_601626 != nil:
+    section.add "X-Amz-Security-Token", valid_601626
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773792 = header.getOrDefault("X-Amz-Target")
-  valid_773792 = validateParameter(valid_773792, JString, required = true, default = newJString(
+  var valid_601627 = header.getOrDefault("X-Amz-Target")
+  valid_601627 = validateParameter(valid_601627, JString, required = true, default = newJString(
       "OvertureService.DescribeInterconnects"))
-  if valid_773792 != nil:
-    section.add "X-Amz-Target", valid_773792
-  var valid_773793 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773793 = validateParameter(valid_773793, JString, required = false,
+  if valid_601627 != nil:
+    section.add "X-Amz-Target", valid_601627
+  var valid_601628 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601628 = validateParameter(valid_601628, JString, required = false,
                                  default = nil)
-  if valid_773793 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773793
-  var valid_773794 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773794 = validateParameter(valid_773794, JString, required = false,
+  if valid_601628 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601628
+  var valid_601629 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601629 = validateParameter(valid_601629, JString, required = false,
                                  default = nil)
-  if valid_773794 != nil:
-    section.add "X-Amz-Algorithm", valid_773794
-  var valid_773795 = header.getOrDefault("X-Amz-Signature")
-  valid_773795 = validateParameter(valid_773795, JString, required = false,
+  if valid_601629 != nil:
+    section.add "X-Amz-Algorithm", valid_601629
+  var valid_601630 = header.getOrDefault("X-Amz-Signature")
+  valid_601630 = validateParameter(valid_601630, JString, required = false,
                                  default = nil)
-  if valid_773795 != nil:
-    section.add "X-Amz-Signature", valid_773795
-  var valid_773796 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773796 = validateParameter(valid_773796, JString, required = false,
+  if valid_601630 != nil:
+    section.add "X-Amz-Signature", valid_601630
+  var valid_601631 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601631 = validateParameter(valid_601631, JString, required = false,
                                  default = nil)
-  if valid_773796 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773796
-  var valid_773797 = header.getOrDefault("X-Amz-Credential")
-  valid_773797 = validateParameter(valid_773797, JString, required = false,
+  if valid_601631 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601631
+  var valid_601632 = header.getOrDefault("X-Amz-Credential")
+  valid_601632 = validateParameter(valid_601632, JString, required = false,
                                  default = nil)
-  if valid_773797 != nil:
-    section.add "X-Amz-Credential", valid_773797
+  if valid_601632 != nil:
+    section.add "X-Amz-Credential", valid_601632
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4442,40 +4442,40 @@ proc validate_DescribeInterconnects_773788(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773799: Call_DescribeInterconnects_773787; path: JsonNode;
+proc call*(call_601634: Call_DescribeInterconnects_601622; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the interconnects owned by the AWS account or only the specified interconnect.
   ## 
-  let valid = call_773799.validator(path, query, header, formData, body)
-  let scheme = call_773799.pickScheme
+  let valid = call_601634.validator(path, query, header, formData, body)
+  let scheme = call_601634.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773799.url(scheme.get, call_773799.host, call_773799.base,
-                         call_773799.route, valid.getOrDefault("path"))
-  result = hook(call_773799, url, valid)
+  let url = call_601634.url(scheme.get, call_601634.host, call_601634.base,
+                         call_601634.route, valid.getOrDefault("path"))
+  result = hook(call_601634, url, valid)
 
-proc call*(call_773800: Call_DescribeInterconnects_773787; body: JsonNode): Recallable =
+proc call*(call_601635: Call_DescribeInterconnects_601622; body: JsonNode): Recallable =
   ## describeInterconnects
   ## Lists the interconnects owned by the AWS account or only the specified interconnect.
   ##   body: JObject (required)
-  var body_773801 = newJObject()
+  var body_601636 = newJObject()
   if body != nil:
-    body_773801 = body
-  result = call_773800.call(nil, nil, nil, nil, body_773801)
+    body_601636 = body
+  result = call_601635.call(nil, nil, nil, nil, body_601636)
 
-var describeInterconnects* = Call_DescribeInterconnects_773787(
+var describeInterconnects* = Call_DescribeInterconnects_601622(
     name: "describeInterconnects", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeInterconnects",
-    validator: validate_DescribeInterconnects_773788, base: "/",
-    url: url_DescribeInterconnects_773789, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeInterconnects_601623, base: "/",
+    url: url_DescribeInterconnects_601624, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeLags_773802 = ref object of OpenApiRestCall_772597
-proc url_DescribeLags_773804(protocol: Scheme; host: string; base: string;
+  Call_DescribeLags_601637 = ref object of OpenApiRestCall_600426
+proc url_DescribeLags_601639(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeLags_773803(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeLags_601638(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes all your link aggregation groups (LAG) or the specified LAG.
   ## 
@@ -4495,48 +4495,48 @@ proc validate_DescribeLags_773803(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773805 = header.getOrDefault("X-Amz-Date")
-  valid_773805 = validateParameter(valid_773805, JString, required = false,
+  var valid_601640 = header.getOrDefault("X-Amz-Date")
+  valid_601640 = validateParameter(valid_601640, JString, required = false,
                                  default = nil)
-  if valid_773805 != nil:
-    section.add "X-Amz-Date", valid_773805
-  var valid_773806 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773806 = validateParameter(valid_773806, JString, required = false,
+  if valid_601640 != nil:
+    section.add "X-Amz-Date", valid_601640
+  var valid_601641 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601641 = validateParameter(valid_601641, JString, required = false,
                                  default = nil)
-  if valid_773806 != nil:
-    section.add "X-Amz-Security-Token", valid_773806
+  if valid_601641 != nil:
+    section.add "X-Amz-Security-Token", valid_601641
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773807 = header.getOrDefault("X-Amz-Target")
-  valid_773807 = validateParameter(valid_773807, JString, required = true, default = newJString(
+  var valid_601642 = header.getOrDefault("X-Amz-Target")
+  valid_601642 = validateParameter(valid_601642, JString, required = true, default = newJString(
       "OvertureService.DescribeLags"))
-  if valid_773807 != nil:
-    section.add "X-Amz-Target", valid_773807
-  var valid_773808 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773808 = validateParameter(valid_773808, JString, required = false,
+  if valid_601642 != nil:
+    section.add "X-Amz-Target", valid_601642
+  var valid_601643 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601643 = validateParameter(valid_601643, JString, required = false,
                                  default = nil)
-  if valid_773808 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773808
-  var valid_773809 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773809 = validateParameter(valid_773809, JString, required = false,
+  if valid_601643 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601643
+  var valid_601644 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601644 = validateParameter(valid_601644, JString, required = false,
                                  default = nil)
-  if valid_773809 != nil:
-    section.add "X-Amz-Algorithm", valid_773809
-  var valid_773810 = header.getOrDefault("X-Amz-Signature")
-  valid_773810 = validateParameter(valid_773810, JString, required = false,
+  if valid_601644 != nil:
+    section.add "X-Amz-Algorithm", valid_601644
+  var valid_601645 = header.getOrDefault("X-Amz-Signature")
+  valid_601645 = validateParameter(valid_601645, JString, required = false,
                                  default = nil)
-  if valid_773810 != nil:
-    section.add "X-Amz-Signature", valid_773810
-  var valid_773811 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773811 = validateParameter(valid_773811, JString, required = false,
+  if valid_601645 != nil:
+    section.add "X-Amz-Signature", valid_601645
+  var valid_601646 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601646 = validateParameter(valid_601646, JString, required = false,
                                  default = nil)
-  if valid_773811 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773811
-  var valid_773812 = header.getOrDefault("X-Amz-Credential")
-  valid_773812 = validateParameter(valid_773812, JString, required = false,
+  if valid_601646 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601646
+  var valid_601647 = header.getOrDefault("X-Amz-Credential")
+  valid_601647 = validateParameter(valid_601647, JString, required = false,
                                  default = nil)
-  if valid_773812 != nil:
-    section.add "X-Amz-Credential", valid_773812
+  if valid_601647 != nil:
+    section.add "X-Amz-Credential", valid_601647
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4547,39 +4547,39 @@ proc validate_DescribeLags_773803(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_773814: Call_DescribeLags_773802; path: JsonNode; query: JsonNode;
+proc call*(call_601649: Call_DescribeLags_601637; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes all your link aggregation groups (LAG) or the specified LAG.
   ## 
-  let valid = call_773814.validator(path, query, header, formData, body)
-  let scheme = call_773814.pickScheme
+  let valid = call_601649.validator(path, query, header, formData, body)
+  let scheme = call_601649.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773814.url(scheme.get, call_773814.host, call_773814.base,
-                         call_773814.route, valid.getOrDefault("path"))
-  result = hook(call_773814, url, valid)
+  let url = call_601649.url(scheme.get, call_601649.host, call_601649.base,
+                         call_601649.route, valid.getOrDefault("path"))
+  result = hook(call_601649, url, valid)
 
-proc call*(call_773815: Call_DescribeLags_773802; body: JsonNode): Recallable =
+proc call*(call_601650: Call_DescribeLags_601637; body: JsonNode): Recallable =
   ## describeLags
   ## Describes all your link aggregation groups (LAG) or the specified LAG.
   ##   body: JObject (required)
-  var body_773816 = newJObject()
+  var body_601651 = newJObject()
   if body != nil:
-    body_773816 = body
-  result = call_773815.call(nil, nil, nil, nil, body_773816)
+    body_601651 = body
+  result = call_601650.call(nil, nil, nil, nil, body_601651)
 
-var describeLags* = Call_DescribeLags_773802(name: "describeLags",
+var describeLags* = Call_DescribeLags_601637(name: "describeLags",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeLags",
-    validator: validate_DescribeLags_773803, base: "/", url: url_DescribeLags_773804,
+    validator: validate_DescribeLags_601638, base: "/", url: url_DescribeLags_601639,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeLoa_773817 = ref object of OpenApiRestCall_772597
-proc url_DescribeLoa_773819(protocol: Scheme; host: string; base: string;
+  Call_DescribeLoa_601652 = ref object of OpenApiRestCall_600426
+proc url_DescribeLoa_601654(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeLoa_773818(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeLoa_601653(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets the LOA-CFA for a connection, interconnect, or link aggregation group (LAG).</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that is used when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ## 
@@ -4599,48 +4599,48 @@ proc validate_DescribeLoa_773818(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773820 = header.getOrDefault("X-Amz-Date")
-  valid_773820 = validateParameter(valid_773820, JString, required = false,
+  var valid_601655 = header.getOrDefault("X-Amz-Date")
+  valid_601655 = validateParameter(valid_601655, JString, required = false,
                                  default = nil)
-  if valid_773820 != nil:
-    section.add "X-Amz-Date", valid_773820
-  var valid_773821 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773821 = validateParameter(valid_773821, JString, required = false,
+  if valid_601655 != nil:
+    section.add "X-Amz-Date", valid_601655
+  var valid_601656 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601656 = validateParameter(valid_601656, JString, required = false,
                                  default = nil)
-  if valid_773821 != nil:
-    section.add "X-Amz-Security-Token", valid_773821
+  if valid_601656 != nil:
+    section.add "X-Amz-Security-Token", valid_601656
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773822 = header.getOrDefault("X-Amz-Target")
-  valid_773822 = validateParameter(valid_773822, JString, required = true, default = newJString(
+  var valid_601657 = header.getOrDefault("X-Amz-Target")
+  valid_601657 = validateParameter(valid_601657, JString, required = true, default = newJString(
       "OvertureService.DescribeLoa"))
-  if valid_773822 != nil:
-    section.add "X-Amz-Target", valid_773822
-  var valid_773823 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773823 = validateParameter(valid_773823, JString, required = false,
+  if valid_601657 != nil:
+    section.add "X-Amz-Target", valid_601657
+  var valid_601658 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601658 = validateParameter(valid_601658, JString, required = false,
                                  default = nil)
-  if valid_773823 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773823
-  var valid_773824 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773824 = validateParameter(valid_773824, JString, required = false,
+  if valid_601658 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601658
+  var valid_601659 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601659 = validateParameter(valid_601659, JString, required = false,
                                  default = nil)
-  if valid_773824 != nil:
-    section.add "X-Amz-Algorithm", valid_773824
-  var valid_773825 = header.getOrDefault("X-Amz-Signature")
-  valid_773825 = validateParameter(valid_773825, JString, required = false,
+  if valid_601659 != nil:
+    section.add "X-Amz-Algorithm", valid_601659
+  var valid_601660 = header.getOrDefault("X-Amz-Signature")
+  valid_601660 = validateParameter(valid_601660, JString, required = false,
                                  default = nil)
-  if valid_773825 != nil:
-    section.add "X-Amz-Signature", valid_773825
-  var valid_773826 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773826 = validateParameter(valid_773826, JString, required = false,
+  if valid_601660 != nil:
+    section.add "X-Amz-Signature", valid_601660
+  var valid_601661 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601661 = validateParameter(valid_601661, JString, required = false,
                                  default = nil)
-  if valid_773826 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773826
-  var valid_773827 = header.getOrDefault("X-Amz-Credential")
-  valid_773827 = validateParameter(valid_773827, JString, required = false,
+  if valid_601661 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601661
+  var valid_601662 = header.getOrDefault("X-Amz-Credential")
+  valid_601662 = validateParameter(valid_601662, JString, required = false,
                                  default = nil)
-  if valid_773827 != nil:
-    section.add "X-Amz-Credential", valid_773827
+  if valid_601662 != nil:
+    section.add "X-Amz-Credential", valid_601662
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4651,40 +4651,40 @@ proc validate_DescribeLoa_773818(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_773829: Call_DescribeLoa_773817; path: JsonNode; query: JsonNode;
+proc call*(call_601664: Call_DescribeLoa_601652; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the LOA-CFA for a connection, interconnect, or link aggregation group (LAG).</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that is used when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ## 
-  let valid = call_773829.validator(path, query, header, formData, body)
-  let scheme = call_773829.pickScheme
+  let valid = call_601664.validator(path, query, header, formData, body)
+  let scheme = call_601664.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773829.url(scheme.get, call_773829.host, call_773829.base,
-                         call_773829.route, valid.getOrDefault("path"))
-  result = hook(call_773829, url, valid)
+  let url = call_601664.url(scheme.get, call_601664.host, call_601664.base,
+                         call_601664.route, valid.getOrDefault("path"))
+  result = hook(call_601664, url, valid)
 
-proc call*(call_773830: Call_DescribeLoa_773817; body: JsonNode): Recallable =
+proc call*(call_601665: Call_DescribeLoa_601652; body: JsonNode): Recallable =
   ## describeLoa
   ## <p>Gets the LOA-CFA for a connection, interconnect, or link aggregation group (LAG).</p> <p>The Letter of Authorization - Connecting Facility Assignment (LOA-CFA) is a document that is used when establishing your cross connect to AWS at the colocation facility. For more information, see <a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Colocation.html">Requesting Cross Connects at AWS Direct Connect Locations</a> in the <i>AWS Direct Connect User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_773831 = newJObject()
+  var body_601666 = newJObject()
   if body != nil:
-    body_773831 = body
-  result = call_773830.call(nil, nil, nil, nil, body_773831)
+    body_601666 = body
+  result = call_601665.call(nil, nil, nil, nil, body_601666)
 
-var describeLoa* = Call_DescribeLoa_773817(name: "describeLoa",
+var describeLoa* = Call_DescribeLoa_601652(name: "describeLoa",
                                         meth: HttpMethod.HttpPost,
                                         host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.DescribeLoa",
-                                        validator: validate_DescribeLoa_773818,
-                                        base: "/", url: url_DescribeLoa_773819,
+                                        validator: validate_DescribeLoa_601653,
+                                        base: "/", url: url_DescribeLoa_601654,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeLocations_773832 = ref object of OpenApiRestCall_772597
-proc url_DescribeLocations_773834(protocol: Scheme; host: string; base: string;
+  Call_DescribeLocations_601667 = ref object of OpenApiRestCall_600426
+proc url_DescribeLocations_601669(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeLocations_773833(path: JsonNode; query: JsonNode;
+proc validate_DescribeLocations_601668(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Lists the AWS Direct Connect locations in the current AWS Region. These are the locations that can be selected when calling <a>CreateConnection</a> or <a>CreateInterconnect</a>.
@@ -4705,83 +4705,83 @@ proc validate_DescribeLocations_773833(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773835 = header.getOrDefault("X-Amz-Date")
-  valid_773835 = validateParameter(valid_773835, JString, required = false,
+  var valid_601670 = header.getOrDefault("X-Amz-Date")
+  valid_601670 = validateParameter(valid_601670, JString, required = false,
                                  default = nil)
-  if valid_773835 != nil:
-    section.add "X-Amz-Date", valid_773835
-  var valid_773836 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773836 = validateParameter(valid_773836, JString, required = false,
+  if valid_601670 != nil:
+    section.add "X-Amz-Date", valid_601670
+  var valid_601671 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601671 = validateParameter(valid_601671, JString, required = false,
                                  default = nil)
-  if valid_773836 != nil:
-    section.add "X-Amz-Security-Token", valid_773836
+  if valid_601671 != nil:
+    section.add "X-Amz-Security-Token", valid_601671
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773837 = header.getOrDefault("X-Amz-Target")
-  valid_773837 = validateParameter(valid_773837, JString, required = true, default = newJString(
+  var valid_601672 = header.getOrDefault("X-Amz-Target")
+  valid_601672 = validateParameter(valid_601672, JString, required = true, default = newJString(
       "OvertureService.DescribeLocations"))
-  if valid_773837 != nil:
-    section.add "X-Amz-Target", valid_773837
-  var valid_773838 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773838 = validateParameter(valid_773838, JString, required = false,
+  if valid_601672 != nil:
+    section.add "X-Amz-Target", valid_601672
+  var valid_601673 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601673 = validateParameter(valid_601673, JString, required = false,
                                  default = nil)
-  if valid_773838 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773838
-  var valid_773839 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773839 = validateParameter(valid_773839, JString, required = false,
+  if valid_601673 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601673
+  var valid_601674 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601674 = validateParameter(valid_601674, JString, required = false,
                                  default = nil)
-  if valid_773839 != nil:
-    section.add "X-Amz-Algorithm", valid_773839
-  var valid_773840 = header.getOrDefault("X-Amz-Signature")
-  valid_773840 = validateParameter(valid_773840, JString, required = false,
+  if valid_601674 != nil:
+    section.add "X-Amz-Algorithm", valid_601674
+  var valid_601675 = header.getOrDefault("X-Amz-Signature")
+  valid_601675 = validateParameter(valid_601675, JString, required = false,
                                  default = nil)
-  if valid_773840 != nil:
-    section.add "X-Amz-Signature", valid_773840
-  var valid_773841 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773841 = validateParameter(valid_773841, JString, required = false,
+  if valid_601675 != nil:
+    section.add "X-Amz-Signature", valid_601675
+  var valid_601676 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601676 = validateParameter(valid_601676, JString, required = false,
                                  default = nil)
-  if valid_773841 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773841
-  var valid_773842 = header.getOrDefault("X-Amz-Credential")
-  valid_773842 = validateParameter(valid_773842, JString, required = false,
+  if valid_601676 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601676
+  var valid_601677 = header.getOrDefault("X-Amz-Credential")
+  valid_601677 = validateParameter(valid_601677, JString, required = false,
                                  default = nil)
-  if valid_773842 != nil:
-    section.add "X-Amz-Credential", valid_773842
+  if valid_601677 != nil:
+    section.add "X-Amz-Credential", valid_601677
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773843: Call_DescribeLocations_773832; path: JsonNode;
+proc call*(call_601678: Call_DescribeLocations_601667; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the AWS Direct Connect locations in the current AWS Region. These are the locations that can be selected when calling <a>CreateConnection</a> or <a>CreateInterconnect</a>.
   ## 
-  let valid = call_773843.validator(path, query, header, formData, body)
-  let scheme = call_773843.pickScheme
+  let valid = call_601678.validator(path, query, header, formData, body)
+  let scheme = call_601678.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773843.url(scheme.get, call_773843.host, call_773843.base,
-                         call_773843.route, valid.getOrDefault("path"))
-  result = hook(call_773843, url, valid)
+  let url = call_601678.url(scheme.get, call_601678.host, call_601678.base,
+                         call_601678.route, valid.getOrDefault("path"))
+  result = hook(call_601678, url, valid)
 
-proc call*(call_773844: Call_DescribeLocations_773832): Recallable =
+proc call*(call_601679: Call_DescribeLocations_601667): Recallable =
   ## describeLocations
   ## Lists the AWS Direct Connect locations in the current AWS Region. These are the locations that can be selected when calling <a>CreateConnection</a> or <a>CreateInterconnect</a>.
-  result = call_773844.call(nil, nil, nil, nil, nil)
+  result = call_601679.call(nil, nil, nil, nil, nil)
 
-var describeLocations* = Call_DescribeLocations_773832(name: "describeLocations",
+var describeLocations* = Call_DescribeLocations_601667(name: "describeLocations",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeLocations",
-    validator: validate_DescribeLocations_773833, base: "/",
-    url: url_DescribeLocations_773834, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeLocations_601668, base: "/",
+    url: url_DescribeLocations_601669, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTags_773845 = ref object of OpenApiRestCall_772597
-proc url_DescribeTags_773847(protocol: Scheme; host: string; base: string;
+  Call_DescribeTags_601680 = ref object of OpenApiRestCall_600426
+proc url_DescribeTags_601682(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeTags_773846(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeTags_601681(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the tags associated with the specified AWS Direct Connect resources.
   ## 
@@ -4801,48 +4801,48 @@ proc validate_DescribeTags_773846(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773848 = header.getOrDefault("X-Amz-Date")
-  valid_773848 = validateParameter(valid_773848, JString, required = false,
+  var valid_601683 = header.getOrDefault("X-Amz-Date")
+  valid_601683 = validateParameter(valid_601683, JString, required = false,
                                  default = nil)
-  if valid_773848 != nil:
-    section.add "X-Amz-Date", valid_773848
-  var valid_773849 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773849 = validateParameter(valid_773849, JString, required = false,
+  if valid_601683 != nil:
+    section.add "X-Amz-Date", valid_601683
+  var valid_601684 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601684 = validateParameter(valid_601684, JString, required = false,
                                  default = nil)
-  if valid_773849 != nil:
-    section.add "X-Amz-Security-Token", valid_773849
+  if valid_601684 != nil:
+    section.add "X-Amz-Security-Token", valid_601684
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773850 = header.getOrDefault("X-Amz-Target")
-  valid_773850 = validateParameter(valid_773850, JString, required = true, default = newJString(
+  var valid_601685 = header.getOrDefault("X-Amz-Target")
+  valid_601685 = validateParameter(valid_601685, JString, required = true, default = newJString(
       "OvertureService.DescribeTags"))
-  if valid_773850 != nil:
-    section.add "X-Amz-Target", valid_773850
-  var valid_773851 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773851 = validateParameter(valid_773851, JString, required = false,
+  if valid_601685 != nil:
+    section.add "X-Amz-Target", valid_601685
+  var valid_601686 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601686 = validateParameter(valid_601686, JString, required = false,
                                  default = nil)
-  if valid_773851 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773851
-  var valid_773852 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773852 = validateParameter(valid_773852, JString, required = false,
+  if valid_601686 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601686
+  var valid_601687 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601687 = validateParameter(valid_601687, JString, required = false,
                                  default = nil)
-  if valid_773852 != nil:
-    section.add "X-Amz-Algorithm", valid_773852
-  var valid_773853 = header.getOrDefault("X-Amz-Signature")
-  valid_773853 = validateParameter(valid_773853, JString, required = false,
+  if valid_601687 != nil:
+    section.add "X-Amz-Algorithm", valid_601687
+  var valid_601688 = header.getOrDefault("X-Amz-Signature")
+  valid_601688 = validateParameter(valid_601688, JString, required = false,
                                  default = nil)
-  if valid_773853 != nil:
-    section.add "X-Amz-Signature", valid_773853
-  var valid_773854 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773854 = validateParameter(valid_773854, JString, required = false,
+  if valid_601688 != nil:
+    section.add "X-Amz-Signature", valid_601688
+  var valid_601689 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601689 = validateParameter(valid_601689, JString, required = false,
                                  default = nil)
-  if valid_773854 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773854
-  var valid_773855 = header.getOrDefault("X-Amz-Credential")
-  valid_773855 = validateParameter(valid_773855, JString, required = false,
+  if valid_601689 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601689
+  var valid_601690 = header.getOrDefault("X-Amz-Credential")
+  valid_601690 = validateParameter(valid_601690, JString, required = false,
                                  default = nil)
-  if valid_773855 != nil:
-    section.add "X-Amz-Credential", valid_773855
+  if valid_601690 != nil:
+    section.add "X-Amz-Credential", valid_601690
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4853,39 +4853,39 @@ proc validate_DescribeTags_773846(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_773857: Call_DescribeTags_773845; path: JsonNode; query: JsonNode;
+proc call*(call_601692: Call_DescribeTags_601680; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the tags associated with the specified AWS Direct Connect resources.
   ## 
-  let valid = call_773857.validator(path, query, header, formData, body)
-  let scheme = call_773857.pickScheme
+  let valid = call_601692.validator(path, query, header, formData, body)
+  let scheme = call_601692.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773857.url(scheme.get, call_773857.host, call_773857.base,
-                         call_773857.route, valid.getOrDefault("path"))
-  result = hook(call_773857, url, valid)
+  let url = call_601692.url(scheme.get, call_601692.host, call_601692.base,
+                         call_601692.route, valid.getOrDefault("path"))
+  result = hook(call_601692, url, valid)
 
-proc call*(call_773858: Call_DescribeTags_773845; body: JsonNode): Recallable =
+proc call*(call_601693: Call_DescribeTags_601680; body: JsonNode): Recallable =
   ## describeTags
   ## Describes the tags associated with the specified AWS Direct Connect resources.
   ##   body: JObject (required)
-  var body_773859 = newJObject()
+  var body_601694 = newJObject()
   if body != nil:
-    body_773859 = body
-  result = call_773858.call(nil, nil, nil, nil, body_773859)
+    body_601694 = body
+  result = call_601693.call(nil, nil, nil, nil, body_601694)
 
-var describeTags* = Call_DescribeTags_773845(name: "describeTags",
+var describeTags* = Call_DescribeTags_601680(name: "describeTags",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeTags",
-    validator: validate_DescribeTags_773846, base: "/", url: url_DescribeTags_773847,
+    validator: validate_DescribeTags_601681, base: "/", url: url_DescribeTags_601682,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeVirtualGateways_773860 = ref object of OpenApiRestCall_772597
-proc url_DescribeVirtualGateways_773862(protocol: Scheme; host: string; base: string;
+  Call_DescribeVirtualGateways_601695 = ref object of OpenApiRestCall_600426
+proc url_DescribeVirtualGateways_601697(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeVirtualGateways_773861(path: JsonNode; query: JsonNode;
+proc validate_DescribeVirtualGateways_601696(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the virtual private gateways owned by the AWS account.</p> <p>You can create one or more AWS Direct Connect private virtual interfaces linked to a virtual private gateway.</p>
   ## 
@@ -4905,84 +4905,84 @@ proc validate_DescribeVirtualGateways_773861(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773863 = header.getOrDefault("X-Amz-Date")
-  valid_773863 = validateParameter(valid_773863, JString, required = false,
+  var valid_601698 = header.getOrDefault("X-Amz-Date")
+  valid_601698 = validateParameter(valid_601698, JString, required = false,
                                  default = nil)
-  if valid_773863 != nil:
-    section.add "X-Amz-Date", valid_773863
-  var valid_773864 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773864 = validateParameter(valid_773864, JString, required = false,
+  if valid_601698 != nil:
+    section.add "X-Amz-Date", valid_601698
+  var valid_601699 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601699 = validateParameter(valid_601699, JString, required = false,
                                  default = nil)
-  if valid_773864 != nil:
-    section.add "X-Amz-Security-Token", valid_773864
+  if valid_601699 != nil:
+    section.add "X-Amz-Security-Token", valid_601699
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773865 = header.getOrDefault("X-Amz-Target")
-  valid_773865 = validateParameter(valid_773865, JString, required = true, default = newJString(
+  var valid_601700 = header.getOrDefault("X-Amz-Target")
+  valid_601700 = validateParameter(valid_601700, JString, required = true, default = newJString(
       "OvertureService.DescribeVirtualGateways"))
-  if valid_773865 != nil:
-    section.add "X-Amz-Target", valid_773865
-  var valid_773866 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773866 = validateParameter(valid_773866, JString, required = false,
+  if valid_601700 != nil:
+    section.add "X-Amz-Target", valid_601700
+  var valid_601701 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601701 = validateParameter(valid_601701, JString, required = false,
                                  default = nil)
-  if valid_773866 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773866
-  var valid_773867 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773867 = validateParameter(valid_773867, JString, required = false,
+  if valid_601701 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601701
+  var valid_601702 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601702 = validateParameter(valid_601702, JString, required = false,
                                  default = nil)
-  if valid_773867 != nil:
-    section.add "X-Amz-Algorithm", valid_773867
-  var valid_773868 = header.getOrDefault("X-Amz-Signature")
-  valid_773868 = validateParameter(valid_773868, JString, required = false,
+  if valid_601702 != nil:
+    section.add "X-Amz-Algorithm", valid_601702
+  var valid_601703 = header.getOrDefault("X-Amz-Signature")
+  valid_601703 = validateParameter(valid_601703, JString, required = false,
                                  default = nil)
-  if valid_773868 != nil:
-    section.add "X-Amz-Signature", valid_773868
-  var valid_773869 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773869 = validateParameter(valid_773869, JString, required = false,
+  if valid_601703 != nil:
+    section.add "X-Amz-Signature", valid_601703
+  var valid_601704 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601704 = validateParameter(valid_601704, JString, required = false,
                                  default = nil)
-  if valid_773869 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773869
-  var valid_773870 = header.getOrDefault("X-Amz-Credential")
-  valid_773870 = validateParameter(valid_773870, JString, required = false,
+  if valid_601704 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601704
+  var valid_601705 = header.getOrDefault("X-Amz-Credential")
+  valid_601705 = validateParameter(valid_601705, JString, required = false,
                                  default = nil)
-  if valid_773870 != nil:
-    section.add "X-Amz-Credential", valid_773870
+  if valid_601705 != nil:
+    section.add "X-Amz-Credential", valid_601705
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773871: Call_DescribeVirtualGateways_773860; path: JsonNode;
+proc call*(call_601706: Call_DescribeVirtualGateways_601695; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the virtual private gateways owned by the AWS account.</p> <p>You can create one or more AWS Direct Connect private virtual interfaces linked to a virtual private gateway.</p>
   ## 
-  let valid = call_773871.validator(path, query, header, formData, body)
-  let scheme = call_773871.pickScheme
+  let valid = call_601706.validator(path, query, header, formData, body)
+  let scheme = call_601706.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773871.url(scheme.get, call_773871.host, call_773871.base,
-                         call_773871.route, valid.getOrDefault("path"))
-  result = hook(call_773871, url, valid)
+  let url = call_601706.url(scheme.get, call_601706.host, call_601706.base,
+                         call_601706.route, valid.getOrDefault("path"))
+  result = hook(call_601706, url, valid)
 
-proc call*(call_773872: Call_DescribeVirtualGateways_773860): Recallable =
+proc call*(call_601707: Call_DescribeVirtualGateways_601695): Recallable =
   ## describeVirtualGateways
   ## <p>Lists the virtual private gateways owned by the AWS account.</p> <p>You can create one or more AWS Direct Connect private virtual interfaces linked to a virtual private gateway.</p>
-  result = call_773872.call(nil, nil, nil, nil, nil)
+  result = call_601707.call(nil, nil, nil, nil, nil)
 
-var describeVirtualGateways* = Call_DescribeVirtualGateways_773860(
+var describeVirtualGateways* = Call_DescribeVirtualGateways_601695(
     name: "describeVirtualGateways", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeVirtualGateways",
-    validator: validate_DescribeVirtualGateways_773861, base: "/",
-    url: url_DescribeVirtualGateways_773862, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeVirtualGateways_601696, base: "/",
+    url: url_DescribeVirtualGateways_601697, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeVirtualInterfaces_773873 = ref object of OpenApiRestCall_772597
-proc url_DescribeVirtualInterfaces_773875(protocol: Scheme; host: string;
+  Call_DescribeVirtualInterfaces_601708 = ref object of OpenApiRestCall_600426
+proc url_DescribeVirtualInterfaces_601710(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeVirtualInterfaces_773874(path: JsonNode; query: JsonNode;
+proc validate_DescribeVirtualInterfaces_601709(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Displays all virtual interfaces for an AWS account. Virtual interfaces deleted fewer than 15 minutes before you make the request are also returned. If you specify a connection ID, only the virtual interfaces associated with the connection are returned. If you specify a virtual interface ID, then only a single virtual interface is returned.</p> <p>A virtual interface (VLAN) transmits the traffic between the AWS Direct Connect location and the customer network.</p>
   ## 
@@ -5002,48 +5002,48 @@ proc validate_DescribeVirtualInterfaces_773874(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773876 = header.getOrDefault("X-Amz-Date")
-  valid_773876 = validateParameter(valid_773876, JString, required = false,
+  var valid_601711 = header.getOrDefault("X-Amz-Date")
+  valid_601711 = validateParameter(valid_601711, JString, required = false,
                                  default = nil)
-  if valid_773876 != nil:
-    section.add "X-Amz-Date", valid_773876
-  var valid_773877 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773877 = validateParameter(valid_773877, JString, required = false,
+  if valid_601711 != nil:
+    section.add "X-Amz-Date", valid_601711
+  var valid_601712 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601712 = validateParameter(valid_601712, JString, required = false,
                                  default = nil)
-  if valid_773877 != nil:
-    section.add "X-Amz-Security-Token", valid_773877
+  if valid_601712 != nil:
+    section.add "X-Amz-Security-Token", valid_601712
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773878 = header.getOrDefault("X-Amz-Target")
-  valid_773878 = validateParameter(valid_773878, JString, required = true, default = newJString(
+  var valid_601713 = header.getOrDefault("X-Amz-Target")
+  valid_601713 = validateParameter(valid_601713, JString, required = true, default = newJString(
       "OvertureService.DescribeVirtualInterfaces"))
-  if valid_773878 != nil:
-    section.add "X-Amz-Target", valid_773878
-  var valid_773879 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773879 = validateParameter(valid_773879, JString, required = false,
+  if valid_601713 != nil:
+    section.add "X-Amz-Target", valid_601713
+  var valid_601714 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601714 = validateParameter(valid_601714, JString, required = false,
                                  default = nil)
-  if valid_773879 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773879
-  var valid_773880 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773880 = validateParameter(valid_773880, JString, required = false,
+  if valid_601714 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601714
+  var valid_601715 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601715 = validateParameter(valid_601715, JString, required = false,
                                  default = nil)
-  if valid_773880 != nil:
-    section.add "X-Amz-Algorithm", valid_773880
-  var valid_773881 = header.getOrDefault("X-Amz-Signature")
-  valid_773881 = validateParameter(valid_773881, JString, required = false,
+  if valid_601715 != nil:
+    section.add "X-Amz-Algorithm", valid_601715
+  var valid_601716 = header.getOrDefault("X-Amz-Signature")
+  valid_601716 = validateParameter(valid_601716, JString, required = false,
                                  default = nil)
-  if valid_773881 != nil:
-    section.add "X-Amz-Signature", valid_773881
-  var valid_773882 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773882 = validateParameter(valid_773882, JString, required = false,
+  if valid_601716 != nil:
+    section.add "X-Amz-Signature", valid_601716
+  var valid_601717 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601717 = validateParameter(valid_601717, JString, required = false,
                                  default = nil)
-  if valid_773882 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773882
-  var valid_773883 = header.getOrDefault("X-Amz-Credential")
-  valid_773883 = validateParameter(valid_773883, JString, required = false,
+  if valid_601717 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601717
+  var valid_601718 = header.getOrDefault("X-Amz-Credential")
+  valid_601718 = validateParameter(valid_601718, JString, required = false,
                                  default = nil)
-  if valid_773883 != nil:
-    section.add "X-Amz-Credential", valid_773883
+  if valid_601718 != nil:
+    section.add "X-Amz-Credential", valid_601718
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5054,41 +5054,41 @@ proc validate_DescribeVirtualInterfaces_773874(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773885: Call_DescribeVirtualInterfaces_773873; path: JsonNode;
+proc call*(call_601720: Call_DescribeVirtualInterfaces_601708; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Displays all virtual interfaces for an AWS account. Virtual interfaces deleted fewer than 15 minutes before you make the request are also returned. If you specify a connection ID, only the virtual interfaces associated with the connection are returned. If you specify a virtual interface ID, then only a single virtual interface is returned.</p> <p>A virtual interface (VLAN) transmits the traffic between the AWS Direct Connect location and the customer network.</p>
   ## 
-  let valid = call_773885.validator(path, query, header, formData, body)
-  let scheme = call_773885.pickScheme
+  let valid = call_601720.validator(path, query, header, formData, body)
+  let scheme = call_601720.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773885.url(scheme.get, call_773885.host, call_773885.base,
-                         call_773885.route, valid.getOrDefault("path"))
-  result = hook(call_773885, url, valid)
+  let url = call_601720.url(scheme.get, call_601720.host, call_601720.base,
+                         call_601720.route, valid.getOrDefault("path"))
+  result = hook(call_601720, url, valid)
 
-proc call*(call_773886: Call_DescribeVirtualInterfaces_773873; body: JsonNode): Recallable =
+proc call*(call_601721: Call_DescribeVirtualInterfaces_601708; body: JsonNode): Recallable =
   ## describeVirtualInterfaces
   ## <p>Displays all virtual interfaces for an AWS account. Virtual interfaces deleted fewer than 15 minutes before you make the request are also returned. If you specify a connection ID, only the virtual interfaces associated with the connection are returned. If you specify a virtual interface ID, then only a single virtual interface is returned.</p> <p>A virtual interface (VLAN) transmits the traffic between the AWS Direct Connect location and the customer network.</p>
   ##   body: JObject (required)
-  var body_773887 = newJObject()
+  var body_601722 = newJObject()
   if body != nil:
-    body_773887 = body
-  result = call_773886.call(nil, nil, nil, nil, body_773887)
+    body_601722 = body
+  result = call_601721.call(nil, nil, nil, nil, body_601722)
 
-var describeVirtualInterfaces* = Call_DescribeVirtualInterfaces_773873(
+var describeVirtualInterfaces* = Call_DescribeVirtualInterfaces_601708(
     name: "describeVirtualInterfaces", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DescribeVirtualInterfaces",
-    validator: validate_DescribeVirtualInterfaces_773874, base: "/",
-    url: url_DescribeVirtualInterfaces_773875,
+    validator: validate_DescribeVirtualInterfaces_601709, base: "/",
+    url: url_DescribeVirtualInterfaces_601710,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateConnectionFromLag_773888 = ref object of OpenApiRestCall_772597
-proc url_DisassociateConnectionFromLag_773890(protocol: Scheme; host: string;
+  Call_DisassociateConnectionFromLag_601723 = ref object of OpenApiRestCall_600426
+proc url_DisassociateConnectionFromLag_601725(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DisassociateConnectionFromLag_773889(path: JsonNode; query: JsonNode;
+proc validate_DisassociateConnectionFromLag_601724(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Disassociates a connection from a link aggregation group (LAG). The connection is interrupted and re-established as a standalone connection (the connection is not deleted; to delete the connection, use the <a>DeleteConnection</a> request). If the LAG has associated virtual interfaces or hosted connections, they remain associated with the LAG. A disassociated connection owned by an AWS Direct Connect Partner is automatically converted to an interconnect.</p> <p>If disassociating the connection would cause the LAG to fall below its setting for minimum number of operational connections, the request fails, except when it's the last member of the LAG. If all connections are disassociated, the LAG continues to exist as an empty LAG with no physical connections. </p>
   ## 
@@ -5108,48 +5108,48 @@ proc validate_DisassociateConnectionFromLag_773889(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773891 = header.getOrDefault("X-Amz-Date")
-  valid_773891 = validateParameter(valid_773891, JString, required = false,
+  var valid_601726 = header.getOrDefault("X-Amz-Date")
+  valid_601726 = validateParameter(valid_601726, JString, required = false,
                                  default = nil)
-  if valid_773891 != nil:
-    section.add "X-Amz-Date", valid_773891
-  var valid_773892 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773892 = validateParameter(valid_773892, JString, required = false,
+  if valid_601726 != nil:
+    section.add "X-Amz-Date", valid_601726
+  var valid_601727 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601727 = validateParameter(valid_601727, JString, required = false,
                                  default = nil)
-  if valid_773892 != nil:
-    section.add "X-Amz-Security-Token", valid_773892
+  if valid_601727 != nil:
+    section.add "X-Amz-Security-Token", valid_601727
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773893 = header.getOrDefault("X-Amz-Target")
-  valid_773893 = validateParameter(valid_773893, JString, required = true, default = newJString(
+  var valid_601728 = header.getOrDefault("X-Amz-Target")
+  valid_601728 = validateParameter(valid_601728, JString, required = true, default = newJString(
       "OvertureService.DisassociateConnectionFromLag"))
-  if valid_773893 != nil:
-    section.add "X-Amz-Target", valid_773893
-  var valid_773894 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773894 = validateParameter(valid_773894, JString, required = false,
+  if valid_601728 != nil:
+    section.add "X-Amz-Target", valid_601728
+  var valid_601729 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601729 = validateParameter(valid_601729, JString, required = false,
                                  default = nil)
-  if valid_773894 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773894
-  var valid_773895 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773895 = validateParameter(valid_773895, JString, required = false,
+  if valid_601729 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601729
+  var valid_601730 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601730 = validateParameter(valid_601730, JString, required = false,
                                  default = nil)
-  if valid_773895 != nil:
-    section.add "X-Amz-Algorithm", valid_773895
-  var valid_773896 = header.getOrDefault("X-Amz-Signature")
-  valid_773896 = validateParameter(valid_773896, JString, required = false,
+  if valid_601730 != nil:
+    section.add "X-Amz-Algorithm", valid_601730
+  var valid_601731 = header.getOrDefault("X-Amz-Signature")
+  valid_601731 = validateParameter(valid_601731, JString, required = false,
                                  default = nil)
-  if valid_773896 != nil:
-    section.add "X-Amz-Signature", valid_773896
-  var valid_773897 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773897 = validateParameter(valid_773897, JString, required = false,
+  if valid_601731 != nil:
+    section.add "X-Amz-Signature", valid_601731
+  var valid_601732 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601732 = validateParameter(valid_601732, JString, required = false,
                                  default = nil)
-  if valid_773897 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773897
-  var valid_773898 = header.getOrDefault("X-Amz-Credential")
-  valid_773898 = validateParameter(valid_773898, JString, required = false,
+  if valid_601732 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601732
+  var valid_601733 = header.getOrDefault("X-Amz-Credential")
+  valid_601733 = validateParameter(valid_601733, JString, required = false,
                                  default = nil)
-  if valid_773898 != nil:
-    section.add "X-Amz-Credential", valid_773898
+  if valid_601733 != nil:
+    section.add "X-Amz-Credential", valid_601733
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5160,41 +5160,41 @@ proc validate_DisassociateConnectionFromLag_773889(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_773900: Call_DisassociateConnectionFromLag_773888; path: JsonNode;
+proc call*(call_601735: Call_DisassociateConnectionFromLag_601723; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Disassociates a connection from a link aggregation group (LAG). The connection is interrupted and re-established as a standalone connection (the connection is not deleted; to delete the connection, use the <a>DeleteConnection</a> request). If the LAG has associated virtual interfaces or hosted connections, they remain associated with the LAG. A disassociated connection owned by an AWS Direct Connect Partner is automatically converted to an interconnect.</p> <p>If disassociating the connection would cause the LAG to fall below its setting for minimum number of operational connections, the request fails, except when it's the last member of the LAG. If all connections are disassociated, the LAG continues to exist as an empty LAG with no physical connections. </p>
   ## 
-  let valid = call_773900.validator(path, query, header, formData, body)
-  let scheme = call_773900.pickScheme
+  let valid = call_601735.validator(path, query, header, formData, body)
+  let scheme = call_601735.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773900.url(scheme.get, call_773900.host, call_773900.base,
-                         call_773900.route, valid.getOrDefault("path"))
-  result = hook(call_773900, url, valid)
+  let url = call_601735.url(scheme.get, call_601735.host, call_601735.base,
+                         call_601735.route, valid.getOrDefault("path"))
+  result = hook(call_601735, url, valid)
 
-proc call*(call_773901: Call_DisassociateConnectionFromLag_773888; body: JsonNode): Recallable =
+proc call*(call_601736: Call_DisassociateConnectionFromLag_601723; body: JsonNode): Recallable =
   ## disassociateConnectionFromLag
   ## <p>Disassociates a connection from a link aggregation group (LAG). The connection is interrupted and re-established as a standalone connection (the connection is not deleted; to delete the connection, use the <a>DeleteConnection</a> request). If the LAG has associated virtual interfaces or hosted connections, they remain associated with the LAG. A disassociated connection owned by an AWS Direct Connect Partner is automatically converted to an interconnect.</p> <p>If disassociating the connection would cause the LAG to fall below its setting for minimum number of operational connections, the request fails, except when it's the last member of the LAG. If all connections are disassociated, the LAG continues to exist as an empty LAG with no physical connections. </p>
   ##   body: JObject (required)
-  var body_773902 = newJObject()
+  var body_601737 = newJObject()
   if body != nil:
-    body_773902 = body
-  result = call_773901.call(nil, nil, nil, nil, body_773902)
+    body_601737 = body
+  result = call_601736.call(nil, nil, nil, nil, body_601737)
 
-var disassociateConnectionFromLag* = Call_DisassociateConnectionFromLag_773888(
+var disassociateConnectionFromLag* = Call_DisassociateConnectionFromLag_601723(
     name: "disassociateConnectionFromLag", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.DisassociateConnectionFromLag",
-    validator: validate_DisassociateConnectionFromLag_773889, base: "/",
-    url: url_DisassociateConnectionFromLag_773890,
+    validator: validate_DisassociateConnectionFromLag_601724, base: "/",
+    url: url_DisassociateConnectionFromLag_601725,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_773903 = ref object of OpenApiRestCall_772597
-proc url_TagResource_773905(protocol: Scheme; host: string; base: string;
+  Call_TagResource_601738 = ref object of OpenApiRestCall_600426
+proc url_TagResource_601740(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_TagResource_773904(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_601739(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds the specified tags to the specified AWS Direct Connect resource. Each resource can have a maximum of 50 tags.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the resource, this action updates its value.</p>
   ## 
@@ -5214,48 +5214,48 @@ proc validate_TagResource_773904(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773906 = header.getOrDefault("X-Amz-Date")
-  valid_773906 = validateParameter(valid_773906, JString, required = false,
+  var valid_601741 = header.getOrDefault("X-Amz-Date")
+  valid_601741 = validateParameter(valid_601741, JString, required = false,
                                  default = nil)
-  if valid_773906 != nil:
-    section.add "X-Amz-Date", valid_773906
-  var valid_773907 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773907 = validateParameter(valid_773907, JString, required = false,
+  if valid_601741 != nil:
+    section.add "X-Amz-Date", valid_601741
+  var valid_601742 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601742 = validateParameter(valid_601742, JString, required = false,
                                  default = nil)
-  if valid_773907 != nil:
-    section.add "X-Amz-Security-Token", valid_773907
+  if valid_601742 != nil:
+    section.add "X-Amz-Security-Token", valid_601742
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773908 = header.getOrDefault("X-Amz-Target")
-  valid_773908 = validateParameter(valid_773908, JString, required = true, default = newJString(
+  var valid_601743 = header.getOrDefault("X-Amz-Target")
+  valid_601743 = validateParameter(valid_601743, JString, required = true, default = newJString(
       "OvertureService.TagResource"))
-  if valid_773908 != nil:
-    section.add "X-Amz-Target", valid_773908
-  var valid_773909 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773909 = validateParameter(valid_773909, JString, required = false,
+  if valid_601743 != nil:
+    section.add "X-Amz-Target", valid_601743
+  var valid_601744 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601744 = validateParameter(valid_601744, JString, required = false,
                                  default = nil)
-  if valid_773909 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773909
-  var valid_773910 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773910 = validateParameter(valid_773910, JString, required = false,
+  if valid_601744 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601744
+  var valid_601745 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601745 = validateParameter(valid_601745, JString, required = false,
                                  default = nil)
-  if valid_773910 != nil:
-    section.add "X-Amz-Algorithm", valid_773910
-  var valid_773911 = header.getOrDefault("X-Amz-Signature")
-  valid_773911 = validateParameter(valid_773911, JString, required = false,
+  if valid_601745 != nil:
+    section.add "X-Amz-Algorithm", valid_601745
+  var valid_601746 = header.getOrDefault("X-Amz-Signature")
+  valid_601746 = validateParameter(valid_601746, JString, required = false,
                                  default = nil)
-  if valid_773911 != nil:
-    section.add "X-Amz-Signature", valid_773911
-  var valid_773912 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773912 = validateParameter(valid_773912, JString, required = false,
+  if valid_601746 != nil:
+    section.add "X-Amz-Signature", valid_601746
+  var valid_601747 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601747 = validateParameter(valid_601747, JString, required = false,
                                  default = nil)
-  if valid_773912 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773912
-  var valid_773913 = header.getOrDefault("X-Amz-Credential")
-  valid_773913 = validateParameter(valid_773913, JString, required = false,
+  if valid_601747 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601747
+  var valid_601748 = header.getOrDefault("X-Amz-Credential")
+  valid_601748 = validateParameter(valid_601748, JString, required = false,
                                  default = nil)
-  if valid_773913 != nil:
-    section.add "X-Amz-Credential", valid_773913
+  if valid_601748 != nil:
+    section.add "X-Amz-Credential", valid_601748
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5266,40 +5266,40 @@ proc validate_TagResource_773904(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_773915: Call_TagResource_773903; path: JsonNode; query: JsonNode;
+proc call*(call_601750: Call_TagResource_601738; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds the specified tags to the specified AWS Direct Connect resource. Each resource can have a maximum of 50 tags.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the resource, this action updates its value.</p>
   ## 
-  let valid = call_773915.validator(path, query, header, formData, body)
-  let scheme = call_773915.pickScheme
+  let valid = call_601750.validator(path, query, header, formData, body)
+  let scheme = call_601750.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773915.url(scheme.get, call_773915.host, call_773915.base,
-                         call_773915.route, valid.getOrDefault("path"))
-  result = hook(call_773915, url, valid)
+  let url = call_601750.url(scheme.get, call_601750.host, call_601750.base,
+                         call_601750.route, valid.getOrDefault("path"))
+  result = hook(call_601750, url, valid)
 
-proc call*(call_773916: Call_TagResource_773903; body: JsonNode): Recallable =
+proc call*(call_601751: Call_TagResource_601738; body: JsonNode): Recallable =
   ## tagResource
   ## <p>Adds the specified tags to the specified AWS Direct Connect resource. Each resource can have a maximum of 50 tags.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the resource, this action updates its value.</p>
   ##   body: JObject (required)
-  var body_773917 = newJObject()
+  var body_601752 = newJObject()
   if body != nil:
-    body_773917 = body
-  result = call_773916.call(nil, nil, nil, nil, body_773917)
+    body_601752 = body
+  result = call_601751.call(nil, nil, nil, nil, body_601752)
 
-var tagResource* = Call_TagResource_773903(name: "tagResource",
+var tagResource* = Call_TagResource_601738(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.TagResource",
-                                        validator: validate_TagResource_773904,
-                                        base: "/", url: url_TagResource_773905,
+                                        validator: validate_TagResource_601739,
+                                        base: "/", url: url_TagResource_601740,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_773918 = ref object of OpenApiRestCall_772597
-proc url_UntagResource_773920(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_601753 = ref object of OpenApiRestCall_600426
+proc url_UntagResource_601755(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_UntagResource_773919(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_601754(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes one or more tags from the specified AWS Direct Connect resource.
   ## 
@@ -5319,48 +5319,48 @@ proc validate_UntagResource_773919(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773921 = header.getOrDefault("X-Amz-Date")
-  valid_773921 = validateParameter(valid_773921, JString, required = false,
+  var valid_601756 = header.getOrDefault("X-Amz-Date")
+  valid_601756 = validateParameter(valid_601756, JString, required = false,
                                  default = nil)
-  if valid_773921 != nil:
-    section.add "X-Amz-Date", valid_773921
-  var valid_773922 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773922 = validateParameter(valid_773922, JString, required = false,
+  if valid_601756 != nil:
+    section.add "X-Amz-Date", valid_601756
+  var valid_601757 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601757 = validateParameter(valid_601757, JString, required = false,
                                  default = nil)
-  if valid_773922 != nil:
-    section.add "X-Amz-Security-Token", valid_773922
+  if valid_601757 != nil:
+    section.add "X-Amz-Security-Token", valid_601757
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773923 = header.getOrDefault("X-Amz-Target")
-  valid_773923 = validateParameter(valid_773923, JString, required = true, default = newJString(
+  var valid_601758 = header.getOrDefault("X-Amz-Target")
+  valid_601758 = validateParameter(valid_601758, JString, required = true, default = newJString(
       "OvertureService.UntagResource"))
-  if valid_773923 != nil:
-    section.add "X-Amz-Target", valid_773923
-  var valid_773924 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773924 = validateParameter(valid_773924, JString, required = false,
+  if valid_601758 != nil:
+    section.add "X-Amz-Target", valid_601758
+  var valid_601759 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601759 = validateParameter(valid_601759, JString, required = false,
                                  default = nil)
-  if valid_773924 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773924
-  var valid_773925 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773925 = validateParameter(valid_773925, JString, required = false,
+  if valid_601759 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601759
+  var valid_601760 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601760 = validateParameter(valid_601760, JString, required = false,
                                  default = nil)
-  if valid_773925 != nil:
-    section.add "X-Amz-Algorithm", valid_773925
-  var valid_773926 = header.getOrDefault("X-Amz-Signature")
-  valid_773926 = validateParameter(valid_773926, JString, required = false,
+  if valid_601760 != nil:
+    section.add "X-Amz-Algorithm", valid_601760
+  var valid_601761 = header.getOrDefault("X-Amz-Signature")
+  valid_601761 = validateParameter(valid_601761, JString, required = false,
                                  default = nil)
-  if valid_773926 != nil:
-    section.add "X-Amz-Signature", valid_773926
-  var valid_773927 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773927 = validateParameter(valid_773927, JString, required = false,
+  if valid_601761 != nil:
+    section.add "X-Amz-Signature", valid_601761
+  var valid_601762 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601762 = validateParameter(valid_601762, JString, required = false,
                                  default = nil)
-  if valid_773927 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773927
-  var valid_773928 = header.getOrDefault("X-Amz-Credential")
-  valid_773928 = validateParameter(valid_773928, JString, required = false,
+  if valid_601762 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601762
+  var valid_601763 = header.getOrDefault("X-Amz-Credential")
+  valid_601763 = validateParameter(valid_601763, JString, required = false,
                                  default = nil)
-  if valid_773928 != nil:
-    section.add "X-Amz-Credential", valid_773928
+  if valid_601763 != nil:
+    section.add "X-Amz-Credential", valid_601763
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5371,39 +5371,39 @@ proc validate_UntagResource_773919(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_773930: Call_UntagResource_773918; path: JsonNode; query: JsonNode;
+proc call*(call_601765: Call_UntagResource_601753; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes one or more tags from the specified AWS Direct Connect resource.
   ## 
-  let valid = call_773930.validator(path, query, header, formData, body)
-  let scheme = call_773930.pickScheme
+  let valid = call_601765.validator(path, query, header, formData, body)
+  let scheme = call_601765.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773930.url(scheme.get, call_773930.host, call_773930.base,
-                         call_773930.route, valid.getOrDefault("path"))
-  result = hook(call_773930, url, valid)
+  let url = call_601765.url(scheme.get, call_601765.host, call_601765.base,
+                         call_601765.route, valid.getOrDefault("path"))
+  result = hook(call_601765, url, valid)
 
-proc call*(call_773931: Call_UntagResource_773918; body: JsonNode): Recallable =
+proc call*(call_601766: Call_UntagResource_601753; body: JsonNode): Recallable =
   ## untagResource
   ## Removes one or more tags from the specified AWS Direct Connect resource.
   ##   body: JObject (required)
-  var body_773932 = newJObject()
+  var body_601767 = newJObject()
   if body != nil:
-    body_773932 = body
-  result = call_773931.call(nil, nil, nil, nil, body_773932)
+    body_601767 = body
+  result = call_601766.call(nil, nil, nil, nil, body_601767)
 
-var untagResource* = Call_UntagResource_773918(name: "untagResource",
+var untagResource* = Call_UntagResource_601753(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.UntagResource",
-    validator: validate_UntagResource_773919, base: "/", url: url_UntagResource_773920,
+    validator: validate_UntagResource_601754, base: "/", url: url_UntagResource_601755,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateDirectConnectGatewayAssociation_773933 = ref object of OpenApiRestCall_772597
-proc url_UpdateDirectConnectGatewayAssociation_773935(protocol: Scheme;
+  Call_UpdateDirectConnectGatewayAssociation_601768 = ref object of OpenApiRestCall_600426
+proc url_UpdateDirectConnectGatewayAssociation_601770(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_UpdateDirectConnectGatewayAssociation_773934(path: JsonNode;
+proc validate_UpdateDirectConnectGatewayAssociation_601769(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the specified attributes of the Direct Connect gateway association.</p> <p>Add or remove prefixes from the association.</p>
   ## 
@@ -5423,48 +5423,48 @@ proc validate_UpdateDirectConnectGatewayAssociation_773934(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773936 = header.getOrDefault("X-Amz-Date")
-  valid_773936 = validateParameter(valid_773936, JString, required = false,
+  var valid_601771 = header.getOrDefault("X-Amz-Date")
+  valid_601771 = validateParameter(valid_601771, JString, required = false,
                                  default = nil)
-  if valid_773936 != nil:
-    section.add "X-Amz-Date", valid_773936
-  var valid_773937 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773937 = validateParameter(valid_773937, JString, required = false,
+  if valid_601771 != nil:
+    section.add "X-Amz-Date", valid_601771
+  var valid_601772 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601772 = validateParameter(valid_601772, JString, required = false,
                                  default = nil)
-  if valid_773937 != nil:
-    section.add "X-Amz-Security-Token", valid_773937
+  if valid_601772 != nil:
+    section.add "X-Amz-Security-Token", valid_601772
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773938 = header.getOrDefault("X-Amz-Target")
-  valid_773938 = validateParameter(valid_773938, JString, required = true, default = newJString(
+  var valid_601773 = header.getOrDefault("X-Amz-Target")
+  valid_601773 = validateParameter(valid_601773, JString, required = true, default = newJString(
       "OvertureService.UpdateDirectConnectGatewayAssociation"))
-  if valid_773938 != nil:
-    section.add "X-Amz-Target", valid_773938
-  var valid_773939 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773939 = validateParameter(valid_773939, JString, required = false,
+  if valid_601773 != nil:
+    section.add "X-Amz-Target", valid_601773
+  var valid_601774 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601774 = validateParameter(valid_601774, JString, required = false,
                                  default = nil)
-  if valid_773939 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773939
-  var valid_773940 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773940 = validateParameter(valid_773940, JString, required = false,
+  if valid_601774 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601774
+  var valid_601775 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601775 = validateParameter(valid_601775, JString, required = false,
                                  default = nil)
-  if valid_773940 != nil:
-    section.add "X-Amz-Algorithm", valid_773940
-  var valid_773941 = header.getOrDefault("X-Amz-Signature")
-  valid_773941 = validateParameter(valid_773941, JString, required = false,
+  if valid_601775 != nil:
+    section.add "X-Amz-Algorithm", valid_601775
+  var valid_601776 = header.getOrDefault("X-Amz-Signature")
+  valid_601776 = validateParameter(valid_601776, JString, required = false,
                                  default = nil)
-  if valid_773941 != nil:
-    section.add "X-Amz-Signature", valid_773941
-  var valid_773942 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773942 = validateParameter(valid_773942, JString, required = false,
+  if valid_601776 != nil:
+    section.add "X-Amz-Signature", valid_601776
+  var valid_601777 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601777 = validateParameter(valid_601777, JString, required = false,
                                  default = nil)
-  if valid_773942 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773942
-  var valid_773943 = header.getOrDefault("X-Amz-Credential")
-  valid_773943 = validateParameter(valid_773943, JString, required = false,
+  if valid_601777 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601777
+  var valid_601778 = header.getOrDefault("X-Amz-Credential")
+  valid_601778 = validateParameter(valid_601778, JString, required = false,
                                  default = nil)
-  if valid_773943 != nil:
-    section.add "X-Amz-Credential", valid_773943
+  if valid_601778 != nil:
+    section.add "X-Amz-Credential", valid_601778
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5475,42 +5475,42 @@ proc validate_UpdateDirectConnectGatewayAssociation_773934(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773945: Call_UpdateDirectConnectGatewayAssociation_773933;
+proc call*(call_601780: Call_UpdateDirectConnectGatewayAssociation_601768;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Updates the specified attributes of the Direct Connect gateway association.</p> <p>Add or remove prefixes from the association.</p>
   ## 
-  let valid = call_773945.validator(path, query, header, formData, body)
-  let scheme = call_773945.pickScheme
+  let valid = call_601780.validator(path, query, header, formData, body)
+  let scheme = call_601780.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773945.url(scheme.get, call_773945.host, call_773945.base,
-                         call_773945.route, valid.getOrDefault("path"))
-  result = hook(call_773945, url, valid)
+  let url = call_601780.url(scheme.get, call_601780.host, call_601780.base,
+                         call_601780.route, valid.getOrDefault("path"))
+  result = hook(call_601780, url, valid)
 
-proc call*(call_773946: Call_UpdateDirectConnectGatewayAssociation_773933;
+proc call*(call_601781: Call_UpdateDirectConnectGatewayAssociation_601768;
           body: JsonNode): Recallable =
   ## updateDirectConnectGatewayAssociation
   ## <p>Updates the specified attributes of the Direct Connect gateway association.</p> <p>Add or remove prefixes from the association.</p>
   ##   body: JObject (required)
-  var body_773947 = newJObject()
+  var body_601782 = newJObject()
   if body != nil:
-    body_773947 = body
-  result = call_773946.call(nil, nil, nil, nil, body_773947)
+    body_601782 = body
+  result = call_601781.call(nil, nil, nil, nil, body_601782)
 
-var updateDirectConnectGatewayAssociation* = Call_UpdateDirectConnectGatewayAssociation_773933(
+var updateDirectConnectGatewayAssociation* = Call_UpdateDirectConnectGatewayAssociation_601768(
     name: "updateDirectConnectGatewayAssociation", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.UpdateDirectConnectGatewayAssociation",
-    validator: validate_UpdateDirectConnectGatewayAssociation_773934, base: "/",
-    url: url_UpdateDirectConnectGatewayAssociation_773935,
+    validator: validate_UpdateDirectConnectGatewayAssociation_601769, base: "/",
+    url: url_UpdateDirectConnectGatewayAssociation_601770,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateLag_773948 = ref object of OpenApiRestCall_772597
-proc url_UpdateLag_773950(protocol: Scheme; host: string; base: string; route: string;
+  Call_UpdateLag_601783 = ref object of OpenApiRestCall_600426
+proc url_UpdateLag_601785(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_UpdateLag_773949(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateLag_601784(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the attributes of the specified link aggregation group (LAG).</p> <p>You can update the following attributes:</p> <ul> <li> <p>The name of the LAG.</p> </li> <li> <p>The value for the minimum number of connections that must be operational for the LAG itself to be operational. </p> </li> </ul> <p>When you create a LAG, the default value for the minimum number of operational connections is zero (0). If you update this value and the number of operational connections falls below the specified value, the LAG automatically goes down to avoid over-utilization of the remaining connections. Adjust this value with care, as it could force the LAG down if it is set higher than the current number of operational connections.</p>
   ## 
@@ -5530,48 +5530,48 @@ proc validate_UpdateLag_773949(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773951 = header.getOrDefault("X-Amz-Date")
-  valid_773951 = validateParameter(valid_773951, JString, required = false,
+  var valid_601786 = header.getOrDefault("X-Amz-Date")
+  valid_601786 = validateParameter(valid_601786, JString, required = false,
                                  default = nil)
-  if valid_773951 != nil:
-    section.add "X-Amz-Date", valid_773951
-  var valid_773952 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773952 = validateParameter(valid_773952, JString, required = false,
+  if valid_601786 != nil:
+    section.add "X-Amz-Date", valid_601786
+  var valid_601787 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601787 = validateParameter(valid_601787, JString, required = false,
                                  default = nil)
-  if valid_773952 != nil:
-    section.add "X-Amz-Security-Token", valid_773952
+  if valid_601787 != nil:
+    section.add "X-Amz-Security-Token", valid_601787
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773953 = header.getOrDefault("X-Amz-Target")
-  valid_773953 = validateParameter(valid_773953, JString, required = true, default = newJString(
+  var valid_601788 = header.getOrDefault("X-Amz-Target")
+  valid_601788 = validateParameter(valid_601788, JString, required = true, default = newJString(
       "OvertureService.UpdateLag"))
-  if valid_773953 != nil:
-    section.add "X-Amz-Target", valid_773953
-  var valid_773954 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773954 = validateParameter(valid_773954, JString, required = false,
+  if valid_601788 != nil:
+    section.add "X-Amz-Target", valid_601788
+  var valid_601789 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601789 = validateParameter(valid_601789, JString, required = false,
                                  default = nil)
-  if valid_773954 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773954
-  var valid_773955 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773955 = validateParameter(valid_773955, JString, required = false,
+  if valid_601789 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601789
+  var valid_601790 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601790 = validateParameter(valid_601790, JString, required = false,
                                  default = nil)
-  if valid_773955 != nil:
-    section.add "X-Amz-Algorithm", valid_773955
-  var valid_773956 = header.getOrDefault("X-Amz-Signature")
-  valid_773956 = validateParameter(valid_773956, JString, required = false,
+  if valid_601790 != nil:
+    section.add "X-Amz-Algorithm", valid_601790
+  var valid_601791 = header.getOrDefault("X-Amz-Signature")
+  valid_601791 = validateParameter(valid_601791, JString, required = false,
                                  default = nil)
-  if valid_773956 != nil:
-    section.add "X-Amz-Signature", valid_773956
-  var valid_773957 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773957 = validateParameter(valid_773957, JString, required = false,
+  if valid_601791 != nil:
+    section.add "X-Amz-Signature", valid_601791
+  var valid_601792 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601792 = validateParameter(valid_601792, JString, required = false,
                                  default = nil)
-  if valid_773957 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773957
-  var valid_773958 = header.getOrDefault("X-Amz-Credential")
-  valid_773958 = validateParameter(valid_773958, JString, required = false,
+  if valid_601792 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601792
+  var valid_601793 = header.getOrDefault("X-Amz-Credential")
+  valid_601793 = validateParameter(valid_601793, JString, required = false,
                                  default = nil)
-  if valid_773958 != nil:
-    section.add "X-Amz-Credential", valid_773958
+  if valid_601793 != nil:
+    section.add "X-Amz-Credential", valid_601793
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5582,39 +5582,39 @@ proc validate_UpdateLag_773949(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_773960: Call_UpdateLag_773948; path: JsonNode; query: JsonNode;
+proc call*(call_601795: Call_UpdateLag_601783; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the attributes of the specified link aggregation group (LAG).</p> <p>You can update the following attributes:</p> <ul> <li> <p>The name of the LAG.</p> </li> <li> <p>The value for the minimum number of connections that must be operational for the LAG itself to be operational. </p> </li> </ul> <p>When you create a LAG, the default value for the minimum number of operational connections is zero (0). If you update this value and the number of operational connections falls below the specified value, the LAG automatically goes down to avoid over-utilization of the remaining connections. Adjust this value with care, as it could force the LAG down if it is set higher than the current number of operational connections.</p>
   ## 
-  let valid = call_773960.validator(path, query, header, formData, body)
-  let scheme = call_773960.pickScheme
+  let valid = call_601795.validator(path, query, header, formData, body)
+  let scheme = call_601795.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773960.url(scheme.get, call_773960.host, call_773960.base,
-                         call_773960.route, valid.getOrDefault("path"))
-  result = hook(call_773960, url, valid)
+  let url = call_601795.url(scheme.get, call_601795.host, call_601795.base,
+                         call_601795.route, valid.getOrDefault("path"))
+  result = hook(call_601795, url, valid)
 
-proc call*(call_773961: Call_UpdateLag_773948; body: JsonNode): Recallable =
+proc call*(call_601796: Call_UpdateLag_601783; body: JsonNode): Recallable =
   ## updateLag
   ## <p>Updates the attributes of the specified link aggregation group (LAG).</p> <p>You can update the following attributes:</p> <ul> <li> <p>The name of the LAG.</p> </li> <li> <p>The value for the minimum number of connections that must be operational for the LAG itself to be operational. </p> </li> </ul> <p>When you create a LAG, the default value for the minimum number of operational connections is zero (0). If you update this value and the number of operational connections falls below the specified value, the LAG automatically goes down to avoid over-utilization of the remaining connections. Adjust this value with care, as it could force the LAG down if it is set higher than the current number of operational connections.</p>
   ##   body: JObject (required)
-  var body_773962 = newJObject()
+  var body_601797 = newJObject()
   if body != nil:
-    body_773962 = body
-  result = call_773961.call(nil, nil, nil, nil, body_773962)
+    body_601797 = body
+  result = call_601796.call(nil, nil, nil, nil, body_601797)
 
-var updateLag* = Call_UpdateLag_773948(name: "updateLag", meth: HttpMethod.HttpPost,
+var updateLag* = Call_UpdateLag_601783(name: "updateLag", meth: HttpMethod.HttpPost,
                                     host: "directconnect.amazonaws.com", route: "/#X-Amz-Target=OvertureService.UpdateLag",
-                                    validator: validate_UpdateLag_773949,
-                                    base: "/", url: url_UpdateLag_773950,
+                                    validator: validate_UpdateLag_601784,
+                                    base: "/", url: url_UpdateLag_601785,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateVirtualInterfaceAttributes_773963 = ref object of OpenApiRestCall_772597
-proc url_UpdateVirtualInterfaceAttributes_773965(protocol: Scheme; host: string;
+  Call_UpdateVirtualInterfaceAttributes_601798 = ref object of OpenApiRestCall_600426
+proc url_UpdateVirtualInterfaceAttributes_601800(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_UpdateVirtualInterfaceAttributes_773964(path: JsonNode;
+proc validate_UpdateVirtualInterfaceAttributes_601799(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the specified attributes of the specified virtual private interface.</p> <p>Setting the MTU of a virtual interface to 9001 (jumbo frames) can cause an update to the underlying physical connection if it wasn't updated to support jumbo frames. Updating the connection disrupts network connectivity for all virtual interfaces associated with the connection for up to 30 seconds. To check whether your connection supports jumbo frames, call <a>DescribeConnections</a>. To check whether your virtual interface supports jumbo frames, call <a>DescribeVirtualInterfaces</a>.</p>
   ## 
@@ -5634,48 +5634,48 @@ proc validate_UpdateVirtualInterfaceAttributes_773964(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773966 = header.getOrDefault("X-Amz-Date")
-  valid_773966 = validateParameter(valid_773966, JString, required = false,
+  var valid_601801 = header.getOrDefault("X-Amz-Date")
+  valid_601801 = validateParameter(valid_601801, JString, required = false,
                                  default = nil)
-  if valid_773966 != nil:
-    section.add "X-Amz-Date", valid_773966
-  var valid_773967 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773967 = validateParameter(valid_773967, JString, required = false,
+  if valid_601801 != nil:
+    section.add "X-Amz-Date", valid_601801
+  var valid_601802 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601802 = validateParameter(valid_601802, JString, required = false,
                                  default = nil)
-  if valid_773967 != nil:
-    section.add "X-Amz-Security-Token", valid_773967
+  if valid_601802 != nil:
+    section.add "X-Amz-Security-Token", valid_601802
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_773968 = header.getOrDefault("X-Amz-Target")
-  valid_773968 = validateParameter(valid_773968, JString, required = true, default = newJString(
+  var valid_601803 = header.getOrDefault("X-Amz-Target")
+  valid_601803 = validateParameter(valid_601803, JString, required = true, default = newJString(
       "OvertureService.UpdateVirtualInterfaceAttributes"))
-  if valid_773968 != nil:
-    section.add "X-Amz-Target", valid_773968
-  var valid_773969 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773969 = validateParameter(valid_773969, JString, required = false,
+  if valid_601803 != nil:
+    section.add "X-Amz-Target", valid_601803
+  var valid_601804 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601804 = validateParameter(valid_601804, JString, required = false,
                                  default = nil)
-  if valid_773969 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773969
-  var valid_773970 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773970 = validateParameter(valid_773970, JString, required = false,
+  if valid_601804 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601804
+  var valid_601805 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601805 = validateParameter(valid_601805, JString, required = false,
                                  default = nil)
-  if valid_773970 != nil:
-    section.add "X-Amz-Algorithm", valid_773970
-  var valid_773971 = header.getOrDefault("X-Amz-Signature")
-  valid_773971 = validateParameter(valid_773971, JString, required = false,
+  if valid_601805 != nil:
+    section.add "X-Amz-Algorithm", valid_601805
+  var valid_601806 = header.getOrDefault("X-Amz-Signature")
+  valid_601806 = validateParameter(valid_601806, JString, required = false,
                                  default = nil)
-  if valid_773971 != nil:
-    section.add "X-Amz-Signature", valid_773971
-  var valid_773972 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773972 = validateParameter(valid_773972, JString, required = false,
+  if valid_601806 != nil:
+    section.add "X-Amz-Signature", valid_601806
+  var valid_601807 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601807 = validateParameter(valid_601807, JString, required = false,
                                  default = nil)
-  if valid_773972 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773972
-  var valid_773973 = header.getOrDefault("X-Amz-Credential")
-  valid_773973 = validateParameter(valid_773973, JString, required = false,
+  if valid_601807 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601807
+  var valid_601808 = header.getOrDefault("X-Amz-Credential")
+  valid_601808 = validateParameter(valid_601808, JString, required = false,
                                  default = nil)
-  if valid_773973 != nil:
-    section.add "X-Amz-Credential", valid_773973
+  if valid_601808 != nil:
+    section.add "X-Amz-Credential", valid_601808
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5686,36 +5686,39 @@ proc validate_UpdateVirtualInterfaceAttributes_773964(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773975: Call_UpdateVirtualInterfaceAttributes_773963;
+proc call*(call_601810: Call_UpdateVirtualInterfaceAttributes_601798;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Updates the specified attributes of the specified virtual private interface.</p> <p>Setting the MTU of a virtual interface to 9001 (jumbo frames) can cause an update to the underlying physical connection if it wasn't updated to support jumbo frames. Updating the connection disrupts network connectivity for all virtual interfaces associated with the connection for up to 30 seconds. To check whether your connection supports jumbo frames, call <a>DescribeConnections</a>. To check whether your virtual interface supports jumbo frames, call <a>DescribeVirtualInterfaces</a>.</p>
   ## 
-  let valid = call_773975.validator(path, query, header, formData, body)
-  let scheme = call_773975.pickScheme
+  let valid = call_601810.validator(path, query, header, formData, body)
+  let scheme = call_601810.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773975.url(scheme.get, call_773975.host, call_773975.base,
-                         call_773975.route, valid.getOrDefault("path"))
-  result = hook(call_773975, url, valid)
+  let url = call_601810.url(scheme.get, call_601810.host, call_601810.base,
+                         call_601810.route, valid.getOrDefault("path"))
+  result = hook(call_601810, url, valid)
 
-proc call*(call_773976: Call_UpdateVirtualInterfaceAttributes_773963;
+proc call*(call_601811: Call_UpdateVirtualInterfaceAttributes_601798;
           body: JsonNode): Recallable =
   ## updateVirtualInterfaceAttributes
   ## <p>Updates the specified attributes of the specified virtual private interface.</p> <p>Setting the MTU of a virtual interface to 9001 (jumbo frames) can cause an update to the underlying physical connection if it wasn't updated to support jumbo frames. Updating the connection disrupts network connectivity for all virtual interfaces associated with the connection for up to 30 seconds. To check whether your connection supports jumbo frames, call <a>DescribeConnections</a>. To check whether your virtual interface supports jumbo frames, call <a>DescribeVirtualInterfaces</a>.</p>
   ##   body: JObject (required)
-  var body_773977 = newJObject()
+  var body_601812 = newJObject()
   if body != nil:
-    body_773977 = body
-  result = call_773976.call(nil, nil, nil, nil, body_773977)
+    body_601812 = body
+  result = call_601811.call(nil, nil, nil, nil, body_601812)
 
-var updateVirtualInterfaceAttributes* = Call_UpdateVirtualInterfaceAttributes_773963(
+var updateVirtualInterfaceAttributes* = Call_UpdateVirtualInterfaceAttributes_601798(
     name: "updateVirtualInterfaceAttributes", meth: HttpMethod.HttpPost,
     host: "directconnect.amazonaws.com",
     route: "/#X-Amz-Target=OvertureService.UpdateVirtualInterfaceAttributes",
-    validator: validate_UpdateVirtualInterfaceAttributes_773964, base: "/",
-    url: url_UpdateVirtualInterfaceAttributes_773965,
+    validator: validate_UpdateVirtualInterfaceAttributes_601799, base: "/",
+    url: url_UpdateVirtualInterfaceAttributes_601800,
     schemes: {Scheme.Https, Scheme.Http})
+export
+  rest
+
 proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()

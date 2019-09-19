@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode): string
 
-  OpenApiRestCall_772597 = ref object of OpenApiRestCall
+  OpenApiRestCall_600426 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_772597](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600426](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_772597): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600426): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -130,8 +130,8 @@ const
   awsServiceName = "cognito-sync"
 method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
 type
-  Call_BulkPublish_772933 = ref object of OpenApiRestCall_772597
-proc url_BulkPublish_772935(protocol: Scheme; host: string; base: string;
+  Call_BulkPublish_600768 = ref object of OpenApiRestCall_600426
+proc url_BulkPublish_600770(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -144,7 +144,7 @@ proc url_BulkPublish_772935(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_BulkPublish_772934(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_BulkPublish_600769(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Initiates a bulk publish of all existing datasets for an Identity Pool to the configured stream. Customers are limited to one successful bulk publish per 24 hours. Bulk publish is an asynchronous request, customers can see the status of the request via the GetBulkPublishDetails operation.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
@@ -156,11 +156,11 @@ proc validate_BulkPublish_772934(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityPoolId` field"
-  var valid_773061 = path.getOrDefault("IdentityPoolId")
-  valid_773061 = validateParameter(valid_773061, JString, required = true,
+  var valid_600896 = path.getOrDefault("IdentityPoolId")
+  valid_600896 = validateParameter(valid_600896, JString, required = true,
                                  default = nil)
-  if valid_773061 != nil:
-    section.add "IdentityPoolId", valid_773061
+  if valid_600896 != nil:
+    section.add "IdentityPoolId", valid_600896
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -173,77 +173,77 @@ proc validate_BulkPublish_772934(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773062 = header.getOrDefault("X-Amz-Date")
-  valid_773062 = validateParameter(valid_773062, JString, required = false,
+  var valid_600897 = header.getOrDefault("X-Amz-Date")
+  valid_600897 = validateParameter(valid_600897, JString, required = false,
                                  default = nil)
-  if valid_773062 != nil:
-    section.add "X-Amz-Date", valid_773062
-  var valid_773063 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773063 = validateParameter(valid_773063, JString, required = false,
+  if valid_600897 != nil:
+    section.add "X-Amz-Date", valid_600897
+  var valid_600898 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600898 = validateParameter(valid_600898, JString, required = false,
                                  default = nil)
-  if valid_773063 != nil:
-    section.add "X-Amz-Security-Token", valid_773063
-  var valid_773064 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773064 = validateParameter(valid_773064, JString, required = false,
+  if valid_600898 != nil:
+    section.add "X-Amz-Security-Token", valid_600898
+  var valid_600899 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600899 = validateParameter(valid_600899, JString, required = false,
                                  default = nil)
-  if valid_773064 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773064
-  var valid_773065 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773065 = validateParameter(valid_773065, JString, required = false,
+  if valid_600899 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600899
+  var valid_600900 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600900 = validateParameter(valid_600900, JString, required = false,
                                  default = nil)
-  if valid_773065 != nil:
-    section.add "X-Amz-Algorithm", valid_773065
-  var valid_773066 = header.getOrDefault("X-Amz-Signature")
-  valid_773066 = validateParameter(valid_773066, JString, required = false,
+  if valid_600900 != nil:
+    section.add "X-Amz-Algorithm", valid_600900
+  var valid_600901 = header.getOrDefault("X-Amz-Signature")
+  valid_600901 = validateParameter(valid_600901, JString, required = false,
                                  default = nil)
-  if valid_773066 != nil:
-    section.add "X-Amz-Signature", valid_773066
-  var valid_773067 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773067 = validateParameter(valid_773067, JString, required = false,
+  if valid_600901 != nil:
+    section.add "X-Amz-Signature", valid_600901
+  var valid_600902 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600902 = validateParameter(valid_600902, JString, required = false,
                                  default = nil)
-  if valid_773067 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773067
-  var valid_773068 = header.getOrDefault("X-Amz-Credential")
-  valid_773068 = validateParameter(valid_773068, JString, required = false,
+  if valid_600902 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600902
+  var valid_600903 = header.getOrDefault("X-Amz-Credential")
+  valid_600903 = validateParameter(valid_600903, JString, required = false,
                                  default = nil)
-  if valid_773068 != nil:
-    section.add "X-Amz-Credential", valid_773068
+  if valid_600903 != nil:
+    section.add "X-Amz-Credential", valid_600903
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773091: Call_BulkPublish_772933; path: JsonNode; query: JsonNode;
+proc call*(call_600926: Call_BulkPublish_600768; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Initiates a bulk publish of all existing datasets for an Identity Pool to the configured stream. Customers are limited to one successful bulk publish per 24 hours. Bulk publish is an asynchronous request, customers can see the status of the request via the GetBulkPublishDetails operation.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
-  let valid = call_773091.validator(path, query, header, formData, body)
-  let scheme = call_773091.pickScheme
+  let valid = call_600926.validator(path, query, header, formData, body)
+  let scheme = call_600926.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773091.url(scheme.get, call_773091.host, call_773091.base,
-                         call_773091.route, valid.getOrDefault("path"))
-  result = hook(call_773091, url, valid)
+  let url = call_600926.url(scheme.get, call_600926.host, call_600926.base,
+                         call_600926.route, valid.getOrDefault("path"))
+  result = hook(call_600926, url, valid)
 
-proc call*(call_773162: Call_BulkPublish_772933; IdentityPoolId: string): Recallable =
+proc call*(call_600997: Call_BulkPublish_600768; IdentityPoolId: string): Recallable =
   ## bulkPublish
   ## <p>Initiates a bulk publish of all existing datasets for an Identity Pool to the configured stream. Customers are limited to one successful bulk publish per 24 hours. Bulk publish is an asynchronous request, customers can see the status of the request via the GetBulkPublishDetails operation.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ##   IdentityPoolId: string (required)
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. GUID generation is unique within a region.
-  var path_773163 = newJObject()
-  add(path_773163, "IdentityPoolId", newJString(IdentityPoolId))
-  result = call_773162.call(path_773163, nil, nil, nil, nil)
+  var path_600998 = newJObject()
+  add(path_600998, "IdentityPoolId", newJString(IdentityPoolId))
+  result = call_600997.call(path_600998, nil, nil, nil, nil)
 
-var bulkPublish* = Call_BulkPublish_772933(name: "bulkPublish",
+var bulkPublish* = Call_BulkPublish_600768(name: "bulkPublish",
                                         meth: HttpMethod.HttpPost,
                                         host: "cognito-sync.amazonaws.com", route: "/identitypools/{IdentityPoolId}/bulkpublish",
-                                        validator: validate_BulkPublish_772934,
-                                        base: "/", url: url_BulkPublish_772935,
+                                        validator: validate_BulkPublish_600769,
+                                        base: "/", url: url_BulkPublish_600770,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRecords_773219 = ref object of OpenApiRestCall_772597
-proc url_UpdateRecords_773221(protocol: Scheme; host: string; base: string;
+  Call_UpdateRecords_601054 = ref object of OpenApiRestCall_600426
+proc url_UpdateRecords_601056(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -261,7 +261,7 @@ proc url_UpdateRecords_773221(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_UpdateRecords_773220(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateRecords_601055(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Posts updates to records and adds and deletes records for a dataset and user.</p> <p>The sync count in the record patch is your last known sync count for that record. The server will reject an UpdateRecords request with a ResourceConflictException if you try to patch a record with a new value but a stale sync count.</p> <p>For example, if the sync count on the server is 5 for a key called highScore and you try and submit a new highScore with sync count of 4, the request will be rejected. To obtain the current sync count for a record, call ListRecords. On a successful update of the record, the response returns the new sync count for that record. You should present that sync count the next time you try to update that same record. When the record does not exist, specify the sync count as 0.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
   ## 
@@ -277,21 +277,21 @@ proc validate_UpdateRecords_773220(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773222 = path.getOrDefault("IdentityId")
-  valid_773222 = validateParameter(valid_773222, JString, required = true,
+  var valid_601057 = path.getOrDefault("IdentityId")
+  valid_601057 = validateParameter(valid_601057, JString, required = true,
                                  default = nil)
-  if valid_773222 != nil:
-    section.add "IdentityId", valid_773222
-  var valid_773223 = path.getOrDefault("IdentityPoolId")
-  valid_773223 = validateParameter(valid_773223, JString, required = true,
+  if valid_601057 != nil:
+    section.add "IdentityId", valid_601057
+  var valid_601058 = path.getOrDefault("IdentityPoolId")
+  valid_601058 = validateParameter(valid_601058, JString, required = true,
                                  default = nil)
-  if valid_773223 != nil:
-    section.add "IdentityPoolId", valid_773223
-  var valid_773224 = path.getOrDefault("DatasetName")
-  valid_773224 = validateParameter(valid_773224, JString, required = true,
+  if valid_601058 != nil:
+    section.add "IdentityPoolId", valid_601058
+  var valid_601059 = path.getOrDefault("DatasetName")
+  valid_601059 = validateParameter(valid_601059, JString, required = true,
                                  default = nil)
-  if valid_773224 != nil:
-    section.add "DatasetName", valid_773224
+  if valid_601059 != nil:
+    section.add "DatasetName", valid_601059
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -306,46 +306,46 @@ proc validate_UpdateRecords_773220(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773225 = header.getOrDefault("X-Amz-Date")
-  valid_773225 = validateParameter(valid_773225, JString, required = false,
+  var valid_601060 = header.getOrDefault("X-Amz-Date")
+  valid_601060 = validateParameter(valid_601060, JString, required = false,
                                  default = nil)
-  if valid_773225 != nil:
-    section.add "X-Amz-Date", valid_773225
-  var valid_773226 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773226 = validateParameter(valid_773226, JString, required = false,
+  if valid_601060 != nil:
+    section.add "X-Amz-Date", valid_601060
+  var valid_601061 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601061 = validateParameter(valid_601061, JString, required = false,
                                  default = nil)
-  if valid_773226 != nil:
-    section.add "X-Amz-Security-Token", valid_773226
-  var valid_773227 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773227 = validateParameter(valid_773227, JString, required = false,
+  if valid_601061 != nil:
+    section.add "X-Amz-Security-Token", valid_601061
+  var valid_601062 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601062 = validateParameter(valid_601062, JString, required = false,
                                  default = nil)
-  if valid_773227 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773227
-  var valid_773228 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773228 = validateParameter(valid_773228, JString, required = false,
+  if valid_601062 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601062
+  var valid_601063 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601063 = validateParameter(valid_601063, JString, required = false,
                                  default = nil)
-  if valid_773228 != nil:
-    section.add "X-Amz-Algorithm", valid_773228
-  var valid_773229 = header.getOrDefault("x-amz-Client-Context")
-  valid_773229 = validateParameter(valid_773229, JString, required = false,
+  if valid_601063 != nil:
+    section.add "X-Amz-Algorithm", valid_601063
+  var valid_601064 = header.getOrDefault("x-amz-Client-Context")
+  valid_601064 = validateParameter(valid_601064, JString, required = false,
                                  default = nil)
-  if valid_773229 != nil:
-    section.add "x-amz-Client-Context", valid_773229
-  var valid_773230 = header.getOrDefault("X-Amz-Signature")
-  valid_773230 = validateParameter(valid_773230, JString, required = false,
+  if valid_601064 != nil:
+    section.add "x-amz-Client-Context", valid_601064
+  var valid_601065 = header.getOrDefault("X-Amz-Signature")
+  valid_601065 = validateParameter(valid_601065, JString, required = false,
                                  default = nil)
-  if valid_773230 != nil:
-    section.add "X-Amz-Signature", valid_773230
-  var valid_773231 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773231 = validateParameter(valid_773231, JString, required = false,
+  if valid_601065 != nil:
+    section.add "X-Amz-Signature", valid_601065
+  var valid_601066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601066 = validateParameter(valid_601066, JString, required = false,
                                  default = nil)
-  if valid_773231 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773231
-  var valid_773232 = header.getOrDefault("X-Amz-Credential")
-  valid_773232 = validateParameter(valid_773232, JString, required = false,
+  if valid_601066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601066
+  var valid_601067 = header.getOrDefault("X-Amz-Credential")
+  valid_601067 = validateParameter(valid_601067, JString, required = false,
                                  default = nil)
-  if valid_773232 != nil:
-    section.add "X-Amz-Credential", valid_773232
+  if valid_601067 != nil:
+    section.add "X-Amz-Credential", valid_601067
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -356,19 +356,19 @@ proc validate_UpdateRecords_773220(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_773234: Call_UpdateRecords_773219; path: JsonNode; query: JsonNode;
+proc call*(call_601069: Call_UpdateRecords_601054; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Posts updates to records and adds and deletes records for a dataset and user.</p> <p>The sync count in the record patch is your last known sync count for that record. The server will reject an UpdateRecords request with a ResourceConflictException if you try to patch a record with a new value but a stale sync count.</p> <p>For example, if the sync count on the server is 5 for a key called highScore and you try and submit a new highScore with sync count of 4, the request will be rejected. To obtain the current sync count for a record, call ListRecords. On a successful update of the record, the response returns the new sync count for that record. You should present that sync count the next time you try to update that same record. When the record does not exist, specify the sync count as 0.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
   ## 
-  let valid = call_773234.validator(path, query, header, formData, body)
-  let scheme = call_773234.pickScheme
+  let valid = call_601069.validator(path, query, header, formData, body)
+  let scheme = call_601069.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773234.url(scheme.get, call_773234.host, call_773234.base,
-                         call_773234.route, valid.getOrDefault("path"))
-  result = hook(call_773234, url, valid)
+  let url = call_601069.url(scheme.get, call_601069.host, call_601069.base,
+                         call_601069.route, valid.getOrDefault("path"))
+  result = hook(call_601069, url, valid)
 
-proc call*(call_773235: Call_UpdateRecords_773219; IdentityId: string;
+proc call*(call_601070: Call_UpdateRecords_601054; IdentityId: string;
           IdentityPoolId: string; DatasetName: string; body: JsonNode): Recallable =
   ## updateRecords
   ## <p>Posts updates to records and adds and deletes records for a dataset and user.</p> <p>The sync count in the record patch is your last known sync count for that record. The server will reject an UpdateRecords request with a ResourceConflictException if you try to patch a record with a new value but a stale sync count.</p> <p>For example, if the sync count on the server is 5 for a key called highScore and you try and submit a new highScore with sync count of 4, the request will be rejected. To obtain the current sync count for a record, call ListRecords. On a successful update of the record, the response returns the new sync count for that record. You should present that sync count the next time you try to update that same record. When the record does not exist, specify the sync count as 0.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
@@ -379,22 +379,22 @@ proc call*(call_773235: Call_UpdateRecords_773219; IdentityId: string;
   ##   DatasetName: string (required)
   ##              : A string of up to 128 characters. Allowed characters are a-z, A-Z, 0-9, '_' (underscore), '-' (dash), and '.' (dot).
   ##   body: JObject (required)
-  var path_773236 = newJObject()
-  var body_773237 = newJObject()
-  add(path_773236, "IdentityId", newJString(IdentityId))
-  add(path_773236, "IdentityPoolId", newJString(IdentityPoolId))
-  add(path_773236, "DatasetName", newJString(DatasetName))
+  var path_601071 = newJObject()
+  var body_601072 = newJObject()
+  add(path_601071, "IdentityId", newJString(IdentityId))
+  add(path_601071, "IdentityPoolId", newJString(IdentityPoolId))
+  add(path_601071, "DatasetName", newJString(DatasetName))
   if body != nil:
-    body_773237 = body
-  result = call_773235.call(path_773236, nil, nil, nil, body_773237)
+    body_601072 = body
+  result = call_601070.call(path_601071, nil, nil, nil, body_601072)
 
-var updateRecords* = Call_UpdateRecords_773219(name: "updateRecords",
+var updateRecords* = Call_UpdateRecords_601054(name: "updateRecords",
     meth: HttpMethod.HttpPost, host: "cognito-sync.amazonaws.com", route: "/identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}",
-    validator: validate_UpdateRecords_773220, base: "/", url: url_UpdateRecords_773221,
+    validator: validate_UpdateRecords_601055, base: "/", url: url_UpdateRecords_601056,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDataset_773203 = ref object of OpenApiRestCall_772597
-proc url_DescribeDataset_773205(protocol: Scheme; host: string; base: string;
+  Call_DescribeDataset_601038 = ref object of OpenApiRestCall_600426
+proc url_DescribeDataset_601040(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -412,7 +412,7 @@ proc url_DescribeDataset_773205(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_DescribeDataset_773204(path: JsonNode; query: JsonNode;
+proc validate_DescribeDataset_601039(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Gets meta data about a dataset by identity and dataset name. With Amazon Cognito Sync, each identity has access only to its own data. Thus, the credentials used to make this API call need to have access to the identity data.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials. You should use Cognito Identity credentials to make this API call.</p>
@@ -429,21 +429,21 @@ proc validate_DescribeDataset_773204(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773206 = path.getOrDefault("IdentityId")
-  valid_773206 = validateParameter(valid_773206, JString, required = true,
+  var valid_601041 = path.getOrDefault("IdentityId")
+  valid_601041 = validateParameter(valid_601041, JString, required = true,
                                  default = nil)
-  if valid_773206 != nil:
-    section.add "IdentityId", valid_773206
-  var valid_773207 = path.getOrDefault("IdentityPoolId")
-  valid_773207 = validateParameter(valid_773207, JString, required = true,
+  if valid_601041 != nil:
+    section.add "IdentityId", valid_601041
+  var valid_601042 = path.getOrDefault("IdentityPoolId")
+  valid_601042 = validateParameter(valid_601042, JString, required = true,
                                  default = nil)
-  if valid_773207 != nil:
-    section.add "IdentityPoolId", valid_773207
-  var valid_773208 = path.getOrDefault("DatasetName")
-  valid_773208 = validateParameter(valid_773208, JString, required = true,
+  if valid_601042 != nil:
+    section.add "IdentityPoolId", valid_601042
+  var valid_601043 = path.getOrDefault("DatasetName")
+  valid_601043 = validateParameter(valid_601043, JString, required = true,
                                  default = nil)
-  if valid_773208 != nil:
-    section.add "DatasetName", valid_773208
+  if valid_601043 != nil:
+    section.add "DatasetName", valid_601043
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -456,60 +456,60 @@ proc validate_DescribeDataset_773204(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773209 = header.getOrDefault("X-Amz-Date")
-  valid_773209 = validateParameter(valid_773209, JString, required = false,
+  var valid_601044 = header.getOrDefault("X-Amz-Date")
+  valid_601044 = validateParameter(valid_601044, JString, required = false,
                                  default = nil)
-  if valid_773209 != nil:
-    section.add "X-Amz-Date", valid_773209
-  var valid_773210 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773210 = validateParameter(valid_773210, JString, required = false,
+  if valid_601044 != nil:
+    section.add "X-Amz-Date", valid_601044
+  var valid_601045 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601045 = validateParameter(valid_601045, JString, required = false,
                                  default = nil)
-  if valid_773210 != nil:
-    section.add "X-Amz-Security-Token", valid_773210
-  var valid_773211 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773211 = validateParameter(valid_773211, JString, required = false,
+  if valid_601045 != nil:
+    section.add "X-Amz-Security-Token", valid_601045
+  var valid_601046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601046 = validateParameter(valid_601046, JString, required = false,
                                  default = nil)
-  if valid_773211 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773211
-  var valid_773212 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773212 = validateParameter(valid_773212, JString, required = false,
+  if valid_601046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601046
+  var valid_601047 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601047 = validateParameter(valid_601047, JString, required = false,
                                  default = nil)
-  if valid_773212 != nil:
-    section.add "X-Amz-Algorithm", valid_773212
-  var valid_773213 = header.getOrDefault("X-Amz-Signature")
-  valid_773213 = validateParameter(valid_773213, JString, required = false,
+  if valid_601047 != nil:
+    section.add "X-Amz-Algorithm", valid_601047
+  var valid_601048 = header.getOrDefault("X-Amz-Signature")
+  valid_601048 = validateParameter(valid_601048, JString, required = false,
                                  default = nil)
-  if valid_773213 != nil:
-    section.add "X-Amz-Signature", valid_773213
-  var valid_773214 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773214 = validateParameter(valid_773214, JString, required = false,
+  if valid_601048 != nil:
+    section.add "X-Amz-Signature", valid_601048
+  var valid_601049 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601049 = validateParameter(valid_601049, JString, required = false,
                                  default = nil)
-  if valid_773214 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773214
-  var valid_773215 = header.getOrDefault("X-Amz-Credential")
-  valid_773215 = validateParameter(valid_773215, JString, required = false,
+  if valid_601049 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601049
+  var valid_601050 = header.getOrDefault("X-Amz-Credential")
+  valid_601050 = validateParameter(valid_601050, JString, required = false,
                                  default = nil)
-  if valid_773215 != nil:
-    section.add "X-Amz-Credential", valid_773215
+  if valid_601050 != nil:
+    section.add "X-Amz-Credential", valid_601050
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773216: Call_DescribeDataset_773203; path: JsonNode; query: JsonNode;
+proc call*(call_601051: Call_DescribeDataset_601038; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets meta data about a dataset by identity and dataset name. With Amazon Cognito Sync, each identity has access only to its own data. Thus, the credentials used to make this API call need to have access to the identity data.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials. You should use Cognito Identity credentials to make this API call.</p>
   ## 
-  let valid = call_773216.validator(path, query, header, formData, body)
-  let scheme = call_773216.pickScheme
+  let valid = call_601051.validator(path, query, header, formData, body)
+  let scheme = call_601051.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773216.url(scheme.get, call_773216.host, call_773216.base,
-                         call_773216.route, valid.getOrDefault("path"))
-  result = hook(call_773216, url, valid)
+  let url = call_601051.url(scheme.get, call_601051.host, call_601051.base,
+                         call_601051.route, valid.getOrDefault("path"))
+  result = hook(call_601051, url, valid)
 
-proc call*(call_773217: Call_DescribeDataset_773203; IdentityId: string;
+proc call*(call_601052: Call_DescribeDataset_601038; IdentityId: string;
           IdentityPoolId: string; DatasetName: string): Recallable =
   ## describeDataset
   ## <p>Gets meta data about a dataset by identity and dataset name. With Amazon Cognito Sync, each identity has access only to its own data. Thus, the credentials used to make this API call need to have access to the identity data.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials. You should use Cognito Identity credentials to make this API call.</p>
@@ -519,19 +519,19 @@ proc call*(call_773217: Call_DescribeDataset_773203; IdentityId: string;
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. GUID generation is unique within a region.
   ##   DatasetName: string (required)
   ##              : A string of up to 128 characters. Allowed characters are a-z, A-Z, 0-9, '_' (underscore), '-' (dash), and '.' (dot).
-  var path_773218 = newJObject()
-  add(path_773218, "IdentityId", newJString(IdentityId))
-  add(path_773218, "IdentityPoolId", newJString(IdentityPoolId))
-  add(path_773218, "DatasetName", newJString(DatasetName))
-  result = call_773217.call(path_773218, nil, nil, nil, nil)
+  var path_601053 = newJObject()
+  add(path_601053, "IdentityId", newJString(IdentityId))
+  add(path_601053, "IdentityPoolId", newJString(IdentityPoolId))
+  add(path_601053, "DatasetName", newJString(DatasetName))
+  result = call_601052.call(path_601053, nil, nil, nil, nil)
 
-var describeDataset* = Call_DescribeDataset_773203(name: "describeDataset",
+var describeDataset* = Call_DescribeDataset_601038(name: "describeDataset",
     meth: HttpMethod.HttpGet, host: "cognito-sync.amazonaws.com", route: "/identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}",
-    validator: validate_DescribeDataset_773204, base: "/", url: url_DescribeDataset_773205,
+    validator: validate_DescribeDataset_601039, base: "/", url: url_DescribeDataset_601040,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDataset_773238 = ref object of OpenApiRestCall_772597
-proc url_DeleteDataset_773240(protocol: Scheme; host: string; base: string;
+  Call_DeleteDataset_601073 = ref object of OpenApiRestCall_600426
+proc url_DeleteDataset_601075(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -549,7 +549,7 @@ proc url_DeleteDataset_773240(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_DeleteDataset_773239(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteDataset_601074(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specific dataset. The dataset will be deleted permanently, and the action can't be undone. Datasets that this dataset was merged with will no longer report the merge. Any subsequent operation on this dataset will result in a ResourceNotFoundException.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
   ## 
@@ -565,21 +565,21 @@ proc validate_DeleteDataset_773239(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773241 = path.getOrDefault("IdentityId")
-  valid_773241 = validateParameter(valid_773241, JString, required = true,
+  var valid_601076 = path.getOrDefault("IdentityId")
+  valid_601076 = validateParameter(valid_601076, JString, required = true,
                                  default = nil)
-  if valid_773241 != nil:
-    section.add "IdentityId", valid_773241
-  var valid_773242 = path.getOrDefault("IdentityPoolId")
-  valid_773242 = validateParameter(valid_773242, JString, required = true,
+  if valid_601076 != nil:
+    section.add "IdentityId", valid_601076
+  var valid_601077 = path.getOrDefault("IdentityPoolId")
+  valid_601077 = validateParameter(valid_601077, JString, required = true,
                                  default = nil)
-  if valid_773242 != nil:
-    section.add "IdentityPoolId", valid_773242
-  var valid_773243 = path.getOrDefault("DatasetName")
-  valid_773243 = validateParameter(valid_773243, JString, required = true,
+  if valid_601077 != nil:
+    section.add "IdentityPoolId", valid_601077
+  var valid_601078 = path.getOrDefault("DatasetName")
+  valid_601078 = validateParameter(valid_601078, JString, required = true,
                                  default = nil)
-  if valid_773243 != nil:
-    section.add "DatasetName", valid_773243
+  if valid_601078 != nil:
+    section.add "DatasetName", valid_601078
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -592,60 +592,60 @@ proc validate_DeleteDataset_773239(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773244 = header.getOrDefault("X-Amz-Date")
-  valid_773244 = validateParameter(valid_773244, JString, required = false,
+  var valid_601079 = header.getOrDefault("X-Amz-Date")
+  valid_601079 = validateParameter(valid_601079, JString, required = false,
                                  default = nil)
-  if valid_773244 != nil:
-    section.add "X-Amz-Date", valid_773244
-  var valid_773245 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773245 = validateParameter(valid_773245, JString, required = false,
+  if valid_601079 != nil:
+    section.add "X-Amz-Date", valid_601079
+  var valid_601080 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601080 = validateParameter(valid_601080, JString, required = false,
                                  default = nil)
-  if valid_773245 != nil:
-    section.add "X-Amz-Security-Token", valid_773245
-  var valid_773246 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773246 = validateParameter(valid_773246, JString, required = false,
+  if valid_601080 != nil:
+    section.add "X-Amz-Security-Token", valid_601080
+  var valid_601081 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601081 = validateParameter(valid_601081, JString, required = false,
                                  default = nil)
-  if valid_773246 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773246
-  var valid_773247 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773247 = validateParameter(valid_773247, JString, required = false,
+  if valid_601081 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601081
+  var valid_601082 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601082 = validateParameter(valid_601082, JString, required = false,
                                  default = nil)
-  if valid_773247 != nil:
-    section.add "X-Amz-Algorithm", valid_773247
-  var valid_773248 = header.getOrDefault("X-Amz-Signature")
-  valid_773248 = validateParameter(valid_773248, JString, required = false,
+  if valid_601082 != nil:
+    section.add "X-Amz-Algorithm", valid_601082
+  var valid_601083 = header.getOrDefault("X-Amz-Signature")
+  valid_601083 = validateParameter(valid_601083, JString, required = false,
                                  default = nil)
-  if valid_773248 != nil:
-    section.add "X-Amz-Signature", valid_773248
-  var valid_773249 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773249 = validateParameter(valid_773249, JString, required = false,
+  if valid_601083 != nil:
+    section.add "X-Amz-Signature", valid_601083
+  var valid_601084 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601084 = validateParameter(valid_601084, JString, required = false,
                                  default = nil)
-  if valid_773249 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773249
-  var valid_773250 = header.getOrDefault("X-Amz-Credential")
-  valid_773250 = validateParameter(valid_773250, JString, required = false,
+  if valid_601084 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601084
+  var valid_601085 = header.getOrDefault("X-Amz-Credential")
+  valid_601085 = validateParameter(valid_601085, JString, required = false,
                                  default = nil)
-  if valid_773250 != nil:
-    section.add "X-Amz-Credential", valid_773250
+  if valid_601085 != nil:
+    section.add "X-Amz-Credential", valid_601085
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773251: Call_DeleteDataset_773238; path: JsonNode; query: JsonNode;
+proc call*(call_601086: Call_DeleteDataset_601073; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specific dataset. The dataset will be deleted permanently, and the action can't be undone. Datasets that this dataset was merged with will no longer report the merge. Any subsequent operation on this dataset will result in a ResourceNotFoundException.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
   ## 
-  let valid = call_773251.validator(path, query, header, formData, body)
-  let scheme = call_773251.pickScheme
+  let valid = call_601086.validator(path, query, header, formData, body)
+  let scheme = call_601086.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773251.url(scheme.get, call_773251.host, call_773251.base,
-                         call_773251.route, valid.getOrDefault("path"))
-  result = hook(call_773251, url, valid)
+  let url = call_601086.url(scheme.get, call_601086.host, call_601086.base,
+                         call_601086.route, valid.getOrDefault("path"))
+  result = hook(call_601086, url, valid)
 
-proc call*(call_773252: Call_DeleteDataset_773238; IdentityId: string;
+proc call*(call_601087: Call_DeleteDataset_601073; IdentityId: string;
           IdentityPoolId: string; DatasetName: string): Recallable =
   ## deleteDataset
   ## <p>Deletes the specific dataset. The dataset will be deleted permanently, and the action can't be undone. Datasets that this dataset was merged with will no longer report the merge. Any subsequent operation on this dataset will result in a ResourceNotFoundException.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
@@ -655,19 +655,19 @@ proc call*(call_773252: Call_DeleteDataset_773238; IdentityId: string;
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. GUID generation is unique within a region.
   ##   DatasetName: string (required)
   ##              : A string of up to 128 characters. Allowed characters are a-z, A-Z, 0-9, '_' (underscore), '-' (dash), and '.' (dot).
-  var path_773253 = newJObject()
-  add(path_773253, "IdentityId", newJString(IdentityId))
-  add(path_773253, "IdentityPoolId", newJString(IdentityPoolId))
-  add(path_773253, "DatasetName", newJString(DatasetName))
-  result = call_773252.call(path_773253, nil, nil, nil, nil)
+  var path_601088 = newJObject()
+  add(path_601088, "IdentityId", newJString(IdentityId))
+  add(path_601088, "IdentityPoolId", newJString(IdentityPoolId))
+  add(path_601088, "DatasetName", newJString(DatasetName))
+  result = call_601087.call(path_601088, nil, nil, nil, nil)
 
-var deleteDataset* = Call_DeleteDataset_773238(name: "deleteDataset",
+var deleteDataset* = Call_DeleteDataset_601073(name: "deleteDataset",
     meth: HttpMethod.HttpDelete, host: "cognito-sync.amazonaws.com", route: "/identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}",
-    validator: validate_DeleteDataset_773239, base: "/", url: url_DeleteDataset_773240,
+    validator: validate_DeleteDataset_601074, base: "/", url: url_DeleteDataset_601075,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeIdentityPoolUsage_773254 = ref object of OpenApiRestCall_772597
-proc url_DescribeIdentityPoolUsage_773256(protocol: Scheme; host: string;
+  Call_DescribeIdentityPoolUsage_601089 = ref object of OpenApiRestCall_600426
+proc url_DescribeIdentityPoolUsage_601091(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -679,7 +679,7 @@ proc url_DescribeIdentityPoolUsage_773256(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_DescribeIdentityPoolUsage_773255(path: JsonNode; query: JsonNode;
+proc validate_DescribeIdentityPoolUsage_601090(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets usage details (for example, data storage) about a particular identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
@@ -691,11 +691,11 @@ proc validate_DescribeIdentityPoolUsage_773255(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityPoolId` field"
-  var valid_773257 = path.getOrDefault("IdentityPoolId")
-  valid_773257 = validateParameter(valid_773257, JString, required = true,
+  var valid_601092 = path.getOrDefault("IdentityPoolId")
+  valid_601092 = validateParameter(valid_601092, JString, required = true,
                                  default = nil)
-  if valid_773257 != nil:
-    section.add "IdentityPoolId", valid_773257
+  if valid_601092 != nil:
+    section.add "IdentityPoolId", valid_601092
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -708,78 +708,78 @@ proc validate_DescribeIdentityPoolUsage_773255(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773258 = header.getOrDefault("X-Amz-Date")
-  valid_773258 = validateParameter(valid_773258, JString, required = false,
+  var valid_601093 = header.getOrDefault("X-Amz-Date")
+  valid_601093 = validateParameter(valid_601093, JString, required = false,
                                  default = nil)
-  if valid_773258 != nil:
-    section.add "X-Amz-Date", valid_773258
-  var valid_773259 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773259 = validateParameter(valid_773259, JString, required = false,
+  if valid_601093 != nil:
+    section.add "X-Amz-Date", valid_601093
+  var valid_601094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601094 = validateParameter(valid_601094, JString, required = false,
                                  default = nil)
-  if valid_773259 != nil:
-    section.add "X-Amz-Security-Token", valid_773259
-  var valid_773260 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773260 = validateParameter(valid_773260, JString, required = false,
+  if valid_601094 != nil:
+    section.add "X-Amz-Security-Token", valid_601094
+  var valid_601095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601095 = validateParameter(valid_601095, JString, required = false,
                                  default = nil)
-  if valid_773260 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773260
-  var valid_773261 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773261 = validateParameter(valid_773261, JString, required = false,
+  if valid_601095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601095
+  var valid_601096 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601096 = validateParameter(valid_601096, JString, required = false,
                                  default = nil)
-  if valid_773261 != nil:
-    section.add "X-Amz-Algorithm", valid_773261
-  var valid_773262 = header.getOrDefault("X-Amz-Signature")
-  valid_773262 = validateParameter(valid_773262, JString, required = false,
+  if valid_601096 != nil:
+    section.add "X-Amz-Algorithm", valid_601096
+  var valid_601097 = header.getOrDefault("X-Amz-Signature")
+  valid_601097 = validateParameter(valid_601097, JString, required = false,
                                  default = nil)
-  if valid_773262 != nil:
-    section.add "X-Amz-Signature", valid_773262
-  var valid_773263 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773263 = validateParameter(valid_773263, JString, required = false,
+  if valid_601097 != nil:
+    section.add "X-Amz-Signature", valid_601097
+  var valid_601098 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601098 = validateParameter(valid_601098, JString, required = false,
                                  default = nil)
-  if valid_773263 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773263
-  var valid_773264 = header.getOrDefault("X-Amz-Credential")
-  valid_773264 = validateParameter(valid_773264, JString, required = false,
+  if valid_601098 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601098
+  var valid_601099 = header.getOrDefault("X-Amz-Credential")
+  valid_601099 = validateParameter(valid_601099, JString, required = false,
                                  default = nil)
-  if valid_773264 != nil:
-    section.add "X-Amz-Credential", valid_773264
+  if valid_601099 != nil:
+    section.add "X-Amz-Credential", valid_601099
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773265: Call_DescribeIdentityPoolUsage_773254; path: JsonNode;
+proc call*(call_601100: Call_DescribeIdentityPoolUsage_601089; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets usage details (for example, data storage) about a particular identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
-  let valid = call_773265.validator(path, query, header, formData, body)
-  let scheme = call_773265.pickScheme
+  let valid = call_601100.validator(path, query, header, formData, body)
+  let scheme = call_601100.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773265.url(scheme.get, call_773265.host, call_773265.base,
-                         call_773265.route, valid.getOrDefault("path"))
-  result = hook(call_773265, url, valid)
+  let url = call_601100.url(scheme.get, call_601100.host, call_601100.base,
+                         call_601100.route, valid.getOrDefault("path"))
+  result = hook(call_601100, url, valid)
 
-proc call*(call_773266: Call_DescribeIdentityPoolUsage_773254;
+proc call*(call_601101: Call_DescribeIdentityPoolUsage_601089;
           IdentityPoolId: string): Recallable =
   ## describeIdentityPoolUsage
   ## <p>Gets usage details (for example, data storage) about a particular identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ##   IdentityPoolId: string (required)
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. GUID generation is unique within a region.
-  var path_773267 = newJObject()
-  add(path_773267, "IdentityPoolId", newJString(IdentityPoolId))
-  result = call_773266.call(path_773267, nil, nil, nil, nil)
+  var path_601102 = newJObject()
+  add(path_601102, "IdentityPoolId", newJString(IdentityPoolId))
+  result = call_601101.call(path_601102, nil, nil, nil, nil)
 
-var describeIdentityPoolUsage* = Call_DescribeIdentityPoolUsage_773254(
+var describeIdentityPoolUsage* = Call_DescribeIdentityPoolUsage_601089(
     name: "describeIdentityPoolUsage", meth: HttpMethod.HttpGet,
     host: "cognito-sync.amazonaws.com", route: "/identitypools/{IdentityPoolId}",
-    validator: validate_DescribeIdentityPoolUsage_773255, base: "/",
-    url: url_DescribeIdentityPoolUsage_773256,
+    validator: validate_DescribeIdentityPoolUsage_601090, base: "/",
+    url: url_DescribeIdentityPoolUsage_601091,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeIdentityUsage_773268 = ref object of OpenApiRestCall_772597
-proc url_DescribeIdentityUsage_773270(protocol: Scheme; host: string; base: string;
+  Call_DescribeIdentityUsage_601103 = ref object of OpenApiRestCall_600426
+proc url_DescribeIdentityUsage_601105(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -794,7 +794,7 @@ proc url_DescribeIdentityUsage_773270(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_DescribeIdentityUsage_773269(path: JsonNode; query: JsonNode;
+proc validate_DescribeIdentityUsage_601104(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets usage information for an identity, including number of datasets and data usage.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
   ## 
@@ -808,16 +808,16 @@ proc validate_DescribeIdentityUsage_773269(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773271 = path.getOrDefault("IdentityId")
-  valid_773271 = validateParameter(valid_773271, JString, required = true,
+  var valid_601106 = path.getOrDefault("IdentityId")
+  valid_601106 = validateParameter(valid_601106, JString, required = true,
                                  default = nil)
-  if valid_773271 != nil:
-    section.add "IdentityId", valid_773271
-  var valid_773272 = path.getOrDefault("IdentityPoolId")
-  valid_773272 = validateParameter(valid_773272, JString, required = true,
+  if valid_601106 != nil:
+    section.add "IdentityId", valid_601106
+  var valid_601107 = path.getOrDefault("IdentityPoolId")
+  valid_601107 = validateParameter(valid_601107, JString, required = true,
                                  default = nil)
-  if valid_773272 != nil:
-    section.add "IdentityPoolId", valid_773272
+  if valid_601107 != nil:
+    section.add "IdentityPoolId", valid_601107
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -830,60 +830,60 @@ proc validate_DescribeIdentityUsage_773269(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773273 = header.getOrDefault("X-Amz-Date")
-  valid_773273 = validateParameter(valid_773273, JString, required = false,
+  var valid_601108 = header.getOrDefault("X-Amz-Date")
+  valid_601108 = validateParameter(valid_601108, JString, required = false,
                                  default = nil)
-  if valid_773273 != nil:
-    section.add "X-Amz-Date", valid_773273
-  var valid_773274 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773274 = validateParameter(valid_773274, JString, required = false,
+  if valid_601108 != nil:
+    section.add "X-Amz-Date", valid_601108
+  var valid_601109 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601109 = validateParameter(valid_601109, JString, required = false,
                                  default = nil)
-  if valid_773274 != nil:
-    section.add "X-Amz-Security-Token", valid_773274
-  var valid_773275 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773275 = validateParameter(valid_773275, JString, required = false,
+  if valid_601109 != nil:
+    section.add "X-Amz-Security-Token", valid_601109
+  var valid_601110 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601110 = validateParameter(valid_601110, JString, required = false,
                                  default = nil)
-  if valid_773275 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773275
-  var valid_773276 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773276 = validateParameter(valid_773276, JString, required = false,
+  if valid_601110 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601110
+  var valid_601111 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601111 = validateParameter(valid_601111, JString, required = false,
                                  default = nil)
-  if valid_773276 != nil:
-    section.add "X-Amz-Algorithm", valid_773276
-  var valid_773277 = header.getOrDefault("X-Amz-Signature")
-  valid_773277 = validateParameter(valid_773277, JString, required = false,
+  if valid_601111 != nil:
+    section.add "X-Amz-Algorithm", valid_601111
+  var valid_601112 = header.getOrDefault("X-Amz-Signature")
+  valid_601112 = validateParameter(valid_601112, JString, required = false,
                                  default = nil)
-  if valid_773277 != nil:
-    section.add "X-Amz-Signature", valid_773277
-  var valid_773278 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773278 = validateParameter(valid_773278, JString, required = false,
+  if valid_601112 != nil:
+    section.add "X-Amz-Signature", valid_601112
+  var valid_601113 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601113 = validateParameter(valid_601113, JString, required = false,
                                  default = nil)
-  if valid_773278 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773278
-  var valid_773279 = header.getOrDefault("X-Amz-Credential")
-  valid_773279 = validateParameter(valid_773279, JString, required = false,
+  if valid_601113 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601113
+  var valid_601114 = header.getOrDefault("X-Amz-Credential")
+  valid_601114 = validateParameter(valid_601114, JString, required = false,
                                  default = nil)
-  if valid_773279 != nil:
-    section.add "X-Amz-Credential", valid_773279
+  if valid_601114 != nil:
+    section.add "X-Amz-Credential", valid_601114
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773280: Call_DescribeIdentityUsage_773268; path: JsonNode;
+proc call*(call_601115: Call_DescribeIdentityUsage_601103; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets usage information for an identity, including number of datasets and data usage.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
   ## 
-  let valid = call_773280.validator(path, query, header, formData, body)
-  let scheme = call_773280.pickScheme
+  let valid = call_601115.validator(path, query, header, formData, body)
+  let scheme = call_601115.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773280.url(scheme.get, call_773280.host, call_773280.base,
-                         call_773280.route, valid.getOrDefault("path"))
-  result = hook(call_773280, url, valid)
+  let url = call_601115.url(scheme.get, call_601115.host, call_601115.base,
+                         call_601115.route, valid.getOrDefault("path"))
+  result = hook(call_601115, url, valid)
 
-proc call*(call_773281: Call_DescribeIdentityUsage_773268; IdentityId: string;
+proc call*(call_601116: Call_DescribeIdentityUsage_601103; IdentityId: string;
           IdentityPoolId: string): Recallable =
   ## describeIdentityUsage
   ## <p>Gets usage information for an identity, including number of datasets and data usage.</p> <p>This API can be called with temporary user credentials provided by Cognito Identity or with developer credentials.</p>
@@ -891,20 +891,20 @@ proc call*(call_773281: Call_DescribeIdentityUsage_773268; IdentityId: string;
   ##             : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. GUID generation is unique within a region.
   ##   IdentityPoolId: string (required)
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. GUID generation is unique within a region.
-  var path_773282 = newJObject()
-  add(path_773282, "IdentityId", newJString(IdentityId))
-  add(path_773282, "IdentityPoolId", newJString(IdentityPoolId))
-  result = call_773281.call(path_773282, nil, nil, nil, nil)
+  var path_601117 = newJObject()
+  add(path_601117, "IdentityId", newJString(IdentityId))
+  add(path_601117, "IdentityPoolId", newJString(IdentityPoolId))
+  result = call_601116.call(path_601117, nil, nil, nil, nil)
 
-var describeIdentityUsage* = Call_DescribeIdentityUsage_773268(
+var describeIdentityUsage* = Call_DescribeIdentityUsage_601103(
     name: "describeIdentityUsage", meth: HttpMethod.HttpGet,
     host: "cognito-sync.amazonaws.com",
     route: "/identitypools/{IdentityPoolId}/identities/{IdentityId}",
-    validator: validate_DescribeIdentityUsage_773269, base: "/",
-    url: url_DescribeIdentityUsage_773270, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeIdentityUsage_601104, base: "/",
+    url: url_DescribeIdentityUsage_601105, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBulkPublishDetails_773283 = ref object of OpenApiRestCall_772597
-proc url_GetBulkPublishDetails_773285(protocol: Scheme; host: string; base: string;
+  Call_GetBulkPublishDetails_601118 = ref object of OpenApiRestCall_600426
+proc url_GetBulkPublishDetails_601120(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -917,7 +917,7 @@ proc url_GetBulkPublishDetails_773285(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetBulkPublishDetails_773284(path: JsonNode; query: JsonNode;
+proc validate_GetBulkPublishDetails_601119(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Get the status of the last BulkPublish operation for an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
@@ -929,11 +929,11 @@ proc validate_GetBulkPublishDetails_773284(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityPoolId` field"
-  var valid_773286 = path.getOrDefault("IdentityPoolId")
-  valid_773286 = validateParameter(valid_773286, JString, required = true,
+  var valid_601121 = path.getOrDefault("IdentityPoolId")
+  valid_601121 = validateParameter(valid_601121, JString, required = true,
                                  default = nil)
-  if valid_773286 != nil:
-    section.add "IdentityPoolId", valid_773286
+  if valid_601121 != nil:
+    section.add "IdentityPoolId", valid_601121
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -946,77 +946,77 @@ proc validate_GetBulkPublishDetails_773284(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773287 = header.getOrDefault("X-Amz-Date")
-  valid_773287 = validateParameter(valid_773287, JString, required = false,
+  var valid_601122 = header.getOrDefault("X-Amz-Date")
+  valid_601122 = validateParameter(valid_601122, JString, required = false,
                                  default = nil)
-  if valid_773287 != nil:
-    section.add "X-Amz-Date", valid_773287
-  var valid_773288 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773288 = validateParameter(valid_773288, JString, required = false,
+  if valid_601122 != nil:
+    section.add "X-Amz-Date", valid_601122
+  var valid_601123 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601123 = validateParameter(valid_601123, JString, required = false,
                                  default = nil)
-  if valid_773288 != nil:
-    section.add "X-Amz-Security-Token", valid_773288
-  var valid_773289 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773289 = validateParameter(valid_773289, JString, required = false,
+  if valid_601123 != nil:
+    section.add "X-Amz-Security-Token", valid_601123
+  var valid_601124 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601124 = validateParameter(valid_601124, JString, required = false,
                                  default = nil)
-  if valid_773289 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773289
-  var valid_773290 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773290 = validateParameter(valid_773290, JString, required = false,
+  if valid_601124 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601124
+  var valid_601125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601125 = validateParameter(valid_601125, JString, required = false,
                                  default = nil)
-  if valid_773290 != nil:
-    section.add "X-Amz-Algorithm", valid_773290
-  var valid_773291 = header.getOrDefault("X-Amz-Signature")
-  valid_773291 = validateParameter(valid_773291, JString, required = false,
+  if valid_601125 != nil:
+    section.add "X-Amz-Algorithm", valid_601125
+  var valid_601126 = header.getOrDefault("X-Amz-Signature")
+  valid_601126 = validateParameter(valid_601126, JString, required = false,
                                  default = nil)
-  if valid_773291 != nil:
-    section.add "X-Amz-Signature", valid_773291
-  var valid_773292 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773292 = validateParameter(valid_773292, JString, required = false,
+  if valid_601126 != nil:
+    section.add "X-Amz-Signature", valid_601126
+  var valid_601127 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601127 = validateParameter(valid_601127, JString, required = false,
                                  default = nil)
-  if valid_773292 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773292
-  var valid_773293 = header.getOrDefault("X-Amz-Credential")
-  valid_773293 = validateParameter(valid_773293, JString, required = false,
+  if valid_601127 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601127
+  var valid_601128 = header.getOrDefault("X-Amz-Credential")
+  valid_601128 = validateParameter(valid_601128, JString, required = false,
                                  default = nil)
-  if valid_773293 != nil:
-    section.add "X-Amz-Credential", valid_773293
+  if valid_601128 != nil:
+    section.add "X-Amz-Credential", valid_601128
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773294: Call_GetBulkPublishDetails_773283; path: JsonNode;
+proc call*(call_601129: Call_GetBulkPublishDetails_601118; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Get the status of the last BulkPublish operation for an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
-  let valid = call_773294.validator(path, query, header, formData, body)
-  let scheme = call_773294.pickScheme
+  let valid = call_601129.validator(path, query, header, formData, body)
+  let scheme = call_601129.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773294.url(scheme.get, call_773294.host, call_773294.base,
-                         call_773294.route, valid.getOrDefault("path"))
-  result = hook(call_773294, url, valid)
+  let url = call_601129.url(scheme.get, call_601129.host, call_601129.base,
+                         call_601129.route, valid.getOrDefault("path"))
+  result = hook(call_601129, url, valid)
 
-proc call*(call_773295: Call_GetBulkPublishDetails_773283; IdentityPoolId: string): Recallable =
+proc call*(call_601130: Call_GetBulkPublishDetails_601118; IdentityPoolId: string): Recallable =
   ## getBulkPublishDetails
   ## <p>Get the status of the last BulkPublish operation for an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ##   IdentityPoolId: string (required)
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. GUID generation is unique within a region.
-  var path_773296 = newJObject()
-  add(path_773296, "IdentityPoolId", newJString(IdentityPoolId))
-  result = call_773295.call(path_773296, nil, nil, nil, nil)
+  var path_601131 = newJObject()
+  add(path_601131, "IdentityPoolId", newJString(IdentityPoolId))
+  result = call_601130.call(path_601131, nil, nil, nil, nil)
 
-var getBulkPublishDetails* = Call_GetBulkPublishDetails_773283(
+var getBulkPublishDetails* = Call_GetBulkPublishDetails_601118(
     name: "getBulkPublishDetails", meth: HttpMethod.HttpPost,
     host: "cognito-sync.amazonaws.com",
     route: "/identitypools/{IdentityPoolId}/getBulkPublishDetails",
-    validator: validate_GetBulkPublishDetails_773284, base: "/",
-    url: url_GetBulkPublishDetails_773285, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBulkPublishDetails_601119, base: "/",
+    url: url_GetBulkPublishDetails_601120, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SetCognitoEvents_773311 = ref object of OpenApiRestCall_772597
-proc url_SetCognitoEvents_773313(protocol: Scheme; host: string; base: string;
+  Call_SetCognitoEvents_601146 = ref object of OpenApiRestCall_600426
+proc url_SetCognitoEvents_601148(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -1029,7 +1029,7 @@ proc url_SetCognitoEvents_773313(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_SetCognitoEvents_773312(path: JsonNode; query: JsonNode;
+proc validate_SetCognitoEvents_601147(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Sets the AWS Lambda function for a given event type for an identity pool. This request only updates the key/value pair specified. Other key/values pairs are not updated. To remove a key value pair, pass a empty value for the particular key.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
@@ -1042,11 +1042,11 @@ proc validate_SetCognitoEvents_773312(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityPoolId` field"
-  var valid_773314 = path.getOrDefault("IdentityPoolId")
-  valid_773314 = validateParameter(valid_773314, JString, required = true,
+  var valid_601149 = path.getOrDefault("IdentityPoolId")
+  valid_601149 = validateParameter(valid_601149, JString, required = true,
                                  default = nil)
-  if valid_773314 != nil:
-    section.add "IdentityPoolId", valid_773314
+  if valid_601149 != nil:
+    section.add "IdentityPoolId", valid_601149
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1059,41 +1059,41 @@ proc validate_SetCognitoEvents_773312(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773315 = header.getOrDefault("X-Amz-Date")
-  valid_773315 = validateParameter(valid_773315, JString, required = false,
+  var valid_601150 = header.getOrDefault("X-Amz-Date")
+  valid_601150 = validateParameter(valid_601150, JString, required = false,
                                  default = nil)
-  if valid_773315 != nil:
-    section.add "X-Amz-Date", valid_773315
-  var valid_773316 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773316 = validateParameter(valid_773316, JString, required = false,
+  if valid_601150 != nil:
+    section.add "X-Amz-Date", valid_601150
+  var valid_601151 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601151 = validateParameter(valid_601151, JString, required = false,
                                  default = nil)
-  if valid_773316 != nil:
-    section.add "X-Amz-Security-Token", valid_773316
-  var valid_773317 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773317 = validateParameter(valid_773317, JString, required = false,
+  if valid_601151 != nil:
+    section.add "X-Amz-Security-Token", valid_601151
+  var valid_601152 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601152 = validateParameter(valid_601152, JString, required = false,
                                  default = nil)
-  if valid_773317 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773317
-  var valid_773318 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773318 = validateParameter(valid_773318, JString, required = false,
+  if valid_601152 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601152
+  var valid_601153 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601153 = validateParameter(valid_601153, JString, required = false,
                                  default = nil)
-  if valid_773318 != nil:
-    section.add "X-Amz-Algorithm", valid_773318
-  var valid_773319 = header.getOrDefault("X-Amz-Signature")
-  valid_773319 = validateParameter(valid_773319, JString, required = false,
+  if valid_601153 != nil:
+    section.add "X-Amz-Algorithm", valid_601153
+  var valid_601154 = header.getOrDefault("X-Amz-Signature")
+  valid_601154 = validateParameter(valid_601154, JString, required = false,
                                  default = nil)
-  if valid_773319 != nil:
-    section.add "X-Amz-Signature", valid_773319
-  var valid_773320 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773320 = validateParameter(valid_773320, JString, required = false,
+  if valid_601154 != nil:
+    section.add "X-Amz-Signature", valid_601154
+  var valid_601155 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601155 = validateParameter(valid_601155, JString, required = false,
                                  default = nil)
-  if valid_773320 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773320
-  var valid_773321 = header.getOrDefault("X-Amz-Credential")
-  valid_773321 = validateParameter(valid_773321, JString, required = false,
+  if valid_601155 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601155
+  var valid_601156 = header.getOrDefault("X-Amz-Credential")
+  valid_601156 = validateParameter(valid_601156, JString, required = false,
                                  default = nil)
-  if valid_773321 != nil:
-    section.add "X-Amz-Credential", valid_773321
+  if valid_601156 != nil:
+    section.add "X-Amz-Credential", valid_601156
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1104,40 +1104,40 @@ proc validate_SetCognitoEvents_773312(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773323: Call_SetCognitoEvents_773311; path: JsonNode;
+proc call*(call_601158: Call_SetCognitoEvents_601146; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the AWS Lambda function for a given event type for an identity pool. This request only updates the key/value pair specified. Other key/values pairs are not updated. To remove a key value pair, pass a empty value for the particular key.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
-  let valid = call_773323.validator(path, query, header, formData, body)
-  let scheme = call_773323.pickScheme
+  let valid = call_601158.validator(path, query, header, formData, body)
+  let scheme = call_601158.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773323.url(scheme.get, call_773323.host, call_773323.base,
-                         call_773323.route, valid.getOrDefault("path"))
-  result = hook(call_773323, url, valid)
+  let url = call_601158.url(scheme.get, call_601158.host, call_601158.base,
+                         call_601158.route, valid.getOrDefault("path"))
+  result = hook(call_601158, url, valid)
 
-proc call*(call_773324: Call_SetCognitoEvents_773311; IdentityPoolId: string;
+proc call*(call_601159: Call_SetCognitoEvents_601146; IdentityPoolId: string;
           body: JsonNode): Recallable =
   ## setCognitoEvents
   ## <p>Sets the AWS Lambda function for a given event type for an identity pool. This request only updates the key/value pair specified. Other key/values pairs are not updated. To remove a key value pair, pass a empty value for the particular key.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ##   IdentityPoolId: string (required)
   ##                 : The Cognito Identity Pool to use when configuring Cognito Events
   ##   body: JObject (required)
-  var path_773325 = newJObject()
-  var body_773326 = newJObject()
-  add(path_773325, "IdentityPoolId", newJString(IdentityPoolId))
+  var path_601160 = newJObject()
+  var body_601161 = newJObject()
+  add(path_601160, "IdentityPoolId", newJString(IdentityPoolId))
   if body != nil:
-    body_773326 = body
-  result = call_773324.call(path_773325, nil, nil, nil, body_773326)
+    body_601161 = body
+  result = call_601159.call(path_601160, nil, nil, nil, body_601161)
 
-var setCognitoEvents* = Call_SetCognitoEvents_773311(name: "setCognitoEvents",
+var setCognitoEvents* = Call_SetCognitoEvents_601146(name: "setCognitoEvents",
     meth: HttpMethod.HttpPost, host: "cognito-sync.amazonaws.com",
     route: "/identitypools/{IdentityPoolId}/events",
-    validator: validate_SetCognitoEvents_773312, base: "/",
-    url: url_SetCognitoEvents_773313, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SetCognitoEvents_601147, base: "/",
+    url: url_SetCognitoEvents_601148, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCognitoEvents_773297 = ref object of OpenApiRestCall_772597
-proc url_GetCognitoEvents_773299(protocol: Scheme; host: string; base: string;
+  Call_GetCognitoEvents_601132 = ref object of OpenApiRestCall_600426
+proc url_GetCognitoEvents_601134(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -1150,7 +1150,7 @@ proc url_GetCognitoEvents_773299(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetCognitoEvents_773298(path: JsonNode; query: JsonNode;
+proc validate_GetCognitoEvents_601133(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Gets the events and the corresponding Lambda functions associated with an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
@@ -1163,11 +1163,11 @@ proc validate_GetCognitoEvents_773298(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityPoolId` field"
-  var valid_773300 = path.getOrDefault("IdentityPoolId")
-  valid_773300 = validateParameter(valid_773300, JString, required = true,
+  var valid_601135 = path.getOrDefault("IdentityPoolId")
+  valid_601135 = validateParameter(valid_601135, JString, required = true,
                                  default = nil)
-  if valid_773300 != nil:
-    section.add "IdentityPoolId", valid_773300
+  if valid_601135 != nil:
+    section.add "IdentityPoolId", valid_601135
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1180,76 +1180,76 @@ proc validate_GetCognitoEvents_773298(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773301 = header.getOrDefault("X-Amz-Date")
-  valid_773301 = validateParameter(valid_773301, JString, required = false,
+  var valid_601136 = header.getOrDefault("X-Amz-Date")
+  valid_601136 = validateParameter(valid_601136, JString, required = false,
                                  default = nil)
-  if valid_773301 != nil:
-    section.add "X-Amz-Date", valid_773301
-  var valid_773302 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773302 = validateParameter(valid_773302, JString, required = false,
+  if valid_601136 != nil:
+    section.add "X-Amz-Date", valid_601136
+  var valid_601137 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601137 = validateParameter(valid_601137, JString, required = false,
                                  default = nil)
-  if valid_773302 != nil:
-    section.add "X-Amz-Security-Token", valid_773302
-  var valid_773303 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773303 = validateParameter(valid_773303, JString, required = false,
+  if valid_601137 != nil:
+    section.add "X-Amz-Security-Token", valid_601137
+  var valid_601138 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601138 = validateParameter(valid_601138, JString, required = false,
                                  default = nil)
-  if valid_773303 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773303
-  var valid_773304 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773304 = validateParameter(valid_773304, JString, required = false,
+  if valid_601138 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601138
+  var valid_601139 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601139 = validateParameter(valid_601139, JString, required = false,
                                  default = nil)
-  if valid_773304 != nil:
-    section.add "X-Amz-Algorithm", valid_773304
-  var valid_773305 = header.getOrDefault("X-Amz-Signature")
-  valid_773305 = validateParameter(valid_773305, JString, required = false,
+  if valid_601139 != nil:
+    section.add "X-Amz-Algorithm", valid_601139
+  var valid_601140 = header.getOrDefault("X-Amz-Signature")
+  valid_601140 = validateParameter(valid_601140, JString, required = false,
                                  default = nil)
-  if valid_773305 != nil:
-    section.add "X-Amz-Signature", valid_773305
-  var valid_773306 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773306 = validateParameter(valid_773306, JString, required = false,
+  if valid_601140 != nil:
+    section.add "X-Amz-Signature", valid_601140
+  var valid_601141 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601141 = validateParameter(valid_601141, JString, required = false,
                                  default = nil)
-  if valid_773306 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773306
-  var valid_773307 = header.getOrDefault("X-Amz-Credential")
-  valid_773307 = validateParameter(valid_773307, JString, required = false,
+  if valid_601141 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601141
+  var valid_601142 = header.getOrDefault("X-Amz-Credential")
+  valid_601142 = validateParameter(valid_601142, JString, required = false,
                                  default = nil)
-  if valid_773307 != nil:
-    section.add "X-Amz-Credential", valid_773307
+  if valid_601142 != nil:
+    section.add "X-Amz-Credential", valid_601142
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773308: Call_GetCognitoEvents_773297; path: JsonNode;
+proc call*(call_601143: Call_GetCognitoEvents_601132; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the events and the corresponding Lambda functions associated with an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
-  let valid = call_773308.validator(path, query, header, formData, body)
-  let scheme = call_773308.pickScheme
+  let valid = call_601143.validator(path, query, header, formData, body)
+  let scheme = call_601143.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773308.url(scheme.get, call_773308.host, call_773308.base,
-                         call_773308.route, valid.getOrDefault("path"))
-  result = hook(call_773308, url, valid)
+  let url = call_601143.url(scheme.get, call_601143.host, call_601143.base,
+                         call_601143.route, valid.getOrDefault("path"))
+  result = hook(call_601143, url, valid)
 
-proc call*(call_773309: Call_GetCognitoEvents_773297; IdentityPoolId: string): Recallable =
+proc call*(call_601144: Call_GetCognitoEvents_601132; IdentityPoolId: string): Recallable =
   ## getCognitoEvents
   ## <p>Gets the events and the corresponding Lambda functions associated with an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ##   IdentityPoolId: string (required)
   ##                 : The Cognito Identity Pool ID for the request
-  var path_773310 = newJObject()
-  add(path_773310, "IdentityPoolId", newJString(IdentityPoolId))
-  result = call_773309.call(path_773310, nil, nil, nil, nil)
+  var path_601145 = newJObject()
+  add(path_601145, "IdentityPoolId", newJString(IdentityPoolId))
+  result = call_601144.call(path_601145, nil, nil, nil, nil)
 
-var getCognitoEvents* = Call_GetCognitoEvents_773297(name: "getCognitoEvents",
+var getCognitoEvents* = Call_GetCognitoEvents_601132(name: "getCognitoEvents",
     meth: HttpMethod.HttpGet, host: "cognito-sync.amazonaws.com",
     route: "/identitypools/{IdentityPoolId}/events",
-    validator: validate_GetCognitoEvents_773298, base: "/",
-    url: url_GetCognitoEvents_773299, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetCognitoEvents_601133, base: "/",
+    url: url_GetCognitoEvents_601134, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SetIdentityPoolConfiguration_773341 = ref object of OpenApiRestCall_772597
-proc url_SetIdentityPoolConfiguration_773343(protocol: Scheme; host: string;
+  Call_SetIdentityPoolConfiguration_601176 = ref object of OpenApiRestCall_600426
+proc url_SetIdentityPoolConfiguration_601178(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -1262,7 +1262,7 @@ proc url_SetIdentityPoolConfiguration_773343(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_SetIdentityPoolConfiguration_773342(path: JsonNode; query: JsonNode;
+proc validate_SetIdentityPoolConfiguration_601177(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the necessary configuration for push sync.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
@@ -1274,11 +1274,11 @@ proc validate_SetIdentityPoolConfiguration_773342(path: JsonNode; query: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityPoolId` field"
-  var valid_773344 = path.getOrDefault("IdentityPoolId")
-  valid_773344 = validateParameter(valid_773344, JString, required = true,
+  var valid_601179 = path.getOrDefault("IdentityPoolId")
+  valid_601179 = validateParameter(valid_601179, JString, required = true,
                                  default = nil)
-  if valid_773344 != nil:
-    section.add "IdentityPoolId", valid_773344
+  if valid_601179 != nil:
+    section.add "IdentityPoolId", valid_601179
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1291,41 +1291,41 @@ proc validate_SetIdentityPoolConfiguration_773342(path: JsonNode; query: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773345 = header.getOrDefault("X-Amz-Date")
-  valid_773345 = validateParameter(valid_773345, JString, required = false,
+  var valid_601180 = header.getOrDefault("X-Amz-Date")
+  valid_601180 = validateParameter(valid_601180, JString, required = false,
                                  default = nil)
-  if valid_773345 != nil:
-    section.add "X-Amz-Date", valid_773345
-  var valid_773346 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773346 = validateParameter(valid_773346, JString, required = false,
+  if valid_601180 != nil:
+    section.add "X-Amz-Date", valid_601180
+  var valid_601181 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601181 = validateParameter(valid_601181, JString, required = false,
                                  default = nil)
-  if valid_773346 != nil:
-    section.add "X-Amz-Security-Token", valid_773346
-  var valid_773347 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773347 = validateParameter(valid_773347, JString, required = false,
+  if valid_601181 != nil:
+    section.add "X-Amz-Security-Token", valid_601181
+  var valid_601182 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601182 = validateParameter(valid_601182, JString, required = false,
                                  default = nil)
-  if valid_773347 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773347
-  var valid_773348 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773348 = validateParameter(valid_773348, JString, required = false,
+  if valid_601182 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601182
+  var valid_601183 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601183 = validateParameter(valid_601183, JString, required = false,
                                  default = nil)
-  if valid_773348 != nil:
-    section.add "X-Amz-Algorithm", valid_773348
-  var valid_773349 = header.getOrDefault("X-Amz-Signature")
-  valid_773349 = validateParameter(valid_773349, JString, required = false,
+  if valid_601183 != nil:
+    section.add "X-Amz-Algorithm", valid_601183
+  var valid_601184 = header.getOrDefault("X-Amz-Signature")
+  valid_601184 = validateParameter(valid_601184, JString, required = false,
                                  default = nil)
-  if valid_773349 != nil:
-    section.add "X-Amz-Signature", valid_773349
-  var valid_773350 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773350 = validateParameter(valid_773350, JString, required = false,
+  if valid_601184 != nil:
+    section.add "X-Amz-Signature", valid_601184
+  var valid_601185 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601185 = validateParameter(valid_601185, JString, required = false,
                                  default = nil)
-  if valid_773350 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773350
-  var valid_773351 = header.getOrDefault("X-Amz-Credential")
-  valid_773351 = validateParameter(valid_773351, JString, required = false,
+  if valid_601185 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601185
+  var valid_601186 = header.getOrDefault("X-Amz-Credential")
+  valid_601186 = validateParameter(valid_601186, JString, required = false,
                                  default = nil)
-  if valid_773351 != nil:
-    section.add "X-Amz-Credential", valid_773351
+  if valid_601186 != nil:
+    section.add "X-Amz-Credential", valid_601186
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1336,42 +1336,42 @@ proc validate_SetIdentityPoolConfiguration_773342(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_773353: Call_SetIdentityPoolConfiguration_773341; path: JsonNode;
+proc call*(call_601188: Call_SetIdentityPoolConfiguration_601176; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the necessary configuration for push sync.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
-  let valid = call_773353.validator(path, query, header, formData, body)
-  let scheme = call_773353.pickScheme
+  let valid = call_601188.validator(path, query, header, formData, body)
+  let scheme = call_601188.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773353.url(scheme.get, call_773353.host, call_773353.base,
-                         call_773353.route, valid.getOrDefault("path"))
-  result = hook(call_773353, url, valid)
+  let url = call_601188.url(scheme.get, call_601188.host, call_601188.base,
+                         call_601188.route, valid.getOrDefault("path"))
+  result = hook(call_601188, url, valid)
 
-proc call*(call_773354: Call_SetIdentityPoolConfiguration_773341;
+proc call*(call_601189: Call_SetIdentityPoolConfiguration_601176;
           IdentityPoolId: string; body: JsonNode): Recallable =
   ## setIdentityPoolConfiguration
   ## <p>Sets the necessary configuration for push sync.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ##   IdentityPoolId: string (required)
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. This is the ID of the pool to modify.
   ##   body: JObject (required)
-  var path_773355 = newJObject()
-  var body_773356 = newJObject()
-  add(path_773355, "IdentityPoolId", newJString(IdentityPoolId))
+  var path_601190 = newJObject()
+  var body_601191 = newJObject()
+  add(path_601190, "IdentityPoolId", newJString(IdentityPoolId))
   if body != nil:
-    body_773356 = body
-  result = call_773354.call(path_773355, nil, nil, nil, body_773356)
+    body_601191 = body
+  result = call_601189.call(path_601190, nil, nil, nil, body_601191)
 
-var setIdentityPoolConfiguration* = Call_SetIdentityPoolConfiguration_773341(
+var setIdentityPoolConfiguration* = Call_SetIdentityPoolConfiguration_601176(
     name: "setIdentityPoolConfiguration", meth: HttpMethod.HttpPost,
     host: "cognito-sync.amazonaws.com",
     route: "/identitypools/{IdentityPoolId}/configuration",
-    validator: validate_SetIdentityPoolConfiguration_773342, base: "/",
-    url: url_SetIdentityPoolConfiguration_773343,
+    validator: validate_SetIdentityPoolConfiguration_601177, base: "/",
+    url: url_SetIdentityPoolConfiguration_601178,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetIdentityPoolConfiguration_773327 = ref object of OpenApiRestCall_772597
-proc url_GetIdentityPoolConfiguration_773329(protocol: Scheme; host: string;
+  Call_GetIdentityPoolConfiguration_601162 = ref object of OpenApiRestCall_600426
+proc url_GetIdentityPoolConfiguration_601164(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -1384,7 +1384,7 @@ proc url_GetIdentityPoolConfiguration_773329(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_GetIdentityPoolConfiguration_773328(path: JsonNode; query: JsonNode;
+proc validate_GetIdentityPoolConfiguration_601163(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets the configuration settings of an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
@@ -1396,11 +1396,11 @@ proc validate_GetIdentityPoolConfiguration_773328(path: JsonNode; query: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityPoolId` field"
-  var valid_773330 = path.getOrDefault("IdentityPoolId")
-  valid_773330 = validateParameter(valid_773330, JString, required = true,
+  var valid_601165 = path.getOrDefault("IdentityPoolId")
+  valid_601165 = validateParameter(valid_601165, JString, required = true,
                                  default = nil)
-  if valid_773330 != nil:
-    section.add "IdentityPoolId", valid_773330
+  if valid_601165 != nil:
+    section.add "IdentityPoolId", valid_601165
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1413,79 +1413,79 @@ proc validate_GetIdentityPoolConfiguration_773328(path: JsonNode; query: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773331 = header.getOrDefault("X-Amz-Date")
-  valid_773331 = validateParameter(valid_773331, JString, required = false,
+  var valid_601166 = header.getOrDefault("X-Amz-Date")
+  valid_601166 = validateParameter(valid_601166, JString, required = false,
                                  default = nil)
-  if valid_773331 != nil:
-    section.add "X-Amz-Date", valid_773331
-  var valid_773332 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773332 = validateParameter(valid_773332, JString, required = false,
+  if valid_601166 != nil:
+    section.add "X-Amz-Date", valid_601166
+  var valid_601167 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601167 = validateParameter(valid_601167, JString, required = false,
                                  default = nil)
-  if valid_773332 != nil:
-    section.add "X-Amz-Security-Token", valid_773332
-  var valid_773333 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773333 = validateParameter(valid_773333, JString, required = false,
+  if valid_601167 != nil:
+    section.add "X-Amz-Security-Token", valid_601167
+  var valid_601168 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601168 = validateParameter(valid_601168, JString, required = false,
                                  default = nil)
-  if valid_773333 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773333
-  var valid_773334 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773334 = validateParameter(valid_773334, JString, required = false,
+  if valid_601168 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601168
+  var valid_601169 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601169 = validateParameter(valid_601169, JString, required = false,
                                  default = nil)
-  if valid_773334 != nil:
-    section.add "X-Amz-Algorithm", valid_773334
-  var valid_773335 = header.getOrDefault("X-Amz-Signature")
-  valid_773335 = validateParameter(valid_773335, JString, required = false,
+  if valid_601169 != nil:
+    section.add "X-Amz-Algorithm", valid_601169
+  var valid_601170 = header.getOrDefault("X-Amz-Signature")
+  valid_601170 = validateParameter(valid_601170, JString, required = false,
                                  default = nil)
-  if valid_773335 != nil:
-    section.add "X-Amz-Signature", valid_773335
-  var valid_773336 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773336 = validateParameter(valid_773336, JString, required = false,
+  if valid_601170 != nil:
+    section.add "X-Amz-Signature", valid_601170
+  var valid_601171 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601171 = validateParameter(valid_601171, JString, required = false,
                                  default = nil)
-  if valid_773336 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773336
-  var valid_773337 = header.getOrDefault("X-Amz-Credential")
-  valid_773337 = validateParameter(valid_773337, JString, required = false,
+  if valid_601171 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601171
+  var valid_601172 = header.getOrDefault("X-Amz-Credential")
+  valid_601172 = validateParameter(valid_601172, JString, required = false,
                                  default = nil)
-  if valid_773337 != nil:
-    section.add "X-Amz-Credential", valid_773337
+  if valid_601172 != nil:
+    section.add "X-Amz-Credential", valid_601172
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773338: Call_GetIdentityPoolConfiguration_773327; path: JsonNode;
+proc call*(call_601173: Call_GetIdentityPoolConfiguration_601162; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the configuration settings of an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ## 
-  let valid = call_773338.validator(path, query, header, formData, body)
-  let scheme = call_773338.pickScheme
+  let valid = call_601173.validator(path, query, header, formData, body)
+  let scheme = call_601173.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773338.url(scheme.get, call_773338.host, call_773338.base,
-                         call_773338.route, valid.getOrDefault("path"))
-  result = hook(call_773338, url, valid)
+  let url = call_601173.url(scheme.get, call_601173.host, call_601173.base,
+                         call_601173.route, valid.getOrDefault("path"))
+  result = hook(call_601173, url, valid)
 
-proc call*(call_773339: Call_GetIdentityPoolConfiguration_773327;
+proc call*(call_601174: Call_GetIdentityPoolConfiguration_601162;
           IdentityPoolId: string): Recallable =
   ## getIdentityPoolConfiguration
   ## <p>Gets the configuration settings of an identity pool.</p> <p>This API can only be called with developer credentials. You cannot call this API with the temporary user credentials provided by Cognito Identity.</p>
   ##   IdentityPoolId: string (required)
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. This is the ID of the pool for which to return a configuration.
-  var path_773340 = newJObject()
-  add(path_773340, "IdentityPoolId", newJString(IdentityPoolId))
-  result = call_773339.call(path_773340, nil, nil, nil, nil)
+  var path_601175 = newJObject()
+  add(path_601175, "IdentityPoolId", newJString(IdentityPoolId))
+  result = call_601174.call(path_601175, nil, nil, nil, nil)
 
-var getIdentityPoolConfiguration* = Call_GetIdentityPoolConfiguration_773327(
+var getIdentityPoolConfiguration* = Call_GetIdentityPoolConfiguration_601162(
     name: "getIdentityPoolConfiguration", meth: HttpMethod.HttpGet,
     host: "cognito-sync.amazonaws.com",
     route: "/identitypools/{IdentityPoolId}/configuration",
-    validator: validate_GetIdentityPoolConfiguration_773328, base: "/",
-    url: url_GetIdentityPoolConfiguration_773329,
+    validator: validate_GetIdentityPoolConfiguration_601163, base: "/",
+    url: url_GetIdentityPoolConfiguration_601164,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDatasets_773357 = ref object of OpenApiRestCall_772597
-proc url_ListDatasets_773359(protocol: Scheme; host: string; base: string;
+  Call_ListDatasets_601192 = ref object of OpenApiRestCall_600426
+proc url_ListDatasets_601194(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -1501,7 +1501,7 @@ proc url_ListDatasets_773359(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_ListDatasets_773358(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListDatasets_601193(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists datasets for an identity. With Amazon Cognito Sync, each identity has access only to its own data. Thus, the credentials used to make this API call need to have access to the identity data.</p> <p>ListDatasets can be called with temporary user credentials provided by Cognito Identity or with developer credentials. You should use the Cognito Identity credentials to make this API call.</p>
   ## 
@@ -1515,16 +1515,16 @@ proc validate_ListDatasets_773358(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773360 = path.getOrDefault("IdentityId")
-  valid_773360 = validateParameter(valid_773360, JString, required = true,
+  var valid_601195 = path.getOrDefault("IdentityId")
+  valid_601195 = validateParameter(valid_601195, JString, required = true,
                                  default = nil)
-  if valid_773360 != nil:
-    section.add "IdentityId", valid_773360
-  var valid_773361 = path.getOrDefault("IdentityPoolId")
-  valid_773361 = validateParameter(valid_773361, JString, required = true,
+  if valid_601195 != nil:
+    section.add "IdentityId", valid_601195
+  var valid_601196 = path.getOrDefault("IdentityPoolId")
+  valid_601196 = validateParameter(valid_601196, JString, required = true,
                                  default = nil)
-  if valid_773361 != nil:
-    section.add "IdentityPoolId", valid_773361
+  if valid_601196 != nil:
+    section.add "IdentityPoolId", valid_601196
   result.add "path", section
   ## parameters in `query` object:
   ##   maxResults: JInt
@@ -1532,15 +1532,15 @@ proc validate_ListDatasets_773358(path: JsonNode; query: JsonNode; header: JsonN
   ##   nextToken: JString
   ##            : A pagination token for obtaining the next page of results.
   section = newJObject()
-  var valid_773362 = query.getOrDefault("maxResults")
-  valid_773362 = validateParameter(valid_773362, JInt, required = false, default = nil)
-  if valid_773362 != nil:
-    section.add "maxResults", valid_773362
-  var valid_773363 = query.getOrDefault("nextToken")
-  valid_773363 = validateParameter(valid_773363, JString, required = false,
+  var valid_601197 = query.getOrDefault("maxResults")
+  valid_601197 = validateParameter(valid_601197, JInt, required = false, default = nil)
+  if valid_601197 != nil:
+    section.add "maxResults", valid_601197
+  var valid_601198 = query.getOrDefault("nextToken")
+  valid_601198 = validateParameter(valid_601198, JString, required = false,
                                  default = nil)
-  if valid_773363 != nil:
-    section.add "nextToken", valid_773363
+  if valid_601198 != nil:
+    section.add "nextToken", valid_601198
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1551,60 +1551,60 @@ proc validate_ListDatasets_773358(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773364 = header.getOrDefault("X-Amz-Date")
-  valid_773364 = validateParameter(valid_773364, JString, required = false,
+  var valid_601199 = header.getOrDefault("X-Amz-Date")
+  valid_601199 = validateParameter(valid_601199, JString, required = false,
                                  default = nil)
-  if valid_773364 != nil:
-    section.add "X-Amz-Date", valid_773364
-  var valid_773365 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773365 = validateParameter(valid_773365, JString, required = false,
+  if valid_601199 != nil:
+    section.add "X-Amz-Date", valid_601199
+  var valid_601200 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601200 = validateParameter(valid_601200, JString, required = false,
                                  default = nil)
-  if valid_773365 != nil:
-    section.add "X-Amz-Security-Token", valid_773365
-  var valid_773366 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773366 = validateParameter(valid_773366, JString, required = false,
+  if valid_601200 != nil:
+    section.add "X-Amz-Security-Token", valid_601200
+  var valid_601201 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601201 = validateParameter(valid_601201, JString, required = false,
                                  default = nil)
-  if valid_773366 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773366
-  var valid_773367 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773367 = validateParameter(valid_773367, JString, required = false,
+  if valid_601201 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601201
+  var valid_601202 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601202 = validateParameter(valid_601202, JString, required = false,
                                  default = nil)
-  if valid_773367 != nil:
-    section.add "X-Amz-Algorithm", valid_773367
-  var valid_773368 = header.getOrDefault("X-Amz-Signature")
-  valid_773368 = validateParameter(valid_773368, JString, required = false,
+  if valid_601202 != nil:
+    section.add "X-Amz-Algorithm", valid_601202
+  var valid_601203 = header.getOrDefault("X-Amz-Signature")
+  valid_601203 = validateParameter(valid_601203, JString, required = false,
                                  default = nil)
-  if valid_773368 != nil:
-    section.add "X-Amz-Signature", valid_773368
-  var valid_773369 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773369 = validateParameter(valid_773369, JString, required = false,
+  if valid_601203 != nil:
+    section.add "X-Amz-Signature", valid_601203
+  var valid_601204 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601204 = validateParameter(valid_601204, JString, required = false,
                                  default = nil)
-  if valid_773369 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773369
-  var valid_773370 = header.getOrDefault("X-Amz-Credential")
-  valid_773370 = validateParameter(valid_773370, JString, required = false,
+  if valid_601204 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601204
+  var valid_601205 = header.getOrDefault("X-Amz-Credential")
+  valid_601205 = validateParameter(valid_601205, JString, required = false,
                                  default = nil)
-  if valid_773370 != nil:
-    section.add "X-Amz-Credential", valid_773370
+  if valid_601205 != nil:
+    section.add "X-Amz-Credential", valid_601205
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773371: Call_ListDatasets_773357; path: JsonNode; query: JsonNode;
+proc call*(call_601206: Call_ListDatasets_601192; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists datasets for an identity. With Amazon Cognito Sync, each identity has access only to its own data. Thus, the credentials used to make this API call need to have access to the identity data.</p> <p>ListDatasets can be called with temporary user credentials provided by Cognito Identity or with developer credentials. You should use the Cognito Identity credentials to make this API call.</p>
   ## 
-  let valid = call_773371.validator(path, query, header, formData, body)
-  let scheme = call_773371.pickScheme
+  let valid = call_601206.validator(path, query, header, formData, body)
+  let scheme = call_601206.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773371.url(scheme.get, call_773371.host, call_773371.base,
-                         call_773371.route, valid.getOrDefault("path"))
-  result = hook(call_773371, url, valid)
+  let url = call_601206.url(scheme.get, call_601206.host, call_601206.base,
+                         call_601206.route, valid.getOrDefault("path"))
+  result = hook(call_601206, url, valid)
 
-proc call*(call_773372: Call_ListDatasets_773357; IdentityId: string;
+proc call*(call_601207: Call_ListDatasets_601192; IdentityId: string;
           IdentityPoolId: string; maxResults: int = 0; nextToken: string = ""): Recallable =
   ## listDatasets
   ## <p>Lists datasets for an identity. With Amazon Cognito Sync, each identity has access only to its own data. Thus, the credentials used to make this API call need to have access to the identity data.</p> <p>ListDatasets can be called with temporary user credentials provided by Cognito Identity or with developer credentials. You should use the Cognito Identity credentials to make this API call.</p>
@@ -1616,26 +1616,26 @@ proc call*(call_773372: Call_ListDatasets_773357; IdentityId: string;
   ##             : The maximum number of results to be returned.
   ##   nextToken: string
   ##            : A pagination token for obtaining the next page of results.
-  var path_773373 = newJObject()
-  var query_773374 = newJObject()
-  add(path_773373, "IdentityId", newJString(IdentityId))
-  add(path_773373, "IdentityPoolId", newJString(IdentityPoolId))
-  add(query_773374, "maxResults", newJInt(maxResults))
-  add(query_773374, "nextToken", newJString(nextToken))
-  result = call_773372.call(path_773373, query_773374, nil, nil, nil)
+  var path_601208 = newJObject()
+  var query_601209 = newJObject()
+  add(path_601208, "IdentityId", newJString(IdentityId))
+  add(path_601208, "IdentityPoolId", newJString(IdentityPoolId))
+  add(query_601209, "maxResults", newJInt(maxResults))
+  add(query_601209, "nextToken", newJString(nextToken))
+  result = call_601207.call(path_601208, query_601209, nil, nil, nil)
 
-var listDatasets* = Call_ListDatasets_773357(name: "listDatasets",
+var listDatasets* = Call_ListDatasets_601192(name: "listDatasets",
     meth: HttpMethod.HttpGet, host: "cognito-sync.amazonaws.com",
     route: "/identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets",
-    validator: validate_ListDatasets_773358, base: "/", url: url_ListDatasets_773359,
+    validator: validate_ListDatasets_601193, base: "/", url: url_ListDatasets_601194,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListIdentityPoolUsage_773375 = ref object of OpenApiRestCall_772597
-proc url_ListIdentityPoolUsage_773377(protocol: Scheme; host: string; base: string;
+  Call_ListIdentityPoolUsage_601210 = ref object of OpenApiRestCall_600426
+proc url_ListIdentityPoolUsage_601212(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListIdentityPoolUsage_773376(path: JsonNode; query: JsonNode;
+proc validate_ListIdentityPoolUsage_601211(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets a list of identity pools registered with Cognito.</p> <p>ListIdentityPoolUsage can only be called with developer credentials. You cannot make this API call with the temporary user credentials provided by Cognito Identity.</p>
   ## 
@@ -1649,15 +1649,15 @@ proc validate_ListIdentityPoolUsage_773376(path: JsonNode; query: JsonNode;
   ##   nextToken: JString
   ##            : A pagination token for obtaining the next page of results.
   section = newJObject()
-  var valid_773378 = query.getOrDefault("maxResults")
-  valid_773378 = validateParameter(valid_773378, JInt, required = false, default = nil)
-  if valid_773378 != nil:
-    section.add "maxResults", valid_773378
-  var valid_773379 = query.getOrDefault("nextToken")
-  valid_773379 = validateParameter(valid_773379, JString, required = false,
+  var valid_601213 = query.getOrDefault("maxResults")
+  valid_601213 = validateParameter(valid_601213, JInt, required = false, default = nil)
+  if valid_601213 != nil:
+    section.add "maxResults", valid_601213
+  var valid_601214 = query.getOrDefault("nextToken")
+  valid_601214 = validateParameter(valid_601214, JString, required = false,
                                  default = nil)
-  if valid_773379 != nil:
-    section.add "nextToken", valid_773379
+  if valid_601214 != nil:
+    section.add "nextToken", valid_601214
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1668,60 +1668,60 @@ proc validate_ListIdentityPoolUsage_773376(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773380 = header.getOrDefault("X-Amz-Date")
-  valid_773380 = validateParameter(valid_773380, JString, required = false,
+  var valid_601215 = header.getOrDefault("X-Amz-Date")
+  valid_601215 = validateParameter(valid_601215, JString, required = false,
                                  default = nil)
-  if valid_773380 != nil:
-    section.add "X-Amz-Date", valid_773380
-  var valid_773381 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773381 = validateParameter(valid_773381, JString, required = false,
+  if valid_601215 != nil:
+    section.add "X-Amz-Date", valid_601215
+  var valid_601216 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601216 = validateParameter(valid_601216, JString, required = false,
                                  default = nil)
-  if valid_773381 != nil:
-    section.add "X-Amz-Security-Token", valid_773381
-  var valid_773382 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773382 = validateParameter(valid_773382, JString, required = false,
+  if valid_601216 != nil:
+    section.add "X-Amz-Security-Token", valid_601216
+  var valid_601217 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601217 = validateParameter(valid_601217, JString, required = false,
                                  default = nil)
-  if valid_773382 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773382
-  var valid_773383 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773383 = validateParameter(valid_773383, JString, required = false,
+  if valid_601217 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601217
+  var valid_601218 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601218 = validateParameter(valid_601218, JString, required = false,
                                  default = nil)
-  if valid_773383 != nil:
-    section.add "X-Amz-Algorithm", valid_773383
-  var valid_773384 = header.getOrDefault("X-Amz-Signature")
-  valid_773384 = validateParameter(valid_773384, JString, required = false,
+  if valid_601218 != nil:
+    section.add "X-Amz-Algorithm", valid_601218
+  var valid_601219 = header.getOrDefault("X-Amz-Signature")
+  valid_601219 = validateParameter(valid_601219, JString, required = false,
                                  default = nil)
-  if valid_773384 != nil:
-    section.add "X-Amz-Signature", valid_773384
-  var valid_773385 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773385 = validateParameter(valid_773385, JString, required = false,
+  if valid_601219 != nil:
+    section.add "X-Amz-Signature", valid_601219
+  var valid_601220 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601220 = validateParameter(valid_601220, JString, required = false,
                                  default = nil)
-  if valid_773385 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773385
-  var valid_773386 = header.getOrDefault("X-Amz-Credential")
-  valid_773386 = validateParameter(valid_773386, JString, required = false,
+  if valid_601220 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601220
+  var valid_601221 = header.getOrDefault("X-Amz-Credential")
+  valid_601221 = validateParameter(valid_601221, JString, required = false,
                                  default = nil)
-  if valid_773386 != nil:
-    section.add "X-Amz-Credential", valid_773386
+  if valid_601221 != nil:
+    section.add "X-Amz-Credential", valid_601221
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773387: Call_ListIdentityPoolUsage_773375; path: JsonNode;
+proc call*(call_601222: Call_ListIdentityPoolUsage_601210; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets a list of identity pools registered with Cognito.</p> <p>ListIdentityPoolUsage can only be called with developer credentials. You cannot make this API call with the temporary user credentials provided by Cognito Identity.</p>
   ## 
-  let valid = call_773387.validator(path, query, header, formData, body)
-  let scheme = call_773387.pickScheme
+  let valid = call_601222.validator(path, query, header, formData, body)
+  let scheme = call_601222.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773387.url(scheme.get, call_773387.host, call_773387.base,
-                         call_773387.route, valid.getOrDefault("path"))
-  result = hook(call_773387, url, valid)
+  let url = call_601222.url(scheme.get, call_601222.host, call_601222.base,
+                         call_601222.route, valid.getOrDefault("path"))
+  result = hook(call_601222, url, valid)
 
-proc call*(call_773388: Call_ListIdentityPoolUsage_773375; maxResults: int = 0;
+proc call*(call_601223: Call_ListIdentityPoolUsage_601210; maxResults: int = 0;
           nextToken: string = ""): Recallable =
   ## listIdentityPoolUsage
   ## <p>Gets a list of identity pools registered with Cognito.</p> <p>ListIdentityPoolUsage can only be called with developer credentials. You cannot make this API call with the temporary user credentials provided by Cognito Identity.</p>
@@ -1729,19 +1729,19 @@ proc call*(call_773388: Call_ListIdentityPoolUsage_773375; maxResults: int = 0;
   ##             : The maximum number of results to be returned.
   ##   nextToken: string
   ##            : A pagination token for obtaining the next page of results.
-  var query_773389 = newJObject()
-  add(query_773389, "maxResults", newJInt(maxResults))
-  add(query_773389, "nextToken", newJString(nextToken))
-  result = call_773388.call(nil, query_773389, nil, nil, nil)
+  var query_601224 = newJObject()
+  add(query_601224, "maxResults", newJInt(maxResults))
+  add(query_601224, "nextToken", newJString(nextToken))
+  result = call_601223.call(nil, query_601224, nil, nil, nil)
 
-var listIdentityPoolUsage* = Call_ListIdentityPoolUsage_773375(
+var listIdentityPoolUsage* = Call_ListIdentityPoolUsage_601210(
     name: "listIdentityPoolUsage", meth: HttpMethod.HttpGet,
     host: "cognito-sync.amazonaws.com", route: "/identitypools",
-    validator: validate_ListIdentityPoolUsage_773376, base: "/",
-    url: url_ListIdentityPoolUsage_773377, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListIdentityPoolUsage_601211, base: "/",
+    url: url_ListIdentityPoolUsage_601212, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRecords_773390 = ref object of OpenApiRestCall_772597
-proc url_ListRecords_773392(protocol: Scheme; host: string; base: string;
+  Call_ListRecords_601225 = ref object of OpenApiRestCall_600426
+proc url_ListRecords_601227(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -1760,7 +1760,7 @@ proc url_ListRecords_773392(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_ListRecords_773391(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListRecords_601226(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets paginated records, optionally changed after a particular sync count for a dataset and identity. With Amazon Cognito Sync, each identity has access only to its own data. Thus, the credentials used to make this API call need to have access to the identity data.</p> <p>ListRecords can be called with temporary user credentials provided by Cognito Identity or with developer credentials. You should use Cognito Identity credentials to make this API call.</p>
   ## 
@@ -1776,21 +1776,21 @@ proc validate_ListRecords_773391(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773393 = path.getOrDefault("IdentityId")
-  valid_773393 = validateParameter(valid_773393, JString, required = true,
+  var valid_601228 = path.getOrDefault("IdentityId")
+  valid_601228 = validateParameter(valid_601228, JString, required = true,
                                  default = nil)
-  if valid_773393 != nil:
-    section.add "IdentityId", valid_773393
-  var valid_773394 = path.getOrDefault("IdentityPoolId")
-  valid_773394 = validateParameter(valid_773394, JString, required = true,
+  if valid_601228 != nil:
+    section.add "IdentityId", valid_601228
+  var valid_601229 = path.getOrDefault("IdentityPoolId")
+  valid_601229 = validateParameter(valid_601229, JString, required = true,
                                  default = nil)
-  if valid_773394 != nil:
-    section.add "IdentityPoolId", valid_773394
-  var valid_773395 = path.getOrDefault("DatasetName")
-  valid_773395 = validateParameter(valid_773395, JString, required = true,
+  if valid_601229 != nil:
+    section.add "IdentityPoolId", valid_601229
+  var valid_601230 = path.getOrDefault("DatasetName")
+  valid_601230 = validateParameter(valid_601230, JString, required = true,
                                  default = nil)
-  if valid_773395 != nil:
-    section.add "DatasetName", valid_773395
+  if valid_601230 != nil:
+    section.add "DatasetName", valid_601230
   result.add "path", section
   ## parameters in `query` object:
   ##   maxResults: JInt
@@ -1802,24 +1802,24 @@ proc validate_ListRecords_773391(path: JsonNode; query: JsonNode; header: JsonNo
   ##   syncSessionToken: JString
   ##                   : A token containing a session ID, identity ID, and expiration.
   section = newJObject()
-  var valid_773396 = query.getOrDefault("maxResults")
-  valid_773396 = validateParameter(valid_773396, JInt, required = false, default = nil)
-  if valid_773396 != nil:
-    section.add "maxResults", valid_773396
-  var valid_773397 = query.getOrDefault("nextToken")
-  valid_773397 = validateParameter(valid_773397, JString, required = false,
+  var valid_601231 = query.getOrDefault("maxResults")
+  valid_601231 = validateParameter(valid_601231, JInt, required = false, default = nil)
+  if valid_601231 != nil:
+    section.add "maxResults", valid_601231
+  var valid_601232 = query.getOrDefault("nextToken")
+  valid_601232 = validateParameter(valid_601232, JString, required = false,
                                  default = nil)
-  if valid_773397 != nil:
-    section.add "nextToken", valid_773397
-  var valid_773398 = query.getOrDefault("lastSyncCount")
-  valid_773398 = validateParameter(valid_773398, JInt, required = false, default = nil)
-  if valid_773398 != nil:
-    section.add "lastSyncCount", valid_773398
-  var valid_773399 = query.getOrDefault("syncSessionToken")
-  valid_773399 = validateParameter(valid_773399, JString, required = false,
+  if valid_601232 != nil:
+    section.add "nextToken", valid_601232
+  var valid_601233 = query.getOrDefault("lastSyncCount")
+  valid_601233 = validateParameter(valid_601233, JInt, required = false, default = nil)
+  if valid_601233 != nil:
+    section.add "lastSyncCount", valid_601233
+  var valid_601234 = query.getOrDefault("syncSessionToken")
+  valid_601234 = validateParameter(valid_601234, JString, required = false,
                                  default = nil)
-  if valid_773399 != nil:
-    section.add "syncSessionToken", valid_773399
+  if valid_601234 != nil:
+    section.add "syncSessionToken", valid_601234
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1830,60 +1830,60 @@ proc validate_ListRecords_773391(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773400 = header.getOrDefault("X-Amz-Date")
-  valid_773400 = validateParameter(valid_773400, JString, required = false,
+  var valid_601235 = header.getOrDefault("X-Amz-Date")
+  valid_601235 = validateParameter(valid_601235, JString, required = false,
                                  default = nil)
-  if valid_773400 != nil:
-    section.add "X-Amz-Date", valid_773400
-  var valid_773401 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773401 = validateParameter(valid_773401, JString, required = false,
+  if valid_601235 != nil:
+    section.add "X-Amz-Date", valid_601235
+  var valid_601236 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601236 = validateParameter(valid_601236, JString, required = false,
                                  default = nil)
-  if valid_773401 != nil:
-    section.add "X-Amz-Security-Token", valid_773401
-  var valid_773402 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773402 = validateParameter(valid_773402, JString, required = false,
+  if valid_601236 != nil:
+    section.add "X-Amz-Security-Token", valid_601236
+  var valid_601237 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601237 = validateParameter(valid_601237, JString, required = false,
                                  default = nil)
-  if valid_773402 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773402
-  var valid_773403 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773403 = validateParameter(valid_773403, JString, required = false,
+  if valid_601237 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601237
+  var valid_601238 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601238 = validateParameter(valid_601238, JString, required = false,
                                  default = nil)
-  if valid_773403 != nil:
-    section.add "X-Amz-Algorithm", valid_773403
-  var valid_773404 = header.getOrDefault("X-Amz-Signature")
-  valid_773404 = validateParameter(valid_773404, JString, required = false,
+  if valid_601238 != nil:
+    section.add "X-Amz-Algorithm", valid_601238
+  var valid_601239 = header.getOrDefault("X-Amz-Signature")
+  valid_601239 = validateParameter(valid_601239, JString, required = false,
                                  default = nil)
-  if valid_773404 != nil:
-    section.add "X-Amz-Signature", valid_773404
-  var valid_773405 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773405 = validateParameter(valid_773405, JString, required = false,
+  if valid_601239 != nil:
+    section.add "X-Amz-Signature", valid_601239
+  var valid_601240 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601240 = validateParameter(valid_601240, JString, required = false,
                                  default = nil)
-  if valid_773405 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773405
-  var valid_773406 = header.getOrDefault("X-Amz-Credential")
-  valid_773406 = validateParameter(valid_773406, JString, required = false,
+  if valid_601240 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601240
+  var valid_601241 = header.getOrDefault("X-Amz-Credential")
+  valid_601241 = validateParameter(valid_601241, JString, required = false,
                                  default = nil)
-  if valid_773406 != nil:
-    section.add "X-Amz-Credential", valid_773406
+  if valid_601241 != nil:
+    section.add "X-Amz-Credential", valid_601241
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773407: Call_ListRecords_773390; path: JsonNode; query: JsonNode;
+proc call*(call_601242: Call_ListRecords_601225; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets paginated records, optionally changed after a particular sync count for a dataset and identity. With Amazon Cognito Sync, each identity has access only to its own data. Thus, the credentials used to make this API call need to have access to the identity data.</p> <p>ListRecords can be called with temporary user credentials provided by Cognito Identity or with developer credentials. You should use Cognito Identity credentials to make this API call.</p>
   ## 
-  let valid = call_773407.validator(path, query, header, formData, body)
-  let scheme = call_773407.pickScheme
+  let valid = call_601242.validator(path, query, header, formData, body)
+  let scheme = call_601242.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773407.url(scheme.get, call_773407.host, call_773407.base,
-                         call_773407.route, valid.getOrDefault("path"))
-  result = hook(call_773407, url, valid)
+  let url = call_601242.url(scheme.get, call_601242.host, call_601242.base,
+                         call_601242.route, valid.getOrDefault("path"))
+  result = hook(call_601242, url, valid)
 
-proc call*(call_773408: Call_ListRecords_773390; IdentityId: string;
+proc call*(call_601243: Call_ListRecords_601225; IdentityId: string;
           IdentityPoolId: string; DatasetName: string; maxResults: int = 0;
           nextToken: string = ""; lastSyncCount: int = 0; syncSessionToken: string = ""): Recallable =
   ## listRecords
@@ -1902,26 +1902,26 @@ proc call*(call_773408: Call_ListRecords_773390; IdentityId: string;
   ##              : A string of up to 128 characters. Allowed characters are a-z, A-Z, 0-9, '_' (underscore), '-' (dash), and '.' (dot).
   ##   syncSessionToken: string
   ##                   : A token containing a session ID, identity ID, and expiration.
-  var path_773409 = newJObject()
-  var query_773410 = newJObject()
-  add(path_773409, "IdentityId", newJString(IdentityId))
-  add(path_773409, "IdentityPoolId", newJString(IdentityPoolId))
-  add(query_773410, "maxResults", newJInt(maxResults))
-  add(query_773410, "nextToken", newJString(nextToken))
-  add(query_773410, "lastSyncCount", newJInt(lastSyncCount))
-  add(path_773409, "DatasetName", newJString(DatasetName))
-  add(query_773410, "syncSessionToken", newJString(syncSessionToken))
-  result = call_773408.call(path_773409, query_773410, nil, nil, nil)
+  var path_601244 = newJObject()
+  var query_601245 = newJObject()
+  add(path_601244, "IdentityId", newJString(IdentityId))
+  add(path_601244, "IdentityPoolId", newJString(IdentityPoolId))
+  add(query_601245, "maxResults", newJInt(maxResults))
+  add(query_601245, "nextToken", newJString(nextToken))
+  add(query_601245, "lastSyncCount", newJInt(lastSyncCount))
+  add(path_601244, "DatasetName", newJString(DatasetName))
+  add(query_601245, "syncSessionToken", newJString(syncSessionToken))
+  result = call_601243.call(path_601244, query_601245, nil, nil, nil)
 
-var listRecords* = Call_ListRecords_773390(name: "listRecords",
+var listRecords* = Call_ListRecords_601225(name: "listRecords",
                                         meth: HttpMethod.HttpGet,
                                         host: "cognito-sync.amazonaws.com", route: "/identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}/records",
-                                        validator: validate_ListRecords_773391,
-                                        base: "/", url: url_ListRecords_773392,
+                                        validator: validate_ListRecords_601226,
+                                        base: "/", url: url_ListRecords_601227,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterDevice_773411 = ref object of OpenApiRestCall_772597
-proc url_RegisterDevice_773413(protocol: Scheme; host: string; base: string;
+  Call_RegisterDevice_601246 = ref object of OpenApiRestCall_600426
+proc url_RegisterDevice_601248(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -1937,7 +1937,7 @@ proc url_RegisterDevice_773413(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_RegisterDevice_773412(path: JsonNode; query: JsonNode;
+proc validate_RegisterDevice_601247(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Registers a device to receive push sync notifications.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
@@ -1952,16 +1952,16 @@ proc validate_RegisterDevice_773412(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773414 = path.getOrDefault("IdentityId")
-  valid_773414 = validateParameter(valid_773414, JString, required = true,
+  var valid_601249 = path.getOrDefault("IdentityId")
+  valid_601249 = validateParameter(valid_601249, JString, required = true,
                                  default = nil)
-  if valid_773414 != nil:
-    section.add "IdentityId", valid_773414
-  var valid_773415 = path.getOrDefault("IdentityPoolId")
-  valid_773415 = validateParameter(valid_773415, JString, required = true,
+  if valid_601249 != nil:
+    section.add "IdentityId", valid_601249
+  var valid_601250 = path.getOrDefault("IdentityPoolId")
+  valid_601250 = validateParameter(valid_601250, JString, required = true,
                                  default = nil)
-  if valid_773415 != nil:
-    section.add "IdentityPoolId", valid_773415
+  if valid_601250 != nil:
+    section.add "IdentityPoolId", valid_601250
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1974,41 +1974,41 @@ proc validate_RegisterDevice_773412(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773416 = header.getOrDefault("X-Amz-Date")
-  valid_773416 = validateParameter(valid_773416, JString, required = false,
+  var valid_601251 = header.getOrDefault("X-Amz-Date")
+  valid_601251 = validateParameter(valid_601251, JString, required = false,
                                  default = nil)
-  if valid_773416 != nil:
-    section.add "X-Amz-Date", valid_773416
-  var valid_773417 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773417 = validateParameter(valid_773417, JString, required = false,
+  if valid_601251 != nil:
+    section.add "X-Amz-Date", valid_601251
+  var valid_601252 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601252 = validateParameter(valid_601252, JString, required = false,
                                  default = nil)
-  if valid_773417 != nil:
-    section.add "X-Amz-Security-Token", valid_773417
-  var valid_773418 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773418 = validateParameter(valid_773418, JString, required = false,
+  if valid_601252 != nil:
+    section.add "X-Amz-Security-Token", valid_601252
+  var valid_601253 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601253 = validateParameter(valid_601253, JString, required = false,
                                  default = nil)
-  if valid_773418 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773418
-  var valid_773419 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773419 = validateParameter(valid_773419, JString, required = false,
+  if valid_601253 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601253
+  var valid_601254 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601254 = validateParameter(valid_601254, JString, required = false,
                                  default = nil)
-  if valid_773419 != nil:
-    section.add "X-Amz-Algorithm", valid_773419
-  var valid_773420 = header.getOrDefault("X-Amz-Signature")
-  valid_773420 = validateParameter(valid_773420, JString, required = false,
+  if valid_601254 != nil:
+    section.add "X-Amz-Algorithm", valid_601254
+  var valid_601255 = header.getOrDefault("X-Amz-Signature")
+  valid_601255 = validateParameter(valid_601255, JString, required = false,
                                  default = nil)
-  if valid_773420 != nil:
-    section.add "X-Amz-Signature", valid_773420
-  var valid_773421 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773421 = validateParameter(valid_773421, JString, required = false,
+  if valid_601255 != nil:
+    section.add "X-Amz-Signature", valid_601255
+  var valid_601256 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601256 = validateParameter(valid_601256, JString, required = false,
                                  default = nil)
-  if valid_773421 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773421
-  var valid_773422 = header.getOrDefault("X-Amz-Credential")
-  valid_773422 = validateParameter(valid_773422, JString, required = false,
+  if valid_601256 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601256
+  var valid_601257 = header.getOrDefault("X-Amz-Credential")
+  valid_601257 = validateParameter(valid_601257, JString, required = false,
                                  default = nil)
-  if valid_773422 != nil:
-    section.add "X-Amz-Credential", valid_773422
+  if valid_601257 != nil:
+    section.add "X-Amz-Credential", valid_601257
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2019,19 +2019,19 @@ proc validate_RegisterDevice_773412(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_773424: Call_RegisterDevice_773411; path: JsonNode; query: JsonNode;
+proc call*(call_601259: Call_RegisterDevice_601246; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers a device to receive push sync notifications.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
   ## 
-  let valid = call_773424.validator(path, query, header, formData, body)
-  let scheme = call_773424.pickScheme
+  let valid = call_601259.validator(path, query, header, formData, body)
+  let scheme = call_601259.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773424.url(scheme.get, call_773424.host, call_773424.base,
-                         call_773424.route, valid.getOrDefault("path"))
-  result = hook(call_773424, url, valid)
+  let url = call_601259.url(scheme.get, call_601259.host, call_601259.base,
+                         call_601259.route, valid.getOrDefault("path"))
+  result = hook(call_601259, url, valid)
 
-proc call*(call_773425: Call_RegisterDevice_773411; IdentityId: string;
+proc call*(call_601260: Call_RegisterDevice_601246; IdentityId: string;
           IdentityPoolId: string; body: JsonNode): Recallable =
   ## registerDevice
   ## <p>Registers a device to receive push sync notifications.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
@@ -2040,22 +2040,22 @@ proc call*(call_773425: Call_RegisterDevice_773411; IdentityId: string;
   ##   IdentityPoolId: string (required)
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. Here, the ID of the pool that the identity belongs to.
   ##   body: JObject (required)
-  var path_773426 = newJObject()
-  var body_773427 = newJObject()
-  add(path_773426, "IdentityId", newJString(IdentityId))
-  add(path_773426, "IdentityPoolId", newJString(IdentityPoolId))
+  var path_601261 = newJObject()
+  var body_601262 = newJObject()
+  add(path_601261, "IdentityId", newJString(IdentityId))
+  add(path_601261, "IdentityPoolId", newJString(IdentityPoolId))
   if body != nil:
-    body_773427 = body
-  result = call_773425.call(path_773426, nil, nil, nil, body_773427)
+    body_601262 = body
+  result = call_601260.call(path_601261, nil, nil, nil, body_601262)
 
-var registerDevice* = Call_RegisterDevice_773411(name: "registerDevice",
+var registerDevice* = Call_RegisterDevice_601246(name: "registerDevice",
     meth: HttpMethod.HttpPost, host: "cognito-sync.amazonaws.com",
     route: "/identitypools/{IdentityPoolId}/identity/{IdentityId}/device",
-    validator: validate_RegisterDevice_773412, base: "/", url: url_RegisterDevice_773413,
+    validator: validate_RegisterDevice_601247, base: "/", url: url_RegisterDevice_601248,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SubscribeToDataset_773428 = ref object of OpenApiRestCall_772597
-proc url_SubscribeToDataset_773430(protocol: Scheme; host: string; base: string;
+  Call_SubscribeToDataset_601263 = ref object of OpenApiRestCall_600426
+proc url_SubscribeToDataset_601265(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -2076,7 +2076,7 @@ proc url_SubscribeToDataset_773430(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_SubscribeToDataset_773429(path: JsonNode; query: JsonNode;
+proc validate_SubscribeToDataset_601264(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Subscribes to receive notifications when a dataset is modified by another device.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
@@ -2095,26 +2095,26 @@ proc validate_SubscribeToDataset_773429(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773431 = path.getOrDefault("IdentityId")
-  valid_773431 = validateParameter(valid_773431, JString, required = true,
+  var valid_601266 = path.getOrDefault("IdentityId")
+  valid_601266 = validateParameter(valid_601266, JString, required = true,
                                  default = nil)
-  if valid_773431 != nil:
-    section.add "IdentityId", valid_773431
-  var valid_773432 = path.getOrDefault("DeviceId")
-  valid_773432 = validateParameter(valid_773432, JString, required = true,
+  if valid_601266 != nil:
+    section.add "IdentityId", valid_601266
+  var valid_601267 = path.getOrDefault("DeviceId")
+  valid_601267 = validateParameter(valid_601267, JString, required = true,
                                  default = nil)
-  if valid_773432 != nil:
-    section.add "DeviceId", valid_773432
-  var valid_773433 = path.getOrDefault("IdentityPoolId")
-  valid_773433 = validateParameter(valid_773433, JString, required = true,
+  if valid_601267 != nil:
+    section.add "DeviceId", valid_601267
+  var valid_601268 = path.getOrDefault("IdentityPoolId")
+  valid_601268 = validateParameter(valid_601268, JString, required = true,
                                  default = nil)
-  if valid_773433 != nil:
-    section.add "IdentityPoolId", valid_773433
-  var valid_773434 = path.getOrDefault("DatasetName")
-  valid_773434 = validateParameter(valid_773434, JString, required = true,
+  if valid_601268 != nil:
+    section.add "IdentityPoolId", valid_601268
+  var valid_601269 = path.getOrDefault("DatasetName")
+  valid_601269 = validateParameter(valid_601269, JString, required = true,
                                  default = nil)
-  if valid_773434 != nil:
-    section.add "DatasetName", valid_773434
+  if valid_601269 != nil:
+    section.add "DatasetName", valid_601269
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2127,60 +2127,60 @@ proc validate_SubscribeToDataset_773429(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773435 = header.getOrDefault("X-Amz-Date")
-  valid_773435 = validateParameter(valid_773435, JString, required = false,
+  var valid_601270 = header.getOrDefault("X-Amz-Date")
+  valid_601270 = validateParameter(valid_601270, JString, required = false,
                                  default = nil)
-  if valid_773435 != nil:
-    section.add "X-Amz-Date", valid_773435
-  var valid_773436 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773436 = validateParameter(valid_773436, JString, required = false,
+  if valid_601270 != nil:
+    section.add "X-Amz-Date", valid_601270
+  var valid_601271 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601271 = validateParameter(valid_601271, JString, required = false,
                                  default = nil)
-  if valid_773436 != nil:
-    section.add "X-Amz-Security-Token", valid_773436
-  var valid_773437 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773437 = validateParameter(valid_773437, JString, required = false,
+  if valid_601271 != nil:
+    section.add "X-Amz-Security-Token", valid_601271
+  var valid_601272 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601272 = validateParameter(valid_601272, JString, required = false,
                                  default = nil)
-  if valid_773437 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773437
-  var valid_773438 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773438 = validateParameter(valid_773438, JString, required = false,
+  if valid_601272 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601272
+  var valid_601273 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601273 = validateParameter(valid_601273, JString, required = false,
                                  default = nil)
-  if valid_773438 != nil:
-    section.add "X-Amz-Algorithm", valid_773438
-  var valid_773439 = header.getOrDefault("X-Amz-Signature")
-  valid_773439 = validateParameter(valid_773439, JString, required = false,
+  if valid_601273 != nil:
+    section.add "X-Amz-Algorithm", valid_601273
+  var valid_601274 = header.getOrDefault("X-Amz-Signature")
+  valid_601274 = validateParameter(valid_601274, JString, required = false,
                                  default = nil)
-  if valid_773439 != nil:
-    section.add "X-Amz-Signature", valid_773439
-  var valid_773440 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773440 = validateParameter(valid_773440, JString, required = false,
+  if valid_601274 != nil:
+    section.add "X-Amz-Signature", valid_601274
+  var valid_601275 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601275 = validateParameter(valid_601275, JString, required = false,
                                  default = nil)
-  if valid_773440 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773440
-  var valid_773441 = header.getOrDefault("X-Amz-Credential")
-  valid_773441 = validateParameter(valid_773441, JString, required = false,
+  if valid_601275 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601275
+  var valid_601276 = header.getOrDefault("X-Amz-Credential")
+  valid_601276 = validateParameter(valid_601276, JString, required = false,
                                  default = nil)
-  if valid_773441 != nil:
-    section.add "X-Amz-Credential", valid_773441
+  if valid_601276 != nil:
+    section.add "X-Amz-Credential", valid_601276
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773442: Call_SubscribeToDataset_773428; path: JsonNode;
+proc call*(call_601277: Call_SubscribeToDataset_601263; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Subscribes to receive notifications when a dataset is modified by another device.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
   ## 
-  let valid = call_773442.validator(path, query, header, formData, body)
-  let scheme = call_773442.pickScheme
+  let valid = call_601277.validator(path, query, header, formData, body)
+  let scheme = call_601277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773442.url(scheme.get, call_773442.host, call_773442.base,
-                         call_773442.route, valid.getOrDefault("path"))
-  result = hook(call_773442, url, valid)
+  let url = call_601277.url(scheme.get, call_601277.host, call_601277.base,
+                         call_601277.route, valid.getOrDefault("path"))
+  result = hook(call_601277, url, valid)
 
-proc call*(call_773443: Call_SubscribeToDataset_773428; IdentityId: string;
+proc call*(call_601278: Call_SubscribeToDataset_601263; IdentityId: string;
           DeviceId: string; IdentityPoolId: string; DatasetName: string): Recallable =
   ## subscribeToDataset
   ## <p>Subscribes to receive notifications when a dataset is modified by another device.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
@@ -2192,21 +2192,21 @@ proc call*(call_773443: Call_SubscribeToDataset_773428; IdentityId: string;
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. The ID of the pool to which the identity belongs.
   ##   DatasetName: string (required)
   ##              : The name of the dataset to subcribe to.
-  var path_773444 = newJObject()
-  add(path_773444, "IdentityId", newJString(IdentityId))
-  add(path_773444, "DeviceId", newJString(DeviceId))
-  add(path_773444, "IdentityPoolId", newJString(IdentityPoolId))
-  add(path_773444, "DatasetName", newJString(DatasetName))
-  result = call_773443.call(path_773444, nil, nil, nil, nil)
+  var path_601279 = newJObject()
+  add(path_601279, "IdentityId", newJString(IdentityId))
+  add(path_601279, "DeviceId", newJString(DeviceId))
+  add(path_601279, "IdentityPoolId", newJString(IdentityPoolId))
+  add(path_601279, "DatasetName", newJString(DatasetName))
+  result = call_601278.call(path_601279, nil, nil, nil, nil)
 
-var subscribeToDataset* = Call_SubscribeToDataset_773428(
+var subscribeToDataset* = Call_SubscribeToDataset_601263(
     name: "subscribeToDataset", meth: HttpMethod.HttpPost,
     host: "cognito-sync.amazonaws.com", route: "/identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}/subscriptions/{DeviceId}",
-    validator: validate_SubscribeToDataset_773429, base: "/",
-    url: url_SubscribeToDataset_773430, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SubscribeToDataset_601264, base: "/",
+    url: url_SubscribeToDataset_601265, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UnsubscribeFromDataset_773445 = ref object of OpenApiRestCall_772597
-proc url_UnsubscribeFromDataset_773447(protocol: Scheme; host: string; base: string;
+  Call_UnsubscribeFromDataset_601280 = ref object of OpenApiRestCall_600426
+proc url_UnsubscribeFromDataset_601282(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "IdentityPoolId" in path, "`IdentityPoolId` is a required path parameter"
@@ -2227,7 +2227,7 @@ proc url_UnsubscribeFromDataset_773447(protocol: Scheme; host: string; base: str
     raise newException(ValueError, "unable to fully hydrate path")
   result = $protocol & "://" & host & base & hydrated.get()
 
-proc validate_UnsubscribeFromDataset_773446(path: JsonNode; query: JsonNode;
+proc validate_UnsubscribeFromDataset_601281(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Unsubscribes from receiving notifications when a dataset is modified by another device.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
   ## 
@@ -2245,26 +2245,26 @@ proc validate_UnsubscribeFromDataset_773446(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `IdentityId` field"
-  var valid_773448 = path.getOrDefault("IdentityId")
-  valid_773448 = validateParameter(valid_773448, JString, required = true,
+  var valid_601283 = path.getOrDefault("IdentityId")
+  valid_601283 = validateParameter(valid_601283, JString, required = true,
                                  default = nil)
-  if valid_773448 != nil:
-    section.add "IdentityId", valid_773448
-  var valid_773449 = path.getOrDefault("DeviceId")
-  valid_773449 = validateParameter(valid_773449, JString, required = true,
+  if valid_601283 != nil:
+    section.add "IdentityId", valid_601283
+  var valid_601284 = path.getOrDefault("DeviceId")
+  valid_601284 = validateParameter(valid_601284, JString, required = true,
                                  default = nil)
-  if valid_773449 != nil:
-    section.add "DeviceId", valid_773449
-  var valid_773450 = path.getOrDefault("IdentityPoolId")
-  valid_773450 = validateParameter(valid_773450, JString, required = true,
+  if valid_601284 != nil:
+    section.add "DeviceId", valid_601284
+  var valid_601285 = path.getOrDefault("IdentityPoolId")
+  valid_601285 = validateParameter(valid_601285, JString, required = true,
                                  default = nil)
-  if valid_773450 != nil:
-    section.add "IdentityPoolId", valid_773450
-  var valid_773451 = path.getOrDefault("DatasetName")
-  valid_773451 = validateParameter(valid_773451, JString, required = true,
+  if valid_601285 != nil:
+    section.add "IdentityPoolId", valid_601285
+  var valid_601286 = path.getOrDefault("DatasetName")
+  valid_601286 = validateParameter(valid_601286, JString, required = true,
                                  default = nil)
-  if valid_773451 != nil:
-    section.add "DatasetName", valid_773451
+  if valid_601286 != nil:
+    section.add "DatasetName", valid_601286
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2277,60 +2277,60 @@ proc validate_UnsubscribeFromDataset_773446(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_773452 = header.getOrDefault("X-Amz-Date")
-  valid_773452 = validateParameter(valid_773452, JString, required = false,
+  var valid_601287 = header.getOrDefault("X-Amz-Date")
+  valid_601287 = validateParameter(valid_601287, JString, required = false,
                                  default = nil)
-  if valid_773452 != nil:
-    section.add "X-Amz-Date", valid_773452
-  var valid_773453 = header.getOrDefault("X-Amz-Security-Token")
-  valid_773453 = validateParameter(valid_773453, JString, required = false,
+  if valid_601287 != nil:
+    section.add "X-Amz-Date", valid_601287
+  var valid_601288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601288 = validateParameter(valid_601288, JString, required = false,
                                  default = nil)
-  if valid_773453 != nil:
-    section.add "X-Amz-Security-Token", valid_773453
-  var valid_773454 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_773454 = validateParameter(valid_773454, JString, required = false,
+  if valid_601288 != nil:
+    section.add "X-Amz-Security-Token", valid_601288
+  var valid_601289 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601289 = validateParameter(valid_601289, JString, required = false,
                                  default = nil)
-  if valid_773454 != nil:
-    section.add "X-Amz-Content-Sha256", valid_773454
-  var valid_773455 = header.getOrDefault("X-Amz-Algorithm")
-  valid_773455 = validateParameter(valid_773455, JString, required = false,
+  if valid_601289 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601289
+  var valid_601290 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601290 = validateParameter(valid_601290, JString, required = false,
                                  default = nil)
-  if valid_773455 != nil:
-    section.add "X-Amz-Algorithm", valid_773455
-  var valid_773456 = header.getOrDefault("X-Amz-Signature")
-  valid_773456 = validateParameter(valid_773456, JString, required = false,
+  if valid_601290 != nil:
+    section.add "X-Amz-Algorithm", valid_601290
+  var valid_601291 = header.getOrDefault("X-Amz-Signature")
+  valid_601291 = validateParameter(valid_601291, JString, required = false,
                                  default = nil)
-  if valid_773456 != nil:
-    section.add "X-Amz-Signature", valid_773456
-  var valid_773457 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_773457 = validateParameter(valid_773457, JString, required = false,
+  if valid_601291 != nil:
+    section.add "X-Amz-Signature", valid_601291
+  var valid_601292 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601292 = validateParameter(valid_601292, JString, required = false,
                                  default = nil)
-  if valid_773457 != nil:
-    section.add "X-Amz-SignedHeaders", valid_773457
-  var valid_773458 = header.getOrDefault("X-Amz-Credential")
-  valid_773458 = validateParameter(valid_773458, JString, required = false,
+  if valid_601292 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601292
+  var valid_601293 = header.getOrDefault("X-Amz-Credential")
+  valid_601293 = validateParameter(valid_601293, JString, required = false,
                                  default = nil)
-  if valid_773458 != nil:
-    section.add "X-Amz-Credential", valid_773458
+  if valid_601293 != nil:
+    section.add "X-Amz-Credential", valid_601293
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_773459: Call_UnsubscribeFromDataset_773445; path: JsonNode;
+proc call*(call_601294: Call_UnsubscribeFromDataset_601280; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Unsubscribes from receiving notifications when a dataset is modified by another device.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
   ## 
-  let valid = call_773459.validator(path, query, header, formData, body)
-  let scheme = call_773459.pickScheme
+  let valid = call_601294.validator(path, query, header, formData, body)
+  let scheme = call_601294.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_773459.url(scheme.get, call_773459.host, call_773459.base,
-                         call_773459.route, valid.getOrDefault("path"))
-  result = hook(call_773459, url, valid)
+  let url = call_601294.url(scheme.get, call_601294.host, call_601294.base,
+                         call_601294.route, valid.getOrDefault("path"))
+  result = hook(call_601294, url, valid)
 
-proc call*(call_773460: Call_UnsubscribeFromDataset_773445; IdentityId: string;
+proc call*(call_601295: Call_UnsubscribeFromDataset_601280; IdentityId: string;
           DeviceId: string; IdentityPoolId: string; DatasetName: string): Recallable =
   ## unsubscribeFromDataset
   ## <p>Unsubscribes from receiving notifications when a dataset is modified by another device.</p> <p>This API can only be called with temporary credentials provided by Cognito Identity. You cannot call this API with developer credentials.</p>
@@ -2342,18 +2342,21 @@ proc call*(call_773460: Call_UnsubscribeFromDataset_773445; IdentityId: string;
   ##                 : A name-spaced GUID (for example, us-east-1:23EC4050-6AEA-7089-A2DD-08002EXAMPLE) created by Amazon Cognito. The ID of the pool to which this identity belongs.
   ##   DatasetName: string (required)
   ##              : The name of the dataset from which to unsubcribe.
-  var path_773461 = newJObject()
-  add(path_773461, "IdentityId", newJString(IdentityId))
-  add(path_773461, "DeviceId", newJString(DeviceId))
-  add(path_773461, "IdentityPoolId", newJString(IdentityPoolId))
-  add(path_773461, "DatasetName", newJString(DatasetName))
-  result = call_773460.call(path_773461, nil, nil, nil, nil)
+  var path_601296 = newJObject()
+  add(path_601296, "IdentityId", newJString(IdentityId))
+  add(path_601296, "DeviceId", newJString(DeviceId))
+  add(path_601296, "IdentityPoolId", newJString(IdentityPoolId))
+  add(path_601296, "DatasetName", newJString(DatasetName))
+  result = call_601295.call(path_601296, nil, nil, nil, nil)
 
-var unsubscribeFromDataset* = Call_UnsubscribeFromDataset_773445(
+var unsubscribeFromDataset* = Call_UnsubscribeFromDataset_601280(
     name: "unsubscribeFromDataset", meth: HttpMethod.HttpDelete,
     host: "cognito-sync.amazonaws.com", route: "/identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}/subscriptions/{DeviceId}",
-    validator: validate_UnsubscribeFromDataset_773446, base: "/",
-    url: url_UnsubscribeFromDataset_773447, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UnsubscribeFromDataset_601281, base: "/",
+    url: url_UnsubscribeFromDataset_601282, schemes: {Scheme.Https, Scheme.Http})
+export
+  rest
+
 proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
