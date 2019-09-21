@@ -18,8 +18,8 @@ import asyncdispatch
 import httpclient
 import httpcore
 
-import atoz/sqs_20121105
-import atoz/sns_20100331
+import atoz/sqs_20121105 # ie. SQS release version 2012-11-05
+import atoz/sns_20100331 # ie. SNS release version 2010-03-31
 
 let
   # the call() gets arguments you might expect; they have sensible
@@ -48,6 +48,10 @@ This project is based almost entirely upon the following:
 - Amazon Web Services Signature Version 4 https://github.com/disruptek/sigv4
 
 Patches welcome!
+
+## Feedback Needed on Versioning
+
+I'm thinking that AWS API version 2.531.0 is gonna have to be atoz-205310.0.0 simply because any change on the AWS side, or to our code generator, is going to be a potentially breaking one.  Please offer your thoughts in the issues...
 
 ## License
 
