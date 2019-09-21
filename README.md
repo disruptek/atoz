@@ -18,17 +18,23 @@ import asyncdispatch
 import httpclient
 import httpcore
 
-import atoz/sqs_20121105
-import atoz/sns_20100331
+import atoz/sqs_20121105 # ie. SQS release version 2012-11-05
+import atoz/sns_20100331 # ie. SNS release version 2010-03-31
 
-let myQueues = getListQueues.call()
+let
+  # the call() gets arguments you might expect; they have sensible
+  # defaults depending upon the call, the API, whether they are
+  # required, what their types are, whether we can infer a default...
+  myQueues = getListQueues.call(QueueNamePrefix="production_")
 for response in myQueues.retried(tries=3):
   if response.code.is2xx:
     echo waitfor response.body
     break
 
 let
-  myTopics = getListTopics.call()
+  # you can usually override the API version, even to use a later
+  # version than the one you imported.  but, y'know, why would you?
+  myTopics = getListTopics.call(Version="1969-12-31")
   response = waitfor myTopics.retry(tries=3)
 if response.code.is2xx:
   echo waitfor response.body
@@ -42,6 +48,10 @@ This project is based almost entirely upon the following:
 - Amazon Web Services Signature Version 4 https://github.com/disruptek/sigv4
 
 Patches welcome!
+
+## Feedback Needed on Versioning
+
+I'm thinking that AWS API version 2.531.0 is gonna have to be atoz-205310.0.0 simply because any change on the AWS side, or to our code generator, is going to be a potentially breaking one.  Please offer your thoughts in the issues...
 
 ## License
 
