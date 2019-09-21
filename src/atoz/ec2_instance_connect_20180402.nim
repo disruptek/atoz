@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode): string
 
-  OpenApiRestCall_600413 = ref object of OpenApiRestCall
+  OpenApiRestCall_602420 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600413](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_602420](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600413): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_602420): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -93,7 +93,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
-  result = some(head & remainder.get())
+  result = some(head & remainder.get)
 
 const
   awsServers = {Scheme.Http: {"ap-northeast-1": "ec2-instance-connect.ap-northeast-1.amazonaws.com", "ap-southeast-1": "ec2-instance-connect.ap-southeast-1.amazonaws.com", "us-west-2": "ec2-instance-connect.us-west-2.amazonaws.com", "eu-west-2": "ec2-instance-connect.eu-west-2.amazonaws.com", "ap-northeast-3": "ec2-instance-connect.ap-northeast-3.amazonaws.com", "eu-central-1": "ec2-instance-connect.eu-central-1.amazonaws.com", "us-east-2": "ec2-instance-connect.us-east-2.amazonaws.com", "us-east-1": "ec2-instance-connect.us-east-1.amazonaws.com", "cn-northwest-1": "ec2-instance-connect.cn-northwest-1.amazonaws.com.cn", "ap-south-1": "ec2-instance-connect.ap-south-1.amazonaws.com", "eu-north-1": "ec2-instance-connect.eu-north-1.amazonaws.com", "ap-northeast-2": "ec2-instance-connect.ap-northeast-2.amazonaws.com", "us-west-1": "ec2-instance-connect.us-west-1.amazonaws.com", "us-gov-east-1": "ec2-instance-connect.us-gov-east-1.amazonaws.com", "eu-west-3": "ec2-instance-connect.eu-west-3.amazonaws.com", "cn-north-1": "ec2-instance-connect.cn-north-1.amazonaws.com.cn", "sa-east-1": "ec2-instance-connect.sa-east-1.amazonaws.com", "eu-west-1": "ec2-instance-connect.eu-west-1.amazonaws.com", "us-gov-west-1": "ec2-instance-connect.us-gov-west-1.amazonaws.com", "ap-southeast-2": "ec2-instance-connect.ap-southeast-2.amazonaws.com", "ca-central-1": "ec2-instance-connect.ca-central-1.amazonaws.com"}.toTable, Scheme.Https: {
@@ -122,12 +122,12 @@ const
   awsServiceName = "ec2-instance-connect"
 method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
 type
-  Call_SendSSHPublicKey_600755 = ref object of OpenApiRestCall_600413
-proc url_SendSSHPublicKey_600757(protocol: Scheme; host: string; base: string;
+  Call_SendSSHPublicKey_602757 = ref object of OpenApiRestCall_602420
+proc url_SendSSHPublicKey_602759(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_SendSSHPublicKey_600756(path: JsonNode; query: JsonNode;
+proc validate_SendSSHPublicKey_602758(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Pushes an SSH public key to a particular OS user on a given EC2 instance for 60 seconds.
@@ -148,48 +148,48 @@ proc validate_SendSSHPublicKey_600756(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600869 = header.getOrDefault("X-Amz-Date")
-  valid_600869 = validateParameter(valid_600869, JString, required = false,
+  var valid_602871 = header.getOrDefault("X-Amz-Date")
+  valid_602871 = validateParameter(valid_602871, JString, required = false,
                                  default = nil)
-  if valid_600869 != nil:
-    section.add "X-Amz-Date", valid_600869
-  var valid_600870 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600870 = validateParameter(valid_600870, JString, required = false,
+  if valid_602871 != nil:
+    section.add "X-Amz-Date", valid_602871
+  var valid_602872 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602872 = validateParameter(valid_602872, JString, required = false,
                                  default = nil)
-  if valid_600870 != nil:
-    section.add "X-Amz-Security-Token", valid_600870
+  if valid_602872 != nil:
+    section.add "X-Amz-Security-Token", valid_602872
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600884 = header.getOrDefault("X-Amz-Target")
-  valid_600884 = validateParameter(valid_600884, JString, required = true, default = newJString(
+  var valid_602886 = header.getOrDefault("X-Amz-Target")
+  valid_602886 = validateParameter(valid_602886, JString, required = true, default = newJString(
       "AWSEC2InstanceConnectService.SendSSHPublicKey"))
-  if valid_600884 != nil:
-    section.add "X-Amz-Target", valid_600884
-  var valid_600885 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600885 = validateParameter(valid_600885, JString, required = false,
+  if valid_602886 != nil:
+    section.add "X-Amz-Target", valid_602886
+  var valid_602887 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602887 = validateParameter(valid_602887, JString, required = false,
                                  default = nil)
-  if valid_600885 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600885
-  var valid_600886 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600886 = validateParameter(valid_600886, JString, required = false,
+  if valid_602887 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602887
+  var valid_602888 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602888 = validateParameter(valid_602888, JString, required = false,
                                  default = nil)
-  if valid_600886 != nil:
-    section.add "X-Amz-Algorithm", valid_600886
-  var valid_600887 = header.getOrDefault("X-Amz-Signature")
-  valid_600887 = validateParameter(valid_600887, JString, required = false,
+  if valid_602888 != nil:
+    section.add "X-Amz-Algorithm", valid_602888
+  var valid_602889 = header.getOrDefault("X-Amz-Signature")
+  valid_602889 = validateParameter(valid_602889, JString, required = false,
                                  default = nil)
-  if valid_600887 != nil:
-    section.add "X-Amz-Signature", valid_600887
-  var valid_600888 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600888 = validateParameter(valid_600888, JString, required = false,
+  if valid_602889 != nil:
+    section.add "X-Amz-Signature", valid_602889
+  var valid_602890 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602890 = validateParameter(valid_602890, JString, required = false,
                                  default = nil)
-  if valid_600888 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600888
-  var valid_600889 = header.getOrDefault("X-Amz-Credential")
-  valid_600889 = validateParameter(valid_600889, JString, required = false,
+  if valid_602890 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602890
+  var valid_602891 = header.getOrDefault("X-Amz-Credential")
+  valid_602891 = validateParameter(valid_602891, JString, required = false,
                                  default = nil)
-  if valid_600889 != nil:
-    section.add "X-Amz-Credential", valid_600889
+  if valid_602891 != nil:
+    section.add "X-Amz-Credential", valid_602891
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -200,32 +200,32 @@ proc validate_SendSSHPublicKey_600756(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600913: Call_SendSSHPublicKey_600755; path: JsonNode;
+proc call*(call_602915: Call_SendSSHPublicKey_602757; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Pushes an SSH public key to a particular OS user on a given EC2 instance for 60 seconds.
   ## 
-  let valid = call_600913.validator(path, query, header, formData, body)
-  let scheme = call_600913.pickScheme
+  let valid = call_602915.validator(path, query, header, formData, body)
+  let scheme = call_602915.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600913.url(scheme.get, call_600913.host, call_600913.base,
-                         call_600913.route, valid.getOrDefault("path"))
-  result = hook(call_600913, url, valid)
+  let url = call_602915.url(scheme.get, call_602915.host, call_602915.base,
+                         call_602915.route, valid.getOrDefault("path"))
+  result = hook(call_602915, url, valid)
 
-proc call*(call_600984: Call_SendSSHPublicKey_600755; body: JsonNode): Recallable =
+proc call*(call_602986: Call_SendSSHPublicKey_602757; body: JsonNode): Recallable =
   ## sendSSHPublicKey
   ## Pushes an SSH public key to a particular OS user on a given EC2 instance for 60 seconds.
   ##   body: JObject (required)
-  var body_600985 = newJObject()
+  var body_602987 = newJObject()
   if body != nil:
-    body_600985 = body
-  result = call_600984.call(nil, nil, nil, nil, body_600985)
+    body_602987 = body
+  result = call_602986.call(nil, nil, nil, nil, body_602987)
 
-var sendSSHPublicKey* = Call_SendSSHPublicKey_600755(name: "sendSSHPublicKey",
+var sendSSHPublicKey* = Call_SendSSHPublicKey_602757(name: "sendSSHPublicKey",
     meth: HttpMethod.HttpPost, host: "ec2-instance-connect.amazonaws.com",
     route: "/#X-Amz-Target=AWSEC2InstanceConnectService.SendSSHPublicKey",
-    validator: validate_SendSSHPublicKey_600756, base: "/",
-    url: url_SendSSHPublicKey_600757, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SendSSHPublicKey_602758, base: "/",
+    url: url_SendSSHPublicKey_602759, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode): string
 
-  OpenApiRestCall_600426 = ref object of OpenApiRestCall
+  OpenApiRestCall_602433 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600426](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_602433](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600426): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_602433): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -93,7 +93,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
-  result = some(head & remainder.get())
+  result = some(head & remainder.get)
 
 const
   awsServers = {Scheme.Http: {"ap-northeast-1": "s3-ap-northeast-1.amazonaws.com",
@@ -141,8 +141,8 @@ const
   awsServiceName = "s3"
 method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
 type
-  Call_CompleteMultipartUpload_601053 = ref object of OpenApiRestCall_600426
-proc url_CompleteMultipartUpload_601055(protocol: Scheme; host: string; base: string;
+  Call_CompleteMultipartUpload_603055 = ref object of OpenApiRestCall_602433
+proc url_CompleteMultipartUpload_603057(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -156,9 +156,9 @@ proc url_CompleteMultipartUpload_601055(protocol: Scheme; host: string; base: st
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_CompleteMultipartUpload_601054(path: JsonNode; query: JsonNode;
+proc validate_CompleteMultipartUpload_603056(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Completes a multipart upload by assembling previously uploaded parts.
   ## 
@@ -172,16 +172,16 @@ proc validate_CompleteMultipartUpload_601054(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601056 = path.getOrDefault("Key")
-  valid_601056 = validateParameter(valid_601056, JString, required = true,
+  var valid_603058 = path.getOrDefault("Key")
+  valid_603058 = validateParameter(valid_603058, JString, required = true,
                                  default = nil)
-  if valid_601056 != nil:
-    section.add "Key", valid_601056
-  var valid_601057 = path.getOrDefault("Bucket")
-  valid_601057 = validateParameter(valid_601057, JString, required = true,
+  if valid_603058 != nil:
+    section.add "Key", valid_603058
+  var valid_603059 = path.getOrDefault("Bucket")
+  valid_603059 = validateParameter(valid_603059, JString, required = true,
                                  default = nil)
-  if valid_601057 != nil:
-    section.add "Bucket", valid_601057
+  if valid_603059 != nil:
+    section.add "Bucket", valid_603059
   result.add "path", section
   ## parameters in `query` object:
   ##   uploadId: JString (required)
@@ -189,11 +189,11 @@ proc validate_CompleteMultipartUpload_601054(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `uploadId` field"
-  var valid_601058 = query.getOrDefault("uploadId")
-  valid_601058 = validateParameter(valid_601058, JString, required = true,
+  var valid_603060 = query.getOrDefault("uploadId")
+  valid_603060 = validateParameter(valid_603060, JString, required = true,
                                  default = nil)
-  if valid_601058 != nil:
-    section.add "uploadId", valid_601058
+  if valid_603060 != nil:
+    section.add "uploadId", valid_603060
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -201,16 +201,16 @@ proc validate_CompleteMultipartUpload_601054(path: JsonNode; query: JsonNode;
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_601059 = header.getOrDefault("x-amz-security-token")
-  valid_601059 = validateParameter(valid_601059, JString, required = false,
+  var valid_603061 = header.getOrDefault("x-amz-security-token")
+  valid_603061 = validateParameter(valid_603061, JString, required = false,
                                  default = nil)
-  if valid_601059 != nil:
-    section.add "x-amz-security-token", valid_601059
-  var valid_601060 = header.getOrDefault("x-amz-request-payer")
-  valid_601060 = validateParameter(valid_601060, JString, required = false,
+  if valid_603061 != nil:
+    section.add "x-amz-security-token", valid_603061
+  var valid_603062 = header.getOrDefault("x-amz-request-payer")
+  valid_603062 = validateParameter(valid_603062, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601060 != nil:
-    section.add "x-amz-request-payer", valid_601060
+  if valid_603062 != nil:
+    section.add "x-amz-request-payer", valid_603062
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -221,20 +221,20 @@ proc validate_CompleteMultipartUpload_601054(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601062: Call_CompleteMultipartUpload_601053; path: JsonNode;
+proc call*(call_603064: Call_CompleteMultipartUpload_603055; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Completes a multipart upload by assembling previously uploaded parts.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadComplete.html
-  let valid = call_601062.validator(path, query, header, formData, body)
-  let scheme = call_601062.pickScheme
+  let valid = call_603064.validator(path, query, header, formData, body)
+  let scheme = call_603064.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601062.url(scheme.get, call_601062.host, call_601062.base,
-                         call_601062.route, valid.getOrDefault("path"))
-  result = hook(call_601062, url, valid)
+  let url = call_603064.url(scheme.get, call_603064.host, call_603064.base,
+                         call_603064.route, valid.getOrDefault("path"))
+  result = hook(call_603064, url, valid)
 
-proc call*(call_601063: Call_CompleteMultipartUpload_601053; uploadId: string;
+proc call*(call_603065: Call_CompleteMultipartUpload_603055; uploadId: string;
           Key: string; Bucket: string; body: JsonNode): Recallable =
   ## completeMultipartUpload
   ## Completes a multipart upload by assembling previously uploaded parts.
@@ -246,24 +246,24 @@ proc call*(call_601063: Call_CompleteMultipartUpload_601053; uploadId: string;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601064 = newJObject()
-  var query_601065 = newJObject()
-  var body_601066 = newJObject()
-  add(query_601065, "uploadId", newJString(uploadId))
-  add(path_601064, "Key", newJString(Key))
-  add(path_601064, "Bucket", newJString(Bucket))
+  var path_603066 = newJObject()
+  var query_603067 = newJObject()
+  var body_603068 = newJObject()
+  add(query_603067, "uploadId", newJString(uploadId))
+  add(path_603066, "Key", newJString(Key))
+  add(path_603066, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601066 = body
-  result = call_601063.call(path_601064, query_601065, nil, nil, body_601066)
+    body_603068 = body
+  result = call_603065.call(path_603066, query_603067, nil, nil, body_603068)
 
-var completeMultipartUpload* = Call_CompleteMultipartUpload_601053(
+var completeMultipartUpload* = Call_CompleteMultipartUpload_603055(
     name: "completeMultipartUpload", meth: HttpMethod.HttpPost,
     host: "s3.amazonaws.com", route: "/{Bucket}/{Key}#uploadId",
-    validator: validate_CompleteMultipartUpload_601054, base: "/",
-    url: url_CompleteMultipartUpload_601055, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CompleteMultipartUpload_603056, base: "/",
+    url: url_CompleteMultipartUpload_603057, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListParts_600768 = ref object of OpenApiRestCall_600426
-proc url_ListParts_600770(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListParts_602770 = ref object of OpenApiRestCall_602433
+proc url_ListParts_602772(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -277,9 +277,9 @@ proc url_ListParts_600770(protocol: Scheme; host: string; base: string; route: s
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_ListParts_600769(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListParts_602771(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the parts that have been uploaded for a specific multipart upload.
   ## 
@@ -293,16 +293,16 @@ proc validate_ListParts_600769(path: JsonNode; query: JsonNode; header: JsonNode
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_600896 = path.getOrDefault("Key")
-  valid_600896 = validateParameter(valid_600896, JString, required = true,
+  var valid_602898 = path.getOrDefault("Key")
+  valid_602898 = validateParameter(valid_602898, JString, required = true,
                                  default = nil)
-  if valid_600896 != nil:
-    section.add "Key", valid_600896
-  var valid_600897 = path.getOrDefault("Bucket")
-  valid_600897 = validateParameter(valid_600897, JString, required = true,
+  if valid_602898 != nil:
+    section.add "Key", valid_602898
+  var valid_602899 = path.getOrDefault("Bucket")
+  valid_602899 = validateParameter(valid_602899, JString, required = true,
                                  default = nil)
-  if valid_600897 != nil:
-    section.add "Bucket", valid_600897
+  if valid_602899 != nil:
+    section.add "Bucket", valid_602899
   result.add "path", section
   ## parameters in `query` object:
   ##   max-parts: JInt
@@ -316,31 +316,31 @@ proc validate_ListParts_600769(path: JsonNode; query: JsonNode; header: JsonNode
   ##   PartNumberMarker: JString
   ##                   : Pagination token
   section = newJObject()
-  var valid_600898 = query.getOrDefault("max-parts")
-  valid_600898 = validateParameter(valid_600898, JInt, required = false, default = nil)
-  if valid_600898 != nil:
-    section.add "max-parts", valid_600898
+  var valid_602900 = query.getOrDefault("max-parts")
+  valid_602900 = validateParameter(valid_602900, JInt, required = false, default = nil)
+  if valid_602900 != nil:
+    section.add "max-parts", valid_602900
   assert query != nil,
         "query argument is necessary due to required `uploadId` field"
-  var valid_600899 = query.getOrDefault("uploadId")
-  valid_600899 = validateParameter(valid_600899, JString, required = true,
+  var valid_602901 = query.getOrDefault("uploadId")
+  valid_602901 = validateParameter(valid_602901, JString, required = true,
                                  default = nil)
-  if valid_600899 != nil:
-    section.add "uploadId", valid_600899
-  var valid_600900 = query.getOrDefault("MaxParts")
-  valid_600900 = validateParameter(valid_600900, JString, required = false,
+  if valid_602901 != nil:
+    section.add "uploadId", valid_602901
+  var valid_602902 = query.getOrDefault("MaxParts")
+  valid_602902 = validateParameter(valid_602902, JString, required = false,
                                  default = nil)
-  if valid_600900 != nil:
-    section.add "MaxParts", valid_600900
-  var valid_600901 = query.getOrDefault("part-number-marker")
-  valid_600901 = validateParameter(valid_600901, JInt, required = false, default = nil)
-  if valid_600901 != nil:
-    section.add "part-number-marker", valid_600901
-  var valid_600902 = query.getOrDefault("PartNumberMarker")
-  valid_600902 = validateParameter(valid_600902, JString, required = false,
+  if valid_602902 != nil:
+    section.add "MaxParts", valid_602902
+  var valid_602903 = query.getOrDefault("part-number-marker")
+  valid_602903 = validateParameter(valid_602903, JInt, required = false, default = nil)
+  if valid_602903 != nil:
+    section.add "part-number-marker", valid_602903
+  var valid_602904 = query.getOrDefault("PartNumberMarker")
+  valid_602904 = validateParameter(valid_602904, JString, required = false,
                                  default = nil)
-  if valid_600902 != nil:
-    section.add "PartNumberMarker", valid_600902
+  if valid_602904 != nil:
+    section.add "PartNumberMarker", valid_602904
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -348,36 +348,36 @@ proc validate_ListParts_600769(path: JsonNode; query: JsonNode; header: JsonNode
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_600903 = header.getOrDefault("x-amz-security-token")
-  valid_600903 = validateParameter(valid_600903, JString, required = false,
+  var valid_602905 = header.getOrDefault("x-amz-security-token")
+  valid_602905 = validateParameter(valid_602905, JString, required = false,
                                  default = nil)
-  if valid_600903 != nil:
-    section.add "x-amz-security-token", valid_600903
-  var valid_600917 = header.getOrDefault("x-amz-request-payer")
-  valid_600917 = validateParameter(valid_600917, JString, required = false,
+  if valid_602905 != nil:
+    section.add "x-amz-security-token", valid_602905
+  var valid_602919 = header.getOrDefault("x-amz-request-payer")
+  valid_602919 = validateParameter(valid_602919, JString, required = false,
                                  default = newJString("requester"))
-  if valid_600917 != nil:
-    section.add "x-amz-request-payer", valid_600917
+  if valid_602919 != nil:
+    section.add "x-amz-request-payer", valid_602919
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600940: Call_ListParts_600768; path: JsonNode; query: JsonNode;
+proc call*(call_602942: Call_ListParts_602770; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the parts that have been uploaded for a specific multipart upload.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListParts.html
-  let valid = call_600940.validator(path, query, header, formData, body)
-  let scheme = call_600940.pickScheme
+  let valid = call_602942.validator(path, query, header, formData, body)
+  let scheme = call_602942.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600940.url(scheme.get, call_600940.host, call_600940.base,
-                         call_600940.route, valid.getOrDefault("path"))
-  result = hook(call_600940, url, valid)
+  let url = call_602942.url(scheme.get, call_602942.host, call_602942.base,
+                         call_602942.route, valid.getOrDefault("path"))
+  result = hook(call_602942, url, valid)
 
-proc call*(call_601011: Call_ListParts_600768; uploadId: string; Key: string;
+proc call*(call_603013: Call_ListParts_602770; uploadId: string; Key: string;
           Bucket: string; maxParts: int = 0; MaxParts: string = "";
           partNumberMarker: int = 0; PartNumberMarker: string = ""): Recallable =
   ## listParts
@@ -397,26 +397,26 @@ proc call*(call_601011: Call_ListParts_600768; uploadId: string; Key: string;
   ##      : <p/>
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601012 = newJObject()
-  var query_601014 = newJObject()
-  add(query_601014, "max-parts", newJInt(maxParts))
-  add(query_601014, "uploadId", newJString(uploadId))
-  add(query_601014, "MaxParts", newJString(MaxParts))
-  add(query_601014, "part-number-marker", newJInt(partNumberMarker))
-  add(query_601014, "PartNumberMarker", newJString(PartNumberMarker))
-  add(path_601012, "Key", newJString(Key))
-  add(path_601012, "Bucket", newJString(Bucket))
-  result = call_601011.call(path_601012, query_601014, nil, nil, nil)
+  var path_603014 = newJObject()
+  var query_603016 = newJObject()
+  add(query_603016, "max-parts", newJInt(maxParts))
+  add(query_603016, "uploadId", newJString(uploadId))
+  add(query_603016, "MaxParts", newJString(MaxParts))
+  add(query_603016, "part-number-marker", newJInt(partNumberMarker))
+  add(query_603016, "PartNumberMarker", newJString(PartNumberMarker))
+  add(path_603014, "Key", newJString(Key))
+  add(path_603014, "Bucket", newJString(Bucket))
+  result = call_603013.call(path_603014, query_603016, nil, nil, nil)
 
-var listParts* = Call_ListParts_600768(name: "listParts", meth: HttpMethod.HttpGet,
+var listParts* = Call_ListParts_602770(name: "listParts", meth: HttpMethod.HttpGet,
                                     host: "s3.amazonaws.com",
                                     route: "/{Bucket}/{Key}#uploadId",
-                                    validator: validate_ListParts_600769,
-                                    base: "/", url: url_ListParts_600770,
+                                    validator: validate_ListParts_602771,
+                                    base: "/", url: url_ListParts_602772,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AbortMultipartUpload_601067 = ref object of OpenApiRestCall_600426
-proc url_AbortMultipartUpload_601069(protocol: Scheme; host: string; base: string;
+  Call_AbortMultipartUpload_603069 = ref object of OpenApiRestCall_602433
+proc url_AbortMultipartUpload_603071(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -430,9 +430,9 @@ proc url_AbortMultipartUpload_601069(protocol: Scheme; host: string; base: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_AbortMultipartUpload_601068(path: JsonNode; query: JsonNode;
+proc validate_AbortMultipartUpload_603070(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Aborts a multipart upload.</p> <p>To verify that all parts have been removed, so you don't get charged for the part storage, you should call the List Parts operation and ensure the parts list is empty.</p>
   ## 
@@ -446,16 +446,16 @@ proc validate_AbortMultipartUpload_601068(path: JsonNode; query: JsonNode;
   ##         : Name of the bucket to which the multipart upload was initiated.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601070 = path.getOrDefault("Key")
-  valid_601070 = validateParameter(valid_601070, JString, required = true,
+  var valid_603072 = path.getOrDefault("Key")
+  valid_603072 = validateParameter(valid_603072, JString, required = true,
                                  default = nil)
-  if valid_601070 != nil:
-    section.add "Key", valid_601070
-  var valid_601071 = path.getOrDefault("Bucket")
-  valid_601071 = validateParameter(valid_601071, JString, required = true,
+  if valid_603072 != nil:
+    section.add "Key", valid_603072
+  var valid_603073 = path.getOrDefault("Bucket")
+  valid_603073 = validateParameter(valid_603073, JString, required = true,
                                  default = nil)
-  if valid_601071 != nil:
-    section.add "Bucket", valid_601071
+  if valid_603073 != nil:
+    section.add "Bucket", valid_603073
   result.add "path", section
   ## parameters in `query` object:
   ##   uploadId: JString (required)
@@ -463,11 +463,11 @@ proc validate_AbortMultipartUpload_601068(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `uploadId` field"
-  var valid_601072 = query.getOrDefault("uploadId")
-  valid_601072 = validateParameter(valid_601072, JString, required = true,
+  var valid_603074 = query.getOrDefault("uploadId")
+  valid_603074 = validateParameter(valid_603074, JString, required = true,
                                  default = nil)
-  if valid_601072 != nil:
-    section.add "uploadId", valid_601072
+  if valid_603074 != nil:
+    section.add "uploadId", valid_603074
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -475,36 +475,36 @@ proc validate_AbortMultipartUpload_601068(path: JsonNode; query: JsonNode;
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_601073 = header.getOrDefault("x-amz-security-token")
-  valid_601073 = validateParameter(valid_601073, JString, required = false,
+  var valid_603075 = header.getOrDefault("x-amz-security-token")
+  valid_603075 = validateParameter(valid_603075, JString, required = false,
                                  default = nil)
-  if valid_601073 != nil:
-    section.add "x-amz-security-token", valid_601073
-  var valid_601074 = header.getOrDefault("x-amz-request-payer")
-  valid_601074 = validateParameter(valid_601074, JString, required = false,
+  if valid_603075 != nil:
+    section.add "x-amz-security-token", valid_603075
+  var valid_603076 = header.getOrDefault("x-amz-request-payer")
+  valid_603076 = validateParameter(valid_603076, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601074 != nil:
-    section.add "x-amz-request-payer", valid_601074
+  if valid_603076 != nil:
+    section.add "x-amz-request-payer", valid_603076
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601075: Call_AbortMultipartUpload_601067; path: JsonNode;
+proc call*(call_603077: Call_AbortMultipartUpload_603069; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Aborts a multipart upload.</p> <p>To verify that all parts have been removed, so you don't get charged for the part storage, you should call the List Parts operation and ensure the parts list is empty.</p>
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadAbort.html
-  let valid = call_601075.validator(path, query, header, formData, body)
-  let scheme = call_601075.pickScheme
+  let valid = call_603077.validator(path, query, header, formData, body)
+  let scheme = call_603077.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601075.url(scheme.get, call_601075.host, call_601075.base,
-                         call_601075.route, valid.getOrDefault("path"))
-  result = hook(call_601075, url, valid)
+  let url = call_603077.url(scheme.get, call_603077.host, call_603077.base,
+                         call_603077.route, valid.getOrDefault("path"))
+  result = hook(call_603077, url, valid)
 
-proc call*(call_601076: Call_AbortMultipartUpload_601067; uploadId: string;
+proc call*(call_603078: Call_AbortMultipartUpload_603069; uploadId: string;
           Key: string; Bucket: string): Recallable =
   ## abortMultipartUpload
   ## <p>Aborts a multipart upload.</p> <p>To verify that all parts have been removed, so you don't get charged for the part storage, you should call the List Parts operation and ensure the parts list is empty.</p>
@@ -515,21 +515,21 @@ proc call*(call_601076: Call_AbortMultipartUpload_601067; uploadId: string;
   ##      : Key of the object for which the multipart upload was initiated.
   ##   Bucket: string (required)
   ##         : Name of the bucket to which the multipart upload was initiated.
-  var path_601077 = newJObject()
-  var query_601078 = newJObject()
-  add(query_601078, "uploadId", newJString(uploadId))
-  add(path_601077, "Key", newJString(Key))
-  add(path_601077, "Bucket", newJString(Bucket))
-  result = call_601076.call(path_601077, query_601078, nil, nil, nil)
+  var path_603079 = newJObject()
+  var query_603080 = newJObject()
+  add(query_603080, "uploadId", newJString(uploadId))
+  add(path_603079, "Key", newJString(Key))
+  add(path_603079, "Bucket", newJString(Bucket))
+  result = call_603078.call(path_603079, query_603080, nil, nil, nil)
 
-var abortMultipartUpload* = Call_AbortMultipartUpload_601067(
+var abortMultipartUpload* = Call_AbortMultipartUpload_603069(
     name: "abortMultipartUpload", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}/{Key}#uploadId",
-    validator: validate_AbortMultipartUpload_601068, base: "/",
-    url: url_AbortMultipartUpload_601069, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AbortMultipartUpload_603070, base: "/",
+    url: url_AbortMultipartUpload_603071, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CopyObject_601079 = ref object of OpenApiRestCall_600426
-proc url_CopyObject_601081(protocol: Scheme; host: string; base: string; route: string;
+  Call_CopyObject_603081 = ref object of OpenApiRestCall_602433
+proc url_CopyObject_603083(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -543,9 +543,9 @@ proc url_CopyObject_601081(protocol: Scheme; host: string; base: string; route: 
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_CopyObject_601080(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CopyObject_603082(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a copy of an object that is already stored in Amazon S3.
   ## 
@@ -559,16 +559,16 @@ proc validate_CopyObject_601080(path: JsonNode; query: JsonNode; header: JsonNod
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601082 = path.getOrDefault("Key")
-  valid_601082 = validateParameter(valid_601082, JString, required = true,
+  var valid_603084 = path.getOrDefault("Key")
+  valid_603084 = validateParameter(valid_603084, JString, required = true,
                                  default = nil)
-  if valid_601082 != nil:
-    section.add "Key", valid_601082
-  var valid_601083 = path.getOrDefault("Bucket")
-  valid_601083 = validateParameter(valid_601083, JString, required = true,
+  if valid_603084 != nil:
+    section.add "Key", valid_603084
+  var valid_603085 = path.getOrDefault("Bucket")
+  valid_603085 = validateParameter(valid_603085, JString, required = true,
                                  default = nil)
-  if valid_601083 != nil:
-    section.add "Bucket", valid_601083
+  if valid_603085 != nil:
+    section.add "Bucket", valid_603085
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -645,183 +645,183 @@ proc validate_CopyObject_601080(path: JsonNode; query: JsonNode; header: JsonNod
   ##   x-amz-server-side-encryption-customer-key: JString
   ##                                            : Specifies the customer-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon does not store the encryption key. The key must be appropriate for use with the algorithm specified in the x-amz-server-side​-encryption​-customer-algorithm header.
   section = newJObject()
-  var valid_601084 = header.getOrDefault("Content-Disposition")
-  valid_601084 = validateParameter(valid_601084, JString, required = false,
+  var valid_603086 = header.getOrDefault("Content-Disposition")
+  valid_603086 = validateParameter(valid_603086, JString, required = false,
                                  default = nil)
-  if valid_601084 != nil:
-    section.add "Content-Disposition", valid_601084
-  var valid_601085 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-algorithm")
-  valid_601085 = validateParameter(valid_601085, JString, required = false,
+  if valid_603086 != nil:
+    section.add "Content-Disposition", valid_603086
+  var valid_603087 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-algorithm")
+  valid_603087 = validateParameter(valid_603087, JString, required = false,
                                  default = nil)
-  if valid_601085 != nil:
+  if valid_603087 != nil:
     section.add "x-amz-copy-source-server-side-encryption-customer-algorithm",
-               valid_601085
-  var valid_601086 = header.getOrDefault("x-amz-grant-full-control")
-  valid_601086 = validateParameter(valid_601086, JString, required = false,
+               valid_603087
+  var valid_603088 = header.getOrDefault("x-amz-grant-full-control")
+  valid_603088 = validateParameter(valid_603088, JString, required = false,
                                  default = nil)
-  if valid_601086 != nil:
-    section.add "x-amz-grant-full-control", valid_601086
-  var valid_601087 = header.getOrDefault("x-amz-security-token")
-  valid_601087 = validateParameter(valid_601087, JString, required = false,
+  if valid_603088 != nil:
+    section.add "x-amz-grant-full-control", valid_603088
+  var valid_603089 = header.getOrDefault("x-amz-security-token")
+  valid_603089 = validateParameter(valid_603089, JString, required = false,
                                  default = nil)
-  if valid_601087 != nil:
-    section.add "x-amz-security-token", valid_601087
-  var valid_601088 = header.getOrDefault("x-amz-copy-source-if-modified-since")
-  valid_601088 = validateParameter(valid_601088, JString, required = false,
+  if valid_603089 != nil:
+    section.add "x-amz-security-token", valid_603089
+  var valid_603090 = header.getOrDefault("x-amz-copy-source-if-modified-since")
+  valid_603090 = validateParameter(valid_603090, JString, required = false,
                                  default = nil)
-  if valid_601088 != nil:
-    section.add "x-amz-copy-source-if-modified-since", valid_601088
-  var valid_601089 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-key-MD5")
-  valid_601089 = validateParameter(valid_601089, JString, required = false,
+  if valid_603090 != nil:
+    section.add "x-amz-copy-source-if-modified-since", valid_603090
+  var valid_603091 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-key-MD5")
+  valid_603091 = validateParameter(valid_603091, JString, required = false,
                                  default = nil)
-  if valid_601089 != nil:
-    section.add "x-amz-copy-source-server-side-encryption-customer-key-MD5", valid_601089
-  var valid_601090 = header.getOrDefault("x-amz-tagging-directive")
-  valid_601090 = validateParameter(valid_601090, JString, required = false,
+  if valid_603091 != nil:
+    section.add "x-amz-copy-source-server-side-encryption-customer-key-MD5", valid_603091
+  var valid_603092 = header.getOrDefault("x-amz-tagging-directive")
+  valid_603092 = validateParameter(valid_603092, JString, required = false,
                                  default = newJString("COPY"))
-  if valid_601090 != nil:
-    section.add "x-amz-tagging-directive", valid_601090
-  var valid_601091 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
-  valid_601091 = validateParameter(valid_601091, JString, required = false,
+  if valid_603092 != nil:
+    section.add "x-amz-tagging-directive", valid_603092
+  var valid_603093 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
+  valid_603093 = validateParameter(valid_603093, JString, required = false,
                                  default = nil)
-  if valid_601091 != nil:
-    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_601091
-  var valid_601092 = header.getOrDefault("x-amz-object-lock-mode")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  if valid_603093 != nil:
+    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_603093
+  var valid_603094 = header.getOrDefault("x-amz-object-lock-mode")
+  valid_603094 = validateParameter(valid_603094, JString, required = false,
                                  default = newJString("GOVERNANCE"))
-  if valid_601092 != nil:
-    section.add "x-amz-object-lock-mode", valid_601092
-  var valid_601093 = header.getOrDefault("Cache-Control")
-  valid_601093 = validateParameter(valid_601093, JString, required = false,
+  if valid_603094 != nil:
+    section.add "x-amz-object-lock-mode", valid_603094
+  var valid_603095 = header.getOrDefault("Cache-Control")
+  valid_603095 = validateParameter(valid_603095, JString, required = false,
                                  default = nil)
-  if valid_601093 != nil:
-    section.add "Cache-Control", valid_601093
-  var valid_601094 = header.getOrDefault("Content-Language")
-  valid_601094 = validateParameter(valid_601094, JString, required = false,
+  if valid_603095 != nil:
+    section.add "Cache-Control", valid_603095
+  var valid_603096 = header.getOrDefault("Content-Language")
+  valid_603096 = validateParameter(valid_603096, JString, required = false,
                                  default = nil)
-  if valid_601094 != nil:
-    section.add "Content-Language", valid_601094
-  var valid_601095 = header.getOrDefault("Content-Type")
-  valid_601095 = validateParameter(valid_601095, JString, required = false,
+  if valid_603096 != nil:
+    section.add "Content-Language", valid_603096
+  var valid_603097 = header.getOrDefault("Content-Type")
+  valid_603097 = validateParameter(valid_603097, JString, required = false,
                                  default = nil)
-  if valid_601095 != nil:
-    section.add "Content-Type", valid_601095
-  var valid_601096 = header.getOrDefault("Expires")
-  valid_601096 = validateParameter(valid_601096, JString, required = false,
+  if valid_603097 != nil:
+    section.add "Content-Type", valid_603097
+  var valid_603098 = header.getOrDefault("Expires")
+  valid_603098 = validateParameter(valid_603098, JString, required = false,
                                  default = nil)
-  if valid_601096 != nil:
-    section.add "Expires", valid_601096
-  var valid_601097 = header.getOrDefault("x-amz-website-redirect-location")
-  valid_601097 = validateParameter(valid_601097, JString, required = false,
+  if valid_603098 != nil:
+    section.add "Expires", valid_603098
+  var valid_603099 = header.getOrDefault("x-amz-website-redirect-location")
+  valid_603099 = validateParameter(valid_603099, JString, required = false,
                                  default = nil)
-  if valid_601097 != nil:
-    section.add "x-amz-website-redirect-location", valid_601097
-  var valid_601098 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-key")
-  valid_601098 = validateParameter(valid_601098, JString, required = false,
+  if valid_603099 != nil:
+    section.add "x-amz-website-redirect-location", valid_603099
+  var valid_603100 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-key")
+  valid_603100 = validateParameter(valid_603100, JString, required = false,
                                  default = nil)
-  if valid_601098 != nil:
-    section.add "x-amz-copy-source-server-side-encryption-customer-key", valid_601098
-  var valid_601099 = header.getOrDefault("x-amz-acl")
-  valid_601099 = validateParameter(valid_601099, JString, required = false,
+  if valid_603100 != nil:
+    section.add "x-amz-copy-source-server-side-encryption-customer-key", valid_603100
+  var valid_603101 = header.getOrDefault("x-amz-acl")
+  valid_603101 = validateParameter(valid_603101, JString, required = false,
                                  default = newJString("private"))
-  if valid_601099 != nil:
-    section.add "x-amz-acl", valid_601099
-  var valid_601100 = header.getOrDefault("x-amz-grant-read")
-  valid_601100 = validateParameter(valid_601100, JString, required = false,
+  if valid_603101 != nil:
+    section.add "x-amz-acl", valid_603101
+  var valid_603102 = header.getOrDefault("x-amz-grant-read")
+  valid_603102 = validateParameter(valid_603102, JString, required = false,
                                  default = nil)
-  if valid_601100 != nil:
-    section.add "x-amz-grant-read", valid_601100
-  var valid_601101 = header.getOrDefault("x-amz-storage-class")
-  valid_601101 = validateParameter(valid_601101, JString, required = false,
+  if valid_603102 != nil:
+    section.add "x-amz-grant-read", valid_603102
+  var valid_603103 = header.getOrDefault("x-amz-storage-class")
+  valid_603103 = validateParameter(valid_603103, JString, required = false,
                                  default = newJString("STANDARD"))
-  if valid_601101 != nil:
-    section.add "x-amz-storage-class", valid_601101
-  var valid_601102 = header.getOrDefault("x-amz-object-lock-legal-hold")
-  valid_601102 = validateParameter(valid_601102, JString, required = false,
+  if valid_603103 != nil:
+    section.add "x-amz-storage-class", valid_603103
+  var valid_603104 = header.getOrDefault("x-amz-object-lock-legal-hold")
+  valid_603104 = validateParameter(valid_603104, JString, required = false,
                                  default = newJString("ON"))
-  if valid_601102 != nil:
-    section.add "x-amz-object-lock-legal-hold", valid_601102
-  var valid_601103 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
-  valid_601103 = validateParameter(valid_601103, JString, required = false,
+  if valid_603104 != nil:
+    section.add "x-amz-object-lock-legal-hold", valid_603104
+  var valid_603105 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
+  valid_603105 = validateParameter(valid_603105, JString, required = false,
                                  default = nil)
-  if valid_601103 != nil:
-    section.add "x-amz-server-side-encryption-customer-algorithm", valid_601103
-  var valid_601104 = header.getOrDefault("x-amz-tagging")
-  valid_601104 = validateParameter(valid_601104, JString, required = false,
+  if valid_603105 != nil:
+    section.add "x-amz-server-side-encryption-customer-algorithm", valid_603105
+  var valid_603106 = header.getOrDefault("x-amz-tagging")
+  valid_603106 = validateParameter(valid_603106, JString, required = false,
                                  default = nil)
-  if valid_601104 != nil:
-    section.add "x-amz-tagging", valid_601104
-  var valid_601105 = header.getOrDefault("x-amz-grant-read-acp")
-  valid_601105 = validateParameter(valid_601105, JString, required = false,
+  if valid_603106 != nil:
+    section.add "x-amz-tagging", valid_603106
+  var valid_603107 = header.getOrDefault("x-amz-grant-read-acp")
+  valid_603107 = validateParameter(valid_603107, JString, required = false,
                                  default = nil)
-  if valid_601105 != nil:
-    section.add "x-amz-grant-read-acp", valid_601105
+  if valid_603107 != nil:
+    section.add "x-amz-grant-read-acp", valid_603107
   assert header != nil, "header argument is necessary due to required `x-amz-copy-source` field"
-  var valid_601106 = header.getOrDefault("x-amz-copy-source")
-  valid_601106 = validateParameter(valid_601106, JString, required = true,
+  var valid_603108 = header.getOrDefault("x-amz-copy-source")
+  valid_603108 = validateParameter(valid_603108, JString, required = true,
                                  default = nil)
-  if valid_601106 != nil:
-    section.add "x-amz-copy-source", valid_601106
-  var valid_601107 = header.getOrDefault("x-amz-server-side-encryption-context")
-  valid_601107 = validateParameter(valid_601107, JString, required = false,
+  if valid_603108 != nil:
+    section.add "x-amz-copy-source", valid_603108
+  var valid_603109 = header.getOrDefault("x-amz-server-side-encryption-context")
+  valid_603109 = validateParameter(valid_603109, JString, required = false,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "x-amz-server-side-encryption-context", valid_601107
-  var valid_601108 = header.getOrDefault("x-amz-server-side-encryption-aws-kms-key-id")
-  valid_601108 = validateParameter(valid_601108, JString, required = false,
+  if valid_603109 != nil:
+    section.add "x-amz-server-side-encryption-context", valid_603109
+  var valid_603110 = header.getOrDefault("x-amz-server-side-encryption-aws-kms-key-id")
+  valid_603110 = validateParameter(valid_603110, JString, required = false,
                                  default = nil)
-  if valid_601108 != nil:
-    section.add "x-amz-server-side-encryption-aws-kms-key-id", valid_601108
-  var valid_601109 = header.getOrDefault("x-amz-object-lock-retain-until-date")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  if valid_603110 != nil:
+    section.add "x-amz-server-side-encryption-aws-kms-key-id", valid_603110
+  var valid_603111 = header.getOrDefault("x-amz-object-lock-retain-until-date")
+  valid_603111 = validateParameter(valid_603111, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "x-amz-object-lock-retain-until-date", valid_601109
-  var valid_601110 = header.getOrDefault("x-amz-metadata-directive")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_603111 != nil:
+    section.add "x-amz-object-lock-retain-until-date", valid_603111
+  var valid_603112 = header.getOrDefault("x-amz-metadata-directive")
+  valid_603112 = validateParameter(valid_603112, JString, required = false,
                                  default = newJString("COPY"))
-  if valid_601110 != nil:
-    section.add "x-amz-metadata-directive", valid_601110
-  var valid_601111 = header.getOrDefault("x-amz-copy-source-if-match")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_603112 != nil:
+    section.add "x-amz-metadata-directive", valid_603112
+  var valid_603113 = header.getOrDefault("x-amz-copy-source-if-match")
+  valid_603113 = validateParameter(valid_603113, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "x-amz-copy-source-if-match", valid_601111
-  var valid_601112 = header.getOrDefault("x-amz-copy-source-if-unmodified-since")
-  valid_601112 = validateParameter(valid_601112, JString, required = false,
+  if valid_603113 != nil:
+    section.add "x-amz-copy-source-if-match", valid_603113
+  var valid_603114 = header.getOrDefault("x-amz-copy-source-if-unmodified-since")
+  valid_603114 = validateParameter(valid_603114, JString, required = false,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "x-amz-copy-source-if-unmodified-since", valid_601112
-  var valid_601113 = header.getOrDefault("x-amz-grant-write-acp")
-  valid_601113 = validateParameter(valid_601113, JString, required = false,
+  if valid_603114 != nil:
+    section.add "x-amz-copy-source-if-unmodified-since", valid_603114
+  var valid_603115 = header.getOrDefault("x-amz-grant-write-acp")
+  valid_603115 = validateParameter(valid_603115, JString, required = false,
                                  default = nil)
-  if valid_601113 != nil:
-    section.add "x-amz-grant-write-acp", valid_601113
-  var valid_601114 = header.getOrDefault("Content-Encoding")
-  valid_601114 = validateParameter(valid_601114, JString, required = false,
+  if valid_603115 != nil:
+    section.add "x-amz-grant-write-acp", valid_603115
+  var valid_603116 = header.getOrDefault("Content-Encoding")
+  valid_603116 = validateParameter(valid_603116, JString, required = false,
                                  default = nil)
-  if valid_601114 != nil:
-    section.add "Content-Encoding", valid_601114
-  var valid_601115 = header.getOrDefault("x-amz-request-payer")
-  valid_601115 = validateParameter(valid_601115, JString, required = false,
+  if valid_603116 != nil:
+    section.add "Content-Encoding", valid_603116
+  var valid_603117 = header.getOrDefault("x-amz-request-payer")
+  valid_603117 = validateParameter(valid_603117, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601115 != nil:
-    section.add "x-amz-request-payer", valid_601115
-  var valid_601116 = header.getOrDefault("x-amz-copy-source-if-none-match")
-  valid_601116 = validateParameter(valid_601116, JString, required = false,
+  if valid_603117 != nil:
+    section.add "x-amz-request-payer", valid_603117
+  var valid_603118 = header.getOrDefault("x-amz-copy-source-if-none-match")
+  valid_603118 = validateParameter(valid_603118, JString, required = false,
                                  default = nil)
-  if valid_601116 != nil:
-    section.add "x-amz-copy-source-if-none-match", valid_601116
-  var valid_601117 = header.getOrDefault("x-amz-server-side-encryption")
-  valid_601117 = validateParameter(valid_601117, JString, required = false,
+  if valid_603118 != nil:
+    section.add "x-amz-copy-source-if-none-match", valid_603118
+  var valid_603119 = header.getOrDefault("x-amz-server-side-encryption")
+  valid_603119 = validateParameter(valid_603119, JString, required = false,
                                  default = newJString("AES256"))
-  if valid_601117 != nil:
-    section.add "x-amz-server-side-encryption", valid_601117
-  var valid_601118 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
-  valid_601118 = validateParameter(valid_601118, JString, required = false,
+  if valid_603119 != nil:
+    section.add "x-amz-server-side-encryption", valid_603119
+  var valid_603120 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
+  valid_603120 = validateParameter(valid_603120, JString, required = false,
                                  default = nil)
-  if valid_601118 != nil:
-    section.add "x-amz-server-side-encryption-customer-key", valid_601118
+  if valid_603120 != nil:
+    section.add "x-amz-server-side-encryption-customer-key", valid_603120
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -832,20 +832,20 @@ proc validate_CopyObject_601080(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_601120: Call_CopyObject_601079; path: JsonNode; query: JsonNode;
+proc call*(call_603122: Call_CopyObject_603081; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a copy of an object that is already stored in Amazon S3.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectCOPY.html
-  let valid = call_601120.validator(path, query, header, formData, body)
-  let scheme = call_601120.pickScheme
+  let valid = call_603122.validator(path, query, header, formData, body)
+  let scheme = call_603122.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601120.url(scheme.get, call_601120.host, call_601120.base,
-                         call_601120.route, valid.getOrDefault("path"))
-  result = hook(call_601120, url, valid)
+  let url = call_603122.url(scheme.get, call_603122.host, call_603122.base,
+                         call_603122.route, valid.getOrDefault("path"))
+  result = hook(call_603122, url, valid)
 
-proc call*(call_601121: Call_CopyObject_601079; Key: string; Bucket: string;
+proc call*(call_603123: Call_CopyObject_603081; Key: string; Bucket: string;
           body: JsonNode): Recallable =
   ## copyObject
   ## Creates a copy of an object that is already stored in Amazon S3.
@@ -855,23 +855,23 @@ proc call*(call_601121: Call_CopyObject_601079; Key: string; Bucket: string;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601122 = newJObject()
-  var body_601123 = newJObject()
-  add(path_601122, "Key", newJString(Key))
-  add(path_601122, "Bucket", newJString(Bucket))
+  var path_603124 = newJObject()
+  var body_603125 = newJObject()
+  add(path_603124, "Key", newJString(Key))
+  add(path_603124, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601123 = body
-  result = call_601121.call(path_601122, nil, nil, nil, body_601123)
+    body_603125 = body
+  result = call_603123.call(path_603124, nil, nil, nil, body_603125)
 
-var copyObject* = Call_CopyObject_601079(name: "copyObject",
+var copyObject* = Call_CopyObject_603081(name: "copyObject",
                                       meth: HttpMethod.HttpPut,
                                       host: "s3.amazonaws.com", route: "/{Bucket}/{Key}#x-amz-copy-source",
-                                      validator: validate_CopyObject_601080,
-                                      base: "/", url: url_CopyObject_601081,
+                                      validator: validate_CopyObject_603082,
+                                      base: "/", url: url_CopyObject_603083,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateBucket_601141 = ref object of OpenApiRestCall_600426
-proc url_CreateBucket_601143(protocol: Scheme; host: string; base: string;
+  Call_CreateBucket_603143 = ref object of OpenApiRestCall_602433
+proc url_CreateBucket_603145(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -881,9 +881,9 @@ proc url_CreateBucket_601143(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_CreateBucket_601142(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateBucket_603144(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a new bucket.
   ## 
@@ -895,11 +895,11 @@ proc validate_CreateBucket_601142(path: JsonNode; query: JsonNode; header: JsonN
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601144 = path.getOrDefault("Bucket")
-  valid_601144 = validateParameter(valid_601144, JString, required = true,
+  var valid_603146 = path.getOrDefault("Bucket")
+  valid_603146 = validateParameter(valid_603146, JString, required = true,
                                  default = nil)
-  if valid_601144 != nil:
-    section.add "Bucket", valid_601144
+  if valid_603146 != nil:
+    section.add "Bucket", valid_603146
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -920,45 +920,45 @@ proc validate_CreateBucket_601142(path: JsonNode; query: JsonNode; header: JsonN
   ##   x-amz-grant-full-control: JString
   ##                           : Allows grantee the read, write, read ACP, and write ACP permissions on the bucket.
   section = newJObject()
-  var valid_601145 = header.getOrDefault("x-amz-security-token")
-  valid_601145 = validateParameter(valid_601145, JString, required = false,
+  var valid_603147 = header.getOrDefault("x-amz-security-token")
+  valid_603147 = validateParameter(valid_603147, JString, required = false,
                                  default = nil)
-  if valid_601145 != nil:
-    section.add "x-amz-security-token", valid_601145
-  var valid_601146 = header.getOrDefault("x-amz-acl")
-  valid_601146 = validateParameter(valid_601146, JString, required = false,
+  if valid_603147 != nil:
+    section.add "x-amz-security-token", valid_603147
+  var valid_603148 = header.getOrDefault("x-amz-acl")
+  valid_603148 = validateParameter(valid_603148, JString, required = false,
                                  default = newJString("private"))
-  if valid_601146 != nil:
-    section.add "x-amz-acl", valid_601146
-  var valid_601147 = header.getOrDefault("x-amz-grant-read")
-  valid_601147 = validateParameter(valid_601147, JString, required = false,
+  if valid_603148 != nil:
+    section.add "x-amz-acl", valid_603148
+  var valid_603149 = header.getOrDefault("x-amz-grant-read")
+  valid_603149 = validateParameter(valid_603149, JString, required = false,
                                  default = nil)
-  if valid_601147 != nil:
-    section.add "x-amz-grant-read", valid_601147
-  var valid_601148 = header.getOrDefault("x-amz-grant-read-acp")
-  valid_601148 = validateParameter(valid_601148, JString, required = false,
+  if valid_603149 != nil:
+    section.add "x-amz-grant-read", valid_603149
+  var valid_603150 = header.getOrDefault("x-amz-grant-read-acp")
+  valid_603150 = validateParameter(valid_603150, JString, required = false,
                                  default = nil)
-  if valid_601148 != nil:
-    section.add "x-amz-grant-read-acp", valid_601148
-  var valid_601149 = header.getOrDefault("x-amz-bucket-object-lock-enabled")
-  valid_601149 = validateParameter(valid_601149, JBool, required = false, default = nil)
-  if valid_601149 != nil:
-    section.add "x-amz-bucket-object-lock-enabled", valid_601149
-  var valid_601150 = header.getOrDefault("x-amz-grant-write")
-  valid_601150 = validateParameter(valid_601150, JString, required = false,
+  if valid_603150 != nil:
+    section.add "x-amz-grant-read-acp", valid_603150
+  var valid_603151 = header.getOrDefault("x-amz-bucket-object-lock-enabled")
+  valid_603151 = validateParameter(valid_603151, JBool, required = false, default = nil)
+  if valid_603151 != nil:
+    section.add "x-amz-bucket-object-lock-enabled", valid_603151
+  var valid_603152 = header.getOrDefault("x-amz-grant-write")
+  valid_603152 = validateParameter(valid_603152, JString, required = false,
                                  default = nil)
-  if valid_601150 != nil:
-    section.add "x-amz-grant-write", valid_601150
-  var valid_601151 = header.getOrDefault("x-amz-grant-write-acp")
-  valid_601151 = validateParameter(valid_601151, JString, required = false,
+  if valid_603152 != nil:
+    section.add "x-amz-grant-write", valid_603152
+  var valid_603153 = header.getOrDefault("x-amz-grant-write-acp")
+  valid_603153 = validateParameter(valid_603153, JString, required = false,
                                  default = nil)
-  if valid_601151 != nil:
-    section.add "x-amz-grant-write-acp", valid_601151
-  var valid_601152 = header.getOrDefault("x-amz-grant-full-control")
-  valid_601152 = validateParameter(valid_601152, JString, required = false,
+  if valid_603153 != nil:
+    section.add "x-amz-grant-write-acp", valid_603153
+  var valid_603154 = header.getOrDefault("x-amz-grant-full-control")
+  valid_603154 = validateParameter(valid_603154, JString, required = false,
                                  default = nil)
-  if valid_601152 != nil:
-    section.add "x-amz-grant-full-control", valid_601152
+  if valid_603154 != nil:
+    section.add "x-amz-grant-full-control", valid_603154
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -969,40 +969,40 @@ proc validate_CreateBucket_601142(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601154: Call_CreateBucket_601141; path: JsonNode; query: JsonNode;
+proc call*(call_603156: Call_CreateBucket_603143; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a new bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html
-  let valid = call_601154.validator(path, query, header, formData, body)
-  let scheme = call_601154.pickScheme
+  let valid = call_603156.validator(path, query, header, formData, body)
+  let scheme = call_603156.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601154.url(scheme.get, call_601154.host, call_601154.base,
-                         call_601154.route, valid.getOrDefault("path"))
-  result = hook(call_601154, url, valid)
+  let url = call_603156.url(scheme.get, call_603156.host, call_603156.base,
+                         call_603156.route, valid.getOrDefault("path"))
+  result = hook(call_603156, url, valid)
 
-proc call*(call_601155: Call_CreateBucket_601141; Bucket: string; body: JsonNode): Recallable =
+proc call*(call_603157: Call_CreateBucket_603143; Bucket: string; body: JsonNode): Recallable =
   ## createBucket
   ## Creates a new bucket.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUT.html
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601156 = newJObject()
-  var body_601157 = newJObject()
-  add(path_601156, "Bucket", newJString(Bucket))
+  var path_603158 = newJObject()
+  var body_603159 = newJObject()
+  add(path_603158, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601157 = body
-  result = call_601155.call(path_601156, nil, nil, nil, body_601157)
+    body_603159 = body
+  result = call_603157.call(path_603158, nil, nil, nil, body_603159)
 
-var createBucket* = Call_CreateBucket_601141(name: "createBucket",
+var createBucket* = Call_CreateBucket_603143(name: "createBucket",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com", route: "/{Bucket}",
-    validator: validate_CreateBucket_601142, base: "/", url: url_CreateBucket_601143,
+    validator: validate_CreateBucket_603144, base: "/", url: url_CreateBucket_603145,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_HeadBucket_601166 = ref object of OpenApiRestCall_600426
-proc url_HeadBucket_601168(protocol: Scheme; host: string; base: string; route: string;
+  Call_HeadBucket_603168 = ref object of OpenApiRestCall_602433
+proc url_HeadBucket_603170(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -1012,9 +1012,9 @@ proc url_HeadBucket_601168(protocol: Scheme; host: string; base: string; route: 
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_HeadBucket_601167(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_HeadBucket_603169(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation is useful to determine if a bucket exists and you have permission to access it.
   ## 
@@ -1026,61 +1026,61 @@ proc validate_HeadBucket_601167(path: JsonNode; query: JsonNode; header: JsonNod
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601169 = path.getOrDefault("Bucket")
-  valid_601169 = validateParameter(valid_601169, JString, required = true,
+  var valid_603171 = path.getOrDefault("Bucket")
+  valid_603171 = validateParameter(valid_603171, JString, required = true,
                                  default = nil)
-  if valid_601169 != nil:
-    section.add "Bucket", valid_601169
+  if valid_603171 != nil:
+    section.add "Bucket", valid_603171
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601170 = header.getOrDefault("x-amz-security-token")
-  valid_601170 = validateParameter(valid_601170, JString, required = false,
+  var valid_603172 = header.getOrDefault("x-amz-security-token")
+  valid_603172 = validateParameter(valid_603172, JString, required = false,
                                  default = nil)
-  if valid_601170 != nil:
-    section.add "x-amz-security-token", valid_601170
+  if valid_603172 != nil:
+    section.add "x-amz-security-token", valid_603172
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601171: Call_HeadBucket_601166; path: JsonNode; query: JsonNode;
+proc call*(call_603173: Call_HeadBucket_603168; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation is useful to determine if a bucket exists and you have permission to access it.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html
-  let valid = call_601171.validator(path, query, header, formData, body)
-  let scheme = call_601171.pickScheme
+  let valid = call_603173.validator(path, query, header, formData, body)
+  let scheme = call_603173.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601171.url(scheme.get, call_601171.host, call_601171.base,
-                         call_601171.route, valid.getOrDefault("path"))
-  result = hook(call_601171, url, valid)
+  let url = call_603173.url(scheme.get, call_603173.host, call_603173.base,
+                         call_603173.route, valid.getOrDefault("path"))
+  result = hook(call_603173, url, valid)
 
-proc call*(call_601172: Call_HeadBucket_601166; Bucket: string): Recallable =
+proc call*(call_603174: Call_HeadBucket_603168; Bucket: string): Recallable =
   ## headBucket
   ## This operation is useful to determine if a bucket exists and you have permission to access it.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketHEAD.html
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601173 = newJObject()
-  add(path_601173, "Bucket", newJString(Bucket))
-  result = call_601172.call(path_601173, nil, nil, nil, nil)
+  var path_603175 = newJObject()
+  add(path_603175, "Bucket", newJString(Bucket))
+  result = call_603174.call(path_603175, nil, nil, nil, nil)
 
-var headBucket* = Call_HeadBucket_601166(name: "headBucket",
+var headBucket* = Call_HeadBucket_603168(name: "headBucket",
                                       meth: HttpMethod.HttpHead,
                                       host: "s3.amazonaws.com",
                                       route: "/{Bucket}",
-                                      validator: validate_HeadBucket_601167,
-                                      base: "/", url: url_HeadBucket_601168,
+                                      validator: validate_HeadBucket_603169,
+                                      base: "/", url: url_HeadBucket_603170,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListObjects_601124 = ref object of OpenApiRestCall_600426
-proc url_ListObjects_601126(protocol: Scheme; host: string; base: string;
+  Call_ListObjects_603126 = ref object of OpenApiRestCall_602433
+proc url_ListObjects_603128(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -1090,9 +1090,9 @@ proc url_ListObjects_601126(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_ListObjects_601125(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListObjects_603127(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns some or all (up to 1000) of the objects in a bucket. You can use the request parameters as selection criteria to return a subset of the objects in a bucket.
   ## 
@@ -1104,11 +1104,11 @@ proc validate_ListObjects_601125(path: JsonNode; query: JsonNode; header: JsonNo
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601127 = path.getOrDefault("Bucket")
-  valid_601127 = validateParameter(valid_601127, JString, required = true,
+  var valid_603129 = path.getOrDefault("Bucket")
+  valid_603129 = validateParameter(valid_603129, JString, required = true,
                                  default = nil)
-  if valid_601127 != nil:
-    section.add "Bucket", valid_601127
+  if valid_603129 != nil:
+    section.add "Bucket", valid_603129
   result.add "path", section
   ## parameters in `query` object:
   ##   max-keys: JInt
@@ -1126,40 +1126,40 @@ proc validate_ListObjects_601125(path: JsonNode; query: JsonNode; header: JsonNo
   ##   MaxKeys: JString
   ##          : Pagination limit
   section = newJObject()
-  var valid_601128 = query.getOrDefault("max-keys")
-  valid_601128 = validateParameter(valid_601128, JInt, required = false, default = nil)
-  if valid_601128 != nil:
-    section.add "max-keys", valid_601128
-  var valid_601129 = query.getOrDefault("encoding-type")
-  valid_601129 = validateParameter(valid_601129, JString, required = false,
+  var valid_603130 = query.getOrDefault("max-keys")
+  valid_603130 = validateParameter(valid_603130, JInt, required = false, default = nil)
+  if valid_603130 != nil:
+    section.add "max-keys", valid_603130
+  var valid_603131 = query.getOrDefault("encoding-type")
+  valid_603131 = validateParameter(valid_603131, JString, required = false,
                                  default = newJString("url"))
-  if valid_601129 != nil:
-    section.add "encoding-type", valid_601129
-  var valid_601130 = query.getOrDefault("marker")
-  valid_601130 = validateParameter(valid_601130, JString, required = false,
+  if valid_603131 != nil:
+    section.add "encoding-type", valid_603131
+  var valid_603132 = query.getOrDefault("marker")
+  valid_603132 = validateParameter(valid_603132, JString, required = false,
                                  default = nil)
-  if valid_601130 != nil:
-    section.add "marker", valid_601130
-  var valid_601131 = query.getOrDefault("Marker")
-  valid_601131 = validateParameter(valid_601131, JString, required = false,
+  if valid_603132 != nil:
+    section.add "marker", valid_603132
+  var valid_603133 = query.getOrDefault("Marker")
+  valid_603133 = validateParameter(valid_603133, JString, required = false,
                                  default = nil)
-  if valid_601131 != nil:
-    section.add "Marker", valid_601131
-  var valid_601132 = query.getOrDefault("delimiter")
-  valid_601132 = validateParameter(valid_601132, JString, required = false,
+  if valid_603133 != nil:
+    section.add "Marker", valid_603133
+  var valid_603134 = query.getOrDefault("delimiter")
+  valid_603134 = validateParameter(valid_603134, JString, required = false,
                                  default = nil)
-  if valid_601132 != nil:
-    section.add "delimiter", valid_601132
-  var valid_601133 = query.getOrDefault("prefix")
-  valid_601133 = validateParameter(valid_601133, JString, required = false,
+  if valid_603134 != nil:
+    section.add "delimiter", valid_603134
+  var valid_603135 = query.getOrDefault("prefix")
+  valid_603135 = validateParameter(valid_603135, JString, required = false,
                                  default = nil)
-  if valid_601133 != nil:
-    section.add "prefix", valid_601133
-  var valid_601134 = query.getOrDefault("MaxKeys")
-  valid_601134 = validateParameter(valid_601134, JString, required = false,
+  if valid_603135 != nil:
+    section.add "prefix", valid_603135
+  var valid_603136 = query.getOrDefault("MaxKeys")
+  valid_603136 = validateParameter(valid_603136, JString, required = false,
                                  default = nil)
-  if valid_601134 != nil:
-    section.add "MaxKeys", valid_601134
+  if valid_603136 != nil:
+    section.add "MaxKeys", valid_603136
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -1167,36 +1167,36 @@ proc validate_ListObjects_601125(path: JsonNode; query: JsonNode; header: JsonNo
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_601135 = header.getOrDefault("x-amz-security-token")
-  valid_601135 = validateParameter(valid_601135, JString, required = false,
+  var valid_603137 = header.getOrDefault("x-amz-security-token")
+  valid_603137 = validateParameter(valid_603137, JString, required = false,
                                  default = nil)
-  if valid_601135 != nil:
-    section.add "x-amz-security-token", valid_601135
-  var valid_601136 = header.getOrDefault("x-amz-request-payer")
-  valid_601136 = validateParameter(valid_601136, JString, required = false,
+  if valid_603137 != nil:
+    section.add "x-amz-security-token", valid_603137
+  var valid_603138 = header.getOrDefault("x-amz-request-payer")
+  valid_603138 = validateParameter(valid_603138, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601136 != nil:
-    section.add "x-amz-request-payer", valid_601136
+  if valid_603138 != nil:
+    section.add "x-amz-request-payer", valid_603138
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601137: Call_ListObjects_601124; path: JsonNode; query: JsonNode;
+proc call*(call_603139: Call_ListObjects_603126; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns some or all (up to 1000) of the objects in a bucket. You can use the request parameters as selection criteria to return a subset of the objects in a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGET.html
-  let valid = call_601137.validator(path, query, header, formData, body)
-  let scheme = call_601137.pickScheme
+  let valid = call_603139.validator(path, query, header, formData, body)
+  let scheme = call_603139.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601137.url(scheme.get, call_601137.host, call_601137.base,
-                         call_601137.route, valid.getOrDefault("path"))
-  result = hook(call_601137, url, valid)
+  let url = call_603139.url(scheme.get, call_603139.host, call_603139.base,
+                         call_603139.route, valid.getOrDefault("path"))
+  result = hook(call_603139, url, valid)
 
-proc call*(call_601138: Call_ListObjects_601124; Bucket: string; maxKeys: int = 0;
+proc call*(call_603140: Call_ListObjects_603126; Bucket: string; maxKeys: int = 0;
           encodingType: string = "url"; marker: string = ""; Marker: string = "";
           delimiter: string = ""; prefix: string = ""; MaxKeys: string = ""): Recallable =
   ## listObjects
@@ -1218,28 +1218,28 @@ proc call*(call_601138: Call_ListObjects_601124; Bucket: string; maxKeys: int = 
   ##         : Limits the response to keys that begin with the specified prefix.
   ##   MaxKeys: string
   ##          : Pagination limit
-  var path_601139 = newJObject()
-  var query_601140 = newJObject()
-  add(query_601140, "max-keys", newJInt(maxKeys))
-  add(query_601140, "encoding-type", newJString(encodingType))
-  add(query_601140, "marker", newJString(marker))
-  add(query_601140, "Marker", newJString(Marker))
-  add(query_601140, "delimiter", newJString(delimiter))
-  add(path_601139, "Bucket", newJString(Bucket))
-  add(query_601140, "prefix", newJString(prefix))
-  add(query_601140, "MaxKeys", newJString(MaxKeys))
-  result = call_601138.call(path_601139, query_601140, nil, nil, nil)
+  var path_603141 = newJObject()
+  var query_603142 = newJObject()
+  add(query_603142, "max-keys", newJInt(maxKeys))
+  add(query_603142, "encoding-type", newJString(encodingType))
+  add(query_603142, "marker", newJString(marker))
+  add(query_603142, "Marker", newJString(Marker))
+  add(query_603142, "delimiter", newJString(delimiter))
+  add(path_603141, "Bucket", newJString(Bucket))
+  add(query_603142, "prefix", newJString(prefix))
+  add(query_603142, "MaxKeys", newJString(MaxKeys))
+  result = call_603140.call(path_603141, query_603142, nil, nil, nil)
 
-var listObjects* = Call_ListObjects_601124(name: "listObjects",
+var listObjects* = Call_ListObjects_603126(name: "listObjects",
                                         meth: HttpMethod.HttpGet,
                                         host: "s3.amazonaws.com",
                                         route: "/{Bucket}",
-                                        validator: validate_ListObjects_601125,
-                                        base: "/", url: url_ListObjects_601126,
+                                        validator: validate_ListObjects_603127,
+                                        base: "/", url: url_ListObjects_603128,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucket_601158 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucket_601160(protocol: Scheme; host: string; base: string;
+  Call_DeleteBucket_603160 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucket_603162(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -1249,9 +1249,9 @@ proc url_DeleteBucket_601160(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucket_601159(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteBucket_603161(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the bucket. All objects (including all object versions and Delete Markers) in the bucket must be deleted before the bucket itself can be deleted.
   ## 
@@ -1263,58 +1263,58 @@ proc validate_DeleteBucket_601159(path: JsonNode; query: JsonNode; header: JsonN
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601161 = path.getOrDefault("Bucket")
-  valid_601161 = validateParameter(valid_601161, JString, required = true,
+  var valid_603163 = path.getOrDefault("Bucket")
+  valid_603163 = validateParameter(valid_603163, JString, required = true,
                                  default = nil)
-  if valid_601161 != nil:
-    section.add "Bucket", valid_601161
+  if valid_603163 != nil:
+    section.add "Bucket", valid_603163
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601162 = header.getOrDefault("x-amz-security-token")
-  valid_601162 = validateParameter(valid_601162, JString, required = false,
+  var valid_603164 = header.getOrDefault("x-amz-security-token")
+  valid_603164 = validateParameter(valid_603164, JString, required = false,
                                  default = nil)
-  if valid_601162 != nil:
-    section.add "x-amz-security-token", valid_601162
+  if valid_603164 != nil:
+    section.add "x-amz-security-token", valid_603164
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601163: Call_DeleteBucket_601158; path: JsonNode; query: JsonNode;
+proc call*(call_603165: Call_DeleteBucket_603160; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the bucket. All objects (including all object versions and Delete Markers) in the bucket must be deleted before the bucket itself can be deleted.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html
-  let valid = call_601163.validator(path, query, header, formData, body)
-  let scheme = call_601163.pickScheme
+  let valid = call_603165.validator(path, query, header, formData, body)
+  let scheme = call_603165.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601163.url(scheme.get, call_601163.host, call_601163.base,
-                         call_601163.route, valid.getOrDefault("path"))
-  result = hook(call_601163, url, valid)
+  let url = call_603165.url(scheme.get, call_603165.host, call_603165.base,
+                         call_603165.route, valid.getOrDefault("path"))
+  result = hook(call_603165, url, valid)
 
-proc call*(call_601164: Call_DeleteBucket_601158; Bucket: string): Recallable =
+proc call*(call_603166: Call_DeleteBucket_603160; Bucket: string): Recallable =
   ## deleteBucket
   ## Deletes the bucket. All objects (including all object versions and Delete Markers) in the bucket must be deleted before the bucket itself can be deleted.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETE.html
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601165 = newJObject()
-  add(path_601165, "Bucket", newJString(Bucket))
-  result = call_601164.call(path_601165, nil, nil, nil, nil)
+  var path_603167 = newJObject()
+  add(path_603167, "Bucket", newJString(Bucket))
+  result = call_603166.call(path_603167, nil, nil, nil, nil)
 
-var deleteBucket* = Call_DeleteBucket_601158(name: "deleteBucket",
+var deleteBucket* = Call_DeleteBucket_603160(name: "deleteBucket",
     meth: HttpMethod.HttpDelete, host: "s3.amazonaws.com", route: "/{Bucket}",
-    validator: validate_DeleteBucket_601159, base: "/", url: url_DeleteBucket_601160,
+    validator: validate_DeleteBucket_603161, base: "/", url: url_DeleteBucket_603162,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateMultipartUpload_601174 = ref object of OpenApiRestCall_600426
-proc url_CreateMultipartUpload_601176(protocol: Scheme; host: string; base: string;
+  Call_CreateMultipartUpload_603176 = ref object of OpenApiRestCall_602433
+proc url_CreateMultipartUpload_603178(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -1328,9 +1328,9 @@ proc url_CreateMultipartUpload_601176(protocol: Scheme; host: string; base: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_CreateMultipartUpload_601175(path: JsonNode; query: JsonNode;
+proc validate_CreateMultipartUpload_603177(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Initiates a multipart upload and returns an upload ID.</p> <p> <b>Note:</b> After you initiate multipart upload and upload one or more parts, you must either complete or abort multipart upload in order to stop getting charged for storage of the uploaded parts. Only after you either complete or abort multipart upload, Amazon S3 frees up the parts storage and stops charging you for the parts storage.</p>
   ## 
@@ -1344,25 +1344,25 @@ proc validate_CreateMultipartUpload_601175(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601177 = path.getOrDefault("Key")
-  valid_601177 = validateParameter(valid_601177, JString, required = true,
+  var valid_603179 = path.getOrDefault("Key")
+  valid_603179 = validateParameter(valid_603179, JString, required = true,
                                  default = nil)
-  if valid_601177 != nil:
-    section.add "Key", valid_601177
-  var valid_601178 = path.getOrDefault("Bucket")
-  valid_601178 = validateParameter(valid_601178, JString, required = true,
+  if valid_603179 != nil:
+    section.add "Key", valid_603179
+  var valid_603180 = path.getOrDefault("Bucket")
+  valid_603180 = validateParameter(valid_603180, JString, required = true,
                                  default = nil)
-  if valid_601178 != nil:
-    section.add "Bucket", valid_601178
+  if valid_603180 != nil:
+    section.add "Bucket", valid_603180
   result.add "path", section
   ## parameters in `query` object:
   ##   uploads: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `uploads` field"
-  var valid_601179 = query.getOrDefault("uploads")
-  valid_601179 = validateParameter(valid_601179, JBool, required = true, default = nil)
-  if valid_601179 != nil:
-    section.add "uploads", valid_601179
+  var valid_603181 = query.getOrDefault("uploads")
+  valid_603181 = validateParameter(valid_603181, JBool, required = true, default = nil)
+  if valid_603181 != nil:
+    section.add "uploads", valid_603181
   result.add "query", section
   ## parameters in `header` object:
   ##   Content-Disposition: JString
@@ -1417,131 +1417,131 @@ proc validate_CreateMultipartUpload_601175(path: JsonNode; query: JsonNode;
   ##   x-amz-server-side-encryption-customer-key: JString
   ##                                            : Specifies the customer-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon does not store the encryption key. The key must be appropriate for use with the algorithm specified in the x-amz-server-side​-encryption​-customer-algorithm header.
   section = newJObject()
-  var valid_601180 = header.getOrDefault("Content-Disposition")
-  valid_601180 = validateParameter(valid_601180, JString, required = false,
+  var valid_603182 = header.getOrDefault("Content-Disposition")
+  valid_603182 = validateParameter(valid_603182, JString, required = false,
                                  default = nil)
-  if valid_601180 != nil:
-    section.add "Content-Disposition", valid_601180
-  var valid_601181 = header.getOrDefault("x-amz-grant-full-control")
-  valid_601181 = validateParameter(valid_601181, JString, required = false,
+  if valid_603182 != nil:
+    section.add "Content-Disposition", valid_603182
+  var valid_603183 = header.getOrDefault("x-amz-grant-full-control")
+  valid_603183 = validateParameter(valid_603183, JString, required = false,
                                  default = nil)
-  if valid_601181 != nil:
-    section.add "x-amz-grant-full-control", valid_601181
-  var valid_601182 = header.getOrDefault("x-amz-security-token")
-  valid_601182 = validateParameter(valid_601182, JString, required = false,
+  if valid_603183 != nil:
+    section.add "x-amz-grant-full-control", valid_603183
+  var valid_603184 = header.getOrDefault("x-amz-security-token")
+  valid_603184 = validateParameter(valid_603184, JString, required = false,
                                  default = nil)
-  if valid_601182 != nil:
-    section.add "x-amz-security-token", valid_601182
-  var valid_601183 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
-  valid_601183 = validateParameter(valid_601183, JString, required = false,
+  if valid_603184 != nil:
+    section.add "x-amz-security-token", valid_603184
+  var valid_603185 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
+  valid_603185 = validateParameter(valid_603185, JString, required = false,
                                  default = nil)
-  if valid_601183 != nil:
-    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_601183
-  var valid_601184 = header.getOrDefault("x-amz-object-lock-mode")
-  valid_601184 = validateParameter(valid_601184, JString, required = false,
+  if valid_603185 != nil:
+    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_603185
+  var valid_603186 = header.getOrDefault("x-amz-object-lock-mode")
+  valid_603186 = validateParameter(valid_603186, JString, required = false,
                                  default = newJString("GOVERNANCE"))
-  if valid_601184 != nil:
-    section.add "x-amz-object-lock-mode", valid_601184
-  var valid_601185 = header.getOrDefault("Cache-Control")
-  valid_601185 = validateParameter(valid_601185, JString, required = false,
+  if valid_603186 != nil:
+    section.add "x-amz-object-lock-mode", valid_603186
+  var valid_603187 = header.getOrDefault("Cache-Control")
+  valid_603187 = validateParameter(valid_603187, JString, required = false,
                                  default = nil)
-  if valid_601185 != nil:
-    section.add "Cache-Control", valid_601185
-  var valid_601186 = header.getOrDefault("Content-Language")
-  valid_601186 = validateParameter(valid_601186, JString, required = false,
+  if valid_603187 != nil:
+    section.add "Cache-Control", valid_603187
+  var valid_603188 = header.getOrDefault("Content-Language")
+  valid_603188 = validateParameter(valid_603188, JString, required = false,
                                  default = nil)
-  if valid_601186 != nil:
-    section.add "Content-Language", valid_601186
-  var valid_601187 = header.getOrDefault("Content-Type")
-  valid_601187 = validateParameter(valid_601187, JString, required = false,
+  if valid_603188 != nil:
+    section.add "Content-Language", valid_603188
+  var valid_603189 = header.getOrDefault("Content-Type")
+  valid_603189 = validateParameter(valid_603189, JString, required = false,
                                  default = nil)
-  if valid_601187 != nil:
-    section.add "Content-Type", valid_601187
-  var valid_601188 = header.getOrDefault("Expires")
-  valid_601188 = validateParameter(valid_601188, JString, required = false,
+  if valid_603189 != nil:
+    section.add "Content-Type", valid_603189
+  var valid_603190 = header.getOrDefault("Expires")
+  valid_603190 = validateParameter(valid_603190, JString, required = false,
                                  default = nil)
-  if valid_601188 != nil:
-    section.add "Expires", valid_601188
-  var valid_601189 = header.getOrDefault("x-amz-website-redirect-location")
-  valid_601189 = validateParameter(valid_601189, JString, required = false,
+  if valid_603190 != nil:
+    section.add "Expires", valid_603190
+  var valid_603191 = header.getOrDefault("x-amz-website-redirect-location")
+  valid_603191 = validateParameter(valid_603191, JString, required = false,
                                  default = nil)
-  if valid_601189 != nil:
-    section.add "x-amz-website-redirect-location", valid_601189
-  var valid_601190 = header.getOrDefault("x-amz-acl")
-  valid_601190 = validateParameter(valid_601190, JString, required = false,
+  if valid_603191 != nil:
+    section.add "x-amz-website-redirect-location", valid_603191
+  var valid_603192 = header.getOrDefault("x-amz-acl")
+  valid_603192 = validateParameter(valid_603192, JString, required = false,
                                  default = newJString("private"))
-  if valid_601190 != nil:
-    section.add "x-amz-acl", valid_601190
-  var valid_601191 = header.getOrDefault("x-amz-grant-read")
-  valid_601191 = validateParameter(valid_601191, JString, required = false,
+  if valid_603192 != nil:
+    section.add "x-amz-acl", valid_603192
+  var valid_603193 = header.getOrDefault("x-amz-grant-read")
+  valid_603193 = validateParameter(valid_603193, JString, required = false,
                                  default = nil)
-  if valid_601191 != nil:
-    section.add "x-amz-grant-read", valid_601191
-  var valid_601192 = header.getOrDefault("x-amz-storage-class")
-  valid_601192 = validateParameter(valid_601192, JString, required = false,
+  if valid_603193 != nil:
+    section.add "x-amz-grant-read", valid_603193
+  var valid_603194 = header.getOrDefault("x-amz-storage-class")
+  valid_603194 = validateParameter(valid_603194, JString, required = false,
                                  default = newJString("STANDARD"))
-  if valid_601192 != nil:
-    section.add "x-amz-storage-class", valid_601192
-  var valid_601193 = header.getOrDefault("x-amz-object-lock-legal-hold")
-  valid_601193 = validateParameter(valid_601193, JString, required = false,
+  if valid_603194 != nil:
+    section.add "x-amz-storage-class", valid_603194
+  var valid_603195 = header.getOrDefault("x-amz-object-lock-legal-hold")
+  valid_603195 = validateParameter(valid_603195, JString, required = false,
                                  default = newJString("ON"))
-  if valid_601193 != nil:
-    section.add "x-amz-object-lock-legal-hold", valid_601193
-  var valid_601194 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
-  valid_601194 = validateParameter(valid_601194, JString, required = false,
+  if valid_603195 != nil:
+    section.add "x-amz-object-lock-legal-hold", valid_603195
+  var valid_603196 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
+  valid_603196 = validateParameter(valid_603196, JString, required = false,
                                  default = nil)
-  if valid_601194 != nil:
-    section.add "x-amz-server-side-encryption-customer-algorithm", valid_601194
-  var valid_601195 = header.getOrDefault("x-amz-tagging")
-  valid_601195 = validateParameter(valid_601195, JString, required = false,
+  if valid_603196 != nil:
+    section.add "x-amz-server-side-encryption-customer-algorithm", valid_603196
+  var valid_603197 = header.getOrDefault("x-amz-tagging")
+  valid_603197 = validateParameter(valid_603197, JString, required = false,
                                  default = nil)
-  if valid_601195 != nil:
-    section.add "x-amz-tagging", valid_601195
-  var valid_601196 = header.getOrDefault("x-amz-grant-read-acp")
-  valid_601196 = validateParameter(valid_601196, JString, required = false,
+  if valid_603197 != nil:
+    section.add "x-amz-tagging", valid_603197
+  var valid_603198 = header.getOrDefault("x-amz-grant-read-acp")
+  valid_603198 = validateParameter(valid_603198, JString, required = false,
                                  default = nil)
-  if valid_601196 != nil:
-    section.add "x-amz-grant-read-acp", valid_601196
-  var valid_601197 = header.getOrDefault("x-amz-server-side-encryption-context")
-  valid_601197 = validateParameter(valid_601197, JString, required = false,
+  if valid_603198 != nil:
+    section.add "x-amz-grant-read-acp", valid_603198
+  var valid_603199 = header.getOrDefault("x-amz-server-side-encryption-context")
+  valid_603199 = validateParameter(valid_603199, JString, required = false,
                                  default = nil)
-  if valid_601197 != nil:
-    section.add "x-amz-server-side-encryption-context", valid_601197
-  var valid_601198 = header.getOrDefault("x-amz-server-side-encryption-aws-kms-key-id")
-  valid_601198 = validateParameter(valid_601198, JString, required = false,
+  if valid_603199 != nil:
+    section.add "x-amz-server-side-encryption-context", valid_603199
+  var valid_603200 = header.getOrDefault("x-amz-server-side-encryption-aws-kms-key-id")
+  valid_603200 = validateParameter(valid_603200, JString, required = false,
                                  default = nil)
-  if valid_601198 != nil:
-    section.add "x-amz-server-side-encryption-aws-kms-key-id", valid_601198
-  var valid_601199 = header.getOrDefault("x-amz-object-lock-retain-until-date")
-  valid_601199 = validateParameter(valid_601199, JString, required = false,
+  if valid_603200 != nil:
+    section.add "x-amz-server-side-encryption-aws-kms-key-id", valid_603200
+  var valid_603201 = header.getOrDefault("x-amz-object-lock-retain-until-date")
+  valid_603201 = validateParameter(valid_603201, JString, required = false,
                                  default = nil)
-  if valid_601199 != nil:
-    section.add "x-amz-object-lock-retain-until-date", valid_601199
-  var valid_601200 = header.getOrDefault("x-amz-grant-write-acp")
-  valid_601200 = validateParameter(valid_601200, JString, required = false,
+  if valid_603201 != nil:
+    section.add "x-amz-object-lock-retain-until-date", valid_603201
+  var valid_603202 = header.getOrDefault("x-amz-grant-write-acp")
+  valid_603202 = validateParameter(valid_603202, JString, required = false,
                                  default = nil)
-  if valid_601200 != nil:
-    section.add "x-amz-grant-write-acp", valid_601200
-  var valid_601201 = header.getOrDefault("Content-Encoding")
-  valid_601201 = validateParameter(valid_601201, JString, required = false,
+  if valid_603202 != nil:
+    section.add "x-amz-grant-write-acp", valid_603202
+  var valid_603203 = header.getOrDefault("Content-Encoding")
+  valid_603203 = validateParameter(valid_603203, JString, required = false,
                                  default = nil)
-  if valid_601201 != nil:
-    section.add "Content-Encoding", valid_601201
-  var valid_601202 = header.getOrDefault("x-amz-request-payer")
-  valid_601202 = validateParameter(valid_601202, JString, required = false,
+  if valid_603203 != nil:
+    section.add "Content-Encoding", valid_603203
+  var valid_603204 = header.getOrDefault("x-amz-request-payer")
+  valid_603204 = validateParameter(valid_603204, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601202 != nil:
-    section.add "x-amz-request-payer", valid_601202
-  var valid_601203 = header.getOrDefault("x-amz-server-side-encryption")
-  valid_601203 = validateParameter(valid_601203, JString, required = false,
+  if valid_603204 != nil:
+    section.add "x-amz-request-payer", valid_603204
+  var valid_603205 = header.getOrDefault("x-amz-server-side-encryption")
+  valid_603205 = validateParameter(valid_603205, JString, required = false,
                                  default = newJString("AES256"))
-  if valid_601203 != nil:
-    section.add "x-amz-server-side-encryption", valid_601203
-  var valid_601204 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
-  valid_601204 = validateParameter(valid_601204, JString, required = false,
+  if valid_603205 != nil:
+    section.add "x-amz-server-side-encryption", valid_603205
+  var valid_603206 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
+  valid_603206 = validateParameter(valid_603206, JString, required = false,
                                  default = nil)
-  if valid_601204 != nil:
-    section.add "x-amz-server-side-encryption-customer-key", valid_601204
+  if valid_603206 != nil:
+    section.add "x-amz-server-side-encryption-customer-key", valid_603206
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1552,20 +1552,20 @@ proc validate_CreateMultipartUpload_601175(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601206: Call_CreateMultipartUpload_601174; path: JsonNode;
+proc call*(call_603208: Call_CreateMultipartUpload_603176; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Initiates a multipart upload and returns an upload ID.</p> <p> <b>Note:</b> After you initiate multipart upload and upload one or more parts, you must either complete or abort multipart upload in order to stop getting charged for storage of the uploaded parts. Only after you either complete or abort multipart upload, Amazon S3 frees up the parts storage and stops charging you for the parts storage.</p>
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadInitiate.html
-  let valid = call_601206.validator(path, query, header, formData, body)
-  let scheme = call_601206.pickScheme
+  let valid = call_603208.validator(path, query, header, formData, body)
+  let scheme = call_603208.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601206.url(scheme.get, call_601206.host, call_601206.base,
-                         call_601206.route, valid.getOrDefault("path"))
-  result = hook(call_601206, url, valid)
+  let url = call_603208.url(scheme.get, call_603208.host, call_603208.base,
+                         call_603208.route, valid.getOrDefault("path"))
+  result = hook(call_603208, url, valid)
 
-proc call*(call_601207: Call_CreateMultipartUpload_601174; Key: string;
+proc call*(call_603209: Call_CreateMultipartUpload_603176; Key: string;
           uploads: bool; Bucket: string; body: JsonNode): Recallable =
   ## createMultipartUpload
   ## <p>Initiates a multipart upload and returns an upload ID.</p> <p> <b>Note:</b> After you initiate multipart upload and upload one or more parts, you must either complete or abort multipart upload in order to stop getting charged for storage of the uploaded parts. Only after you either complete or abort multipart upload, Amazon S3 frees up the parts storage and stops charging you for the parts storage.</p>
@@ -1576,24 +1576,24 @@ proc call*(call_601207: Call_CreateMultipartUpload_601174; Key: string;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601208 = newJObject()
-  var query_601209 = newJObject()
-  var body_601210 = newJObject()
-  add(path_601208, "Key", newJString(Key))
-  add(query_601209, "uploads", newJBool(uploads))
-  add(path_601208, "Bucket", newJString(Bucket))
+  var path_603210 = newJObject()
+  var query_603211 = newJObject()
+  var body_603212 = newJObject()
+  add(path_603210, "Key", newJString(Key))
+  add(query_603211, "uploads", newJBool(uploads))
+  add(path_603210, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601210 = body
-  result = call_601207.call(path_601208, query_601209, nil, nil, body_601210)
+    body_603212 = body
+  result = call_603209.call(path_603210, query_603211, nil, nil, body_603212)
 
-var createMultipartUpload* = Call_CreateMultipartUpload_601174(
+var createMultipartUpload* = Call_CreateMultipartUpload_603176(
     name: "createMultipartUpload", meth: HttpMethod.HttpPost,
     host: "s3.amazonaws.com", route: "/{Bucket}/{Key}#uploads",
-    validator: validate_CreateMultipartUpload_601175, base: "/",
-    url: url_CreateMultipartUpload_601176, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateMultipartUpload_603177, base: "/",
+    url: url_CreateMultipartUpload_603178, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketAnalyticsConfiguration_601222 = ref object of OpenApiRestCall_600426
-proc url_PutBucketAnalyticsConfiguration_601224(protocol: Scheme; host: string;
+  Call_PutBucketAnalyticsConfiguration_603224 = ref object of OpenApiRestCall_602433
+proc url_PutBucketAnalyticsConfiguration_603226(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -1604,9 +1604,9 @@ proc url_PutBucketAnalyticsConfiguration_601224(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketAnalyticsConfiguration_601223(path: JsonNode;
+proc validate_PutBucketAnalyticsConfiguration_603225(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Sets an analytics configuration for the bucket (specified by the analytics configuration ID).
   ## 
@@ -1617,11 +1617,11 @@ proc validate_PutBucketAnalyticsConfiguration_601223(path: JsonNode;
   ##         : The name of the bucket to which an analytics configuration is stored.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601225 = path.getOrDefault("Bucket")
-  valid_601225 = validateParameter(valid_601225, JString, required = true,
+  var valid_603227 = path.getOrDefault("Bucket")
+  valid_603227 = validateParameter(valid_603227, JString, required = true,
                                  default = nil)
-  if valid_601225 != nil:
-    section.add "Bucket", valid_601225
+  if valid_603227 != nil:
+    section.add "Bucket", valid_603227
   result.add "path", section
   ## parameters in `query` object:
   ##   id: JString (required)
@@ -1629,24 +1629,24 @@ proc validate_PutBucketAnalyticsConfiguration_601223(path: JsonNode;
   ##   analytics: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `id` field"
-  var valid_601226 = query.getOrDefault("id")
-  valid_601226 = validateParameter(valid_601226, JString, required = true,
+  var valid_603228 = query.getOrDefault("id")
+  valid_603228 = validateParameter(valid_603228, JString, required = true,
                                  default = nil)
-  if valid_601226 != nil:
-    section.add "id", valid_601226
-  var valid_601227 = query.getOrDefault("analytics")
-  valid_601227 = validateParameter(valid_601227, JBool, required = true, default = nil)
-  if valid_601227 != nil:
-    section.add "analytics", valid_601227
+  if valid_603228 != nil:
+    section.add "id", valid_603228
+  var valid_603229 = query.getOrDefault("analytics")
+  valid_603229 = validateParameter(valid_603229, JBool, required = true, default = nil)
+  if valid_603229 != nil:
+    section.add "analytics", valid_603229
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601228 = header.getOrDefault("x-amz-security-token")
-  valid_601228 = validateParameter(valid_601228, JString, required = false,
+  var valid_603230 = header.getOrDefault("x-amz-security-token")
+  valid_603230 = validateParameter(valid_603230, JString, required = false,
                                  default = nil)
-  if valid_601228 != nil:
-    section.add "x-amz-security-token", valid_601228
+  if valid_603230 != nil:
+    section.add "x-amz-security-token", valid_603230
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1657,20 +1657,20 @@ proc validate_PutBucketAnalyticsConfiguration_601223(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601230: Call_PutBucketAnalyticsConfiguration_601222;
+proc call*(call_603232: Call_PutBucketAnalyticsConfiguration_603224;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Sets an analytics configuration for the bucket (specified by the analytics configuration ID).
   ## 
-  let valid = call_601230.validator(path, query, header, formData, body)
-  let scheme = call_601230.pickScheme
+  let valid = call_603232.validator(path, query, header, formData, body)
+  let scheme = call_603232.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601230.url(scheme.get, call_601230.host, call_601230.base,
-                         call_601230.route, valid.getOrDefault("path"))
-  result = hook(call_601230, url, valid)
+  let url = call_603232.url(scheme.get, call_603232.host, call_603232.base,
+                         call_603232.route, valid.getOrDefault("path"))
+  result = hook(call_603232, url, valid)
 
-proc call*(call_601231: Call_PutBucketAnalyticsConfiguration_601222; id: string;
+proc call*(call_603233: Call_PutBucketAnalyticsConfiguration_603224; id: string;
           analytics: bool; Bucket: string; body: JsonNode): Recallable =
   ## putBucketAnalyticsConfiguration
   ## Sets an analytics configuration for the bucket (specified by the analytics configuration ID).
@@ -1680,25 +1680,25 @@ proc call*(call_601231: Call_PutBucketAnalyticsConfiguration_601222; id: string;
   ##   Bucket: string (required)
   ##         : The name of the bucket to which an analytics configuration is stored.
   ##   body: JObject (required)
-  var path_601232 = newJObject()
-  var query_601233 = newJObject()
-  var body_601234 = newJObject()
-  add(query_601233, "id", newJString(id))
-  add(query_601233, "analytics", newJBool(analytics))
-  add(path_601232, "Bucket", newJString(Bucket))
+  var path_603234 = newJObject()
+  var query_603235 = newJObject()
+  var body_603236 = newJObject()
+  add(query_603235, "id", newJString(id))
+  add(query_603235, "analytics", newJBool(analytics))
+  add(path_603234, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601234 = body
-  result = call_601231.call(path_601232, query_601233, nil, nil, body_601234)
+    body_603236 = body
+  result = call_603233.call(path_603234, query_603235, nil, nil, body_603236)
 
-var putBucketAnalyticsConfiguration* = Call_PutBucketAnalyticsConfiguration_601222(
+var putBucketAnalyticsConfiguration* = Call_PutBucketAnalyticsConfiguration_603224(
     name: "putBucketAnalyticsConfiguration", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#analytics&id",
-    validator: validate_PutBucketAnalyticsConfiguration_601223, base: "/",
-    url: url_PutBucketAnalyticsConfiguration_601224,
+    validator: validate_PutBucketAnalyticsConfiguration_603225, base: "/",
+    url: url_PutBucketAnalyticsConfiguration_603226,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketAnalyticsConfiguration_601211 = ref object of OpenApiRestCall_600426
-proc url_GetBucketAnalyticsConfiguration_601213(protocol: Scheme; host: string;
+  Call_GetBucketAnalyticsConfiguration_603213 = ref object of OpenApiRestCall_602433
+proc url_GetBucketAnalyticsConfiguration_603215(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -1709,9 +1709,9 @@ proc url_GetBucketAnalyticsConfiguration_601213(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketAnalyticsConfiguration_601212(path: JsonNode;
+proc validate_GetBucketAnalyticsConfiguration_603214(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets an analytics configuration for the bucket (specified by the analytics configuration ID).
   ## 
@@ -1722,11 +1722,11 @@ proc validate_GetBucketAnalyticsConfiguration_601212(path: JsonNode;
   ##         : The name of the bucket from which an analytics configuration is retrieved.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601214 = path.getOrDefault("Bucket")
-  valid_601214 = validateParameter(valid_601214, JString, required = true,
+  var valid_603216 = path.getOrDefault("Bucket")
+  valid_603216 = validateParameter(valid_603216, JString, required = true,
                                  default = nil)
-  if valid_601214 != nil:
-    section.add "Bucket", valid_601214
+  if valid_603216 != nil:
+    section.add "Bucket", valid_603216
   result.add "path", section
   ## parameters in `query` object:
   ##   id: JString (required)
@@ -1734,44 +1734,44 @@ proc validate_GetBucketAnalyticsConfiguration_601212(path: JsonNode;
   ##   analytics: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `id` field"
-  var valid_601215 = query.getOrDefault("id")
-  valid_601215 = validateParameter(valid_601215, JString, required = true,
+  var valid_603217 = query.getOrDefault("id")
+  valid_603217 = validateParameter(valid_603217, JString, required = true,
                                  default = nil)
-  if valid_601215 != nil:
-    section.add "id", valid_601215
-  var valid_601216 = query.getOrDefault("analytics")
-  valid_601216 = validateParameter(valid_601216, JBool, required = true, default = nil)
-  if valid_601216 != nil:
-    section.add "analytics", valid_601216
+  if valid_603217 != nil:
+    section.add "id", valid_603217
+  var valid_603218 = query.getOrDefault("analytics")
+  valid_603218 = validateParameter(valid_603218, JBool, required = true, default = nil)
+  if valid_603218 != nil:
+    section.add "analytics", valid_603218
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601217 = header.getOrDefault("x-amz-security-token")
-  valid_601217 = validateParameter(valid_601217, JString, required = false,
+  var valid_603219 = header.getOrDefault("x-amz-security-token")
+  valid_603219 = validateParameter(valid_603219, JString, required = false,
                                  default = nil)
-  if valid_601217 != nil:
-    section.add "x-amz-security-token", valid_601217
+  if valid_603219 != nil:
+    section.add "x-amz-security-token", valid_603219
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601218: Call_GetBucketAnalyticsConfiguration_601211;
+proc call*(call_603220: Call_GetBucketAnalyticsConfiguration_603213;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Gets an analytics configuration for the bucket (specified by the analytics configuration ID).
   ## 
-  let valid = call_601218.validator(path, query, header, formData, body)
-  let scheme = call_601218.pickScheme
+  let valid = call_603220.validator(path, query, header, formData, body)
+  let scheme = call_603220.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601218.url(scheme.get, call_601218.host, call_601218.base,
-                         call_601218.route, valid.getOrDefault("path"))
-  result = hook(call_601218, url, valid)
+  let url = call_603220.url(scheme.get, call_603220.host, call_603220.base,
+                         call_603220.route, valid.getOrDefault("path"))
+  result = hook(call_603220, url, valid)
 
-proc call*(call_601219: Call_GetBucketAnalyticsConfiguration_601211; id: string;
+proc call*(call_603221: Call_GetBucketAnalyticsConfiguration_603213; id: string;
           analytics: bool; Bucket: string): Recallable =
   ## getBucketAnalyticsConfiguration
   ## Gets an analytics configuration for the bucket (specified by the analytics configuration ID).
@@ -1780,22 +1780,22 @@ proc call*(call_601219: Call_GetBucketAnalyticsConfiguration_601211; id: string;
   ##   analytics: bool (required)
   ##   Bucket: string (required)
   ##         : The name of the bucket from which an analytics configuration is retrieved.
-  var path_601220 = newJObject()
-  var query_601221 = newJObject()
-  add(query_601221, "id", newJString(id))
-  add(query_601221, "analytics", newJBool(analytics))
-  add(path_601220, "Bucket", newJString(Bucket))
-  result = call_601219.call(path_601220, query_601221, nil, nil, nil)
+  var path_603222 = newJObject()
+  var query_603223 = newJObject()
+  add(query_603223, "id", newJString(id))
+  add(query_603223, "analytics", newJBool(analytics))
+  add(path_603222, "Bucket", newJString(Bucket))
+  result = call_603221.call(path_603222, query_603223, nil, nil, nil)
 
-var getBucketAnalyticsConfiguration* = Call_GetBucketAnalyticsConfiguration_601211(
+var getBucketAnalyticsConfiguration* = Call_GetBucketAnalyticsConfiguration_603213(
     name: "getBucketAnalyticsConfiguration", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#analytics&id",
-    validator: validate_GetBucketAnalyticsConfiguration_601212, base: "/",
-    url: url_GetBucketAnalyticsConfiguration_601213,
+    validator: validate_GetBucketAnalyticsConfiguration_603214, base: "/",
+    url: url_GetBucketAnalyticsConfiguration_603215,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketAnalyticsConfiguration_601235 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketAnalyticsConfiguration_601237(protocol: Scheme; host: string;
+  Call_DeleteBucketAnalyticsConfiguration_603237 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketAnalyticsConfiguration_603239(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -1806,9 +1806,9 @@ proc url_DeleteBucketAnalyticsConfiguration_601237(protocol: Scheme; host: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketAnalyticsConfiguration_601236(path: JsonNode;
+proc validate_DeleteBucketAnalyticsConfiguration_603238(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes an analytics configuration for the bucket (specified by the analytics configuration ID).</p> <p>To use this operation, you must have permissions to perform the s3:PutAnalyticsConfiguration action. The bucket owner has this permission by default. The bucket owner can grant this permission to others. </p>
   ## 
@@ -1819,11 +1819,11 @@ proc validate_DeleteBucketAnalyticsConfiguration_601236(path: JsonNode;
   ##         : The name of the bucket from which an analytics configuration is deleted.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601238 = path.getOrDefault("Bucket")
-  valid_601238 = validateParameter(valid_601238, JString, required = true,
+  var valid_603240 = path.getOrDefault("Bucket")
+  valid_603240 = validateParameter(valid_603240, JString, required = true,
                                  default = nil)
-  if valid_601238 != nil:
-    section.add "Bucket", valid_601238
+  if valid_603240 != nil:
+    section.add "Bucket", valid_603240
   result.add "path", section
   ## parameters in `query` object:
   ##   id: JString (required)
@@ -1831,44 +1831,44 @@ proc validate_DeleteBucketAnalyticsConfiguration_601236(path: JsonNode;
   ##   analytics: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `id` field"
-  var valid_601239 = query.getOrDefault("id")
-  valid_601239 = validateParameter(valid_601239, JString, required = true,
+  var valid_603241 = query.getOrDefault("id")
+  valid_603241 = validateParameter(valid_603241, JString, required = true,
                                  default = nil)
-  if valid_601239 != nil:
-    section.add "id", valid_601239
-  var valid_601240 = query.getOrDefault("analytics")
-  valid_601240 = validateParameter(valid_601240, JBool, required = true, default = nil)
-  if valid_601240 != nil:
-    section.add "analytics", valid_601240
+  if valid_603241 != nil:
+    section.add "id", valid_603241
+  var valid_603242 = query.getOrDefault("analytics")
+  valid_603242 = validateParameter(valid_603242, JBool, required = true, default = nil)
+  if valid_603242 != nil:
+    section.add "analytics", valid_603242
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601241 = header.getOrDefault("x-amz-security-token")
-  valid_601241 = validateParameter(valid_601241, JString, required = false,
+  var valid_603243 = header.getOrDefault("x-amz-security-token")
+  valid_603243 = validateParameter(valid_603243, JString, required = false,
                                  default = nil)
-  if valid_601241 != nil:
-    section.add "x-amz-security-token", valid_601241
+  if valid_603243 != nil:
+    section.add "x-amz-security-token", valid_603243
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601242: Call_DeleteBucketAnalyticsConfiguration_601235;
+proc call*(call_603244: Call_DeleteBucketAnalyticsConfiguration_603237;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Deletes an analytics configuration for the bucket (specified by the analytics configuration ID).</p> <p>To use this operation, you must have permissions to perform the s3:PutAnalyticsConfiguration action. The bucket owner has this permission by default. The bucket owner can grant this permission to others. </p>
   ## 
-  let valid = call_601242.validator(path, query, header, formData, body)
-  let scheme = call_601242.pickScheme
+  let valid = call_603244.validator(path, query, header, formData, body)
+  let scheme = call_603244.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601242.url(scheme.get, call_601242.host, call_601242.base,
-                         call_601242.route, valid.getOrDefault("path"))
-  result = hook(call_601242, url, valid)
+  let url = call_603244.url(scheme.get, call_603244.host, call_603244.base,
+                         call_603244.route, valid.getOrDefault("path"))
+  result = hook(call_603244, url, valid)
 
-proc call*(call_601243: Call_DeleteBucketAnalyticsConfiguration_601235; id: string;
+proc call*(call_603245: Call_DeleteBucketAnalyticsConfiguration_603237; id: string;
           analytics: bool; Bucket: string): Recallable =
   ## deleteBucketAnalyticsConfiguration
   ## <p>Deletes an analytics configuration for the bucket (specified by the analytics configuration ID).</p> <p>To use this operation, you must have permissions to perform the s3:PutAnalyticsConfiguration action. The bucket owner has this permission by default. The bucket owner can grant this permission to others. </p>
@@ -1877,22 +1877,22 @@ proc call*(call_601243: Call_DeleteBucketAnalyticsConfiguration_601235; id: stri
   ##   analytics: bool (required)
   ##   Bucket: string (required)
   ##         : The name of the bucket from which an analytics configuration is deleted.
-  var path_601244 = newJObject()
-  var query_601245 = newJObject()
-  add(query_601245, "id", newJString(id))
-  add(query_601245, "analytics", newJBool(analytics))
-  add(path_601244, "Bucket", newJString(Bucket))
-  result = call_601243.call(path_601244, query_601245, nil, nil, nil)
+  var path_603246 = newJObject()
+  var query_603247 = newJObject()
+  add(query_603247, "id", newJString(id))
+  add(query_603247, "analytics", newJBool(analytics))
+  add(path_603246, "Bucket", newJString(Bucket))
+  result = call_603245.call(path_603246, query_603247, nil, nil, nil)
 
-var deleteBucketAnalyticsConfiguration* = Call_DeleteBucketAnalyticsConfiguration_601235(
+var deleteBucketAnalyticsConfiguration* = Call_DeleteBucketAnalyticsConfiguration_603237(
     name: "deleteBucketAnalyticsConfiguration", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#analytics&id",
-    validator: validate_DeleteBucketAnalyticsConfiguration_601236, base: "/",
-    url: url_DeleteBucketAnalyticsConfiguration_601237,
+    validator: validate_DeleteBucketAnalyticsConfiguration_603238, base: "/",
+    url: url_DeleteBucketAnalyticsConfiguration_603239,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketCors_601256 = ref object of OpenApiRestCall_600426
-proc url_PutBucketCors_601258(protocol: Scheme; host: string; base: string;
+  Call_PutBucketCors_603258 = ref object of OpenApiRestCall_602433
+proc url_PutBucketCors_603260(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -1903,9 +1903,9 @@ proc url_PutBucketCors_601258(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketCors_601257(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutBucketCors_603259(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Sets the CORS configuration for a bucket.
   ## 
@@ -1917,36 +1917,36 @@ proc validate_PutBucketCors_601257(path: JsonNode; query: JsonNode; header: Json
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601259 = path.getOrDefault("Bucket")
-  valid_601259 = validateParameter(valid_601259, JString, required = true,
+  var valid_603261 = path.getOrDefault("Bucket")
+  valid_603261 = validateParameter(valid_603261, JString, required = true,
                                  default = nil)
-  if valid_601259 != nil:
-    section.add "Bucket", valid_601259
+  if valid_603261 != nil:
+    section.add "Bucket", valid_603261
   result.add "path", section
   ## parameters in `query` object:
   ##   cors: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `cors` field"
-  var valid_601260 = query.getOrDefault("cors")
-  valid_601260 = validateParameter(valid_601260, JBool, required = true, default = nil)
-  if valid_601260 != nil:
-    section.add "cors", valid_601260
+  var valid_603262 = query.getOrDefault("cors")
+  valid_603262 = validateParameter(valid_603262, JBool, required = true, default = nil)
+  if valid_603262 != nil:
+    section.add "cors", valid_603262
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : <p/>
   section = newJObject()
-  var valid_601261 = header.getOrDefault("x-amz-security-token")
-  valid_601261 = validateParameter(valid_601261, JString, required = false,
+  var valid_603263 = header.getOrDefault("x-amz-security-token")
+  valid_603263 = validateParameter(valid_603263, JString, required = false,
                                  default = nil)
-  if valid_601261 != nil:
-    section.add "x-amz-security-token", valid_601261
-  var valid_601262 = header.getOrDefault("Content-MD5")
-  valid_601262 = validateParameter(valid_601262, JString, required = false,
+  if valid_603263 != nil:
+    section.add "x-amz-security-token", valid_603263
+  var valid_603264 = header.getOrDefault("Content-MD5")
+  valid_603264 = validateParameter(valid_603264, JString, required = false,
                                  default = nil)
-  if valid_601262 != nil:
-    section.add "Content-MD5", valid_601262
+  if valid_603264 != nil:
+    section.add "Content-MD5", valid_603264
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1957,20 +1957,20 @@ proc validate_PutBucketCors_601257(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601264: Call_PutBucketCors_601256; path: JsonNode; query: JsonNode;
+proc call*(call_603266: Call_PutBucketCors_603258; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets the CORS configuration for a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTcors.html
-  let valid = call_601264.validator(path, query, header, formData, body)
-  let scheme = call_601264.pickScheme
+  let valid = call_603266.validator(path, query, header, formData, body)
+  let scheme = call_603266.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601264.url(scheme.get, call_601264.host, call_601264.base,
-                         call_601264.route, valid.getOrDefault("path"))
-  result = hook(call_601264, url, valid)
+  let url = call_603266.url(scheme.get, call_603266.host, call_603266.base,
+                         call_603266.route, valid.getOrDefault("path"))
+  result = hook(call_603266, url, valid)
 
-proc call*(call_601265: Call_PutBucketCors_601256; cors: bool; Bucket: string;
+proc call*(call_603267: Call_PutBucketCors_603258; cors: bool; Bucket: string;
           body: JsonNode): Recallable =
   ## putBucketCors
   ## Sets the CORS configuration for a bucket.
@@ -1979,22 +1979,22 @@ proc call*(call_601265: Call_PutBucketCors_601256; cors: bool; Bucket: string;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601266 = newJObject()
-  var query_601267 = newJObject()
-  var body_601268 = newJObject()
-  add(query_601267, "cors", newJBool(cors))
-  add(path_601266, "Bucket", newJString(Bucket))
+  var path_603268 = newJObject()
+  var query_603269 = newJObject()
+  var body_603270 = newJObject()
+  add(query_603269, "cors", newJBool(cors))
+  add(path_603268, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601268 = body
-  result = call_601265.call(path_601266, query_601267, nil, nil, body_601268)
+    body_603270 = body
+  result = call_603267.call(path_603268, query_603269, nil, nil, body_603270)
 
-var putBucketCors* = Call_PutBucketCors_601256(name: "putBucketCors",
+var putBucketCors* = Call_PutBucketCors_603258(name: "putBucketCors",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com", route: "/{Bucket}#cors",
-    validator: validate_PutBucketCors_601257, base: "/", url: url_PutBucketCors_601258,
+    validator: validate_PutBucketCors_603259, base: "/", url: url_PutBucketCors_603260,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketCors_601246 = ref object of OpenApiRestCall_600426
-proc url_GetBucketCors_601248(protocol: Scheme; host: string; base: string;
+  Call_GetBucketCors_603248 = ref object of OpenApiRestCall_602433
+proc url_GetBucketCors_603250(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2005,9 +2005,9 @@ proc url_GetBucketCors_601248(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketCors_601247(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetBucketCors_603249(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the CORS configuration for the bucket.
   ## 
@@ -2019,68 +2019,68 @@ proc validate_GetBucketCors_601247(path: JsonNode; query: JsonNode; header: Json
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601249 = path.getOrDefault("Bucket")
-  valid_601249 = validateParameter(valid_601249, JString, required = true,
+  var valid_603251 = path.getOrDefault("Bucket")
+  valid_603251 = validateParameter(valid_603251, JString, required = true,
                                  default = nil)
-  if valid_601249 != nil:
-    section.add "Bucket", valid_601249
+  if valid_603251 != nil:
+    section.add "Bucket", valid_603251
   result.add "path", section
   ## parameters in `query` object:
   ##   cors: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `cors` field"
-  var valid_601250 = query.getOrDefault("cors")
-  valid_601250 = validateParameter(valid_601250, JBool, required = true, default = nil)
-  if valid_601250 != nil:
-    section.add "cors", valid_601250
+  var valid_603252 = query.getOrDefault("cors")
+  valid_603252 = validateParameter(valid_603252, JBool, required = true, default = nil)
+  if valid_603252 != nil:
+    section.add "cors", valid_603252
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601251 = header.getOrDefault("x-amz-security-token")
-  valid_601251 = validateParameter(valid_601251, JString, required = false,
+  var valid_603253 = header.getOrDefault("x-amz-security-token")
+  valid_603253 = validateParameter(valid_603253, JString, required = false,
                                  default = nil)
-  if valid_601251 != nil:
-    section.add "x-amz-security-token", valid_601251
+  if valid_603253 != nil:
+    section.add "x-amz-security-token", valid_603253
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601252: Call_GetBucketCors_601246; path: JsonNode; query: JsonNode;
+proc call*(call_603254: Call_GetBucketCors_603248; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the CORS configuration for the bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETcors.html
-  let valid = call_601252.validator(path, query, header, formData, body)
-  let scheme = call_601252.pickScheme
+  let valid = call_603254.validator(path, query, header, formData, body)
+  let scheme = call_603254.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601252.url(scheme.get, call_601252.host, call_601252.base,
-                         call_601252.route, valid.getOrDefault("path"))
-  result = hook(call_601252, url, valid)
+  let url = call_603254.url(scheme.get, call_603254.host, call_603254.base,
+                         call_603254.route, valid.getOrDefault("path"))
+  result = hook(call_603254, url, valid)
 
-proc call*(call_601253: Call_GetBucketCors_601246; cors: bool; Bucket: string): Recallable =
+proc call*(call_603255: Call_GetBucketCors_603248; cors: bool; Bucket: string): Recallable =
   ## getBucketCors
   ## Returns the CORS configuration for the bucket.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETcors.html
   ##   cors: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601254 = newJObject()
-  var query_601255 = newJObject()
-  add(query_601255, "cors", newJBool(cors))
-  add(path_601254, "Bucket", newJString(Bucket))
-  result = call_601253.call(path_601254, query_601255, nil, nil, nil)
+  var path_603256 = newJObject()
+  var query_603257 = newJObject()
+  add(query_603257, "cors", newJBool(cors))
+  add(path_603256, "Bucket", newJString(Bucket))
+  result = call_603255.call(path_603256, query_603257, nil, nil, nil)
 
-var getBucketCors* = Call_GetBucketCors_601246(name: "getBucketCors",
+var getBucketCors* = Call_GetBucketCors_603248(name: "getBucketCors",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com", route: "/{Bucket}#cors",
-    validator: validate_GetBucketCors_601247, base: "/", url: url_GetBucketCors_601248,
+    validator: validate_GetBucketCors_603249, base: "/", url: url_GetBucketCors_603250,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketCors_601269 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketCors_601271(protocol: Scheme; host: string; base: string;
+  Call_DeleteBucketCors_603271 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketCors_603273(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2091,9 +2091,9 @@ proc url_DeleteBucketCors_601271(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketCors_601270(path: JsonNode; query: JsonNode;
+proc validate_DeleteBucketCors_603272(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Deletes the CORS configuration information set for the bucket.
@@ -2106,68 +2106,68 @@ proc validate_DeleteBucketCors_601270(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601272 = path.getOrDefault("Bucket")
-  valid_601272 = validateParameter(valid_601272, JString, required = true,
+  var valid_603274 = path.getOrDefault("Bucket")
+  valid_603274 = validateParameter(valid_603274, JString, required = true,
                                  default = nil)
-  if valid_601272 != nil:
-    section.add "Bucket", valid_601272
+  if valid_603274 != nil:
+    section.add "Bucket", valid_603274
   result.add "path", section
   ## parameters in `query` object:
   ##   cors: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `cors` field"
-  var valid_601273 = query.getOrDefault("cors")
-  valid_601273 = validateParameter(valid_601273, JBool, required = true, default = nil)
-  if valid_601273 != nil:
-    section.add "cors", valid_601273
+  var valid_603275 = query.getOrDefault("cors")
+  valid_603275 = validateParameter(valid_603275, JBool, required = true, default = nil)
+  if valid_603275 != nil:
+    section.add "cors", valid_603275
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601274 = header.getOrDefault("x-amz-security-token")
-  valid_601274 = validateParameter(valid_601274, JString, required = false,
+  var valid_603276 = header.getOrDefault("x-amz-security-token")
+  valid_603276 = validateParameter(valid_603276, JString, required = false,
                                  default = nil)
-  if valid_601274 != nil:
-    section.add "x-amz-security-token", valid_601274
+  if valid_603276 != nil:
+    section.add "x-amz-security-token", valid_603276
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601275: Call_DeleteBucketCors_601269; path: JsonNode;
+proc call*(call_603277: Call_DeleteBucketCors_603271; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the CORS configuration information set for the bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETEcors.html
-  let valid = call_601275.validator(path, query, header, formData, body)
-  let scheme = call_601275.pickScheme
+  let valid = call_603277.validator(path, query, header, formData, body)
+  let scheme = call_603277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601275.url(scheme.get, call_601275.host, call_601275.base,
-                         call_601275.route, valid.getOrDefault("path"))
-  result = hook(call_601275, url, valid)
+  let url = call_603277.url(scheme.get, call_603277.host, call_603277.base,
+                         call_603277.route, valid.getOrDefault("path"))
+  result = hook(call_603277, url, valid)
 
-proc call*(call_601276: Call_DeleteBucketCors_601269; cors: bool; Bucket: string): Recallable =
+proc call*(call_603278: Call_DeleteBucketCors_603271; cors: bool; Bucket: string): Recallable =
   ## deleteBucketCors
   ## Deletes the CORS configuration information set for the bucket.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETEcors.html
   ##   cors: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601277 = newJObject()
-  var query_601278 = newJObject()
-  add(query_601278, "cors", newJBool(cors))
-  add(path_601277, "Bucket", newJString(Bucket))
-  result = call_601276.call(path_601277, query_601278, nil, nil, nil)
+  var path_603279 = newJObject()
+  var query_603280 = newJObject()
+  add(query_603280, "cors", newJBool(cors))
+  add(path_603279, "Bucket", newJString(Bucket))
+  result = call_603278.call(path_603279, query_603280, nil, nil, nil)
 
-var deleteBucketCors* = Call_DeleteBucketCors_601269(name: "deleteBucketCors",
+var deleteBucketCors* = Call_DeleteBucketCors_603271(name: "deleteBucketCors",
     meth: HttpMethod.HttpDelete, host: "s3.amazonaws.com", route: "/{Bucket}#cors",
-    validator: validate_DeleteBucketCors_601270, base: "/",
-    url: url_DeleteBucketCors_601271, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBucketCors_603272, base: "/",
+    url: url_DeleteBucketCors_603273, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketEncryption_601289 = ref object of OpenApiRestCall_600426
-proc url_PutBucketEncryption_601291(protocol: Scheme; host: string; base: string;
+  Call_PutBucketEncryption_603291 = ref object of OpenApiRestCall_602433
+proc url_PutBucketEncryption_603293(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2178,9 +2178,9 @@ proc url_PutBucketEncryption_601291(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketEncryption_601290(path: JsonNode; query: JsonNode;
+proc validate_PutBucketEncryption_603292(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Creates a new server-side encryption configuration (or replaces an existing one, if present).
@@ -2193,37 +2193,37 @@ proc validate_PutBucketEncryption_601290(path: JsonNode; query: JsonNode;
   ## href="https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html">Amazon S3 Default Bucket Encryption</a> in the <i>Amazon Simple Storage Service Developer Guide</i>.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601292 = path.getOrDefault("Bucket")
-  valid_601292 = validateParameter(valid_601292, JString, required = true,
+  var valid_603294 = path.getOrDefault("Bucket")
+  valid_603294 = validateParameter(valid_603294, JString, required = true,
                                  default = nil)
-  if valid_601292 != nil:
-    section.add "Bucket", valid_601292
+  if valid_603294 != nil:
+    section.add "Bucket", valid_603294
   result.add "path", section
   ## parameters in `query` object:
   ##   encryption: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `encryption` field"
-  var valid_601293 = query.getOrDefault("encryption")
-  valid_601293 = validateParameter(valid_601293, JBool, required = true, default = nil)
-  if valid_601293 != nil:
-    section.add "encryption", valid_601293
+  var valid_603295 = query.getOrDefault("encryption")
+  valid_603295 = validateParameter(valid_603295, JBool, required = true, default = nil)
+  if valid_603295 != nil:
+    section.add "encryption", valid_603295
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : The base64-encoded 128-bit MD5 digest of the server-side encryption configuration. This parameter is auto-populated when using the command from the CLI.
   section = newJObject()
-  var valid_601294 = header.getOrDefault("x-amz-security-token")
-  valid_601294 = validateParameter(valid_601294, JString, required = false,
+  var valid_603296 = header.getOrDefault("x-amz-security-token")
+  valid_603296 = validateParameter(valid_603296, JString, required = false,
                                  default = nil)
-  if valid_601294 != nil:
-    section.add "x-amz-security-token", valid_601294
-  var valid_601295 = header.getOrDefault("Content-MD5")
-  valid_601295 = validateParameter(valid_601295, JString, required = false,
+  if valid_603296 != nil:
+    section.add "x-amz-security-token", valid_603296
+  var valid_603297 = header.getOrDefault("Content-MD5")
+  valid_603297 = validateParameter(valid_603297, JString, required = false,
                                  default = nil)
-  if valid_601295 != nil:
-    section.add "Content-MD5", valid_601295
+  if valid_603297 != nil:
+    section.add "Content-MD5", valid_603297
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2234,19 +2234,19 @@ proc validate_PutBucketEncryption_601290(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601297: Call_PutBucketEncryption_601289; path: JsonNode;
+proc call*(call_603299: Call_PutBucketEncryption_603291; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a new server-side encryption configuration (or replaces an existing one, if present).
   ## 
-  let valid = call_601297.validator(path, query, header, formData, body)
-  let scheme = call_601297.pickScheme
+  let valid = call_603299.validator(path, query, header, formData, body)
+  let scheme = call_603299.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601297.url(scheme.get, call_601297.host, call_601297.base,
-                         call_601297.route, valid.getOrDefault("path"))
-  result = hook(call_601297, url, valid)
+  let url = call_603299.url(scheme.get, call_603299.host, call_603299.base,
+                         call_603299.route, valid.getOrDefault("path"))
+  result = hook(call_603299, url, valid)
 
-proc call*(call_601298: Call_PutBucketEncryption_601289; encryption: bool;
+proc call*(call_603300: Call_PutBucketEncryption_603291; encryption: bool;
           Bucket: string; body: JsonNode): Recallable =
   ## putBucketEncryption
   ## Creates a new server-side encryption configuration (or replaces an existing one, if present).
@@ -2255,23 +2255,23 @@ proc call*(call_601298: Call_PutBucketEncryption_601289; encryption: bool;
   ##         : Specifies default encryption for a bucket using server-side encryption with Amazon S3-managed keys (SSE-S3) or AWS KMS-managed keys (SSE-KMS). For information about the Amazon S3 default encryption feature, see <a 
   ## href="https://docs.aws.amazon.com/AmazonS3/latest/dev/bucket-encryption.html">Amazon S3 Default Bucket Encryption</a> in the <i>Amazon Simple Storage Service Developer Guide</i>.
   ##   body: JObject (required)
-  var path_601299 = newJObject()
-  var query_601300 = newJObject()
-  var body_601301 = newJObject()
-  add(query_601300, "encryption", newJBool(encryption))
-  add(path_601299, "Bucket", newJString(Bucket))
+  var path_603301 = newJObject()
+  var query_603302 = newJObject()
+  var body_603303 = newJObject()
+  add(query_603302, "encryption", newJBool(encryption))
+  add(path_603301, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601301 = body
-  result = call_601298.call(path_601299, query_601300, nil, nil, body_601301)
+    body_603303 = body
+  result = call_603300.call(path_603301, query_603302, nil, nil, body_603303)
 
-var putBucketEncryption* = Call_PutBucketEncryption_601289(
+var putBucketEncryption* = Call_PutBucketEncryption_603291(
     name: "putBucketEncryption", meth: HttpMethod.HttpPut, host: "s3.amazonaws.com",
-    route: "/{Bucket}#encryption", validator: validate_PutBucketEncryption_601290,
-    base: "/", url: url_PutBucketEncryption_601291,
+    route: "/{Bucket}#encryption", validator: validate_PutBucketEncryption_603292,
+    base: "/", url: url_PutBucketEncryption_603293,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketEncryption_601279 = ref object of OpenApiRestCall_600426
-proc url_GetBucketEncryption_601281(protocol: Scheme; host: string; base: string;
+  Call_GetBucketEncryption_603281 = ref object of OpenApiRestCall_602433
+proc url_GetBucketEncryption_603283(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2282,9 +2282,9 @@ proc url_GetBucketEncryption_601281(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketEncryption_601280(path: JsonNode; query: JsonNode;
+proc validate_GetBucketEncryption_603282(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns the server-side encryption configuration of a bucket.
@@ -2296,69 +2296,69 @@ proc validate_GetBucketEncryption_601280(path: JsonNode; query: JsonNode;
   ##         : The name of the bucket from which the server-side encryption configuration is retrieved.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601282 = path.getOrDefault("Bucket")
-  valid_601282 = validateParameter(valid_601282, JString, required = true,
+  var valid_603284 = path.getOrDefault("Bucket")
+  valid_603284 = validateParameter(valid_603284, JString, required = true,
                                  default = nil)
-  if valid_601282 != nil:
-    section.add "Bucket", valid_601282
+  if valid_603284 != nil:
+    section.add "Bucket", valid_603284
   result.add "path", section
   ## parameters in `query` object:
   ##   encryption: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `encryption` field"
-  var valid_601283 = query.getOrDefault("encryption")
-  valid_601283 = validateParameter(valid_601283, JBool, required = true, default = nil)
-  if valid_601283 != nil:
-    section.add "encryption", valid_601283
+  var valid_603285 = query.getOrDefault("encryption")
+  valid_603285 = validateParameter(valid_603285, JBool, required = true, default = nil)
+  if valid_603285 != nil:
+    section.add "encryption", valid_603285
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601284 = header.getOrDefault("x-amz-security-token")
-  valid_601284 = validateParameter(valid_601284, JString, required = false,
+  var valid_603286 = header.getOrDefault("x-amz-security-token")
+  valid_603286 = validateParameter(valid_603286, JString, required = false,
                                  default = nil)
-  if valid_601284 != nil:
-    section.add "x-amz-security-token", valid_601284
+  if valid_603286 != nil:
+    section.add "x-amz-security-token", valid_603286
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601285: Call_GetBucketEncryption_601279; path: JsonNode;
+proc call*(call_603287: Call_GetBucketEncryption_603281; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the server-side encryption configuration of a bucket.
   ## 
-  let valid = call_601285.validator(path, query, header, formData, body)
-  let scheme = call_601285.pickScheme
+  let valid = call_603287.validator(path, query, header, formData, body)
+  let scheme = call_603287.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601285.url(scheme.get, call_601285.host, call_601285.base,
-                         call_601285.route, valid.getOrDefault("path"))
-  result = hook(call_601285, url, valid)
+  let url = call_603287.url(scheme.get, call_603287.host, call_603287.base,
+                         call_603287.route, valid.getOrDefault("path"))
+  result = hook(call_603287, url, valid)
 
-proc call*(call_601286: Call_GetBucketEncryption_601279; encryption: bool;
+proc call*(call_603288: Call_GetBucketEncryption_603281; encryption: bool;
           Bucket: string): Recallable =
   ## getBucketEncryption
   ## Returns the server-side encryption configuration of a bucket.
   ##   encryption: bool (required)
   ##   Bucket: string (required)
   ##         : The name of the bucket from which the server-side encryption configuration is retrieved.
-  var path_601287 = newJObject()
-  var query_601288 = newJObject()
-  add(query_601288, "encryption", newJBool(encryption))
-  add(path_601287, "Bucket", newJString(Bucket))
-  result = call_601286.call(path_601287, query_601288, nil, nil, nil)
+  var path_603289 = newJObject()
+  var query_603290 = newJObject()
+  add(query_603290, "encryption", newJBool(encryption))
+  add(path_603289, "Bucket", newJString(Bucket))
+  result = call_603288.call(path_603289, query_603290, nil, nil, nil)
 
-var getBucketEncryption* = Call_GetBucketEncryption_601279(
+var getBucketEncryption* = Call_GetBucketEncryption_603281(
     name: "getBucketEncryption", meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}#encryption", validator: validate_GetBucketEncryption_601280,
-    base: "/", url: url_GetBucketEncryption_601281,
+    route: "/{Bucket}#encryption", validator: validate_GetBucketEncryption_603282,
+    base: "/", url: url_GetBucketEncryption_603283,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketEncryption_601302 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketEncryption_601304(protocol: Scheme; host: string; base: string;
+  Call_DeleteBucketEncryption_603304 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketEncryption_603306(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2369,9 +2369,9 @@ proc url_DeleteBucketEncryption_601304(protocol: Scheme; host: string; base: str
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketEncryption_601303(path: JsonNode; query: JsonNode;
+proc validate_DeleteBucketEncryption_603305(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the server-side encryption configuration from the bucket.
   ## 
@@ -2382,69 +2382,69 @@ proc validate_DeleteBucketEncryption_601303(path: JsonNode; query: JsonNode;
   ##         : The name of the bucket containing the server-side encryption configuration to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601305 = path.getOrDefault("Bucket")
-  valid_601305 = validateParameter(valid_601305, JString, required = true,
+  var valid_603307 = path.getOrDefault("Bucket")
+  valid_603307 = validateParameter(valid_603307, JString, required = true,
                                  default = nil)
-  if valid_601305 != nil:
-    section.add "Bucket", valid_601305
+  if valid_603307 != nil:
+    section.add "Bucket", valid_603307
   result.add "path", section
   ## parameters in `query` object:
   ##   encryption: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `encryption` field"
-  var valid_601306 = query.getOrDefault("encryption")
-  valid_601306 = validateParameter(valid_601306, JBool, required = true, default = nil)
-  if valid_601306 != nil:
-    section.add "encryption", valid_601306
+  var valid_603308 = query.getOrDefault("encryption")
+  valid_603308 = validateParameter(valid_603308, JBool, required = true, default = nil)
+  if valid_603308 != nil:
+    section.add "encryption", valid_603308
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601307 = header.getOrDefault("x-amz-security-token")
-  valid_601307 = validateParameter(valid_601307, JString, required = false,
+  var valid_603309 = header.getOrDefault("x-amz-security-token")
+  valid_603309 = validateParameter(valid_603309, JString, required = false,
                                  default = nil)
-  if valid_601307 != nil:
-    section.add "x-amz-security-token", valid_601307
+  if valid_603309 != nil:
+    section.add "x-amz-security-token", valid_603309
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601308: Call_DeleteBucketEncryption_601302; path: JsonNode;
+proc call*(call_603310: Call_DeleteBucketEncryption_603304; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the server-side encryption configuration from the bucket.
   ## 
-  let valid = call_601308.validator(path, query, header, formData, body)
-  let scheme = call_601308.pickScheme
+  let valid = call_603310.validator(path, query, header, formData, body)
+  let scheme = call_603310.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601308.url(scheme.get, call_601308.host, call_601308.base,
-                         call_601308.route, valid.getOrDefault("path"))
-  result = hook(call_601308, url, valid)
+  let url = call_603310.url(scheme.get, call_603310.host, call_603310.base,
+                         call_603310.route, valid.getOrDefault("path"))
+  result = hook(call_603310, url, valid)
 
-proc call*(call_601309: Call_DeleteBucketEncryption_601302; encryption: bool;
+proc call*(call_603311: Call_DeleteBucketEncryption_603304; encryption: bool;
           Bucket: string): Recallable =
   ## deleteBucketEncryption
   ## Deletes the server-side encryption configuration from the bucket.
   ##   encryption: bool (required)
   ##   Bucket: string (required)
   ##         : The name of the bucket containing the server-side encryption configuration to delete.
-  var path_601310 = newJObject()
-  var query_601311 = newJObject()
-  add(query_601311, "encryption", newJBool(encryption))
-  add(path_601310, "Bucket", newJString(Bucket))
-  result = call_601309.call(path_601310, query_601311, nil, nil, nil)
+  var path_603312 = newJObject()
+  var query_603313 = newJObject()
+  add(query_603313, "encryption", newJBool(encryption))
+  add(path_603312, "Bucket", newJString(Bucket))
+  result = call_603311.call(path_603312, query_603313, nil, nil, nil)
 
-var deleteBucketEncryption* = Call_DeleteBucketEncryption_601302(
+var deleteBucketEncryption* = Call_DeleteBucketEncryption_603304(
     name: "deleteBucketEncryption", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#encryption",
-    validator: validate_DeleteBucketEncryption_601303, base: "/",
-    url: url_DeleteBucketEncryption_601304, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBucketEncryption_603305, base: "/",
+    url: url_DeleteBucketEncryption_603306, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketInventoryConfiguration_601323 = ref object of OpenApiRestCall_600426
-proc url_PutBucketInventoryConfiguration_601325(protocol: Scheme; host: string;
+  Call_PutBucketInventoryConfiguration_603325 = ref object of OpenApiRestCall_602433
+proc url_PutBucketInventoryConfiguration_603327(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2455,9 +2455,9 @@ proc url_PutBucketInventoryConfiguration_601325(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketInventoryConfiguration_601324(path: JsonNode;
+proc validate_PutBucketInventoryConfiguration_603326(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds an inventory configuration (identified by the inventory ID) from the bucket.
   ## 
@@ -2468,11 +2468,11 @@ proc validate_PutBucketInventoryConfiguration_601324(path: JsonNode;
   ##         : The name of the bucket where the inventory configuration will be stored.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601326 = path.getOrDefault("Bucket")
-  valid_601326 = validateParameter(valid_601326, JString, required = true,
+  var valid_603328 = path.getOrDefault("Bucket")
+  valid_603328 = validateParameter(valid_603328, JString, required = true,
                                  default = nil)
-  if valid_601326 != nil:
-    section.add "Bucket", valid_601326
+  if valid_603328 != nil:
+    section.add "Bucket", valid_603328
   result.add "path", section
   ## parameters in `query` object:
   ##   inventory: JBool (required)
@@ -2481,24 +2481,24 @@ proc validate_PutBucketInventoryConfiguration_601324(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `inventory` field"
-  var valid_601327 = query.getOrDefault("inventory")
-  valid_601327 = validateParameter(valid_601327, JBool, required = true, default = nil)
-  if valid_601327 != nil:
-    section.add "inventory", valid_601327
-  var valid_601328 = query.getOrDefault("id")
-  valid_601328 = validateParameter(valid_601328, JString, required = true,
+  var valid_603329 = query.getOrDefault("inventory")
+  valid_603329 = validateParameter(valid_603329, JBool, required = true, default = nil)
+  if valid_603329 != nil:
+    section.add "inventory", valid_603329
+  var valid_603330 = query.getOrDefault("id")
+  valid_603330 = validateParameter(valid_603330, JString, required = true,
                                  default = nil)
-  if valid_601328 != nil:
-    section.add "id", valid_601328
+  if valid_603330 != nil:
+    section.add "id", valid_603330
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601329 = header.getOrDefault("x-amz-security-token")
-  valid_601329 = validateParameter(valid_601329, JString, required = false,
+  var valid_603331 = header.getOrDefault("x-amz-security-token")
+  valid_603331 = validateParameter(valid_603331, JString, required = false,
                                  default = nil)
-  if valid_601329 != nil:
-    section.add "x-amz-security-token", valid_601329
+  if valid_603331 != nil:
+    section.add "x-amz-security-token", valid_603331
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2509,20 +2509,20 @@ proc validate_PutBucketInventoryConfiguration_601324(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601331: Call_PutBucketInventoryConfiguration_601323;
+proc call*(call_603333: Call_PutBucketInventoryConfiguration_603325;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Adds an inventory configuration (identified by the inventory ID) from the bucket.
   ## 
-  let valid = call_601331.validator(path, query, header, formData, body)
-  let scheme = call_601331.pickScheme
+  let valid = call_603333.validator(path, query, header, formData, body)
+  let scheme = call_603333.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601331.url(scheme.get, call_601331.host, call_601331.base,
-                         call_601331.route, valid.getOrDefault("path"))
-  result = hook(call_601331, url, valid)
+  let url = call_603333.url(scheme.get, call_603333.host, call_603333.base,
+                         call_603333.route, valid.getOrDefault("path"))
+  result = hook(call_603333, url, valid)
 
-proc call*(call_601332: Call_PutBucketInventoryConfiguration_601323;
+proc call*(call_603334: Call_PutBucketInventoryConfiguration_603325;
           inventory: bool; id: string; Bucket: string; body: JsonNode): Recallable =
   ## putBucketInventoryConfiguration
   ## Adds an inventory configuration (identified by the inventory ID) from the bucket.
@@ -2532,25 +2532,25 @@ proc call*(call_601332: Call_PutBucketInventoryConfiguration_601323;
   ##   Bucket: string (required)
   ##         : The name of the bucket where the inventory configuration will be stored.
   ##   body: JObject (required)
-  var path_601333 = newJObject()
-  var query_601334 = newJObject()
-  var body_601335 = newJObject()
-  add(query_601334, "inventory", newJBool(inventory))
-  add(query_601334, "id", newJString(id))
-  add(path_601333, "Bucket", newJString(Bucket))
+  var path_603335 = newJObject()
+  var query_603336 = newJObject()
+  var body_603337 = newJObject()
+  add(query_603336, "inventory", newJBool(inventory))
+  add(query_603336, "id", newJString(id))
+  add(path_603335, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601335 = body
-  result = call_601332.call(path_601333, query_601334, nil, nil, body_601335)
+    body_603337 = body
+  result = call_603334.call(path_603335, query_603336, nil, nil, body_603337)
 
-var putBucketInventoryConfiguration* = Call_PutBucketInventoryConfiguration_601323(
+var putBucketInventoryConfiguration* = Call_PutBucketInventoryConfiguration_603325(
     name: "putBucketInventoryConfiguration", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#inventory&id",
-    validator: validate_PutBucketInventoryConfiguration_601324, base: "/",
-    url: url_PutBucketInventoryConfiguration_601325,
+    validator: validate_PutBucketInventoryConfiguration_603326, base: "/",
+    url: url_PutBucketInventoryConfiguration_603327,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketInventoryConfiguration_601312 = ref object of OpenApiRestCall_600426
-proc url_GetBucketInventoryConfiguration_601314(protocol: Scheme; host: string;
+  Call_GetBucketInventoryConfiguration_603314 = ref object of OpenApiRestCall_602433
+proc url_GetBucketInventoryConfiguration_603316(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2561,9 +2561,9 @@ proc url_GetBucketInventoryConfiguration_601314(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketInventoryConfiguration_601313(path: JsonNode;
+proc validate_GetBucketInventoryConfiguration_603315(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an inventory configuration (identified by the inventory ID) from the bucket.
   ## 
@@ -2574,11 +2574,11 @@ proc validate_GetBucketInventoryConfiguration_601313(path: JsonNode;
   ##         : The name of the bucket containing the inventory configuration to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601315 = path.getOrDefault("Bucket")
-  valid_601315 = validateParameter(valid_601315, JString, required = true,
+  var valid_603317 = path.getOrDefault("Bucket")
+  valid_603317 = validateParameter(valid_603317, JString, required = true,
                                  default = nil)
-  if valid_601315 != nil:
-    section.add "Bucket", valid_601315
+  if valid_603317 != nil:
+    section.add "Bucket", valid_603317
   result.add "path", section
   ## parameters in `query` object:
   ##   inventory: JBool (required)
@@ -2587,44 +2587,44 @@ proc validate_GetBucketInventoryConfiguration_601313(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `inventory` field"
-  var valid_601316 = query.getOrDefault("inventory")
-  valid_601316 = validateParameter(valid_601316, JBool, required = true, default = nil)
-  if valid_601316 != nil:
-    section.add "inventory", valid_601316
-  var valid_601317 = query.getOrDefault("id")
-  valid_601317 = validateParameter(valid_601317, JString, required = true,
+  var valid_603318 = query.getOrDefault("inventory")
+  valid_603318 = validateParameter(valid_603318, JBool, required = true, default = nil)
+  if valid_603318 != nil:
+    section.add "inventory", valid_603318
+  var valid_603319 = query.getOrDefault("id")
+  valid_603319 = validateParameter(valid_603319, JString, required = true,
                                  default = nil)
-  if valid_601317 != nil:
-    section.add "id", valid_601317
+  if valid_603319 != nil:
+    section.add "id", valid_603319
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601318 = header.getOrDefault("x-amz-security-token")
-  valid_601318 = validateParameter(valid_601318, JString, required = false,
+  var valid_603320 = header.getOrDefault("x-amz-security-token")
+  valid_603320 = validateParameter(valid_603320, JString, required = false,
                                  default = nil)
-  if valid_601318 != nil:
-    section.add "x-amz-security-token", valid_601318
+  if valid_603320 != nil:
+    section.add "x-amz-security-token", valid_603320
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601319: Call_GetBucketInventoryConfiguration_601312;
+proc call*(call_603321: Call_GetBucketInventoryConfiguration_603314;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns an inventory configuration (identified by the inventory ID) from the bucket.
   ## 
-  let valid = call_601319.validator(path, query, header, formData, body)
-  let scheme = call_601319.pickScheme
+  let valid = call_603321.validator(path, query, header, formData, body)
+  let scheme = call_603321.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601319.url(scheme.get, call_601319.host, call_601319.base,
-                         call_601319.route, valid.getOrDefault("path"))
-  result = hook(call_601319, url, valid)
+  let url = call_603321.url(scheme.get, call_603321.host, call_603321.base,
+                         call_603321.route, valid.getOrDefault("path"))
+  result = hook(call_603321, url, valid)
 
-proc call*(call_601320: Call_GetBucketInventoryConfiguration_601312;
+proc call*(call_603322: Call_GetBucketInventoryConfiguration_603314;
           inventory: bool; id: string; Bucket: string): Recallable =
   ## getBucketInventoryConfiguration
   ## Returns an inventory configuration (identified by the inventory ID) from the bucket.
@@ -2633,22 +2633,22 @@ proc call*(call_601320: Call_GetBucketInventoryConfiguration_601312;
   ##     : The ID used to identify the inventory configuration.
   ##   Bucket: string (required)
   ##         : The name of the bucket containing the inventory configuration to retrieve.
-  var path_601321 = newJObject()
-  var query_601322 = newJObject()
-  add(query_601322, "inventory", newJBool(inventory))
-  add(query_601322, "id", newJString(id))
-  add(path_601321, "Bucket", newJString(Bucket))
-  result = call_601320.call(path_601321, query_601322, nil, nil, nil)
+  var path_603323 = newJObject()
+  var query_603324 = newJObject()
+  add(query_603324, "inventory", newJBool(inventory))
+  add(query_603324, "id", newJString(id))
+  add(path_603323, "Bucket", newJString(Bucket))
+  result = call_603322.call(path_603323, query_603324, nil, nil, nil)
 
-var getBucketInventoryConfiguration* = Call_GetBucketInventoryConfiguration_601312(
+var getBucketInventoryConfiguration* = Call_GetBucketInventoryConfiguration_603314(
     name: "getBucketInventoryConfiguration", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#inventory&id",
-    validator: validate_GetBucketInventoryConfiguration_601313, base: "/",
-    url: url_GetBucketInventoryConfiguration_601314,
+    validator: validate_GetBucketInventoryConfiguration_603315, base: "/",
+    url: url_GetBucketInventoryConfiguration_603316,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketInventoryConfiguration_601336 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketInventoryConfiguration_601338(protocol: Scheme; host: string;
+  Call_DeleteBucketInventoryConfiguration_603338 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketInventoryConfiguration_603340(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2659,9 +2659,9 @@ proc url_DeleteBucketInventoryConfiguration_601338(protocol: Scheme; host: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketInventoryConfiguration_601337(path: JsonNode;
+proc validate_DeleteBucketInventoryConfiguration_603339(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes an inventory configuration (identified by the inventory ID) from the bucket.
   ## 
@@ -2672,11 +2672,11 @@ proc validate_DeleteBucketInventoryConfiguration_601337(path: JsonNode;
   ##         : The name of the bucket containing the inventory configuration to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601339 = path.getOrDefault("Bucket")
-  valid_601339 = validateParameter(valid_601339, JString, required = true,
+  var valid_603341 = path.getOrDefault("Bucket")
+  valid_603341 = validateParameter(valid_603341, JString, required = true,
                                  default = nil)
-  if valid_601339 != nil:
-    section.add "Bucket", valid_601339
+  if valid_603341 != nil:
+    section.add "Bucket", valid_603341
   result.add "path", section
   ## parameters in `query` object:
   ##   inventory: JBool (required)
@@ -2685,44 +2685,44 @@ proc validate_DeleteBucketInventoryConfiguration_601337(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `inventory` field"
-  var valid_601340 = query.getOrDefault("inventory")
-  valid_601340 = validateParameter(valid_601340, JBool, required = true, default = nil)
-  if valid_601340 != nil:
-    section.add "inventory", valid_601340
-  var valid_601341 = query.getOrDefault("id")
-  valid_601341 = validateParameter(valid_601341, JString, required = true,
+  var valid_603342 = query.getOrDefault("inventory")
+  valid_603342 = validateParameter(valid_603342, JBool, required = true, default = nil)
+  if valid_603342 != nil:
+    section.add "inventory", valid_603342
+  var valid_603343 = query.getOrDefault("id")
+  valid_603343 = validateParameter(valid_603343, JString, required = true,
                                  default = nil)
-  if valid_601341 != nil:
-    section.add "id", valid_601341
+  if valid_603343 != nil:
+    section.add "id", valid_603343
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601342 = header.getOrDefault("x-amz-security-token")
-  valid_601342 = validateParameter(valid_601342, JString, required = false,
+  var valid_603344 = header.getOrDefault("x-amz-security-token")
+  valid_603344 = validateParameter(valid_603344, JString, required = false,
                                  default = nil)
-  if valid_601342 != nil:
-    section.add "x-amz-security-token", valid_601342
+  if valid_603344 != nil:
+    section.add "x-amz-security-token", valid_603344
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601343: Call_DeleteBucketInventoryConfiguration_601336;
+proc call*(call_603345: Call_DeleteBucketInventoryConfiguration_603338;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Deletes an inventory configuration (identified by the inventory ID) from the bucket.
   ## 
-  let valid = call_601343.validator(path, query, header, formData, body)
-  let scheme = call_601343.pickScheme
+  let valid = call_603345.validator(path, query, header, formData, body)
+  let scheme = call_603345.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601343.url(scheme.get, call_601343.host, call_601343.base,
-                         call_601343.route, valid.getOrDefault("path"))
-  result = hook(call_601343, url, valid)
+  let url = call_603345.url(scheme.get, call_603345.host, call_603345.base,
+                         call_603345.route, valid.getOrDefault("path"))
+  result = hook(call_603345, url, valid)
 
-proc call*(call_601344: Call_DeleteBucketInventoryConfiguration_601336;
+proc call*(call_603346: Call_DeleteBucketInventoryConfiguration_603338;
           inventory: bool; id: string; Bucket: string): Recallable =
   ## deleteBucketInventoryConfiguration
   ## Deletes an inventory configuration (identified by the inventory ID) from the bucket.
@@ -2731,22 +2731,22 @@ proc call*(call_601344: Call_DeleteBucketInventoryConfiguration_601336;
   ##     : The ID used to identify the inventory configuration.
   ##   Bucket: string (required)
   ##         : The name of the bucket containing the inventory configuration to delete.
-  var path_601345 = newJObject()
-  var query_601346 = newJObject()
-  add(query_601346, "inventory", newJBool(inventory))
-  add(query_601346, "id", newJString(id))
-  add(path_601345, "Bucket", newJString(Bucket))
-  result = call_601344.call(path_601345, query_601346, nil, nil, nil)
+  var path_603347 = newJObject()
+  var query_603348 = newJObject()
+  add(query_603348, "inventory", newJBool(inventory))
+  add(query_603348, "id", newJString(id))
+  add(path_603347, "Bucket", newJString(Bucket))
+  result = call_603346.call(path_603347, query_603348, nil, nil, nil)
 
-var deleteBucketInventoryConfiguration* = Call_DeleteBucketInventoryConfiguration_601336(
+var deleteBucketInventoryConfiguration* = Call_DeleteBucketInventoryConfiguration_603338(
     name: "deleteBucketInventoryConfiguration", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#inventory&id",
-    validator: validate_DeleteBucketInventoryConfiguration_601337, base: "/",
-    url: url_DeleteBucketInventoryConfiguration_601338,
+    validator: validate_DeleteBucketInventoryConfiguration_603339, base: "/",
+    url: url_DeleteBucketInventoryConfiguration_603340,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketLifecycleConfiguration_601357 = ref object of OpenApiRestCall_600426
-proc url_PutBucketLifecycleConfiguration_601359(protocol: Scheme; host: string;
+  Call_PutBucketLifecycleConfiguration_603359 = ref object of OpenApiRestCall_602433
+proc url_PutBucketLifecycleConfiguration_603361(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2757,9 +2757,9 @@ proc url_PutBucketLifecycleConfiguration_601359(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketLifecycleConfiguration_601358(path: JsonNode;
+proc validate_PutBucketLifecycleConfiguration_603360(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Sets lifecycle configuration for your bucket. If a lifecycle configuration exists, it replaces it.
   ## 
@@ -2770,30 +2770,30 @@ proc validate_PutBucketLifecycleConfiguration_601358(path: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601360 = path.getOrDefault("Bucket")
-  valid_601360 = validateParameter(valid_601360, JString, required = true,
+  var valid_603362 = path.getOrDefault("Bucket")
+  valid_603362 = validateParameter(valid_603362, JString, required = true,
                                  default = nil)
-  if valid_601360 != nil:
-    section.add "Bucket", valid_601360
+  if valid_603362 != nil:
+    section.add "Bucket", valid_603362
   result.add "path", section
   ## parameters in `query` object:
   ##   lifecycle: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `lifecycle` field"
-  var valid_601361 = query.getOrDefault("lifecycle")
-  valid_601361 = validateParameter(valid_601361, JBool, required = true, default = nil)
-  if valid_601361 != nil:
-    section.add "lifecycle", valid_601361
+  var valid_603363 = query.getOrDefault("lifecycle")
+  valid_603363 = validateParameter(valid_603363, JBool, required = true, default = nil)
+  if valid_603363 != nil:
+    section.add "lifecycle", valid_603363
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601362 = header.getOrDefault("x-amz-security-token")
-  valid_601362 = validateParameter(valid_601362, JString, required = false,
+  var valid_603364 = header.getOrDefault("x-amz-security-token")
+  valid_603364 = validateParameter(valid_603364, JString, required = false,
                                  default = nil)
-  if valid_601362 != nil:
-    section.add "x-amz-security-token", valid_601362
+  if valid_603364 != nil:
+    section.add "x-amz-security-token", valid_603364
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2804,20 +2804,20 @@ proc validate_PutBucketLifecycleConfiguration_601358(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601364: Call_PutBucketLifecycleConfiguration_601357;
+proc call*(call_603366: Call_PutBucketLifecycleConfiguration_603359;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Sets lifecycle configuration for your bucket. If a lifecycle configuration exists, it replaces it.
   ## 
-  let valid = call_601364.validator(path, query, header, formData, body)
-  let scheme = call_601364.pickScheme
+  let valid = call_603366.validator(path, query, header, formData, body)
+  let scheme = call_603366.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601364.url(scheme.get, call_601364.host, call_601364.base,
-                         call_601364.route, valid.getOrDefault("path"))
-  result = hook(call_601364, url, valid)
+  let url = call_603366.url(scheme.get, call_603366.host, call_603366.base,
+                         call_603366.route, valid.getOrDefault("path"))
+  result = hook(call_603366, url, valid)
 
-proc call*(call_601365: Call_PutBucketLifecycleConfiguration_601357;
+proc call*(call_603367: Call_PutBucketLifecycleConfiguration_603359;
           Bucket: string; lifecycle: bool; body: JsonNode): Recallable =
   ## putBucketLifecycleConfiguration
   ## Sets lifecycle configuration for your bucket. If a lifecycle configuration exists, it replaces it.
@@ -2825,24 +2825,24 @@ proc call*(call_601365: Call_PutBucketLifecycleConfiguration_601357;
   ##         : <p/>
   ##   lifecycle: bool (required)
   ##   body: JObject (required)
-  var path_601366 = newJObject()
-  var query_601367 = newJObject()
-  var body_601368 = newJObject()
-  add(path_601366, "Bucket", newJString(Bucket))
-  add(query_601367, "lifecycle", newJBool(lifecycle))
+  var path_603368 = newJObject()
+  var query_603369 = newJObject()
+  var body_603370 = newJObject()
+  add(path_603368, "Bucket", newJString(Bucket))
+  add(query_603369, "lifecycle", newJBool(lifecycle))
   if body != nil:
-    body_601368 = body
-  result = call_601365.call(path_601366, query_601367, nil, nil, body_601368)
+    body_603370 = body
+  result = call_603367.call(path_603368, query_603369, nil, nil, body_603370)
 
-var putBucketLifecycleConfiguration* = Call_PutBucketLifecycleConfiguration_601357(
+var putBucketLifecycleConfiguration* = Call_PutBucketLifecycleConfiguration_603359(
     name: "putBucketLifecycleConfiguration", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#lifecycle",
-    validator: validate_PutBucketLifecycleConfiguration_601358, base: "/",
-    url: url_PutBucketLifecycleConfiguration_601359,
+    validator: validate_PutBucketLifecycleConfiguration_603360, base: "/",
+    url: url_PutBucketLifecycleConfiguration_603361,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketLifecycleConfiguration_601347 = ref object of OpenApiRestCall_600426
-proc url_GetBucketLifecycleConfiguration_601349(protocol: Scheme; host: string;
+  Call_GetBucketLifecycleConfiguration_603349 = ref object of OpenApiRestCall_602433
+proc url_GetBucketLifecycleConfiguration_603351(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2853,9 +2853,9 @@ proc url_GetBucketLifecycleConfiguration_601349(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketLifecycleConfiguration_601348(path: JsonNode;
+proc validate_GetBucketLifecycleConfiguration_603350(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the lifecycle configuration information set on the bucket.
   ## 
@@ -2866,71 +2866,71 @@ proc validate_GetBucketLifecycleConfiguration_601348(path: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601350 = path.getOrDefault("Bucket")
-  valid_601350 = validateParameter(valid_601350, JString, required = true,
+  var valid_603352 = path.getOrDefault("Bucket")
+  valid_603352 = validateParameter(valid_603352, JString, required = true,
                                  default = nil)
-  if valid_601350 != nil:
-    section.add "Bucket", valid_601350
+  if valid_603352 != nil:
+    section.add "Bucket", valid_603352
   result.add "path", section
   ## parameters in `query` object:
   ##   lifecycle: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `lifecycle` field"
-  var valid_601351 = query.getOrDefault("lifecycle")
-  valid_601351 = validateParameter(valid_601351, JBool, required = true, default = nil)
-  if valid_601351 != nil:
-    section.add "lifecycle", valid_601351
+  var valid_603353 = query.getOrDefault("lifecycle")
+  valid_603353 = validateParameter(valid_603353, JBool, required = true, default = nil)
+  if valid_603353 != nil:
+    section.add "lifecycle", valid_603353
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601352 = header.getOrDefault("x-amz-security-token")
-  valid_601352 = validateParameter(valid_601352, JString, required = false,
+  var valid_603354 = header.getOrDefault("x-amz-security-token")
+  valid_603354 = validateParameter(valid_603354, JString, required = false,
                                  default = nil)
-  if valid_601352 != nil:
-    section.add "x-amz-security-token", valid_601352
+  if valid_603354 != nil:
+    section.add "x-amz-security-token", valid_603354
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601353: Call_GetBucketLifecycleConfiguration_601347;
+proc call*(call_603355: Call_GetBucketLifecycleConfiguration_603349;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns the lifecycle configuration information set on the bucket.
   ## 
-  let valid = call_601353.validator(path, query, header, formData, body)
-  let scheme = call_601353.pickScheme
+  let valid = call_603355.validator(path, query, header, formData, body)
+  let scheme = call_603355.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601353.url(scheme.get, call_601353.host, call_601353.base,
-                         call_601353.route, valid.getOrDefault("path"))
-  result = hook(call_601353, url, valid)
+  let url = call_603355.url(scheme.get, call_603355.host, call_603355.base,
+                         call_603355.route, valid.getOrDefault("path"))
+  result = hook(call_603355, url, valid)
 
-proc call*(call_601354: Call_GetBucketLifecycleConfiguration_601347;
+proc call*(call_603356: Call_GetBucketLifecycleConfiguration_603349;
           Bucket: string; lifecycle: bool): Recallable =
   ## getBucketLifecycleConfiguration
   ## Returns the lifecycle configuration information set on the bucket.
   ##   Bucket: string (required)
   ##         : <p/>
   ##   lifecycle: bool (required)
-  var path_601355 = newJObject()
-  var query_601356 = newJObject()
-  add(path_601355, "Bucket", newJString(Bucket))
-  add(query_601356, "lifecycle", newJBool(lifecycle))
-  result = call_601354.call(path_601355, query_601356, nil, nil, nil)
+  var path_603357 = newJObject()
+  var query_603358 = newJObject()
+  add(path_603357, "Bucket", newJString(Bucket))
+  add(query_603358, "lifecycle", newJBool(lifecycle))
+  result = call_603356.call(path_603357, query_603358, nil, nil, nil)
 
-var getBucketLifecycleConfiguration* = Call_GetBucketLifecycleConfiguration_601347(
+var getBucketLifecycleConfiguration* = Call_GetBucketLifecycleConfiguration_603349(
     name: "getBucketLifecycleConfiguration", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#lifecycle",
-    validator: validate_GetBucketLifecycleConfiguration_601348, base: "/",
-    url: url_GetBucketLifecycleConfiguration_601349,
+    validator: validate_GetBucketLifecycleConfiguration_603350, base: "/",
+    url: url_GetBucketLifecycleConfiguration_603351,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketLifecycle_601369 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketLifecycle_601371(protocol: Scheme; host: string; base: string;
+  Call_DeleteBucketLifecycle_603371 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketLifecycle_603373(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -2941,9 +2941,9 @@ proc url_DeleteBucketLifecycle_601371(protocol: Scheme; host: string; base: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketLifecycle_601370(path: JsonNode; query: JsonNode;
+proc validate_DeleteBucketLifecycle_603372(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the lifecycle configuration from the bucket.
   ## 
@@ -2955,50 +2955,50 @@ proc validate_DeleteBucketLifecycle_601370(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601372 = path.getOrDefault("Bucket")
-  valid_601372 = validateParameter(valid_601372, JString, required = true,
+  var valid_603374 = path.getOrDefault("Bucket")
+  valid_603374 = validateParameter(valid_603374, JString, required = true,
                                  default = nil)
-  if valid_601372 != nil:
-    section.add "Bucket", valid_601372
+  if valid_603374 != nil:
+    section.add "Bucket", valid_603374
   result.add "path", section
   ## parameters in `query` object:
   ##   lifecycle: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `lifecycle` field"
-  var valid_601373 = query.getOrDefault("lifecycle")
-  valid_601373 = validateParameter(valid_601373, JBool, required = true, default = nil)
-  if valid_601373 != nil:
-    section.add "lifecycle", valid_601373
+  var valid_603375 = query.getOrDefault("lifecycle")
+  valid_603375 = validateParameter(valid_603375, JBool, required = true, default = nil)
+  if valid_603375 != nil:
+    section.add "lifecycle", valid_603375
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601374 = header.getOrDefault("x-amz-security-token")
-  valid_601374 = validateParameter(valid_601374, JString, required = false,
+  var valid_603376 = header.getOrDefault("x-amz-security-token")
+  valid_603376 = validateParameter(valid_603376, JString, required = false,
                                  default = nil)
-  if valid_601374 != nil:
-    section.add "x-amz-security-token", valid_601374
+  if valid_603376 != nil:
+    section.add "x-amz-security-token", valid_603376
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601375: Call_DeleteBucketLifecycle_601369; path: JsonNode;
+proc call*(call_603377: Call_DeleteBucketLifecycle_603371; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the lifecycle configuration from the bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETElifecycle.html
-  let valid = call_601375.validator(path, query, header, formData, body)
-  let scheme = call_601375.pickScheme
+  let valid = call_603377.validator(path, query, header, formData, body)
+  let scheme = call_603377.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601375.url(scheme.get, call_601375.host, call_601375.base,
-                         call_601375.route, valid.getOrDefault("path"))
-  result = hook(call_601375, url, valid)
+  let url = call_603377.url(scheme.get, call_603377.host, call_603377.base,
+                         call_603377.route, valid.getOrDefault("path"))
+  result = hook(call_603377, url, valid)
 
-proc call*(call_601376: Call_DeleteBucketLifecycle_601369; Bucket: string;
+proc call*(call_603378: Call_DeleteBucketLifecycle_603371; Bucket: string;
           lifecycle: bool): Recallable =
   ## deleteBucketLifecycle
   ## Deletes the lifecycle configuration from the bucket.
@@ -3006,20 +3006,20 @@ proc call*(call_601376: Call_DeleteBucketLifecycle_601369; Bucket: string;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   lifecycle: bool (required)
-  var path_601377 = newJObject()
-  var query_601378 = newJObject()
-  add(path_601377, "Bucket", newJString(Bucket))
-  add(query_601378, "lifecycle", newJBool(lifecycle))
-  result = call_601376.call(path_601377, query_601378, nil, nil, nil)
+  var path_603379 = newJObject()
+  var query_603380 = newJObject()
+  add(path_603379, "Bucket", newJString(Bucket))
+  add(query_603380, "lifecycle", newJBool(lifecycle))
+  result = call_603378.call(path_603379, query_603380, nil, nil, nil)
 
-var deleteBucketLifecycle* = Call_DeleteBucketLifecycle_601369(
+var deleteBucketLifecycle* = Call_DeleteBucketLifecycle_603371(
     name: "deleteBucketLifecycle", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#lifecycle",
-    validator: validate_DeleteBucketLifecycle_601370, base: "/",
-    url: url_DeleteBucketLifecycle_601371, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBucketLifecycle_603372, base: "/",
+    url: url_DeleteBucketLifecycle_603373, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketMetricsConfiguration_601390 = ref object of OpenApiRestCall_600426
-proc url_PutBucketMetricsConfiguration_601392(protocol: Scheme; host: string;
+  Call_PutBucketMetricsConfiguration_603392 = ref object of OpenApiRestCall_602433
+proc url_PutBucketMetricsConfiguration_603394(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3030,9 +3030,9 @@ proc url_PutBucketMetricsConfiguration_601392(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketMetricsConfiguration_601391(path: JsonNode; query: JsonNode;
+proc validate_PutBucketMetricsConfiguration_603393(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Sets a metrics configuration (specified by the metrics configuration ID) for the bucket.
   ## 
@@ -3043,11 +3043,11 @@ proc validate_PutBucketMetricsConfiguration_601391(path: JsonNode; query: JsonNo
   ##         : The name of the bucket for which the metrics configuration is set.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601393 = path.getOrDefault("Bucket")
-  valid_601393 = validateParameter(valid_601393, JString, required = true,
+  var valid_603395 = path.getOrDefault("Bucket")
+  valid_603395 = validateParameter(valid_603395, JString, required = true,
                                  default = nil)
-  if valid_601393 != nil:
-    section.add "Bucket", valid_601393
+  if valid_603395 != nil:
+    section.add "Bucket", valid_603395
   result.add "path", section
   ## parameters in `query` object:
   ##   id: JString (required)
@@ -3055,24 +3055,24 @@ proc validate_PutBucketMetricsConfiguration_601391(path: JsonNode; query: JsonNo
   ##   metrics: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `id` field"
-  var valid_601394 = query.getOrDefault("id")
-  valid_601394 = validateParameter(valid_601394, JString, required = true,
+  var valid_603396 = query.getOrDefault("id")
+  valid_603396 = validateParameter(valid_603396, JString, required = true,
                                  default = nil)
-  if valid_601394 != nil:
-    section.add "id", valid_601394
-  var valid_601395 = query.getOrDefault("metrics")
-  valid_601395 = validateParameter(valid_601395, JBool, required = true, default = nil)
-  if valid_601395 != nil:
-    section.add "metrics", valid_601395
+  if valid_603396 != nil:
+    section.add "id", valid_603396
+  var valid_603397 = query.getOrDefault("metrics")
+  valid_603397 = validateParameter(valid_603397, JBool, required = true, default = nil)
+  if valid_603397 != nil:
+    section.add "metrics", valid_603397
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601396 = header.getOrDefault("x-amz-security-token")
-  valid_601396 = validateParameter(valid_601396, JString, required = false,
+  var valid_603398 = header.getOrDefault("x-amz-security-token")
+  valid_603398 = validateParameter(valid_603398, JString, required = false,
                                  default = nil)
-  if valid_601396 != nil:
-    section.add "x-amz-security-token", valid_601396
+  if valid_603398 != nil:
+    section.add "x-amz-security-token", valid_603398
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3083,19 +3083,19 @@ proc validate_PutBucketMetricsConfiguration_601391(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601398: Call_PutBucketMetricsConfiguration_601390; path: JsonNode;
+proc call*(call_603400: Call_PutBucketMetricsConfiguration_603392; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets a metrics configuration (specified by the metrics configuration ID) for the bucket.
   ## 
-  let valid = call_601398.validator(path, query, header, formData, body)
-  let scheme = call_601398.pickScheme
+  let valid = call_603400.validator(path, query, header, formData, body)
+  let scheme = call_603400.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601398.url(scheme.get, call_601398.host, call_601398.base,
-                         call_601398.route, valid.getOrDefault("path"))
-  result = hook(call_601398, url, valid)
+  let url = call_603400.url(scheme.get, call_603400.host, call_603400.base,
+                         call_603400.route, valid.getOrDefault("path"))
+  result = hook(call_603400, url, valid)
 
-proc call*(call_601399: Call_PutBucketMetricsConfiguration_601390; id: string;
+proc call*(call_603401: Call_PutBucketMetricsConfiguration_603392; id: string;
           metrics: bool; Bucket: string; body: JsonNode): Recallable =
   ## putBucketMetricsConfiguration
   ## Sets a metrics configuration (specified by the metrics configuration ID) for the bucket.
@@ -3105,25 +3105,25 @@ proc call*(call_601399: Call_PutBucketMetricsConfiguration_601390; id: string;
   ##   Bucket: string (required)
   ##         : The name of the bucket for which the metrics configuration is set.
   ##   body: JObject (required)
-  var path_601400 = newJObject()
-  var query_601401 = newJObject()
-  var body_601402 = newJObject()
-  add(query_601401, "id", newJString(id))
-  add(query_601401, "metrics", newJBool(metrics))
-  add(path_601400, "Bucket", newJString(Bucket))
+  var path_603402 = newJObject()
+  var query_603403 = newJObject()
+  var body_603404 = newJObject()
+  add(query_603403, "id", newJString(id))
+  add(query_603403, "metrics", newJBool(metrics))
+  add(path_603402, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601402 = body
-  result = call_601399.call(path_601400, query_601401, nil, nil, body_601402)
+    body_603404 = body
+  result = call_603401.call(path_603402, query_603403, nil, nil, body_603404)
 
-var putBucketMetricsConfiguration* = Call_PutBucketMetricsConfiguration_601390(
+var putBucketMetricsConfiguration* = Call_PutBucketMetricsConfiguration_603392(
     name: "putBucketMetricsConfiguration", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#metrics&id",
-    validator: validate_PutBucketMetricsConfiguration_601391, base: "/",
-    url: url_PutBucketMetricsConfiguration_601392,
+    validator: validate_PutBucketMetricsConfiguration_603393, base: "/",
+    url: url_PutBucketMetricsConfiguration_603394,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketMetricsConfiguration_601379 = ref object of OpenApiRestCall_600426
-proc url_GetBucketMetricsConfiguration_601381(protocol: Scheme; host: string;
+  Call_GetBucketMetricsConfiguration_603381 = ref object of OpenApiRestCall_602433
+proc url_GetBucketMetricsConfiguration_603383(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3134,9 +3134,9 @@ proc url_GetBucketMetricsConfiguration_601381(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketMetricsConfiguration_601380(path: JsonNode; query: JsonNode;
+proc validate_GetBucketMetricsConfiguration_603382(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a metrics configuration (specified by the metrics configuration ID) from the bucket.
   ## 
@@ -3147,11 +3147,11 @@ proc validate_GetBucketMetricsConfiguration_601380(path: JsonNode; query: JsonNo
   ##         : The name of the bucket containing the metrics configuration to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601382 = path.getOrDefault("Bucket")
-  valid_601382 = validateParameter(valid_601382, JString, required = true,
+  var valid_603384 = path.getOrDefault("Bucket")
+  valid_603384 = validateParameter(valid_603384, JString, required = true,
                                  default = nil)
-  if valid_601382 != nil:
-    section.add "Bucket", valid_601382
+  if valid_603384 != nil:
+    section.add "Bucket", valid_603384
   result.add "path", section
   ## parameters in `query` object:
   ##   id: JString (required)
@@ -3159,43 +3159,43 @@ proc validate_GetBucketMetricsConfiguration_601380(path: JsonNode; query: JsonNo
   ##   metrics: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `id` field"
-  var valid_601383 = query.getOrDefault("id")
-  valid_601383 = validateParameter(valid_601383, JString, required = true,
+  var valid_603385 = query.getOrDefault("id")
+  valid_603385 = validateParameter(valid_603385, JString, required = true,
                                  default = nil)
-  if valid_601383 != nil:
-    section.add "id", valid_601383
-  var valid_601384 = query.getOrDefault("metrics")
-  valid_601384 = validateParameter(valid_601384, JBool, required = true, default = nil)
-  if valid_601384 != nil:
-    section.add "metrics", valid_601384
+  if valid_603385 != nil:
+    section.add "id", valid_603385
+  var valid_603386 = query.getOrDefault("metrics")
+  valid_603386 = validateParameter(valid_603386, JBool, required = true, default = nil)
+  if valid_603386 != nil:
+    section.add "metrics", valid_603386
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601385 = header.getOrDefault("x-amz-security-token")
-  valid_601385 = validateParameter(valid_601385, JString, required = false,
+  var valid_603387 = header.getOrDefault("x-amz-security-token")
+  valid_603387 = validateParameter(valid_603387, JString, required = false,
                                  default = nil)
-  if valid_601385 != nil:
-    section.add "x-amz-security-token", valid_601385
+  if valid_603387 != nil:
+    section.add "x-amz-security-token", valid_603387
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601386: Call_GetBucketMetricsConfiguration_601379; path: JsonNode;
+proc call*(call_603388: Call_GetBucketMetricsConfiguration_603381; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a metrics configuration (specified by the metrics configuration ID) from the bucket.
   ## 
-  let valid = call_601386.validator(path, query, header, formData, body)
-  let scheme = call_601386.pickScheme
+  let valid = call_603388.validator(path, query, header, formData, body)
+  let scheme = call_603388.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601386.url(scheme.get, call_601386.host, call_601386.base,
-                         call_601386.route, valid.getOrDefault("path"))
-  result = hook(call_601386, url, valid)
+  let url = call_603388.url(scheme.get, call_603388.host, call_603388.base,
+                         call_603388.route, valid.getOrDefault("path"))
+  result = hook(call_603388, url, valid)
 
-proc call*(call_601387: Call_GetBucketMetricsConfiguration_601379; id: string;
+proc call*(call_603389: Call_GetBucketMetricsConfiguration_603381; id: string;
           metrics: bool; Bucket: string): Recallable =
   ## getBucketMetricsConfiguration
   ## Gets a metrics configuration (specified by the metrics configuration ID) from the bucket.
@@ -3204,22 +3204,22 @@ proc call*(call_601387: Call_GetBucketMetricsConfiguration_601379; id: string;
   ##   metrics: bool (required)
   ##   Bucket: string (required)
   ##         : The name of the bucket containing the metrics configuration to retrieve.
-  var path_601388 = newJObject()
-  var query_601389 = newJObject()
-  add(query_601389, "id", newJString(id))
-  add(query_601389, "metrics", newJBool(metrics))
-  add(path_601388, "Bucket", newJString(Bucket))
-  result = call_601387.call(path_601388, query_601389, nil, nil, nil)
+  var path_603390 = newJObject()
+  var query_603391 = newJObject()
+  add(query_603391, "id", newJString(id))
+  add(query_603391, "metrics", newJBool(metrics))
+  add(path_603390, "Bucket", newJString(Bucket))
+  result = call_603389.call(path_603390, query_603391, nil, nil, nil)
 
-var getBucketMetricsConfiguration* = Call_GetBucketMetricsConfiguration_601379(
+var getBucketMetricsConfiguration* = Call_GetBucketMetricsConfiguration_603381(
     name: "getBucketMetricsConfiguration", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#metrics&id",
-    validator: validate_GetBucketMetricsConfiguration_601380, base: "/",
-    url: url_GetBucketMetricsConfiguration_601381,
+    validator: validate_GetBucketMetricsConfiguration_603382, base: "/",
+    url: url_GetBucketMetricsConfiguration_603383,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketMetricsConfiguration_601403 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketMetricsConfiguration_601405(protocol: Scheme; host: string;
+  Call_DeleteBucketMetricsConfiguration_603405 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketMetricsConfiguration_603407(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3230,9 +3230,9 @@ proc url_DeleteBucketMetricsConfiguration_601405(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketMetricsConfiguration_601404(path: JsonNode;
+proc validate_DeleteBucketMetricsConfiguration_603406(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes a metrics configuration (specified by the metrics configuration ID) from the bucket.
   ## 
@@ -3243,11 +3243,11 @@ proc validate_DeleteBucketMetricsConfiguration_601404(path: JsonNode;
   ##         : The name of the bucket containing the metrics configuration to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601406 = path.getOrDefault("Bucket")
-  valid_601406 = validateParameter(valid_601406, JString, required = true,
+  var valid_603408 = path.getOrDefault("Bucket")
+  valid_603408 = validateParameter(valid_603408, JString, required = true,
                                  default = nil)
-  if valid_601406 != nil:
-    section.add "Bucket", valid_601406
+  if valid_603408 != nil:
+    section.add "Bucket", valid_603408
   result.add "path", section
   ## parameters in `query` object:
   ##   id: JString (required)
@@ -3255,44 +3255,44 @@ proc validate_DeleteBucketMetricsConfiguration_601404(path: JsonNode;
   ##   metrics: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `id` field"
-  var valid_601407 = query.getOrDefault("id")
-  valid_601407 = validateParameter(valid_601407, JString, required = true,
+  var valid_603409 = query.getOrDefault("id")
+  valid_603409 = validateParameter(valid_603409, JString, required = true,
                                  default = nil)
-  if valid_601407 != nil:
-    section.add "id", valid_601407
-  var valid_601408 = query.getOrDefault("metrics")
-  valid_601408 = validateParameter(valid_601408, JBool, required = true, default = nil)
-  if valid_601408 != nil:
-    section.add "metrics", valid_601408
+  if valid_603409 != nil:
+    section.add "id", valid_603409
+  var valid_603410 = query.getOrDefault("metrics")
+  valid_603410 = validateParameter(valid_603410, JBool, required = true, default = nil)
+  if valid_603410 != nil:
+    section.add "metrics", valid_603410
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601409 = header.getOrDefault("x-amz-security-token")
-  valid_601409 = validateParameter(valid_601409, JString, required = false,
+  var valid_603411 = header.getOrDefault("x-amz-security-token")
+  valid_603411 = validateParameter(valid_603411, JString, required = false,
                                  default = nil)
-  if valid_601409 != nil:
-    section.add "x-amz-security-token", valid_601409
+  if valid_603411 != nil:
+    section.add "x-amz-security-token", valid_603411
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601410: Call_DeleteBucketMetricsConfiguration_601403;
+proc call*(call_603412: Call_DeleteBucketMetricsConfiguration_603405;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Deletes a metrics configuration (specified by the metrics configuration ID) from the bucket.
   ## 
-  let valid = call_601410.validator(path, query, header, formData, body)
-  let scheme = call_601410.pickScheme
+  let valid = call_603412.validator(path, query, header, formData, body)
+  let scheme = call_603412.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601410.url(scheme.get, call_601410.host, call_601410.base,
-                         call_601410.route, valid.getOrDefault("path"))
-  result = hook(call_601410, url, valid)
+  let url = call_603412.url(scheme.get, call_603412.host, call_603412.base,
+                         call_603412.route, valid.getOrDefault("path"))
+  result = hook(call_603412, url, valid)
 
-proc call*(call_601411: Call_DeleteBucketMetricsConfiguration_601403; id: string;
+proc call*(call_603413: Call_DeleteBucketMetricsConfiguration_603405; id: string;
           metrics: bool; Bucket: string): Recallable =
   ## deleteBucketMetricsConfiguration
   ## Deletes a metrics configuration (specified by the metrics configuration ID) from the bucket.
@@ -3301,22 +3301,22 @@ proc call*(call_601411: Call_DeleteBucketMetricsConfiguration_601403; id: string
   ##   metrics: bool (required)
   ##   Bucket: string (required)
   ##         : The name of the bucket containing the metrics configuration to delete.
-  var path_601412 = newJObject()
-  var query_601413 = newJObject()
-  add(query_601413, "id", newJString(id))
-  add(query_601413, "metrics", newJBool(metrics))
-  add(path_601412, "Bucket", newJString(Bucket))
-  result = call_601411.call(path_601412, query_601413, nil, nil, nil)
+  var path_603414 = newJObject()
+  var query_603415 = newJObject()
+  add(query_603415, "id", newJString(id))
+  add(query_603415, "metrics", newJBool(metrics))
+  add(path_603414, "Bucket", newJString(Bucket))
+  result = call_603413.call(path_603414, query_603415, nil, nil, nil)
 
-var deleteBucketMetricsConfiguration* = Call_DeleteBucketMetricsConfiguration_601403(
+var deleteBucketMetricsConfiguration* = Call_DeleteBucketMetricsConfiguration_603405(
     name: "deleteBucketMetricsConfiguration", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#metrics&id",
-    validator: validate_DeleteBucketMetricsConfiguration_601404, base: "/",
-    url: url_DeleteBucketMetricsConfiguration_601405,
+    validator: validate_DeleteBucketMetricsConfiguration_603406, base: "/",
+    url: url_DeleteBucketMetricsConfiguration_603407,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketPolicy_601424 = ref object of OpenApiRestCall_600426
-proc url_PutBucketPolicy_601426(protocol: Scheme; host: string; base: string;
+  Call_PutBucketPolicy_603426 = ref object of OpenApiRestCall_602433
+proc url_PutBucketPolicy_603428(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3327,9 +3327,9 @@ proc url_PutBucketPolicy_601426(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketPolicy_601425(path: JsonNode; query: JsonNode;
+proc validate_PutBucketPolicy_603427(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Applies an Amazon S3 bucket policy to an Amazon S3 bucket.
@@ -3342,20 +3342,20 @@ proc validate_PutBucketPolicy_601425(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601427 = path.getOrDefault("Bucket")
-  valid_601427 = validateParameter(valid_601427, JString, required = true,
+  var valid_603429 = path.getOrDefault("Bucket")
+  valid_603429 = validateParameter(valid_603429, JString, required = true,
                                  default = nil)
-  if valid_601427 != nil:
-    section.add "Bucket", valid_601427
+  if valid_603429 != nil:
+    section.add "Bucket", valid_603429
   result.add "path", section
   ## parameters in `query` object:
   ##   policy: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `policy` field"
-  var valid_601428 = query.getOrDefault("policy")
-  valid_601428 = validateParameter(valid_601428, JBool, required = true, default = nil)
-  if valid_601428 != nil:
-    section.add "policy", valid_601428
+  var valid_603430 = query.getOrDefault("policy")
+  valid_603430 = validateParameter(valid_603430, JBool, required = true, default = nil)
+  if valid_603430 != nil:
+    section.add "policy", valid_603430
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -3364,20 +3364,20 @@ proc validate_PutBucketPolicy_601425(path: JsonNode; query: JsonNode;
   ##   x-amz-confirm-remove-self-bucket-access: JBool
   ##                                          : Set this parameter to true to confirm that you want to remove your permissions to change this bucket policy in the future.
   section = newJObject()
-  var valid_601429 = header.getOrDefault("x-amz-security-token")
-  valid_601429 = validateParameter(valid_601429, JString, required = false,
+  var valid_603431 = header.getOrDefault("x-amz-security-token")
+  valid_603431 = validateParameter(valid_603431, JString, required = false,
                                  default = nil)
-  if valid_601429 != nil:
-    section.add "x-amz-security-token", valid_601429
-  var valid_601430 = header.getOrDefault("Content-MD5")
-  valid_601430 = validateParameter(valid_601430, JString, required = false,
+  if valid_603431 != nil:
+    section.add "x-amz-security-token", valid_603431
+  var valid_603432 = header.getOrDefault("Content-MD5")
+  valid_603432 = validateParameter(valid_603432, JString, required = false,
                                  default = nil)
-  if valid_601430 != nil:
-    section.add "Content-MD5", valid_601430
-  var valid_601431 = header.getOrDefault("x-amz-confirm-remove-self-bucket-access")
-  valid_601431 = validateParameter(valid_601431, JBool, required = false, default = nil)
-  if valid_601431 != nil:
-    section.add "x-amz-confirm-remove-self-bucket-access", valid_601431
+  if valid_603432 != nil:
+    section.add "Content-MD5", valid_603432
+  var valid_603433 = header.getOrDefault("x-amz-confirm-remove-self-bucket-access")
+  valid_603433 = validateParameter(valid_603433, JBool, required = false, default = nil)
+  if valid_603433 != nil:
+    section.add "x-amz-confirm-remove-self-bucket-access", valid_603433
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3388,20 +3388,20 @@ proc validate_PutBucketPolicy_601425(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601433: Call_PutBucketPolicy_601424; path: JsonNode; query: JsonNode;
+proc call*(call_603435: Call_PutBucketPolicy_603426; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Applies an Amazon S3 bucket policy to an Amazon S3 bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTpolicy.html
-  let valid = call_601433.validator(path, query, header, formData, body)
-  let scheme = call_601433.pickScheme
+  let valid = call_603435.validator(path, query, header, formData, body)
+  let scheme = call_603435.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601433.url(scheme.get, call_601433.host, call_601433.base,
-                         call_601433.route, valid.getOrDefault("path"))
-  result = hook(call_601433, url, valid)
+  let url = call_603435.url(scheme.get, call_603435.host, call_603435.base,
+                         call_603435.route, valid.getOrDefault("path"))
+  result = hook(call_603435, url, valid)
 
-proc call*(call_601434: Call_PutBucketPolicy_601424; policy: bool; Bucket: string;
+proc call*(call_603436: Call_PutBucketPolicy_603426; policy: bool; Bucket: string;
           body: JsonNode): Recallable =
   ## putBucketPolicy
   ## Applies an Amazon S3 bucket policy to an Amazon S3 bucket.
@@ -3410,22 +3410,22 @@ proc call*(call_601434: Call_PutBucketPolicy_601424; policy: bool; Bucket: strin
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601435 = newJObject()
-  var query_601436 = newJObject()
-  var body_601437 = newJObject()
-  add(query_601436, "policy", newJBool(policy))
-  add(path_601435, "Bucket", newJString(Bucket))
+  var path_603437 = newJObject()
+  var query_603438 = newJObject()
+  var body_603439 = newJObject()
+  add(query_603438, "policy", newJBool(policy))
+  add(path_603437, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601437 = body
-  result = call_601434.call(path_601435, query_601436, nil, nil, body_601437)
+    body_603439 = body
+  result = call_603436.call(path_603437, query_603438, nil, nil, body_603439)
 
-var putBucketPolicy* = Call_PutBucketPolicy_601424(name: "putBucketPolicy",
+var putBucketPolicy* = Call_PutBucketPolicy_603426(name: "putBucketPolicy",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com", route: "/{Bucket}#policy",
-    validator: validate_PutBucketPolicy_601425, base: "/", url: url_PutBucketPolicy_601426,
+    validator: validate_PutBucketPolicy_603427, base: "/", url: url_PutBucketPolicy_603428,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketPolicy_601414 = ref object of OpenApiRestCall_600426
-proc url_GetBucketPolicy_601416(protocol: Scheme; host: string; base: string;
+  Call_GetBucketPolicy_603416 = ref object of OpenApiRestCall_602433
+proc url_GetBucketPolicy_603418(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3436,9 +3436,9 @@ proc url_GetBucketPolicy_601416(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketPolicy_601415(path: JsonNode; query: JsonNode;
+proc validate_GetBucketPolicy_603417(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Returns the policy of a specified bucket.
@@ -3451,68 +3451,68 @@ proc validate_GetBucketPolicy_601415(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601417 = path.getOrDefault("Bucket")
-  valid_601417 = validateParameter(valid_601417, JString, required = true,
+  var valid_603419 = path.getOrDefault("Bucket")
+  valid_603419 = validateParameter(valid_603419, JString, required = true,
                                  default = nil)
-  if valid_601417 != nil:
-    section.add "Bucket", valid_601417
+  if valid_603419 != nil:
+    section.add "Bucket", valid_603419
   result.add "path", section
   ## parameters in `query` object:
   ##   policy: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `policy` field"
-  var valid_601418 = query.getOrDefault("policy")
-  valid_601418 = validateParameter(valid_601418, JBool, required = true, default = nil)
-  if valid_601418 != nil:
-    section.add "policy", valid_601418
+  var valid_603420 = query.getOrDefault("policy")
+  valid_603420 = validateParameter(valid_603420, JBool, required = true, default = nil)
+  if valid_603420 != nil:
+    section.add "policy", valid_603420
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601419 = header.getOrDefault("x-amz-security-token")
-  valid_601419 = validateParameter(valid_601419, JString, required = false,
+  var valid_603421 = header.getOrDefault("x-amz-security-token")
+  valid_603421 = validateParameter(valid_603421, JString, required = false,
                                  default = nil)
-  if valid_601419 != nil:
-    section.add "x-amz-security-token", valid_601419
+  if valid_603421 != nil:
+    section.add "x-amz-security-token", valid_603421
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601420: Call_GetBucketPolicy_601414; path: JsonNode; query: JsonNode;
+proc call*(call_603422: Call_GetBucketPolicy_603416; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the policy of a specified bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETpolicy.html
-  let valid = call_601420.validator(path, query, header, formData, body)
-  let scheme = call_601420.pickScheme
+  let valid = call_603422.validator(path, query, header, formData, body)
+  let scheme = call_603422.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601420.url(scheme.get, call_601420.host, call_601420.base,
-                         call_601420.route, valid.getOrDefault("path"))
-  result = hook(call_601420, url, valid)
+  let url = call_603422.url(scheme.get, call_603422.host, call_603422.base,
+                         call_603422.route, valid.getOrDefault("path"))
+  result = hook(call_603422, url, valid)
 
-proc call*(call_601421: Call_GetBucketPolicy_601414; policy: bool; Bucket: string): Recallable =
+proc call*(call_603423: Call_GetBucketPolicy_603416; policy: bool; Bucket: string): Recallable =
   ## getBucketPolicy
   ## Returns the policy of a specified bucket.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETpolicy.html
   ##   policy: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601422 = newJObject()
-  var query_601423 = newJObject()
-  add(query_601423, "policy", newJBool(policy))
-  add(path_601422, "Bucket", newJString(Bucket))
-  result = call_601421.call(path_601422, query_601423, nil, nil, nil)
+  var path_603424 = newJObject()
+  var query_603425 = newJObject()
+  add(query_603425, "policy", newJBool(policy))
+  add(path_603424, "Bucket", newJString(Bucket))
+  result = call_603423.call(path_603424, query_603425, nil, nil, nil)
 
-var getBucketPolicy* = Call_GetBucketPolicy_601414(name: "getBucketPolicy",
+var getBucketPolicy* = Call_GetBucketPolicy_603416(name: "getBucketPolicy",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com", route: "/{Bucket}#policy",
-    validator: validate_GetBucketPolicy_601415, base: "/", url: url_GetBucketPolicy_601416,
+    validator: validate_GetBucketPolicy_603417, base: "/", url: url_GetBucketPolicy_603418,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketPolicy_601438 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketPolicy_601440(protocol: Scheme; host: string; base: string;
+  Call_DeleteBucketPolicy_603440 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketPolicy_603442(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3523,9 +3523,9 @@ proc url_DeleteBucketPolicy_601440(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketPolicy_601439(path: JsonNode; query: JsonNode;
+proc validate_DeleteBucketPolicy_603441(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Deletes the policy from the bucket.
@@ -3538,69 +3538,69 @@ proc validate_DeleteBucketPolicy_601439(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601441 = path.getOrDefault("Bucket")
-  valid_601441 = validateParameter(valid_601441, JString, required = true,
+  var valid_603443 = path.getOrDefault("Bucket")
+  valid_603443 = validateParameter(valid_603443, JString, required = true,
                                  default = nil)
-  if valid_601441 != nil:
-    section.add "Bucket", valid_601441
+  if valid_603443 != nil:
+    section.add "Bucket", valid_603443
   result.add "path", section
   ## parameters in `query` object:
   ##   policy: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `policy` field"
-  var valid_601442 = query.getOrDefault("policy")
-  valid_601442 = validateParameter(valid_601442, JBool, required = true, default = nil)
-  if valid_601442 != nil:
-    section.add "policy", valid_601442
+  var valid_603444 = query.getOrDefault("policy")
+  valid_603444 = validateParameter(valid_603444, JBool, required = true, default = nil)
+  if valid_603444 != nil:
+    section.add "policy", valid_603444
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601443 = header.getOrDefault("x-amz-security-token")
-  valid_601443 = validateParameter(valid_601443, JString, required = false,
+  var valid_603445 = header.getOrDefault("x-amz-security-token")
+  valid_603445 = validateParameter(valid_603445, JString, required = false,
                                  default = nil)
-  if valid_601443 != nil:
-    section.add "x-amz-security-token", valid_601443
+  if valid_603445 != nil:
+    section.add "x-amz-security-token", valid_603445
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601444: Call_DeleteBucketPolicy_601438; path: JsonNode;
+proc call*(call_603446: Call_DeleteBucketPolicy_603440; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the policy from the bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETEpolicy.html
-  let valid = call_601444.validator(path, query, header, formData, body)
-  let scheme = call_601444.pickScheme
+  let valid = call_603446.validator(path, query, header, formData, body)
+  let scheme = call_603446.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601444.url(scheme.get, call_601444.host, call_601444.base,
-                         call_601444.route, valid.getOrDefault("path"))
-  result = hook(call_601444, url, valid)
+  let url = call_603446.url(scheme.get, call_603446.host, call_603446.base,
+                         call_603446.route, valid.getOrDefault("path"))
+  result = hook(call_603446, url, valid)
 
-proc call*(call_601445: Call_DeleteBucketPolicy_601438; policy: bool; Bucket: string): Recallable =
+proc call*(call_603447: Call_DeleteBucketPolicy_603440; policy: bool; Bucket: string): Recallable =
   ## deleteBucketPolicy
   ## Deletes the policy from the bucket.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETEpolicy.html
   ##   policy: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601446 = newJObject()
-  var query_601447 = newJObject()
-  add(query_601447, "policy", newJBool(policy))
-  add(path_601446, "Bucket", newJString(Bucket))
-  result = call_601445.call(path_601446, query_601447, nil, nil, nil)
+  var path_603448 = newJObject()
+  var query_603449 = newJObject()
+  add(query_603449, "policy", newJBool(policy))
+  add(path_603448, "Bucket", newJString(Bucket))
+  result = call_603447.call(path_603448, query_603449, nil, nil, nil)
 
-var deleteBucketPolicy* = Call_DeleteBucketPolicy_601438(
+var deleteBucketPolicy* = Call_DeleteBucketPolicy_603440(
     name: "deleteBucketPolicy", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#policy",
-    validator: validate_DeleteBucketPolicy_601439, base: "/",
-    url: url_DeleteBucketPolicy_601440, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBucketPolicy_603441, base: "/",
+    url: url_DeleteBucketPolicy_603442, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketReplication_601458 = ref object of OpenApiRestCall_600426
-proc url_PutBucketReplication_601460(protocol: Scheme; host: string; base: string;
+  Call_PutBucketReplication_603460 = ref object of OpenApiRestCall_602433
+proc url_PutBucketReplication_603462(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3611,9 +3611,9 @@ proc url_PutBucketReplication_601460(protocol: Scheme; host: string; base: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketReplication_601459(path: JsonNode; query: JsonNode;
+proc validate_PutBucketReplication_603461(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ##  Creates a replication configuration or replaces an existing one. For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/crr.html">Cross-Region Replication (CRR)</a> in the <i>Amazon S3 Developer Guide</i>. 
   ## 
@@ -3624,21 +3624,21 @@ proc validate_PutBucketReplication_601459(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601461 = path.getOrDefault("Bucket")
-  valid_601461 = validateParameter(valid_601461, JString, required = true,
+  var valid_603463 = path.getOrDefault("Bucket")
+  valid_603463 = validateParameter(valid_603463, JString, required = true,
                                  default = nil)
-  if valid_601461 != nil:
-    section.add "Bucket", valid_601461
+  if valid_603463 != nil:
+    section.add "Bucket", valid_603463
   result.add "path", section
   ## parameters in `query` object:
   ##   replication: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `replication` field"
-  var valid_601462 = query.getOrDefault("replication")
-  valid_601462 = validateParameter(valid_601462, JBool, required = true, default = nil)
-  if valid_601462 != nil:
-    section.add "replication", valid_601462
+  var valid_603464 = query.getOrDefault("replication")
+  valid_603464 = validateParameter(valid_603464, JBool, required = true, default = nil)
+  if valid_603464 != nil:
+    section.add "replication", valid_603464
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -3647,21 +3647,21 @@ proc validate_PutBucketReplication_601459(path: JsonNode; query: JsonNode;
   ##   x-amz-bucket-object-lock-token: JString
   ##                                 : A token that allows Amazon S3 object lock to be enabled for an existing bucket.
   section = newJObject()
-  var valid_601463 = header.getOrDefault("x-amz-security-token")
-  valid_601463 = validateParameter(valid_601463, JString, required = false,
+  var valid_603465 = header.getOrDefault("x-amz-security-token")
+  valid_603465 = validateParameter(valid_603465, JString, required = false,
                                  default = nil)
-  if valid_601463 != nil:
-    section.add "x-amz-security-token", valid_601463
-  var valid_601464 = header.getOrDefault("Content-MD5")
-  valid_601464 = validateParameter(valid_601464, JString, required = false,
+  if valid_603465 != nil:
+    section.add "x-amz-security-token", valid_603465
+  var valid_603466 = header.getOrDefault("Content-MD5")
+  valid_603466 = validateParameter(valid_603466, JString, required = false,
                                  default = nil)
-  if valid_601464 != nil:
-    section.add "Content-MD5", valid_601464
-  var valid_601465 = header.getOrDefault("x-amz-bucket-object-lock-token")
-  valid_601465 = validateParameter(valid_601465, JString, required = false,
+  if valid_603466 != nil:
+    section.add "Content-MD5", valid_603466
+  var valid_603467 = header.getOrDefault("x-amz-bucket-object-lock-token")
+  valid_603467 = validateParameter(valid_603467, JString, required = false,
                                  default = nil)
-  if valid_601465 != nil:
-    section.add "x-amz-bucket-object-lock-token", valid_601465
+  if valid_603467 != nil:
+    section.add "x-amz-bucket-object-lock-token", valid_603467
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3672,19 +3672,19 @@ proc validate_PutBucketReplication_601459(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601467: Call_PutBucketReplication_601458; path: JsonNode;
+proc call*(call_603469: Call_PutBucketReplication_603460; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  Creates a replication configuration or replaces an existing one. For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/crr.html">Cross-Region Replication (CRR)</a> in the <i>Amazon S3 Developer Guide</i>. 
   ## 
-  let valid = call_601467.validator(path, query, header, formData, body)
-  let scheme = call_601467.pickScheme
+  let valid = call_603469.validator(path, query, header, formData, body)
+  let scheme = call_603469.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601467.url(scheme.get, call_601467.host, call_601467.base,
-                         call_601467.route, valid.getOrDefault("path"))
-  result = hook(call_601467, url, valid)
+  let url = call_603469.url(scheme.get, call_603469.host, call_603469.base,
+                         call_603469.route, valid.getOrDefault("path"))
+  result = hook(call_603469, url, valid)
 
-proc call*(call_601468: Call_PutBucketReplication_601458; replication: bool;
+proc call*(call_603470: Call_PutBucketReplication_603460; replication: bool;
           Bucket: string; body: JsonNode): Recallable =
   ## putBucketReplication
   ##  Creates a replication configuration or replaces an existing one. For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/crr.html">Cross-Region Replication (CRR)</a> in the <i>Amazon S3 Developer Guide</i>. 
@@ -3692,23 +3692,23 @@ proc call*(call_601468: Call_PutBucketReplication_601458; replication: bool;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601469 = newJObject()
-  var query_601470 = newJObject()
-  var body_601471 = newJObject()
-  add(query_601470, "replication", newJBool(replication))
-  add(path_601469, "Bucket", newJString(Bucket))
+  var path_603471 = newJObject()
+  var query_603472 = newJObject()
+  var body_603473 = newJObject()
+  add(query_603472, "replication", newJBool(replication))
+  add(path_603471, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601471 = body
-  result = call_601468.call(path_601469, query_601470, nil, nil, body_601471)
+    body_603473 = body
+  result = call_603470.call(path_603471, query_603472, nil, nil, body_603473)
 
-var putBucketReplication* = Call_PutBucketReplication_601458(
+var putBucketReplication* = Call_PutBucketReplication_603460(
     name: "putBucketReplication", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#replication",
-    validator: validate_PutBucketReplication_601459, base: "/",
-    url: url_PutBucketReplication_601460, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutBucketReplication_603461, base: "/",
+    url: url_PutBucketReplication_603462, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketReplication_601448 = ref object of OpenApiRestCall_600426
-proc url_GetBucketReplication_601450(protocol: Scheme; host: string; base: string;
+  Call_GetBucketReplication_603450 = ref object of OpenApiRestCall_602433
+proc url_GetBucketReplication_603452(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3719,9 +3719,9 @@ proc url_GetBucketReplication_601450(protocol: Scheme; host: string; base: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketReplication_601449(path: JsonNode; query: JsonNode;
+proc validate_GetBucketReplication_603451(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the replication configuration of a bucket.</p> <note> <p> It can take a while to propagate the put or delete a replication configuration to all Amazon S3 systems. Therefore, a get request soon after put or delete can return a wrong result. </p> </note>
   ## 
@@ -3732,69 +3732,69 @@ proc validate_GetBucketReplication_601449(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601451 = path.getOrDefault("Bucket")
-  valid_601451 = validateParameter(valid_601451, JString, required = true,
+  var valid_603453 = path.getOrDefault("Bucket")
+  valid_603453 = validateParameter(valid_603453, JString, required = true,
                                  default = nil)
-  if valid_601451 != nil:
-    section.add "Bucket", valid_601451
+  if valid_603453 != nil:
+    section.add "Bucket", valid_603453
   result.add "path", section
   ## parameters in `query` object:
   ##   replication: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `replication` field"
-  var valid_601452 = query.getOrDefault("replication")
-  valid_601452 = validateParameter(valid_601452, JBool, required = true, default = nil)
-  if valid_601452 != nil:
-    section.add "replication", valid_601452
+  var valid_603454 = query.getOrDefault("replication")
+  valid_603454 = validateParameter(valid_603454, JBool, required = true, default = nil)
+  if valid_603454 != nil:
+    section.add "replication", valid_603454
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601453 = header.getOrDefault("x-amz-security-token")
-  valid_601453 = validateParameter(valid_601453, JString, required = false,
+  var valid_603455 = header.getOrDefault("x-amz-security-token")
+  valid_603455 = validateParameter(valid_603455, JString, required = false,
                                  default = nil)
-  if valid_601453 != nil:
-    section.add "x-amz-security-token", valid_601453
+  if valid_603455 != nil:
+    section.add "x-amz-security-token", valid_603455
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601454: Call_GetBucketReplication_601448; path: JsonNode;
+proc call*(call_603456: Call_GetBucketReplication_603450; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the replication configuration of a bucket.</p> <note> <p> It can take a while to propagate the put or delete a replication configuration to all Amazon S3 systems. Therefore, a get request soon after put or delete can return a wrong result. </p> </note>
   ## 
-  let valid = call_601454.validator(path, query, header, formData, body)
-  let scheme = call_601454.pickScheme
+  let valid = call_603456.validator(path, query, header, formData, body)
+  let scheme = call_603456.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601454.url(scheme.get, call_601454.host, call_601454.base,
-                         call_601454.route, valid.getOrDefault("path"))
-  result = hook(call_601454, url, valid)
+  let url = call_603456.url(scheme.get, call_603456.host, call_603456.base,
+                         call_603456.route, valid.getOrDefault("path"))
+  result = hook(call_603456, url, valid)
 
-proc call*(call_601455: Call_GetBucketReplication_601448; replication: bool;
+proc call*(call_603457: Call_GetBucketReplication_603450; replication: bool;
           Bucket: string): Recallable =
   ## getBucketReplication
   ## <p>Returns the replication configuration of a bucket.</p> <note> <p> It can take a while to propagate the put or delete a replication configuration to all Amazon S3 systems. Therefore, a get request soon after put or delete can return a wrong result. </p> </note>
   ##   replication: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601456 = newJObject()
-  var query_601457 = newJObject()
-  add(query_601457, "replication", newJBool(replication))
-  add(path_601456, "Bucket", newJString(Bucket))
-  result = call_601455.call(path_601456, query_601457, nil, nil, nil)
+  var path_603458 = newJObject()
+  var query_603459 = newJObject()
+  add(query_603459, "replication", newJBool(replication))
+  add(path_603458, "Bucket", newJString(Bucket))
+  result = call_603457.call(path_603458, query_603459, nil, nil, nil)
 
-var getBucketReplication* = Call_GetBucketReplication_601448(
+var getBucketReplication* = Call_GetBucketReplication_603450(
     name: "getBucketReplication", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#replication",
-    validator: validate_GetBucketReplication_601449, base: "/",
-    url: url_GetBucketReplication_601450, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketReplication_603451, base: "/",
+    url: url_GetBucketReplication_603452, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketReplication_601472 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketReplication_601474(protocol: Scheme; host: string; base: string;
+  Call_DeleteBucketReplication_603474 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketReplication_603476(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3805,9 +3805,9 @@ proc url_DeleteBucketReplication_601474(protocol: Scheme; host: string; base: st
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketReplication_601473(path: JsonNode; query: JsonNode;
+proc validate_DeleteBucketReplication_603475(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ##  Deletes the replication configuration from the bucket. For information about replication configuration, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/crr.html">Cross-Region Replication (CRR)</a> in the <i>Amazon S3 Developer Guide</i>. 
   ## 
@@ -3818,69 +3818,69 @@ proc validate_DeleteBucketReplication_601473(path: JsonNode; query: JsonNode;
   ##         : <p> The bucket name. </p> <note> <p>It can take a while to propagate the deletion of a replication configuration to all Amazon S3 systems.</p> </note>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601475 = path.getOrDefault("Bucket")
-  valid_601475 = validateParameter(valid_601475, JString, required = true,
+  var valid_603477 = path.getOrDefault("Bucket")
+  valid_603477 = validateParameter(valid_603477, JString, required = true,
                                  default = nil)
-  if valid_601475 != nil:
-    section.add "Bucket", valid_601475
+  if valid_603477 != nil:
+    section.add "Bucket", valid_603477
   result.add "path", section
   ## parameters in `query` object:
   ##   replication: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `replication` field"
-  var valid_601476 = query.getOrDefault("replication")
-  valid_601476 = validateParameter(valid_601476, JBool, required = true, default = nil)
-  if valid_601476 != nil:
-    section.add "replication", valid_601476
+  var valid_603478 = query.getOrDefault("replication")
+  valid_603478 = validateParameter(valid_603478, JBool, required = true, default = nil)
+  if valid_603478 != nil:
+    section.add "replication", valid_603478
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601477 = header.getOrDefault("x-amz-security-token")
-  valid_601477 = validateParameter(valid_601477, JString, required = false,
+  var valid_603479 = header.getOrDefault("x-amz-security-token")
+  valid_603479 = validateParameter(valid_603479, JString, required = false,
                                  default = nil)
-  if valid_601477 != nil:
-    section.add "x-amz-security-token", valid_601477
+  if valid_603479 != nil:
+    section.add "x-amz-security-token", valid_603479
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601478: Call_DeleteBucketReplication_601472; path: JsonNode;
+proc call*(call_603480: Call_DeleteBucketReplication_603474; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  Deletes the replication configuration from the bucket. For information about replication configuration, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/crr.html">Cross-Region Replication (CRR)</a> in the <i>Amazon S3 Developer Guide</i>. 
   ## 
-  let valid = call_601478.validator(path, query, header, formData, body)
-  let scheme = call_601478.pickScheme
+  let valid = call_603480.validator(path, query, header, formData, body)
+  let scheme = call_603480.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601478.url(scheme.get, call_601478.host, call_601478.base,
-                         call_601478.route, valid.getOrDefault("path"))
-  result = hook(call_601478, url, valid)
+  let url = call_603480.url(scheme.get, call_603480.host, call_603480.base,
+                         call_603480.route, valid.getOrDefault("path"))
+  result = hook(call_603480, url, valid)
 
-proc call*(call_601479: Call_DeleteBucketReplication_601472; replication: bool;
+proc call*(call_603481: Call_DeleteBucketReplication_603474; replication: bool;
           Bucket: string): Recallable =
   ## deleteBucketReplication
   ##  Deletes the replication configuration from the bucket. For information about replication configuration, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/crr.html">Cross-Region Replication (CRR)</a> in the <i>Amazon S3 Developer Guide</i>. 
   ##   replication: bool (required)
   ##   Bucket: string (required)
   ##         : <p> The bucket name. </p> <note> <p>It can take a while to propagate the deletion of a replication configuration to all Amazon S3 systems.</p> </note>
-  var path_601480 = newJObject()
-  var query_601481 = newJObject()
-  add(query_601481, "replication", newJBool(replication))
-  add(path_601480, "Bucket", newJString(Bucket))
-  result = call_601479.call(path_601480, query_601481, nil, nil, nil)
+  var path_603482 = newJObject()
+  var query_603483 = newJObject()
+  add(query_603483, "replication", newJBool(replication))
+  add(path_603482, "Bucket", newJString(Bucket))
+  result = call_603481.call(path_603482, query_603483, nil, nil, nil)
 
-var deleteBucketReplication* = Call_DeleteBucketReplication_601472(
+var deleteBucketReplication* = Call_DeleteBucketReplication_603474(
     name: "deleteBucketReplication", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#replication",
-    validator: validate_DeleteBucketReplication_601473, base: "/",
-    url: url_DeleteBucketReplication_601474, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBucketReplication_603475, base: "/",
+    url: url_DeleteBucketReplication_603476, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketTagging_601492 = ref object of OpenApiRestCall_600426
-proc url_PutBucketTagging_601494(protocol: Scheme; host: string; base: string;
+  Call_PutBucketTagging_603494 = ref object of OpenApiRestCall_602433
+proc url_PutBucketTagging_603496(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3891,9 +3891,9 @@ proc url_PutBucketTagging_601494(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketTagging_601493(path: JsonNode; query: JsonNode;
+proc validate_PutBucketTagging_603495(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Sets the tags for a bucket.
@@ -3906,36 +3906,36 @@ proc validate_PutBucketTagging_601493(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601495 = path.getOrDefault("Bucket")
-  valid_601495 = validateParameter(valid_601495, JString, required = true,
+  var valid_603497 = path.getOrDefault("Bucket")
+  valid_603497 = validateParameter(valid_603497, JString, required = true,
                                  default = nil)
-  if valid_601495 != nil:
-    section.add "Bucket", valid_601495
+  if valid_603497 != nil:
+    section.add "Bucket", valid_603497
   result.add "path", section
   ## parameters in `query` object:
   ##   tagging: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `tagging` field"
-  var valid_601496 = query.getOrDefault("tagging")
-  valid_601496 = validateParameter(valid_601496, JBool, required = true, default = nil)
-  if valid_601496 != nil:
-    section.add "tagging", valid_601496
+  var valid_603498 = query.getOrDefault("tagging")
+  valid_603498 = validateParameter(valid_603498, JBool, required = true, default = nil)
+  if valid_603498 != nil:
+    section.add "tagging", valid_603498
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : <p/>
   section = newJObject()
-  var valid_601497 = header.getOrDefault("x-amz-security-token")
-  valid_601497 = validateParameter(valid_601497, JString, required = false,
+  var valid_603499 = header.getOrDefault("x-amz-security-token")
+  valid_603499 = validateParameter(valid_603499, JString, required = false,
                                  default = nil)
-  if valid_601497 != nil:
-    section.add "x-amz-security-token", valid_601497
-  var valid_601498 = header.getOrDefault("Content-MD5")
-  valid_601498 = validateParameter(valid_601498, JString, required = false,
+  if valid_603499 != nil:
+    section.add "x-amz-security-token", valid_603499
+  var valid_603500 = header.getOrDefault("Content-MD5")
+  valid_603500 = validateParameter(valid_603500, JString, required = false,
                                  default = nil)
-  if valid_601498 != nil:
-    section.add "Content-MD5", valid_601498
+  if valid_603500 != nil:
+    section.add "Content-MD5", valid_603500
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3946,20 +3946,20 @@ proc validate_PutBucketTagging_601493(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601500: Call_PutBucketTagging_601492; path: JsonNode;
+proc call*(call_603502: Call_PutBucketTagging_603494; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets the tags for a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTtagging.html
-  let valid = call_601500.validator(path, query, header, formData, body)
-  let scheme = call_601500.pickScheme
+  let valid = call_603502.validator(path, query, header, formData, body)
+  let scheme = call_603502.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601500.url(scheme.get, call_601500.host, call_601500.base,
-                         call_601500.route, valid.getOrDefault("path"))
-  result = hook(call_601500, url, valid)
+  let url = call_603502.url(scheme.get, call_603502.host, call_603502.base,
+                         call_603502.route, valid.getOrDefault("path"))
+  result = hook(call_603502, url, valid)
 
-proc call*(call_601501: Call_PutBucketTagging_601492; tagging: bool; Bucket: string;
+proc call*(call_603503: Call_PutBucketTagging_603494; tagging: bool; Bucket: string;
           body: JsonNode): Recallable =
   ## putBucketTagging
   ## Sets the tags for a bucket.
@@ -3968,22 +3968,22 @@ proc call*(call_601501: Call_PutBucketTagging_601492; tagging: bool; Bucket: str
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601502 = newJObject()
-  var query_601503 = newJObject()
-  var body_601504 = newJObject()
-  add(query_601503, "tagging", newJBool(tagging))
-  add(path_601502, "Bucket", newJString(Bucket))
+  var path_603504 = newJObject()
+  var query_603505 = newJObject()
+  var body_603506 = newJObject()
+  add(query_603505, "tagging", newJBool(tagging))
+  add(path_603504, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601504 = body
-  result = call_601501.call(path_601502, query_601503, nil, nil, body_601504)
+    body_603506 = body
+  result = call_603503.call(path_603504, query_603505, nil, nil, body_603506)
 
-var putBucketTagging* = Call_PutBucketTagging_601492(name: "putBucketTagging",
+var putBucketTagging* = Call_PutBucketTagging_603494(name: "putBucketTagging",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com", route: "/{Bucket}#tagging",
-    validator: validate_PutBucketTagging_601493, base: "/",
-    url: url_PutBucketTagging_601494, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutBucketTagging_603495, base: "/",
+    url: url_PutBucketTagging_603496, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketTagging_601482 = ref object of OpenApiRestCall_600426
-proc url_GetBucketTagging_601484(protocol: Scheme; host: string; base: string;
+  Call_GetBucketTagging_603484 = ref object of OpenApiRestCall_602433
+proc url_GetBucketTagging_603486(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -3994,9 +3994,9 @@ proc url_GetBucketTagging_601484(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketTagging_601483(path: JsonNode; query: JsonNode;
+proc validate_GetBucketTagging_603485(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the tag set associated with the bucket.
@@ -4009,68 +4009,68 @@ proc validate_GetBucketTagging_601483(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601485 = path.getOrDefault("Bucket")
-  valid_601485 = validateParameter(valid_601485, JString, required = true,
+  var valid_603487 = path.getOrDefault("Bucket")
+  valid_603487 = validateParameter(valid_603487, JString, required = true,
                                  default = nil)
-  if valid_601485 != nil:
-    section.add "Bucket", valid_601485
+  if valid_603487 != nil:
+    section.add "Bucket", valid_603487
   result.add "path", section
   ## parameters in `query` object:
   ##   tagging: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `tagging` field"
-  var valid_601486 = query.getOrDefault("tagging")
-  valid_601486 = validateParameter(valid_601486, JBool, required = true, default = nil)
-  if valid_601486 != nil:
-    section.add "tagging", valid_601486
+  var valid_603488 = query.getOrDefault("tagging")
+  valid_603488 = validateParameter(valid_603488, JBool, required = true, default = nil)
+  if valid_603488 != nil:
+    section.add "tagging", valid_603488
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601487 = header.getOrDefault("x-amz-security-token")
-  valid_601487 = validateParameter(valid_601487, JString, required = false,
+  var valid_603489 = header.getOrDefault("x-amz-security-token")
+  valid_603489 = validateParameter(valid_603489, JString, required = false,
                                  default = nil)
-  if valid_601487 != nil:
-    section.add "x-amz-security-token", valid_601487
+  if valid_603489 != nil:
+    section.add "x-amz-security-token", valid_603489
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601488: Call_GetBucketTagging_601482; path: JsonNode;
+proc call*(call_603490: Call_GetBucketTagging_603484; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the tag set associated with the bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETtagging.html
-  let valid = call_601488.validator(path, query, header, formData, body)
-  let scheme = call_601488.pickScheme
+  let valid = call_603490.validator(path, query, header, formData, body)
+  let scheme = call_603490.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601488.url(scheme.get, call_601488.host, call_601488.base,
-                         call_601488.route, valid.getOrDefault("path"))
-  result = hook(call_601488, url, valid)
+  let url = call_603490.url(scheme.get, call_603490.host, call_603490.base,
+                         call_603490.route, valid.getOrDefault("path"))
+  result = hook(call_603490, url, valid)
 
-proc call*(call_601489: Call_GetBucketTagging_601482; tagging: bool; Bucket: string): Recallable =
+proc call*(call_603491: Call_GetBucketTagging_603484; tagging: bool; Bucket: string): Recallable =
   ## getBucketTagging
   ## Returns the tag set associated with the bucket.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETtagging.html
   ##   tagging: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601490 = newJObject()
-  var query_601491 = newJObject()
-  add(query_601491, "tagging", newJBool(tagging))
-  add(path_601490, "Bucket", newJString(Bucket))
-  result = call_601489.call(path_601490, query_601491, nil, nil, nil)
+  var path_603492 = newJObject()
+  var query_603493 = newJObject()
+  add(query_603493, "tagging", newJBool(tagging))
+  add(path_603492, "Bucket", newJString(Bucket))
+  result = call_603491.call(path_603492, query_603493, nil, nil, nil)
 
-var getBucketTagging* = Call_GetBucketTagging_601482(name: "getBucketTagging",
+var getBucketTagging* = Call_GetBucketTagging_603484(name: "getBucketTagging",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com", route: "/{Bucket}#tagging",
-    validator: validate_GetBucketTagging_601483, base: "/",
-    url: url_GetBucketTagging_601484, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketTagging_603485, base: "/",
+    url: url_GetBucketTagging_603486, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketTagging_601505 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketTagging_601507(protocol: Scheme; host: string; base: string;
+  Call_DeleteBucketTagging_603507 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketTagging_603509(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -4081,9 +4081,9 @@ proc url_DeleteBucketTagging_601507(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketTagging_601506(path: JsonNode; query: JsonNode;
+proc validate_DeleteBucketTagging_603508(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Deletes the tags from the bucket.
@@ -4096,49 +4096,49 @@ proc validate_DeleteBucketTagging_601506(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601508 = path.getOrDefault("Bucket")
-  valid_601508 = validateParameter(valid_601508, JString, required = true,
+  var valid_603510 = path.getOrDefault("Bucket")
+  valid_603510 = validateParameter(valid_603510, JString, required = true,
                                  default = nil)
-  if valid_601508 != nil:
-    section.add "Bucket", valid_601508
+  if valid_603510 != nil:
+    section.add "Bucket", valid_603510
   result.add "path", section
   ## parameters in `query` object:
   ##   tagging: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `tagging` field"
-  var valid_601509 = query.getOrDefault("tagging")
-  valid_601509 = validateParameter(valid_601509, JBool, required = true, default = nil)
-  if valid_601509 != nil:
-    section.add "tagging", valid_601509
+  var valid_603511 = query.getOrDefault("tagging")
+  valid_603511 = validateParameter(valid_603511, JBool, required = true, default = nil)
+  if valid_603511 != nil:
+    section.add "tagging", valid_603511
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601510 = header.getOrDefault("x-amz-security-token")
-  valid_601510 = validateParameter(valid_601510, JString, required = false,
+  var valid_603512 = header.getOrDefault("x-amz-security-token")
+  valid_603512 = validateParameter(valid_603512, JString, required = false,
                                  default = nil)
-  if valid_601510 != nil:
-    section.add "x-amz-security-token", valid_601510
+  if valid_603512 != nil:
+    section.add "x-amz-security-token", valid_603512
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601511: Call_DeleteBucketTagging_601505; path: JsonNode;
+proc call*(call_603513: Call_DeleteBucketTagging_603507; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the tags from the bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETEtagging.html
-  let valid = call_601511.validator(path, query, header, formData, body)
-  let scheme = call_601511.pickScheme
+  let valid = call_603513.validator(path, query, header, formData, body)
+  let scheme = call_603513.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601511.url(scheme.get, call_601511.host, call_601511.base,
-                         call_601511.route, valid.getOrDefault("path"))
-  result = hook(call_601511, url, valid)
+  let url = call_603513.url(scheme.get, call_603513.host, call_603513.base,
+                         call_603513.route, valid.getOrDefault("path"))
+  result = hook(call_603513, url, valid)
 
-proc call*(call_601512: Call_DeleteBucketTagging_601505; tagging: bool;
+proc call*(call_603514: Call_DeleteBucketTagging_603507; tagging: bool;
           Bucket: string): Recallable =
   ## deleteBucketTagging
   ## Deletes the tags from the bucket.
@@ -4146,20 +4146,20 @@ proc call*(call_601512: Call_DeleteBucketTagging_601505; tagging: bool;
   ##   tagging: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601513 = newJObject()
-  var query_601514 = newJObject()
-  add(query_601514, "tagging", newJBool(tagging))
-  add(path_601513, "Bucket", newJString(Bucket))
-  result = call_601512.call(path_601513, query_601514, nil, nil, nil)
+  var path_603515 = newJObject()
+  var query_603516 = newJObject()
+  add(query_603516, "tagging", newJBool(tagging))
+  add(path_603515, "Bucket", newJString(Bucket))
+  result = call_603514.call(path_603515, query_603516, nil, nil, nil)
 
-var deleteBucketTagging* = Call_DeleteBucketTagging_601505(
+var deleteBucketTagging* = Call_DeleteBucketTagging_603507(
     name: "deleteBucketTagging", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#tagging",
-    validator: validate_DeleteBucketTagging_601506, base: "/",
-    url: url_DeleteBucketTagging_601507, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBucketTagging_603508, base: "/",
+    url: url_DeleteBucketTagging_603509, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketWebsite_601525 = ref object of OpenApiRestCall_600426
-proc url_PutBucketWebsite_601527(protocol: Scheme; host: string; base: string;
+  Call_PutBucketWebsite_603527 = ref object of OpenApiRestCall_602433
+proc url_PutBucketWebsite_603529(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -4170,9 +4170,9 @@ proc url_PutBucketWebsite_601527(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketWebsite_601526(path: JsonNode; query: JsonNode;
+proc validate_PutBucketWebsite_603528(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Set the website configuration for a bucket.
@@ -4185,36 +4185,36 @@ proc validate_PutBucketWebsite_601526(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601528 = path.getOrDefault("Bucket")
-  valid_601528 = validateParameter(valid_601528, JString, required = true,
+  var valid_603530 = path.getOrDefault("Bucket")
+  valid_603530 = validateParameter(valid_603530, JString, required = true,
                                  default = nil)
-  if valid_601528 != nil:
-    section.add "Bucket", valid_601528
+  if valid_603530 != nil:
+    section.add "Bucket", valid_603530
   result.add "path", section
   ## parameters in `query` object:
   ##   website: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `website` field"
-  var valid_601529 = query.getOrDefault("website")
-  valid_601529 = validateParameter(valid_601529, JBool, required = true, default = nil)
-  if valid_601529 != nil:
-    section.add "website", valid_601529
+  var valid_603531 = query.getOrDefault("website")
+  valid_603531 = validateParameter(valid_603531, JBool, required = true, default = nil)
+  if valid_603531 != nil:
+    section.add "website", valid_603531
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : <p/>
   section = newJObject()
-  var valid_601530 = header.getOrDefault("x-amz-security-token")
-  valid_601530 = validateParameter(valid_601530, JString, required = false,
+  var valid_603532 = header.getOrDefault("x-amz-security-token")
+  valid_603532 = validateParameter(valid_603532, JString, required = false,
                                  default = nil)
-  if valid_601530 != nil:
-    section.add "x-amz-security-token", valid_601530
-  var valid_601531 = header.getOrDefault("Content-MD5")
-  valid_601531 = validateParameter(valid_601531, JString, required = false,
+  if valid_603532 != nil:
+    section.add "x-amz-security-token", valid_603532
+  var valid_603533 = header.getOrDefault("Content-MD5")
+  valid_603533 = validateParameter(valid_603533, JString, required = false,
                                  default = nil)
-  if valid_601531 != nil:
-    section.add "Content-MD5", valid_601531
+  if valid_603533 != nil:
+    section.add "Content-MD5", valid_603533
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4225,20 +4225,20 @@ proc validate_PutBucketWebsite_601526(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601533: Call_PutBucketWebsite_601525; path: JsonNode;
+proc call*(call_603535: Call_PutBucketWebsite_603527; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Set the website configuration for a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTwebsite.html
-  let valid = call_601533.validator(path, query, header, formData, body)
-  let scheme = call_601533.pickScheme
+  let valid = call_603535.validator(path, query, header, formData, body)
+  let scheme = call_603535.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601533.url(scheme.get, call_601533.host, call_601533.base,
-                         call_601533.route, valid.getOrDefault("path"))
-  result = hook(call_601533, url, valid)
+  let url = call_603535.url(scheme.get, call_603535.host, call_603535.base,
+                         call_603535.route, valid.getOrDefault("path"))
+  result = hook(call_603535, url, valid)
 
-proc call*(call_601534: Call_PutBucketWebsite_601525; website: bool; Bucket: string;
+proc call*(call_603536: Call_PutBucketWebsite_603527; website: bool; Bucket: string;
           body: JsonNode): Recallable =
   ## putBucketWebsite
   ## Set the website configuration for a bucket.
@@ -4247,22 +4247,22 @@ proc call*(call_601534: Call_PutBucketWebsite_601525; website: bool; Bucket: str
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601535 = newJObject()
-  var query_601536 = newJObject()
-  var body_601537 = newJObject()
-  add(query_601536, "website", newJBool(website))
-  add(path_601535, "Bucket", newJString(Bucket))
+  var path_603537 = newJObject()
+  var query_603538 = newJObject()
+  var body_603539 = newJObject()
+  add(query_603538, "website", newJBool(website))
+  add(path_603537, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601537 = body
-  result = call_601534.call(path_601535, query_601536, nil, nil, body_601537)
+    body_603539 = body
+  result = call_603536.call(path_603537, query_603538, nil, nil, body_603539)
 
-var putBucketWebsite* = Call_PutBucketWebsite_601525(name: "putBucketWebsite",
+var putBucketWebsite* = Call_PutBucketWebsite_603527(name: "putBucketWebsite",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com", route: "/{Bucket}#website",
-    validator: validate_PutBucketWebsite_601526, base: "/",
-    url: url_PutBucketWebsite_601527, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutBucketWebsite_603528, base: "/",
+    url: url_PutBucketWebsite_603529, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketWebsite_601515 = ref object of OpenApiRestCall_600426
-proc url_GetBucketWebsite_601517(protocol: Scheme; host: string; base: string;
+  Call_GetBucketWebsite_603517 = ref object of OpenApiRestCall_602433
+proc url_GetBucketWebsite_603519(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -4273,9 +4273,9 @@ proc url_GetBucketWebsite_601517(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketWebsite_601516(path: JsonNode; query: JsonNode;
+proc validate_GetBucketWebsite_603518(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the website configuration for a bucket.
@@ -4288,68 +4288,68 @@ proc validate_GetBucketWebsite_601516(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601518 = path.getOrDefault("Bucket")
-  valid_601518 = validateParameter(valid_601518, JString, required = true,
+  var valid_603520 = path.getOrDefault("Bucket")
+  valid_603520 = validateParameter(valid_603520, JString, required = true,
                                  default = nil)
-  if valid_601518 != nil:
-    section.add "Bucket", valid_601518
+  if valid_603520 != nil:
+    section.add "Bucket", valid_603520
   result.add "path", section
   ## parameters in `query` object:
   ##   website: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `website` field"
-  var valid_601519 = query.getOrDefault("website")
-  valid_601519 = validateParameter(valid_601519, JBool, required = true, default = nil)
-  if valid_601519 != nil:
-    section.add "website", valid_601519
+  var valid_603521 = query.getOrDefault("website")
+  valid_603521 = validateParameter(valid_603521, JBool, required = true, default = nil)
+  if valid_603521 != nil:
+    section.add "website", valid_603521
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601520 = header.getOrDefault("x-amz-security-token")
-  valid_601520 = validateParameter(valid_601520, JString, required = false,
+  var valid_603522 = header.getOrDefault("x-amz-security-token")
+  valid_603522 = validateParameter(valid_603522, JString, required = false,
                                  default = nil)
-  if valid_601520 != nil:
-    section.add "x-amz-security-token", valid_601520
+  if valid_603522 != nil:
+    section.add "x-amz-security-token", valid_603522
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601521: Call_GetBucketWebsite_601515; path: JsonNode;
+proc call*(call_603523: Call_GetBucketWebsite_603517; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the website configuration for a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETwebsite.html
-  let valid = call_601521.validator(path, query, header, formData, body)
-  let scheme = call_601521.pickScheme
+  let valid = call_603523.validator(path, query, header, formData, body)
+  let scheme = call_603523.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601521.url(scheme.get, call_601521.host, call_601521.base,
-                         call_601521.route, valid.getOrDefault("path"))
-  result = hook(call_601521, url, valid)
+  let url = call_603523.url(scheme.get, call_603523.host, call_603523.base,
+                         call_603523.route, valid.getOrDefault("path"))
+  result = hook(call_603523, url, valid)
 
-proc call*(call_601522: Call_GetBucketWebsite_601515; website: bool; Bucket: string): Recallable =
+proc call*(call_603524: Call_GetBucketWebsite_603517; website: bool; Bucket: string): Recallable =
   ## getBucketWebsite
   ## Returns the website configuration for a bucket.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETwebsite.html
   ##   website: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601523 = newJObject()
-  var query_601524 = newJObject()
-  add(query_601524, "website", newJBool(website))
-  add(path_601523, "Bucket", newJString(Bucket))
-  result = call_601522.call(path_601523, query_601524, nil, nil, nil)
+  var path_603525 = newJObject()
+  var query_603526 = newJObject()
+  add(query_603526, "website", newJBool(website))
+  add(path_603525, "Bucket", newJString(Bucket))
+  result = call_603524.call(path_603525, query_603526, nil, nil, nil)
 
-var getBucketWebsite* = Call_GetBucketWebsite_601515(name: "getBucketWebsite",
+var getBucketWebsite* = Call_GetBucketWebsite_603517(name: "getBucketWebsite",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com", route: "/{Bucket}#website",
-    validator: validate_GetBucketWebsite_601516, base: "/",
-    url: url_GetBucketWebsite_601517, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketWebsite_603518, base: "/",
+    url: url_GetBucketWebsite_603519, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBucketWebsite_601538 = ref object of OpenApiRestCall_600426
-proc url_DeleteBucketWebsite_601540(protocol: Scheme; host: string; base: string;
+  Call_DeleteBucketWebsite_603540 = ref object of OpenApiRestCall_602433
+proc url_DeleteBucketWebsite_603542(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -4360,9 +4360,9 @@ proc url_DeleteBucketWebsite_601540(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteBucketWebsite_601539(path: JsonNode; query: JsonNode;
+proc validate_DeleteBucketWebsite_603541(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## This operation removes the website configuration from the bucket.
@@ -4375,49 +4375,49 @@ proc validate_DeleteBucketWebsite_601539(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601541 = path.getOrDefault("Bucket")
-  valid_601541 = validateParameter(valid_601541, JString, required = true,
+  var valid_603543 = path.getOrDefault("Bucket")
+  valid_603543 = validateParameter(valid_603543, JString, required = true,
                                  default = nil)
-  if valid_601541 != nil:
-    section.add "Bucket", valid_601541
+  if valid_603543 != nil:
+    section.add "Bucket", valid_603543
   result.add "path", section
   ## parameters in `query` object:
   ##   website: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `website` field"
-  var valid_601542 = query.getOrDefault("website")
-  valid_601542 = validateParameter(valid_601542, JBool, required = true, default = nil)
-  if valid_601542 != nil:
-    section.add "website", valid_601542
+  var valid_603544 = query.getOrDefault("website")
+  valid_603544 = validateParameter(valid_603544, JBool, required = true, default = nil)
+  if valid_603544 != nil:
+    section.add "website", valid_603544
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601543 = header.getOrDefault("x-amz-security-token")
-  valid_601543 = validateParameter(valid_601543, JString, required = false,
+  var valid_603545 = header.getOrDefault("x-amz-security-token")
+  valid_603545 = validateParameter(valid_603545, JString, required = false,
                                  default = nil)
-  if valid_601543 != nil:
-    section.add "x-amz-security-token", valid_601543
+  if valid_603545 != nil:
+    section.add "x-amz-security-token", valid_603545
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601544: Call_DeleteBucketWebsite_601538; path: JsonNode;
+proc call*(call_603546: Call_DeleteBucketWebsite_603540; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation removes the website configuration from the bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketDELETEwebsite.html
-  let valid = call_601544.validator(path, query, header, formData, body)
-  let scheme = call_601544.pickScheme
+  let valid = call_603546.validator(path, query, header, formData, body)
+  let scheme = call_603546.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601544.url(scheme.get, call_601544.host, call_601544.base,
-                         call_601544.route, valid.getOrDefault("path"))
-  result = hook(call_601544, url, valid)
+  let url = call_603546.url(scheme.get, call_603546.host, call_603546.base,
+                         call_603546.route, valid.getOrDefault("path"))
+  result = hook(call_603546, url, valid)
 
-proc call*(call_601545: Call_DeleteBucketWebsite_601538; website: bool;
+proc call*(call_603547: Call_DeleteBucketWebsite_603540; website: bool;
           Bucket: string): Recallable =
   ## deleteBucketWebsite
   ## This operation removes the website configuration from the bucket.
@@ -4425,20 +4425,20 @@ proc call*(call_601545: Call_DeleteBucketWebsite_601538; website: bool;
   ##   website: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601546 = newJObject()
-  var query_601547 = newJObject()
-  add(query_601547, "website", newJBool(website))
-  add(path_601546, "Bucket", newJString(Bucket))
-  result = call_601545.call(path_601546, query_601547, nil, nil, nil)
+  var path_603548 = newJObject()
+  var query_603549 = newJObject()
+  add(query_603549, "website", newJBool(website))
+  add(path_603548, "Bucket", newJString(Bucket))
+  result = call_603547.call(path_603548, query_603549, nil, nil, nil)
 
-var deleteBucketWebsite* = Call_DeleteBucketWebsite_601538(
+var deleteBucketWebsite* = Call_DeleteBucketWebsite_603540(
     name: "deleteBucketWebsite", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#website",
-    validator: validate_DeleteBucketWebsite_601539, base: "/",
-    url: url_DeleteBucketWebsite_601540, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBucketWebsite_603541, base: "/",
+    url: url_DeleteBucketWebsite_603542, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutObject_601575 = ref object of OpenApiRestCall_600426
-proc url_PutObject_601577(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutObject_603577 = ref object of OpenApiRestCall_602433
+proc url_PutObject_603579(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -4451,9 +4451,9 @@ proc url_PutObject_601577(protocol: Scheme; host: string; base: string; route: s
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutObject_601576(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutObject_603578(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds an object to a bucket.
   ## 
@@ -4467,16 +4467,16 @@ proc validate_PutObject_601576(path: JsonNode; query: JsonNode; header: JsonNode
   ##         : Name of the bucket to which the PUT operation was initiated.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601578 = path.getOrDefault("Key")
-  valid_601578 = validateParameter(valid_601578, JString, required = true,
+  var valid_603580 = path.getOrDefault("Key")
+  valid_603580 = validateParameter(valid_603580, JString, required = true,
                                  default = nil)
-  if valid_601578 != nil:
-    section.add "Key", valid_601578
-  var valid_601579 = path.getOrDefault("Bucket")
-  valid_601579 = validateParameter(valid_601579, JString, required = true,
+  if valid_603580 != nil:
+    section.add "Key", valid_603580
+  var valid_603581 = path.getOrDefault("Bucket")
+  valid_603581 = validateParameter(valid_603581, JString, required = true,
                                  default = nil)
-  if valid_601579 != nil:
-    section.add "Bucket", valid_601579
+  if valid_603581 != nil:
+    section.add "Bucket", valid_603581
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4537,140 +4537,140 @@ proc validate_PutObject_601576(path: JsonNode; query: JsonNode; header: JsonNode
   ##   x-amz-server-side-encryption-customer-key: JString
   ##                                            : Specifies the customer-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon does not store the encryption key. The key must be appropriate for use with the algorithm specified in the x-amz-server-side​-encryption​-customer-algorithm header.
   section = newJObject()
-  var valid_601580 = header.getOrDefault("Content-Disposition")
-  valid_601580 = validateParameter(valid_601580, JString, required = false,
+  var valid_603582 = header.getOrDefault("Content-Disposition")
+  valid_603582 = validateParameter(valid_603582, JString, required = false,
                                  default = nil)
-  if valid_601580 != nil:
-    section.add "Content-Disposition", valid_601580
-  var valid_601581 = header.getOrDefault("x-amz-grant-full-control")
-  valid_601581 = validateParameter(valid_601581, JString, required = false,
+  if valid_603582 != nil:
+    section.add "Content-Disposition", valid_603582
+  var valid_603583 = header.getOrDefault("x-amz-grant-full-control")
+  valid_603583 = validateParameter(valid_603583, JString, required = false,
                                  default = nil)
-  if valid_601581 != nil:
-    section.add "x-amz-grant-full-control", valid_601581
-  var valid_601582 = header.getOrDefault("x-amz-security-token")
-  valid_601582 = validateParameter(valid_601582, JString, required = false,
+  if valid_603583 != nil:
+    section.add "x-amz-grant-full-control", valid_603583
+  var valid_603584 = header.getOrDefault("x-amz-security-token")
+  valid_603584 = validateParameter(valid_603584, JString, required = false,
                                  default = nil)
-  if valid_601582 != nil:
-    section.add "x-amz-security-token", valid_601582
-  var valid_601583 = header.getOrDefault("Content-MD5")
-  valid_601583 = validateParameter(valid_601583, JString, required = false,
+  if valid_603584 != nil:
+    section.add "x-amz-security-token", valid_603584
+  var valid_603585 = header.getOrDefault("Content-MD5")
+  valid_603585 = validateParameter(valid_603585, JString, required = false,
                                  default = nil)
-  if valid_601583 != nil:
-    section.add "Content-MD5", valid_601583
-  var valid_601584 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
-  valid_601584 = validateParameter(valid_601584, JString, required = false,
+  if valid_603585 != nil:
+    section.add "Content-MD5", valid_603585
+  var valid_603586 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
+  valid_603586 = validateParameter(valid_603586, JString, required = false,
                                  default = nil)
-  if valid_601584 != nil:
-    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_601584
-  var valid_601585 = header.getOrDefault("x-amz-object-lock-mode")
-  valid_601585 = validateParameter(valid_601585, JString, required = false,
+  if valid_603586 != nil:
+    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_603586
+  var valid_603587 = header.getOrDefault("x-amz-object-lock-mode")
+  valid_603587 = validateParameter(valid_603587, JString, required = false,
                                  default = newJString("GOVERNANCE"))
-  if valid_601585 != nil:
-    section.add "x-amz-object-lock-mode", valid_601585
-  var valid_601586 = header.getOrDefault("Cache-Control")
-  valid_601586 = validateParameter(valid_601586, JString, required = false,
+  if valid_603587 != nil:
+    section.add "x-amz-object-lock-mode", valid_603587
+  var valid_603588 = header.getOrDefault("Cache-Control")
+  valid_603588 = validateParameter(valid_603588, JString, required = false,
                                  default = nil)
-  if valid_601586 != nil:
-    section.add "Cache-Control", valid_601586
-  var valid_601587 = header.getOrDefault("Content-Language")
-  valid_601587 = validateParameter(valid_601587, JString, required = false,
+  if valid_603588 != nil:
+    section.add "Cache-Control", valid_603588
+  var valid_603589 = header.getOrDefault("Content-Language")
+  valid_603589 = validateParameter(valid_603589, JString, required = false,
                                  default = nil)
-  if valid_601587 != nil:
-    section.add "Content-Language", valid_601587
-  var valid_601588 = header.getOrDefault("Content-Type")
-  valid_601588 = validateParameter(valid_601588, JString, required = false,
+  if valid_603589 != nil:
+    section.add "Content-Language", valid_603589
+  var valid_603590 = header.getOrDefault("Content-Type")
+  valid_603590 = validateParameter(valid_603590, JString, required = false,
                                  default = nil)
-  if valid_601588 != nil:
-    section.add "Content-Type", valid_601588
-  var valid_601589 = header.getOrDefault("Expires")
-  valid_601589 = validateParameter(valid_601589, JString, required = false,
+  if valid_603590 != nil:
+    section.add "Content-Type", valid_603590
+  var valid_603591 = header.getOrDefault("Expires")
+  valid_603591 = validateParameter(valid_603591, JString, required = false,
                                  default = nil)
-  if valid_601589 != nil:
-    section.add "Expires", valid_601589
-  var valid_601590 = header.getOrDefault("x-amz-website-redirect-location")
-  valid_601590 = validateParameter(valid_601590, JString, required = false,
+  if valid_603591 != nil:
+    section.add "Expires", valid_603591
+  var valid_603592 = header.getOrDefault("x-amz-website-redirect-location")
+  valid_603592 = validateParameter(valid_603592, JString, required = false,
                                  default = nil)
-  if valid_601590 != nil:
-    section.add "x-amz-website-redirect-location", valid_601590
-  var valid_601591 = header.getOrDefault("x-amz-acl")
-  valid_601591 = validateParameter(valid_601591, JString, required = false,
+  if valid_603592 != nil:
+    section.add "x-amz-website-redirect-location", valid_603592
+  var valid_603593 = header.getOrDefault("x-amz-acl")
+  valid_603593 = validateParameter(valid_603593, JString, required = false,
                                  default = newJString("private"))
-  if valid_601591 != nil:
-    section.add "x-amz-acl", valid_601591
-  var valid_601592 = header.getOrDefault("x-amz-grant-read")
-  valid_601592 = validateParameter(valid_601592, JString, required = false,
+  if valid_603593 != nil:
+    section.add "x-amz-acl", valid_603593
+  var valid_603594 = header.getOrDefault("x-amz-grant-read")
+  valid_603594 = validateParameter(valid_603594, JString, required = false,
                                  default = nil)
-  if valid_601592 != nil:
-    section.add "x-amz-grant-read", valid_601592
-  var valid_601593 = header.getOrDefault("x-amz-storage-class")
-  valid_601593 = validateParameter(valid_601593, JString, required = false,
+  if valid_603594 != nil:
+    section.add "x-amz-grant-read", valid_603594
+  var valid_603595 = header.getOrDefault("x-amz-storage-class")
+  valid_603595 = validateParameter(valid_603595, JString, required = false,
                                  default = newJString("STANDARD"))
-  if valid_601593 != nil:
-    section.add "x-amz-storage-class", valid_601593
-  var valid_601594 = header.getOrDefault("x-amz-object-lock-legal-hold")
-  valid_601594 = validateParameter(valid_601594, JString, required = false,
+  if valid_603595 != nil:
+    section.add "x-amz-storage-class", valid_603595
+  var valid_603596 = header.getOrDefault("x-amz-object-lock-legal-hold")
+  valid_603596 = validateParameter(valid_603596, JString, required = false,
                                  default = newJString("ON"))
-  if valid_601594 != nil:
-    section.add "x-amz-object-lock-legal-hold", valid_601594
-  var valid_601595 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
-  valid_601595 = validateParameter(valid_601595, JString, required = false,
+  if valid_603596 != nil:
+    section.add "x-amz-object-lock-legal-hold", valid_603596
+  var valid_603597 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
+  valid_603597 = validateParameter(valid_603597, JString, required = false,
                                  default = nil)
-  if valid_601595 != nil:
-    section.add "x-amz-server-side-encryption-customer-algorithm", valid_601595
-  var valid_601596 = header.getOrDefault("x-amz-tagging")
-  valid_601596 = validateParameter(valid_601596, JString, required = false,
+  if valid_603597 != nil:
+    section.add "x-amz-server-side-encryption-customer-algorithm", valid_603597
+  var valid_603598 = header.getOrDefault("x-amz-tagging")
+  valid_603598 = validateParameter(valid_603598, JString, required = false,
                                  default = nil)
-  if valid_601596 != nil:
-    section.add "x-amz-tagging", valid_601596
-  var valid_601597 = header.getOrDefault("x-amz-grant-read-acp")
-  valid_601597 = validateParameter(valid_601597, JString, required = false,
+  if valid_603598 != nil:
+    section.add "x-amz-tagging", valid_603598
+  var valid_603599 = header.getOrDefault("x-amz-grant-read-acp")
+  valid_603599 = validateParameter(valid_603599, JString, required = false,
                                  default = nil)
-  if valid_601597 != nil:
-    section.add "x-amz-grant-read-acp", valid_601597
-  var valid_601598 = header.getOrDefault("Content-Length")
-  valid_601598 = validateParameter(valid_601598, JInt, required = false, default = nil)
-  if valid_601598 != nil:
-    section.add "Content-Length", valid_601598
-  var valid_601599 = header.getOrDefault("x-amz-server-side-encryption-context")
-  valid_601599 = validateParameter(valid_601599, JString, required = false,
+  if valid_603599 != nil:
+    section.add "x-amz-grant-read-acp", valid_603599
+  var valid_603600 = header.getOrDefault("Content-Length")
+  valid_603600 = validateParameter(valid_603600, JInt, required = false, default = nil)
+  if valid_603600 != nil:
+    section.add "Content-Length", valid_603600
+  var valid_603601 = header.getOrDefault("x-amz-server-side-encryption-context")
+  valid_603601 = validateParameter(valid_603601, JString, required = false,
                                  default = nil)
-  if valid_601599 != nil:
-    section.add "x-amz-server-side-encryption-context", valid_601599
-  var valid_601600 = header.getOrDefault("x-amz-server-side-encryption-aws-kms-key-id")
-  valid_601600 = validateParameter(valid_601600, JString, required = false,
+  if valid_603601 != nil:
+    section.add "x-amz-server-side-encryption-context", valid_603601
+  var valid_603602 = header.getOrDefault("x-amz-server-side-encryption-aws-kms-key-id")
+  valid_603602 = validateParameter(valid_603602, JString, required = false,
                                  default = nil)
-  if valid_601600 != nil:
-    section.add "x-amz-server-side-encryption-aws-kms-key-id", valid_601600
-  var valid_601601 = header.getOrDefault("x-amz-object-lock-retain-until-date")
-  valid_601601 = validateParameter(valid_601601, JString, required = false,
+  if valid_603602 != nil:
+    section.add "x-amz-server-side-encryption-aws-kms-key-id", valid_603602
+  var valid_603603 = header.getOrDefault("x-amz-object-lock-retain-until-date")
+  valid_603603 = validateParameter(valid_603603, JString, required = false,
                                  default = nil)
-  if valid_601601 != nil:
-    section.add "x-amz-object-lock-retain-until-date", valid_601601
-  var valid_601602 = header.getOrDefault("x-amz-grant-write-acp")
-  valid_601602 = validateParameter(valid_601602, JString, required = false,
+  if valid_603603 != nil:
+    section.add "x-amz-object-lock-retain-until-date", valid_603603
+  var valid_603604 = header.getOrDefault("x-amz-grant-write-acp")
+  valid_603604 = validateParameter(valid_603604, JString, required = false,
                                  default = nil)
-  if valid_601602 != nil:
-    section.add "x-amz-grant-write-acp", valid_601602
-  var valid_601603 = header.getOrDefault("Content-Encoding")
-  valid_601603 = validateParameter(valid_601603, JString, required = false,
+  if valid_603604 != nil:
+    section.add "x-amz-grant-write-acp", valid_603604
+  var valid_603605 = header.getOrDefault("Content-Encoding")
+  valid_603605 = validateParameter(valid_603605, JString, required = false,
                                  default = nil)
-  if valid_601603 != nil:
-    section.add "Content-Encoding", valid_601603
-  var valid_601604 = header.getOrDefault("x-amz-request-payer")
-  valid_601604 = validateParameter(valid_601604, JString, required = false,
+  if valid_603605 != nil:
+    section.add "Content-Encoding", valid_603605
+  var valid_603606 = header.getOrDefault("x-amz-request-payer")
+  valid_603606 = validateParameter(valid_603606, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601604 != nil:
-    section.add "x-amz-request-payer", valid_601604
-  var valid_601605 = header.getOrDefault("x-amz-server-side-encryption")
-  valid_601605 = validateParameter(valid_601605, JString, required = false,
+  if valid_603606 != nil:
+    section.add "x-amz-request-payer", valid_603606
+  var valid_603607 = header.getOrDefault("x-amz-server-side-encryption")
+  valid_603607 = validateParameter(valid_603607, JString, required = false,
                                  default = newJString("AES256"))
-  if valid_601605 != nil:
-    section.add "x-amz-server-side-encryption", valid_601605
-  var valid_601606 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
-  valid_601606 = validateParameter(valid_601606, JString, required = false,
+  if valid_603607 != nil:
+    section.add "x-amz-server-side-encryption", valid_603607
+  var valid_603608 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
+  valid_603608 = validateParameter(valid_603608, JString, required = false,
                                  default = nil)
-  if valid_601606 != nil:
-    section.add "x-amz-server-side-encryption-customer-key", valid_601606
+  if valid_603608 != nil:
+    section.add "x-amz-server-side-encryption-customer-key", valid_603608
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4681,20 +4681,20 @@ proc validate_PutObject_601576(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_601608: Call_PutObject_601575; path: JsonNode; query: JsonNode;
+proc call*(call_603610: Call_PutObject_603577; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds an object to a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html
-  let valid = call_601608.validator(path, query, header, formData, body)
-  let scheme = call_601608.pickScheme
+  let valid = call_603610.validator(path, query, header, formData, body)
+  let scheme = call_603610.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601608.url(scheme.get, call_601608.host, call_601608.base,
-                         call_601608.route, valid.getOrDefault("path"))
-  result = hook(call_601608, url, valid)
+  let url = call_603610.url(scheme.get, call_603610.host, call_603610.base,
+                         call_603610.route, valid.getOrDefault("path"))
+  result = hook(call_603610, url, valid)
 
-proc call*(call_601609: Call_PutObject_601575; Key: string; Bucket: string;
+proc call*(call_603611: Call_PutObject_603577; Key: string; Bucket: string;
           body: JsonNode): Recallable =
   ## putObject
   ## Adds an object to a bucket.
@@ -4704,23 +4704,23 @@ proc call*(call_601609: Call_PutObject_601575; Key: string; Bucket: string;
   ##   Bucket: string (required)
   ##         : Name of the bucket to which the PUT operation was initiated.
   ##   body: JObject (required)
-  var path_601610 = newJObject()
-  var body_601611 = newJObject()
-  add(path_601610, "Key", newJString(Key))
-  add(path_601610, "Bucket", newJString(Bucket))
+  var path_603612 = newJObject()
+  var body_603613 = newJObject()
+  add(path_603612, "Key", newJString(Key))
+  add(path_603612, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601611 = body
-  result = call_601609.call(path_601610, nil, nil, nil, body_601611)
+    body_603613 = body
+  result = call_603611.call(path_603612, nil, nil, nil, body_603613)
 
-var putObject* = Call_PutObject_601575(name: "putObject", meth: HttpMethod.HttpPut,
+var putObject* = Call_PutObject_603577(name: "putObject", meth: HttpMethod.HttpPut,
                                     host: "s3.amazonaws.com",
                                     route: "/{Bucket}/{Key}",
-                                    validator: validate_PutObject_601576,
-                                    base: "/", url: url_PutObject_601577,
+                                    validator: validate_PutObject_603578,
+                                    base: "/", url: url_PutObject_603579,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_HeadObject_601626 = ref object of OpenApiRestCall_600426
-proc url_HeadObject_601628(protocol: Scheme; host: string; base: string; route: string;
+  Call_HeadObject_603628 = ref object of OpenApiRestCall_602433
+proc url_HeadObject_603630(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -4733,9 +4733,9 @@ proc url_HeadObject_601628(protocol: Scheme; host: string; base: string; route: 
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_HeadObject_601627(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_HeadObject_603629(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## The HEAD operation retrieves metadata from an object without returning the object itself. This operation is useful if you're only interested in an object's metadata. To use HEAD, you must have READ access to the object.
   ## 
@@ -4749,16 +4749,16 @@ proc validate_HeadObject_601627(path: JsonNode; query: JsonNode; header: JsonNod
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601629 = path.getOrDefault("Key")
-  valid_601629 = validateParameter(valid_601629, JString, required = true,
+  var valid_603631 = path.getOrDefault("Key")
+  valid_603631 = validateParameter(valid_603631, JString, required = true,
                                  default = nil)
-  if valid_601629 != nil:
-    section.add "Key", valid_601629
-  var valid_601630 = path.getOrDefault("Bucket")
-  valid_601630 = validateParameter(valid_601630, JString, required = true,
+  if valid_603631 != nil:
+    section.add "Key", valid_603631
+  var valid_603632 = path.getOrDefault("Bucket")
+  valid_603632 = validateParameter(valid_603632, JString, required = true,
                                  default = nil)
-  if valid_601630 != nil:
-    section.add "Bucket", valid_601630
+  if valid_603632 != nil:
+    section.add "Bucket", valid_603632
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
@@ -4766,15 +4766,15 @@ proc validate_HeadObject_601627(path: JsonNode; query: JsonNode; header: JsonNod
   ##   partNumber: JInt
   ##             : Part number of the object being read. This is a positive integer between 1 and 10,000. Effectively performs a 'ranged' HEAD request for the part specified. Useful querying about the size of the part and the number of parts in this object.
   section = newJObject()
-  var valid_601631 = query.getOrDefault("versionId")
-  valid_601631 = validateParameter(valid_601631, JString, required = false,
+  var valid_603633 = query.getOrDefault("versionId")
+  valid_603633 = validateParameter(valid_603633, JString, required = false,
                                  default = nil)
-  if valid_601631 != nil:
-    section.add "versionId", valid_601631
-  var valid_601632 = query.getOrDefault("partNumber")
-  valid_601632 = validateParameter(valid_601632, JInt, required = false, default = nil)
-  if valid_601632 != nil:
-    section.add "partNumber", valid_601632
+  if valid_603633 != nil:
+    section.add "versionId", valid_603633
+  var valid_603634 = query.getOrDefault("partNumber")
+  valid_603634 = validateParameter(valid_603634, JInt, required = false, default = nil)
+  if valid_603634 != nil:
+    section.add "partNumber", valid_603634
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -4798,76 +4798,76 @@ proc validate_HeadObject_601627(path: JsonNode; query: JsonNode; header: JsonNod
   ##   x-amz-server-side-encryption-customer-key: JString
   ##                                            : Specifies the customer-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon does not store the encryption key. The key must be appropriate for use with the algorithm specified in the x-amz-server-side​-encryption​-customer-algorithm header.
   section = newJObject()
-  var valid_601633 = header.getOrDefault("x-amz-security-token")
-  valid_601633 = validateParameter(valid_601633, JString, required = false,
+  var valid_603635 = header.getOrDefault("x-amz-security-token")
+  valid_603635 = validateParameter(valid_603635, JString, required = false,
                                  default = nil)
-  if valid_601633 != nil:
-    section.add "x-amz-security-token", valid_601633
-  var valid_601634 = header.getOrDefault("If-Match")
-  valid_601634 = validateParameter(valid_601634, JString, required = false,
+  if valid_603635 != nil:
+    section.add "x-amz-security-token", valid_603635
+  var valid_603636 = header.getOrDefault("If-Match")
+  valid_603636 = validateParameter(valid_603636, JString, required = false,
                                  default = nil)
-  if valid_601634 != nil:
-    section.add "If-Match", valid_601634
-  var valid_601635 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
-  valid_601635 = validateParameter(valid_601635, JString, required = false,
+  if valid_603636 != nil:
+    section.add "If-Match", valid_603636
+  var valid_603637 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
+  valid_603637 = validateParameter(valid_603637, JString, required = false,
                                  default = nil)
-  if valid_601635 != nil:
-    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_601635
-  var valid_601636 = header.getOrDefault("If-Unmodified-Since")
-  valid_601636 = validateParameter(valid_601636, JString, required = false,
+  if valid_603637 != nil:
+    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_603637
+  var valid_603638 = header.getOrDefault("If-Unmodified-Since")
+  valid_603638 = validateParameter(valid_603638, JString, required = false,
                                  default = nil)
-  if valid_601636 != nil:
-    section.add "If-Unmodified-Since", valid_601636
-  var valid_601637 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
-  valid_601637 = validateParameter(valid_601637, JString, required = false,
+  if valid_603638 != nil:
+    section.add "If-Unmodified-Since", valid_603638
+  var valid_603639 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
+  valid_603639 = validateParameter(valid_603639, JString, required = false,
                                  default = nil)
-  if valid_601637 != nil:
-    section.add "x-amz-server-side-encryption-customer-algorithm", valid_601637
-  var valid_601638 = header.getOrDefault("If-Modified-Since")
-  valid_601638 = validateParameter(valid_601638, JString, required = false,
+  if valid_603639 != nil:
+    section.add "x-amz-server-side-encryption-customer-algorithm", valid_603639
+  var valid_603640 = header.getOrDefault("If-Modified-Since")
+  valid_603640 = validateParameter(valid_603640, JString, required = false,
                                  default = nil)
-  if valid_601638 != nil:
-    section.add "If-Modified-Since", valid_601638
-  var valid_601639 = header.getOrDefault("If-None-Match")
-  valid_601639 = validateParameter(valid_601639, JString, required = false,
+  if valid_603640 != nil:
+    section.add "If-Modified-Since", valid_603640
+  var valid_603641 = header.getOrDefault("If-None-Match")
+  valid_603641 = validateParameter(valid_603641, JString, required = false,
                                  default = nil)
-  if valid_601639 != nil:
-    section.add "If-None-Match", valid_601639
-  var valid_601640 = header.getOrDefault("x-amz-request-payer")
-  valid_601640 = validateParameter(valid_601640, JString, required = false,
+  if valid_603641 != nil:
+    section.add "If-None-Match", valid_603641
+  var valid_603642 = header.getOrDefault("x-amz-request-payer")
+  valid_603642 = validateParameter(valid_603642, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601640 != nil:
-    section.add "x-amz-request-payer", valid_601640
-  var valid_601641 = header.getOrDefault("Range")
-  valid_601641 = validateParameter(valid_601641, JString, required = false,
+  if valid_603642 != nil:
+    section.add "x-amz-request-payer", valid_603642
+  var valid_603643 = header.getOrDefault("Range")
+  valid_603643 = validateParameter(valid_603643, JString, required = false,
                                  default = nil)
-  if valid_601641 != nil:
-    section.add "Range", valid_601641
-  var valid_601642 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
-  valid_601642 = validateParameter(valid_601642, JString, required = false,
+  if valid_603643 != nil:
+    section.add "Range", valid_603643
+  var valid_603644 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
+  valid_603644 = validateParameter(valid_603644, JString, required = false,
                                  default = nil)
-  if valid_601642 != nil:
-    section.add "x-amz-server-side-encryption-customer-key", valid_601642
+  if valid_603644 != nil:
+    section.add "x-amz-server-side-encryption-customer-key", valid_603644
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601643: Call_HeadObject_601626; path: JsonNode; query: JsonNode;
+proc call*(call_603645: Call_HeadObject_603628; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## The HEAD operation retrieves metadata from an object without returning the object itself. This operation is useful if you're only interested in an object's metadata. To use HEAD, you must have READ access to the object.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectHEAD.html
-  let valid = call_601643.validator(path, query, header, formData, body)
-  let scheme = call_601643.pickScheme
+  let valid = call_603645.validator(path, query, header, formData, body)
+  let scheme = call_603645.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601643.url(scheme.get, call_601643.host, call_601643.base,
-                         call_601643.route, valid.getOrDefault("path"))
-  result = hook(call_601643, url, valid)
+  let url = call_603645.url(scheme.get, call_603645.host, call_603645.base,
+                         call_603645.route, valid.getOrDefault("path"))
+  result = hook(call_603645, url, valid)
 
-proc call*(call_601644: Call_HeadObject_601626; Key: string; Bucket: string;
+proc call*(call_603646: Call_HeadObject_603628; Key: string; Bucket: string;
           versionId: string = ""; partNumber: int = 0): Recallable =
   ## headObject
   ## The HEAD operation retrieves metadata from an object without returning the object itself. This operation is useful if you're only interested in an object's metadata. To use HEAD, you must have READ access to the object.
@@ -4880,24 +4880,24 @@ proc call*(call_601644: Call_HeadObject_601626; Key: string; Bucket: string;
   ##      : <p/>
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601645 = newJObject()
-  var query_601646 = newJObject()
-  add(query_601646, "versionId", newJString(versionId))
-  add(query_601646, "partNumber", newJInt(partNumber))
-  add(path_601645, "Key", newJString(Key))
-  add(path_601645, "Bucket", newJString(Bucket))
-  result = call_601644.call(path_601645, query_601646, nil, nil, nil)
+  var path_603647 = newJObject()
+  var query_603648 = newJObject()
+  add(query_603648, "versionId", newJString(versionId))
+  add(query_603648, "partNumber", newJInt(partNumber))
+  add(path_603647, "Key", newJString(Key))
+  add(path_603647, "Bucket", newJString(Bucket))
+  result = call_603646.call(path_603647, query_603648, nil, nil, nil)
 
-var headObject* = Call_HeadObject_601626(name: "headObject",
+var headObject* = Call_HeadObject_603628(name: "headObject",
                                       meth: HttpMethod.HttpHead,
                                       host: "s3.amazonaws.com",
                                       route: "/{Bucket}/{Key}",
-                                      validator: validate_HeadObject_601627,
-                                      base: "/", url: url_HeadObject_601628,
+                                      validator: validate_HeadObject_603629,
+                                      base: "/", url: url_HeadObject_603630,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetObject_601548 = ref object of OpenApiRestCall_600426
-proc url_GetObject_601550(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetObject_603550 = ref object of OpenApiRestCall_602433
+proc url_GetObject_603552(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -4910,9 +4910,9 @@ proc url_GetObject_601550(protocol: Scheme; host: string; base: string; route: s
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetObject_601549(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetObject_603551(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves objects from Amazon S3.
   ## 
@@ -4926,16 +4926,16 @@ proc validate_GetObject_601549(path: JsonNode; query: JsonNode; header: JsonNode
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601551 = path.getOrDefault("Key")
-  valid_601551 = validateParameter(valid_601551, JString, required = true,
+  var valid_603553 = path.getOrDefault("Key")
+  valid_603553 = validateParameter(valid_603553, JString, required = true,
                                  default = nil)
-  if valid_601551 != nil:
-    section.add "Key", valid_601551
-  var valid_601552 = path.getOrDefault("Bucket")
-  valid_601552 = validateParameter(valid_601552, JString, required = true,
+  if valid_603553 != nil:
+    section.add "Key", valid_603553
+  var valid_603554 = path.getOrDefault("Bucket")
+  valid_603554 = validateParameter(valid_603554, JString, required = true,
                                  default = nil)
-  if valid_601552 != nil:
-    section.add "Bucket", valid_601552
+  if valid_603554 != nil:
+    section.add "Bucket", valid_603554
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
@@ -4955,45 +4955,45 @@ proc validate_GetObject_601549(path: JsonNode; query: JsonNode; header: JsonNode
   ##   response-content-type: JString
   ##                        : Sets the Content-Type header of the response.
   section = newJObject()
-  var valid_601553 = query.getOrDefault("versionId")
-  valid_601553 = validateParameter(valid_601553, JString, required = false,
+  var valid_603555 = query.getOrDefault("versionId")
+  valid_603555 = validateParameter(valid_603555, JString, required = false,
                                  default = nil)
-  if valid_601553 != nil:
-    section.add "versionId", valid_601553
-  var valid_601554 = query.getOrDefault("partNumber")
-  valid_601554 = validateParameter(valid_601554, JInt, required = false, default = nil)
-  if valid_601554 != nil:
-    section.add "partNumber", valid_601554
-  var valid_601555 = query.getOrDefault("response-expires")
-  valid_601555 = validateParameter(valid_601555, JString, required = false,
+  if valid_603555 != nil:
+    section.add "versionId", valid_603555
+  var valid_603556 = query.getOrDefault("partNumber")
+  valid_603556 = validateParameter(valid_603556, JInt, required = false, default = nil)
+  if valid_603556 != nil:
+    section.add "partNumber", valid_603556
+  var valid_603557 = query.getOrDefault("response-expires")
+  valid_603557 = validateParameter(valid_603557, JString, required = false,
                                  default = nil)
-  if valid_601555 != nil:
-    section.add "response-expires", valid_601555
-  var valid_601556 = query.getOrDefault("response-content-language")
-  valid_601556 = validateParameter(valid_601556, JString, required = false,
+  if valid_603557 != nil:
+    section.add "response-expires", valid_603557
+  var valid_603558 = query.getOrDefault("response-content-language")
+  valid_603558 = validateParameter(valid_603558, JString, required = false,
                                  default = nil)
-  if valid_601556 != nil:
-    section.add "response-content-language", valid_601556
-  var valid_601557 = query.getOrDefault("response-content-encoding")
-  valid_601557 = validateParameter(valid_601557, JString, required = false,
+  if valid_603558 != nil:
+    section.add "response-content-language", valid_603558
+  var valid_603559 = query.getOrDefault("response-content-encoding")
+  valid_603559 = validateParameter(valid_603559, JString, required = false,
                                  default = nil)
-  if valid_601557 != nil:
-    section.add "response-content-encoding", valid_601557
-  var valid_601558 = query.getOrDefault("response-cache-control")
-  valid_601558 = validateParameter(valid_601558, JString, required = false,
+  if valid_603559 != nil:
+    section.add "response-content-encoding", valid_603559
+  var valid_603560 = query.getOrDefault("response-cache-control")
+  valid_603560 = validateParameter(valid_603560, JString, required = false,
                                  default = nil)
-  if valid_601558 != nil:
-    section.add "response-cache-control", valid_601558
-  var valid_601559 = query.getOrDefault("response-content-disposition")
-  valid_601559 = validateParameter(valid_601559, JString, required = false,
+  if valid_603560 != nil:
+    section.add "response-cache-control", valid_603560
+  var valid_603561 = query.getOrDefault("response-content-disposition")
+  valid_603561 = validateParameter(valid_603561, JString, required = false,
                                  default = nil)
-  if valid_601559 != nil:
-    section.add "response-content-disposition", valid_601559
-  var valid_601560 = query.getOrDefault("response-content-type")
-  valid_601560 = validateParameter(valid_601560, JString, required = false,
+  if valid_603561 != nil:
+    section.add "response-content-disposition", valid_603561
+  var valid_603562 = query.getOrDefault("response-content-type")
+  valid_603562 = validateParameter(valid_603562, JString, required = false,
                                  default = nil)
-  if valid_601560 != nil:
-    section.add "response-content-type", valid_601560
+  if valid_603562 != nil:
+    section.add "response-content-type", valid_603562
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -5017,76 +5017,76 @@ proc validate_GetObject_601549(path: JsonNode; query: JsonNode; header: JsonNode
   ##   x-amz-server-side-encryption-customer-key: JString
   ##                                            : Specifies the customer-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon does not store the encryption key. The key must be appropriate for use with the algorithm specified in the x-amz-server-side​-encryption​-customer-algorithm header.
   section = newJObject()
-  var valid_601561 = header.getOrDefault("x-amz-security-token")
-  valid_601561 = validateParameter(valid_601561, JString, required = false,
+  var valid_603563 = header.getOrDefault("x-amz-security-token")
+  valid_603563 = validateParameter(valid_603563, JString, required = false,
                                  default = nil)
-  if valid_601561 != nil:
-    section.add "x-amz-security-token", valid_601561
-  var valid_601562 = header.getOrDefault("If-Match")
-  valid_601562 = validateParameter(valid_601562, JString, required = false,
+  if valid_603563 != nil:
+    section.add "x-amz-security-token", valid_603563
+  var valid_603564 = header.getOrDefault("If-Match")
+  valid_603564 = validateParameter(valid_603564, JString, required = false,
                                  default = nil)
-  if valid_601562 != nil:
-    section.add "If-Match", valid_601562
-  var valid_601563 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
-  valid_601563 = validateParameter(valid_601563, JString, required = false,
+  if valid_603564 != nil:
+    section.add "If-Match", valid_603564
+  var valid_603565 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
+  valid_603565 = validateParameter(valid_603565, JString, required = false,
                                  default = nil)
-  if valid_601563 != nil:
-    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_601563
-  var valid_601564 = header.getOrDefault("If-Unmodified-Since")
-  valid_601564 = validateParameter(valid_601564, JString, required = false,
+  if valid_603565 != nil:
+    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_603565
+  var valid_603566 = header.getOrDefault("If-Unmodified-Since")
+  valid_603566 = validateParameter(valid_603566, JString, required = false,
                                  default = nil)
-  if valid_601564 != nil:
-    section.add "If-Unmodified-Since", valid_601564
-  var valid_601565 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
-  valid_601565 = validateParameter(valid_601565, JString, required = false,
+  if valid_603566 != nil:
+    section.add "If-Unmodified-Since", valid_603566
+  var valid_603567 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
+  valid_603567 = validateParameter(valid_603567, JString, required = false,
                                  default = nil)
-  if valid_601565 != nil:
-    section.add "x-amz-server-side-encryption-customer-algorithm", valid_601565
-  var valid_601566 = header.getOrDefault("If-Modified-Since")
-  valid_601566 = validateParameter(valid_601566, JString, required = false,
+  if valid_603567 != nil:
+    section.add "x-amz-server-side-encryption-customer-algorithm", valid_603567
+  var valid_603568 = header.getOrDefault("If-Modified-Since")
+  valid_603568 = validateParameter(valid_603568, JString, required = false,
                                  default = nil)
-  if valid_601566 != nil:
-    section.add "If-Modified-Since", valid_601566
-  var valid_601567 = header.getOrDefault("If-None-Match")
-  valid_601567 = validateParameter(valid_601567, JString, required = false,
+  if valid_603568 != nil:
+    section.add "If-Modified-Since", valid_603568
+  var valid_603569 = header.getOrDefault("If-None-Match")
+  valid_603569 = validateParameter(valid_603569, JString, required = false,
                                  default = nil)
-  if valid_601567 != nil:
-    section.add "If-None-Match", valid_601567
-  var valid_601568 = header.getOrDefault("x-amz-request-payer")
-  valid_601568 = validateParameter(valid_601568, JString, required = false,
+  if valid_603569 != nil:
+    section.add "If-None-Match", valid_603569
+  var valid_603570 = header.getOrDefault("x-amz-request-payer")
+  valid_603570 = validateParameter(valid_603570, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601568 != nil:
-    section.add "x-amz-request-payer", valid_601568
-  var valid_601569 = header.getOrDefault("Range")
-  valid_601569 = validateParameter(valid_601569, JString, required = false,
+  if valid_603570 != nil:
+    section.add "x-amz-request-payer", valid_603570
+  var valid_603571 = header.getOrDefault("Range")
+  valid_603571 = validateParameter(valid_603571, JString, required = false,
                                  default = nil)
-  if valid_601569 != nil:
-    section.add "Range", valid_601569
-  var valid_601570 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
-  valid_601570 = validateParameter(valid_601570, JString, required = false,
+  if valid_603571 != nil:
+    section.add "Range", valid_603571
+  var valid_603572 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
+  valid_603572 = validateParameter(valid_603572, JString, required = false,
                                  default = nil)
-  if valid_601570 != nil:
-    section.add "x-amz-server-side-encryption-customer-key", valid_601570
+  if valid_603572 != nil:
+    section.add "x-amz-server-side-encryption-customer-key", valid_603572
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601571: Call_GetObject_601548; path: JsonNode; query: JsonNode;
+proc call*(call_603573: Call_GetObject_603550; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves objects from Amazon S3.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGET.html
-  let valid = call_601571.validator(path, query, header, formData, body)
-  let scheme = call_601571.pickScheme
+  let valid = call_603573.validator(path, query, header, formData, body)
+  let scheme = call_603573.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601571.url(scheme.get, call_601571.host, call_601571.base,
-                         call_601571.route, valid.getOrDefault("path"))
-  result = hook(call_601571, url, valid)
+  let url = call_603573.url(scheme.get, call_603573.host, call_603573.base,
+                         call_603573.route, valid.getOrDefault("path"))
+  result = hook(call_603573, url, valid)
 
-proc call*(call_601572: Call_GetObject_601548; Key: string; Bucket: string;
+proc call*(call_603574: Call_GetObject_603550; Key: string; Bucket: string;
           versionId: string = ""; partNumber: int = 0; responseExpires: string = "";
           responseContentLanguage: string = "";
           responseContentEncoding: string = ""; responseCacheControl: string = "";
@@ -5114,32 +5114,32 @@ proc call*(call_601572: Call_GetObject_601548; Key: string; Bucket: string;
   ##                             : Sets the Content-Disposition header of the response
   ##   responseContentType: string
   ##                      : Sets the Content-Type header of the response.
-  var path_601573 = newJObject()
-  var query_601574 = newJObject()
-  add(query_601574, "versionId", newJString(versionId))
-  add(query_601574, "partNumber", newJInt(partNumber))
-  add(query_601574, "response-expires", newJString(responseExpires))
-  add(query_601574, "response-content-language",
+  var path_603575 = newJObject()
+  var query_603576 = newJObject()
+  add(query_603576, "versionId", newJString(versionId))
+  add(query_603576, "partNumber", newJInt(partNumber))
+  add(query_603576, "response-expires", newJString(responseExpires))
+  add(query_603576, "response-content-language",
       newJString(responseContentLanguage))
-  add(path_601573, "Key", newJString(Key))
-  add(query_601574, "response-content-encoding",
+  add(path_603575, "Key", newJString(Key))
+  add(query_603576, "response-content-encoding",
       newJString(responseContentEncoding))
-  add(query_601574, "response-cache-control", newJString(responseCacheControl))
-  add(path_601573, "Bucket", newJString(Bucket))
-  add(query_601574, "response-content-disposition",
+  add(query_603576, "response-cache-control", newJString(responseCacheControl))
+  add(path_603575, "Bucket", newJString(Bucket))
+  add(query_603576, "response-content-disposition",
       newJString(responseContentDisposition))
-  add(query_601574, "response-content-type", newJString(responseContentType))
-  result = call_601572.call(path_601573, query_601574, nil, nil, nil)
+  add(query_603576, "response-content-type", newJString(responseContentType))
+  result = call_603574.call(path_603575, query_603576, nil, nil, nil)
 
-var getObject* = Call_GetObject_601548(name: "getObject", meth: HttpMethod.HttpGet,
+var getObject* = Call_GetObject_603550(name: "getObject", meth: HttpMethod.HttpGet,
                                     host: "s3.amazonaws.com",
                                     route: "/{Bucket}/{Key}",
-                                    validator: validate_GetObject_601549,
-                                    base: "/", url: url_GetObject_601550,
+                                    validator: validate_GetObject_603551,
+                                    base: "/", url: url_GetObject_603552,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteObject_601612 = ref object of OpenApiRestCall_600426
-proc url_DeleteObject_601614(protocol: Scheme; host: string; base: string;
+  Call_DeleteObject_603614 = ref object of OpenApiRestCall_602433
+proc url_DeleteObject_603616(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -5152,9 +5152,9 @@ proc url_DeleteObject_601614(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteObject_601613(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteObject_603615(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes the null version (if there is one) of an object and inserts a delete marker, which becomes the latest version of the object. If there isn't a null version, Amazon S3 does not remove any objects.
   ## 
@@ -5168,26 +5168,26 @@ proc validate_DeleteObject_601613(path: JsonNode; query: JsonNode; header: JsonN
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601615 = path.getOrDefault("Key")
-  valid_601615 = validateParameter(valid_601615, JString, required = true,
+  var valid_603617 = path.getOrDefault("Key")
+  valid_603617 = validateParameter(valid_603617, JString, required = true,
                                  default = nil)
-  if valid_601615 != nil:
-    section.add "Key", valid_601615
-  var valid_601616 = path.getOrDefault("Bucket")
-  valid_601616 = validateParameter(valid_601616, JString, required = true,
+  if valid_603617 != nil:
+    section.add "Key", valid_603617
+  var valid_603618 = path.getOrDefault("Bucket")
+  valid_603618 = validateParameter(valid_603618, JString, required = true,
                                  default = nil)
-  if valid_601616 != nil:
-    section.add "Bucket", valid_601616
+  if valid_603618 != nil:
+    section.add "Bucket", valid_603618
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : VersionId used to reference a specific version of the object.
   section = newJObject()
-  var valid_601617 = query.getOrDefault("versionId")
-  valid_601617 = validateParameter(valid_601617, JString, required = false,
+  var valid_603619 = query.getOrDefault("versionId")
+  valid_603619 = validateParameter(valid_603619, JString, required = false,
                                  default = nil)
-  if valid_601617 != nil:
-    section.add "versionId", valid_601617
+  if valid_603619 != nil:
+    section.add "versionId", valid_603619
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -5199,45 +5199,45 @@ proc validate_DeleteObject_601613(path: JsonNode; query: JsonNode; header: JsonN
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_601618 = header.getOrDefault("x-amz-security-token")
-  valid_601618 = validateParameter(valid_601618, JString, required = false,
+  var valid_603620 = header.getOrDefault("x-amz-security-token")
+  valid_603620 = validateParameter(valid_603620, JString, required = false,
                                  default = nil)
-  if valid_601618 != nil:
-    section.add "x-amz-security-token", valid_601618
-  var valid_601619 = header.getOrDefault("x-amz-mfa")
-  valid_601619 = validateParameter(valid_601619, JString, required = false,
+  if valid_603620 != nil:
+    section.add "x-amz-security-token", valid_603620
+  var valid_603621 = header.getOrDefault("x-amz-mfa")
+  valid_603621 = validateParameter(valid_603621, JString, required = false,
                                  default = nil)
-  if valid_601619 != nil:
-    section.add "x-amz-mfa", valid_601619
-  var valid_601620 = header.getOrDefault("x-amz-bypass-governance-retention")
-  valid_601620 = validateParameter(valid_601620, JBool, required = false, default = nil)
-  if valid_601620 != nil:
-    section.add "x-amz-bypass-governance-retention", valid_601620
-  var valid_601621 = header.getOrDefault("x-amz-request-payer")
-  valid_601621 = validateParameter(valid_601621, JString, required = false,
+  if valid_603621 != nil:
+    section.add "x-amz-mfa", valid_603621
+  var valid_603622 = header.getOrDefault("x-amz-bypass-governance-retention")
+  valid_603622 = validateParameter(valid_603622, JBool, required = false, default = nil)
+  if valid_603622 != nil:
+    section.add "x-amz-bypass-governance-retention", valid_603622
+  var valid_603623 = header.getOrDefault("x-amz-request-payer")
+  valid_603623 = validateParameter(valid_603623, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601621 != nil:
-    section.add "x-amz-request-payer", valid_601621
+  if valid_603623 != nil:
+    section.add "x-amz-request-payer", valid_603623
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601622: Call_DeleteObject_601612; path: JsonNode; query: JsonNode;
+proc call*(call_603624: Call_DeleteObject_603614; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes the null version (if there is one) of an object and inserts a delete marker, which becomes the latest version of the object. If there isn't a null version, Amazon S3 does not remove any objects.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectDELETE.html
-  let valid = call_601622.validator(path, query, header, formData, body)
-  let scheme = call_601622.pickScheme
+  let valid = call_603624.validator(path, query, header, formData, body)
+  let scheme = call_603624.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601622.url(scheme.get, call_601622.host, call_601622.base,
-                         call_601622.route, valid.getOrDefault("path"))
-  result = hook(call_601622, url, valid)
+  let url = call_603624.url(scheme.get, call_603624.host, call_603624.base,
+                         call_603624.route, valid.getOrDefault("path"))
+  result = hook(call_603624, url, valid)
 
-proc call*(call_601623: Call_DeleteObject_601612; Key: string; Bucket: string;
+proc call*(call_603625: Call_DeleteObject_603614; Key: string; Bucket: string;
           versionId: string = ""): Recallable =
   ## deleteObject
   ## Removes the null version (if there is one) of an object and inserts a delete marker, which becomes the latest version of the object. If there isn't a null version, Amazon S3 does not remove any objects.
@@ -5248,20 +5248,20 @@ proc call*(call_601623: Call_DeleteObject_601612; Key: string; Bucket: string;
   ##      : <p/>
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601624 = newJObject()
-  var query_601625 = newJObject()
-  add(query_601625, "versionId", newJString(versionId))
-  add(path_601624, "Key", newJString(Key))
-  add(path_601624, "Bucket", newJString(Bucket))
-  result = call_601623.call(path_601624, query_601625, nil, nil, nil)
+  var path_603626 = newJObject()
+  var query_603627 = newJObject()
+  add(query_603627, "versionId", newJString(versionId))
+  add(path_603626, "Key", newJString(Key))
+  add(path_603626, "Bucket", newJString(Bucket))
+  result = call_603625.call(path_603626, query_603627, nil, nil, nil)
 
-var deleteObject* = Call_DeleteObject_601612(name: "deleteObject",
+var deleteObject* = Call_DeleteObject_603614(name: "deleteObject",
     meth: HttpMethod.HttpDelete, host: "s3.amazonaws.com", route: "/{Bucket}/{Key}",
-    validator: validate_DeleteObject_601613, base: "/", url: url_DeleteObject_601614,
+    validator: validate_DeleteObject_603615, base: "/", url: url_DeleteObject_603616,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutObjectTagging_601659 = ref object of OpenApiRestCall_600426
-proc url_PutObjectTagging_601661(protocol: Scheme; host: string; base: string;
+  Call_PutObjectTagging_603661 = ref object of OpenApiRestCall_602433
+proc url_PutObjectTagging_603663(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -5275,9 +5275,9 @@ proc url_PutObjectTagging_601661(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutObjectTagging_601660(path: JsonNode; query: JsonNode;
+proc validate_PutObjectTagging_603662(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Sets the supplied tag-set to an object that already exists in a bucket
@@ -5291,48 +5291,48 @@ proc validate_PutObjectTagging_601660(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601662 = path.getOrDefault("Key")
-  valid_601662 = validateParameter(valid_601662, JString, required = true,
+  var valid_603664 = path.getOrDefault("Key")
+  valid_603664 = validateParameter(valid_603664, JString, required = true,
                                  default = nil)
-  if valid_601662 != nil:
-    section.add "Key", valid_601662
-  var valid_601663 = path.getOrDefault("Bucket")
-  valid_601663 = validateParameter(valid_601663, JString, required = true,
+  if valid_603664 != nil:
+    section.add "Key", valid_603664
+  var valid_603665 = path.getOrDefault("Bucket")
+  valid_603665 = validateParameter(valid_603665, JString, required = true,
                                  default = nil)
-  if valid_601663 != nil:
-    section.add "Bucket", valid_601663
+  if valid_603665 != nil:
+    section.add "Bucket", valid_603665
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : <p/>
   ##   tagging: JBool (required)
   section = newJObject()
-  var valid_601664 = query.getOrDefault("versionId")
-  valid_601664 = validateParameter(valid_601664, JString, required = false,
+  var valid_603666 = query.getOrDefault("versionId")
+  valid_603666 = validateParameter(valid_603666, JString, required = false,
                                  default = nil)
-  if valid_601664 != nil:
-    section.add "versionId", valid_601664
+  if valid_603666 != nil:
+    section.add "versionId", valid_603666
   assert query != nil, "query argument is necessary due to required `tagging` field"
-  var valid_601665 = query.getOrDefault("tagging")
-  valid_601665 = validateParameter(valid_601665, JBool, required = true, default = nil)
-  if valid_601665 != nil:
-    section.add "tagging", valid_601665
+  var valid_603667 = query.getOrDefault("tagging")
+  valid_603667 = validateParameter(valid_603667, JBool, required = true, default = nil)
+  if valid_603667 != nil:
+    section.add "tagging", valid_603667
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : <p/>
   section = newJObject()
-  var valid_601666 = header.getOrDefault("x-amz-security-token")
-  valid_601666 = validateParameter(valid_601666, JString, required = false,
+  var valid_603668 = header.getOrDefault("x-amz-security-token")
+  valid_603668 = validateParameter(valid_603668, JString, required = false,
                                  default = nil)
-  if valid_601666 != nil:
-    section.add "x-amz-security-token", valid_601666
-  var valid_601667 = header.getOrDefault("Content-MD5")
-  valid_601667 = validateParameter(valid_601667, JString, required = false,
+  if valid_603668 != nil:
+    section.add "x-amz-security-token", valid_603668
+  var valid_603669 = header.getOrDefault("Content-MD5")
+  valid_603669 = validateParameter(valid_603669, JString, required = false,
                                  default = nil)
-  if valid_601667 != nil:
-    section.add "Content-MD5", valid_601667
+  if valid_603669 != nil:
+    section.add "Content-MD5", valid_603669
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5343,19 +5343,19 @@ proc validate_PutObjectTagging_601660(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601669: Call_PutObjectTagging_601659; path: JsonNode;
+proc call*(call_603671: Call_PutObjectTagging_603661; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets the supplied tag-set to an object that already exists in a bucket
   ## 
-  let valid = call_601669.validator(path, query, header, formData, body)
-  let scheme = call_601669.pickScheme
+  let valid = call_603671.validator(path, query, header, formData, body)
+  let scheme = call_603671.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601669.url(scheme.get, call_601669.host, call_601669.base,
-                         call_601669.route, valid.getOrDefault("path"))
-  result = hook(call_601669, url, valid)
+  let url = call_603671.url(scheme.get, call_603671.host, call_603671.base,
+                         call_603671.route, valid.getOrDefault("path"))
+  result = hook(call_603671, url, valid)
 
-proc call*(call_601670: Call_PutObjectTagging_601659; tagging: bool; Key: string;
+proc call*(call_603672: Call_PutObjectTagging_603661; tagging: bool; Key: string;
           Bucket: string; body: JsonNode; versionId: string = ""): Recallable =
   ## putObjectTagging
   ## Sets the supplied tag-set to an object that already exists in a bucket
@@ -5367,25 +5367,25 @@ proc call*(call_601670: Call_PutObjectTagging_601659; tagging: bool; Key: string
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601671 = newJObject()
-  var query_601672 = newJObject()
-  var body_601673 = newJObject()
-  add(query_601672, "versionId", newJString(versionId))
-  add(query_601672, "tagging", newJBool(tagging))
-  add(path_601671, "Key", newJString(Key))
-  add(path_601671, "Bucket", newJString(Bucket))
+  var path_603673 = newJObject()
+  var query_603674 = newJObject()
+  var body_603675 = newJObject()
+  add(query_603674, "versionId", newJString(versionId))
+  add(query_603674, "tagging", newJBool(tagging))
+  add(path_603673, "Key", newJString(Key))
+  add(path_603673, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601673 = body
-  result = call_601670.call(path_601671, query_601672, nil, nil, body_601673)
+    body_603675 = body
+  result = call_603672.call(path_603673, query_603674, nil, nil, body_603675)
 
-var putObjectTagging* = Call_PutObjectTagging_601659(name: "putObjectTagging",
+var putObjectTagging* = Call_PutObjectTagging_603661(name: "putObjectTagging",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#tagging", validator: validate_PutObjectTagging_601660,
-    base: "/", url: url_PutObjectTagging_601661,
+    route: "/{Bucket}/{Key}#tagging", validator: validate_PutObjectTagging_603662,
+    base: "/", url: url_PutObjectTagging_603663,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetObjectTagging_601647 = ref object of OpenApiRestCall_600426
-proc url_GetObjectTagging_601649(protocol: Scheme; host: string; base: string;
+  Call_GetObjectTagging_603649 = ref object of OpenApiRestCall_602433
+proc url_GetObjectTagging_603651(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -5399,9 +5399,9 @@ proc url_GetObjectTagging_601649(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetObjectTagging_601648(path: JsonNode; query: JsonNode;
+proc validate_GetObjectTagging_603650(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the tag-set of an object.
@@ -5415,60 +5415,60 @@ proc validate_GetObjectTagging_601648(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601650 = path.getOrDefault("Key")
-  valid_601650 = validateParameter(valid_601650, JString, required = true,
+  var valid_603652 = path.getOrDefault("Key")
+  valid_603652 = validateParameter(valid_603652, JString, required = true,
                                  default = nil)
-  if valid_601650 != nil:
-    section.add "Key", valid_601650
-  var valid_601651 = path.getOrDefault("Bucket")
-  valid_601651 = validateParameter(valid_601651, JString, required = true,
+  if valid_603652 != nil:
+    section.add "Key", valid_603652
+  var valid_603653 = path.getOrDefault("Bucket")
+  valid_603653 = validateParameter(valid_603653, JString, required = true,
                                  default = nil)
-  if valid_601651 != nil:
-    section.add "Bucket", valid_601651
+  if valid_603653 != nil:
+    section.add "Bucket", valid_603653
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : <p/>
   ##   tagging: JBool (required)
   section = newJObject()
-  var valid_601652 = query.getOrDefault("versionId")
-  valid_601652 = validateParameter(valid_601652, JString, required = false,
+  var valid_603654 = query.getOrDefault("versionId")
+  valid_603654 = validateParameter(valid_603654, JString, required = false,
                                  default = nil)
-  if valid_601652 != nil:
-    section.add "versionId", valid_601652
+  if valid_603654 != nil:
+    section.add "versionId", valid_603654
   assert query != nil, "query argument is necessary due to required `tagging` field"
-  var valid_601653 = query.getOrDefault("tagging")
-  valid_601653 = validateParameter(valid_601653, JBool, required = true, default = nil)
-  if valid_601653 != nil:
-    section.add "tagging", valid_601653
+  var valid_603655 = query.getOrDefault("tagging")
+  valid_603655 = validateParameter(valid_603655, JBool, required = true, default = nil)
+  if valid_603655 != nil:
+    section.add "tagging", valid_603655
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601654 = header.getOrDefault("x-amz-security-token")
-  valid_601654 = validateParameter(valid_601654, JString, required = false,
+  var valid_603656 = header.getOrDefault("x-amz-security-token")
+  valid_603656 = validateParameter(valid_603656, JString, required = false,
                                  default = nil)
-  if valid_601654 != nil:
-    section.add "x-amz-security-token", valid_601654
+  if valid_603656 != nil:
+    section.add "x-amz-security-token", valid_603656
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601655: Call_GetObjectTagging_601647; path: JsonNode;
+proc call*(call_603657: Call_GetObjectTagging_603649; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the tag-set of an object.
   ## 
-  let valid = call_601655.validator(path, query, header, formData, body)
-  let scheme = call_601655.pickScheme
+  let valid = call_603657.validator(path, query, header, formData, body)
+  let scheme = call_603657.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601655.url(scheme.get, call_601655.host, call_601655.base,
-                         call_601655.route, valid.getOrDefault("path"))
-  result = hook(call_601655, url, valid)
+  let url = call_603657.url(scheme.get, call_603657.host, call_603657.base,
+                         call_603657.route, valid.getOrDefault("path"))
+  result = hook(call_603657, url, valid)
 
-proc call*(call_601656: Call_GetObjectTagging_601647; tagging: bool; Key: string;
+proc call*(call_603658: Call_GetObjectTagging_603649; tagging: bool; Key: string;
           Bucket: string; versionId: string = ""): Recallable =
   ## getObjectTagging
   ## Returns the tag-set of an object.
@@ -5479,22 +5479,22 @@ proc call*(call_601656: Call_GetObjectTagging_601647; tagging: bool; Key: string
   ##      : <p/>
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601657 = newJObject()
-  var query_601658 = newJObject()
-  add(query_601658, "versionId", newJString(versionId))
-  add(query_601658, "tagging", newJBool(tagging))
-  add(path_601657, "Key", newJString(Key))
-  add(path_601657, "Bucket", newJString(Bucket))
-  result = call_601656.call(path_601657, query_601658, nil, nil, nil)
+  var path_603659 = newJObject()
+  var query_603660 = newJObject()
+  add(query_603660, "versionId", newJString(versionId))
+  add(query_603660, "tagging", newJBool(tagging))
+  add(path_603659, "Key", newJString(Key))
+  add(path_603659, "Bucket", newJString(Bucket))
+  result = call_603658.call(path_603659, query_603660, nil, nil, nil)
 
-var getObjectTagging* = Call_GetObjectTagging_601647(name: "getObjectTagging",
+var getObjectTagging* = Call_GetObjectTagging_603649(name: "getObjectTagging",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#tagging", validator: validate_GetObjectTagging_601648,
-    base: "/", url: url_GetObjectTagging_601649,
+    route: "/{Bucket}/{Key}#tagging", validator: validate_GetObjectTagging_603650,
+    base: "/", url: url_GetObjectTagging_603651,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteObjectTagging_601674 = ref object of OpenApiRestCall_600426
-proc url_DeleteObjectTagging_601676(protocol: Scheme; host: string; base: string;
+  Call_DeleteObjectTagging_603676 = ref object of OpenApiRestCall_602433
+proc url_DeleteObjectTagging_603678(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -5508,9 +5508,9 @@ proc url_DeleteObjectTagging_601676(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteObjectTagging_601675(path: JsonNode; query: JsonNode;
+proc validate_DeleteObjectTagging_603677(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Removes the tag-set from an existing object.
@@ -5524,60 +5524,60 @@ proc validate_DeleteObjectTagging_601675(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601677 = path.getOrDefault("Key")
-  valid_601677 = validateParameter(valid_601677, JString, required = true,
+  var valid_603679 = path.getOrDefault("Key")
+  valid_603679 = validateParameter(valid_603679, JString, required = true,
                                  default = nil)
-  if valid_601677 != nil:
-    section.add "Key", valid_601677
-  var valid_601678 = path.getOrDefault("Bucket")
-  valid_601678 = validateParameter(valid_601678, JString, required = true,
+  if valid_603679 != nil:
+    section.add "Key", valid_603679
+  var valid_603680 = path.getOrDefault("Bucket")
+  valid_603680 = validateParameter(valid_603680, JString, required = true,
                                  default = nil)
-  if valid_601678 != nil:
-    section.add "Bucket", valid_601678
+  if valid_603680 != nil:
+    section.add "Bucket", valid_603680
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : The versionId of the object that the tag-set will be removed from.
   ##   tagging: JBool (required)
   section = newJObject()
-  var valid_601679 = query.getOrDefault("versionId")
-  valid_601679 = validateParameter(valid_601679, JString, required = false,
+  var valid_603681 = query.getOrDefault("versionId")
+  valid_603681 = validateParameter(valid_603681, JString, required = false,
                                  default = nil)
-  if valid_601679 != nil:
-    section.add "versionId", valid_601679
+  if valid_603681 != nil:
+    section.add "versionId", valid_603681
   assert query != nil, "query argument is necessary due to required `tagging` field"
-  var valid_601680 = query.getOrDefault("tagging")
-  valid_601680 = validateParameter(valid_601680, JBool, required = true, default = nil)
-  if valid_601680 != nil:
-    section.add "tagging", valid_601680
+  var valid_603682 = query.getOrDefault("tagging")
+  valid_603682 = validateParameter(valid_603682, JBool, required = true, default = nil)
+  if valid_603682 != nil:
+    section.add "tagging", valid_603682
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601681 = header.getOrDefault("x-amz-security-token")
-  valid_601681 = validateParameter(valid_601681, JString, required = false,
+  var valid_603683 = header.getOrDefault("x-amz-security-token")
+  valid_603683 = validateParameter(valid_603683, JString, required = false,
                                  default = nil)
-  if valid_601681 != nil:
-    section.add "x-amz-security-token", valid_601681
+  if valid_603683 != nil:
+    section.add "x-amz-security-token", valid_603683
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601682: Call_DeleteObjectTagging_601674; path: JsonNode;
+proc call*(call_603684: Call_DeleteObjectTagging_603676; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes the tag-set from an existing object.
   ## 
-  let valid = call_601682.validator(path, query, header, formData, body)
-  let scheme = call_601682.pickScheme
+  let valid = call_603684.validator(path, query, header, formData, body)
+  let scheme = call_603684.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601682.url(scheme.get, call_601682.host, call_601682.base,
-                         call_601682.route, valid.getOrDefault("path"))
-  result = hook(call_601682, url, valid)
+  let url = call_603684.url(scheme.get, call_603684.host, call_603684.base,
+                         call_603684.route, valid.getOrDefault("path"))
+  result = hook(call_603684, url, valid)
 
-proc call*(call_601683: Call_DeleteObjectTagging_601674; tagging: bool; Key: string;
+proc call*(call_603685: Call_DeleteObjectTagging_603676; tagging: bool; Key: string;
           Bucket: string; versionId: string = ""): Recallable =
   ## deleteObjectTagging
   ## Removes the tag-set from an existing object.
@@ -5588,22 +5588,22 @@ proc call*(call_601683: Call_DeleteObjectTagging_601674; tagging: bool; Key: str
   ##      : <p/>
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601684 = newJObject()
-  var query_601685 = newJObject()
-  add(query_601685, "versionId", newJString(versionId))
-  add(query_601685, "tagging", newJBool(tagging))
-  add(path_601684, "Key", newJString(Key))
-  add(path_601684, "Bucket", newJString(Bucket))
-  result = call_601683.call(path_601684, query_601685, nil, nil, nil)
+  var path_603686 = newJObject()
+  var query_603687 = newJObject()
+  add(query_603687, "versionId", newJString(versionId))
+  add(query_603687, "tagging", newJBool(tagging))
+  add(path_603686, "Key", newJString(Key))
+  add(path_603686, "Bucket", newJString(Bucket))
+  result = call_603685.call(path_603686, query_603687, nil, nil, nil)
 
-var deleteObjectTagging* = Call_DeleteObjectTagging_601674(
+var deleteObjectTagging* = Call_DeleteObjectTagging_603676(
     name: "deleteObjectTagging", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}/{Key}#tagging",
-    validator: validate_DeleteObjectTagging_601675, base: "/",
-    url: url_DeleteObjectTagging_601676, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteObjectTagging_603677, base: "/",
+    url: url_DeleteObjectTagging_603678, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteObjects_601686 = ref object of OpenApiRestCall_600426
-proc url_DeleteObjects_601688(protocol: Scheme; host: string; base: string;
+  Call_DeleteObjects_603688 = ref object of OpenApiRestCall_602433
+proc url_DeleteObjects_603690(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -5614,9 +5614,9 @@ proc url_DeleteObjects_601688(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeleteObjects_601687(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteObjects_603689(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation enables you to delete multiple objects from a bucket using a single HTTP request. You may specify up to 1000 keys.
   ## 
@@ -5628,20 +5628,20 @@ proc validate_DeleteObjects_601687(path: JsonNode; query: JsonNode; header: Json
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601689 = path.getOrDefault("Bucket")
-  valid_601689 = validateParameter(valid_601689, JString, required = true,
+  var valid_603691 = path.getOrDefault("Bucket")
+  valid_603691 = validateParameter(valid_603691, JString, required = true,
                                  default = nil)
-  if valid_601689 != nil:
-    section.add "Bucket", valid_601689
+  if valid_603691 != nil:
+    section.add "Bucket", valid_603691
   result.add "path", section
   ## parameters in `query` object:
   ##   delete: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `delete` field"
-  var valid_601690 = query.getOrDefault("delete")
-  valid_601690 = validateParameter(valid_601690, JBool, required = true, default = nil)
-  if valid_601690 != nil:
-    section.add "delete", valid_601690
+  var valid_603692 = query.getOrDefault("delete")
+  valid_603692 = validateParameter(valid_603692, JBool, required = true, default = nil)
+  if valid_603692 != nil:
+    section.add "delete", valid_603692
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -5653,25 +5653,25 @@ proc validate_DeleteObjects_601687(path: JsonNode; query: JsonNode; header: Json
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_601691 = header.getOrDefault("x-amz-security-token")
-  valid_601691 = validateParameter(valid_601691, JString, required = false,
+  var valid_603693 = header.getOrDefault("x-amz-security-token")
+  valid_603693 = validateParameter(valid_603693, JString, required = false,
                                  default = nil)
-  if valid_601691 != nil:
-    section.add "x-amz-security-token", valid_601691
-  var valid_601692 = header.getOrDefault("x-amz-mfa")
-  valid_601692 = validateParameter(valid_601692, JString, required = false,
+  if valid_603693 != nil:
+    section.add "x-amz-security-token", valid_603693
+  var valid_603694 = header.getOrDefault("x-amz-mfa")
+  valid_603694 = validateParameter(valid_603694, JString, required = false,
                                  default = nil)
-  if valid_601692 != nil:
-    section.add "x-amz-mfa", valid_601692
-  var valid_601693 = header.getOrDefault("x-amz-bypass-governance-retention")
-  valid_601693 = validateParameter(valid_601693, JBool, required = false, default = nil)
-  if valid_601693 != nil:
-    section.add "x-amz-bypass-governance-retention", valid_601693
-  var valid_601694 = header.getOrDefault("x-amz-request-payer")
-  valid_601694 = validateParameter(valid_601694, JString, required = false,
+  if valid_603694 != nil:
+    section.add "x-amz-mfa", valid_603694
+  var valid_603695 = header.getOrDefault("x-amz-bypass-governance-retention")
+  valid_603695 = validateParameter(valid_603695, JBool, required = false, default = nil)
+  if valid_603695 != nil:
+    section.add "x-amz-bypass-governance-retention", valid_603695
+  var valid_603696 = header.getOrDefault("x-amz-request-payer")
+  valid_603696 = validateParameter(valid_603696, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601694 != nil:
-    section.add "x-amz-request-payer", valid_601694
+  if valid_603696 != nil:
+    section.add "x-amz-request-payer", valid_603696
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5682,20 +5682,20 @@ proc validate_DeleteObjects_601687(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601696: Call_DeleteObjects_601686; path: JsonNode; query: JsonNode;
+proc call*(call_603698: Call_DeleteObjects_603688; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation enables you to delete multiple objects from a bucket using a single HTTP request. You may specify up to 1000 keys.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/multiobjectdeleteapi.html
-  let valid = call_601696.validator(path, query, header, formData, body)
-  let scheme = call_601696.pickScheme
+  let valid = call_603698.validator(path, query, header, formData, body)
+  let scheme = call_603698.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601696.url(scheme.get, call_601696.host, call_601696.base,
-                         call_601696.route, valid.getOrDefault("path"))
-  result = hook(call_601696, url, valid)
+  let url = call_603698.url(scheme.get, call_603698.host, call_603698.base,
+                         call_603698.route, valid.getOrDefault("path"))
+  result = hook(call_603698, url, valid)
 
-proc call*(call_601697: Call_DeleteObjects_601686; Bucket: string; body: JsonNode;
+proc call*(call_603699: Call_DeleteObjects_603688; Bucket: string; body: JsonNode;
           delete: bool): Recallable =
   ## deleteObjects
   ## This operation enables you to delete multiple objects from a bucket using a single HTTP request. You may specify up to 1000 keys.
@@ -5704,22 +5704,22 @@ proc call*(call_601697: Call_DeleteObjects_601686; Bucket: string; body: JsonNod
   ##         : <p/>
   ##   body: JObject (required)
   ##   delete: bool (required)
-  var path_601698 = newJObject()
-  var query_601699 = newJObject()
-  var body_601700 = newJObject()
-  add(path_601698, "Bucket", newJString(Bucket))
+  var path_603700 = newJObject()
+  var query_603701 = newJObject()
+  var body_603702 = newJObject()
+  add(path_603700, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601700 = body
-  add(query_601699, "delete", newJBool(delete))
-  result = call_601697.call(path_601698, query_601699, nil, nil, body_601700)
+    body_603702 = body
+  add(query_603701, "delete", newJBool(delete))
+  result = call_603699.call(path_603700, query_603701, nil, nil, body_603702)
 
-var deleteObjects* = Call_DeleteObjects_601686(name: "deleteObjects",
+var deleteObjects* = Call_DeleteObjects_603688(name: "deleteObjects",
     meth: HttpMethod.HttpPost, host: "s3.amazonaws.com", route: "/{Bucket}#delete",
-    validator: validate_DeleteObjects_601687, base: "/", url: url_DeleteObjects_601688,
+    validator: validate_DeleteObjects_603689, base: "/", url: url_DeleteObjects_603690,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutPublicAccessBlock_601711 = ref object of OpenApiRestCall_600426
-proc url_PutPublicAccessBlock_601713(protocol: Scheme; host: string; base: string;
+  Call_PutPublicAccessBlock_603713 = ref object of OpenApiRestCall_602433
+proc url_PutPublicAccessBlock_603715(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -5730,9 +5730,9 @@ proc url_PutPublicAccessBlock_601713(protocol: Scheme; host: string; base: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutPublicAccessBlock_601712(path: JsonNode; query: JsonNode;
+proc validate_PutPublicAccessBlock_603714(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates or modifies the <code>PublicAccessBlock</code> configuration for an Amazon S3 bucket.
   ## 
@@ -5743,37 +5743,37 @@ proc validate_PutPublicAccessBlock_601712(path: JsonNode; query: JsonNode;
   ##         : The name of the Amazon S3 bucket whose <code>PublicAccessBlock</code> configuration you want to set.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601714 = path.getOrDefault("Bucket")
-  valid_601714 = validateParameter(valid_601714, JString, required = true,
+  var valid_603716 = path.getOrDefault("Bucket")
+  valid_603716 = validateParameter(valid_603716, JString, required = true,
                                  default = nil)
-  if valid_601714 != nil:
-    section.add "Bucket", valid_601714
+  if valid_603716 != nil:
+    section.add "Bucket", valid_603716
   result.add "path", section
   ## parameters in `query` object:
   ##   publicAccessBlock: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `publicAccessBlock` field"
-  var valid_601715 = query.getOrDefault("publicAccessBlock")
-  valid_601715 = validateParameter(valid_601715, JBool, required = true, default = nil)
-  if valid_601715 != nil:
-    section.add "publicAccessBlock", valid_601715
+  var valid_603717 = query.getOrDefault("publicAccessBlock")
+  valid_603717 = validateParameter(valid_603717, JBool, required = true, default = nil)
+  if valid_603717 != nil:
+    section.add "publicAccessBlock", valid_603717
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : The MD5 hash of the <code>PutPublicAccessBlock</code> request body. 
   section = newJObject()
-  var valid_601716 = header.getOrDefault("x-amz-security-token")
-  valid_601716 = validateParameter(valid_601716, JString, required = false,
+  var valid_603718 = header.getOrDefault("x-amz-security-token")
+  valid_603718 = validateParameter(valid_603718, JString, required = false,
                                  default = nil)
-  if valid_601716 != nil:
-    section.add "x-amz-security-token", valid_601716
-  var valid_601717 = header.getOrDefault("Content-MD5")
-  valid_601717 = validateParameter(valid_601717, JString, required = false,
+  if valid_603718 != nil:
+    section.add "x-amz-security-token", valid_603718
+  var valid_603719 = header.getOrDefault("Content-MD5")
+  valid_603719 = validateParameter(valid_603719, JString, required = false,
                                  default = nil)
-  if valid_601717 != nil:
-    section.add "Content-MD5", valid_601717
+  if valid_603719 != nil:
+    section.add "Content-MD5", valid_603719
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5784,19 +5784,19 @@ proc validate_PutPublicAccessBlock_601712(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601719: Call_PutPublicAccessBlock_601711; path: JsonNode;
+proc call*(call_603721: Call_PutPublicAccessBlock_603713; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates or modifies the <code>PublicAccessBlock</code> configuration for an Amazon S3 bucket.
   ## 
-  let valid = call_601719.validator(path, query, header, formData, body)
-  let scheme = call_601719.pickScheme
+  let valid = call_603721.validator(path, query, header, formData, body)
+  let scheme = call_603721.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601719.url(scheme.get, call_601719.host, call_601719.base,
-                         call_601719.route, valid.getOrDefault("path"))
-  result = hook(call_601719, url, valid)
+  let url = call_603721.url(scheme.get, call_603721.host, call_603721.base,
+                         call_603721.route, valid.getOrDefault("path"))
+  result = hook(call_603721, url, valid)
 
-proc call*(call_601720: Call_PutPublicAccessBlock_601711; publicAccessBlock: bool;
+proc call*(call_603722: Call_PutPublicAccessBlock_603713; publicAccessBlock: bool;
           Bucket: string; body: JsonNode): Recallable =
   ## putPublicAccessBlock
   ## Creates or modifies the <code>PublicAccessBlock</code> configuration for an Amazon S3 bucket.
@@ -5804,23 +5804,23 @@ proc call*(call_601720: Call_PutPublicAccessBlock_601711; publicAccessBlock: boo
   ##   Bucket: string (required)
   ##         : The name of the Amazon S3 bucket whose <code>PublicAccessBlock</code> configuration you want to set.
   ##   body: JObject (required)
-  var path_601721 = newJObject()
-  var query_601722 = newJObject()
-  var body_601723 = newJObject()
-  add(query_601722, "publicAccessBlock", newJBool(publicAccessBlock))
-  add(path_601721, "Bucket", newJString(Bucket))
+  var path_603723 = newJObject()
+  var query_603724 = newJObject()
+  var body_603725 = newJObject()
+  add(query_603724, "publicAccessBlock", newJBool(publicAccessBlock))
+  add(path_603723, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601723 = body
-  result = call_601720.call(path_601721, query_601722, nil, nil, body_601723)
+    body_603725 = body
+  result = call_603722.call(path_603723, query_603724, nil, nil, body_603725)
 
-var putPublicAccessBlock* = Call_PutPublicAccessBlock_601711(
+var putPublicAccessBlock* = Call_PutPublicAccessBlock_603713(
     name: "putPublicAccessBlock", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#publicAccessBlock",
-    validator: validate_PutPublicAccessBlock_601712, base: "/",
-    url: url_PutPublicAccessBlock_601713, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutPublicAccessBlock_603714, base: "/",
+    url: url_PutPublicAccessBlock_603715, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetPublicAccessBlock_601701 = ref object of OpenApiRestCall_600426
-proc url_GetPublicAccessBlock_601703(protocol: Scheme; host: string; base: string;
+  Call_GetPublicAccessBlock_603703 = ref object of OpenApiRestCall_602433
+proc url_GetPublicAccessBlock_603705(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -5831,9 +5831,9 @@ proc url_GetPublicAccessBlock_601703(protocol: Scheme; host: string; base: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetPublicAccessBlock_601702(path: JsonNode; query: JsonNode;
+proc validate_GetPublicAccessBlock_603704(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the <code>PublicAccessBlock</code> configuration for an Amazon S3 bucket.
   ## 
@@ -5844,69 +5844,69 @@ proc validate_GetPublicAccessBlock_601702(path: JsonNode; query: JsonNode;
   ##         : The name of the Amazon S3 bucket whose <code>PublicAccessBlock</code> configuration you want to retrieve. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601704 = path.getOrDefault("Bucket")
-  valid_601704 = validateParameter(valid_601704, JString, required = true,
+  var valid_603706 = path.getOrDefault("Bucket")
+  valid_603706 = validateParameter(valid_603706, JString, required = true,
                                  default = nil)
-  if valid_601704 != nil:
-    section.add "Bucket", valid_601704
+  if valid_603706 != nil:
+    section.add "Bucket", valid_603706
   result.add "path", section
   ## parameters in `query` object:
   ##   publicAccessBlock: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `publicAccessBlock` field"
-  var valid_601705 = query.getOrDefault("publicAccessBlock")
-  valid_601705 = validateParameter(valid_601705, JBool, required = true, default = nil)
-  if valid_601705 != nil:
-    section.add "publicAccessBlock", valid_601705
+  var valid_603707 = query.getOrDefault("publicAccessBlock")
+  valid_603707 = validateParameter(valid_603707, JBool, required = true, default = nil)
+  if valid_603707 != nil:
+    section.add "publicAccessBlock", valid_603707
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601706 = header.getOrDefault("x-amz-security-token")
-  valid_601706 = validateParameter(valid_601706, JString, required = false,
+  var valid_603708 = header.getOrDefault("x-amz-security-token")
+  valid_603708 = validateParameter(valid_603708, JString, required = false,
                                  default = nil)
-  if valid_601706 != nil:
-    section.add "x-amz-security-token", valid_601706
+  if valid_603708 != nil:
+    section.add "x-amz-security-token", valid_603708
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601707: Call_GetPublicAccessBlock_601701; path: JsonNode;
+proc call*(call_603709: Call_GetPublicAccessBlock_603703; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the <code>PublicAccessBlock</code> configuration for an Amazon S3 bucket.
   ## 
-  let valid = call_601707.validator(path, query, header, formData, body)
-  let scheme = call_601707.pickScheme
+  let valid = call_603709.validator(path, query, header, formData, body)
+  let scheme = call_603709.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601707.url(scheme.get, call_601707.host, call_601707.base,
-                         call_601707.route, valid.getOrDefault("path"))
-  result = hook(call_601707, url, valid)
+  let url = call_603709.url(scheme.get, call_603709.host, call_603709.base,
+                         call_603709.route, valid.getOrDefault("path"))
+  result = hook(call_603709, url, valid)
 
-proc call*(call_601708: Call_GetPublicAccessBlock_601701; publicAccessBlock: bool;
+proc call*(call_603710: Call_GetPublicAccessBlock_603703; publicAccessBlock: bool;
           Bucket: string): Recallable =
   ## getPublicAccessBlock
   ## Retrieves the <code>PublicAccessBlock</code> configuration for an Amazon S3 bucket.
   ##   publicAccessBlock: bool (required)
   ##   Bucket: string (required)
   ##         : The name of the Amazon S3 bucket whose <code>PublicAccessBlock</code> configuration you want to retrieve. 
-  var path_601709 = newJObject()
-  var query_601710 = newJObject()
-  add(query_601710, "publicAccessBlock", newJBool(publicAccessBlock))
-  add(path_601709, "Bucket", newJString(Bucket))
-  result = call_601708.call(path_601709, query_601710, nil, nil, nil)
+  var path_603711 = newJObject()
+  var query_603712 = newJObject()
+  add(query_603712, "publicAccessBlock", newJBool(publicAccessBlock))
+  add(path_603711, "Bucket", newJString(Bucket))
+  result = call_603710.call(path_603711, query_603712, nil, nil, nil)
 
-var getPublicAccessBlock* = Call_GetPublicAccessBlock_601701(
+var getPublicAccessBlock* = Call_GetPublicAccessBlock_603703(
     name: "getPublicAccessBlock", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#publicAccessBlock",
-    validator: validate_GetPublicAccessBlock_601702, base: "/",
-    url: url_GetPublicAccessBlock_601703, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetPublicAccessBlock_603704, base: "/",
+    url: url_GetPublicAccessBlock_603705, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeletePublicAccessBlock_601724 = ref object of OpenApiRestCall_600426
-proc url_DeletePublicAccessBlock_601726(protocol: Scheme; host: string; base: string;
+  Call_DeletePublicAccessBlock_603726 = ref object of OpenApiRestCall_602433
+proc url_DeletePublicAccessBlock_603728(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -5917,9 +5917,9 @@ proc url_DeletePublicAccessBlock_601726(protocol: Scheme; host: string; base: st
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_DeletePublicAccessBlock_601725(path: JsonNode; query: JsonNode;
+proc validate_DeletePublicAccessBlock_603727(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes the <code>PublicAccessBlock</code> configuration from an Amazon S3 bucket.
   ## 
@@ -5930,69 +5930,69 @@ proc validate_DeletePublicAccessBlock_601725(path: JsonNode; query: JsonNode;
   ##         : The Amazon S3 bucket whose <code>PublicAccessBlock</code> configuration you want to delete. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601727 = path.getOrDefault("Bucket")
-  valid_601727 = validateParameter(valid_601727, JString, required = true,
+  var valid_603729 = path.getOrDefault("Bucket")
+  valid_603729 = validateParameter(valid_603729, JString, required = true,
                                  default = nil)
-  if valid_601727 != nil:
-    section.add "Bucket", valid_601727
+  if valid_603729 != nil:
+    section.add "Bucket", valid_603729
   result.add "path", section
   ## parameters in `query` object:
   ##   publicAccessBlock: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `publicAccessBlock` field"
-  var valid_601728 = query.getOrDefault("publicAccessBlock")
-  valid_601728 = validateParameter(valid_601728, JBool, required = true, default = nil)
-  if valid_601728 != nil:
-    section.add "publicAccessBlock", valid_601728
+  var valid_603730 = query.getOrDefault("publicAccessBlock")
+  valid_603730 = validateParameter(valid_603730, JBool, required = true, default = nil)
+  if valid_603730 != nil:
+    section.add "publicAccessBlock", valid_603730
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601729 = header.getOrDefault("x-amz-security-token")
-  valid_601729 = validateParameter(valid_601729, JString, required = false,
+  var valid_603731 = header.getOrDefault("x-amz-security-token")
+  valid_603731 = validateParameter(valid_603731, JString, required = false,
                                  default = nil)
-  if valid_601729 != nil:
-    section.add "x-amz-security-token", valid_601729
+  if valid_603731 != nil:
+    section.add "x-amz-security-token", valid_603731
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601730: Call_DeletePublicAccessBlock_601724; path: JsonNode;
+proc call*(call_603732: Call_DeletePublicAccessBlock_603726; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes the <code>PublicAccessBlock</code> configuration from an Amazon S3 bucket.
   ## 
-  let valid = call_601730.validator(path, query, header, formData, body)
-  let scheme = call_601730.pickScheme
+  let valid = call_603732.validator(path, query, header, formData, body)
+  let scheme = call_603732.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601730.url(scheme.get, call_601730.host, call_601730.base,
-                         call_601730.route, valid.getOrDefault("path"))
-  result = hook(call_601730, url, valid)
+  let url = call_603732.url(scheme.get, call_603732.host, call_603732.base,
+                         call_603732.route, valid.getOrDefault("path"))
+  result = hook(call_603732, url, valid)
 
-proc call*(call_601731: Call_DeletePublicAccessBlock_601724;
+proc call*(call_603733: Call_DeletePublicAccessBlock_603726;
           publicAccessBlock: bool; Bucket: string): Recallable =
   ## deletePublicAccessBlock
   ## Removes the <code>PublicAccessBlock</code> configuration from an Amazon S3 bucket.
   ##   publicAccessBlock: bool (required)
   ##   Bucket: string (required)
   ##         : The Amazon S3 bucket whose <code>PublicAccessBlock</code> configuration you want to delete. 
-  var path_601732 = newJObject()
-  var query_601733 = newJObject()
-  add(query_601733, "publicAccessBlock", newJBool(publicAccessBlock))
-  add(path_601732, "Bucket", newJString(Bucket))
-  result = call_601731.call(path_601732, query_601733, nil, nil, nil)
+  var path_603734 = newJObject()
+  var query_603735 = newJObject()
+  add(query_603735, "publicAccessBlock", newJBool(publicAccessBlock))
+  add(path_603734, "Bucket", newJString(Bucket))
+  result = call_603733.call(path_603734, query_603735, nil, nil, nil)
 
-var deletePublicAccessBlock* = Call_DeletePublicAccessBlock_601724(
+var deletePublicAccessBlock* = Call_DeletePublicAccessBlock_603726(
     name: "deletePublicAccessBlock", meth: HttpMethod.HttpDelete,
     host: "s3.amazonaws.com", route: "/{Bucket}#publicAccessBlock",
-    validator: validate_DeletePublicAccessBlock_601725, base: "/",
-    url: url_DeletePublicAccessBlock_601726, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeletePublicAccessBlock_603727, base: "/",
+    url: url_DeletePublicAccessBlock_603728, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketAccelerateConfiguration_601744 = ref object of OpenApiRestCall_600426
-proc url_PutBucketAccelerateConfiguration_601746(protocol: Scheme; host: string;
+  Call_PutBucketAccelerateConfiguration_603746 = ref object of OpenApiRestCall_602433
+proc url_PutBucketAccelerateConfiguration_603748(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6003,9 +6003,9 @@ proc url_PutBucketAccelerateConfiguration_601746(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketAccelerateConfiguration_601745(path: JsonNode;
+proc validate_PutBucketAccelerateConfiguration_603747(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Sets the accelerate configuration of an existing bucket.
   ## 
@@ -6016,30 +6016,30 @@ proc validate_PutBucketAccelerateConfiguration_601745(path: JsonNode;
   ##         : Name of the bucket for which the accelerate configuration is set.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601747 = path.getOrDefault("Bucket")
-  valid_601747 = validateParameter(valid_601747, JString, required = true,
+  var valid_603749 = path.getOrDefault("Bucket")
+  valid_603749 = validateParameter(valid_603749, JString, required = true,
                                  default = nil)
-  if valid_601747 != nil:
-    section.add "Bucket", valid_601747
+  if valid_603749 != nil:
+    section.add "Bucket", valid_603749
   result.add "path", section
   ## parameters in `query` object:
   ##   accelerate: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `accelerate` field"
-  var valid_601748 = query.getOrDefault("accelerate")
-  valid_601748 = validateParameter(valid_601748, JBool, required = true, default = nil)
-  if valid_601748 != nil:
-    section.add "accelerate", valid_601748
+  var valid_603750 = query.getOrDefault("accelerate")
+  valid_603750 = validateParameter(valid_603750, JBool, required = true, default = nil)
+  if valid_603750 != nil:
+    section.add "accelerate", valid_603750
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601749 = header.getOrDefault("x-amz-security-token")
-  valid_601749 = validateParameter(valid_601749, JString, required = false,
+  var valid_603751 = header.getOrDefault("x-amz-security-token")
+  valid_603751 = validateParameter(valid_603751, JString, required = false,
                                  default = nil)
-  if valid_601749 != nil:
-    section.add "x-amz-security-token", valid_601749
+  if valid_603751 != nil:
+    section.add "x-amz-security-token", valid_603751
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6050,20 +6050,20 @@ proc validate_PutBucketAccelerateConfiguration_601745(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601751: Call_PutBucketAccelerateConfiguration_601744;
+proc call*(call_603753: Call_PutBucketAccelerateConfiguration_603746;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Sets the accelerate configuration of an existing bucket.
   ## 
-  let valid = call_601751.validator(path, query, header, formData, body)
-  let scheme = call_601751.pickScheme
+  let valid = call_603753.validator(path, query, header, formData, body)
+  let scheme = call_603753.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601751.url(scheme.get, call_601751.host, call_601751.base,
-                         call_601751.route, valid.getOrDefault("path"))
-  result = hook(call_601751, url, valid)
+  let url = call_603753.url(scheme.get, call_603753.host, call_603753.base,
+                         call_603753.route, valid.getOrDefault("path"))
+  result = hook(call_603753, url, valid)
 
-proc call*(call_601752: Call_PutBucketAccelerateConfiguration_601744;
+proc call*(call_603754: Call_PutBucketAccelerateConfiguration_603746;
           accelerate: bool; Bucket: string; body: JsonNode): Recallable =
   ## putBucketAccelerateConfiguration
   ## Sets the accelerate configuration of an existing bucket.
@@ -6071,24 +6071,24 @@ proc call*(call_601752: Call_PutBucketAccelerateConfiguration_601744;
   ##   Bucket: string (required)
   ##         : Name of the bucket for which the accelerate configuration is set.
   ##   body: JObject (required)
-  var path_601753 = newJObject()
-  var query_601754 = newJObject()
-  var body_601755 = newJObject()
-  add(query_601754, "accelerate", newJBool(accelerate))
-  add(path_601753, "Bucket", newJString(Bucket))
+  var path_603755 = newJObject()
+  var query_603756 = newJObject()
+  var body_603757 = newJObject()
+  add(query_603756, "accelerate", newJBool(accelerate))
+  add(path_603755, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601755 = body
-  result = call_601752.call(path_601753, query_601754, nil, nil, body_601755)
+    body_603757 = body
+  result = call_603754.call(path_603755, query_603756, nil, nil, body_603757)
 
-var putBucketAccelerateConfiguration* = Call_PutBucketAccelerateConfiguration_601744(
+var putBucketAccelerateConfiguration* = Call_PutBucketAccelerateConfiguration_603746(
     name: "putBucketAccelerateConfiguration", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#accelerate",
-    validator: validate_PutBucketAccelerateConfiguration_601745, base: "/",
-    url: url_PutBucketAccelerateConfiguration_601746,
+    validator: validate_PutBucketAccelerateConfiguration_603747, base: "/",
+    url: url_PutBucketAccelerateConfiguration_603748,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketAccelerateConfiguration_601734 = ref object of OpenApiRestCall_600426
-proc url_GetBucketAccelerateConfiguration_601736(protocol: Scheme; host: string;
+  Call_GetBucketAccelerateConfiguration_603736 = ref object of OpenApiRestCall_602433
+proc url_GetBucketAccelerateConfiguration_603738(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6099,9 +6099,9 @@ proc url_GetBucketAccelerateConfiguration_601736(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketAccelerateConfiguration_601735(path: JsonNode;
+proc validate_GetBucketAccelerateConfiguration_603737(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the accelerate configuration of a bucket.
   ## 
@@ -6112,71 +6112,71 @@ proc validate_GetBucketAccelerateConfiguration_601735(path: JsonNode;
   ##         : Name of the bucket for which the accelerate configuration is retrieved.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601737 = path.getOrDefault("Bucket")
-  valid_601737 = validateParameter(valid_601737, JString, required = true,
+  var valid_603739 = path.getOrDefault("Bucket")
+  valid_603739 = validateParameter(valid_603739, JString, required = true,
                                  default = nil)
-  if valid_601737 != nil:
-    section.add "Bucket", valid_601737
+  if valid_603739 != nil:
+    section.add "Bucket", valid_603739
   result.add "path", section
   ## parameters in `query` object:
   ##   accelerate: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `accelerate` field"
-  var valid_601738 = query.getOrDefault("accelerate")
-  valid_601738 = validateParameter(valid_601738, JBool, required = true, default = nil)
-  if valid_601738 != nil:
-    section.add "accelerate", valid_601738
+  var valid_603740 = query.getOrDefault("accelerate")
+  valid_603740 = validateParameter(valid_603740, JBool, required = true, default = nil)
+  if valid_603740 != nil:
+    section.add "accelerate", valid_603740
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601739 = header.getOrDefault("x-amz-security-token")
-  valid_601739 = validateParameter(valid_601739, JString, required = false,
+  var valid_603741 = header.getOrDefault("x-amz-security-token")
+  valid_603741 = validateParameter(valid_603741, JString, required = false,
                                  default = nil)
-  if valid_601739 != nil:
-    section.add "x-amz-security-token", valid_601739
+  if valid_603741 != nil:
+    section.add "x-amz-security-token", valid_603741
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601740: Call_GetBucketAccelerateConfiguration_601734;
+proc call*(call_603742: Call_GetBucketAccelerateConfiguration_603736;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns the accelerate configuration of a bucket.
   ## 
-  let valid = call_601740.validator(path, query, header, formData, body)
-  let scheme = call_601740.pickScheme
+  let valid = call_603742.validator(path, query, header, formData, body)
+  let scheme = call_603742.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601740.url(scheme.get, call_601740.host, call_601740.base,
-                         call_601740.route, valid.getOrDefault("path"))
-  result = hook(call_601740, url, valid)
+  let url = call_603742.url(scheme.get, call_603742.host, call_603742.base,
+                         call_603742.route, valid.getOrDefault("path"))
+  result = hook(call_603742, url, valid)
 
-proc call*(call_601741: Call_GetBucketAccelerateConfiguration_601734;
+proc call*(call_603743: Call_GetBucketAccelerateConfiguration_603736;
           accelerate: bool; Bucket: string): Recallable =
   ## getBucketAccelerateConfiguration
   ## Returns the accelerate configuration of a bucket.
   ##   accelerate: bool (required)
   ##   Bucket: string (required)
   ##         : Name of the bucket for which the accelerate configuration is retrieved.
-  var path_601742 = newJObject()
-  var query_601743 = newJObject()
-  add(query_601743, "accelerate", newJBool(accelerate))
-  add(path_601742, "Bucket", newJString(Bucket))
-  result = call_601741.call(path_601742, query_601743, nil, nil, nil)
+  var path_603744 = newJObject()
+  var query_603745 = newJObject()
+  add(query_603745, "accelerate", newJBool(accelerate))
+  add(path_603744, "Bucket", newJString(Bucket))
+  result = call_603743.call(path_603744, query_603745, nil, nil, nil)
 
-var getBucketAccelerateConfiguration* = Call_GetBucketAccelerateConfiguration_601734(
+var getBucketAccelerateConfiguration* = Call_GetBucketAccelerateConfiguration_603736(
     name: "getBucketAccelerateConfiguration", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#accelerate",
-    validator: validate_GetBucketAccelerateConfiguration_601735, base: "/",
-    url: url_GetBucketAccelerateConfiguration_601736,
+    validator: validate_GetBucketAccelerateConfiguration_603737, base: "/",
+    url: url_GetBucketAccelerateConfiguration_603738,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketAcl_601766 = ref object of OpenApiRestCall_600426
-proc url_PutBucketAcl_601768(protocol: Scheme; host: string; base: string;
+  Call_PutBucketAcl_603768 = ref object of OpenApiRestCall_602433
+proc url_PutBucketAcl_603770(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6187,9 +6187,9 @@ proc url_PutBucketAcl_601768(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketAcl_601767(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutBucketAcl_603769(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Sets the permissions on a bucket using access control lists (ACL).
   ## 
@@ -6201,20 +6201,20 @@ proc validate_PutBucketAcl_601767(path: JsonNode; query: JsonNode; header: JsonN
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601769 = path.getOrDefault("Bucket")
-  valid_601769 = validateParameter(valid_601769, JString, required = true,
+  var valid_603771 = path.getOrDefault("Bucket")
+  valid_603771 = validateParameter(valid_603771, JString, required = true,
                                  default = nil)
-  if valid_601769 != nil:
-    section.add "Bucket", valid_601769
+  if valid_603771 != nil:
+    section.add "Bucket", valid_603771
   result.add "path", section
   ## parameters in `query` object:
   ##   acl: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `acl` field"
-  var valid_601770 = query.getOrDefault("acl")
-  valid_601770 = validateParameter(valid_601770, JBool, required = true, default = nil)
-  if valid_601770 != nil:
-    section.add "acl", valid_601770
+  var valid_603772 = query.getOrDefault("acl")
+  valid_603772 = validateParameter(valid_603772, JBool, required = true, default = nil)
+  if valid_603772 != nil:
+    section.add "acl", valid_603772
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -6233,46 +6233,46 @@ proc validate_PutBucketAcl_601767(path: JsonNode; query: JsonNode; header: JsonN
   ##   x-amz-grant-full-control: JString
   ##                           : Allows grantee the read, write, read ACP, and write ACP permissions on the bucket.
   section = newJObject()
-  var valid_601771 = header.getOrDefault("x-amz-security-token")
-  valid_601771 = validateParameter(valid_601771, JString, required = false,
+  var valid_603773 = header.getOrDefault("x-amz-security-token")
+  valid_603773 = validateParameter(valid_603773, JString, required = false,
                                  default = nil)
-  if valid_601771 != nil:
-    section.add "x-amz-security-token", valid_601771
-  var valid_601772 = header.getOrDefault("Content-MD5")
-  valid_601772 = validateParameter(valid_601772, JString, required = false,
+  if valid_603773 != nil:
+    section.add "x-amz-security-token", valid_603773
+  var valid_603774 = header.getOrDefault("Content-MD5")
+  valid_603774 = validateParameter(valid_603774, JString, required = false,
                                  default = nil)
-  if valid_601772 != nil:
-    section.add "Content-MD5", valid_601772
-  var valid_601773 = header.getOrDefault("x-amz-acl")
-  valid_601773 = validateParameter(valid_601773, JString, required = false,
+  if valid_603774 != nil:
+    section.add "Content-MD5", valid_603774
+  var valid_603775 = header.getOrDefault("x-amz-acl")
+  valid_603775 = validateParameter(valid_603775, JString, required = false,
                                  default = newJString("private"))
-  if valid_601773 != nil:
-    section.add "x-amz-acl", valid_601773
-  var valid_601774 = header.getOrDefault("x-amz-grant-read")
-  valid_601774 = validateParameter(valid_601774, JString, required = false,
+  if valid_603775 != nil:
+    section.add "x-amz-acl", valid_603775
+  var valid_603776 = header.getOrDefault("x-amz-grant-read")
+  valid_603776 = validateParameter(valid_603776, JString, required = false,
                                  default = nil)
-  if valid_601774 != nil:
-    section.add "x-amz-grant-read", valid_601774
-  var valid_601775 = header.getOrDefault("x-amz-grant-read-acp")
-  valid_601775 = validateParameter(valid_601775, JString, required = false,
+  if valid_603776 != nil:
+    section.add "x-amz-grant-read", valid_603776
+  var valid_603777 = header.getOrDefault("x-amz-grant-read-acp")
+  valid_603777 = validateParameter(valid_603777, JString, required = false,
                                  default = nil)
-  if valid_601775 != nil:
-    section.add "x-amz-grant-read-acp", valid_601775
-  var valid_601776 = header.getOrDefault("x-amz-grant-write")
-  valid_601776 = validateParameter(valid_601776, JString, required = false,
+  if valid_603777 != nil:
+    section.add "x-amz-grant-read-acp", valid_603777
+  var valid_603778 = header.getOrDefault("x-amz-grant-write")
+  valid_603778 = validateParameter(valid_603778, JString, required = false,
                                  default = nil)
-  if valid_601776 != nil:
-    section.add "x-amz-grant-write", valid_601776
-  var valid_601777 = header.getOrDefault("x-amz-grant-write-acp")
-  valid_601777 = validateParameter(valid_601777, JString, required = false,
+  if valid_603778 != nil:
+    section.add "x-amz-grant-write", valid_603778
+  var valid_603779 = header.getOrDefault("x-amz-grant-write-acp")
+  valid_603779 = validateParameter(valid_603779, JString, required = false,
                                  default = nil)
-  if valid_601777 != nil:
-    section.add "x-amz-grant-write-acp", valid_601777
-  var valid_601778 = header.getOrDefault("x-amz-grant-full-control")
-  valid_601778 = validateParameter(valid_601778, JString, required = false,
+  if valid_603779 != nil:
+    section.add "x-amz-grant-write-acp", valid_603779
+  var valid_603780 = header.getOrDefault("x-amz-grant-full-control")
+  valid_603780 = validateParameter(valid_603780, JString, required = false,
                                  default = nil)
-  if valid_601778 != nil:
-    section.add "x-amz-grant-full-control", valid_601778
+  if valid_603780 != nil:
+    section.add "x-amz-grant-full-control", valid_603780
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6283,20 +6283,20 @@ proc validate_PutBucketAcl_601767(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601780: Call_PutBucketAcl_601766; path: JsonNode; query: JsonNode;
+proc call*(call_603782: Call_PutBucketAcl_603768; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets the permissions on a bucket using access control lists (ACL).
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTacl.html
-  let valid = call_601780.validator(path, query, header, formData, body)
-  let scheme = call_601780.pickScheme
+  let valid = call_603782.validator(path, query, header, formData, body)
+  let scheme = call_603782.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601780.url(scheme.get, call_601780.host, call_601780.base,
-                         call_601780.route, valid.getOrDefault("path"))
-  result = hook(call_601780, url, valid)
+  let url = call_603782.url(scheme.get, call_603782.host, call_603782.base,
+                         call_603782.route, valid.getOrDefault("path"))
+  result = hook(call_603782, url, valid)
 
-proc call*(call_601781: Call_PutBucketAcl_601766; acl: bool; Bucket: string;
+proc call*(call_603783: Call_PutBucketAcl_603768; acl: bool; Bucket: string;
           body: JsonNode): Recallable =
   ## putBucketAcl
   ## Sets the permissions on a bucket using access control lists (ACL).
@@ -6305,22 +6305,22 @@ proc call*(call_601781: Call_PutBucketAcl_601766; acl: bool; Bucket: string;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601782 = newJObject()
-  var query_601783 = newJObject()
-  var body_601784 = newJObject()
-  add(query_601783, "acl", newJBool(acl))
-  add(path_601782, "Bucket", newJString(Bucket))
+  var path_603784 = newJObject()
+  var query_603785 = newJObject()
+  var body_603786 = newJObject()
+  add(query_603785, "acl", newJBool(acl))
+  add(path_603784, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601784 = body
-  result = call_601781.call(path_601782, query_601783, nil, nil, body_601784)
+    body_603786 = body
+  result = call_603783.call(path_603784, query_603785, nil, nil, body_603786)
 
-var putBucketAcl* = Call_PutBucketAcl_601766(name: "putBucketAcl",
+var putBucketAcl* = Call_PutBucketAcl_603768(name: "putBucketAcl",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com", route: "/{Bucket}#acl",
-    validator: validate_PutBucketAcl_601767, base: "/", url: url_PutBucketAcl_601768,
+    validator: validate_PutBucketAcl_603769, base: "/", url: url_PutBucketAcl_603770,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketAcl_601756 = ref object of OpenApiRestCall_600426
-proc url_GetBucketAcl_601758(protocol: Scheme; host: string; base: string;
+  Call_GetBucketAcl_603758 = ref object of OpenApiRestCall_602433
+proc url_GetBucketAcl_603760(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6331,9 +6331,9 @@ proc url_GetBucketAcl_601758(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketAcl_601757(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetBucketAcl_603759(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets the access control policy for the bucket.
   ## 
@@ -6345,68 +6345,68 @@ proc validate_GetBucketAcl_601757(path: JsonNode; query: JsonNode; header: JsonN
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601759 = path.getOrDefault("Bucket")
-  valid_601759 = validateParameter(valid_601759, JString, required = true,
+  var valid_603761 = path.getOrDefault("Bucket")
+  valid_603761 = validateParameter(valid_603761, JString, required = true,
                                  default = nil)
-  if valid_601759 != nil:
-    section.add "Bucket", valid_601759
+  if valid_603761 != nil:
+    section.add "Bucket", valid_603761
   result.add "path", section
   ## parameters in `query` object:
   ##   acl: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `acl` field"
-  var valid_601760 = query.getOrDefault("acl")
-  valid_601760 = validateParameter(valid_601760, JBool, required = true, default = nil)
-  if valid_601760 != nil:
-    section.add "acl", valid_601760
+  var valid_603762 = query.getOrDefault("acl")
+  valid_603762 = validateParameter(valid_603762, JBool, required = true, default = nil)
+  if valid_603762 != nil:
+    section.add "acl", valid_603762
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601761 = header.getOrDefault("x-amz-security-token")
-  valid_601761 = validateParameter(valid_601761, JString, required = false,
+  var valid_603763 = header.getOrDefault("x-amz-security-token")
+  valid_603763 = validateParameter(valid_603763, JString, required = false,
                                  default = nil)
-  if valid_601761 != nil:
-    section.add "x-amz-security-token", valid_601761
+  if valid_603763 != nil:
+    section.add "x-amz-security-token", valid_603763
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601762: Call_GetBucketAcl_601756; path: JsonNode; query: JsonNode;
+proc call*(call_603764: Call_GetBucketAcl_603758; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets the access control policy for the bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html
-  let valid = call_601762.validator(path, query, header, formData, body)
-  let scheme = call_601762.pickScheme
+  let valid = call_603764.validator(path, query, header, formData, body)
+  let scheme = call_603764.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601762.url(scheme.get, call_601762.host, call_601762.base,
-                         call_601762.route, valid.getOrDefault("path"))
-  result = hook(call_601762, url, valid)
+  let url = call_603764.url(scheme.get, call_603764.host, call_603764.base,
+                         call_603764.route, valid.getOrDefault("path"))
+  result = hook(call_603764, url, valid)
 
-proc call*(call_601763: Call_GetBucketAcl_601756; acl: bool; Bucket: string): Recallable =
+proc call*(call_603765: Call_GetBucketAcl_603758; acl: bool; Bucket: string): Recallable =
   ## getBucketAcl
   ## Gets the access control policy for the bucket.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETacl.html
   ##   acl: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601764 = newJObject()
-  var query_601765 = newJObject()
-  add(query_601765, "acl", newJBool(acl))
-  add(path_601764, "Bucket", newJString(Bucket))
-  result = call_601763.call(path_601764, query_601765, nil, nil, nil)
+  var path_603766 = newJObject()
+  var query_603767 = newJObject()
+  add(query_603767, "acl", newJBool(acl))
+  add(path_603766, "Bucket", newJString(Bucket))
+  result = call_603765.call(path_603766, query_603767, nil, nil, nil)
 
-var getBucketAcl* = Call_GetBucketAcl_601756(name: "getBucketAcl",
+var getBucketAcl* = Call_GetBucketAcl_603758(name: "getBucketAcl",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com", route: "/{Bucket}#acl",
-    validator: validate_GetBucketAcl_601757, base: "/", url: url_GetBucketAcl_601758,
+    validator: validate_GetBucketAcl_603759, base: "/", url: url_GetBucketAcl_603760,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketLifecycle_601795 = ref object of OpenApiRestCall_600426
-proc url_PutBucketLifecycle_601797(protocol: Scheme; host: string; base: string;
+  Call_PutBucketLifecycle_603797 = ref object of OpenApiRestCall_602433
+proc url_PutBucketLifecycle_603799(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6417,9 +6417,9 @@ proc url_PutBucketLifecycle_601797(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketLifecycle_601796(path: JsonNode; query: JsonNode;
+proc validate_PutBucketLifecycle_603798(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ##  No longer used, see the PutBucketLifecycleConfiguration operation.
@@ -6432,37 +6432,37 @@ proc validate_PutBucketLifecycle_601796(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601798 = path.getOrDefault("Bucket")
-  valid_601798 = validateParameter(valid_601798, JString, required = true,
+  var valid_603800 = path.getOrDefault("Bucket")
+  valid_603800 = validateParameter(valid_603800, JString, required = true,
                                  default = nil)
-  if valid_601798 != nil:
-    section.add "Bucket", valid_601798
+  if valid_603800 != nil:
+    section.add "Bucket", valid_603800
   result.add "path", section
   ## parameters in `query` object:
   ##   lifecycle: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `lifecycle` field"
-  var valid_601799 = query.getOrDefault("lifecycle")
-  valid_601799 = validateParameter(valid_601799, JBool, required = true, default = nil)
-  if valid_601799 != nil:
-    section.add "lifecycle", valid_601799
+  var valid_603801 = query.getOrDefault("lifecycle")
+  valid_603801 = validateParameter(valid_603801, JBool, required = true, default = nil)
+  if valid_603801 != nil:
+    section.add "lifecycle", valid_603801
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : <p/>
   section = newJObject()
-  var valid_601800 = header.getOrDefault("x-amz-security-token")
-  valid_601800 = validateParameter(valid_601800, JString, required = false,
+  var valid_603802 = header.getOrDefault("x-amz-security-token")
+  valid_603802 = validateParameter(valid_603802, JString, required = false,
                                  default = nil)
-  if valid_601800 != nil:
-    section.add "x-amz-security-token", valid_601800
-  var valid_601801 = header.getOrDefault("Content-MD5")
-  valid_601801 = validateParameter(valid_601801, JString, required = false,
+  if valid_603802 != nil:
+    section.add "x-amz-security-token", valid_603802
+  var valid_603803 = header.getOrDefault("Content-MD5")
+  valid_603803 = validateParameter(valid_603803, JString, required = false,
                                  default = nil)
-  if valid_601801 != nil:
-    section.add "Content-MD5", valid_601801
+  if valid_603803 != nil:
+    section.add "Content-MD5", valid_603803
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6473,20 +6473,20 @@ proc validate_PutBucketLifecycle_601796(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601803: Call_PutBucketLifecycle_601795; path: JsonNode;
+proc call*(call_603805: Call_PutBucketLifecycle_603797; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  No longer used, see the PutBucketLifecycleConfiguration operation.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTlifecycle.html
-  let valid = call_601803.validator(path, query, header, formData, body)
-  let scheme = call_601803.pickScheme
+  let valid = call_603805.validator(path, query, header, formData, body)
+  let scheme = call_603805.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601803.url(scheme.get, call_601803.host, call_601803.base,
-                         call_601803.route, valid.getOrDefault("path"))
-  result = hook(call_601803, url, valid)
+  let url = call_603805.url(scheme.get, call_603805.host, call_603805.base,
+                         call_603805.route, valid.getOrDefault("path"))
+  result = hook(call_603805, url, valid)
 
-proc call*(call_601804: Call_PutBucketLifecycle_601795; Bucket: string;
+proc call*(call_603806: Call_PutBucketLifecycle_603797; Bucket: string;
           lifecycle: bool; body: JsonNode): Recallable =
   ## putBucketLifecycle
   ##  No longer used, see the PutBucketLifecycleConfiguration operation.
@@ -6495,23 +6495,23 @@ proc call*(call_601804: Call_PutBucketLifecycle_601795; Bucket: string;
   ##         : <p/>
   ##   lifecycle: bool (required)
   ##   body: JObject (required)
-  var path_601805 = newJObject()
-  var query_601806 = newJObject()
-  var body_601807 = newJObject()
-  add(path_601805, "Bucket", newJString(Bucket))
-  add(query_601806, "lifecycle", newJBool(lifecycle))
+  var path_603807 = newJObject()
+  var query_603808 = newJObject()
+  var body_603809 = newJObject()
+  add(path_603807, "Bucket", newJString(Bucket))
+  add(query_603808, "lifecycle", newJBool(lifecycle))
   if body != nil:
-    body_601807 = body
-  result = call_601804.call(path_601805, query_601806, nil, nil, body_601807)
+    body_603809 = body
+  result = call_603806.call(path_603807, query_603808, nil, nil, body_603809)
 
-var putBucketLifecycle* = Call_PutBucketLifecycle_601795(
+var putBucketLifecycle* = Call_PutBucketLifecycle_603797(
     name: "putBucketLifecycle", meth: HttpMethod.HttpPut, host: "s3.amazonaws.com",
     route: "/{Bucket}#lifecycle&deprecated!",
-    validator: validate_PutBucketLifecycle_601796, base: "/",
-    url: url_PutBucketLifecycle_601797, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutBucketLifecycle_603798, base: "/",
+    url: url_PutBucketLifecycle_603799, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketLifecycle_601785 = ref object of OpenApiRestCall_600426
-proc url_GetBucketLifecycle_601787(protocol: Scheme; host: string; base: string;
+  Call_GetBucketLifecycle_603787 = ref object of OpenApiRestCall_602433
+proc url_GetBucketLifecycle_603789(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6522,9 +6522,9 @@ proc url_GetBucketLifecycle_601787(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketLifecycle_601786(path: JsonNode; query: JsonNode;
+proc validate_GetBucketLifecycle_603788(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ##  No longer used, see the GetBucketLifecycleConfiguration operation.
@@ -6537,50 +6537,50 @@ proc validate_GetBucketLifecycle_601786(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601788 = path.getOrDefault("Bucket")
-  valid_601788 = validateParameter(valid_601788, JString, required = true,
+  var valid_603790 = path.getOrDefault("Bucket")
+  valid_603790 = validateParameter(valid_603790, JString, required = true,
                                  default = nil)
-  if valid_601788 != nil:
-    section.add "Bucket", valid_601788
+  if valid_603790 != nil:
+    section.add "Bucket", valid_603790
   result.add "path", section
   ## parameters in `query` object:
   ##   lifecycle: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `lifecycle` field"
-  var valid_601789 = query.getOrDefault("lifecycle")
-  valid_601789 = validateParameter(valid_601789, JBool, required = true, default = nil)
-  if valid_601789 != nil:
-    section.add "lifecycle", valid_601789
+  var valid_603791 = query.getOrDefault("lifecycle")
+  valid_603791 = validateParameter(valid_603791, JBool, required = true, default = nil)
+  if valid_603791 != nil:
+    section.add "lifecycle", valid_603791
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601790 = header.getOrDefault("x-amz-security-token")
-  valid_601790 = validateParameter(valid_601790, JString, required = false,
+  var valid_603792 = header.getOrDefault("x-amz-security-token")
+  valid_603792 = validateParameter(valid_603792, JString, required = false,
                                  default = nil)
-  if valid_601790 != nil:
-    section.add "x-amz-security-token", valid_601790
+  if valid_603792 != nil:
+    section.add "x-amz-security-token", valid_603792
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601791: Call_GetBucketLifecycle_601785; path: JsonNode;
+proc call*(call_603793: Call_GetBucketLifecycle_603787; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  No longer used, see the GetBucketLifecycleConfiguration operation.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlifecycle.html
-  let valid = call_601791.validator(path, query, header, formData, body)
-  let scheme = call_601791.pickScheme
+  let valid = call_603793.validator(path, query, header, formData, body)
+  let scheme = call_603793.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601791.url(scheme.get, call_601791.host, call_601791.base,
-                         call_601791.route, valid.getOrDefault("path"))
-  result = hook(call_601791, url, valid)
+  let url = call_603793.url(scheme.get, call_603793.host, call_603793.base,
+                         call_603793.route, valid.getOrDefault("path"))
+  result = hook(call_603793, url, valid)
 
-proc call*(call_601792: Call_GetBucketLifecycle_601785; Bucket: string;
+proc call*(call_603794: Call_GetBucketLifecycle_603787; Bucket: string;
           lifecycle: bool): Recallable =
   ## getBucketLifecycle
   ##  No longer used, see the GetBucketLifecycleConfiguration operation.
@@ -6588,20 +6588,20 @@ proc call*(call_601792: Call_GetBucketLifecycle_601785; Bucket: string;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   lifecycle: bool (required)
-  var path_601793 = newJObject()
-  var query_601794 = newJObject()
-  add(path_601793, "Bucket", newJString(Bucket))
-  add(query_601794, "lifecycle", newJBool(lifecycle))
-  result = call_601792.call(path_601793, query_601794, nil, nil, nil)
+  var path_603795 = newJObject()
+  var query_603796 = newJObject()
+  add(path_603795, "Bucket", newJString(Bucket))
+  add(query_603796, "lifecycle", newJBool(lifecycle))
+  result = call_603794.call(path_603795, query_603796, nil, nil, nil)
 
-var getBucketLifecycle* = Call_GetBucketLifecycle_601785(
+var getBucketLifecycle* = Call_GetBucketLifecycle_603787(
     name: "getBucketLifecycle", meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
     route: "/{Bucket}#lifecycle&deprecated!",
-    validator: validate_GetBucketLifecycle_601786, base: "/",
-    url: url_GetBucketLifecycle_601787, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketLifecycle_603788, base: "/",
+    url: url_GetBucketLifecycle_603789, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketLocation_601808 = ref object of OpenApiRestCall_600426
-proc url_GetBucketLocation_601810(protocol: Scheme; host: string; base: string;
+  Call_GetBucketLocation_603810 = ref object of OpenApiRestCall_602433
+proc url_GetBucketLocation_603812(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6612,9 +6612,9 @@ proc url_GetBucketLocation_601810(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketLocation_601809(path: JsonNode; query: JsonNode;
+proc validate_GetBucketLocation_603811(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Returns the region the bucket resides in.
@@ -6627,69 +6627,69 @@ proc validate_GetBucketLocation_601809(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601811 = path.getOrDefault("Bucket")
-  valid_601811 = validateParameter(valid_601811, JString, required = true,
+  var valid_603813 = path.getOrDefault("Bucket")
+  valid_603813 = validateParameter(valid_603813, JString, required = true,
                                  default = nil)
-  if valid_601811 != nil:
-    section.add "Bucket", valid_601811
+  if valid_603813 != nil:
+    section.add "Bucket", valid_603813
   result.add "path", section
   ## parameters in `query` object:
   ##   location: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `location` field"
-  var valid_601812 = query.getOrDefault("location")
-  valid_601812 = validateParameter(valid_601812, JBool, required = true, default = nil)
-  if valid_601812 != nil:
-    section.add "location", valid_601812
+  var valid_603814 = query.getOrDefault("location")
+  valid_603814 = validateParameter(valid_603814, JBool, required = true, default = nil)
+  if valid_603814 != nil:
+    section.add "location", valid_603814
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601813 = header.getOrDefault("x-amz-security-token")
-  valid_601813 = validateParameter(valid_601813, JString, required = false,
+  var valid_603815 = header.getOrDefault("x-amz-security-token")
+  valid_603815 = validateParameter(valid_603815, JString, required = false,
                                  default = nil)
-  if valid_601813 != nil:
-    section.add "x-amz-security-token", valid_601813
+  if valid_603815 != nil:
+    section.add "x-amz-security-token", valid_603815
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601814: Call_GetBucketLocation_601808; path: JsonNode;
+proc call*(call_603816: Call_GetBucketLocation_603810; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the region the bucket resides in.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html
-  let valid = call_601814.validator(path, query, header, formData, body)
-  let scheme = call_601814.pickScheme
+  let valid = call_603816.validator(path, query, header, formData, body)
+  let scheme = call_603816.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601814.url(scheme.get, call_601814.host, call_601814.base,
-                         call_601814.route, valid.getOrDefault("path"))
-  result = hook(call_601814, url, valid)
+  let url = call_603816.url(scheme.get, call_603816.host, call_603816.base,
+                         call_603816.route, valid.getOrDefault("path"))
+  result = hook(call_603816, url, valid)
 
-proc call*(call_601815: Call_GetBucketLocation_601808; location: bool; Bucket: string): Recallable =
+proc call*(call_603817: Call_GetBucketLocation_603810; location: bool; Bucket: string): Recallable =
   ## getBucketLocation
   ## Returns the region the bucket resides in.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlocation.html
   ##   location: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601816 = newJObject()
-  var query_601817 = newJObject()
-  add(query_601817, "location", newJBool(location))
-  add(path_601816, "Bucket", newJString(Bucket))
-  result = call_601815.call(path_601816, query_601817, nil, nil, nil)
+  var path_603818 = newJObject()
+  var query_603819 = newJObject()
+  add(query_603819, "location", newJBool(location))
+  add(path_603818, "Bucket", newJString(Bucket))
+  result = call_603817.call(path_603818, query_603819, nil, nil, nil)
 
-var getBucketLocation* = Call_GetBucketLocation_601808(name: "getBucketLocation",
+var getBucketLocation* = Call_GetBucketLocation_603810(name: "getBucketLocation",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com", route: "/{Bucket}#location",
-    validator: validate_GetBucketLocation_601809, base: "/",
-    url: url_GetBucketLocation_601810, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketLocation_603811, base: "/",
+    url: url_GetBucketLocation_603812, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketLogging_601828 = ref object of OpenApiRestCall_600426
-proc url_PutBucketLogging_601830(protocol: Scheme; host: string; base: string;
+  Call_PutBucketLogging_603830 = ref object of OpenApiRestCall_602433
+proc url_PutBucketLogging_603832(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6700,9 +6700,9 @@ proc url_PutBucketLogging_601830(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketLogging_601829(path: JsonNode; query: JsonNode;
+proc validate_PutBucketLogging_603831(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Set the logging parameters for a bucket and to specify permissions for who can view and modify the logging parameters. To set the logging status of a bucket, you must be the bucket owner.
@@ -6715,36 +6715,36 @@ proc validate_PutBucketLogging_601829(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601831 = path.getOrDefault("Bucket")
-  valid_601831 = validateParameter(valid_601831, JString, required = true,
+  var valid_603833 = path.getOrDefault("Bucket")
+  valid_603833 = validateParameter(valid_603833, JString, required = true,
                                  default = nil)
-  if valid_601831 != nil:
-    section.add "Bucket", valid_601831
+  if valid_603833 != nil:
+    section.add "Bucket", valid_603833
   result.add "path", section
   ## parameters in `query` object:
   ##   logging: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `logging` field"
-  var valid_601832 = query.getOrDefault("logging")
-  valid_601832 = validateParameter(valid_601832, JBool, required = true, default = nil)
-  if valid_601832 != nil:
-    section.add "logging", valid_601832
+  var valid_603834 = query.getOrDefault("logging")
+  valid_603834 = validateParameter(valid_603834, JBool, required = true, default = nil)
+  if valid_603834 != nil:
+    section.add "logging", valid_603834
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : <p/>
   section = newJObject()
-  var valid_601833 = header.getOrDefault("x-amz-security-token")
-  valid_601833 = validateParameter(valid_601833, JString, required = false,
+  var valid_603835 = header.getOrDefault("x-amz-security-token")
+  valid_603835 = validateParameter(valid_603835, JString, required = false,
                                  default = nil)
-  if valid_601833 != nil:
-    section.add "x-amz-security-token", valid_601833
-  var valid_601834 = header.getOrDefault("Content-MD5")
-  valid_601834 = validateParameter(valid_601834, JString, required = false,
+  if valid_603835 != nil:
+    section.add "x-amz-security-token", valid_603835
+  var valid_603836 = header.getOrDefault("Content-MD5")
+  valid_603836 = validateParameter(valid_603836, JString, required = false,
                                  default = nil)
-  if valid_601834 != nil:
-    section.add "Content-MD5", valid_601834
+  if valid_603836 != nil:
+    section.add "Content-MD5", valid_603836
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6755,20 +6755,20 @@ proc validate_PutBucketLogging_601829(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601836: Call_PutBucketLogging_601828; path: JsonNode;
+proc call*(call_603838: Call_PutBucketLogging_603830; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Set the logging parameters for a bucket and to specify permissions for who can view and modify the logging parameters. To set the logging status of a bucket, you must be the bucket owner.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTlogging.html
-  let valid = call_601836.validator(path, query, header, formData, body)
-  let scheme = call_601836.pickScheme
+  let valid = call_603838.validator(path, query, header, formData, body)
+  let scheme = call_603838.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601836.url(scheme.get, call_601836.host, call_601836.base,
-                         call_601836.route, valid.getOrDefault("path"))
-  result = hook(call_601836, url, valid)
+  let url = call_603838.url(scheme.get, call_603838.host, call_603838.base,
+                         call_603838.route, valid.getOrDefault("path"))
+  result = hook(call_603838, url, valid)
 
-proc call*(call_601837: Call_PutBucketLogging_601828; logging: bool; Bucket: string;
+proc call*(call_603839: Call_PutBucketLogging_603830; logging: bool; Bucket: string;
           body: JsonNode): Recallable =
   ## putBucketLogging
   ## Set the logging parameters for a bucket and to specify permissions for who can view and modify the logging parameters. To set the logging status of a bucket, you must be the bucket owner.
@@ -6777,22 +6777,22 @@ proc call*(call_601837: Call_PutBucketLogging_601828; logging: bool; Bucket: str
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601838 = newJObject()
-  var query_601839 = newJObject()
-  var body_601840 = newJObject()
-  add(query_601839, "logging", newJBool(logging))
-  add(path_601838, "Bucket", newJString(Bucket))
+  var path_603840 = newJObject()
+  var query_603841 = newJObject()
+  var body_603842 = newJObject()
+  add(query_603841, "logging", newJBool(logging))
+  add(path_603840, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601840 = body
-  result = call_601837.call(path_601838, query_601839, nil, nil, body_601840)
+    body_603842 = body
+  result = call_603839.call(path_603840, query_603841, nil, nil, body_603842)
 
-var putBucketLogging* = Call_PutBucketLogging_601828(name: "putBucketLogging",
+var putBucketLogging* = Call_PutBucketLogging_603830(name: "putBucketLogging",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com", route: "/{Bucket}#logging",
-    validator: validate_PutBucketLogging_601829, base: "/",
-    url: url_PutBucketLogging_601830, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutBucketLogging_603831, base: "/",
+    url: url_PutBucketLogging_603832, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketLogging_601818 = ref object of OpenApiRestCall_600426
-proc url_GetBucketLogging_601820(protocol: Scheme; host: string; base: string;
+  Call_GetBucketLogging_603820 = ref object of OpenApiRestCall_602433
+proc url_GetBucketLogging_603822(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6803,9 +6803,9 @@ proc url_GetBucketLogging_601820(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketLogging_601819(path: JsonNode; query: JsonNode;
+proc validate_GetBucketLogging_603821(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the logging status of a bucket and the permissions users have to view and modify that status. To use GET, you must be the bucket owner.
@@ -6818,68 +6818,68 @@ proc validate_GetBucketLogging_601819(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601821 = path.getOrDefault("Bucket")
-  valid_601821 = validateParameter(valid_601821, JString, required = true,
+  var valid_603823 = path.getOrDefault("Bucket")
+  valid_603823 = validateParameter(valid_603823, JString, required = true,
                                  default = nil)
-  if valid_601821 != nil:
-    section.add "Bucket", valid_601821
+  if valid_603823 != nil:
+    section.add "Bucket", valid_603823
   result.add "path", section
   ## parameters in `query` object:
   ##   logging: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `logging` field"
-  var valid_601822 = query.getOrDefault("logging")
-  valid_601822 = validateParameter(valid_601822, JBool, required = true, default = nil)
-  if valid_601822 != nil:
-    section.add "logging", valid_601822
+  var valid_603824 = query.getOrDefault("logging")
+  valid_603824 = validateParameter(valid_603824, JBool, required = true, default = nil)
+  if valid_603824 != nil:
+    section.add "logging", valid_603824
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601823 = header.getOrDefault("x-amz-security-token")
-  valid_601823 = validateParameter(valid_601823, JString, required = false,
+  var valid_603825 = header.getOrDefault("x-amz-security-token")
+  valid_603825 = validateParameter(valid_603825, JString, required = false,
                                  default = nil)
-  if valid_601823 != nil:
-    section.add "x-amz-security-token", valid_601823
+  if valid_603825 != nil:
+    section.add "x-amz-security-token", valid_603825
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601824: Call_GetBucketLogging_601818; path: JsonNode;
+proc call*(call_603826: Call_GetBucketLogging_603820; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the logging status of a bucket and the permissions users have to view and modify that status. To use GET, you must be the bucket owner.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlogging.html
-  let valid = call_601824.validator(path, query, header, formData, body)
-  let scheme = call_601824.pickScheme
+  let valid = call_603826.validator(path, query, header, formData, body)
+  let scheme = call_603826.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601824.url(scheme.get, call_601824.host, call_601824.base,
-                         call_601824.route, valid.getOrDefault("path"))
-  result = hook(call_601824, url, valid)
+  let url = call_603826.url(scheme.get, call_603826.host, call_603826.base,
+                         call_603826.route, valid.getOrDefault("path"))
+  result = hook(call_603826, url, valid)
 
-proc call*(call_601825: Call_GetBucketLogging_601818; logging: bool; Bucket: string): Recallable =
+proc call*(call_603827: Call_GetBucketLogging_603820; logging: bool; Bucket: string): Recallable =
   ## getBucketLogging
   ## Returns the logging status of a bucket and the permissions users have to view and modify that status. To use GET, you must be the bucket owner.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETlogging.html
   ##   logging: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601826 = newJObject()
-  var query_601827 = newJObject()
-  add(query_601827, "logging", newJBool(logging))
-  add(path_601826, "Bucket", newJString(Bucket))
-  result = call_601825.call(path_601826, query_601827, nil, nil, nil)
+  var path_603828 = newJObject()
+  var query_603829 = newJObject()
+  add(query_603829, "logging", newJBool(logging))
+  add(path_603828, "Bucket", newJString(Bucket))
+  result = call_603827.call(path_603828, query_603829, nil, nil, nil)
 
-var getBucketLogging* = Call_GetBucketLogging_601818(name: "getBucketLogging",
+var getBucketLogging* = Call_GetBucketLogging_603820(name: "getBucketLogging",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com", route: "/{Bucket}#logging",
-    validator: validate_GetBucketLogging_601819, base: "/",
-    url: url_GetBucketLogging_601820, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketLogging_603821, base: "/",
+    url: url_GetBucketLogging_603822, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketNotificationConfiguration_601851 = ref object of OpenApiRestCall_600426
-proc url_PutBucketNotificationConfiguration_601853(protocol: Scheme; host: string;
+  Call_PutBucketNotificationConfiguration_603853 = ref object of OpenApiRestCall_602433
+proc url_PutBucketNotificationConfiguration_603855(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6890,9 +6890,9 @@ proc url_PutBucketNotificationConfiguration_601853(protocol: Scheme; host: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketNotificationConfiguration_601852(path: JsonNode;
+proc validate_PutBucketNotificationConfiguration_603854(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Enables notifications of specified events for a bucket.
   ## 
@@ -6903,30 +6903,30 @@ proc validate_PutBucketNotificationConfiguration_601852(path: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601854 = path.getOrDefault("Bucket")
-  valid_601854 = validateParameter(valid_601854, JString, required = true,
+  var valid_603856 = path.getOrDefault("Bucket")
+  valid_603856 = validateParameter(valid_603856, JString, required = true,
                                  default = nil)
-  if valid_601854 != nil:
-    section.add "Bucket", valid_601854
+  if valid_603856 != nil:
+    section.add "Bucket", valid_603856
   result.add "path", section
   ## parameters in `query` object:
   ##   notification: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `notification` field"
-  var valid_601855 = query.getOrDefault("notification")
-  valid_601855 = validateParameter(valid_601855, JBool, required = true, default = nil)
-  if valid_601855 != nil:
-    section.add "notification", valid_601855
+  var valid_603857 = query.getOrDefault("notification")
+  valid_603857 = validateParameter(valid_603857, JBool, required = true, default = nil)
+  if valid_603857 != nil:
+    section.add "notification", valid_603857
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601856 = header.getOrDefault("x-amz-security-token")
-  valid_601856 = validateParameter(valid_601856, JString, required = false,
+  var valid_603858 = header.getOrDefault("x-amz-security-token")
+  valid_603858 = validateParameter(valid_603858, JString, required = false,
                                  default = nil)
-  if valid_601856 != nil:
-    section.add "x-amz-security-token", valid_601856
+  if valid_603858 != nil:
+    section.add "x-amz-security-token", valid_603858
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6937,20 +6937,20 @@ proc validate_PutBucketNotificationConfiguration_601852(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601858: Call_PutBucketNotificationConfiguration_601851;
+proc call*(call_603860: Call_PutBucketNotificationConfiguration_603853;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Enables notifications of specified events for a bucket.
   ## 
-  let valid = call_601858.validator(path, query, header, formData, body)
-  let scheme = call_601858.pickScheme
+  let valid = call_603860.validator(path, query, header, formData, body)
+  let scheme = call_603860.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601858.url(scheme.get, call_601858.host, call_601858.base,
-                         call_601858.route, valid.getOrDefault("path"))
-  result = hook(call_601858, url, valid)
+  let url = call_603860.url(scheme.get, call_603860.host, call_603860.base,
+                         call_603860.route, valid.getOrDefault("path"))
+  result = hook(call_603860, url, valid)
 
-proc call*(call_601859: Call_PutBucketNotificationConfiguration_601851;
+proc call*(call_603861: Call_PutBucketNotificationConfiguration_603853;
           notification: bool; Bucket: string; body: JsonNode): Recallable =
   ## putBucketNotificationConfiguration
   ## Enables notifications of specified events for a bucket.
@@ -6958,24 +6958,24 @@ proc call*(call_601859: Call_PutBucketNotificationConfiguration_601851;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601860 = newJObject()
-  var query_601861 = newJObject()
-  var body_601862 = newJObject()
-  add(query_601861, "notification", newJBool(notification))
-  add(path_601860, "Bucket", newJString(Bucket))
+  var path_603862 = newJObject()
+  var query_603863 = newJObject()
+  var body_603864 = newJObject()
+  add(query_603863, "notification", newJBool(notification))
+  add(path_603862, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601862 = body
-  result = call_601859.call(path_601860, query_601861, nil, nil, body_601862)
+    body_603864 = body
+  result = call_603861.call(path_603862, query_603863, nil, nil, body_603864)
 
-var putBucketNotificationConfiguration* = Call_PutBucketNotificationConfiguration_601851(
+var putBucketNotificationConfiguration* = Call_PutBucketNotificationConfiguration_603853(
     name: "putBucketNotificationConfiguration", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#notification",
-    validator: validate_PutBucketNotificationConfiguration_601852, base: "/",
-    url: url_PutBucketNotificationConfiguration_601853,
+    validator: validate_PutBucketNotificationConfiguration_603854, base: "/",
+    url: url_PutBucketNotificationConfiguration_603855,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketNotificationConfiguration_601841 = ref object of OpenApiRestCall_600426
-proc url_GetBucketNotificationConfiguration_601843(protocol: Scheme; host: string;
+  Call_GetBucketNotificationConfiguration_603843 = ref object of OpenApiRestCall_602433
+proc url_GetBucketNotificationConfiguration_603845(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -6986,9 +6986,9 @@ proc url_GetBucketNotificationConfiguration_601843(protocol: Scheme; host: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketNotificationConfiguration_601842(path: JsonNode;
+proc validate_GetBucketNotificationConfiguration_603844(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the notification configuration of a bucket.
   ## 
@@ -6999,71 +6999,71 @@ proc validate_GetBucketNotificationConfiguration_601842(path: JsonNode;
   ##         : Name of the bucket to get the notification configuration for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601844 = path.getOrDefault("Bucket")
-  valid_601844 = validateParameter(valid_601844, JString, required = true,
+  var valid_603846 = path.getOrDefault("Bucket")
+  valid_603846 = validateParameter(valid_603846, JString, required = true,
                                  default = nil)
-  if valid_601844 != nil:
-    section.add "Bucket", valid_601844
+  if valid_603846 != nil:
+    section.add "Bucket", valid_603846
   result.add "path", section
   ## parameters in `query` object:
   ##   notification: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `notification` field"
-  var valid_601845 = query.getOrDefault("notification")
-  valid_601845 = validateParameter(valid_601845, JBool, required = true, default = nil)
-  if valid_601845 != nil:
-    section.add "notification", valid_601845
+  var valid_603847 = query.getOrDefault("notification")
+  valid_603847 = validateParameter(valid_603847, JBool, required = true, default = nil)
+  if valid_603847 != nil:
+    section.add "notification", valid_603847
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601846 = header.getOrDefault("x-amz-security-token")
-  valid_601846 = validateParameter(valid_601846, JString, required = false,
+  var valid_603848 = header.getOrDefault("x-amz-security-token")
+  valid_603848 = validateParameter(valid_603848, JString, required = false,
                                  default = nil)
-  if valid_601846 != nil:
-    section.add "x-amz-security-token", valid_601846
+  if valid_603848 != nil:
+    section.add "x-amz-security-token", valid_603848
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601847: Call_GetBucketNotificationConfiguration_601841;
+proc call*(call_603849: Call_GetBucketNotificationConfiguration_603843;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns the notification configuration of a bucket.
   ## 
-  let valid = call_601847.validator(path, query, header, formData, body)
-  let scheme = call_601847.pickScheme
+  let valid = call_603849.validator(path, query, header, formData, body)
+  let scheme = call_603849.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601847.url(scheme.get, call_601847.host, call_601847.base,
-                         call_601847.route, valid.getOrDefault("path"))
-  result = hook(call_601847, url, valid)
+  let url = call_603849.url(scheme.get, call_603849.host, call_603849.base,
+                         call_603849.route, valid.getOrDefault("path"))
+  result = hook(call_603849, url, valid)
 
-proc call*(call_601848: Call_GetBucketNotificationConfiguration_601841;
+proc call*(call_603850: Call_GetBucketNotificationConfiguration_603843;
           notification: bool; Bucket: string): Recallable =
   ## getBucketNotificationConfiguration
   ## Returns the notification configuration of a bucket.
   ##   notification: bool (required)
   ##   Bucket: string (required)
   ##         : Name of the bucket to get the notification configuration for.
-  var path_601849 = newJObject()
-  var query_601850 = newJObject()
-  add(query_601850, "notification", newJBool(notification))
-  add(path_601849, "Bucket", newJString(Bucket))
-  result = call_601848.call(path_601849, query_601850, nil, nil, nil)
+  var path_603851 = newJObject()
+  var query_603852 = newJObject()
+  add(query_603852, "notification", newJBool(notification))
+  add(path_603851, "Bucket", newJString(Bucket))
+  result = call_603850.call(path_603851, query_603852, nil, nil, nil)
 
-var getBucketNotificationConfiguration* = Call_GetBucketNotificationConfiguration_601841(
+var getBucketNotificationConfiguration* = Call_GetBucketNotificationConfiguration_603843(
     name: "getBucketNotificationConfiguration", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#notification",
-    validator: validate_GetBucketNotificationConfiguration_601842, base: "/",
-    url: url_GetBucketNotificationConfiguration_601843,
+    validator: validate_GetBucketNotificationConfiguration_603844, base: "/",
+    url: url_GetBucketNotificationConfiguration_603845,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketNotification_601873 = ref object of OpenApiRestCall_600426
-proc url_PutBucketNotification_601875(protocol: Scheme; host: string; base: string;
+  Call_PutBucketNotification_603875 = ref object of OpenApiRestCall_602433
+proc url_PutBucketNotification_603877(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7074,9 +7074,9 @@ proc url_PutBucketNotification_601875(protocol: Scheme; host: string; base: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketNotification_601874(path: JsonNode; query: JsonNode;
+proc validate_PutBucketNotification_603876(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ##  No longer used, see the PutBucketNotificationConfiguration operation.
   ## 
@@ -7088,37 +7088,37 @@ proc validate_PutBucketNotification_601874(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601876 = path.getOrDefault("Bucket")
-  valid_601876 = validateParameter(valid_601876, JString, required = true,
+  var valid_603878 = path.getOrDefault("Bucket")
+  valid_603878 = validateParameter(valid_603878, JString, required = true,
                                  default = nil)
-  if valid_601876 != nil:
-    section.add "Bucket", valid_601876
+  if valid_603878 != nil:
+    section.add "Bucket", valid_603878
   result.add "path", section
   ## parameters in `query` object:
   ##   notification: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `notification` field"
-  var valid_601877 = query.getOrDefault("notification")
-  valid_601877 = validateParameter(valid_601877, JBool, required = true, default = nil)
-  if valid_601877 != nil:
-    section.add "notification", valid_601877
+  var valid_603879 = query.getOrDefault("notification")
+  valid_603879 = validateParameter(valid_603879, JBool, required = true, default = nil)
+  if valid_603879 != nil:
+    section.add "notification", valid_603879
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : <p/>
   section = newJObject()
-  var valid_601878 = header.getOrDefault("x-amz-security-token")
-  valid_601878 = validateParameter(valid_601878, JString, required = false,
+  var valid_603880 = header.getOrDefault("x-amz-security-token")
+  valid_603880 = validateParameter(valid_603880, JString, required = false,
                                  default = nil)
-  if valid_601878 != nil:
-    section.add "x-amz-security-token", valid_601878
-  var valid_601879 = header.getOrDefault("Content-MD5")
-  valid_601879 = validateParameter(valid_601879, JString, required = false,
+  if valid_603880 != nil:
+    section.add "x-amz-security-token", valid_603880
+  var valid_603881 = header.getOrDefault("Content-MD5")
+  valid_603881 = validateParameter(valid_603881, JString, required = false,
                                  default = nil)
-  if valid_601879 != nil:
-    section.add "Content-MD5", valid_601879
+  if valid_603881 != nil:
+    section.add "Content-MD5", valid_603881
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7129,20 +7129,20 @@ proc validate_PutBucketNotification_601874(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601881: Call_PutBucketNotification_601873; path: JsonNode;
+proc call*(call_603883: Call_PutBucketNotification_603875; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  No longer used, see the PutBucketNotificationConfiguration operation.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTnotification.html
-  let valid = call_601881.validator(path, query, header, formData, body)
-  let scheme = call_601881.pickScheme
+  let valid = call_603883.validator(path, query, header, formData, body)
+  let scheme = call_603883.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601881.url(scheme.get, call_601881.host, call_601881.base,
-                         call_601881.route, valid.getOrDefault("path"))
-  result = hook(call_601881, url, valid)
+  let url = call_603883.url(scheme.get, call_603883.host, call_603883.base,
+                         call_603883.route, valid.getOrDefault("path"))
+  result = hook(call_603883, url, valid)
 
-proc call*(call_601882: Call_PutBucketNotification_601873; notification: bool;
+proc call*(call_603884: Call_PutBucketNotification_603875; notification: bool;
           Bucket: string; body: JsonNode): Recallable =
   ## putBucketNotification
   ##  No longer used, see the PutBucketNotificationConfiguration operation.
@@ -7151,23 +7151,23 @@ proc call*(call_601882: Call_PutBucketNotification_601873; notification: bool;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601883 = newJObject()
-  var query_601884 = newJObject()
-  var body_601885 = newJObject()
-  add(query_601884, "notification", newJBool(notification))
-  add(path_601883, "Bucket", newJString(Bucket))
+  var path_603885 = newJObject()
+  var query_603886 = newJObject()
+  var body_603887 = newJObject()
+  add(query_603886, "notification", newJBool(notification))
+  add(path_603885, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601885 = body
-  result = call_601882.call(path_601883, query_601884, nil, nil, body_601885)
+    body_603887 = body
+  result = call_603884.call(path_603885, query_603886, nil, nil, body_603887)
 
-var putBucketNotification* = Call_PutBucketNotification_601873(
+var putBucketNotification* = Call_PutBucketNotification_603875(
     name: "putBucketNotification", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#notification&deprecated!",
-    validator: validate_PutBucketNotification_601874, base: "/",
-    url: url_PutBucketNotification_601875, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutBucketNotification_603876, base: "/",
+    url: url_PutBucketNotification_603877, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketNotification_601863 = ref object of OpenApiRestCall_600426
-proc url_GetBucketNotification_601865(protocol: Scheme; host: string; base: string;
+  Call_GetBucketNotification_603865 = ref object of OpenApiRestCall_602433
+proc url_GetBucketNotification_603867(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7178,9 +7178,9 @@ proc url_GetBucketNotification_601865(protocol: Scheme; host: string; base: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketNotification_601864(path: JsonNode; query: JsonNode;
+proc validate_GetBucketNotification_603866(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ##  No longer used, see the GetBucketNotificationConfiguration operation.
   ## 
@@ -7192,50 +7192,50 @@ proc validate_GetBucketNotification_601864(path: JsonNode; query: JsonNode;
   ##         : Name of the bucket to get the notification configuration for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601866 = path.getOrDefault("Bucket")
-  valid_601866 = validateParameter(valid_601866, JString, required = true,
+  var valid_603868 = path.getOrDefault("Bucket")
+  valid_603868 = validateParameter(valid_603868, JString, required = true,
                                  default = nil)
-  if valid_601866 != nil:
-    section.add "Bucket", valid_601866
+  if valid_603868 != nil:
+    section.add "Bucket", valid_603868
   result.add "path", section
   ## parameters in `query` object:
   ##   notification: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `notification` field"
-  var valid_601867 = query.getOrDefault("notification")
-  valid_601867 = validateParameter(valid_601867, JBool, required = true, default = nil)
-  if valid_601867 != nil:
-    section.add "notification", valid_601867
+  var valid_603869 = query.getOrDefault("notification")
+  valid_603869 = validateParameter(valid_603869, JBool, required = true, default = nil)
+  if valid_603869 != nil:
+    section.add "notification", valid_603869
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601868 = header.getOrDefault("x-amz-security-token")
-  valid_601868 = validateParameter(valid_601868, JString, required = false,
+  var valid_603870 = header.getOrDefault("x-amz-security-token")
+  valid_603870 = validateParameter(valid_603870, JString, required = false,
                                  default = nil)
-  if valid_601868 != nil:
-    section.add "x-amz-security-token", valid_601868
+  if valid_603870 != nil:
+    section.add "x-amz-security-token", valid_603870
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601869: Call_GetBucketNotification_601863; path: JsonNode;
+proc call*(call_603871: Call_GetBucketNotification_603865; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  No longer used, see the GetBucketNotificationConfiguration operation.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETnotification.html
-  let valid = call_601869.validator(path, query, header, formData, body)
-  let scheme = call_601869.pickScheme
+  let valid = call_603871.validator(path, query, header, formData, body)
+  let scheme = call_603871.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601869.url(scheme.get, call_601869.host, call_601869.base,
-                         call_601869.route, valid.getOrDefault("path"))
-  result = hook(call_601869, url, valid)
+  let url = call_603871.url(scheme.get, call_603871.host, call_603871.base,
+                         call_603871.route, valid.getOrDefault("path"))
+  result = hook(call_603871, url, valid)
 
-proc call*(call_601870: Call_GetBucketNotification_601863; notification: bool;
+proc call*(call_603872: Call_GetBucketNotification_603865; notification: bool;
           Bucket: string): Recallable =
   ## getBucketNotification
   ##  No longer used, see the GetBucketNotificationConfiguration operation.
@@ -7243,20 +7243,20 @@ proc call*(call_601870: Call_GetBucketNotification_601863; notification: bool;
   ##   notification: bool (required)
   ##   Bucket: string (required)
   ##         : Name of the bucket to get the notification configuration for.
-  var path_601871 = newJObject()
-  var query_601872 = newJObject()
-  add(query_601872, "notification", newJBool(notification))
-  add(path_601871, "Bucket", newJString(Bucket))
-  result = call_601870.call(path_601871, query_601872, nil, nil, nil)
+  var path_603873 = newJObject()
+  var query_603874 = newJObject()
+  add(query_603874, "notification", newJBool(notification))
+  add(path_603873, "Bucket", newJString(Bucket))
+  result = call_603872.call(path_603873, query_603874, nil, nil, nil)
 
-var getBucketNotification* = Call_GetBucketNotification_601863(
+var getBucketNotification* = Call_GetBucketNotification_603865(
     name: "getBucketNotification", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#notification&deprecated!",
-    validator: validate_GetBucketNotification_601864, base: "/",
-    url: url_GetBucketNotification_601865, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketNotification_603866, base: "/",
+    url: url_GetBucketNotification_603867, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketPolicyStatus_601886 = ref object of OpenApiRestCall_600426
-proc url_GetBucketPolicyStatus_601888(protocol: Scheme; host: string; base: string;
+  Call_GetBucketPolicyStatus_603888 = ref object of OpenApiRestCall_602433
+proc url_GetBucketPolicyStatus_603890(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7267,9 +7267,9 @@ proc url_GetBucketPolicyStatus_601888(protocol: Scheme; host: string; base: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketPolicyStatus_601887(path: JsonNode; query: JsonNode;
+proc validate_GetBucketPolicyStatus_603889(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the policy status for an Amazon S3 bucket, indicating whether the bucket is public.
   ## 
@@ -7280,69 +7280,69 @@ proc validate_GetBucketPolicyStatus_601887(path: JsonNode; query: JsonNode;
   ##         : The name of the Amazon S3 bucket whose policy status you want to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601889 = path.getOrDefault("Bucket")
-  valid_601889 = validateParameter(valid_601889, JString, required = true,
+  var valid_603891 = path.getOrDefault("Bucket")
+  valid_603891 = validateParameter(valid_603891, JString, required = true,
                                  default = nil)
-  if valid_601889 != nil:
-    section.add "Bucket", valid_601889
+  if valid_603891 != nil:
+    section.add "Bucket", valid_603891
   result.add "path", section
   ## parameters in `query` object:
   ##   policyStatus: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `policyStatus` field"
-  var valid_601890 = query.getOrDefault("policyStatus")
-  valid_601890 = validateParameter(valid_601890, JBool, required = true, default = nil)
-  if valid_601890 != nil:
-    section.add "policyStatus", valid_601890
+  var valid_603892 = query.getOrDefault("policyStatus")
+  valid_603892 = validateParameter(valid_603892, JBool, required = true, default = nil)
+  if valid_603892 != nil:
+    section.add "policyStatus", valid_603892
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601891 = header.getOrDefault("x-amz-security-token")
-  valid_601891 = validateParameter(valid_601891, JString, required = false,
+  var valid_603893 = header.getOrDefault("x-amz-security-token")
+  valid_603893 = validateParameter(valid_603893, JString, required = false,
                                  default = nil)
-  if valid_601891 != nil:
-    section.add "x-amz-security-token", valid_601891
+  if valid_603893 != nil:
+    section.add "x-amz-security-token", valid_603893
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601892: Call_GetBucketPolicyStatus_601886; path: JsonNode;
+proc call*(call_603894: Call_GetBucketPolicyStatus_603888; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the policy status for an Amazon S3 bucket, indicating whether the bucket is public.
   ## 
-  let valid = call_601892.validator(path, query, header, formData, body)
-  let scheme = call_601892.pickScheme
+  let valid = call_603894.validator(path, query, header, formData, body)
+  let scheme = call_603894.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601892.url(scheme.get, call_601892.host, call_601892.base,
-                         call_601892.route, valid.getOrDefault("path"))
-  result = hook(call_601892, url, valid)
+  let url = call_603894.url(scheme.get, call_603894.host, call_603894.base,
+                         call_603894.route, valid.getOrDefault("path"))
+  result = hook(call_603894, url, valid)
 
-proc call*(call_601893: Call_GetBucketPolicyStatus_601886; policyStatus: bool;
+proc call*(call_603895: Call_GetBucketPolicyStatus_603888; policyStatus: bool;
           Bucket: string): Recallable =
   ## getBucketPolicyStatus
   ## Retrieves the policy status for an Amazon S3 bucket, indicating whether the bucket is public.
   ##   policyStatus: bool (required)
   ##   Bucket: string (required)
   ##         : The name of the Amazon S3 bucket whose policy status you want to retrieve.
-  var path_601894 = newJObject()
-  var query_601895 = newJObject()
-  add(query_601895, "policyStatus", newJBool(policyStatus))
-  add(path_601894, "Bucket", newJString(Bucket))
-  result = call_601893.call(path_601894, query_601895, nil, nil, nil)
+  var path_603896 = newJObject()
+  var query_603897 = newJObject()
+  add(query_603897, "policyStatus", newJBool(policyStatus))
+  add(path_603896, "Bucket", newJString(Bucket))
+  result = call_603895.call(path_603896, query_603897, nil, nil, nil)
 
-var getBucketPolicyStatus* = Call_GetBucketPolicyStatus_601886(
+var getBucketPolicyStatus* = Call_GetBucketPolicyStatus_603888(
     name: "getBucketPolicyStatus", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#policyStatus",
-    validator: validate_GetBucketPolicyStatus_601887, base: "/",
-    url: url_GetBucketPolicyStatus_601888, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketPolicyStatus_603889, base: "/",
+    url: url_GetBucketPolicyStatus_603890, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketRequestPayment_601906 = ref object of OpenApiRestCall_600426
-proc url_PutBucketRequestPayment_601908(protocol: Scheme; host: string; base: string;
+  Call_PutBucketRequestPayment_603908 = ref object of OpenApiRestCall_602433
+proc url_PutBucketRequestPayment_603910(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7353,9 +7353,9 @@ proc url_PutBucketRequestPayment_601908(protocol: Scheme; host: string; base: st
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketRequestPayment_601907(path: JsonNode; query: JsonNode;
+proc validate_PutBucketRequestPayment_603909(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Sets the request payment configuration for a bucket. By default, the bucket owner pays for downloads from the bucket. This configuration parameter enables the bucket owner (only) to specify that the person requesting the download will be charged for the download. Documentation on requester pays buckets can be found at http://docs.aws.amazon.com/AmazonS3/latest/dev/RequesterPaysBuckets.html
   ## 
@@ -7367,37 +7367,37 @@ proc validate_PutBucketRequestPayment_601907(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601909 = path.getOrDefault("Bucket")
-  valid_601909 = validateParameter(valid_601909, JString, required = true,
+  var valid_603911 = path.getOrDefault("Bucket")
+  valid_603911 = validateParameter(valid_603911, JString, required = true,
                                  default = nil)
-  if valid_601909 != nil:
-    section.add "Bucket", valid_601909
+  if valid_603911 != nil:
+    section.add "Bucket", valid_603911
   result.add "path", section
   ## parameters in `query` object:
   ##   requestPayment: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `requestPayment` field"
-  var valid_601910 = query.getOrDefault("requestPayment")
-  valid_601910 = validateParameter(valid_601910, JBool, required = true, default = nil)
-  if valid_601910 != nil:
-    section.add "requestPayment", valid_601910
+  var valid_603912 = query.getOrDefault("requestPayment")
+  valid_603912 = validateParameter(valid_603912, JBool, required = true, default = nil)
+  if valid_603912 != nil:
+    section.add "requestPayment", valid_603912
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   ##   Content-MD5: JString
   ##              : <p/>
   section = newJObject()
-  var valid_601911 = header.getOrDefault("x-amz-security-token")
-  valid_601911 = validateParameter(valid_601911, JString, required = false,
+  var valid_603913 = header.getOrDefault("x-amz-security-token")
+  valid_603913 = validateParameter(valid_603913, JString, required = false,
                                  default = nil)
-  if valid_601911 != nil:
-    section.add "x-amz-security-token", valid_601911
-  var valid_601912 = header.getOrDefault("Content-MD5")
-  valid_601912 = validateParameter(valid_601912, JString, required = false,
+  if valid_603913 != nil:
+    section.add "x-amz-security-token", valid_603913
+  var valid_603914 = header.getOrDefault("Content-MD5")
+  valid_603914 = validateParameter(valid_603914, JString, required = false,
                                  default = nil)
-  if valid_601912 != nil:
-    section.add "Content-MD5", valid_601912
+  if valid_603914 != nil:
+    section.add "Content-MD5", valid_603914
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7408,20 +7408,20 @@ proc validate_PutBucketRequestPayment_601907(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601914: Call_PutBucketRequestPayment_601906; path: JsonNode;
+proc call*(call_603916: Call_PutBucketRequestPayment_603908; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets the request payment configuration for a bucket. By default, the bucket owner pays for downloads from the bucket. This configuration parameter enables the bucket owner (only) to specify that the person requesting the download will be charged for the download. Documentation on requester pays buckets can be found at http://docs.aws.amazon.com/AmazonS3/latest/dev/RequesterPaysBuckets.html
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTrequestPaymentPUT.html
-  let valid = call_601914.validator(path, query, header, formData, body)
-  let scheme = call_601914.pickScheme
+  let valid = call_603916.validator(path, query, header, formData, body)
+  let scheme = call_603916.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601914.url(scheme.get, call_601914.host, call_601914.base,
-                         call_601914.route, valid.getOrDefault("path"))
-  result = hook(call_601914, url, valid)
+  let url = call_603916.url(scheme.get, call_603916.host, call_603916.base,
+                         call_603916.route, valid.getOrDefault("path"))
+  result = hook(call_603916, url, valid)
 
-proc call*(call_601915: Call_PutBucketRequestPayment_601906; requestPayment: bool;
+proc call*(call_603917: Call_PutBucketRequestPayment_603908; requestPayment: bool;
           Bucket: string; body: JsonNode): Recallable =
   ## putBucketRequestPayment
   ## Sets the request payment configuration for a bucket. By default, the bucket owner pays for downloads from the bucket. This configuration parameter enables the bucket owner (only) to specify that the person requesting the download will be charged for the download. Documentation on requester pays buckets can be found at http://docs.aws.amazon.com/AmazonS3/latest/dev/RequesterPaysBuckets.html
@@ -7430,23 +7430,23 @@ proc call*(call_601915: Call_PutBucketRequestPayment_601906; requestPayment: boo
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601916 = newJObject()
-  var query_601917 = newJObject()
-  var body_601918 = newJObject()
-  add(query_601917, "requestPayment", newJBool(requestPayment))
-  add(path_601916, "Bucket", newJString(Bucket))
+  var path_603918 = newJObject()
+  var query_603919 = newJObject()
+  var body_603920 = newJObject()
+  add(query_603919, "requestPayment", newJBool(requestPayment))
+  add(path_603918, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601918 = body
-  result = call_601915.call(path_601916, query_601917, nil, nil, body_601918)
+    body_603920 = body
+  result = call_603917.call(path_603918, query_603919, nil, nil, body_603920)
 
-var putBucketRequestPayment* = Call_PutBucketRequestPayment_601906(
+var putBucketRequestPayment* = Call_PutBucketRequestPayment_603908(
     name: "putBucketRequestPayment", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#requestPayment",
-    validator: validate_PutBucketRequestPayment_601907, base: "/",
-    url: url_PutBucketRequestPayment_601908, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutBucketRequestPayment_603909, base: "/",
+    url: url_PutBucketRequestPayment_603910, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketRequestPayment_601896 = ref object of OpenApiRestCall_600426
-proc url_GetBucketRequestPayment_601898(protocol: Scheme; host: string; base: string;
+  Call_GetBucketRequestPayment_603898 = ref object of OpenApiRestCall_602433
+proc url_GetBucketRequestPayment_603900(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7457,9 +7457,9 @@ proc url_GetBucketRequestPayment_601898(protocol: Scheme; host: string; base: st
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketRequestPayment_601897(path: JsonNode; query: JsonNode;
+proc validate_GetBucketRequestPayment_603899(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the request payment configuration of a bucket.
   ## 
@@ -7471,50 +7471,50 @@ proc validate_GetBucketRequestPayment_601897(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601899 = path.getOrDefault("Bucket")
-  valid_601899 = validateParameter(valid_601899, JString, required = true,
+  var valid_603901 = path.getOrDefault("Bucket")
+  valid_603901 = validateParameter(valid_603901, JString, required = true,
                                  default = nil)
-  if valid_601899 != nil:
-    section.add "Bucket", valid_601899
+  if valid_603901 != nil:
+    section.add "Bucket", valid_603901
   result.add "path", section
   ## parameters in `query` object:
   ##   requestPayment: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `requestPayment` field"
-  var valid_601900 = query.getOrDefault("requestPayment")
-  valid_601900 = validateParameter(valid_601900, JBool, required = true, default = nil)
-  if valid_601900 != nil:
-    section.add "requestPayment", valid_601900
+  var valid_603902 = query.getOrDefault("requestPayment")
+  valid_603902 = validateParameter(valid_603902, JBool, required = true, default = nil)
+  if valid_603902 != nil:
+    section.add "requestPayment", valid_603902
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601901 = header.getOrDefault("x-amz-security-token")
-  valid_601901 = validateParameter(valid_601901, JString, required = false,
+  var valid_603903 = header.getOrDefault("x-amz-security-token")
+  valid_603903 = validateParameter(valid_603903, JString, required = false,
                                  default = nil)
-  if valid_601901 != nil:
-    section.add "x-amz-security-token", valid_601901
+  if valid_603903 != nil:
+    section.add "x-amz-security-token", valid_603903
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601902: Call_GetBucketRequestPayment_601896; path: JsonNode;
+proc call*(call_603904: Call_GetBucketRequestPayment_603898; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the request payment configuration of a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTrequestPaymentGET.html
-  let valid = call_601902.validator(path, query, header, formData, body)
-  let scheme = call_601902.pickScheme
+  let valid = call_603904.validator(path, query, header, formData, body)
+  let scheme = call_603904.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601902.url(scheme.get, call_601902.host, call_601902.base,
-                         call_601902.route, valid.getOrDefault("path"))
-  result = hook(call_601902, url, valid)
+  let url = call_603904.url(scheme.get, call_603904.host, call_603904.base,
+                         call_603904.route, valid.getOrDefault("path"))
+  result = hook(call_603904, url, valid)
 
-proc call*(call_601903: Call_GetBucketRequestPayment_601896; requestPayment: bool;
+proc call*(call_603905: Call_GetBucketRequestPayment_603898; requestPayment: bool;
           Bucket: string): Recallable =
   ## getBucketRequestPayment
   ## Returns the request payment configuration of a bucket.
@@ -7522,20 +7522,20 @@ proc call*(call_601903: Call_GetBucketRequestPayment_601896; requestPayment: boo
   ##   requestPayment: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601904 = newJObject()
-  var query_601905 = newJObject()
-  add(query_601905, "requestPayment", newJBool(requestPayment))
-  add(path_601904, "Bucket", newJString(Bucket))
-  result = call_601903.call(path_601904, query_601905, nil, nil, nil)
+  var path_603906 = newJObject()
+  var query_603907 = newJObject()
+  add(query_603907, "requestPayment", newJBool(requestPayment))
+  add(path_603906, "Bucket", newJString(Bucket))
+  result = call_603905.call(path_603906, query_603907, nil, nil, nil)
 
-var getBucketRequestPayment* = Call_GetBucketRequestPayment_601896(
+var getBucketRequestPayment* = Call_GetBucketRequestPayment_603898(
     name: "getBucketRequestPayment", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#requestPayment",
-    validator: validate_GetBucketRequestPayment_601897, base: "/",
-    url: url_GetBucketRequestPayment_601898, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBucketRequestPayment_603899, base: "/",
+    url: url_GetBucketRequestPayment_603900, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBucketVersioning_601929 = ref object of OpenApiRestCall_600426
-proc url_PutBucketVersioning_601931(protocol: Scheme; host: string; base: string;
+  Call_PutBucketVersioning_603931 = ref object of OpenApiRestCall_602433
+proc url_PutBucketVersioning_603933(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7546,9 +7546,9 @@ proc url_PutBucketVersioning_601931(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutBucketVersioning_601930(path: JsonNode; query: JsonNode;
+proc validate_PutBucketVersioning_603932(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Sets the versioning state of an existing bucket. To set the versioning state, you must be the bucket owner.
@@ -7561,21 +7561,21 @@ proc validate_PutBucketVersioning_601930(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601932 = path.getOrDefault("Bucket")
-  valid_601932 = validateParameter(valid_601932, JString, required = true,
+  var valid_603934 = path.getOrDefault("Bucket")
+  valid_603934 = validateParameter(valid_603934, JString, required = true,
                                  default = nil)
-  if valid_601932 != nil:
-    section.add "Bucket", valid_601932
+  if valid_603934 != nil:
+    section.add "Bucket", valid_603934
   result.add "path", section
   ## parameters in `query` object:
   ##   versioning: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `versioning` field"
-  var valid_601933 = query.getOrDefault("versioning")
-  valid_601933 = validateParameter(valid_601933, JBool, required = true, default = nil)
-  if valid_601933 != nil:
-    section.add "versioning", valid_601933
+  var valid_603935 = query.getOrDefault("versioning")
+  valid_603935 = validateParameter(valid_603935, JBool, required = true, default = nil)
+  if valid_603935 != nil:
+    section.add "versioning", valid_603935
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -7584,21 +7584,21 @@ proc validate_PutBucketVersioning_601930(path: JsonNode; query: JsonNode;
   ##   x-amz-mfa: JString
   ##            : The concatenation of the authentication device's serial number, a space, and the value that is displayed on your authentication device.
   section = newJObject()
-  var valid_601934 = header.getOrDefault("x-amz-security-token")
-  valid_601934 = validateParameter(valid_601934, JString, required = false,
+  var valid_603936 = header.getOrDefault("x-amz-security-token")
+  valid_603936 = validateParameter(valid_603936, JString, required = false,
                                  default = nil)
-  if valid_601934 != nil:
-    section.add "x-amz-security-token", valid_601934
-  var valid_601935 = header.getOrDefault("Content-MD5")
-  valid_601935 = validateParameter(valid_601935, JString, required = false,
+  if valid_603936 != nil:
+    section.add "x-amz-security-token", valid_603936
+  var valid_603937 = header.getOrDefault("Content-MD5")
+  valid_603937 = validateParameter(valid_603937, JString, required = false,
                                  default = nil)
-  if valid_601935 != nil:
-    section.add "Content-MD5", valid_601935
-  var valid_601936 = header.getOrDefault("x-amz-mfa")
-  valid_601936 = validateParameter(valid_601936, JString, required = false,
+  if valid_603937 != nil:
+    section.add "Content-MD5", valid_603937
+  var valid_603938 = header.getOrDefault("x-amz-mfa")
+  valid_603938 = validateParameter(valid_603938, JString, required = false,
                                  default = nil)
-  if valid_601936 != nil:
-    section.add "x-amz-mfa", valid_601936
+  if valid_603938 != nil:
+    section.add "x-amz-mfa", valid_603938
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7609,20 +7609,20 @@ proc validate_PutBucketVersioning_601930(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601938: Call_PutBucketVersioning_601929; path: JsonNode;
+proc call*(call_603940: Call_PutBucketVersioning_603931; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets the versioning state of an existing bucket. To set the versioning state, you must be the bucket owner.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketPUTVersioningStatus.html
-  let valid = call_601938.validator(path, query, header, formData, body)
-  let scheme = call_601938.pickScheme
+  let valid = call_603940.validator(path, query, header, formData, body)
+  let scheme = call_603940.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601938.url(scheme.get, call_601938.host, call_601938.base,
-                         call_601938.route, valid.getOrDefault("path"))
-  result = hook(call_601938, url, valid)
+  let url = call_603940.url(scheme.get, call_603940.host, call_603940.base,
+                         call_603940.route, valid.getOrDefault("path"))
+  result = hook(call_603940, url, valid)
 
-proc call*(call_601939: Call_PutBucketVersioning_601929; Bucket: string;
+proc call*(call_603941: Call_PutBucketVersioning_603931; Bucket: string;
           body: JsonNode; versioning: bool): Recallable =
   ## putBucketVersioning
   ## Sets the versioning state of an existing bucket. To set the versioning state, you must be the bucket owner.
@@ -7631,23 +7631,23 @@ proc call*(call_601939: Call_PutBucketVersioning_601929; Bucket: string;
   ##         : <p/>
   ##   body: JObject (required)
   ##   versioning: bool (required)
-  var path_601940 = newJObject()
-  var query_601941 = newJObject()
-  var body_601942 = newJObject()
-  add(path_601940, "Bucket", newJString(Bucket))
+  var path_603942 = newJObject()
+  var query_603943 = newJObject()
+  var body_603944 = newJObject()
+  add(path_603942, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601942 = body
-  add(query_601941, "versioning", newJBool(versioning))
-  result = call_601939.call(path_601940, query_601941, nil, nil, body_601942)
+    body_603944 = body
+  add(query_603943, "versioning", newJBool(versioning))
+  result = call_603941.call(path_603942, query_603943, nil, nil, body_603944)
 
-var putBucketVersioning* = Call_PutBucketVersioning_601929(
+var putBucketVersioning* = Call_PutBucketVersioning_603931(
     name: "putBucketVersioning", meth: HttpMethod.HttpPut, host: "s3.amazonaws.com",
-    route: "/{Bucket}#versioning", validator: validate_PutBucketVersioning_601930,
-    base: "/", url: url_PutBucketVersioning_601931,
+    route: "/{Bucket}#versioning", validator: validate_PutBucketVersioning_603932,
+    base: "/", url: url_PutBucketVersioning_603933,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBucketVersioning_601919 = ref object of OpenApiRestCall_600426
-proc url_GetBucketVersioning_601921(protocol: Scheme; host: string; base: string;
+  Call_GetBucketVersioning_603921 = ref object of OpenApiRestCall_602433
+proc url_GetBucketVersioning_603923(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7658,9 +7658,9 @@ proc url_GetBucketVersioning_601921(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetBucketVersioning_601920(path: JsonNode; query: JsonNode;
+proc validate_GetBucketVersioning_603922(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns the versioning state of a bucket.
@@ -7673,50 +7673,50 @@ proc validate_GetBucketVersioning_601920(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_601922 = path.getOrDefault("Bucket")
-  valid_601922 = validateParameter(valid_601922, JString, required = true,
+  var valid_603924 = path.getOrDefault("Bucket")
+  valid_603924 = validateParameter(valid_603924, JString, required = true,
                                  default = nil)
-  if valid_601922 != nil:
-    section.add "Bucket", valid_601922
+  if valid_603924 != nil:
+    section.add "Bucket", valid_603924
   result.add "path", section
   ## parameters in `query` object:
   ##   versioning: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `versioning` field"
-  var valid_601923 = query.getOrDefault("versioning")
-  valid_601923 = validateParameter(valid_601923, JBool, required = true, default = nil)
-  if valid_601923 != nil:
-    section.add "versioning", valid_601923
+  var valid_603925 = query.getOrDefault("versioning")
+  valid_603925 = validateParameter(valid_603925, JBool, required = true, default = nil)
+  if valid_603925 != nil:
+    section.add "versioning", valid_603925
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_601924 = header.getOrDefault("x-amz-security-token")
-  valid_601924 = validateParameter(valid_601924, JString, required = false,
+  var valid_603926 = header.getOrDefault("x-amz-security-token")
+  valid_603926 = validateParameter(valid_603926, JString, required = false,
                                  default = nil)
-  if valid_601924 != nil:
-    section.add "x-amz-security-token", valid_601924
+  if valid_603926 != nil:
+    section.add "x-amz-security-token", valid_603926
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601925: Call_GetBucketVersioning_601919; path: JsonNode;
+proc call*(call_603927: Call_GetBucketVersioning_603921; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the versioning state of a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETversioningStatus.html
-  let valid = call_601925.validator(path, query, header, formData, body)
-  let scheme = call_601925.pickScheme
+  let valid = call_603927.validator(path, query, header, formData, body)
+  let scheme = call_603927.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601925.url(scheme.get, call_601925.host, call_601925.base,
-                         call_601925.route, valid.getOrDefault("path"))
-  result = hook(call_601925, url, valid)
+  let url = call_603927.url(scheme.get, call_603927.host, call_603927.base,
+                         call_603927.route, valid.getOrDefault("path"))
+  result = hook(call_603927, url, valid)
 
-proc call*(call_601926: Call_GetBucketVersioning_601919; Bucket: string;
+proc call*(call_603928: Call_GetBucketVersioning_603921; Bucket: string;
           versioning: bool): Recallable =
   ## getBucketVersioning
   ## Returns the versioning state of a bucket.
@@ -7724,20 +7724,20 @@ proc call*(call_601926: Call_GetBucketVersioning_601919; Bucket: string;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   versioning: bool (required)
-  var path_601927 = newJObject()
-  var query_601928 = newJObject()
-  add(path_601927, "Bucket", newJString(Bucket))
-  add(query_601928, "versioning", newJBool(versioning))
-  result = call_601926.call(path_601927, query_601928, nil, nil, nil)
+  var path_603929 = newJObject()
+  var query_603930 = newJObject()
+  add(path_603929, "Bucket", newJString(Bucket))
+  add(query_603930, "versioning", newJBool(versioning))
+  result = call_603928.call(path_603929, query_603930, nil, nil, nil)
 
-var getBucketVersioning* = Call_GetBucketVersioning_601919(
+var getBucketVersioning* = Call_GetBucketVersioning_603921(
     name: "getBucketVersioning", meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}#versioning", validator: validate_GetBucketVersioning_601920,
-    base: "/", url: url_GetBucketVersioning_601921,
+    route: "/{Bucket}#versioning", validator: validate_GetBucketVersioning_603922,
+    base: "/", url: url_GetBucketVersioning_603923,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutObjectAcl_601956 = ref object of OpenApiRestCall_600426
-proc url_PutObjectAcl_601958(protocol: Scheme; host: string; base: string;
+  Call_PutObjectAcl_603958 = ref object of OpenApiRestCall_602433
+proc url_PutObjectAcl_603960(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7751,9 +7751,9 @@ proc url_PutObjectAcl_601958(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutObjectAcl_601957(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutObjectAcl_603959(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## uses the acl subresource to set the access control list (ACL) permissions for an object that already exists in a bucket
   ## 
@@ -7767,32 +7767,32 @@ proc validate_PutObjectAcl_601957(path: JsonNode; query: JsonNode; header: JsonN
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601959 = path.getOrDefault("Key")
-  valid_601959 = validateParameter(valid_601959, JString, required = true,
+  var valid_603961 = path.getOrDefault("Key")
+  valid_603961 = validateParameter(valid_603961, JString, required = true,
                                  default = nil)
-  if valid_601959 != nil:
-    section.add "Key", valid_601959
-  var valid_601960 = path.getOrDefault("Bucket")
-  valid_601960 = validateParameter(valid_601960, JString, required = true,
+  if valid_603961 != nil:
+    section.add "Key", valid_603961
+  var valid_603962 = path.getOrDefault("Bucket")
+  valid_603962 = validateParameter(valid_603962, JString, required = true,
                                  default = nil)
-  if valid_601960 != nil:
-    section.add "Bucket", valid_601960
+  if valid_603962 != nil:
+    section.add "Bucket", valid_603962
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : VersionId used to reference a specific version of the object.
   ##   acl: JBool (required)
   section = newJObject()
-  var valid_601961 = query.getOrDefault("versionId")
-  valid_601961 = validateParameter(valid_601961, JString, required = false,
+  var valid_603963 = query.getOrDefault("versionId")
+  valid_603963 = validateParameter(valid_603963, JString, required = false,
                                  default = nil)
-  if valid_601961 != nil:
-    section.add "versionId", valid_601961
+  if valid_603963 != nil:
+    section.add "versionId", valid_603963
   assert query != nil, "query argument is necessary due to required `acl` field"
-  var valid_601962 = query.getOrDefault("acl")
-  valid_601962 = validateParameter(valid_601962, JBool, required = true, default = nil)
-  if valid_601962 != nil:
-    section.add "acl", valid_601962
+  var valid_603964 = query.getOrDefault("acl")
+  valid_603964 = validateParameter(valid_603964, JBool, required = true, default = nil)
+  if valid_603964 != nil:
+    section.add "acl", valid_603964
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -7814,51 +7814,51 @@ proc validate_PutObjectAcl_601957(path: JsonNode; query: JsonNode; header: JsonN
   ##   x-amz-grant-full-control: JString
   ##                           : Allows grantee the read, write, read ACP, and write ACP permissions on the bucket.
   section = newJObject()
-  var valid_601963 = header.getOrDefault("x-amz-security-token")
-  valid_601963 = validateParameter(valid_601963, JString, required = false,
+  var valid_603965 = header.getOrDefault("x-amz-security-token")
+  valid_603965 = validateParameter(valid_603965, JString, required = false,
                                  default = nil)
-  if valid_601963 != nil:
-    section.add "x-amz-security-token", valid_601963
-  var valid_601964 = header.getOrDefault("Content-MD5")
-  valid_601964 = validateParameter(valid_601964, JString, required = false,
+  if valid_603965 != nil:
+    section.add "x-amz-security-token", valid_603965
+  var valid_603966 = header.getOrDefault("Content-MD5")
+  valid_603966 = validateParameter(valid_603966, JString, required = false,
                                  default = nil)
-  if valid_601964 != nil:
-    section.add "Content-MD5", valid_601964
-  var valid_601965 = header.getOrDefault("x-amz-acl")
-  valid_601965 = validateParameter(valid_601965, JString, required = false,
+  if valid_603966 != nil:
+    section.add "Content-MD5", valid_603966
+  var valid_603967 = header.getOrDefault("x-amz-acl")
+  valid_603967 = validateParameter(valid_603967, JString, required = false,
                                  default = newJString("private"))
-  if valid_601965 != nil:
-    section.add "x-amz-acl", valid_601965
-  var valid_601966 = header.getOrDefault("x-amz-grant-read")
-  valid_601966 = validateParameter(valid_601966, JString, required = false,
+  if valid_603967 != nil:
+    section.add "x-amz-acl", valid_603967
+  var valid_603968 = header.getOrDefault("x-amz-grant-read")
+  valid_603968 = validateParameter(valid_603968, JString, required = false,
                                  default = nil)
-  if valid_601966 != nil:
-    section.add "x-amz-grant-read", valid_601966
-  var valid_601967 = header.getOrDefault("x-amz-grant-read-acp")
-  valid_601967 = validateParameter(valid_601967, JString, required = false,
+  if valid_603968 != nil:
+    section.add "x-amz-grant-read", valid_603968
+  var valid_603969 = header.getOrDefault("x-amz-grant-read-acp")
+  valid_603969 = validateParameter(valid_603969, JString, required = false,
                                  default = nil)
-  if valid_601967 != nil:
-    section.add "x-amz-grant-read-acp", valid_601967
-  var valid_601968 = header.getOrDefault("x-amz-grant-write")
-  valid_601968 = validateParameter(valid_601968, JString, required = false,
+  if valid_603969 != nil:
+    section.add "x-amz-grant-read-acp", valid_603969
+  var valid_603970 = header.getOrDefault("x-amz-grant-write")
+  valid_603970 = validateParameter(valid_603970, JString, required = false,
                                  default = nil)
-  if valid_601968 != nil:
-    section.add "x-amz-grant-write", valid_601968
-  var valid_601969 = header.getOrDefault("x-amz-grant-write-acp")
-  valid_601969 = validateParameter(valid_601969, JString, required = false,
+  if valid_603970 != nil:
+    section.add "x-amz-grant-write", valid_603970
+  var valid_603971 = header.getOrDefault("x-amz-grant-write-acp")
+  valid_603971 = validateParameter(valid_603971, JString, required = false,
                                  default = nil)
-  if valid_601969 != nil:
-    section.add "x-amz-grant-write-acp", valid_601969
-  var valid_601970 = header.getOrDefault("x-amz-request-payer")
-  valid_601970 = validateParameter(valid_601970, JString, required = false,
+  if valid_603971 != nil:
+    section.add "x-amz-grant-write-acp", valid_603971
+  var valid_603972 = header.getOrDefault("x-amz-request-payer")
+  valid_603972 = validateParameter(valid_603972, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601970 != nil:
-    section.add "x-amz-request-payer", valid_601970
-  var valid_601971 = header.getOrDefault("x-amz-grant-full-control")
-  valid_601971 = validateParameter(valid_601971, JString, required = false,
+  if valid_603972 != nil:
+    section.add "x-amz-request-payer", valid_603972
+  var valid_603973 = header.getOrDefault("x-amz-grant-full-control")
+  valid_603973 = validateParameter(valid_603973, JString, required = false,
                                  default = nil)
-  if valid_601971 != nil:
-    section.add "x-amz-grant-full-control", valid_601971
+  if valid_603973 != nil:
+    section.add "x-amz-grant-full-control", valid_603973
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7869,20 +7869,20 @@ proc validate_PutObjectAcl_601957(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601973: Call_PutObjectAcl_601956; path: JsonNode; query: JsonNode;
+proc call*(call_603975: Call_PutObjectAcl_603958; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## uses the acl subresource to set the access control list (ACL) permissions for an object that already exists in a bucket
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUTacl.html
-  let valid = call_601973.validator(path, query, header, formData, body)
-  let scheme = call_601973.pickScheme
+  let valid = call_603975.validator(path, query, header, formData, body)
+  let scheme = call_603975.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601973.url(scheme.get, call_601973.host, call_601973.base,
-                         call_601973.route, valid.getOrDefault("path"))
-  result = hook(call_601973, url, valid)
+  let url = call_603975.url(scheme.get, call_603975.host, call_603975.base,
+                         call_603975.route, valid.getOrDefault("path"))
+  result = hook(call_603975, url, valid)
 
-proc call*(call_601974: Call_PutObjectAcl_601956; Key: string; acl: bool;
+proc call*(call_603976: Call_PutObjectAcl_603958; Key: string; acl: bool;
           Bucket: string; body: JsonNode; versionId: string = ""): Recallable =
   ## putObjectAcl
   ## uses the acl subresource to set the access control list (ACL) permissions for an object that already exists in a bucket
@@ -7895,24 +7895,24 @@ proc call*(call_601974: Call_PutObjectAcl_601956; Key: string; acl: bool;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_601975 = newJObject()
-  var query_601976 = newJObject()
-  var body_601977 = newJObject()
-  add(query_601976, "versionId", newJString(versionId))
-  add(path_601975, "Key", newJString(Key))
-  add(query_601976, "acl", newJBool(acl))
-  add(path_601975, "Bucket", newJString(Bucket))
+  var path_603977 = newJObject()
+  var query_603978 = newJObject()
+  var body_603979 = newJObject()
+  add(query_603978, "versionId", newJString(versionId))
+  add(path_603977, "Key", newJString(Key))
+  add(query_603978, "acl", newJBool(acl))
+  add(path_603977, "Bucket", newJString(Bucket))
   if body != nil:
-    body_601977 = body
-  result = call_601974.call(path_601975, query_601976, nil, nil, body_601977)
+    body_603979 = body
+  result = call_603976.call(path_603977, query_603978, nil, nil, body_603979)
 
-var putObjectAcl* = Call_PutObjectAcl_601956(name: "putObjectAcl",
+var putObjectAcl* = Call_PutObjectAcl_603958(name: "putObjectAcl",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#acl", validator: validate_PutObjectAcl_601957,
-    base: "/", url: url_PutObjectAcl_601958, schemes: {Scheme.Https, Scheme.Http})
+    route: "/{Bucket}/{Key}#acl", validator: validate_PutObjectAcl_603959,
+    base: "/", url: url_PutObjectAcl_603960, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetObjectAcl_601943 = ref object of OpenApiRestCall_600426
-proc url_GetObjectAcl_601945(protocol: Scheme; host: string; base: string;
+  Call_GetObjectAcl_603945 = ref object of OpenApiRestCall_602433
+proc url_GetObjectAcl_603947(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -7926,9 +7926,9 @@ proc url_GetObjectAcl_601945(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetObjectAcl_601944(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetObjectAcl_603946(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the access control list (ACL) of an object.
   ## 
@@ -7942,32 +7942,32 @@ proc validate_GetObjectAcl_601944(path: JsonNode; query: JsonNode; header: JsonN
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601946 = path.getOrDefault("Key")
-  valid_601946 = validateParameter(valid_601946, JString, required = true,
+  var valid_603948 = path.getOrDefault("Key")
+  valid_603948 = validateParameter(valid_603948, JString, required = true,
                                  default = nil)
-  if valid_601946 != nil:
-    section.add "Key", valid_601946
-  var valid_601947 = path.getOrDefault("Bucket")
-  valid_601947 = validateParameter(valid_601947, JString, required = true,
+  if valid_603948 != nil:
+    section.add "Key", valid_603948
+  var valid_603949 = path.getOrDefault("Bucket")
+  valid_603949 = validateParameter(valid_603949, JString, required = true,
                                  default = nil)
-  if valid_601947 != nil:
-    section.add "Bucket", valid_601947
+  if valid_603949 != nil:
+    section.add "Bucket", valid_603949
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : VersionId used to reference a specific version of the object.
   ##   acl: JBool (required)
   section = newJObject()
-  var valid_601948 = query.getOrDefault("versionId")
-  valid_601948 = validateParameter(valid_601948, JString, required = false,
+  var valid_603950 = query.getOrDefault("versionId")
+  valid_603950 = validateParameter(valid_603950, JString, required = false,
                                  default = nil)
-  if valid_601948 != nil:
-    section.add "versionId", valid_601948
+  if valid_603950 != nil:
+    section.add "versionId", valid_603950
   assert query != nil, "query argument is necessary due to required `acl` field"
-  var valid_601949 = query.getOrDefault("acl")
-  valid_601949 = validateParameter(valid_601949, JBool, required = true, default = nil)
-  if valid_601949 != nil:
-    section.add "acl", valid_601949
+  var valid_603951 = query.getOrDefault("acl")
+  valid_603951 = validateParameter(valid_603951, JBool, required = true, default = nil)
+  if valid_603951 != nil:
+    section.add "acl", valid_603951
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -7975,36 +7975,36 @@ proc validate_GetObjectAcl_601944(path: JsonNode; query: JsonNode; header: JsonN
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_601950 = header.getOrDefault("x-amz-security-token")
-  valid_601950 = validateParameter(valid_601950, JString, required = false,
+  var valid_603952 = header.getOrDefault("x-amz-security-token")
+  valid_603952 = validateParameter(valid_603952, JString, required = false,
                                  default = nil)
-  if valid_601950 != nil:
-    section.add "x-amz-security-token", valid_601950
-  var valid_601951 = header.getOrDefault("x-amz-request-payer")
-  valid_601951 = validateParameter(valid_601951, JString, required = false,
+  if valid_603952 != nil:
+    section.add "x-amz-security-token", valid_603952
+  var valid_603953 = header.getOrDefault("x-amz-request-payer")
+  valid_603953 = validateParameter(valid_603953, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601951 != nil:
-    section.add "x-amz-request-payer", valid_601951
+  if valid_603953 != nil:
+    section.add "x-amz-request-payer", valid_603953
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601952: Call_GetObjectAcl_601943; path: JsonNode; query: JsonNode;
+proc call*(call_603954: Call_GetObjectAcl_603945; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the access control list (ACL) of an object.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGETacl.html
-  let valid = call_601952.validator(path, query, header, formData, body)
-  let scheme = call_601952.pickScheme
+  let valid = call_603954.validator(path, query, header, formData, body)
+  let scheme = call_603954.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601952.url(scheme.get, call_601952.host, call_601952.base,
-                         call_601952.route, valid.getOrDefault("path"))
-  result = hook(call_601952, url, valid)
+  let url = call_603954.url(scheme.get, call_603954.host, call_603954.base,
+                         call_603954.route, valid.getOrDefault("path"))
+  result = hook(call_603954, url, valid)
 
-proc call*(call_601953: Call_GetObjectAcl_601943; Key: string; acl: bool;
+proc call*(call_603955: Call_GetObjectAcl_603945; Key: string; acl: bool;
           Bucket: string; versionId: string = ""): Recallable =
   ## getObjectAcl
   ## Returns the access control list (ACL) of an object.
@@ -8016,21 +8016,21 @@ proc call*(call_601953: Call_GetObjectAcl_601943; Key: string; acl: bool;
   ##   acl: bool (required)
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_601954 = newJObject()
-  var query_601955 = newJObject()
-  add(query_601955, "versionId", newJString(versionId))
-  add(path_601954, "Key", newJString(Key))
-  add(query_601955, "acl", newJBool(acl))
-  add(path_601954, "Bucket", newJString(Bucket))
-  result = call_601953.call(path_601954, query_601955, nil, nil, nil)
+  var path_603956 = newJObject()
+  var query_603957 = newJObject()
+  add(query_603957, "versionId", newJString(versionId))
+  add(path_603956, "Key", newJString(Key))
+  add(query_603957, "acl", newJBool(acl))
+  add(path_603956, "Bucket", newJString(Bucket))
+  result = call_603955.call(path_603956, query_603957, nil, nil, nil)
 
-var getObjectAcl* = Call_GetObjectAcl_601943(name: "getObjectAcl",
+var getObjectAcl* = Call_GetObjectAcl_603945(name: "getObjectAcl",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#acl", validator: validate_GetObjectAcl_601944,
-    base: "/", url: url_GetObjectAcl_601945, schemes: {Scheme.Https, Scheme.Http})
+    route: "/{Bucket}/{Key}#acl", validator: validate_GetObjectAcl_603946,
+    base: "/", url: url_GetObjectAcl_603947, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutObjectLegalHold_601991 = ref object of OpenApiRestCall_600426
-proc url_PutObjectLegalHold_601993(protocol: Scheme; host: string; base: string;
+  Call_PutObjectLegalHold_603993 = ref object of OpenApiRestCall_602433
+proc url_PutObjectLegalHold_603995(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8044,9 +8044,9 @@ proc url_PutObjectLegalHold_601993(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutObjectLegalHold_601992(path: JsonNode; query: JsonNode;
+proc validate_PutObjectLegalHold_603994(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Applies a Legal Hold configuration to the specified object.
@@ -8060,33 +8060,33 @@ proc validate_PutObjectLegalHold_601992(path: JsonNode; query: JsonNode;
   ##         : The bucket containing the object that you want to place a Legal Hold on.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601994 = path.getOrDefault("Key")
-  valid_601994 = validateParameter(valid_601994, JString, required = true,
+  var valid_603996 = path.getOrDefault("Key")
+  valid_603996 = validateParameter(valid_603996, JString, required = true,
                                  default = nil)
-  if valid_601994 != nil:
-    section.add "Key", valid_601994
-  var valid_601995 = path.getOrDefault("Bucket")
-  valid_601995 = validateParameter(valid_601995, JString, required = true,
+  if valid_603996 != nil:
+    section.add "Key", valid_603996
+  var valid_603997 = path.getOrDefault("Bucket")
+  valid_603997 = validateParameter(valid_603997, JString, required = true,
                                  default = nil)
-  if valid_601995 != nil:
-    section.add "Bucket", valid_601995
+  if valid_603997 != nil:
+    section.add "Bucket", valid_603997
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : The version ID of the object that you want to place a Legal Hold on.
   ##   legal-hold: JBool (required)
   section = newJObject()
-  var valid_601996 = query.getOrDefault("versionId")
-  valid_601996 = validateParameter(valid_601996, JString, required = false,
+  var valid_603998 = query.getOrDefault("versionId")
+  valid_603998 = validateParameter(valid_603998, JString, required = false,
                                  default = nil)
-  if valid_601996 != nil:
-    section.add "versionId", valid_601996
+  if valid_603998 != nil:
+    section.add "versionId", valid_603998
   assert query != nil,
         "query argument is necessary due to required `legal-hold` field"
-  var valid_601997 = query.getOrDefault("legal-hold")
-  valid_601997 = validateParameter(valid_601997, JBool, required = true, default = nil)
-  if valid_601997 != nil:
-    section.add "legal-hold", valid_601997
+  var valid_603999 = query.getOrDefault("legal-hold")
+  valid_603999 = validateParameter(valid_603999, JBool, required = true, default = nil)
+  if valid_603999 != nil:
+    section.add "legal-hold", valid_603999
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -8096,21 +8096,21 @@ proc validate_PutObjectLegalHold_601992(path: JsonNode; query: JsonNode;
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_601998 = header.getOrDefault("x-amz-security-token")
-  valid_601998 = validateParameter(valid_601998, JString, required = false,
+  var valid_604000 = header.getOrDefault("x-amz-security-token")
+  valid_604000 = validateParameter(valid_604000, JString, required = false,
                                  default = nil)
-  if valid_601998 != nil:
-    section.add "x-amz-security-token", valid_601998
-  var valid_601999 = header.getOrDefault("Content-MD5")
-  valid_601999 = validateParameter(valid_601999, JString, required = false,
+  if valid_604000 != nil:
+    section.add "x-amz-security-token", valid_604000
+  var valid_604001 = header.getOrDefault("Content-MD5")
+  valid_604001 = validateParameter(valid_604001, JString, required = false,
                                  default = nil)
-  if valid_601999 != nil:
-    section.add "Content-MD5", valid_601999
-  var valid_602000 = header.getOrDefault("x-amz-request-payer")
-  valid_602000 = validateParameter(valid_602000, JString, required = false,
+  if valid_604001 != nil:
+    section.add "Content-MD5", valid_604001
+  var valid_604002 = header.getOrDefault("x-amz-request-payer")
+  valid_604002 = validateParameter(valid_604002, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602000 != nil:
-    section.add "x-amz-request-payer", valid_602000
+  if valid_604002 != nil:
+    section.add "x-amz-request-payer", valid_604002
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8121,19 +8121,19 @@ proc validate_PutObjectLegalHold_601992(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602002: Call_PutObjectLegalHold_601991; path: JsonNode;
+proc call*(call_604004: Call_PutObjectLegalHold_603993; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Applies a Legal Hold configuration to the specified object.
   ## 
-  let valid = call_602002.validator(path, query, header, formData, body)
-  let scheme = call_602002.pickScheme
+  let valid = call_604004.validator(path, query, header, formData, body)
+  let scheme = call_604004.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602002.url(scheme.get, call_602002.host, call_602002.base,
-                         call_602002.route, valid.getOrDefault("path"))
-  result = hook(call_602002, url, valid)
+  let url = call_604004.url(scheme.get, call_604004.host, call_604004.base,
+                         call_604004.route, valid.getOrDefault("path"))
+  result = hook(call_604004, url, valid)
 
-proc call*(call_602003: Call_PutObjectLegalHold_601991; Key: string; legalHold: bool;
+proc call*(call_604005: Call_PutObjectLegalHold_603993; Key: string; legalHold: bool;
           Bucket: string; body: JsonNode; versionId: string = ""): Recallable =
   ## putObjectLegalHold
   ## Applies a Legal Hold configuration to the specified object.
@@ -8145,25 +8145,25 @@ proc call*(call_602003: Call_PutObjectLegalHold_601991; Key: string; legalHold: 
   ##   Bucket: string (required)
   ##         : The bucket containing the object that you want to place a Legal Hold on.
   ##   body: JObject (required)
-  var path_602004 = newJObject()
-  var query_602005 = newJObject()
-  var body_602006 = newJObject()
-  add(query_602005, "versionId", newJString(versionId))
-  add(path_602004, "Key", newJString(Key))
-  add(query_602005, "legal-hold", newJBool(legalHold))
-  add(path_602004, "Bucket", newJString(Bucket))
+  var path_604006 = newJObject()
+  var query_604007 = newJObject()
+  var body_604008 = newJObject()
+  add(query_604007, "versionId", newJString(versionId))
+  add(path_604006, "Key", newJString(Key))
+  add(query_604007, "legal-hold", newJBool(legalHold))
+  add(path_604006, "Bucket", newJString(Bucket))
   if body != nil:
-    body_602006 = body
-  result = call_602003.call(path_602004, query_602005, nil, nil, body_602006)
+    body_604008 = body
+  result = call_604005.call(path_604006, query_604007, nil, nil, body_604008)
 
-var putObjectLegalHold* = Call_PutObjectLegalHold_601991(
+var putObjectLegalHold* = Call_PutObjectLegalHold_603993(
     name: "putObjectLegalHold", meth: HttpMethod.HttpPut, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#legal-hold", validator: validate_PutObjectLegalHold_601992,
-    base: "/", url: url_PutObjectLegalHold_601993,
+    route: "/{Bucket}/{Key}#legal-hold", validator: validate_PutObjectLegalHold_603994,
+    base: "/", url: url_PutObjectLegalHold_603995,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetObjectLegalHold_601978 = ref object of OpenApiRestCall_600426
-proc url_GetObjectLegalHold_601980(protocol: Scheme; host: string; base: string;
+  Call_GetObjectLegalHold_603980 = ref object of OpenApiRestCall_602433
+proc url_GetObjectLegalHold_603982(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8177,9 +8177,9 @@ proc url_GetObjectLegalHold_601980(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetObjectLegalHold_601979(path: JsonNode; query: JsonNode;
+proc validate_GetObjectLegalHold_603981(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Gets an object's current Legal Hold status.
@@ -8193,33 +8193,33 @@ proc validate_GetObjectLegalHold_601979(path: JsonNode; query: JsonNode;
   ##         : The bucket containing the object whose Legal Hold status you want to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_601981 = path.getOrDefault("Key")
-  valid_601981 = validateParameter(valid_601981, JString, required = true,
+  var valid_603983 = path.getOrDefault("Key")
+  valid_603983 = validateParameter(valid_603983, JString, required = true,
                                  default = nil)
-  if valid_601981 != nil:
-    section.add "Key", valid_601981
-  var valid_601982 = path.getOrDefault("Bucket")
-  valid_601982 = validateParameter(valid_601982, JString, required = true,
+  if valid_603983 != nil:
+    section.add "Key", valid_603983
+  var valid_603984 = path.getOrDefault("Bucket")
+  valid_603984 = validateParameter(valid_603984, JString, required = true,
                                  default = nil)
-  if valid_601982 != nil:
-    section.add "Bucket", valid_601982
+  if valid_603984 != nil:
+    section.add "Bucket", valid_603984
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : The version ID of the object whose Legal Hold status you want to retrieve.
   ##   legal-hold: JBool (required)
   section = newJObject()
-  var valid_601983 = query.getOrDefault("versionId")
-  valid_601983 = validateParameter(valid_601983, JString, required = false,
+  var valid_603985 = query.getOrDefault("versionId")
+  valid_603985 = validateParameter(valid_603985, JString, required = false,
                                  default = nil)
-  if valid_601983 != nil:
-    section.add "versionId", valid_601983
+  if valid_603985 != nil:
+    section.add "versionId", valid_603985
   assert query != nil,
         "query argument is necessary due to required `legal-hold` field"
-  var valid_601984 = query.getOrDefault("legal-hold")
-  valid_601984 = validateParameter(valid_601984, JBool, required = true, default = nil)
-  if valid_601984 != nil:
-    section.add "legal-hold", valid_601984
+  var valid_603986 = query.getOrDefault("legal-hold")
+  valid_603986 = validateParameter(valid_603986, JBool, required = true, default = nil)
+  if valid_603986 != nil:
+    section.add "legal-hold", valid_603986
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -8227,35 +8227,35 @@ proc validate_GetObjectLegalHold_601979(path: JsonNode; query: JsonNode;
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_601985 = header.getOrDefault("x-amz-security-token")
-  valid_601985 = validateParameter(valid_601985, JString, required = false,
+  var valid_603987 = header.getOrDefault("x-amz-security-token")
+  valid_603987 = validateParameter(valid_603987, JString, required = false,
                                  default = nil)
-  if valid_601985 != nil:
-    section.add "x-amz-security-token", valid_601985
-  var valid_601986 = header.getOrDefault("x-amz-request-payer")
-  valid_601986 = validateParameter(valid_601986, JString, required = false,
+  if valid_603987 != nil:
+    section.add "x-amz-security-token", valid_603987
+  var valid_603988 = header.getOrDefault("x-amz-request-payer")
+  valid_603988 = validateParameter(valid_603988, JString, required = false,
                                  default = newJString("requester"))
-  if valid_601986 != nil:
-    section.add "x-amz-request-payer", valid_601986
+  if valid_603988 != nil:
+    section.add "x-amz-request-payer", valid_603988
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601987: Call_GetObjectLegalHold_601978; path: JsonNode;
+proc call*(call_603989: Call_GetObjectLegalHold_603980; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets an object's current Legal Hold status.
   ## 
-  let valid = call_601987.validator(path, query, header, formData, body)
-  let scheme = call_601987.pickScheme
+  let valid = call_603989.validator(path, query, header, formData, body)
+  let scheme = call_603989.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601987.url(scheme.get, call_601987.host, call_601987.base,
-                         call_601987.route, valid.getOrDefault("path"))
-  result = hook(call_601987, url, valid)
+  let url = call_603989.url(scheme.get, call_603989.host, call_603989.base,
+                         call_603989.route, valid.getOrDefault("path"))
+  result = hook(call_603989, url, valid)
 
-proc call*(call_601988: Call_GetObjectLegalHold_601978; Key: string; legalHold: bool;
+proc call*(call_603990: Call_GetObjectLegalHold_603980; Key: string; legalHold: bool;
           Bucket: string; versionId: string = ""): Recallable =
   ## getObjectLegalHold
   ## Gets an object's current Legal Hold status.
@@ -8266,22 +8266,22 @@ proc call*(call_601988: Call_GetObjectLegalHold_601978; Key: string; legalHold: 
   ##   legalHold: bool (required)
   ##   Bucket: string (required)
   ##         : The bucket containing the object whose Legal Hold status you want to retrieve.
-  var path_601989 = newJObject()
-  var query_601990 = newJObject()
-  add(query_601990, "versionId", newJString(versionId))
-  add(path_601989, "Key", newJString(Key))
-  add(query_601990, "legal-hold", newJBool(legalHold))
-  add(path_601989, "Bucket", newJString(Bucket))
-  result = call_601988.call(path_601989, query_601990, nil, nil, nil)
+  var path_603991 = newJObject()
+  var query_603992 = newJObject()
+  add(query_603992, "versionId", newJString(versionId))
+  add(path_603991, "Key", newJString(Key))
+  add(query_603992, "legal-hold", newJBool(legalHold))
+  add(path_603991, "Bucket", newJString(Bucket))
+  result = call_603990.call(path_603991, query_603992, nil, nil, nil)
 
-var getObjectLegalHold* = Call_GetObjectLegalHold_601978(
+var getObjectLegalHold* = Call_GetObjectLegalHold_603980(
     name: "getObjectLegalHold", meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#legal-hold", validator: validate_GetObjectLegalHold_601979,
-    base: "/", url: url_GetObjectLegalHold_601980,
+    route: "/{Bucket}/{Key}#legal-hold", validator: validate_GetObjectLegalHold_603981,
+    base: "/", url: url_GetObjectLegalHold_603982,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutObjectLockConfiguration_602017 = ref object of OpenApiRestCall_600426
-proc url_PutObjectLockConfiguration_602019(protocol: Scheme; host: string;
+  Call_PutObjectLockConfiguration_604019 = ref object of OpenApiRestCall_602433
+proc url_PutObjectLockConfiguration_604021(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8292,9 +8292,9 @@ proc url_PutObjectLockConfiguration_602019(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutObjectLockConfiguration_602018(path: JsonNode; query: JsonNode;
+proc validate_PutObjectLockConfiguration_604020(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Places an object lock configuration on the specified bucket. The rule specified in the object lock configuration will be applied by default to every new object placed in the specified bucket.
   ## 
@@ -8305,21 +8305,21 @@ proc validate_PutObjectLockConfiguration_602018(path: JsonNode; query: JsonNode;
   ##         : The bucket whose object lock configuration you want to create or replace.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_602020 = path.getOrDefault("Bucket")
-  valid_602020 = validateParameter(valid_602020, JString, required = true,
+  var valid_604022 = path.getOrDefault("Bucket")
+  valid_604022 = validateParameter(valid_604022, JString, required = true,
                                  default = nil)
-  if valid_602020 != nil:
-    section.add "Bucket", valid_602020
+  if valid_604022 != nil:
+    section.add "Bucket", valid_604022
   result.add "path", section
   ## parameters in `query` object:
   ##   object-lock: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `object-lock` field"
-  var valid_602021 = query.getOrDefault("object-lock")
-  valid_602021 = validateParameter(valid_602021, JBool, required = true, default = nil)
-  if valid_602021 != nil:
-    section.add "object-lock", valid_602021
+  var valid_604023 = query.getOrDefault("object-lock")
+  valid_604023 = validateParameter(valid_604023, JBool, required = true, default = nil)
+  if valid_604023 != nil:
+    section.add "object-lock", valid_604023
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -8331,26 +8331,26 @@ proc validate_PutObjectLockConfiguration_602018(path: JsonNode; query: JsonNode;
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_602022 = header.getOrDefault("x-amz-security-token")
-  valid_602022 = validateParameter(valid_602022, JString, required = false,
+  var valid_604024 = header.getOrDefault("x-amz-security-token")
+  valid_604024 = validateParameter(valid_604024, JString, required = false,
                                  default = nil)
-  if valid_602022 != nil:
-    section.add "x-amz-security-token", valid_602022
-  var valid_602023 = header.getOrDefault("Content-MD5")
-  valid_602023 = validateParameter(valid_602023, JString, required = false,
+  if valid_604024 != nil:
+    section.add "x-amz-security-token", valid_604024
+  var valid_604025 = header.getOrDefault("Content-MD5")
+  valid_604025 = validateParameter(valid_604025, JString, required = false,
                                  default = nil)
-  if valid_602023 != nil:
-    section.add "Content-MD5", valid_602023
-  var valid_602024 = header.getOrDefault("x-amz-bucket-object-lock-token")
-  valid_602024 = validateParameter(valid_602024, JString, required = false,
+  if valid_604025 != nil:
+    section.add "Content-MD5", valid_604025
+  var valid_604026 = header.getOrDefault("x-amz-bucket-object-lock-token")
+  valid_604026 = validateParameter(valid_604026, JString, required = false,
                                  default = nil)
-  if valid_602024 != nil:
-    section.add "x-amz-bucket-object-lock-token", valid_602024
-  var valid_602025 = header.getOrDefault("x-amz-request-payer")
-  valid_602025 = validateParameter(valid_602025, JString, required = false,
+  if valid_604026 != nil:
+    section.add "x-amz-bucket-object-lock-token", valid_604026
+  var valid_604027 = header.getOrDefault("x-amz-request-payer")
+  valid_604027 = validateParameter(valid_604027, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602025 != nil:
-    section.add "x-amz-request-payer", valid_602025
+  if valid_604027 != nil:
+    section.add "x-amz-request-payer", valid_604027
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8361,19 +8361,19 @@ proc validate_PutObjectLockConfiguration_602018(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602027: Call_PutObjectLockConfiguration_602017; path: JsonNode;
+proc call*(call_604029: Call_PutObjectLockConfiguration_604019; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Places an object lock configuration on the specified bucket. The rule specified in the object lock configuration will be applied by default to every new object placed in the specified bucket.
   ## 
-  let valid = call_602027.validator(path, query, header, formData, body)
-  let scheme = call_602027.pickScheme
+  let valid = call_604029.validator(path, query, header, formData, body)
+  let scheme = call_604029.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602027.url(scheme.get, call_602027.host, call_602027.base,
-                         call_602027.route, valid.getOrDefault("path"))
-  result = hook(call_602027, url, valid)
+  let url = call_604029.url(scheme.get, call_604029.host, call_604029.base,
+                         call_604029.route, valid.getOrDefault("path"))
+  result = hook(call_604029, url, valid)
 
-proc call*(call_602028: Call_PutObjectLockConfiguration_602017; objectLock: bool;
+proc call*(call_604030: Call_PutObjectLockConfiguration_604019; objectLock: bool;
           Bucket: string; body: JsonNode): Recallable =
   ## putObjectLockConfiguration
   ## Places an object lock configuration on the specified bucket. The rule specified in the object lock configuration will be applied by default to every new object placed in the specified bucket.
@@ -8381,24 +8381,24 @@ proc call*(call_602028: Call_PutObjectLockConfiguration_602017; objectLock: bool
   ##   Bucket: string (required)
   ##         : The bucket whose object lock configuration you want to create or replace.
   ##   body: JObject (required)
-  var path_602029 = newJObject()
-  var query_602030 = newJObject()
-  var body_602031 = newJObject()
-  add(query_602030, "object-lock", newJBool(objectLock))
-  add(path_602029, "Bucket", newJString(Bucket))
+  var path_604031 = newJObject()
+  var query_604032 = newJObject()
+  var body_604033 = newJObject()
+  add(query_604032, "object-lock", newJBool(objectLock))
+  add(path_604031, "Bucket", newJString(Bucket))
   if body != nil:
-    body_602031 = body
-  result = call_602028.call(path_602029, query_602030, nil, nil, body_602031)
+    body_604033 = body
+  result = call_604030.call(path_604031, query_604032, nil, nil, body_604033)
 
-var putObjectLockConfiguration* = Call_PutObjectLockConfiguration_602017(
+var putObjectLockConfiguration* = Call_PutObjectLockConfiguration_604019(
     name: "putObjectLockConfiguration", meth: HttpMethod.HttpPut,
     host: "s3.amazonaws.com", route: "/{Bucket}#object-lock",
-    validator: validate_PutObjectLockConfiguration_602018, base: "/",
-    url: url_PutObjectLockConfiguration_602019,
+    validator: validate_PutObjectLockConfiguration_604020, base: "/",
+    url: url_PutObjectLockConfiguration_604021,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetObjectLockConfiguration_602007 = ref object of OpenApiRestCall_600426
-proc url_GetObjectLockConfiguration_602009(protocol: Scheme; host: string;
+  Call_GetObjectLockConfiguration_604009 = ref object of OpenApiRestCall_602433
+proc url_GetObjectLockConfiguration_604011(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8409,9 +8409,9 @@ proc url_GetObjectLockConfiguration_602009(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetObjectLockConfiguration_602008(path: JsonNode; query: JsonNode;
+proc validate_GetObjectLockConfiguration_604010(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets the object lock configuration for a bucket. The rule specified in the object lock configuration will be applied by default to every new object placed in the specified bucket.
   ## 
@@ -8422,70 +8422,70 @@ proc validate_GetObjectLockConfiguration_602008(path: JsonNode; query: JsonNode;
   ##         : The bucket whose object lock configuration you want to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_602010 = path.getOrDefault("Bucket")
-  valid_602010 = validateParameter(valid_602010, JString, required = true,
+  var valid_604012 = path.getOrDefault("Bucket")
+  valid_604012 = validateParameter(valid_604012, JString, required = true,
                                  default = nil)
-  if valid_602010 != nil:
-    section.add "Bucket", valid_602010
+  if valid_604012 != nil:
+    section.add "Bucket", valid_604012
   result.add "path", section
   ## parameters in `query` object:
   ##   object-lock: JBool (required)
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `object-lock` field"
-  var valid_602011 = query.getOrDefault("object-lock")
-  valid_602011 = validateParameter(valid_602011, JBool, required = true, default = nil)
-  if valid_602011 != nil:
-    section.add "object-lock", valid_602011
+  var valid_604013 = query.getOrDefault("object-lock")
+  valid_604013 = validateParameter(valid_604013, JBool, required = true, default = nil)
+  if valid_604013 != nil:
+    section.add "object-lock", valid_604013
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_602012 = header.getOrDefault("x-amz-security-token")
-  valid_602012 = validateParameter(valid_602012, JString, required = false,
+  var valid_604014 = header.getOrDefault("x-amz-security-token")
+  valid_604014 = validateParameter(valid_604014, JString, required = false,
                                  default = nil)
-  if valid_602012 != nil:
-    section.add "x-amz-security-token", valid_602012
+  if valid_604014 != nil:
+    section.add "x-amz-security-token", valid_604014
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602013: Call_GetObjectLockConfiguration_602007; path: JsonNode;
+proc call*(call_604015: Call_GetObjectLockConfiguration_604009; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets the object lock configuration for a bucket. The rule specified in the object lock configuration will be applied by default to every new object placed in the specified bucket.
   ## 
-  let valid = call_602013.validator(path, query, header, formData, body)
-  let scheme = call_602013.pickScheme
+  let valid = call_604015.validator(path, query, header, formData, body)
+  let scheme = call_604015.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602013.url(scheme.get, call_602013.host, call_602013.base,
-                         call_602013.route, valid.getOrDefault("path"))
-  result = hook(call_602013, url, valid)
+  let url = call_604015.url(scheme.get, call_604015.host, call_604015.base,
+                         call_604015.route, valid.getOrDefault("path"))
+  result = hook(call_604015, url, valid)
 
-proc call*(call_602014: Call_GetObjectLockConfiguration_602007; objectLock: bool;
+proc call*(call_604016: Call_GetObjectLockConfiguration_604009; objectLock: bool;
           Bucket: string): Recallable =
   ## getObjectLockConfiguration
   ## Gets the object lock configuration for a bucket. The rule specified in the object lock configuration will be applied by default to every new object placed in the specified bucket.
   ##   objectLock: bool (required)
   ##   Bucket: string (required)
   ##         : The bucket whose object lock configuration you want to retrieve.
-  var path_602015 = newJObject()
-  var query_602016 = newJObject()
-  add(query_602016, "object-lock", newJBool(objectLock))
-  add(path_602015, "Bucket", newJString(Bucket))
-  result = call_602014.call(path_602015, query_602016, nil, nil, nil)
+  var path_604017 = newJObject()
+  var query_604018 = newJObject()
+  add(query_604018, "object-lock", newJBool(objectLock))
+  add(path_604017, "Bucket", newJString(Bucket))
+  result = call_604016.call(path_604017, query_604018, nil, nil, nil)
 
-var getObjectLockConfiguration* = Call_GetObjectLockConfiguration_602007(
+var getObjectLockConfiguration* = Call_GetObjectLockConfiguration_604009(
     name: "getObjectLockConfiguration", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#object-lock",
-    validator: validate_GetObjectLockConfiguration_602008, base: "/",
-    url: url_GetObjectLockConfiguration_602009,
+    validator: validate_GetObjectLockConfiguration_604010, base: "/",
+    url: url_GetObjectLockConfiguration_604011,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutObjectRetention_602045 = ref object of OpenApiRestCall_600426
-proc url_PutObjectRetention_602047(protocol: Scheme; host: string; base: string;
+  Call_PutObjectRetention_604047 = ref object of OpenApiRestCall_602433
+proc url_PutObjectRetention_604049(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8499,9 +8499,9 @@ proc url_PutObjectRetention_602047(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_PutObjectRetention_602046(path: JsonNode; query: JsonNode;
+proc validate_PutObjectRetention_604048(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Places an Object Retention configuration on an object.
@@ -8515,33 +8515,33 @@ proc validate_PutObjectRetention_602046(path: JsonNode; query: JsonNode;
   ##         : The bucket that contains the object you want to apply this Object Retention configuration to.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_602048 = path.getOrDefault("Key")
-  valid_602048 = validateParameter(valid_602048, JString, required = true,
+  var valid_604050 = path.getOrDefault("Key")
+  valid_604050 = validateParameter(valid_604050, JString, required = true,
                                  default = nil)
-  if valid_602048 != nil:
-    section.add "Key", valid_602048
-  var valid_602049 = path.getOrDefault("Bucket")
-  valid_602049 = validateParameter(valid_602049, JString, required = true,
+  if valid_604050 != nil:
+    section.add "Key", valid_604050
+  var valid_604051 = path.getOrDefault("Bucket")
+  valid_604051 = validateParameter(valid_604051, JString, required = true,
                                  default = nil)
-  if valid_602049 != nil:
-    section.add "Bucket", valid_602049
+  if valid_604051 != nil:
+    section.add "Bucket", valid_604051
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : The version ID for the object that you want to apply this Object Retention configuration to.
   ##   retention: JBool (required)
   section = newJObject()
-  var valid_602050 = query.getOrDefault("versionId")
-  valid_602050 = validateParameter(valid_602050, JString, required = false,
+  var valid_604052 = query.getOrDefault("versionId")
+  valid_604052 = validateParameter(valid_604052, JString, required = false,
                                  default = nil)
-  if valid_602050 != nil:
-    section.add "versionId", valid_602050
+  if valid_604052 != nil:
+    section.add "versionId", valid_604052
   assert query != nil,
         "query argument is necessary due to required `retention` field"
-  var valid_602051 = query.getOrDefault("retention")
-  valid_602051 = validateParameter(valid_602051, JBool, required = true, default = nil)
-  if valid_602051 != nil:
-    section.add "retention", valid_602051
+  var valid_604053 = query.getOrDefault("retention")
+  valid_604053 = validateParameter(valid_604053, JBool, required = true, default = nil)
+  if valid_604053 != nil:
+    section.add "retention", valid_604053
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -8553,25 +8553,25 @@ proc validate_PutObjectRetention_602046(path: JsonNode; query: JsonNode;
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_602052 = header.getOrDefault("x-amz-security-token")
-  valid_602052 = validateParameter(valid_602052, JString, required = false,
+  var valid_604054 = header.getOrDefault("x-amz-security-token")
+  valid_604054 = validateParameter(valid_604054, JString, required = false,
                                  default = nil)
-  if valid_602052 != nil:
-    section.add "x-amz-security-token", valid_602052
-  var valid_602053 = header.getOrDefault("Content-MD5")
-  valid_602053 = validateParameter(valid_602053, JString, required = false,
+  if valid_604054 != nil:
+    section.add "x-amz-security-token", valid_604054
+  var valid_604055 = header.getOrDefault("Content-MD5")
+  valid_604055 = validateParameter(valid_604055, JString, required = false,
                                  default = nil)
-  if valid_602053 != nil:
-    section.add "Content-MD5", valid_602053
-  var valid_602054 = header.getOrDefault("x-amz-bypass-governance-retention")
-  valid_602054 = validateParameter(valid_602054, JBool, required = false, default = nil)
-  if valid_602054 != nil:
-    section.add "x-amz-bypass-governance-retention", valid_602054
-  var valid_602055 = header.getOrDefault("x-amz-request-payer")
-  valid_602055 = validateParameter(valid_602055, JString, required = false,
+  if valid_604055 != nil:
+    section.add "Content-MD5", valid_604055
+  var valid_604056 = header.getOrDefault("x-amz-bypass-governance-retention")
+  valid_604056 = validateParameter(valid_604056, JBool, required = false, default = nil)
+  if valid_604056 != nil:
+    section.add "x-amz-bypass-governance-retention", valid_604056
+  var valid_604057 = header.getOrDefault("x-amz-request-payer")
+  valid_604057 = validateParameter(valid_604057, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602055 != nil:
-    section.add "x-amz-request-payer", valid_602055
+  if valid_604057 != nil:
+    section.add "x-amz-request-payer", valid_604057
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8582,19 +8582,19 @@ proc validate_PutObjectRetention_602046(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602057: Call_PutObjectRetention_602045; path: JsonNode;
+proc call*(call_604059: Call_PutObjectRetention_604047; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Places an Object Retention configuration on an object.
   ## 
-  let valid = call_602057.validator(path, query, header, formData, body)
-  let scheme = call_602057.pickScheme
+  let valid = call_604059.validator(path, query, header, formData, body)
+  let scheme = call_604059.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602057.url(scheme.get, call_602057.host, call_602057.base,
-                         call_602057.route, valid.getOrDefault("path"))
-  result = hook(call_602057, url, valid)
+  let url = call_604059.url(scheme.get, call_604059.host, call_604059.base,
+                         call_604059.route, valid.getOrDefault("path"))
+  result = hook(call_604059, url, valid)
 
-proc call*(call_602058: Call_PutObjectRetention_602045; retention: bool; Key: string;
+proc call*(call_604060: Call_PutObjectRetention_604047; retention: bool; Key: string;
           Bucket: string; body: JsonNode; versionId: string = ""): Recallable =
   ## putObjectRetention
   ## Places an Object Retention configuration on an object.
@@ -8606,25 +8606,25 @@ proc call*(call_602058: Call_PutObjectRetention_602045; retention: bool; Key: st
   ##   Bucket: string (required)
   ##         : The bucket that contains the object you want to apply this Object Retention configuration to.
   ##   body: JObject (required)
-  var path_602059 = newJObject()
-  var query_602060 = newJObject()
-  var body_602061 = newJObject()
-  add(query_602060, "versionId", newJString(versionId))
-  add(query_602060, "retention", newJBool(retention))
-  add(path_602059, "Key", newJString(Key))
-  add(path_602059, "Bucket", newJString(Bucket))
+  var path_604061 = newJObject()
+  var query_604062 = newJObject()
+  var body_604063 = newJObject()
+  add(query_604062, "versionId", newJString(versionId))
+  add(query_604062, "retention", newJBool(retention))
+  add(path_604061, "Key", newJString(Key))
+  add(path_604061, "Bucket", newJString(Bucket))
   if body != nil:
-    body_602061 = body
-  result = call_602058.call(path_602059, query_602060, nil, nil, body_602061)
+    body_604063 = body
+  result = call_604060.call(path_604061, query_604062, nil, nil, body_604063)
 
-var putObjectRetention* = Call_PutObjectRetention_602045(
+var putObjectRetention* = Call_PutObjectRetention_604047(
     name: "putObjectRetention", meth: HttpMethod.HttpPut, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#retention", validator: validate_PutObjectRetention_602046,
-    base: "/", url: url_PutObjectRetention_602047,
+    route: "/{Bucket}/{Key}#retention", validator: validate_PutObjectRetention_604048,
+    base: "/", url: url_PutObjectRetention_604049,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetObjectRetention_602032 = ref object of OpenApiRestCall_600426
-proc url_GetObjectRetention_602034(protocol: Scheme; host: string; base: string;
+  Call_GetObjectRetention_604034 = ref object of OpenApiRestCall_602433
+proc url_GetObjectRetention_604036(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8638,9 +8638,9 @@ proc url_GetObjectRetention_602034(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetObjectRetention_602033(path: JsonNode; query: JsonNode;
+proc validate_GetObjectRetention_604035(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Retrieves an object's retention settings.
@@ -8654,33 +8654,33 @@ proc validate_GetObjectRetention_602033(path: JsonNode; query: JsonNode;
   ##         : The bucket containing the object whose retention settings you want to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_602035 = path.getOrDefault("Key")
-  valid_602035 = validateParameter(valid_602035, JString, required = true,
+  var valid_604037 = path.getOrDefault("Key")
+  valid_604037 = validateParameter(valid_604037, JString, required = true,
                                  default = nil)
-  if valid_602035 != nil:
-    section.add "Key", valid_602035
-  var valid_602036 = path.getOrDefault("Bucket")
-  valid_602036 = validateParameter(valid_602036, JString, required = true,
+  if valid_604037 != nil:
+    section.add "Key", valid_604037
+  var valid_604038 = path.getOrDefault("Bucket")
+  valid_604038 = validateParameter(valid_604038, JString, required = true,
                                  default = nil)
-  if valid_602036 != nil:
-    section.add "Bucket", valid_602036
+  if valid_604038 != nil:
+    section.add "Bucket", valid_604038
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : The version ID for the object whose retention settings you want to retrieve.
   ##   retention: JBool (required)
   section = newJObject()
-  var valid_602037 = query.getOrDefault("versionId")
-  valid_602037 = validateParameter(valid_602037, JString, required = false,
+  var valid_604039 = query.getOrDefault("versionId")
+  valid_604039 = validateParameter(valid_604039, JString, required = false,
                                  default = nil)
-  if valid_602037 != nil:
-    section.add "versionId", valid_602037
+  if valid_604039 != nil:
+    section.add "versionId", valid_604039
   assert query != nil,
         "query argument is necessary due to required `retention` field"
-  var valid_602038 = query.getOrDefault("retention")
-  valid_602038 = validateParameter(valid_602038, JBool, required = true, default = nil)
-  if valid_602038 != nil:
-    section.add "retention", valid_602038
+  var valid_604040 = query.getOrDefault("retention")
+  valid_604040 = validateParameter(valid_604040, JBool, required = true, default = nil)
+  if valid_604040 != nil:
+    section.add "retention", valid_604040
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -8688,35 +8688,35 @@ proc validate_GetObjectRetention_602033(path: JsonNode; query: JsonNode;
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_602039 = header.getOrDefault("x-amz-security-token")
-  valid_602039 = validateParameter(valid_602039, JString, required = false,
+  var valid_604041 = header.getOrDefault("x-amz-security-token")
+  valid_604041 = validateParameter(valid_604041, JString, required = false,
                                  default = nil)
-  if valid_602039 != nil:
-    section.add "x-amz-security-token", valid_602039
-  var valid_602040 = header.getOrDefault("x-amz-request-payer")
-  valid_602040 = validateParameter(valid_602040, JString, required = false,
+  if valid_604041 != nil:
+    section.add "x-amz-security-token", valid_604041
+  var valid_604042 = header.getOrDefault("x-amz-request-payer")
+  valid_604042 = validateParameter(valid_604042, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602040 != nil:
-    section.add "x-amz-request-payer", valid_602040
+  if valid_604042 != nil:
+    section.add "x-amz-request-payer", valid_604042
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602041: Call_GetObjectRetention_602032; path: JsonNode;
+proc call*(call_604043: Call_GetObjectRetention_604034; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves an object's retention settings.
   ## 
-  let valid = call_602041.validator(path, query, header, formData, body)
-  let scheme = call_602041.pickScheme
+  let valid = call_604043.validator(path, query, header, formData, body)
+  let scheme = call_604043.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602041.url(scheme.get, call_602041.host, call_602041.base,
-                         call_602041.route, valid.getOrDefault("path"))
-  result = hook(call_602041, url, valid)
+  let url = call_604043.url(scheme.get, call_604043.host, call_604043.base,
+                         call_604043.route, valid.getOrDefault("path"))
+  result = hook(call_604043, url, valid)
 
-proc call*(call_602042: Call_GetObjectRetention_602032; retention: bool; Key: string;
+proc call*(call_604044: Call_GetObjectRetention_604034; retention: bool; Key: string;
           Bucket: string; versionId: string = ""): Recallable =
   ## getObjectRetention
   ## Retrieves an object's retention settings.
@@ -8727,22 +8727,22 @@ proc call*(call_602042: Call_GetObjectRetention_602032; retention: bool; Key: st
   ##      : The key name for the object whose retention settings you want to retrieve.
   ##   Bucket: string (required)
   ##         : The bucket containing the object whose retention settings you want to retrieve.
-  var path_602043 = newJObject()
-  var query_602044 = newJObject()
-  add(query_602044, "versionId", newJString(versionId))
-  add(query_602044, "retention", newJBool(retention))
-  add(path_602043, "Key", newJString(Key))
-  add(path_602043, "Bucket", newJString(Bucket))
-  result = call_602042.call(path_602043, query_602044, nil, nil, nil)
+  var path_604045 = newJObject()
+  var query_604046 = newJObject()
+  add(query_604046, "versionId", newJString(versionId))
+  add(query_604046, "retention", newJBool(retention))
+  add(path_604045, "Key", newJString(Key))
+  add(path_604045, "Bucket", newJString(Bucket))
+  result = call_604044.call(path_604045, query_604046, nil, nil, nil)
 
-var getObjectRetention* = Call_GetObjectRetention_602032(
+var getObjectRetention* = Call_GetObjectRetention_604034(
     name: "getObjectRetention", meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#retention", validator: validate_GetObjectRetention_602033,
-    base: "/", url: url_GetObjectRetention_602034,
+    route: "/{Bucket}/{Key}#retention", validator: validate_GetObjectRetention_604035,
+    base: "/", url: url_GetObjectRetention_604036,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetObjectTorrent_602062 = ref object of OpenApiRestCall_600426
-proc url_GetObjectTorrent_602064(protocol: Scheme; host: string; base: string;
+  Call_GetObjectTorrent_604064 = ref object of OpenApiRestCall_602433
+proc url_GetObjectTorrent_604066(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8756,9 +8756,9 @@ proc url_GetObjectTorrent_602064(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_GetObjectTorrent_602063(path: JsonNode; query: JsonNode;
+proc validate_GetObjectTorrent_604065(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Return torrent files from a bucket.
@@ -8773,25 +8773,25 @@ proc validate_GetObjectTorrent_602063(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_602065 = path.getOrDefault("Key")
-  valid_602065 = validateParameter(valid_602065, JString, required = true,
+  var valid_604067 = path.getOrDefault("Key")
+  valid_604067 = validateParameter(valid_604067, JString, required = true,
                                  default = nil)
-  if valid_602065 != nil:
-    section.add "Key", valid_602065
-  var valid_602066 = path.getOrDefault("Bucket")
-  valid_602066 = validateParameter(valid_602066, JString, required = true,
+  if valid_604067 != nil:
+    section.add "Key", valid_604067
+  var valid_604068 = path.getOrDefault("Bucket")
+  valid_604068 = validateParameter(valid_604068, JString, required = true,
                                  default = nil)
-  if valid_602066 != nil:
-    section.add "Bucket", valid_602066
+  if valid_604068 != nil:
+    section.add "Bucket", valid_604068
   result.add "path", section
   ## parameters in `query` object:
   ##   torrent: JBool (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `torrent` field"
-  var valid_602067 = query.getOrDefault("torrent")
-  valid_602067 = validateParameter(valid_602067, JBool, required = true, default = nil)
-  if valid_602067 != nil:
-    section.add "torrent", valid_602067
+  var valid_604069 = query.getOrDefault("torrent")
+  valid_604069 = validateParameter(valid_604069, JBool, required = true, default = nil)
+  if valid_604069 != nil:
+    section.add "torrent", valid_604069
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -8799,36 +8799,36 @@ proc validate_GetObjectTorrent_602063(path: JsonNode; query: JsonNode;
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_602068 = header.getOrDefault("x-amz-security-token")
-  valid_602068 = validateParameter(valid_602068, JString, required = false,
+  var valid_604070 = header.getOrDefault("x-amz-security-token")
+  valid_604070 = validateParameter(valid_604070, JString, required = false,
                                  default = nil)
-  if valid_602068 != nil:
-    section.add "x-amz-security-token", valid_602068
-  var valid_602069 = header.getOrDefault("x-amz-request-payer")
-  valid_602069 = validateParameter(valid_602069, JString, required = false,
+  if valid_604070 != nil:
+    section.add "x-amz-security-token", valid_604070
+  var valid_604071 = header.getOrDefault("x-amz-request-payer")
+  valid_604071 = validateParameter(valid_604071, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602069 != nil:
-    section.add "x-amz-request-payer", valid_602069
+  if valid_604071 != nil:
+    section.add "x-amz-request-payer", valid_604071
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602070: Call_GetObjectTorrent_602062; path: JsonNode;
+proc call*(call_604072: Call_GetObjectTorrent_604064; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Return torrent files from a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectGETtorrent.html
-  let valid = call_602070.validator(path, query, header, formData, body)
-  let scheme = call_602070.pickScheme
+  let valid = call_604072.validator(path, query, header, formData, body)
+  let scheme = call_604072.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602070.url(scheme.get, call_602070.host, call_602070.base,
-                         call_602070.route, valid.getOrDefault("path"))
-  result = hook(call_602070, url, valid)
+  let url = call_604072.url(scheme.get, call_604072.host, call_604072.base,
+                         call_604072.route, valid.getOrDefault("path"))
+  result = hook(call_604072, url, valid)
 
-proc call*(call_602071: Call_GetObjectTorrent_602062; torrent: bool; Key: string;
+proc call*(call_604073: Call_GetObjectTorrent_604064; torrent: bool; Key: string;
           Bucket: string): Recallable =
   ## getObjectTorrent
   ## Return torrent files from a bucket.
@@ -8838,21 +8838,21 @@ proc call*(call_602071: Call_GetObjectTorrent_602062; torrent: bool; Key: string
   ##      : <p/>
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_602072 = newJObject()
-  var query_602073 = newJObject()
-  add(query_602073, "torrent", newJBool(torrent))
-  add(path_602072, "Key", newJString(Key))
-  add(path_602072, "Bucket", newJString(Bucket))
-  result = call_602071.call(path_602072, query_602073, nil, nil, nil)
+  var path_604074 = newJObject()
+  var query_604075 = newJObject()
+  add(query_604075, "torrent", newJBool(torrent))
+  add(path_604074, "Key", newJString(Key))
+  add(path_604074, "Bucket", newJString(Bucket))
+  result = call_604073.call(path_604074, query_604075, nil, nil, nil)
 
-var getObjectTorrent* = Call_GetObjectTorrent_602062(name: "getObjectTorrent",
+var getObjectTorrent* = Call_GetObjectTorrent_604064(name: "getObjectTorrent",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#torrent", validator: validate_GetObjectTorrent_602063,
-    base: "/", url: url_GetObjectTorrent_602064,
+    route: "/{Bucket}/{Key}#torrent", validator: validate_GetObjectTorrent_604065,
+    base: "/", url: url_GetObjectTorrent_604066,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListBucketAnalyticsConfigurations_602074 = ref object of OpenApiRestCall_600426
-proc url_ListBucketAnalyticsConfigurations_602076(protocol: Scheme; host: string;
+  Call_ListBucketAnalyticsConfigurations_604076 = ref object of OpenApiRestCall_602433
+proc url_ListBucketAnalyticsConfigurations_604078(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8863,9 +8863,9 @@ proc url_ListBucketAnalyticsConfigurations_602076(protocol: Scheme; host: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_ListBucketAnalyticsConfigurations_602075(path: JsonNode;
+proc validate_ListBucketAnalyticsConfigurations_604077(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the analytics configurations for the bucket.
   ## 
@@ -8876,11 +8876,11 @@ proc validate_ListBucketAnalyticsConfigurations_602075(path: JsonNode;
   ##         : The name of the bucket from which analytics configurations are retrieved.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_602077 = path.getOrDefault("Bucket")
-  valid_602077 = validateParameter(valid_602077, JString, required = true,
+  var valid_604079 = path.getOrDefault("Bucket")
+  valid_604079 = validateParameter(valid_604079, JString, required = true,
                                  default = nil)
-  if valid_602077 != nil:
-    section.add "Bucket", valid_602077
+  if valid_604079 != nil:
+    section.add "Bucket", valid_604079
   result.add "path", section
   ## parameters in `query` object:
   ##   analytics: JBool (required)
@@ -8889,44 +8889,44 @@ proc validate_ListBucketAnalyticsConfigurations_602075(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `analytics` field"
-  var valid_602078 = query.getOrDefault("analytics")
-  valid_602078 = validateParameter(valid_602078, JBool, required = true, default = nil)
-  if valid_602078 != nil:
-    section.add "analytics", valid_602078
-  var valid_602079 = query.getOrDefault("continuation-token")
-  valid_602079 = validateParameter(valid_602079, JString, required = false,
+  var valid_604080 = query.getOrDefault("analytics")
+  valid_604080 = validateParameter(valid_604080, JBool, required = true, default = nil)
+  if valid_604080 != nil:
+    section.add "analytics", valid_604080
+  var valid_604081 = query.getOrDefault("continuation-token")
+  valid_604081 = validateParameter(valid_604081, JString, required = false,
                                  default = nil)
-  if valid_602079 != nil:
-    section.add "continuation-token", valid_602079
+  if valid_604081 != nil:
+    section.add "continuation-token", valid_604081
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_602080 = header.getOrDefault("x-amz-security-token")
-  valid_602080 = validateParameter(valid_602080, JString, required = false,
+  var valid_604082 = header.getOrDefault("x-amz-security-token")
+  valid_604082 = validateParameter(valid_604082, JString, required = false,
                                  default = nil)
-  if valid_602080 != nil:
-    section.add "x-amz-security-token", valid_602080
+  if valid_604082 != nil:
+    section.add "x-amz-security-token", valid_604082
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602081: Call_ListBucketAnalyticsConfigurations_602074;
+proc call*(call_604083: Call_ListBucketAnalyticsConfigurations_604076;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Lists the analytics configurations for the bucket.
   ## 
-  let valid = call_602081.validator(path, query, header, formData, body)
-  let scheme = call_602081.pickScheme
+  let valid = call_604083.validator(path, query, header, formData, body)
+  let scheme = call_604083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602081.url(scheme.get, call_602081.host, call_602081.base,
-                         call_602081.route, valid.getOrDefault("path"))
-  result = hook(call_602081, url, valid)
+  let url = call_604083.url(scheme.get, call_604083.host, call_604083.base,
+                         call_604083.route, valid.getOrDefault("path"))
+  result = hook(call_604083, url, valid)
 
-proc call*(call_602082: Call_ListBucketAnalyticsConfigurations_602074;
+proc call*(call_604084: Call_ListBucketAnalyticsConfigurations_604076;
           analytics: bool; Bucket: string; continuationToken: string = ""): Recallable =
   ## listBucketAnalyticsConfigurations
   ## Lists the analytics configurations for the bucket.
@@ -8935,22 +8935,22 @@ proc call*(call_602082: Call_ListBucketAnalyticsConfigurations_602074;
   ##                    : The ContinuationToken that represents a placeholder from where this request should begin.
   ##   Bucket: string (required)
   ##         : The name of the bucket from which analytics configurations are retrieved.
-  var path_602083 = newJObject()
-  var query_602084 = newJObject()
-  add(query_602084, "analytics", newJBool(analytics))
-  add(query_602084, "continuation-token", newJString(continuationToken))
-  add(path_602083, "Bucket", newJString(Bucket))
-  result = call_602082.call(path_602083, query_602084, nil, nil, nil)
+  var path_604085 = newJObject()
+  var query_604086 = newJObject()
+  add(query_604086, "analytics", newJBool(analytics))
+  add(query_604086, "continuation-token", newJString(continuationToken))
+  add(path_604085, "Bucket", newJString(Bucket))
+  result = call_604084.call(path_604085, query_604086, nil, nil, nil)
 
-var listBucketAnalyticsConfigurations* = Call_ListBucketAnalyticsConfigurations_602074(
+var listBucketAnalyticsConfigurations* = Call_ListBucketAnalyticsConfigurations_604076(
     name: "listBucketAnalyticsConfigurations", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#analytics",
-    validator: validate_ListBucketAnalyticsConfigurations_602075, base: "/",
-    url: url_ListBucketAnalyticsConfigurations_602076,
+    validator: validate_ListBucketAnalyticsConfigurations_604077, base: "/",
+    url: url_ListBucketAnalyticsConfigurations_604078,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListBucketInventoryConfigurations_602085 = ref object of OpenApiRestCall_600426
-proc url_ListBucketInventoryConfigurations_602087(protocol: Scheme; host: string;
+  Call_ListBucketInventoryConfigurations_604087 = ref object of OpenApiRestCall_602433
+proc url_ListBucketInventoryConfigurations_604089(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -8961,9 +8961,9 @@ proc url_ListBucketInventoryConfigurations_602087(protocol: Scheme; host: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_ListBucketInventoryConfigurations_602086(path: JsonNode;
+proc validate_ListBucketInventoryConfigurations_604088(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of inventory configurations for the bucket.
   ## 
@@ -8974,11 +8974,11 @@ proc validate_ListBucketInventoryConfigurations_602086(path: JsonNode;
   ##         : The name of the bucket containing the inventory configurations to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_602088 = path.getOrDefault("Bucket")
-  valid_602088 = validateParameter(valid_602088, JString, required = true,
+  var valid_604090 = path.getOrDefault("Bucket")
+  valid_604090 = validateParameter(valid_604090, JString, required = true,
                                  default = nil)
-  if valid_602088 != nil:
-    section.add "Bucket", valid_602088
+  if valid_604090 != nil:
+    section.add "Bucket", valid_604090
   result.add "path", section
   ## parameters in `query` object:
   ##   inventory: JBool (required)
@@ -8987,44 +8987,44 @@ proc validate_ListBucketInventoryConfigurations_602086(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `inventory` field"
-  var valid_602089 = query.getOrDefault("inventory")
-  valid_602089 = validateParameter(valid_602089, JBool, required = true, default = nil)
-  if valid_602089 != nil:
-    section.add "inventory", valid_602089
-  var valid_602090 = query.getOrDefault("continuation-token")
-  valid_602090 = validateParameter(valid_602090, JString, required = false,
+  var valid_604091 = query.getOrDefault("inventory")
+  valid_604091 = validateParameter(valid_604091, JBool, required = true, default = nil)
+  if valid_604091 != nil:
+    section.add "inventory", valid_604091
+  var valid_604092 = query.getOrDefault("continuation-token")
+  valid_604092 = validateParameter(valid_604092, JString, required = false,
                                  default = nil)
-  if valid_602090 != nil:
-    section.add "continuation-token", valid_602090
+  if valid_604092 != nil:
+    section.add "continuation-token", valid_604092
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_602091 = header.getOrDefault("x-amz-security-token")
-  valid_602091 = validateParameter(valid_602091, JString, required = false,
+  var valid_604093 = header.getOrDefault("x-amz-security-token")
+  valid_604093 = validateParameter(valid_604093, JString, required = false,
                                  default = nil)
-  if valid_602091 != nil:
-    section.add "x-amz-security-token", valid_602091
+  if valid_604093 != nil:
+    section.add "x-amz-security-token", valid_604093
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602092: Call_ListBucketInventoryConfigurations_602085;
+proc call*(call_604094: Call_ListBucketInventoryConfigurations_604087;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns a list of inventory configurations for the bucket.
   ## 
-  let valid = call_602092.validator(path, query, header, formData, body)
-  let scheme = call_602092.pickScheme
+  let valid = call_604094.validator(path, query, header, formData, body)
+  let scheme = call_604094.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602092.url(scheme.get, call_602092.host, call_602092.base,
-                         call_602092.route, valid.getOrDefault("path"))
-  result = hook(call_602092, url, valid)
+  let url = call_604094.url(scheme.get, call_604094.host, call_604094.base,
+                         call_604094.route, valid.getOrDefault("path"))
+  result = hook(call_604094, url, valid)
 
-proc call*(call_602093: Call_ListBucketInventoryConfigurations_602085;
+proc call*(call_604095: Call_ListBucketInventoryConfigurations_604087;
           inventory: bool; Bucket: string; continuationToken: string = ""): Recallable =
   ## listBucketInventoryConfigurations
   ## Returns a list of inventory configurations for the bucket.
@@ -9033,22 +9033,22 @@ proc call*(call_602093: Call_ListBucketInventoryConfigurations_602085;
   ##                    : The marker used to continue an inventory configuration listing that has been truncated. Use the NextContinuationToken from a previously truncated list response to continue the listing. The continuation token is an opaque value that Amazon S3 understands.
   ##   Bucket: string (required)
   ##         : The name of the bucket containing the inventory configurations to retrieve.
-  var path_602094 = newJObject()
-  var query_602095 = newJObject()
-  add(query_602095, "inventory", newJBool(inventory))
-  add(query_602095, "continuation-token", newJString(continuationToken))
-  add(path_602094, "Bucket", newJString(Bucket))
-  result = call_602093.call(path_602094, query_602095, nil, nil, nil)
+  var path_604096 = newJObject()
+  var query_604097 = newJObject()
+  add(query_604097, "inventory", newJBool(inventory))
+  add(query_604097, "continuation-token", newJString(continuationToken))
+  add(path_604096, "Bucket", newJString(Bucket))
+  result = call_604095.call(path_604096, query_604097, nil, nil, nil)
 
-var listBucketInventoryConfigurations* = Call_ListBucketInventoryConfigurations_602085(
+var listBucketInventoryConfigurations* = Call_ListBucketInventoryConfigurations_604087(
     name: "listBucketInventoryConfigurations", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#inventory",
-    validator: validate_ListBucketInventoryConfigurations_602086, base: "/",
-    url: url_ListBucketInventoryConfigurations_602087,
+    validator: validate_ListBucketInventoryConfigurations_604088, base: "/",
+    url: url_ListBucketInventoryConfigurations_604089,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListBucketMetricsConfigurations_602096 = ref object of OpenApiRestCall_600426
-proc url_ListBucketMetricsConfigurations_602098(protocol: Scheme; host: string;
+  Call_ListBucketMetricsConfigurations_604098 = ref object of OpenApiRestCall_602433
+proc url_ListBucketMetricsConfigurations_604100(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -9059,9 +9059,9 @@ proc url_ListBucketMetricsConfigurations_602098(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_ListBucketMetricsConfigurations_602097(path: JsonNode;
+proc validate_ListBucketMetricsConfigurations_604099(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the metrics configurations for the bucket.
   ## 
@@ -9072,11 +9072,11 @@ proc validate_ListBucketMetricsConfigurations_602097(path: JsonNode;
   ##         : The name of the bucket containing the metrics configurations to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_602099 = path.getOrDefault("Bucket")
-  valid_602099 = validateParameter(valid_602099, JString, required = true,
+  var valid_604101 = path.getOrDefault("Bucket")
+  valid_604101 = validateParameter(valid_604101, JString, required = true,
                                  default = nil)
-  if valid_602099 != nil:
-    section.add "Bucket", valid_602099
+  if valid_604101 != nil:
+    section.add "Bucket", valid_604101
   result.add "path", section
   ## parameters in `query` object:
   ##   metrics: JBool (required)
@@ -9084,44 +9084,44 @@ proc validate_ListBucketMetricsConfigurations_602097(path: JsonNode;
   ##                     : The marker that is used to continue a metrics configuration listing that has been truncated. Use the NextContinuationToken from a previously truncated list response to continue the listing. The continuation token is an opaque value that Amazon S3 understands.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `metrics` field"
-  var valid_602100 = query.getOrDefault("metrics")
-  valid_602100 = validateParameter(valid_602100, JBool, required = true, default = nil)
-  if valid_602100 != nil:
-    section.add "metrics", valid_602100
-  var valid_602101 = query.getOrDefault("continuation-token")
-  valid_602101 = validateParameter(valid_602101, JString, required = false,
+  var valid_604102 = query.getOrDefault("metrics")
+  valid_604102 = validateParameter(valid_604102, JBool, required = true, default = nil)
+  if valid_604102 != nil:
+    section.add "metrics", valid_604102
+  var valid_604103 = query.getOrDefault("continuation-token")
+  valid_604103 = validateParameter(valid_604103, JString, required = false,
                                  default = nil)
-  if valid_602101 != nil:
-    section.add "continuation-token", valid_602101
+  if valid_604103 != nil:
+    section.add "continuation-token", valid_604103
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_602102 = header.getOrDefault("x-amz-security-token")
-  valid_602102 = validateParameter(valid_602102, JString, required = false,
+  var valid_604104 = header.getOrDefault("x-amz-security-token")
+  valid_604104 = validateParameter(valid_604104, JString, required = false,
                                  default = nil)
-  if valid_602102 != nil:
-    section.add "x-amz-security-token", valid_602102
+  if valid_604104 != nil:
+    section.add "x-amz-security-token", valid_604104
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602103: Call_ListBucketMetricsConfigurations_602096;
+proc call*(call_604105: Call_ListBucketMetricsConfigurations_604098;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Lists the metrics configurations for the bucket.
   ## 
-  let valid = call_602103.validator(path, query, header, formData, body)
-  let scheme = call_602103.pickScheme
+  let valid = call_604105.validator(path, query, header, formData, body)
+  let scheme = call_604105.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602103.url(scheme.get, call_602103.host, call_602103.base,
-                         call_602103.route, valid.getOrDefault("path"))
-  result = hook(call_602103, url, valid)
+  let url = call_604105.url(scheme.get, call_604105.host, call_604105.base,
+                         call_604105.route, valid.getOrDefault("path"))
+  result = hook(call_604105, url, valid)
 
-proc call*(call_602104: Call_ListBucketMetricsConfigurations_602096; metrics: bool;
+proc call*(call_604106: Call_ListBucketMetricsConfigurations_604098; metrics: bool;
           Bucket: string; continuationToken: string = ""): Recallable =
   ## listBucketMetricsConfigurations
   ## Lists the metrics configurations for the bucket.
@@ -9130,26 +9130,26 @@ proc call*(call_602104: Call_ListBucketMetricsConfigurations_602096; metrics: bo
   ##                    : The marker that is used to continue a metrics configuration listing that has been truncated. Use the NextContinuationToken from a previously truncated list response to continue the listing. The continuation token is an opaque value that Amazon S3 understands.
   ##   Bucket: string (required)
   ##         : The name of the bucket containing the metrics configurations to retrieve.
-  var path_602105 = newJObject()
-  var query_602106 = newJObject()
-  add(query_602106, "metrics", newJBool(metrics))
-  add(query_602106, "continuation-token", newJString(continuationToken))
-  add(path_602105, "Bucket", newJString(Bucket))
-  result = call_602104.call(path_602105, query_602106, nil, nil, nil)
+  var path_604107 = newJObject()
+  var query_604108 = newJObject()
+  add(query_604108, "metrics", newJBool(metrics))
+  add(query_604108, "continuation-token", newJString(continuationToken))
+  add(path_604107, "Bucket", newJString(Bucket))
+  result = call_604106.call(path_604107, query_604108, nil, nil, nil)
 
-var listBucketMetricsConfigurations* = Call_ListBucketMetricsConfigurations_602096(
+var listBucketMetricsConfigurations* = Call_ListBucketMetricsConfigurations_604098(
     name: "listBucketMetricsConfigurations", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#metrics",
-    validator: validate_ListBucketMetricsConfigurations_602097, base: "/",
-    url: url_ListBucketMetricsConfigurations_602098,
+    validator: validate_ListBucketMetricsConfigurations_604099, base: "/",
+    url: url_ListBucketMetricsConfigurations_604100,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListBuckets_602107 = ref object of OpenApiRestCall_600426
-proc url_ListBuckets_602109(protocol: Scheme; host: string; base: string;
+  Call_ListBuckets_604109 = ref object of OpenApiRestCall_602433
+proc url_ListBuckets_604111(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListBuckets_602108(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListBuckets_604110(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of all buckets owned by the authenticated sender of the request.
   ## 
@@ -9163,45 +9163,45 @@ proc validate_ListBuckets_602108(path: JsonNode; query: JsonNode; header: JsonNo
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_602110 = header.getOrDefault("x-amz-security-token")
-  valid_602110 = validateParameter(valid_602110, JString, required = false,
+  var valid_604112 = header.getOrDefault("x-amz-security-token")
+  valid_604112 = validateParameter(valid_604112, JString, required = false,
                                  default = nil)
-  if valid_602110 != nil:
-    section.add "x-amz-security-token", valid_602110
+  if valid_604112 != nil:
+    section.add "x-amz-security-token", valid_604112
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602111: Call_ListBuckets_602107; path: JsonNode; query: JsonNode;
+proc call*(call_604113: Call_ListBuckets_604109; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of all buckets owned by the authenticated sender of the request.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTServiceGET.html
-  let valid = call_602111.validator(path, query, header, formData, body)
-  let scheme = call_602111.pickScheme
+  let valid = call_604113.validator(path, query, header, formData, body)
+  let scheme = call_604113.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602111.url(scheme.get, call_602111.host, call_602111.base,
-                         call_602111.route, valid.getOrDefault("path"))
-  result = hook(call_602111, url, valid)
+  let url = call_604113.url(scheme.get, call_604113.host, call_604113.base,
+                         call_604113.route, valid.getOrDefault("path"))
+  result = hook(call_604113, url, valid)
 
-proc call*(call_602112: Call_ListBuckets_602107): Recallable =
+proc call*(call_604114: Call_ListBuckets_604109): Recallable =
   ## listBuckets
   ## Returns a list of all buckets owned by the authenticated sender of the request.
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTServiceGET.html
-  result = call_602112.call(nil, nil, nil, nil, nil)
+  result = call_604114.call(nil, nil, nil, nil, nil)
 
-var listBuckets* = Call_ListBuckets_602107(name: "listBuckets",
+var listBuckets* = Call_ListBuckets_604109(name: "listBuckets",
                                         meth: HttpMethod.HttpGet,
                                         host: "s3.amazonaws.com", route: "/",
-                                        validator: validate_ListBuckets_602108,
-                                        base: "/", url: url_ListBuckets_602109,
+                                        validator: validate_ListBuckets_604110,
+                                        base: "/", url: url_ListBuckets_604111,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListMultipartUploads_602113 = ref object of OpenApiRestCall_600426
-proc url_ListMultipartUploads_602115(protocol: Scheme; host: string; base: string;
+  Call_ListMultipartUploads_604115 = ref object of OpenApiRestCall_602433
+proc url_ListMultipartUploads_604117(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -9212,9 +9212,9 @@ proc url_ListMultipartUploads_602115(protocol: Scheme; host: string; base: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_ListMultipartUploads_602114(path: JsonNode; query: JsonNode;
+proc validate_ListMultipartUploads_604116(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation lists in-progress multipart uploads.
   ## 
@@ -9226,11 +9226,11 @@ proc validate_ListMultipartUploads_602114(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_602116 = path.getOrDefault("Bucket")
-  valid_602116 = validateParameter(valid_602116, JString, required = true,
+  var valid_604118 = path.getOrDefault("Bucket")
+  valid_604118 = validateParameter(valid_604118, JString, required = true,
                                  default = nil)
-  if valid_602116 != nil:
-    section.add "Bucket", valid_602116
+  if valid_604118 != nil:
+    section.add "Bucket", valid_604118
   result.add "path", section
   ## parameters in `query` object:
   ##   max-uploads: JInt
@@ -9253,84 +9253,84 @@ proc validate_ListMultipartUploads_602114(path: JsonNode; query: JsonNode;
   ##   UploadIdMarker: JString
   ##                 : Pagination token
   section = newJObject()
-  var valid_602117 = query.getOrDefault("max-uploads")
-  valid_602117 = validateParameter(valid_602117, JInt, required = false, default = nil)
-  if valid_602117 != nil:
-    section.add "max-uploads", valid_602117
-  var valid_602118 = query.getOrDefault("key-marker")
-  valid_602118 = validateParameter(valid_602118, JString, required = false,
+  var valid_604119 = query.getOrDefault("max-uploads")
+  valid_604119 = validateParameter(valid_604119, JInt, required = false, default = nil)
+  if valid_604119 != nil:
+    section.add "max-uploads", valid_604119
+  var valid_604120 = query.getOrDefault("key-marker")
+  valid_604120 = validateParameter(valid_604120, JString, required = false,
                                  default = nil)
-  if valid_602118 != nil:
-    section.add "key-marker", valid_602118
-  var valid_602119 = query.getOrDefault("encoding-type")
-  valid_602119 = validateParameter(valid_602119, JString, required = false,
+  if valid_604120 != nil:
+    section.add "key-marker", valid_604120
+  var valid_604121 = query.getOrDefault("encoding-type")
+  valid_604121 = validateParameter(valid_604121, JString, required = false,
                                  default = newJString("url"))
-  if valid_602119 != nil:
-    section.add "encoding-type", valid_602119
+  if valid_604121 != nil:
+    section.add "encoding-type", valid_604121
   assert query != nil, "query argument is necessary due to required `uploads` field"
-  var valid_602120 = query.getOrDefault("uploads")
-  valid_602120 = validateParameter(valid_602120, JBool, required = true, default = nil)
-  if valid_602120 != nil:
-    section.add "uploads", valid_602120
-  var valid_602121 = query.getOrDefault("MaxUploads")
-  valid_602121 = validateParameter(valid_602121, JString, required = false,
+  var valid_604122 = query.getOrDefault("uploads")
+  valid_604122 = validateParameter(valid_604122, JBool, required = true, default = nil)
+  if valid_604122 != nil:
+    section.add "uploads", valid_604122
+  var valid_604123 = query.getOrDefault("MaxUploads")
+  valid_604123 = validateParameter(valid_604123, JString, required = false,
                                  default = nil)
-  if valid_602121 != nil:
-    section.add "MaxUploads", valid_602121
-  var valid_602122 = query.getOrDefault("delimiter")
-  valid_602122 = validateParameter(valid_602122, JString, required = false,
+  if valid_604123 != nil:
+    section.add "MaxUploads", valid_604123
+  var valid_604124 = query.getOrDefault("delimiter")
+  valid_604124 = validateParameter(valid_604124, JString, required = false,
                                  default = nil)
-  if valid_602122 != nil:
-    section.add "delimiter", valid_602122
-  var valid_602123 = query.getOrDefault("prefix")
-  valid_602123 = validateParameter(valid_602123, JString, required = false,
+  if valid_604124 != nil:
+    section.add "delimiter", valid_604124
+  var valid_604125 = query.getOrDefault("prefix")
+  valid_604125 = validateParameter(valid_604125, JString, required = false,
                                  default = nil)
-  if valid_602123 != nil:
-    section.add "prefix", valid_602123
-  var valid_602124 = query.getOrDefault("upload-id-marker")
-  valid_602124 = validateParameter(valid_602124, JString, required = false,
+  if valid_604125 != nil:
+    section.add "prefix", valid_604125
+  var valid_604126 = query.getOrDefault("upload-id-marker")
+  valid_604126 = validateParameter(valid_604126, JString, required = false,
                                  default = nil)
-  if valid_602124 != nil:
-    section.add "upload-id-marker", valid_602124
-  var valid_602125 = query.getOrDefault("KeyMarker")
-  valid_602125 = validateParameter(valid_602125, JString, required = false,
+  if valid_604126 != nil:
+    section.add "upload-id-marker", valid_604126
+  var valid_604127 = query.getOrDefault("KeyMarker")
+  valid_604127 = validateParameter(valid_604127, JString, required = false,
                                  default = nil)
-  if valid_602125 != nil:
-    section.add "KeyMarker", valid_602125
-  var valid_602126 = query.getOrDefault("UploadIdMarker")
-  valid_602126 = validateParameter(valid_602126, JString, required = false,
+  if valid_604127 != nil:
+    section.add "KeyMarker", valid_604127
+  var valid_604128 = query.getOrDefault("UploadIdMarker")
+  valid_604128 = validateParameter(valid_604128, JString, required = false,
                                  default = nil)
-  if valid_602126 != nil:
-    section.add "UploadIdMarker", valid_602126
+  if valid_604128 != nil:
+    section.add "UploadIdMarker", valid_604128
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_602127 = header.getOrDefault("x-amz-security-token")
-  valid_602127 = validateParameter(valid_602127, JString, required = false,
+  var valid_604129 = header.getOrDefault("x-amz-security-token")
+  valid_604129 = validateParameter(valid_604129, JString, required = false,
                                  default = nil)
-  if valid_602127 != nil:
-    section.add "x-amz-security-token", valid_602127
+  if valid_604129 != nil:
+    section.add "x-amz-security-token", valid_604129
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602128: Call_ListMultipartUploads_602113; path: JsonNode;
+proc call*(call_604130: Call_ListMultipartUploads_604115; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation lists in-progress multipart uploads.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadListMPUpload.html
-  let valid = call_602128.validator(path, query, header, formData, body)
-  let scheme = call_602128.pickScheme
+  let valid = call_604130.validator(path, query, header, formData, body)
+  let scheme = call_604130.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602128.url(scheme.get, call_602128.host, call_602128.base,
-                         call_602128.route, valid.getOrDefault("path"))
-  result = hook(call_602128, url, valid)
+  let url = call_604130.url(scheme.get, call_604130.host, call_604130.base,
+                         call_604130.route, valid.getOrDefault("path"))
+  result = hook(call_604130, url, valid)
 
-proc call*(call_602129: Call_ListMultipartUploads_602113; uploads: bool;
+proc call*(call_604131: Call_ListMultipartUploads_604115; uploads: bool;
           Bucket: string; maxUploads: int = 0; keyMarker: string = "";
           encodingType: string = "url"; MaxUploads: string = ""; delimiter: string = "";
           prefix: string = ""; uploadIdMarker: string = ""; KeyMarker: string = "";
@@ -9359,29 +9359,29 @@ proc call*(call_602129: Call_ListMultipartUploads_602113; uploads: bool;
   ##            : Pagination token
   ##   UploadIdMarker: string
   ##                 : Pagination token
-  var path_602130 = newJObject()
-  var query_602131 = newJObject()
-  add(query_602131, "max-uploads", newJInt(maxUploads))
-  add(query_602131, "key-marker", newJString(keyMarker))
-  add(query_602131, "encoding-type", newJString(encodingType))
-  add(query_602131, "uploads", newJBool(uploads))
-  add(query_602131, "MaxUploads", newJString(MaxUploads))
-  add(query_602131, "delimiter", newJString(delimiter))
-  add(path_602130, "Bucket", newJString(Bucket))
-  add(query_602131, "prefix", newJString(prefix))
-  add(query_602131, "upload-id-marker", newJString(uploadIdMarker))
-  add(query_602131, "KeyMarker", newJString(KeyMarker))
-  add(query_602131, "UploadIdMarker", newJString(UploadIdMarker))
-  result = call_602129.call(path_602130, query_602131, nil, nil, nil)
+  var path_604132 = newJObject()
+  var query_604133 = newJObject()
+  add(query_604133, "max-uploads", newJInt(maxUploads))
+  add(query_604133, "key-marker", newJString(keyMarker))
+  add(query_604133, "encoding-type", newJString(encodingType))
+  add(query_604133, "uploads", newJBool(uploads))
+  add(query_604133, "MaxUploads", newJString(MaxUploads))
+  add(query_604133, "delimiter", newJString(delimiter))
+  add(path_604132, "Bucket", newJString(Bucket))
+  add(query_604133, "prefix", newJString(prefix))
+  add(query_604133, "upload-id-marker", newJString(uploadIdMarker))
+  add(query_604133, "KeyMarker", newJString(KeyMarker))
+  add(query_604133, "UploadIdMarker", newJString(UploadIdMarker))
+  result = call_604131.call(path_604132, query_604133, nil, nil, nil)
 
-var listMultipartUploads* = Call_ListMultipartUploads_602113(
+var listMultipartUploads* = Call_ListMultipartUploads_604115(
     name: "listMultipartUploads", meth: HttpMethod.HttpGet,
     host: "s3.amazonaws.com", route: "/{Bucket}#uploads",
-    validator: validate_ListMultipartUploads_602114, base: "/",
-    url: url_ListMultipartUploads_602115, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListMultipartUploads_604116, base: "/",
+    url: url_ListMultipartUploads_604117, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListObjectVersions_602132 = ref object of OpenApiRestCall_600426
-proc url_ListObjectVersions_602134(protocol: Scheme; host: string; base: string;
+  Call_ListObjectVersions_604134 = ref object of OpenApiRestCall_602433
+proc url_ListObjectVersions_604136(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -9392,9 +9392,9 @@ proc url_ListObjectVersions_602134(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_ListObjectVersions_602133(path: JsonNode; query: JsonNode;
+proc validate_ListObjectVersions_604135(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns metadata about all of the versions of objects in a bucket.
@@ -9407,11 +9407,11 @@ proc validate_ListObjectVersions_602133(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_602135 = path.getOrDefault("Bucket")
-  valid_602135 = validateParameter(valid_602135, JString, required = true,
+  var valid_604137 = path.getOrDefault("Bucket")
+  valid_604137 = validateParameter(valid_604137, JString, required = true,
                                  default = nil)
-  if valid_602135 != nil:
-    section.add "Bucket", valid_602135
+  if valid_604137 != nil:
+    section.add "Bucket", valid_604137
   result.add "path", section
   ## parameters in `query` object:
   ##   key-marker: JString
@@ -9434,85 +9434,85 @@ proc validate_ListObjectVersions_602133(path: JsonNode; query: JsonNode;
   ##   KeyMarker: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_602136 = query.getOrDefault("key-marker")
-  valid_602136 = validateParameter(valid_602136, JString, required = false,
+  var valid_604138 = query.getOrDefault("key-marker")
+  valid_604138 = validateParameter(valid_604138, JString, required = false,
                                  default = nil)
-  if valid_602136 != nil:
-    section.add "key-marker", valid_602136
-  var valid_602137 = query.getOrDefault("max-keys")
-  valid_602137 = validateParameter(valid_602137, JInt, required = false, default = nil)
-  if valid_602137 != nil:
-    section.add "max-keys", valid_602137
-  var valid_602138 = query.getOrDefault("VersionIdMarker")
-  valid_602138 = validateParameter(valid_602138, JString, required = false,
+  if valid_604138 != nil:
+    section.add "key-marker", valid_604138
+  var valid_604139 = query.getOrDefault("max-keys")
+  valid_604139 = validateParameter(valid_604139, JInt, required = false, default = nil)
+  if valid_604139 != nil:
+    section.add "max-keys", valid_604139
+  var valid_604140 = query.getOrDefault("VersionIdMarker")
+  valid_604140 = validateParameter(valid_604140, JString, required = false,
                                  default = nil)
-  if valid_602138 != nil:
-    section.add "VersionIdMarker", valid_602138
+  if valid_604140 != nil:
+    section.add "VersionIdMarker", valid_604140
   assert query != nil,
         "query argument is necessary due to required `versions` field"
-  var valid_602139 = query.getOrDefault("versions")
-  valid_602139 = validateParameter(valid_602139, JBool, required = true, default = nil)
-  if valid_602139 != nil:
-    section.add "versions", valid_602139
-  var valid_602140 = query.getOrDefault("encoding-type")
-  valid_602140 = validateParameter(valid_602140, JString, required = false,
+  var valid_604141 = query.getOrDefault("versions")
+  valid_604141 = validateParameter(valid_604141, JBool, required = true, default = nil)
+  if valid_604141 != nil:
+    section.add "versions", valid_604141
+  var valid_604142 = query.getOrDefault("encoding-type")
+  valid_604142 = validateParameter(valid_604142, JString, required = false,
                                  default = newJString("url"))
-  if valid_602140 != nil:
-    section.add "encoding-type", valid_602140
-  var valid_602141 = query.getOrDefault("version-id-marker")
-  valid_602141 = validateParameter(valid_602141, JString, required = false,
+  if valid_604142 != nil:
+    section.add "encoding-type", valid_604142
+  var valid_604143 = query.getOrDefault("version-id-marker")
+  valid_604143 = validateParameter(valid_604143, JString, required = false,
                                  default = nil)
-  if valid_602141 != nil:
-    section.add "version-id-marker", valid_602141
-  var valid_602142 = query.getOrDefault("delimiter")
-  valid_602142 = validateParameter(valid_602142, JString, required = false,
+  if valid_604143 != nil:
+    section.add "version-id-marker", valid_604143
+  var valid_604144 = query.getOrDefault("delimiter")
+  valid_604144 = validateParameter(valid_604144, JString, required = false,
                                  default = nil)
-  if valid_602142 != nil:
-    section.add "delimiter", valid_602142
-  var valid_602143 = query.getOrDefault("prefix")
-  valid_602143 = validateParameter(valid_602143, JString, required = false,
+  if valid_604144 != nil:
+    section.add "delimiter", valid_604144
+  var valid_604145 = query.getOrDefault("prefix")
+  valid_604145 = validateParameter(valid_604145, JString, required = false,
                                  default = nil)
-  if valid_602143 != nil:
-    section.add "prefix", valid_602143
-  var valid_602144 = query.getOrDefault("MaxKeys")
-  valid_602144 = validateParameter(valid_602144, JString, required = false,
+  if valid_604145 != nil:
+    section.add "prefix", valid_604145
+  var valid_604146 = query.getOrDefault("MaxKeys")
+  valid_604146 = validateParameter(valid_604146, JString, required = false,
                                  default = nil)
-  if valid_602144 != nil:
-    section.add "MaxKeys", valid_602144
-  var valid_602145 = query.getOrDefault("KeyMarker")
-  valid_602145 = validateParameter(valid_602145, JString, required = false,
+  if valid_604146 != nil:
+    section.add "MaxKeys", valid_604146
+  var valid_604147 = query.getOrDefault("KeyMarker")
+  valid_604147 = validateParameter(valid_604147, JString, required = false,
                                  default = nil)
-  if valid_602145 != nil:
-    section.add "KeyMarker", valid_602145
+  if valid_604147 != nil:
+    section.add "KeyMarker", valid_604147
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
   section = newJObject()
-  var valid_602146 = header.getOrDefault("x-amz-security-token")
-  valid_602146 = validateParameter(valid_602146, JString, required = false,
+  var valid_604148 = header.getOrDefault("x-amz-security-token")
+  valid_604148 = validateParameter(valid_604148, JString, required = false,
                                  default = nil)
-  if valid_602146 != nil:
-    section.add "x-amz-security-token", valid_602146
+  if valid_604148 != nil:
+    section.add "x-amz-security-token", valid_604148
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602147: Call_ListObjectVersions_602132; path: JsonNode;
+proc call*(call_604149: Call_ListObjectVersions_604134; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns metadata about all of the versions of objects in a bucket.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTBucketGETVersion.html
-  let valid = call_602147.validator(path, query, header, formData, body)
-  let scheme = call_602147.pickScheme
+  let valid = call_604149.validator(path, query, header, formData, body)
+  let scheme = call_604149.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602147.url(scheme.get, call_602147.host, call_602147.base,
-                         call_602147.route, valid.getOrDefault("path"))
-  result = hook(call_602147, url, valid)
+  let url = call_604149.url(scheme.get, call_604149.host, call_604149.base,
+                         call_604149.route, valid.getOrDefault("path"))
+  result = hook(call_604149, url, valid)
 
-proc call*(call_602148: Call_ListObjectVersions_602132; versions: bool;
+proc call*(call_604150: Call_ListObjectVersions_604134; versions: bool;
           Bucket: string; keyMarker: string = ""; maxKeys: int = 0;
           VersionIdMarker: string = ""; encodingType: string = "url";
           versionIdMarker: string = ""; delimiter: string = ""; prefix: string = "";
@@ -9541,29 +9541,29 @@ proc call*(call_602148: Call_ListObjectVersions_602132; versions: bool;
   ##          : Pagination limit
   ##   KeyMarker: string
   ##            : Pagination token
-  var path_602149 = newJObject()
-  var query_602150 = newJObject()
-  add(query_602150, "key-marker", newJString(keyMarker))
-  add(query_602150, "max-keys", newJInt(maxKeys))
-  add(query_602150, "VersionIdMarker", newJString(VersionIdMarker))
-  add(query_602150, "versions", newJBool(versions))
-  add(query_602150, "encoding-type", newJString(encodingType))
-  add(query_602150, "version-id-marker", newJString(versionIdMarker))
-  add(query_602150, "delimiter", newJString(delimiter))
-  add(path_602149, "Bucket", newJString(Bucket))
-  add(query_602150, "prefix", newJString(prefix))
-  add(query_602150, "MaxKeys", newJString(MaxKeys))
-  add(query_602150, "KeyMarker", newJString(KeyMarker))
-  result = call_602148.call(path_602149, query_602150, nil, nil, nil)
+  var path_604151 = newJObject()
+  var query_604152 = newJObject()
+  add(query_604152, "key-marker", newJString(keyMarker))
+  add(query_604152, "max-keys", newJInt(maxKeys))
+  add(query_604152, "VersionIdMarker", newJString(VersionIdMarker))
+  add(query_604152, "versions", newJBool(versions))
+  add(query_604152, "encoding-type", newJString(encodingType))
+  add(query_604152, "version-id-marker", newJString(versionIdMarker))
+  add(query_604152, "delimiter", newJString(delimiter))
+  add(path_604151, "Bucket", newJString(Bucket))
+  add(query_604152, "prefix", newJString(prefix))
+  add(query_604152, "MaxKeys", newJString(MaxKeys))
+  add(query_604152, "KeyMarker", newJString(KeyMarker))
+  result = call_604150.call(path_604151, query_604152, nil, nil, nil)
 
-var listObjectVersions* = Call_ListObjectVersions_602132(
+var listObjectVersions* = Call_ListObjectVersions_604134(
     name: "listObjectVersions", meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}#versions", validator: validate_ListObjectVersions_602133,
-    base: "/", url: url_ListObjectVersions_602134,
+    route: "/{Bucket}#versions", validator: validate_ListObjectVersions_604135,
+    base: "/", url: url_ListObjectVersions_604136,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListObjectsV2_602151 = ref object of OpenApiRestCall_600426
-proc url_ListObjectsV2_602153(protocol: Scheme; host: string; base: string;
+  Call_ListObjectsV2_604153 = ref object of OpenApiRestCall_602433
+proc url_ListObjectsV2_604155(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -9574,9 +9574,9 @@ proc url_ListObjectsV2_602153(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_ListObjectsV2_602152(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListObjectsV2_604154(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns some or all (up to 1000) of the objects in a bucket. You can use the request parameters as selection criteria to return a subset of the objects in a bucket. Note: ListObjectsV2 is the revised List Objects API and we recommend you use this revised API for new application development.
   ## 
@@ -9587,11 +9587,11 @@ proc validate_ListObjectsV2_602152(path: JsonNode; query: JsonNode; header: Json
   ##         : Name of the bucket to list.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Bucket` field"
-  var valid_602154 = path.getOrDefault("Bucket")
-  valid_602154 = validateParameter(valid_602154, JString, required = true,
+  var valid_604156 = path.getOrDefault("Bucket")
+  valid_604156 = validateParameter(valid_604156, JString, required = true,
                                  default = nil)
-  if valid_602154 != nil:
-    section.add "Bucket", valid_602154
+  if valid_604156 != nil:
+    section.add "Bucket", valid_604156
   result.add "path", section
   ## parameters in `query` object:
   ##   list-type: JString (required)
@@ -9616,54 +9616,54 @@ proc validate_ListObjectsV2_602152(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `list-type` field"
-  var valid_602155 = query.getOrDefault("list-type")
-  valid_602155 = validateParameter(valid_602155, JString, required = true,
+  var valid_604157 = query.getOrDefault("list-type")
+  valid_604157 = validateParameter(valid_604157, JString, required = true,
                                  default = newJString("2"))
-  if valid_602155 != nil:
-    section.add "list-type", valid_602155
-  var valid_602156 = query.getOrDefault("max-keys")
-  valid_602156 = validateParameter(valid_602156, JInt, required = false, default = nil)
-  if valid_602156 != nil:
-    section.add "max-keys", valid_602156
-  var valid_602157 = query.getOrDefault("encoding-type")
-  valid_602157 = validateParameter(valid_602157, JString, required = false,
+  if valid_604157 != nil:
+    section.add "list-type", valid_604157
+  var valid_604158 = query.getOrDefault("max-keys")
+  valid_604158 = validateParameter(valid_604158, JInt, required = false, default = nil)
+  if valid_604158 != nil:
+    section.add "max-keys", valid_604158
+  var valid_604159 = query.getOrDefault("encoding-type")
+  valid_604159 = validateParameter(valid_604159, JString, required = false,
                                  default = newJString("url"))
-  if valid_602157 != nil:
-    section.add "encoding-type", valid_602157
-  var valid_602158 = query.getOrDefault("continuation-token")
-  valid_602158 = validateParameter(valid_602158, JString, required = false,
+  if valid_604159 != nil:
+    section.add "encoding-type", valid_604159
+  var valid_604160 = query.getOrDefault("continuation-token")
+  valid_604160 = validateParameter(valid_604160, JString, required = false,
                                  default = nil)
-  if valid_602158 != nil:
-    section.add "continuation-token", valid_602158
-  var valid_602159 = query.getOrDefault("fetch-owner")
-  valid_602159 = validateParameter(valid_602159, JBool, required = false, default = nil)
-  if valid_602159 != nil:
-    section.add "fetch-owner", valid_602159
-  var valid_602160 = query.getOrDefault("delimiter")
-  valid_602160 = validateParameter(valid_602160, JString, required = false,
+  if valid_604160 != nil:
+    section.add "continuation-token", valid_604160
+  var valid_604161 = query.getOrDefault("fetch-owner")
+  valid_604161 = validateParameter(valid_604161, JBool, required = false, default = nil)
+  if valid_604161 != nil:
+    section.add "fetch-owner", valid_604161
+  var valid_604162 = query.getOrDefault("delimiter")
+  valid_604162 = validateParameter(valid_604162, JString, required = false,
                                  default = nil)
-  if valid_602160 != nil:
-    section.add "delimiter", valid_602160
-  var valid_602161 = query.getOrDefault("start-after")
-  valid_602161 = validateParameter(valid_602161, JString, required = false,
+  if valid_604162 != nil:
+    section.add "delimiter", valid_604162
+  var valid_604163 = query.getOrDefault("start-after")
+  valid_604163 = validateParameter(valid_604163, JString, required = false,
                                  default = nil)
-  if valid_602161 != nil:
-    section.add "start-after", valid_602161
-  var valid_602162 = query.getOrDefault("ContinuationToken")
-  valid_602162 = validateParameter(valid_602162, JString, required = false,
+  if valid_604163 != nil:
+    section.add "start-after", valid_604163
+  var valid_604164 = query.getOrDefault("ContinuationToken")
+  valid_604164 = validateParameter(valid_604164, JString, required = false,
                                  default = nil)
-  if valid_602162 != nil:
-    section.add "ContinuationToken", valid_602162
-  var valid_602163 = query.getOrDefault("prefix")
-  valid_602163 = validateParameter(valid_602163, JString, required = false,
+  if valid_604164 != nil:
+    section.add "ContinuationToken", valid_604164
+  var valid_604165 = query.getOrDefault("prefix")
+  valid_604165 = validateParameter(valid_604165, JString, required = false,
                                  default = nil)
-  if valid_602163 != nil:
-    section.add "prefix", valid_602163
-  var valid_602164 = query.getOrDefault("MaxKeys")
-  valid_602164 = validateParameter(valid_602164, JString, required = false,
+  if valid_604165 != nil:
+    section.add "prefix", valid_604165
+  var valid_604166 = query.getOrDefault("MaxKeys")
+  valid_604166 = validateParameter(valid_604166, JString, required = false,
                                  default = nil)
-  if valid_602164 != nil:
-    section.add "MaxKeys", valid_602164
+  if valid_604166 != nil:
+    section.add "MaxKeys", valid_604166
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -9671,35 +9671,35 @@ proc validate_ListObjectsV2_602152(path: JsonNode; query: JsonNode; header: Json
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_602165 = header.getOrDefault("x-amz-security-token")
-  valid_602165 = validateParameter(valid_602165, JString, required = false,
+  var valid_604167 = header.getOrDefault("x-amz-security-token")
+  valid_604167 = validateParameter(valid_604167, JString, required = false,
                                  default = nil)
-  if valid_602165 != nil:
-    section.add "x-amz-security-token", valid_602165
-  var valid_602166 = header.getOrDefault("x-amz-request-payer")
-  valid_602166 = validateParameter(valid_602166, JString, required = false,
+  if valid_604167 != nil:
+    section.add "x-amz-security-token", valid_604167
+  var valid_604168 = header.getOrDefault("x-amz-request-payer")
+  valid_604168 = validateParameter(valid_604168, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602166 != nil:
-    section.add "x-amz-request-payer", valid_602166
+  if valid_604168 != nil:
+    section.add "x-amz-request-payer", valid_604168
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602167: Call_ListObjectsV2_602151; path: JsonNode; query: JsonNode;
+proc call*(call_604169: Call_ListObjectsV2_604153; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns some or all (up to 1000) of the objects in a bucket. You can use the request parameters as selection criteria to return a subset of the objects in a bucket. Note: ListObjectsV2 is the revised List Objects API and we recommend you use this revised API for new application development.
   ## 
-  let valid = call_602167.validator(path, query, header, formData, body)
-  let scheme = call_602167.pickScheme
+  let valid = call_604169.validator(path, query, header, formData, body)
+  let scheme = call_604169.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602167.url(scheme.get, call_602167.host, call_602167.base,
-                         call_602167.route, valid.getOrDefault("path"))
-  result = hook(call_602167, url, valid)
+  let url = call_604169.url(scheme.get, call_604169.host, call_604169.base,
+                         call_604169.route, valid.getOrDefault("path"))
+  result = hook(call_604169, url, valid)
 
-proc call*(call_602168: Call_ListObjectsV2_602151; Bucket: string;
+proc call*(call_604170: Call_ListObjectsV2_604153; Bucket: string;
           listType: string = "2"; maxKeys: int = 0; encodingType: string = "url";
           continuationToken: string = ""; fetchOwner: bool = false;
           delimiter: string = ""; startAfter: string = "";
@@ -9727,28 +9727,28 @@ proc call*(call_602168: Call_ListObjectsV2_602151; Bucket: string;
   ##         : Limits the response to keys that begin with the specified prefix.
   ##   MaxKeys: string
   ##          : Pagination limit
-  var path_602169 = newJObject()
-  var query_602170 = newJObject()
-  add(query_602170, "list-type", newJString(listType))
-  add(query_602170, "max-keys", newJInt(maxKeys))
-  add(query_602170, "encoding-type", newJString(encodingType))
-  add(query_602170, "continuation-token", newJString(continuationToken))
-  add(query_602170, "fetch-owner", newJBool(fetchOwner))
-  add(query_602170, "delimiter", newJString(delimiter))
-  add(path_602169, "Bucket", newJString(Bucket))
-  add(query_602170, "start-after", newJString(startAfter))
-  add(query_602170, "ContinuationToken", newJString(ContinuationToken))
-  add(query_602170, "prefix", newJString(prefix))
-  add(query_602170, "MaxKeys", newJString(MaxKeys))
-  result = call_602168.call(path_602169, query_602170, nil, nil, nil)
+  var path_604171 = newJObject()
+  var query_604172 = newJObject()
+  add(query_604172, "list-type", newJString(listType))
+  add(query_604172, "max-keys", newJInt(maxKeys))
+  add(query_604172, "encoding-type", newJString(encodingType))
+  add(query_604172, "continuation-token", newJString(continuationToken))
+  add(query_604172, "fetch-owner", newJBool(fetchOwner))
+  add(query_604172, "delimiter", newJString(delimiter))
+  add(path_604171, "Bucket", newJString(Bucket))
+  add(query_604172, "start-after", newJString(startAfter))
+  add(query_604172, "ContinuationToken", newJString(ContinuationToken))
+  add(query_604172, "prefix", newJString(prefix))
+  add(query_604172, "MaxKeys", newJString(MaxKeys))
+  result = call_604170.call(path_604171, query_604172, nil, nil, nil)
 
-var listObjectsV2* = Call_ListObjectsV2_602151(name: "listObjectsV2",
+var listObjectsV2* = Call_ListObjectsV2_604153(name: "listObjectsV2",
     meth: HttpMethod.HttpGet, host: "s3.amazonaws.com",
-    route: "/{Bucket}#list-type=2", validator: validate_ListObjectsV2_602152,
-    base: "/", url: url_ListObjectsV2_602153, schemes: {Scheme.Https, Scheme.Http})
+    route: "/{Bucket}#list-type=2", validator: validate_ListObjectsV2_604154,
+    base: "/", url: url_ListObjectsV2_604155, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestoreObject_602171 = ref object of OpenApiRestCall_600426
-proc url_RestoreObject_602173(protocol: Scheme; host: string; base: string;
+  Call_RestoreObject_604173 = ref object of OpenApiRestCall_602433
+proc url_RestoreObject_604175(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -9762,9 +9762,9 @@ proc url_RestoreObject_602173(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_RestoreObject_602172(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RestoreObject_604174(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Restores an archived copy of an object back into Amazon S3
   ## 
@@ -9778,32 +9778,32 @@ proc validate_RestoreObject_602172(path: JsonNode; query: JsonNode; header: Json
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_602174 = path.getOrDefault("Key")
-  valid_602174 = validateParameter(valid_602174, JString, required = true,
+  var valid_604176 = path.getOrDefault("Key")
+  valid_604176 = validateParameter(valid_604176, JString, required = true,
                                  default = nil)
-  if valid_602174 != nil:
-    section.add "Key", valid_602174
-  var valid_602175 = path.getOrDefault("Bucket")
-  valid_602175 = validateParameter(valid_602175, JString, required = true,
+  if valid_604176 != nil:
+    section.add "Key", valid_604176
+  var valid_604177 = path.getOrDefault("Bucket")
+  valid_604177 = validateParameter(valid_604177, JString, required = true,
                                  default = nil)
-  if valid_602175 != nil:
-    section.add "Bucket", valid_602175
+  if valid_604177 != nil:
+    section.add "Bucket", valid_604177
   result.add "path", section
   ## parameters in `query` object:
   ##   versionId: JString
   ##            : <p/>
   ##   restore: JBool (required)
   section = newJObject()
-  var valid_602176 = query.getOrDefault("versionId")
-  valid_602176 = validateParameter(valid_602176, JString, required = false,
+  var valid_604178 = query.getOrDefault("versionId")
+  valid_604178 = validateParameter(valid_604178, JString, required = false,
                                  default = nil)
-  if valid_602176 != nil:
-    section.add "versionId", valid_602176
+  if valid_604178 != nil:
+    section.add "versionId", valid_604178
   assert query != nil, "query argument is necessary due to required `restore` field"
-  var valid_602177 = query.getOrDefault("restore")
-  valid_602177 = validateParameter(valid_602177, JBool, required = true, default = nil)
-  if valid_602177 != nil:
-    section.add "restore", valid_602177
+  var valid_604179 = query.getOrDefault("restore")
+  valid_604179 = validateParameter(valid_604179, JBool, required = true, default = nil)
+  if valid_604179 != nil:
+    section.add "restore", valid_604179
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -9811,16 +9811,16 @@ proc validate_RestoreObject_602172(path: JsonNode; query: JsonNode; header: Json
   ##                      : Confirms that the requester knows that she or he will be charged for the request. Bucket owners need not specify this parameter in their requests. Documentation on downloading objects from requester pays buckets can be found at 
   ## http://docs.aws.amazon.com/AmazonS3/latest/dev/ObjectsinRequesterPaysBuckets.html
   section = newJObject()
-  var valid_602178 = header.getOrDefault("x-amz-security-token")
-  valid_602178 = validateParameter(valid_602178, JString, required = false,
+  var valid_604180 = header.getOrDefault("x-amz-security-token")
+  valid_604180 = validateParameter(valid_604180, JString, required = false,
                                  default = nil)
-  if valid_602178 != nil:
-    section.add "x-amz-security-token", valid_602178
-  var valid_602179 = header.getOrDefault("x-amz-request-payer")
-  valid_602179 = validateParameter(valid_602179, JString, required = false,
+  if valid_604180 != nil:
+    section.add "x-amz-security-token", valid_604180
+  var valid_604181 = header.getOrDefault("x-amz-request-payer")
+  valid_604181 = validateParameter(valid_604181, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602179 != nil:
-    section.add "x-amz-request-payer", valid_602179
+  if valid_604181 != nil:
+    section.add "x-amz-request-payer", valid_604181
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9831,20 +9831,20 @@ proc validate_RestoreObject_602172(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_602181: Call_RestoreObject_602171; path: JsonNode; query: JsonNode;
+proc call*(call_604183: Call_RestoreObject_604173; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Restores an archived copy of an object back into Amazon S3
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectRestore.html
-  let valid = call_602181.validator(path, query, header, formData, body)
-  let scheme = call_602181.pickScheme
+  let valid = call_604183.validator(path, query, header, formData, body)
+  let scheme = call_604183.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602181.url(scheme.get, call_602181.host, call_602181.base,
-                         call_602181.route, valid.getOrDefault("path"))
-  result = hook(call_602181, url, valid)
+  let url = call_604183.url(scheme.get, call_604183.host, call_604183.base,
+                         call_604183.route, valid.getOrDefault("path"))
+  result = hook(call_604183, url, valid)
 
-proc call*(call_602182: Call_RestoreObject_602171; Key: string; restore: bool;
+proc call*(call_604184: Call_RestoreObject_604173; Key: string; restore: bool;
           Bucket: string; body: JsonNode; versionId: string = ""): Recallable =
   ## restoreObject
   ## Restores an archived copy of an object back into Amazon S3
@@ -9857,24 +9857,24 @@ proc call*(call_602182: Call_RestoreObject_602171; Key: string; restore: bool;
   ##   Bucket: string (required)
   ##         : <p/>
   ##   body: JObject (required)
-  var path_602183 = newJObject()
-  var query_602184 = newJObject()
-  var body_602185 = newJObject()
-  add(query_602184, "versionId", newJString(versionId))
-  add(path_602183, "Key", newJString(Key))
-  add(query_602184, "restore", newJBool(restore))
-  add(path_602183, "Bucket", newJString(Bucket))
+  var path_604185 = newJObject()
+  var query_604186 = newJObject()
+  var body_604187 = newJObject()
+  add(query_604186, "versionId", newJString(versionId))
+  add(path_604185, "Key", newJString(Key))
+  add(query_604186, "restore", newJBool(restore))
+  add(path_604185, "Bucket", newJString(Bucket))
   if body != nil:
-    body_602185 = body
-  result = call_602182.call(path_602183, query_602184, nil, nil, body_602185)
+    body_604187 = body
+  result = call_604184.call(path_604185, query_604186, nil, nil, body_604187)
 
-var restoreObject* = Call_RestoreObject_602171(name: "restoreObject",
+var restoreObject* = Call_RestoreObject_604173(name: "restoreObject",
     meth: HttpMethod.HttpPost, host: "s3.amazonaws.com",
-    route: "/{Bucket}/{Key}#restore", validator: validate_RestoreObject_602172,
-    base: "/", url: url_RestoreObject_602173, schemes: {Scheme.Https, Scheme.Http})
+    route: "/{Bucket}/{Key}#restore", validator: validate_RestoreObject_604174,
+    base: "/", url: url_RestoreObject_604175, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SelectObjectContent_602186 = ref object of OpenApiRestCall_600426
-proc url_SelectObjectContent_602188(protocol: Scheme; host: string; base: string;
+  Call_SelectObjectContent_604188 = ref object of OpenApiRestCall_602433
+proc url_SelectObjectContent_604190(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -9888,9 +9888,9 @@ proc url_SelectObjectContent_602188(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_SelectObjectContent_602187(path: JsonNode; query: JsonNode;
+proc validate_SelectObjectContent_604189(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## This operation filters the contents of an Amazon S3 object based on a simple Structured Query Language (SQL) statement. In the request, along with the SQL expression, you must also specify a data serialization format (JSON or CSV) of the object. Amazon S3 uses this to parse object data into records, and returns only records that match the specified SQL expression. You must also specify the data serialization format for the response.
@@ -9904,31 +9904,31 @@ proc validate_SelectObjectContent_602187(path: JsonNode; query: JsonNode;
   ##         : The S3 bucket.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_602189 = path.getOrDefault("Key")
-  valid_602189 = validateParameter(valid_602189, JString, required = true,
+  var valid_604191 = path.getOrDefault("Key")
+  valid_604191 = validateParameter(valid_604191, JString, required = true,
                                  default = nil)
-  if valid_602189 != nil:
-    section.add "Key", valid_602189
-  var valid_602190 = path.getOrDefault("Bucket")
-  valid_602190 = validateParameter(valid_602190, JString, required = true,
+  if valid_604191 != nil:
+    section.add "Key", valid_604191
+  var valid_604192 = path.getOrDefault("Bucket")
+  valid_604192 = validateParameter(valid_604192, JString, required = true,
                                  default = nil)
-  if valid_602190 != nil:
-    section.add "Bucket", valid_602190
+  if valid_604192 != nil:
+    section.add "Bucket", valid_604192
   result.add "path", section
   ## parameters in `query` object:
   ##   select: JBool (required)
   ##   select-type: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `select` field"
-  var valid_602191 = query.getOrDefault("select")
-  valid_602191 = validateParameter(valid_602191, JBool, required = true, default = nil)
-  if valid_602191 != nil:
-    section.add "select", valid_602191
-  var valid_602192 = query.getOrDefault("select-type")
-  valid_602192 = validateParameter(valid_602192, JString, required = true,
+  var valid_604193 = query.getOrDefault("select")
+  valid_604193 = validateParameter(valid_604193, JBool, required = true, default = nil)
+  if valid_604193 != nil:
+    section.add "select", valid_604193
+  var valid_604194 = query.getOrDefault("select-type")
+  valid_604194 = validateParameter(valid_604194, JString, required = true,
                                  default = newJString("2"))
-  if valid_602192 != nil:
-    section.add "select-type", valid_602192
+  if valid_604194 != nil:
+    section.add "select-type", valid_604194
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -9942,26 +9942,26 @@ proc validate_SelectObjectContent_602187(path: JsonNode; query: JsonNode;
   ##                                            : The SSE Customer Key. For more information, see <a 
   ## href="https://docs.aws.amazon.com/AmazonS3/latest/dev/ServerSideEncryptionCustomerKeys.html"> Server-Side Encryption (Using Customer-Provided Encryption Keys</a>. 
   section = newJObject()
-  var valid_602193 = header.getOrDefault("x-amz-security-token")
-  valid_602193 = validateParameter(valid_602193, JString, required = false,
+  var valid_604195 = header.getOrDefault("x-amz-security-token")
+  valid_604195 = validateParameter(valid_604195, JString, required = false,
                                  default = nil)
-  if valid_602193 != nil:
-    section.add "x-amz-security-token", valid_602193
-  var valid_602194 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
-  valid_602194 = validateParameter(valid_602194, JString, required = false,
+  if valid_604195 != nil:
+    section.add "x-amz-security-token", valid_604195
+  var valid_604196 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
+  valid_604196 = validateParameter(valid_604196, JString, required = false,
                                  default = nil)
-  if valid_602194 != nil:
-    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_602194
-  var valid_602195 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
-  valid_602195 = validateParameter(valid_602195, JString, required = false,
+  if valid_604196 != nil:
+    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_604196
+  var valid_604197 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
+  valid_604197 = validateParameter(valid_604197, JString, required = false,
                                  default = nil)
-  if valid_602195 != nil:
-    section.add "x-amz-server-side-encryption-customer-algorithm", valid_602195
-  var valid_602196 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
-  valid_602196 = validateParameter(valid_602196, JString, required = false,
+  if valid_604197 != nil:
+    section.add "x-amz-server-side-encryption-customer-algorithm", valid_604197
+  var valid_604198 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
+  valid_604198 = validateParameter(valid_604198, JString, required = false,
                                  default = nil)
-  if valid_602196 != nil:
-    section.add "x-amz-server-side-encryption-customer-key", valid_602196
+  if valid_604198 != nil:
+    section.add "x-amz-server-side-encryption-customer-key", valid_604198
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9972,19 +9972,19 @@ proc validate_SelectObjectContent_602187(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602198: Call_SelectObjectContent_602186; path: JsonNode;
+proc call*(call_604200: Call_SelectObjectContent_604188; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation filters the contents of an Amazon S3 object based on a simple Structured Query Language (SQL) statement. In the request, along with the SQL expression, you must also specify a data serialization format (JSON or CSV) of the object. Amazon S3 uses this to parse object data into records, and returns only records that match the specified SQL expression. You must also specify the data serialization format for the response.
   ## 
-  let valid = call_602198.validator(path, query, header, formData, body)
-  let scheme = call_602198.pickScheme
+  let valid = call_604200.validator(path, query, header, formData, body)
+  let scheme = call_604200.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602198.url(scheme.get, call_602198.host, call_602198.base,
-                         call_602198.route, valid.getOrDefault("path"))
-  result = hook(call_602198, url, valid)
+  let url = call_604200.url(scheme.get, call_604200.host, call_604200.base,
+                         call_604200.route, valid.getOrDefault("path"))
+  result = hook(call_604200, url, valid)
 
-proc call*(call_602199: Call_SelectObjectContent_602186; select: bool; Key: string;
+proc call*(call_604201: Call_SelectObjectContent_604188; select: bool; Key: string;
           Bucket: string; body: JsonNode; selectType: string = "2"): Recallable =
   ## selectObjectContent
   ## This operation filters the contents of an Amazon S3 object based on a simple Structured Query Language (SQL) statement. In the request, along with the SQL expression, you must also specify a data serialization format (JSON or CSV) of the object. Amazon S3 uses this to parse object data into records, and returns only records that match the specified SQL expression. You must also specify the data serialization format for the response.
@@ -9995,25 +9995,25 @@ proc call*(call_602199: Call_SelectObjectContent_602186; select: bool; Key: stri
   ##         : The S3 bucket.
   ##   body: JObject (required)
   ##   selectType: string (required)
-  var path_602200 = newJObject()
-  var query_602201 = newJObject()
-  var body_602202 = newJObject()
-  add(query_602201, "select", newJBool(select))
-  add(path_602200, "Key", newJString(Key))
-  add(path_602200, "Bucket", newJString(Bucket))
+  var path_604202 = newJObject()
+  var query_604203 = newJObject()
+  var body_604204 = newJObject()
+  add(query_604203, "select", newJBool(select))
+  add(path_604202, "Key", newJString(Key))
+  add(path_604202, "Bucket", newJString(Bucket))
   if body != nil:
-    body_602202 = body
-  add(query_602201, "select-type", newJString(selectType))
-  result = call_602199.call(path_602200, query_602201, nil, nil, body_602202)
+    body_604204 = body
+  add(query_604203, "select-type", newJString(selectType))
+  result = call_604201.call(path_604202, query_604203, nil, nil, body_604204)
 
-var selectObjectContent* = Call_SelectObjectContent_602186(
+var selectObjectContent* = Call_SelectObjectContent_604188(
     name: "selectObjectContent", meth: HttpMethod.HttpPost,
     host: "s3.amazonaws.com", route: "/{Bucket}/{Key}#select&select-type=2",
-    validator: validate_SelectObjectContent_602187, base: "/",
-    url: url_SelectObjectContent_602188, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SelectObjectContent_604189, base: "/",
+    url: url_SelectObjectContent_604190, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UploadPart_602203 = ref object of OpenApiRestCall_600426
-proc url_UploadPart_602205(protocol: Scheme; host: string; base: string; route: string;
+  Call_UploadPart_604205 = ref object of OpenApiRestCall_602433
+proc url_UploadPart_604207(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -10027,9 +10027,9 @@ proc url_UploadPart_602205(protocol: Scheme; host: string; base: string; route: 
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_UploadPart_602204(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UploadPart_604206(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Uploads a part in a multipart upload.</p> <p> <b>Note:</b> After you initiate multipart upload and upload one or more parts, you must either complete or abort multipart upload in order to stop getting charged for storage of the uploaded parts. Only after you either complete or abort multipart upload, Amazon S3 frees up the parts storage and stops charging you for the parts storage.</p>
   ## 
@@ -10043,16 +10043,16 @@ proc validate_UploadPart_602204(path: JsonNode; query: JsonNode; header: JsonNod
   ##         : Name of the bucket to which the multipart upload was initiated.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_602206 = path.getOrDefault("Key")
-  valid_602206 = validateParameter(valid_602206, JString, required = true,
+  var valid_604208 = path.getOrDefault("Key")
+  valid_604208 = validateParameter(valid_604208, JString, required = true,
                                  default = nil)
-  if valid_602206 != nil:
-    section.add "Key", valid_602206
-  var valid_602207 = path.getOrDefault("Bucket")
-  valid_602207 = validateParameter(valid_602207, JString, required = true,
+  if valid_604208 != nil:
+    section.add "Key", valid_604208
+  var valid_604209 = path.getOrDefault("Bucket")
+  valid_604209 = validateParameter(valid_604209, JString, required = true,
                                  default = nil)
-  if valid_602207 != nil:
-    section.add "Bucket", valid_602207
+  if valid_604209 != nil:
+    section.add "Bucket", valid_604209
   result.add "path", section
   ## parameters in `query` object:
   ##   uploadId: JString (required)
@@ -10062,15 +10062,15 @@ proc validate_UploadPart_602204(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `uploadId` field"
-  var valid_602208 = query.getOrDefault("uploadId")
-  valid_602208 = validateParameter(valid_602208, JString, required = true,
+  var valid_604210 = query.getOrDefault("uploadId")
+  valid_604210 = validateParameter(valid_604210, JString, required = true,
                                  default = nil)
-  if valid_602208 != nil:
-    section.add "uploadId", valid_602208
-  var valid_602209 = query.getOrDefault("partNumber")
-  valid_602209 = validateParameter(valid_602209, JInt, required = true, default = nil)
-  if valid_602209 != nil:
-    section.add "partNumber", valid_602209
+  if valid_604210 != nil:
+    section.add "uploadId", valid_604210
+  var valid_604211 = query.getOrDefault("partNumber")
+  valid_604211 = validateParameter(valid_604211, JInt, required = true, default = nil)
+  if valid_604211 != nil:
+    section.add "partNumber", valid_604211
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-security-token: JString
@@ -10088,40 +10088,40 @@ proc validate_UploadPart_602204(path: JsonNode; query: JsonNode; header: JsonNod
   ##   x-amz-server-side-encryption-customer-key: JString
   ##                                            : Specifies the customer-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon does not store the encryption key. The key must be appropriate for use with the algorithm specified in the x-amz-server-side​-encryption​-customer-algorithm header. This must be the same encryption key specified in the initiate multipart upload request.
   section = newJObject()
-  var valid_602210 = header.getOrDefault("x-amz-security-token")
-  valid_602210 = validateParameter(valid_602210, JString, required = false,
+  var valid_604212 = header.getOrDefault("x-amz-security-token")
+  valid_604212 = validateParameter(valid_604212, JString, required = false,
                                  default = nil)
-  if valid_602210 != nil:
-    section.add "x-amz-security-token", valid_602210
-  var valid_602211 = header.getOrDefault("Content-MD5")
-  valid_602211 = validateParameter(valid_602211, JString, required = false,
+  if valid_604212 != nil:
+    section.add "x-amz-security-token", valid_604212
+  var valid_604213 = header.getOrDefault("Content-MD5")
+  valid_604213 = validateParameter(valid_604213, JString, required = false,
                                  default = nil)
-  if valid_602211 != nil:
-    section.add "Content-MD5", valid_602211
-  var valid_602212 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
-  valid_602212 = validateParameter(valid_602212, JString, required = false,
+  if valid_604213 != nil:
+    section.add "Content-MD5", valid_604213
+  var valid_604214 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
+  valid_604214 = validateParameter(valid_604214, JString, required = false,
                                  default = nil)
-  if valid_602212 != nil:
-    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_602212
-  var valid_602213 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
-  valid_602213 = validateParameter(valid_602213, JString, required = false,
+  if valid_604214 != nil:
+    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_604214
+  var valid_604215 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
+  valid_604215 = validateParameter(valid_604215, JString, required = false,
                                  default = nil)
-  if valid_602213 != nil:
-    section.add "x-amz-server-side-encryption-customer-algorithm", valid_602213
-  var valid_602214 = header.getOrDefault("Content-Length")
-  valid_602214 = validateParameter(valid_602214, JInt, required = false, default = nil)
-  if valid_602214 != nil:
-    section.add "Content-Length", valid_602214
-  var valid_602215 = header.getOrDefault("x-amz-request-payer")
-  valid_602215 = validateParameter(valid_602215, JString, required = false,
+  if valid_604215 != nil:
+    section.add "x-amz-server-side-encryption-customer-algorithm", valid_604215
+  var valid_604216 = header.getOrDefault("Content-Length")
+  valid_604216 = validateParameter(valid_604216, JInt, required = false, default = nil)
+  if valid_604216 != nil:
+    section.add "Content-Length", valid_604216
+  var valid_604217 = header.getOrDefault("x-amz-request-payer")
+  valid_604217 = validateParameter(valid_604217, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602215 != nil:
-    section.add "x-amz-request-payer", valid_602215
-  var valid_602216 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
-  valid_602216 = validateParameter(valid_602216, JString, required = false,
+  if valid_604217 != nil:
+    section.add "x-amz-request-payer", valid_604217
+  var valid_604218 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
+  valid_604218 = validateParameter(valid_604218, JString, required = false,
                                  default = nil)
-  if valid_602216 != nil:
-    section.add "x-amz-server-side-encryption-customer-key", valid_602216
+  if valid_604218 != nil:
+    section.add "x-amz-server-side-encryption-customer-key", valid_604218
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10132,20 +10132,20 @@ proc validate_UploadPart_602204(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_602218: Call_UploadPart_602203; path: JsonNode; query: JsonNode;
+proc call*(call_604220: Call_UploadPart_604205; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Uploads a part in a multipart upload.</p> <p> <b>Note:</b> After you initiate multipart upload and upload one or more parts, you must either complete or abort multipart upload in order to stop getting charged for storage of the uploaded parts. Only after you either complete or abort multipart upload, Amazon S3 frees up the parts storage and stops charging you for the parts storage.</p>
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPart.html
-  let valid = call_602218.validator(path, query, header, formData, body)
-  let scheme = call_602218.pickScheme
+  let valid = call_604220.validator(path, query, header, formData, body)
+  let scheme = call_604220.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602218.url(scheme.get, call_602218.host, call_602218.base,
-                         call_602218.route, valid.getOrDefault("path"))
-  result = hook(call_602218, url, valid)
+  let url = call_604220.url(scheme.get, call_604220.host, call_604220.base,
+                         call_604220.route, valid.getOrDefault("path"))
+  result = hook(call_604220, url, valid)
 
-proc call*(call_602219: Call_UploadPart_602203; uploadId: string; partNumber: int;
+proc call*(call_604221: Call_UploadPart_604205; uploadId: string; partNumber: int;
           Key: string; Bucket: string; body: JsonNode): Recallable =
   ## uploadPart
   ## <p>Uploads a part in a multipart upload.</p> <p> <b>Note:</b> After you initiate multipart upload and upload one or more parts, you must either complete or abort multipart upload in order to stop getting charged for storage of the uploaded parts. Only after you either complete or abort multipart upload, Amazon S3 frees up the parts storage and stops charging you for the parts storage.</p>
@@ -10159,26 +10159,26 @@ proc call*(call_602219: Call_UploadPart_602203; uploadId: string; partNumber: in
   ##   Bucket: string (required)
   ##         : Name of the bucket to which the multipart upload was initiated.
   ##   body: JObject (required)
-  var path_602220 = newJObject()
-  var query_602221 = newJObject()
-  var body_602222 = newJObject()
-  add(query_602221, "uploadId", newJString(uploadId))
-  add(query_602221, "partNumber", newJInt(partNumber))
-  add(path_602220, "Key", newJString(Key))
-  add(path_602220, "Bucket", newJString(Bucket))
+  var path_604222 = newJObject()
+  var query_604223 = newJObject()
+  var body_604224 = newJObject()
+  add(query_604223, "uploadId", newJString(uploadId))
+  add(query_604223, "partNumber", newJInt(partNumber))
+  add(path_604222, "Key", newJString(Key))
+  add(path_604222, "Bucket", newJString(Bucket))
   if body != nil:
-    body_602222 = body
-  result = call_602219.call(path_602220, query_602221, nil, nil, body_602222)
+    body_604224 = body
+  result = call_604221.call(path_604222, query_604223, nil, nil, body_604224)
 
-var uploadPart* = Call_UploadPart_602203(name: "uploadPart",
+var uploadPart* = Call_UploadPart_604205(name: "uploadPart",
                                       meth: HttpMethod.HttpPut,
                                       host: "s3.amazonaws.com", route: "/{Bucket}/{Key}#partNumber&uploadId",
-                                      validator: validate_UploadPart_602204,
-                                      base: "/", url: url_UploadPart_602205,
+                                      validator: validate_UploadPart_604206,
+                                      base: "/", url: url_UploadPart_604207,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UploadPartCopy_602223 = ref object of OpenApiRestCall_600426
-proc url_UploadPartCopy_602225(protocol: Scheme; host: string; base: string;
+  Call_UploadPartCopy_604225 = ref object of OpenApiRestCall_602433
+proc url_UploadPartCopy_604227(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   assert path != nil, "path is required to populate template"
   assert "Bucket" in path, "`Bucket` is a required path parameter"
@@ -10192,9 +10192,9 @@ proc url_UploadPartCopy_602225(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get()
+  result = $protocol & "://" & host & base & hydrated.get
 
-proc validate_UploadPartCopy_602224(path: JsonNode; query: JsonNode;
+proc validate_UploadPartCopy_604226(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Uploads a part by copying data from an existing object as data source.
@@ -10209,16 +10209,16 @@ proc validate_UploadPartCopy_602224(path: JsonNode; query: JsonNode;
   ##         : <p/>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Key` field"
-  var valid_602226 = path.getOrDefault("Key")
-  valid_602226 = validateParameter(valid_602226, JString, required = true,
+  var valid_604228 = path.getOrDefault("Key")
+  valid_604228 = validateParameter(valid_604228, JString, required = true,
                                  default = nil)
-  if valid_602226 != nil:
-    section.add "Key", valid_602226
-  var valid_602227 = path.getOrDefault("Bucket")
-  valid_602227 = validateParameter(valid_602227, JString, required = true,
+  if valid_604228 != nil:
+    section.add "Key", valid_604228
+  var valid_604229 = path.getOrDefault("Bucket")
+  valid_604229 = validateParameter(valid_604229, JString, required = true,
                                  default = nil)
-  if valid_602227 != nil:
-    section.add "Bucket", valid_602227
+  if valid_604229 != nil:
+    section.add "Bucket", valid_604229
   result.add "path", section
   ## parameters in `query` object:
   ##   uploadId: JString (required)
@@ -10228,15 +10228,15 @@ proc validate_UploadPartCopy_602224(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `uploadId` field"
-  var valid_602228 = query.getOrDefault("uploadId")
-  valid_602228 = validateParameter(valid_602228, JString, required = true,
+  var valid_604230 = query.getOrDefault("uploadId")
+  valid_604230 = validateParameter(valid_604230, JString, required = true,
                                  default = nil)
-  if valid_602228 != nil:
-    section.add "uploadId", valid_602228
-  var valid_602229 = query.getOrDefault("partNumber")
-  valid_602229 = validateParameter(valid_602229, JInt, required = true, default = nil)
-  if valid_602229 != nil:
-    section.add "partNumber", valid_602229
+  if valid_604230 != nil:
+    section.add "uploadId", valid_604230
+  var valid_604231 = query.getOrDefault("partNumber")
+  valid_604231 = validateParameter(valid_604231, JInt, required = true, default = nil)
+  if valid_604231 != nil:
+    section.add "partNumber", valid_604231
   result.add "query", section
   ## parameters in `header` object:
   ##   x-amz-copy-source-server-side-encryption-customer-algorithm: JString
@@ -10268,98 +10268,98 @@ proc validate_UploadPartCopy_602224(path: JsonNode; query: JsonNode;
   ##   x-amz-server-side-encryption-customer-key: JString
   ##                                            : Specifies the customer-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon does not store the encryption key. The key must be appropriate for use with the algorithm specified in the x-amz-server-side​-encryption​-customer-algorithm header. This must be the same encryption key specified in the initiate multipart upload request.
   section = newJObject()
-  var valid_602230 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-algorithm")
-  valid_602230 = validateParameter(valid_602230, JString, required = false,
+  var valid_604232 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-algorithm")
+  valid_604232 = validateParameter(valid_604232, JString, required = false,
                                  default = nil)
-  if valid_602230 != nil:
+  if valid_604232 != nil:
     section.add "x-amz-copy-source-server-side-encryption-customer-algorithm",
-               valid_602230
-  var valid_602231 = header.getOrDefault("x-amz-security-token")
-  valid_602231 = validateParameter(valid_602231, JString, required = false,
+               valid_604232
+  var valid_604233 = header.getOrDefault("x-amz-security-token")
+  valid_604233 = validateParameter(valid_604233, JString, required = false,
                                  default = nil)
-  if valid_602231 != nil:
-    section.add "x-amz-security-token", valid_602231
-  var valid_602232 = header.getOrDefault("x-amz-copy-source-if-modified-since")
-  valid_602232 = validateParameter(valid_602232, JString, required = false,
+  if valid_604233 != nil:
+    section.add "x-amz-security-token", valid_604233
+  var valid_604234 = header.getOrDefault("x-amz-copy-source-if-modified-since")
+  valid_604234 = validateParameter(valid_604234, JString, required = false,
                                  default = nil)
-  if valid_602232 != nil:
-    section.add "x-amz-copy-source-if-modified-since", valid_602232
-  var valid_602233 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-key-MD5")
-  valid_602233 = validateParameter(valid_602233, JString, required = false,
+  if valid_604234 != nil:
+    section.add "x-amz-copy-source-if-modified-since", valid_604234
+  var valid_604235 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-key-MD5")
+  valid_604235 = validateParameter(valid_604235, JString, required = false,
                                  default = nil)
-  if valid_602233 != nil:
-    section.add "x-amz-copy-source-server-side-encryption-customer-key-MD5", valid_602233
-  var valid_602234 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
-  valid_602234 = validateParameter(valid_602234, JString, required = false,
+  if valid_604235 != nil:
+    section.add "x-amz-copy-source-server-side-encryption-customer-key-MD5", valid_604235
+  var valid_604236 = header.getOrDefault("x-amz-server-side-encryption-customer-key-MD5")
+  valid_604236 = validateParameter(valid_604236, JString, required = false,
                                  default = nil)
-  if valid_602234 != nil:
-    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_602234
-  var valid_602235 = header.getOrDefault("x-amz-copy-source-range")
-  valid_602235 = validateParameter(valid_602235, JString, required = false,
+  if valid_604236 != nil:
+    section.add "x-amz-server-side-encryption-customer-key-MD5", valid_604236
+  var valid_604237 = header.getOrDefault("x-amz-copy-source-range")
+  valid_604237 = validateParameter(valid_604237, JString, required = false,
                                  default = nil)
-  if valid_602235 != nil:
-    section.add "x-amz-copy-source-range", valid_602235
-  var valid_602236 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-key")
-  valid_602236 = validateParameter(valid_602236, JString, required = false,
+  if valid_604237 != nil:
+    section.add "x-amz-copy-source-range", valid_604237
+  var valid_604238 = header.getOrDefault("x-amz-copy-source-server-side-encryption-customer-key")
+  valid_604238 = validateParameter(valid_604238, JString, required = false,
                                  default = nil)
-  if valid_602236 != nil:
-    section.add "x-amz-copy-source-server-side-encryption-customer-key", valid_602236
-  var valid_602237 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
-  valid_602237 = validateParameter(valid_602237, JString, required = false,
+  if valid_604238 != nil:
+    section.add "x-amz-copy-source-server-side-encryption-customer-key", valid_604238
+  var valid_604239 = header.getOrDefault("x-amz-server-side-encryption-customer-algorithm")
+  valid_604239 = validateParameter(valid_604239, JString, required = false,
                                  default = nil)
-  if valid_602237 != nil:
-    section.add "x-amz-server-side-encryption-customer-algorithm", valid_602237
+  if valid_604239 != nil:
+    section.add "x-amz-server-side-encryption-customer-algorithm", valid_604239
   assert header != nil, "header argument is necessary due to required `x-amz-copy-source` field"
-  var valid_602238 = header.getOrDefault("x-amz-copy-source")
-  valid_602238 = validateParameter(valid_602238, JString, required = true,
+  var valid_604240 = header.getOrDefault("x-amz-copy-source")
+  valid_604240 = validateParameter(valid_604240, JString, required = true,
                                  default = nil)
-  if valid_602238 != nil:
-    section.add "x-amz-copy-source", valid_602238
-  var valid_602239 = header.getOrDefault("x-amz-copy-source-if-match")
-  valid_602239 = validateParameter(valid_602239, JString, required = false,
+  if valid_604240 != nil:
+    section.add "x-amz-copy-source", valid_604240
+  var valid_604241 = header.getOrDefault("x-amz-copy-source-if-match")
+  valid_604241 = validateParameter(valid_604241, JString, required = false,
                                  default = nil)
-  if valid_602239 != nil:
-    section.add "x-amz-copy-source-if-match", valid_602239
-  var valid_602240 = header.getOrDefault("x-amz-copy-source-if-unmodified-since")
-  valid_602240 = validateParameter(valid_602240, JString, required = false,
+  if valid_604241 != nil:
+    section.add "x-amz-copy-source-if-match", valid_604241
+  var valid_604242 = header.getOrDefault("x-amz-copy-source-if-unmodified-since")
+  valid_604242 = validateParameter(valid_604242, JString, required = false,
                                  default = nil)
-  if valid_602240 != nil:
-    section.add "x-amz-copy-source-if-unmodified-since", valid_602240
-  var valid_602241 = header.getOrDefault("x-amz-request-payer")
-  valid_602241 = validateParameter(valid_602241, JString, required = false,
+  if valid_604242 != nil:
+    section.add "x-amz-copy-source-if-unmodified-since", valid_604242
+  var valid_604243 = header.getOrDefault("x-amz-request-payer")
+  valid_604243 = validateParameter(valid_604243, JString, required = false,
                                  default = newJString("requester"))
-  if valid_602241 != nil:
-    section.add "x-amz-request-payer", valid_602241
-  var valid_602242 = header.getOrDefault("x-amz-copy-source-if-none-match")
-  valid_602242 = validateParameter(valid_602242, JString, required = false,
+  if valid_604243 != nil:
+    section.add "x-amz-request-payer", valid_604243
+  var valid_604244 = header.getOrDefault("x-amz-copy-source-if-none-match")
+  valid_604244 = validateParameter(valid_604244, JString, required = false,
                                  default = nil)
-  if valid_602242 != nil:
-    section.add "x-amz-copy-source-if-none-match", valid_602242
-  var valid_602243 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
-  valid_602243 = validateParameter(valid_602243, JString, required = false,
+  if valid_604244 != nil:
+    section.add "x-amz-copy-source-if-none-match", valid_604244
+  var valid_604245 = header.getOrDefault("x-amz-server-side-encryption-customer-key")
+  valid_604245 = validateParameter(valid_604245, JString, required = false,
                                  default = nil)
-  if valid_602243 != nil:
-    section.add "x-amz-server-side-encryption-customer-key", valid_602243
+  if valid_604245 != nil:
+    section.add "x-amz-server-side-encryption-customer-key", valid_604245
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602244: Call_UploadPartCopy_602223; path: JsonNode; query: JsonNode;
+proc call*(call_604246: Call_UploadPartCopy_604225; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Uploads a part by copying data from an existing object as data source.
   ## 
   ## http://docs.amazonwebservices.com/AmazonS3/latest/API/mpUploadUploadPartCopy.html
-  let valid = call_602244.validator(path, query, header, formData, body)
-  let scheme = call_602244.pickScheme
+  let valid = call_604246.validator(path, query, header, formData, body)
+  let scheme = call_604246.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602244.url(scheme.get, call_602244.host, call_602244.base,
-                         call_602244.route, valid.getOrDefault("path"))
-  result = hook(call_602244, url, valid)
+  let url = call_604246.url(scheme.get, call_604246.host, call_604246.base,
+                         call_604246.route, valid.getOrDefault("path"))
+  result = hook(call_604246, url, valid)
 
-proc call*(call_602245: Call_UploadPartCopy_602223; uploadId: string;
+proc call*(call_604247: Call_UploadPartCopy_604225; uploadId: string;
           partNumber: int; Key: string; Bucket: string): Recallable =
   ## uploadPartCopy
   ## Uploads a part by copying data from an existing object as data source.
@@ -10372,18 +10372,18 @@ proc call*(call_602245: Call_UploadPartCopy_602223; uploadId: string;
   ##      : <p/>
   ##   Bucket: string (required)
   ##         : <p/>
-  var path_602246 = newJObject()
-  var query_602247 = newJObject()
-  add(query_602247, "uploadId", newJString(uploadId))
-  add(query_602247, "partNumber", newJInt(partNumber))
-  add(path_602246, "Key", newJString(Key))
-  add(path_602246, "Bucket", newJString(Bucket))
-  result = call_602245.call(path_602246, query_602247, nil, nil, nil)
+  var path_604248 = newJObject()
+  var query_604249 = newJObject()
+  add(query_604249, "uploadId", newJString(uploadId))
+  add(query_604249, "partNumber", newJInt(partNumber))
+  add(path_604248, "Key", newJString(Key))
+  add(path_604248, "Bucket", newJString(Bucket))
+  result = call_604247.call(path_604248, query_604249, nil, nil, nil)
 
-var uploadPartCopy* = Call_UploadPartCopy_602223(name: "uploadPartCopy",
+var uploadPartCopy* = Call_UploadPartCopy_604225(name: "uploadPartCopy",
     meth: HttpMethod.HttpPut, host: "s3.amazonaws.com",
     route: "/{Bucket}/{Key}#x-amz-copy-source&partNumber&uploadId",
-    validator: validate_UploadPartCopy_602224, base: "/", url: url_UploadPartCopy_602225,
+    validator: validate_UploadPartCopy_604226, base: "/", url: url_UploadPartCopy_604227,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode): string
 
-  OpenApiRestCall_600410 = ref object of OpenApiRestCall
+  OpenApiRestCall_602417 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600410](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_602417](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600410): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_602417): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -93,7 +93,7 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
-  result = some(head & remainder.get())
+  result = some(head & remainder.get)
 
 const
   awsServers = {Scheme.Http: {"ap-northeast-1": "sdb.ap-northeast-1.amazonaws.com", "ap-southeast-1": "sdb.ap-southeast-1.amazonaws.com",
@@ -135,12 +135,12 @@ const
   awsServiceName = "sdb"
 method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
 type
-  Call_PostBatchDeleteAttributes_601022 = ref object of OpenApiRestCall_600410
-proc url_PostBatchDeleteAttributes_601024(protocol: Scheme; host: string;
+  Call_PostBatchDeleteAttributes_603024 = ref object of OpenApiRestCall_602417
+proc url_PostBatchDeleteAttributes_603026(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostBatchDeleteAttributes_601023(path: JsonNode; query: JsonNode;
+proc validate_PostBatchDeleteAttributes_603025(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> Performs multiple DeleteAttributes operations in a single call, which reduces round trips and latencies. This enables Amazon SimpleDB to optimize requests, which generally yields better throughput. </p> <note> <p> If you specify BatchDeleteAttributes without attributes or values, all the attributes for the item are deleted. </p> <p> BatchDeleteAttributes is an idempotent operation; running it multiple times on the same item or attribute doesn't result in an error. </p> <p> The BatchDeleteAttributes operation succeeds or fails in its entirety. There are no partial deletes. You can execute multiple BatchDeleteAttributes operations and other operations in parallel. However, large numbers of concurrent BatchDeleteAttributes calls can result in Service Unavailable (503) responses. </p> <p> This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. </p> <p> This operation does not support conditions using Expected.X.Name, Expected.X.Value, or Expected.X.Exists. </p> </note> <p> The following limitations are enforced for this operation: <ul> <li>1 MB request size</li> <li>25 item limit per BatchDeleteAttributes operation</li> </ul> </p>
   ## 
@@ -159,41 +159,41 @@ proc validate_PostBatchDeleteAttributes_601023(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601025 = query.getOrDefault("SignatureMethod")
-  valid_601025 = validateParameter(valid_601025, JString, required = true,
+  var valid_603027 = query.getOrDefault("SignatureMethod")
+  valid_603027 = validateParameter(valid_603027, JString, required = true,
                                  default = nil)
-  if valid_601025 != nil:
-    section.add "SignatureMethod", valid_601025
-  var valid_601026 = query.getOrDefault("Signature")
-  valid_601026 = validateParameter(valid_601026, JString, required = true,
+  if valid_603027 != nil:
+    section.add "SignatureMethod", valid_603027
+  var valid_603028 = query.getOrDefault("Signature")
+  valid_603028 = validateParameter(valid_603028, JString, required = true,
                                  default = nil)
-  if valid_601026 != nil:
-    section.add "Signature", valid_601026
-  var valid_601027 = query.getOrDefault("Action")
-  valid_601027 = validateParameter(valid_601027, JString, required = true,
+  if valid_603028 != nil:
+    section.add "Signature", valid_603028
+  var valid_603029 = query.getOrDefault("Action")
+  valid_603029 = validateParameter(valid_603029, JString, required = true,
                                  default = newJString("BatchDeleteAttributes"))
-  if valid_601027 != nil:
-    section.add "Action", valid_601027
-  var valid_601028 = query.getOrDefault("Timestamp")
-  valid_601028 = validateParameter(valid_601028, JString, required = true,
+  if valid_603029 != nil:
+    section.add "Action", valid_603029
+  var valid_603030 = query.getOrDefault("Timestamp")
+  valid_603030 = validateParameter(valid_603030, JString, required = true,
                                  default = nil)
-  if valid_601028 != nil:
-    section.add "Timestamp", valid_601028
-  var valid_601029 = query.getOrDefault("SignatureVersion")
-  valid_601029 = validateParameter(valid_601029, JString, required = true,
+  if valid_603030 != nil:
+    section.add "Timestamp", valid_603030
+  var valid_603031 = query.getOrDefault("SignatureVersion")
+  valid_603031 = validateParameter(valid_603031, JString, required = true,
                                  default = nil)
-  if valid_601029 != nil:
-    section.add "SignatureVersion", valid_601029
-  var valid_601030 = query.getOrDefault("AWSAccessKeyId")
-  valid_601030 = validateParameter(valid_601030, JString, required = true,
+  if valid_603031 != nil:
+    section.add "SignatureVersion", valid_603031
+  var valid_603032 = query.getOrDefault("AWSAccessKeyId")
+  valid_603032 = validateParameter(valid_603032, JString, required = true,
                                  default = nil)
-  if valid_601030 != nil:
-    section.add "AWSAccessKeyId", valid_601030
-  var valid_601031 = query.getOrDefault("Version")
-  valid_601031 = validateParameter(valid_601031, JString, required = true,
+  if valid_603032 != nil:
+    section.add "AWSAccessKeyId", valid_603032
+  var valid_603033 = query.getOrDefault("Version")
+  valid_603033 = validateParameter(valid_603033, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601031 != nil:
-    section.add "Version", valid_601031
+  if valid_603033 != nil:
+    section.add "Version", valid_603033
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -205,32 +205,32 @@ proc validate_PostBatchDeleteAttributes_601023(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `DomainName` field"
-  var valid_601032 = formData.getOrDefault("DomainName")
-  valid_601032 = validateParameter(valid_601032, JString, required = true,
+  var valid_603034 = formData.getOrDefault("DomainName")
+  valid_603034 = validateParameter(valid_603034, JString, required = true,
                                  default = nil)
-  if valid_601032 != nil:
-    section.add "DomainName", valid_601032
-  var valid_601033 = formData.getOrDefault("Items")
-  valid_601033 = validateParameter(valid_601033, JArray, required = true, default = nil)
-  if valid_601033 != nil:
-    section.add "Items", valid_601033
+  if valid_603034 != nil:
+    section.add "DomainName", valid_603034
+  var valid_603035 = formData.getOrDefault("Items")
+  valid_603035 = validateParameter(valid_603035, JArray, required = true, default = nil)
+  if valid_603035 != nil:
+    section.add "Items", valid_603035
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601034: Call_PostBatchDeleteAttributes_601022; path: JsonNode;
+proc call*(call_603036: Call_PostBatchDeleteAttributes_603024; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Performs multiple DeleteAttributes operations in a single call, which reduces round trips and latencies. This enables Amazon SimpleDB to optimize requests, which generally yields better throughput. </p> <note> <p> If you specify BatchDeleteAttributes without attributes or values, all the attributes for the item are deleted. </p> <p> BatchDeleteAttributes is an idempotent operation; running it multiple times on the same item or attribute doesn't result in an error. </p> <p> The BatchDeleteAttributes operation succeeds or fails in its entirety. There are no partial deletes. You can execute multiple BatchDeleteAttributes operations and other operations in parallel. However, large numbers of concurrent BatchDeleteAttributes calls can result in Service Unavailable (503) responses. </p> <p> This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. </p> <p> This operation does not support conditions using Expected.X.Name, Expected.X.Value, or Expected.X.Exists. </p> </note> <p> The following limitations are enforced for this operation: <ul> <li>1 MB request size</li> <li>25 item limit per BatchDeleteAttributes operation</li> </ul> </p>
   ## 
-  let valid = call_601034.validator(path, query, header, formData, body)
-  let scheme = call_601034.pickScheme
+  let valid = call_603036.validator(path, query, header, formData, body)
+  let scheme = call_603036.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601034.url(scheme.get, call_601034.host, call_601034.base,
-                         call_601034.route, valid.getOrDefault("path"))
-  result = hook(call_601034, url, valid)
+  let url = call_603036.url(scheme.get, call_603036.host, call_603036.base,
+                         call_603036.route, valid.getOrDefault("path"))
+  result = hook(call_603036, url, valid)
 
-proc call*(call_601035: Call_PostBatchDeleteAttributes_601022;
+proc call*(call_603037: Call_PostBatchDeleteAttributes_603024;
           SignatureMethod: string; DomainName: string; Signature: string;
           Timestamp: string; Items: JsonNode; SignatureVersion: string;
           AWSAccessKeyId: string; Action: string = "BatchDeleteAttributes";
@@ -248,33 +248,33 @@ proc call*(call_601035: Call_PostBatchDeleteAttributes_601022;
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601036 = newJObject()
-  var formData_601037 = newJObject()
-  add(query_601036, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601037, "DomainName", newJString(DomainName))
-  add(query_601036, "Signature", newJString(Signature))
-  add(query_601036, "Action", newJString(Action))
-  add(query_601036, "Timestamp", newJString(Timestamp))
+  var query_603038 = newJObject()
+  var formData_603039 = newJObject()
+  add(query_603038, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603039, "DomainName", newJString(DomainName))
+  add(query_603038, "Signature", newJString(Signature))
+  add(query_603038, "Action", newJString(Action))
+  add(query_603038, "Timestamp", newJString(Timestamp))
   if Items != nil:
-    formData_601037.add "Items", Items
-  add(query_601036, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601036, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601036, "Version", newJString(Version))
-  result = call_601035.call(nil, query_601036, nil, formData_601037, nil)
+    formData_603039.add "Items", Items
+  add(query_603038, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603038, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603038, "Version", newJString(Version))
+  result = call_603037.call(nil, query_603038, nil, formData_603039, nil)
 
-var postBatchDeleteAttributes* = Call_PostBatchDeleteAttributes_601022(
+var postBatchDeleteAttributes* = Call_PostBatchDeleteAttributes_603024(
     name: "postBatchDeleteAttributes", meth: HttpMethod.HttpPost,
     host: "sdb.amazonaws.com", route: "/#Action=BatchDeleteAttributes",
-    validator: validate_PostBatchDeleteAttributes_601023, base: "/",
-    url: url_PostBatchDeleteAttributes_601024,
+    validator: validate_PostBatchDeleteAttributes_603025, base: "/",
+    url: url_PostBatchDeleteAttributes_603026,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBatchDeleteAttributes_600752 = ref object of OpenApiRestCall_600410
-proc url_GetBatchDeleteAttributes_600754(protocol: Scheme; host: string;
+  Call_GetBatchDeleteAttributes_602754 = ref object of OpenApiRestCall_602417
+proc url_GetBatchDeleteAttributes_602756(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetBatchDeleteAttributes_600753(path: JsonNode; query: JsonNode;
+proc validate_GetBatchDeleteAttributes_602755(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> Performs multiple DeleteAttributes operations in a single call, which reduces round trips and latencies. This enables Amazon SimpleDB to optimize requests, which generally yields better throughput. </p> <note> <p> If you specify BatchDeleteAttributes without attributes or values, all the attributes for the item are deleted. </p> <p> BatchDeleteAttributes is an idempotent operation; running it multiple times on the same item or attribute doesn't result in an error. </p> <p> The BatchDeleteAttributes operation succeeds or fails in its entirety. There are no partial deletes. You can execute multiple BatchDeleteAttributes operations and other operations in parallel. However, large numbers of concurrent BatchDeleteAttributes calls can result in Service Unavailable (503) responses. </p> <p> This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. </p> <p> This operation does not support conditions using Expected.X.Name, Expected.X.Value, or Expected.X.Exists. </p> </note> <p> The following limitations are enforced for this operation: <ul> <li>1 MB request size</li> <li>25 item limit per BatchDeleteAttributes operation</li> </ul> </p>
   ## 
@@ -297,50 +297,50 @@ proc validate_GetBatchDeleteAttributes_600753(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_600866 = query.getOrDefault("SignatureMethod")
-  valid_600866 = validateParameter(valid_600866, JString, required = true,
+  var valid_602868 = query.getOrDefault("SignatureMethod")
+  valid_602868 = validateParameter(valid_602868, JString, required = true,
                                  default = nil)
-  if valid_600866 != nil:
-    section.add "SignatureMethod", valid_600866
-  var valid_600867 = query.getOrDefault("Signature")
-  valid_600867 = validateParameter(valid_600867, JString, required = true,
+  if valid_602868 != nil:
+    section.add "SignatureMethod", valid_602868
+  var valid_602869 = query.getOrDefault("Signature")
+  valid_602869 = validateParameter(valid_602869, JString, required = true,
                                  default = nil)
-  if valid_600867 != nil:
-    section.add "Signature", valid_600867
-  var valid_600881 = query.getOrDefault("Action")
-  valid_600881 = validateParameter(valid_600881, JString, required = true,
+  if valid_602869 != nil:
+    section.add "Signature", valid_602869
+  var valid_602883 = query.getOrDefault("Action")
+  valid_602883 = validateParameter(valid_602883, JString, required = true,
                                  default = newJString("BatchDeleteAttributes"))
-  if valid_600881 != nil:
-    section.add "Action", valid_600881
-  var valid_600882 = query.getOrDefault("Timestamp")
-  valid_600882 = validateParameter(valid_600882, JString, required = true,
+  if valid_602883 != nil:
+    section.add "Action", valid_602883
+  var valid_602884 = query.getOrDefault("Timestamp")
+  valid_602884 = validateParameter(valid_602884, JString, required = true,
                                  default = nil)
-  if valid_600882 != nil:
-    section.add "Timestamp", valid_600882
-  var valid_600883 = query.getOrDefault("Items")
-  valid_600883 = validateParameter(valid_600883, JArray, required = true, default = nil)
-  if valid_600883 != nil:
-    section.add "Items", valid_600883
-  var valid_600884 = query.getOrDefault("SignatureVersion")
-  valid_600884 = validateParameter(valid_600884, JString, required = true,
+  if valid_602884 != nil:
+    section.add "Timestamp", valid_602884
+  var valid_602885 = query.getOrDefault("Items")
+  valid_602885 = validateParameter(valid_602885, JArray, required = true, default = nil)
+  if valid_602885 != nil:
+    section.add "Items", valid_602885
+  var valid_602886 = query.getOrDefault("SignatureVersion")
+  valid_602886 = validateParameter(valid_602886, JString, required = true,
                                  default = nil)
-  if valid_600884 != nil:
-    section.add "SignatureVersion", valid_600884
-  var valid_600885 = query.getOrDefault("AWSAccessKeyId")
-  valid_600885 = validateParameter(valid_600885, JString, required = true,
+  if valid_602886 != nil:
+    section.add "SignatureVersion", valid_602886
+  var valid_602887 = query.getOrDefault("AWSAccessKeyId")
+  valid_602887 = validateParameter(valid_602887, JString, required = true,
                                  default = nil)
-  if valid_600885 != nil:
-    section.add "AWSAccessKeyId", valid_600885
-  var valid_600886 = query.getOrDefault("DomainName")
-  valid_600886 = validateParameter(valid_600886, JString, required = true,
+  if valid_602887 != nil:
+    section.add "AWSAccessKeyId", valid_602887
+  var valid_602888 = query.getOrDefault("DomainName")
+  valid_602888 = validateParameter(valid_602888, JString, required = true,
                                  default = nil)
-  if valid_600886 != nil:
-    section.add "DomainName", valid_600886
-  var valid_600887 = query.getOrDefault("Version")
-  valid_600887 = validateParameter(valid_600887, JString, required = true,
+  if valid_602888 != nil:
+    section.add "DomainName", valid_602888
+  var valid_602889 = query.getOrDefault("Version")
+  valid_602889 = validateParameter(valid_602889, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_600887 != nil:
-    section.add "Version", valid_600887
+  if valid_602889 != nil:
+    section.add "Version", valid_602889
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -349,19 +349,19 @@ proc validate_GetBatchDeleteAttributes_600753(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600910: Call_GetBatchDeleteAttributes_600752; path: JsonNode;
+proc call*(call_602912: Call_GetBatchDeleteAttributes_602754; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Performs multiple DeleteAttributes operations in a single call, which reduces round trips and latencies. This enables Amazon SimpleDB to optimize requests, which generally yields better throughput. </p> <note> <p> If you specify BatchDeleteAttributes without attributes or values, all the attributes for the item are deleted. </p> <p> BatchDeleteAttributes is an idempotent operation; running it multiple times on the same item or attribute doesn't result in an error. </p> <p> The BatchDeleteAttributes operation succeeds or fails in its entirety. There are no partial deletes. You can execute multiple BatchDeleteAttributes operations and other operations in parallel. However, large numbers of concurrent BatchDeleteAttributes calls can result in Service Unavailable (503) responses. </p> <p> This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. </p> <p> This operation does not support conditions using Expected.X.Name, Expected.X.Value, or Expected.X.Exists. </p> </note> <p> The following limitations are enforced for this operation: <ul> <li>1 MB request size</li> <li>25 item limit per BatchDeleteAttributes operation</li> </ul> </p>
   ## 
-  let valid = call_600910.validator(path, query, header, formData, body)
-  let scheme = call_600910.pickScheme
+  let valid = call_602912.validator(path, query, header, formData, body)
+  let scheme = call_602912.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600910.url(scheme.get, call_600910.host, call_600910.base,
-                         call_600910.route, valid.getOrDefault("path"))
-  result = hook(call_600910, url, valid)
+  let url = call_602912.url(scheme.get, call_602912.host, call_602912.base,
+                         call_602912.route, valid.getOrDefault("path"))
+  result = hook(call_602912, url, valid)
 
-proc call*(call_600981: Call_GetBatchDeleteAttributes_600752;
+proc call*(call_602983: Call_GetBatchDeleteAttributes_602754;
           SignatureMethod: string; Signature: string; Timestamp: string;
           Items: JsonNode; SignatureVersion: string; AWSAccessKeyId: string;
           DomainName: string; Action: string = "BatchDeleteAttributes";
@@ -379,31 +379,31 @@ proc call*(call_600981: Call_GetBatchDeleteAttributes_600752;
   ##   DomainName: string (required)
   ##             : The name of the domain in which the attributes are being deleted.
   ##   Version: string (required)
-  var query_600982 = newJObject()
-  add(query_600982, "SignatureMethod", newJString(SignatureMethod))
-  add(query_600982, "Signature", newJString(Signature))
-  add(query_600982, "Action", newJString(Action))
-  add(query_600982, "Timestamp", newJString(Timestamp))
+  var query_602984 = newJObject()
+  add(query_602984, "SignatureMethod", newJString(SignatureMethod))
+  add(query_602984, "Signature", newJString(Signature))
+  add(query_602984, "Action", newJString(Action))
+  add(query_602984, "Timestamp", newJString(Timestamp))
   if Items != nil:
-    query_600982.add "Items", Items
-  add(query_600982, "SignatureVersion", newJString(SignatureVersion))
-  add(query_600982, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_600982, "DomainName", newJString(DomainName))
-  add(query_600982, "Version", newJString(Version))
-  result = call_600981.call(nil, query_600982, nil, nil, nil)
+    query_602984.add "Items", Items
+  add(query_602984, "SignatureVersion", newJString(SignatureVersion))
+  add(query_602984, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_602984, "DomainName", newJString(DomainName))
+  add(query_602984, "Version", newJString(Version))
+  result = call_602983.call(nil, query_602984, nil, nil, nil)
 
-var getBatchDeleteAttributes* = Call_GetBatchDeleteAttributes_600752(
+var getBatchDeleteAttributes* = Call_GetBatchDeleteAttributes_602754(
     name: "getBatchDeleteAttributes", meth: HttpMethod.HttpGet,
     host: "sdb.amazonaws.com", route: "/#Action=BatchDeleteAttributes",
-    validator: validate_GetBatchDeleteAttributes_600753, base: "/",
-    url: url_GetBatchDeleteAttributes_600754, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBatchDeleteAttributes_602755, base: "/",
+    url: url_GetBatchDeleteAttributes_602756, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostBatchPutAttributes_601053 = ref object of OpenApiRestCall_600410
-proc url_PostBatchPutAttributes_601055(protocol: Scheme; host: string; base: string;
+  Call_PostBatchPutAttributes_603055 = ref object of OpenApiRestCall_602417
+proc url_PostBatchPutAttributes_603057(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostBatchPutAttributes_601054(path: JsonNode; query: JsonNode;
+proc validate_PostBatchPutAttributes_603056(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> The <code>BatchPutAttributes</code> operation creates or replaces attributes within one or more items. By using this operation, the client can perform multiple <a>PutAttribute</a> operation with a single call. This helps yield savings in round trips and latencies, enabling Amazon SimpleDB to optimize requests and generally produce better throughput. </p> <p> The client may specify the item name with the <code>Item.X.ItemName</code> parameter. The client may specify new attributes using a combination of the <code>Item.X.Attribute.Y.Name</code> and <code>Item.X.Attribute.Y.Value</code> parameters. The client may specify the first attribute for the first item using the parameters <code>Item.0.Attribute.0.Name</code> and <code>Item.0.Attribute.0.Value</code>, and for the second attribute for the first item by the parameters <code>Item.0.Attribute.1.Name</code> and <code>Item.0.Attribute.1.Value</code>, and so on. </p> <p> Attributes are uniquely identified within an item by their name/value combination. For example, a single item can have the attributes <code>{ "first_name", "first_value" }</code> and <code>{ "first_name", "second_value" }</code>. However, it cannot have two attribute instances where both the <code>Item.X.Attribute.Y.Name</code> and <code>Item.X.Attribute.Y.Value</code> are the same. </p> <p> Optionally, the requester can supply the <code>Replace</code> parameter for each individual value. Setting this value to <code>true</code> will cause the new attribute values to replace the existing attribute values. For example, if an item <code>I</code> has the attributes <code>{ 'a', '1' }, { 'b', '2'}</code> and <code>{ 'b', '3' }</code> and the requester does a BatchPutAttributes of <code>{'I', 'b', '4' }</code> with the Replace parameter set to true, the final attributes of the item will be <code>{ 'a', '1' }</code> and <code>{ 'b', '4' }</code>, replacing the previous values of the 'b' attribute with the new value. </p> <note> You cannot specify an empty string as an item or as an attribute name. The <code>BatchPutAttributes</code> operation succeeds or fails in its entirety. There are no partial puts. </note> <important> This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. This operation does not support conditions using <code>Expected.X.Name</code>, <code>Expected.X.Value</code>, or <code>Expected.X.Exists</code>. </important> <p> You can execute multiple <code>BatchPutAttributes</code> operations and other operations in parallel. However, large numbers of concurrent <code>BatchPutAttributes</code> calls can result in Service Unavailable (503) responses. </p> <p> The following limitations are enforced for this operation: <ul> <li>256 attribute name-value pairs per item</li> <li>1 MB request size</li> <li>1 billion attributes per domain</li> <li>10 GB of total user data storage per domain</li> <li>25 item limit per <code>BatchPutAttributes</code> operation</li> </ul> </p>
   ## 
@@ -422,41 +422,41 @@ proc validate_PostBatchPutAttributes_601054(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601056 = query.getOrDefault("SignatureMethod")
-  valid_601056 = validateParameter(valid_601056, JString, required = true,
+  var valid_603058 = query.getOrDefault("SignatureMethod")
+  valid_603058 = validateParameter(valid_603058, JString, required = true,
                                  default = nil)
-  if valid_601056 != nil:
-    section.add "SignatureMethod", valid_601056
-  var valid_601057 = query.getOrDefault("Signature")
-  valid_601057 = validateParameter(valid_601057, JString, required = true,
+  if valid_603058 != nil:
+    section.add "SignatureMethod", valid_603058
+  var valid_603059 = query.getOrDefault("Signature")
+  valid_603059 = validateParameter(valid_603059, JString, required = true,
                                  default = nil)
-  if valid_601057 != nil:
-    section.add "Signature", valid_601057
-  var valid_601058 = query.getOrDefault("Action")
-  valid_601058 = validateParameter(valid_601058, JString, required = true,
+  if valid_603059 != nil:
+    section.add "Signature", valid_603059
+  var valid_603060 = query.getOrDefault("Action")
+  valid_603060 = validateParameter(valid_603060, JString, required = true,
                                  default = newJString("BatchPutAttributes"))
-  if valid_601058 != nil:
-    section.add "Action", valid_601058
-  var valid_601059 = query.getOrDefault("Timestamp")
-  valid_601059 = validateParameter(valid_601059, JString, required = true,
+  if valid_603060 != nil:
+    section.add "Action", valid_603060
+  var valid_603061 = query.getOrDefault("Timestamp")
+  valid_603061 = validateParameter(valid_603061, JString, required = true,
                                  default = nil)
-  if valid_601059 != nil:
-    section.add "Timestamp", valid_601059
-  var valid_601060 = query.getOrDefault("SignatureVersion")
-  valid_601060 = validateParameter(valid_601060, JString, required = true,
+  if valid_603061 != nil:
+    section.add "Timestamp", valid_603061
+  var valid_603062 = query.getOrDefault("SignatureVersion")
+  valid_603062 = validateParameter(valid_603062, JString, required = true,
                                  default = nil)
-  if valid_601060 != nil:
-    section.add "SignatureVersion", valid_601060
-  var valid_601061 = query.getOrDefault("AWSAccessKeyId")
-  valid_601061 = validateParameter(valid_601061, JString, required = true,
+  if valid_603062 != nil:
+    section.add "SignatureVersion", valid_603062
+  var valid_603063 = query.getOrDefault("AWSAccessKeyId")
+  valid_603063 = validateParameter(valid_603063, JString, required = true,
                                  default = nil)
-  if valid_601061 != nil:
-    section.add "AWSAccessKeyId", valid_601061
-  var valid_601062 = query.getOrDefault("Version")
-  valid_601062 = validateParameter(valid_601062, JString, required = true,
+  if valid_603063 != nil:
+    section.add "AWSAccessKeyId", valid_603063
+  var valid_603064 = query.getOrDefault("Version")
+  valid_603064 = validateParameter(valid_603064, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601062 != nil:
-    section.add "Version", valid_601062
+  if valid_603064 != nil:
+    section.add "Version", valid_603064
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -468,32 +468,32 @@ proc validate_PostBatchPutAttributes_601054(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `DomainName` field"
-  var valid_601063 = formData.getOrDefault("DomainName")
-  valid_601063 = validateParameter(valid_601063, JString, required = true,
+  var valid_603065 = formData.getOrDefault("DomainName")
+  valid_603065 = validateParameter(valid_603065, JString, required = true,
                                  default = nil)
-  if valid_601063 != nil:
-    section.add "DomainName", valid_601063
-  var valid_601064 = formData.getOrDefault("Items")
-  valid_601064 = validateParameter(valid_601064, JArray, required = true, default = nil)
-  if valid_601064 != nil:
-    section.add "Items", valid_601064
+  if valid_603065 != nil:
+    section.add "DomainName", valid_603065
+  var valid_603066 = formData.getOrDefault("Items")
+  valid_603066 = validateParameter(valid_603066, JArray, required = true, default = nil)
+  if valid_603066 != nil:
+    section.add "Items", valid_603066
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601065: Call_PostBatchPutAttributes_601053; path: JsonNode;
+proc call*(call_603067: Call_PostBatchPutAttributes_603055; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The <code>BatchPutAttributes</code> operation creates or replaces attributes within one or more items. By using this operation, the client can perform multiple <a>PutAttribute</a> operation with a single call. This helps yield savings in round trips and latencies, enabling Amazon SimpleDB to optimize requests and generally produce better throughput. </p> <p> The client may specify the item name with the <code>Item.X.ItemName</code> parameter. The client may specify new attributes using a combination of the <code>Item.X.Attribute.Y.Name</code> and <code>Item.X.Attribute.Y.Value</code> parameters. The client may specify the first attribute for the first item using the parameters <code>Item.0.Attribute.0.Name</code> and <code>Item.0.Attribute.0.Value</code>, and for the second attribute for the first item by the parameters <code>Item.0.Attribute.1.Name</code> and <code>Item.0.Attribute.1.Value</code>, and so on. </p> <p> Attributes are uniquely identified within an item by their name/value combination. For example, a single item can have the attributes <code>{ "first_name", "first_value" }</code> and <code>{ "first_name", "second_value" }</code>. However, it cannot have two attribute instances where both the <code>Item.X.Attribute.Y.Name</code> and <code>Item.X.Attribute.Y.Value</code> are the same. </p> <p> Optionally, the requester can supply the <code>Replace</code> parameter for each individual value. Setting this value to <code>true</code> will cause the new attribute values to replace the existing attribute values. For example, if an item <code>I</code> has the attributes <code>{ 'a', '1' }, { 'b', '2'}</code> and <code>{ 'b', '3' }</code> and the requester does a BatchPutAttributes of <code>{'I', 'b', '4' }</code> with the Replace parameter set to true, the final attributes of the item will be <code>{ 'a', '1' }</code> and <code>{ 'b', '4' }</code>, replacing the previous values of the 'b' attribute with the new value. </p> <note> You cannot specify an empty string as an item or as an attribute name. The <code>BatchPutAttributes</code> operation succeeds or fails in its entirety. There are no partial puts. </note> <important> This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. This operation does not support conditions using <code>Expected.X.Name</code>, <code>Expected.X.Value</code>, or <code>Expected.X.Exists</code>. </important> <p> You can execute multiple <code>BatchPutAttributes</code> operations and other operations in parallel. However, large numbers of concurrent <code>BatchPutAttributes</code> calls can result in Service Unavailable (503) responses. </p> <p> The following limitations are enforced for this operation: <ul> <li>256 attribute name-value pairs per item</li> <li>1 MB request size</li> <li>1 billion attributes per domain</li> <li>10 GB of total user data storage per domain</li> <li>25 item limit per <code>BatchPutAttributes</code> operation</li> </ul> </p>
   ## 
-  let valid = call_601065.validator(path, query, header, formData, body)
-  let scheme = call_601065.pickScheme
+  let valid = call_603067.validator(path, query, header, formData, body)
+  let scheme = call_603067.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601065.url(scheme.get, call_601065.host, call_601065.base,
-                         call_601065.route, valid.getOrDefault("path"))
-  result = hook(call_601065, url, valid)
+  let url = call_603067.url(scheme.get, call_603067.host, call_603067.base,
+                         call_603067.route, valid.getOrDefault("path"))
+  result = hook(call_603067, url, valid)
 
-proc call*(call_601066: Call_PostBatchPutAttributes_601053;
+proc call*(call_603068: Call_PostBatchPutAttributes_603055;
           SignatureMethod: string; DomainName: string; Signature: string;
           Timestamp: string; Items: JsonNode; SignatureVersion: string;
           AWSAccessKeyId: string; Action: string = "BatchPutAttributes";
@@ -511,32 +511,32 @@ proc call*(call_601066: Call_PostBatchPutAttributes_601053;
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601067 = newJObject()
-  var formData_601068 = newJObject()
-  add(query_601067, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601068, "DomainName", newJString(DomainName))
-  add(query_601067, "Signature", newJString(Signature))
-  add(query_601067, "Action", newJString(Action))
-  add(query_601067, "Timestamp", newJString(Timestamp))
+  var query_603069 = newJObject()
+  var formData_603070 = newJObject()
+  add(query_603069, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603070, "DomainName", newJString(DomainName))
+  add(query_603069, "Signature", newJString(Signature))
+  add(query_603069, "Action", newJString(Action))
+  add(query_603069, "Timestamp", newJString(Timestamp))
   if Items != nil:
-    formData_601068.add "Items", Items
-  add(query_601067, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601067, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601067, "Version", newJString(Version))
-  result = call_601066.call(nil, query_601067, nil, formData_601068, nil)
+    formData_603070.add "Items", Items
+  add(query_603069, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603069, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603069, "Version", newJString(Version))
+  result = call_603068.call(nil, query_603069, nil, formData_603070, nil)
 
-var postBatchPutAttributes* = Call_PostBatchPutAttributes_601053(
+var postBatchPutAttributes* = Call_PostBatchPutAttributes_603055(
     name: "postBatchPutAttributes", meth: HttpMethod.HttpPost,
     host: "sdb.amazonaws.com", route: "/#Action=BatchPutAttributes",
-    validator: validate_PostBatchPutAttributes_601054, base: "/",
-    url: url_PostBatchPutAttributes_601055, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostBatchPutAttributes_603056, base: "/",
+    url: url_PostBatchPutAttributes_603057, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBatchPutAttributes_601038 = ref object of OpenApiRestCall_600410
-proc url_GetBatchPutAttributes_601040(protocol: Scheme; host: string; base: string;
+  Call_GetBatchPutAttributes_603040 = ref object of OpenApiRestCall_602417
+proc url_GetBatchPutAttributes_603042(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetBatchPutAttributes_601039(path: JsonNode; query: JsonNode;
+proc validate_GetBatchPutAttributes_603041(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> The <code>BatchPutAttributes</code> operation creates or replaces attributes within one or more items. By using this operation, the client can perform multiple <a>PutAttribute</a> operation with a single call. This helps yield savings in round trips and latencies, enabling Amazon SimpleDB to optimize requests and generally produce better throughput. </p> <p> The client may specify the item name with the <code>Item.X.ItemName</code> parameter. The client may specify new attributes using a combination of the <code>Item.X.Attribute.Y.Name</code> and <code>Item.X.Attribute.Y.Value</code> parameters. The client may specify the first attribute for the first item using the parameters <code>Item.0.Attribute.0.Name</code> and <code>Item.0.Attribute.0.Value</code>, and for the second attribute for the first item by the parameters <code>Item.0.Attribute.1.Name</code> and <code>Item.0.Attribute.1.Value</code>, and so on. </p> <p> Attributes are uniquely identified within an item by their name/value combination. For example, a single item can have the attributes <code>{ "first_name", "first_value" }</code> and <code>{ "first_name", "second_value" }</code>. However, it cannot have two attribute instances where both the <code>Item.X.Attribute.Y.Name</code> and <code>Item.X.Attribute.Y.Value</code> are the same. </p> <p> Optionally, the requester can supply the <code>Replace</code> parameter for each individual value. Setting this value to <code>true</code> will cause the new attribute values to replace the existing attribute values. For example, if an item <code>I</code> has the attributes <code>{ 'a', '1' }, { 'b', '2'}</code> and <code>{ 'b', '3' }</code> and the requester does a BatchPutAttributes of <code>{'I', 'b', '4' }</code> with the Replace parameter set to true, the final attributes of the item will be <code>{ 'a', '1' }</code> and <code>{ 'b', '4' }</code>, replacing the previous values of the 'b' attribute with the new value. </p> <note> You cannot specify an empty string as an item or as an attribute name. The <code>BatchPutAttributes</code> operation succeeds or fails in its entirety. There are no partial puts. </note> <important> This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. This operation does not support conditions using <code>Expected.X.Name</code>, <code>Expected.X.Value</code>, or <code>Expected.X.Exists</code>. </important> <p> You can execute multiple <code>BatchPutAttributes</code> operations and other operations in parallel. However, large numbers of concurrent <code>BatchPutAttributes</code> calls can result in Service Unavailable (503) responses. </p> <p> The following limitations are enforced for this operation: <ul> <li>256 attribute name-value pairs per item</li> <li>1 MB request size</li> <li>1 billion attributes per domain</li> <li>10 GB of total user data storage per domain</li> <li>25 item limit per <code>BatchPutAttributes</code> operation</li> </ul> </p>
   ## 
@@ -559,50 +559,50 @@ proc validate_GetBatchPutAttributes_601039(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601041 = query.getOrDefault("SignatureMethod")
-  valid_601041 = validateParameter(valid_601041, JString, required = true,
+  var valid_603043 = query.getOrDefault("SignatureMethod")
+  valid_603043 = validateParameter(valid_603043, JString, required = true,
                                  default = nil)
-  if valid_601041 != nil:
-    section.add "SignatureMethod", valid_601041
-  var valid_601042 = query.getOrDefault("Signature")
-  valid_601042 = validateParameter(valid_601042, JString, required = true,
+  if valid_603043 != nil:
+    section.add "SignatureMethod", valid_603043
+  var valid_603044 = query.getOrDefault("Signature")
+  valid_603044 = validateParameter(valid_603044, JString, required = true,
                                  default = nil)
-  if valid_601042 != nil:
-    section.add "Signature", valid_601042
-  var valid_601043 = query.getOrDefault("Action")
-  valid_601043 = validateParameter(valid_601043, JString, required = true,
+  if valid_603044 != nil:
+    section.add "Signature", valid_603044
+  var valid_603045 = query.getOrDefault("Action")
+  valid_603045 = validateParameter(valid_603045, JString, required = true,
                                  default = newJString("BatchPutAttributes"))
-  if valid_601043 != nil:
-    section.add "Action", valid_601043
-  var valid_601044 = query.getOrDefault("Timestamp")
-  valid_601044 = validateParameter(valid_601044, JString, required = true,
+  if valid_603045 != nil:
+    section.add "Action", valid_603045
+  var valid_603046 = query.getOrDefault("Timestamp")
+  valid_603046 = validateParameter(valid_603046, JString, required = true,
                                  default = nil)
-  if valid_601044 != nil:
-    section.add "Timestamp", valid_601044
-  var valid_601045 = query.getOrDefault("Items")
-  valid_601045 = validateParameter(valid_601045, JArray, required = true, default = nil)
-  if valid_601045 != nil:
-    section.add "Items", valid_601045
-  var valid_601046 = query.getOrDefault("SignatureVersion")
-  valid_601046 = validateParameter(valid_601046, JString, required = true,
+  if valid_603046 != nil:
+    section.add "Timestamp", valid_603046
+  var valid_603047 = query.getOrDefault("Items")
+  valid_603047 = validateParameter(valid_603047, JArray, required = true, default = nil)
+  if valid_603047 != nil:
+    section.add "Items", valid_603047
+  var valid_603048 = query.getOrDefault("SignatureVersion")
+  valid_603048 = validateParameter(valid_603048, JString, required = true,
                                  default = nil)
-  if valid_601046 != nil:
-    section.add "SignatureVersion", valid_601046
-  var valid_601047 = query.getOrDefault("AWSAccessKeyId")
-  valid_601047 = validateParameter(valid_601047, JString, required = true,
+  if valid_603048 != nil:
+    section.add "SignatureVersion", valid_603048
+  var valid_603049 = query.getOrDefault("AWSAccessKeyId")
+  valid_603049 = validateParameter(valid_603049, JString, required = true,
                                  default = nil)
-  if valid_601047 != nil:
-    section.add "AWSAccessKeyId", valid_601047
-  var valid_601048 = query.getOrDefault("DomainName")
-  valid_601048 = validateParameter(valid_601048, JString, required = true,
+  if valid_603049 != nil:
+    section.add "AWSAccessKeyId", valid_603049
+  var valid_603050 = query.getOrDefault("DomainName")
+  valid_603050 = validateParameter(valid_603050, JString, required = true,
                                  default = nil)
-  if valid_601048 != nil:
-    section.add "DomainName", valid_601048
-  var valid_601049 = query.getOrDefault("Version")
-  valid_601049 = validateParameter(valid_601049, JString, required = true,
+  if valid_603050 != nil:
+    section.add "DomainName", valid_603050
+  var valid_603051 = query.getOrDefault("Version")
+  valid_603051 = validateParameter(valid_603051, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601049 != nil:
-    section.add "Version", valid_601049
+  if valid_603051 != nil:
+    section.add "Version", valid_603051
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -611,19 +611,19 @@ proc validate_GetBatchPutAttributes_601039(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601050: Call_GetBatchPutAttributes_601038; path: JsonNode;
+proc call*(call_603052: Call_GetBatchPutAttributes_603040; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The <code>BatchPutAttributes</code> operation creates or replaces attributes within one or more items. By using this operation, the client can perform multiple <a>PutAttribute</a> operation with a single call. This helps yield savings in round trips and latencies, enabling Amazon SimpleDB to optimize requests and generally produce better throughput. </p> <p> The client may specify the item name with the <code>Item.X.ItemName</code> parameter. The client may specify new attributes using a combination of the <code>Item.X.Attribute.Y.Name</code> and <code>Item.X.Attribute.Y.Value</code> parameters. The client may specify the first attribute for the first item using the parameters <code>Item.0.Attribute.0.Name</code> and <code>Item.0.Attribute.0.Value</code>, and for the second attribute for the first item by the parameters <code>Item.0.Attribute.1.Name</code> and <code>Item.0.Attribute.1.Value</code>, and so on. </p> <p> Attributes are uniquely identified within an item by their name/value combination. For example, a single item can have the attributes <code>{ "first_name", "first_value" }</code> and <code>{ "first_name", "second_value" }</code>. However, it cannot have two attribute instances where both the <code>Item.X.Attribute.Y.Name</code> and <code>Item.X.Attribute.Y.Value</code> are the same. </p> <p> Optionally, the requester can supply the <code>Replace</code> parameter for each individual value. Setting this value to <code>true</code> will cause the new attribute values to replace the existing attribute values. For example, if an item <code>I</code> has the attributes <code>{ 'a', '1' }, { 'b', '2'}</code> and <code>{ 'b', '3' }</code> and the requester does a BatchPutAttributes of <code>{'I', 'b', '4' }</code> with the Replace parameter set to true, the final attributes of the item will be <code>{ 'a', '1' }</code> and <code>{ 'b', '4' }</code>, replacing the previous values of the 'b' attribute with the new value. </p> <note> You cannot specify an empty string as an item or as an attribute name. The <code>BatchPutAttributes</code> operation succeeds or fails in its entirety. There are no partial puts. </note> <important> This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. This operation does not support conditions using <code>Expected.X.Name</code>, <code>Expected.X.Value</code>, or <code>Expected.X.Exists</code>. </important> <p> You can execute multiple <code>BatchPutAttributes</code> operations and other operations in parallel. However, large numbers of concurrent <code>BatchPutAttributes</code> calls can result in Service Unavailable (503) responses. </p> <p> The following limitations are enforced for this operation: <ul> <li>256 attribute name-value pairs per item</li> <li>1 MB request size</li> <li>1 billion attributes per domain</li> <li>10 GB of total user data storage per domain</li> <li>25 item limit per <code>BatchPutAttributes</code> operation</li> </ul> </p>
   ## 
-  let valid = call_601050.validator(path, query, header, formData, body)
-  let scheme = call_601050.pickScheme
+  let valid = call_603052.validator(path, query, header, formData, body)
+  let scheme = call_603052.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601050.url(scheme.get, call_601050.host, call_601050.base,
-                         call_601050.route, valid.getOrDefault("path"))
-  result = hook(call_601050, url, valid)
+  let url = call_603052.url(scheme.get, call_603052.host, call_603052.base,
+                         call_603052.route, valid.getOrDefault("path"))
+  result = hook(call_603052, url, valid)
 
-proc call*(call_601051: Call_GetBatchPutAttributes_601038; SignatureMethod: string;
+proc call*(call_603053: Call_GetBatchPutAttributes_603040; SignatureMethod: string;
           Signature: string; Timestamp: string; Items: JsonNode;
           SignatureVersion: string; AWSAccessKeyId: string; DomainName: string;
           Action: string = "BatchPutAttributes"; Version: string = "2009-04-15"): Recallable =
@@ -640,31 +640,31 @@ proc call*(call_601051: Call_GetBatchPutAttributes_601038; SignatureMethod: stri
   ##   DomainName: string (required)
   ##             : The name of the domain in which the attributes are being stored.
   ##   Version: string (required)
-  var query_601052 = newJObject()
-  add(query_601052, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601052, "Signature", newJString(Signature))
-  add(query_601052, "Action", newJString(Action))
-  add(query_601052, "Timestamp", newJString(Timestamp))
+  var query_603054 = newJObject()
+  add(query_603054, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603054, "Signature", newJString(Signature))
+  add(query_603054, "Action", newJString(Action))
+  add(query_603054, "Timestamp", newJString(Timestamp))
   if Items != nil:
-    query_601052.add "Items", Items
-  add(query_601052, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601052, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601052, "DomainName", newJString(DomainName))
-  add(query_601052, "Version", newJString(Version))
-  result = call_601051.call(nil, query_601052, nil, nil, nil)
+    query_603054.add "Items", Items
+  add(query_603054, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603054, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603054, "DomainName", newJString(DomainName))
+  add(query_603054, "Version", newJString(Version))
+  result = call_603053.call(nil, query_603054, nil, nil, nil)
 
-var getBatchPutAttributes* = Call_GetBatchPutAttributes_601038(
+var getBatchPutAttributes* = Call_GetBatchPutAttributes_603040(
     name: "getBatchPutAttributes", meth: HttpMethod.HttpGet,
     host: "sdb.amazonaws.com", route: "/#Action=BatchPutAttributes",
-    validator: validate_GetBatchPutAttributes_601039, base: "/",
-    url: url_GetBatchPutAttributes_601040, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBatchPutAttributes_603041, base: "/",
+    url: url_GetBatchPutAttributes_603042, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateDomain_601083 = ref object of OpenApiRestCall_600410
-proc url_PostCreateDomain_601085(protocol: Scheme; host: string; base: string;
+  Call_PostCreateDomain_603085 = ref object of OpenApiRestCall_602417
+proc url_PostCreateDomain_603087(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostCreateDomain_601084(path: JsonNode; query: JsonNode;
+proc validate_PostCreateDomain_603086(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p> The <code>CreateDomain</code> operation creates a new domain. The domain name should be unique among the domains associated with the Access Key ID provided in the request. The <code>CreateDomain</code> operation may take 10 or more seconds to complete. </p> <note> CreateDomain is an idempotent operation; running it multiple times using the same domain name will not result in an error response. </note> <p> The client can create up to 100 domains per account. </p> <p> If the client requires additional domains, go to <a href="http://aws.amazon.com/contact-us/simpledb-limit-request/"> http://aws.amazon.com/contact-us/simpledb-limit-request/</a>. </p>
@@ -684,41 +684,41 @@ proc validate_PostCreateDomain_601084(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601086 = query.getOrDefault("SignatureMethod")
-  valid_601086 = validateParameter(valid_601086, JString, required = true,
+  var valid_603088 = query.getOrDefault("SignatureMethod")
+  valid_603088 = validateParameter(valid_603088, JString, required = true,
                                  default = nil)
-  if valid_601086 != nil:
-    section.add "SignatureMethod", valid_601086
-  var valid_601087 = query.getOrDefault("Signature")
-  valid_601087 = validateParameter(valid_601087, JString, required = true,
+  if valid_603088 != nil:
+    section.add "SignatureMethod", valid_603088
+  var valid_603089 = query.getOrDefault("Signature")
+  valid_603089 = validateParameter(valid_603089, JString, required = true,
                                  default = nil)
-  if valid_601087 != nil:
-    section.add "Signature", valid_601087
-  var valid_601088 = query.getOrDefault("Action")
-  valid_601088 = validateParameter(valid_601088, JString, required = true,
+  if valid_603089 != nil:
+    section.add "Signature", valid_603089
+  var valid_603090 = query.getOrDefault("Action")
+  valid_603090 = validateParameter(valid_603090, JString, required = true,
                                  default = newJString("CreateDomain"))
-  if valid_601088 != nil:
-    section.add "Action", valid_601088
-  var valid_601089 = query.getOrDefault("Timestamp")
-  valid_601089 = validateParameter(valid_601089, JString, required = true,
+  if valid_603090 != nil:
+    section.add "Action", valid_603090
+  var valid_603091 = query.getOrDefault("Timestamp")
+  valid_603091 = validateParameter(valid_603091, JString, required = true,
                                  default = nil)
-  if valid_601089 != nil:
-    section.add "Timestamp", valid_601089
-  var valid_601090 = query.getOrDefault("SignatureVersion")
-  valid_601090 = validateParameter(valid_601090, JString, required = true,
+  if valid_603091 != nil:
+    section.add "Timestamp", valid_603091
+  var valid_603092 = query.getOrDefault("SignatureVersion")
+  valid_603092 = validateParameter(valid_603092, JString, required = true,
                                  default = nil)
-  if valid_601090 != nil:
-    section.add "SignatureVersion", valid_601090
-  var valid_601091 = query.getOrDefault("AWSAccessKeyId")
-  valid_601091 = validateParameter(valid_601091, JString, required = true,
+  if valid_603092 != nil:
+    section.add "SignatureVersion", valid_603092
+  var valid_603093 = query.getOrDefault("AWSAccessKeyId")
+  valid_603093 = validateParameter(valid_603093, JString, required = true,
                                  default = nil)
-  if valid_601091 != nil:
-    section.add "AWSAccessKeyId", valid_601091
-  var valid_601092 = query.getOrDefault("Version")
-  valid_601092 = validateParameter(valid_601092, JString, required = true,
+  if valid_603093 != nil:
+    section.add "AWSAccessKeyId", valid_603093
+  var valid_603094 = query.getOrDefault("Version")
+  valid_603094 = validateParameter(valid_603094, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601092 != nil:
-    section.add "Version", valid_601092
+  if valid_603094 != nil:
+    section.add "Version", valid_603094
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -728,28 +728,28 @@ proc validate_PostCreateDomain_601084(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `DomainName` field"
-  var valid_601093 = formData.getOrDefault("DomainName")
-  valid_601093 = validateParameter(valid_601093, JString, required = true,
+  var valid_603095 = formData.getOrDefault("DomainName")
+  valid_603095 = validateParameter(valid_603095, JString, required = true,
                                  default = nil)
-  if valid_601093 != nil:
-    section.add "DomainName", valid_601093
+  if valid_603095 != nil:
+    section.add "DomainName", valid_603095
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601094: Call_PostCreateDomain_601083; path: JsonNode;
+proc call*(call_603096: Call_PostCreateDomain_603085; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The <code>CreateDomain</code> operation creates a new domain. The domain name should be unique among the domains associated with the Access Key ID provided in the request. The <code>CreateDomain</code> operation may take 10 or more seconds to complete. </p> <note> CreateDomain is an idempotent operation; running it multiple times using the same domain name will not result in an error response. </note> <p> The client can create up to 100 domains per account. </p> <p> If the client requires additional domains, go to <a href="http://aws.amazon.com/contact-us/simpledb-limit-request/"> http://aws.amazon.com/contact-us/simpledb-limit-request/</a>. </p>
   ## 
-  let valid = call_601094.validator(path, query, header, formData, body)
-  let scheme = call_601094.pickScheme
+  let valid = call_603096.validator(path, query, header, formData, body)
+  let scheme = call_603096.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601094.url(scheme.get, call_601094.host, call_601094.base,
-                         call_601094.route, valid.getOrDefault("path"))
-  result = hook(call_601094, url, valid)
+  let url = call_603096.url(scheme.get, call_603096.host, call_603096.base,
+                         call_603096.route, valid.getOrDefault("path"))
+  result = hook(call_603096, url, valid)
 
-proc call*(call_601095: Call_PostCreateDomain_601083; SignatureMethod: string;
+proc call*(call_603097: Call_PostCreateDomain_603085; SignatureMethod: string;
           DomainName: string; Signature: string; Timestamp: string;
           SignatureVersion: string; AWSAccessKeyId: string;
           Action: string = "CreateDomain"; Version: string = "2009-04-15"): Recallable =
@@ -764,30 +764,30 @@ proc call*(call_601095: Call_PostCreateDomain_601083; SignatureMethod: string;
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601096 = newJObject()
-  var formData_601097 = newJObject()
-  add(query_601096, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601097, "DomainName", newJString(DomainName))
-  add(query_601096, "Signature", newJString(Signature))
-  add(query_601096, "Action", newJString(Action))
-  add(query_601096, "Timestamp", newJString(Timestamp))
-  add(query_601096, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601096, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601096, "Version", newJString(Version))
-  result = call_601095.call(nil, query_601096, nil, formData_601097, nil)
+  var query_603098 = newJObject()
+  var formData_603099 = newJObject()
+  add(query_603098, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603099, "DomainName", newJString(DomainName))
+  add(query_603098, "Signature", newJString(Signature))
+  add(query_603098, "Action", newJString(Action))
+  add(query_603098, "Timestamp", newJString(Timestamp))
+  add(query_603098, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603098, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603098, "Version", newJString(Version))
+  result = call_603097.call(nil, query_603098, nil, formData_603099, nil)
 
-var postCreateDomain* = Call_PostCreateDomain_601083(name: "postCreateDomain",
+var postCreateDomain* = Call_PostCreateDomain_603085(name: "postCreateDomain",
     meth: HttpMethod.HttpPost, host: "sdb.amazonaws.com",
-    route: "/#Action=CreateDomain", validator: validate_PostCreateDomain_601084,
-    base: "/", url: url_PostCreateDomain_601085,
+    route: "/#Action=CreateDomain", validator: validate_PostCreateDomain_603086,
+    base: "/", url: url_PostCreateDomain_603087,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateDomain_601069 = ref object of OpenApiRestCall_600410
-proc url_GetCreateDomain_601071(protocol: Scheme; host: string; base: string;
+  Call_GetCreateDomain_603071 = ref object of OpenApiRestCall_602417
+proc url_GetCreateDomain_603073(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetCreateDomain_601070(path: JsonNode; query: JsonNode;
+proc validate_GetCreateDomain_603072(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p> The <code>CreateDomain</code> operation creates a new domain. The domain name should be unique among the domains associated with the Access Key ID provided in the request. The <code>CreateDomain</code> operation may take 10 or more seconds to complete. </p> <note> CreateDomain is an idempotent operation; running it multiple times using the same domain name will not result in an error response. </note> <p> The client can create up to 100 domains per account. </p> <p> If the client requires additional domains, go to <a href="http://aws.amazon.com/contact-us/simpledb-limit-request/"> http://aws.amazon.com/contact-us/simpledb-limit-request/</a>. </p>
@@ -809,46 +809,46 @@ proc validate_GetCreateDomain_601070(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601072 = query.getOrDefault("SignatureMethod")
-  valid_601072 = validateParameter(valid_601072, JString, required = true,
+  var valid_603074 = query.getOrDefault("SignatureMethod")
+  valid_603074 = validateParameter(valid_603074, JString, required = true,
                                  default = nil)
-  if valid_601072 != nil:
-    section.add "SignatureMethod", valid_601072
-  var valid_601073 = query.getOrDefault("Signature")
-  valid_601073 = validateParameter(valid_601073, JString, required = true,
+  if valid_603074 != nil:
+    section.add "SignatureMethod", valid_603074
+  var valid_603075 = query.getOrDefault("Signature")
+  valid_603075 = validateParameter(valid_603075, JString, required = true,
                                  default = nil)
-  if valid_601073 != nil:
-    section.add "Signature", valid_601073
-  var valid_601074 = query.getOrDefault("Action")
-  valid_601074 = validateParameter(valid_601074, JString, required = true,
+  if valid_603075 != nil:
+    section.add "Signature", valid_603075
+  var valid_603076 = query.getOrDefault("Action")
+  valid_603076 = validateParameter(valid_603076, JString, required = true,
                                  default = newJString("CreateDomain"))
-  if valid_601074 != nil:
-    section.add "Action", valid_601074
-  var valid_601075 = query.getOrDefault("Timestamp")
-  valid_601075 = validateParameter(valid_601075, JString, required = true,
+  if valid_603076 != nil:
+    section.add "Action", valid_603076
+  var valid_603077 = query.getOrDefault("Timestamp")
+  valid_603077 = validateParameter(valid_603077, JString, required = true,
                                  default = nil)
-  if valid_601075 != nil:
-    section.add "Timestamp", valid_601075
-  var valid_601076 = query.getOrDefault("SignatureVersion")
-  valid_601076 = validateParameter(valid_601076, JString, required = true,
+  if valid_603077 != nil:
+    section.add "Timestamp", valid_603077
+  var valid_603078 = query.getOrDefault("SignatureVersion")
+  valid_603078 = validateParameter(valid_603078, JString, required = true,
                                  default = nil)
-  if valid_601076 != nil:
-    section.add "SignatureVersion", valid_601076
-  var valid_601077 = query.getOrDefault("AWSAccessKeyId")
-  valid_601077 = validateParameter(valid_601077, JString, required = true,
+  if valid_603078 != nil:
+    section.add "SignatureVersion", valid_603078
+  var valid_603079 = query.getOrDefault("AWSAccessKeyId")
+  valid_603079 = validateParameter(valid_603079, JString, required = true,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "AWSAccessKeyId", valid_601077
-  var valid_601078 = query.getOrDefault("DomainName")
-  valid_601078 = validateParameter(valid_601078, JString, required = true,
+  if valid_603079 != nil:
+    section.add "AWSAccessKeyId", valid_603079
+  var valid_603080 = query.getOrDefault("DomainName")
+  valid_603080 = validateParameter(valid_603080, JString, required = true,
                                  default = nil)
-  if valid_601078 != nil:
-    section.add "DomainName", valid_601078
-  var valid_601079 = query.getOrDefault("Version")
-  valid_601079 = validateParameter(valid_601079, JString, required = true,
+  if valid_603080 != nil:
+    section.add "DomainName", valid_603080
+  var valid_603081 = query.getOrDefault("Version")
+  valid_603081 = validateParameter(valid_603081, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601079 != nil:
-    section.add "Version", valid_601079
+  if valid_603081 != nil:
+    section.add "Version", valid_603081
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -857,19 +857,19 @@ proc validate_GetCreateDomain_601070(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601080: Call_GetCreateDomain_601069; path: JsonNode; query: JsonNode;
+proc call*(call_603082: Call_GetCreateDomain_603071; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The <code>CreateDomain</code> operation creates a new domain. The domain name should be unique among the domains associated with the Access Key ID provided in the request. The <code>CreateDomain</code> operation may take 10 or more seconds to complete. </p> <note> CreateDomain is an idempotent operation; running it multiple times using the same domain name will not result in an error response. </note> <p> The client can create up to 100 domains per account. </p> <p> If the client requires additional domains, go to <a href="http://aws.amazon.com/contact-us/simpledb-limit-request/"> http://aws.amazon.com/contact-us/simpledb-limit-request/</a>. </p>
   ## 
-  let valid = call_601080.validator(path, query, header, formData, body)
-  let scheme = call_601080.pickScheme
+  let valid = call_603082.validator(path, query, header, formData, body)
+  let scheme = call_603082.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601080.url(scheme.get, call_601080.host, call_601080.base,
-                         call_601080.route, valid.getOrDefault("path"))
-  result = hook(call_601080, url, valid)
+  let url = call_603082.url(scheme.get, call_603082.host, call_603082.base,
+                         call_603082.route, valid.getOrDefault("path"))
+  result = hook(call_603082, url, valid)
 
-proc call*(call_601081: Call_GetCreateDomain_601069; SignatureMethod: string;
+proc call*(call_603083: Call_GetCreateDomain_603071; SignatureMethod: string;
           Signature: string; Timestamp: string; SignatureVersion: string;
           AWSAccessKeyId: string; DomainName: string;
           Action: string = "CreateDomain"; Version: string = "2009-04-15"): Recallable =
@@ -884,28 +884,28 @@ proc call*(call_601081: Call_GetCreateDomain_601069; SignatureMethod: string;
   ##   DomainName: string (required)
   ##             : The name of the domain to create. The name can range between 3 and 255 characters and can contain the following characters: a-z, A-Z, 0-9, '_', '-', and '.'.
   ##   Version: string (required)
-  var query_601082 = newJObject()
-  add(query_601082, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601082, "Signature", newJString(Signature))
-  add(query_601082, "Action", newJString(Action))
-  add(query_601082, "Timestamp", newJString(Timestamp))
-  add(query_601082, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601082, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601082, "DomainName", newJString(DomainName))
-  add(query_601082, "Version", newJString(Version))
-  result = call_601081.call(nil, query_601082, nil, nil, nil)
+  var query_603084 = newJObject()
+  add(query_603084, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603084, "Signature", newJString(Signature))
+  add(query_603084, "Action", newJString(Action))
+  add(query_603084, "Timestamp", newJString(Timestamp))
+  add(query_603084, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603084, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603084, "DomainName", newJString(DomainName))
+  add(query_603084, "Version", newJString(Version))
+  result = call_603083.call(nil, query_603084, nil, nil, nil)
 
-var getCreateDomain* = Call_GetCreateDomain_601069(name: "getCreateDomain",
+var getCreateDomain* = Call_GetCreateDomain_603071(name: "getCreateDomain",
     meth: HttpMethod.HttpGet, host: "sdb.amazonaws.com",
-    route: "/#Action=CreateDomain", validator: validate_GetCreateDomain_601070,
-    base: "/", url: url_GetCreateDomain_601071, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=CreateDomain", validator: validate_GetCreateDomain_603072,
+    base: "/", url: url_GetCreateDomain_603073, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeleteAttributes_601117 = ref object of OpenApiRestCall_600410
-proc url_PostDeleteAttributes_601119(protocol: Scheme; host: string; base: string;
+  Call_PostDeleteAttributes_603119 = ref object of OpenApiRestCall_602417
+proc url_PostDeleteAttributes_603121(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostDeleteAttributes_601118(path: JsonNode; query: JsonNode;
+proc validate_PostDeleteAttributes_603120(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> Deletes one or more attributes associated with an item. If all attributes of the item are deleted, the item is deleted. </p> <note> If <code>DeleteAttributes</code> is called without being passed any attributes or values specified, all the attributes for the item are deleted. </note> <p> <code>DeleteAttributes</code> is an idempotent operation; running it multiple times on the same item or attribute does not result in an error response. </p> <p> Because Amazon SimpleDB makes multiple copies of item data and uses an eventual consistency update model, performing a <a>GetAttributes</a> or <a>Select</a> operation (read) immediately after a <code>DeleteAttributes</code> or <a>PutAttributes</a> operation (write) might not return updated item data. </p>
   ## 
@@ -924,41 +924,41 @@ proc validate_PostDeleteAttributes_601118(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601120 = query.getOrDefault("SignatureMethod")
-  valid_601120 = validateParameter(valid_601120, JString, required = true,
+  var valid_603122 = query.getOrDefault("SignatureMethod")
+  valid_603122 = validateParameter(valid_603122, JString, required = true,
                                  default = nil)
-  if valid_601120 != nil:
-    section.add "SignatureMethod", valid_601120
-  var valid_601121 = query.getOrDefault("Signature")
-  valid_601121 = validateParameter(valid_601121, JString, required = true,
+  if valid_603122 != nil:
+    section.add "SignatureMethod", valid_603122
+  var valid_603123 = query.getOrDefault("Signature")
+  valid_603123 = validateParameter(valid_603123, JString, required = true,
                                  default = nil)
-  if valid_601121 != nil:
-    section.add "Signature", valid_601121
-  var valid_601122 = query.getOrDefault("Action")
-  valid_601122 = validateParameter(valid_601122, JString, required = true,
+  if valid_603123 != nil:
+    section.add "Signature", valid_603123
+  var valid_603124 = query.getOrDefault("Action")
+  valid_603124 = validateParameter(valid_603124, JString, required = true,
                                  default = newJString("DeleteAttributes"))
-  if valid_601122 != nil:
-    section.add "Action", valid_601122
-  var valid_601123 = query.getOrDefault("Timestamp")
-  valid_601123 = validateParameter(valid_601123, JString, required = true,
+  if valid_603124 != nil:
+    section.add "Action", valid_603124
+  var valid_603125 = query.getOrDefault("Timestamp")
+  valid_603125 = validateParameter(valid_603125, JString, required = true,
                                  default = nil)
-  if valid_601123 != nil:
-    section.add "Timestamp", valid_601123
-  var valid_601124 = query.getOrDefault("SignatureVersion")
-  valid_601124 = validateParameter(valid_601124, JString, required = true,
+  if valid_603125 != nil:
+    section.add "Timestamp", valid_603125
+  var valid_603126 = query.getOrDefault("SignatureVersion")
+  valid_603126 = validateParameter(valid_603126, JString, required = true,
                                  default = nil)
-  if valid_601124 != nil:
-    section.add "SignatureVersion", valid_601124
-  var valid_601125 = query.getOrDefault("AWSAccessKeyId")
-  valid_601125 = validateParameter(valid_601125, JString, required = true,
+  if valid_603126 != nil:
+    section.add "SignatureVersion", valid_603126
+  var valid_603127 = query.getOrDefault("AWSAccessKeyId")
+  valid_603127 = validateParameter(valid_603127, JString, required = true,
                                  default = nil)
-  if valid_601125 != nil:
-    section.add "AWSAccessKeyId", valid_601125
-  var valid_601126 = query.getOrDefault("Version")
-  valid_601126 = validateParameter(valid_601126, JString, required = true,
+  if valid_603127 != nil:
+    section.add "AWSAccessKeyId", valid_603127
+  var valid_603128 = query.getOrDefault("Version")
+  valid_603128 = validateParameter(valid_603128, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601126 != nil:
-    section.add "Version", valid_601126
+  if valid_603128 != nil:
+    section.add "Version", valid_603128
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -981,53 +981,53 @@ proc validate_PostDeleteAttributes_601118(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `DomainName` field"
-  var valid_601127 = formData.getOrDefault("DomainName")
-  valid_601127 = validateParameter(valid_601127, JString, required = true,
+  var valid_603129 = formData.getOrDefault("DomainName")
+  valid_603129 = validateParameter(valid_603129, JString, required = true,
                                  default = nil)
-  if valid_601127 != nil:
-    section.add "DomainName", valid_601127
-  var valid_601128 = formData.getOrDefault("ItemName")
-  valid_601128 = validateParameter(valid_601128, JString, required = true,
+  if valid_603129 != nil:
+    section.add "DomainName", valid_603129
+  var valid_603130 = formData.getOrDefault("ItemName")
+  valid_603130 = validateParameter(valid_603130, JString, required = true,
                                  default = nil)
-  if valid_601128 != nil:
-    section.add "ItemName", valid_601128
-  var valid_601129 = formData.getOrDefault("Expected.Exists")
-  valid_601129 = validateParameter(valid_601129, JString, required = false,
+  if valid_603130 != nil:
+    section.add "ItemName", valid_603130
+  var valid_603131 = formData.getOrDefault("Expected.Exists")
+  valid_603131 = validateParameter(valid_603131, JString, required = false,
                                  default = nil)
-  if valid_601129 != nil:
-    section.add "Expected.Exists", valid_601129
-  var valid_601130 = formData.getOrDefault("Attributes")
-  valid_601130 = validateParameter(valid_601130, JArray, required = false,
+  if valid_603131 != nil:
+    section.add "Expected.Exists", valid_603131
+  var valid_603132 = formData.getOrDefault("Attributes")
+  valid_603132 = validateParameter(valid_603132, JArray, required = false,
                                  default = nil)
-  if valid_601130 != nil:
-    section.add "Attributes", valid_601130
-  var valid_601131 = formData.getOrDefault("Expected.Value")
-  valid_601131 = validateParameter(valid_601131, JString, required = false,
+  if valid_603132 != nil:
+    section.add "Attributes", valid_603132
+  var valid_603133 = formData.getOrDefault("Expected.Value")
+  valid_603133 = validateParameter(valid_603133, JString, required = false,
                                  default = nil)
-  if valid_601131 != nil:
-    section.add "Expected.Value", valid_601131
-  var valid_601132 = formData.getOrDefault("Expected.Name")
-  valid_601132 = validateParameter(valid_601132, JString, required = false,
+  if valid_603133 != nil:
+    section.add "Expected.Value", valid_603133
+  var valid_603134 = formData.getOrDefault("Expected.Name")
+  valid_603134 = validateParameter(valid_603134, JString, required = false,
                                  default = nil)
-  if valid_601132 != nil:
-    section.add "Expected.Name", valid_601132
+  if valid_603134 != nil:
+    section.add "Expected.Name", valid_603134
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601133: Call_PostDeleteAttributes_601117; path: JsonNode;
+proc call*(call_603135: Call_PostDeleteAttributes_603119; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Deletes one or more attributes associated with an item. If all attributes of the item are deleted, the item is deleted. </p> <note> If <code>DeleteAttributes</code> is called without being passed any attributes or values specified, all the attributes for the item are deleted. </note> <p> <code>DeleteAttributes</code> is an idempotent operation; running it multiple times on the same item or attribute does not result in an error response. </p> <p> Because Amazon SimpleDB makes multiple copies of item data and uses an eventual consistency update model, performing a <a>GetAttributes</a> or <a>Select</a> operation (read) immediately after a <code>DeleteAttributes</code> or <a>PutAttributes</a> operation (write) might not return updated item data. </p>
   ## 
-  let valid = call_601133.validator(path, query, header, formData, body)
-  let scheme = call_601133.pickScheme
+  let valid = call_603135.validator(path, query, header, formData, body)
+  let scheme = call_603135.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601133.url(scheme.get, call_601133.host, call_601133.base,
-                         call_601133.route, valid.getOrDefault("path"))
-  result = hook(call_601133, url, valid)
+  let url = call_603135.url(scheme.get, call_603135.host, call_603135.base,
+                         call_603135.route, valid.getOrDefault("path"))
+  result = hook(call_603135, url, valid)
 
-proc call*(call_601134: Call_PostDeleteAttributes_601117; SignatureMethod: string;
+proc call*(call_603136: Call_PostDeleteAttributes_603119; SignatureMethod: string;
           DomainName: string; ItemName: string; Signature: string; Timestamp: string;
           SignatureVersion: string; AWSAccessKeyId: string;
           ExpectedExists: string = ""; Attributes: JsonNode = nil;
@@ -1057,36 +1057,36 @@ proc call*(call_601134: Call_PostDeleteAttributes_601117; SignatureMethod: strin
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601135 = newJObject()
-  var formData_601136 = newJObject()
-  add(query_601135, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601136, "DomainName", newJString(DomainName))
-  add(formData_601136, "ItemName", newJString(ItemName))
-  add(formData_601136, "Expected.Exists", newJString(ExpectedExists))
-  add(query_601135, "Signature", newJString(Signature))
+  var query_603137 = newJObject()
+  var formData_603138 = newJObject()
+  add(query_603137, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603138, "DomainName", newJString(DomainName))
+  add(formData_603138, "ItemName", newJString(ItemName))
+  add(formData_603138, "Expected.Exists", newJString(ExpectedExists))
+  add(query_603137, "Signature", newJString(Signature))
   if Attributes != nil:
-    formData_601136.add "Attributes", Attributes
-  add(query_601135, "Action", newJString(Action))
-  add(query_601135, "Timestamp", newJString(Timestamp))
-  add(formData_601136, "Expected.Value", newJString(ExpectedValue))
-  add(formData_601136, "Expected.Name", newJString(ExpectedName))
-  add(query_601135, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601135, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601135, "Version", newJString(Version))
-  result = call_601134.call(nil, query_601135, nil, formData_601136, nil)
+    formData_603138.add "Attributes", Attributes
+  add(query_603137, "Action", newJString(Action))
+  add(query_603137, "Timestamp", newJString(Timestamp))
+  add(formData_603138, "Expected.Value", newJString(ExpectedValue))
+  add(formData_603138, "Expected.Name", newJString(ExpectedName))
+  add(query_603137, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603137, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603137, "Version", newJString(Version))
+  result = call_603136.call(nil, query_603137, nil, formData_603138, nil)
 
-var postDeleteAttributes* = Call_PostDeleteAttributes_601117(
+var postDeleteAttributes* = Call_PostDeleteAttributes_603119(
     name: "postDeleteAttributes", meth: HttpMethod.HttpPost,
     host: "sdb.amazonaws.com", route: "/#Action=DeleteAttributes",
-    validator: validate_PostDeleteAttributes_601118, base: "/",
-    url: url_PostDeleteAttributes_601119, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostDeleteAttributes_603120, base: "/",
+    url: url_PostDeleteAttributes_603121, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeleteAttributes_601098 = ref object of OpenApiRestCall_600410
-proc url_GetDeleteAttributes_601100(protocol: Scheme; host: string; base: string;
+  Call_GetDeleteAttributes_603100 = ref object of OpenApiRestCall_602417
+proc url_GetDeleteAttributes_603102(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetDeleteAttributes_601099(path: JsonNode; query: JsonNode;
+proc validate_GetDeleteAttributes_603101(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p> Deletes one or more attributes associated with an item. If all attributes of the item are deleted, the item is deleted. </p> <note> If <code>DeleteAttributes</code> is called without being passed any attributes or values specified, all the attributes for the item are deleted. </note> <p> <code>DeleteAttributes</code> is an idempotent operation; running it multiple times on the same item or attribute does not result in an error response. </p> <p> Because Amazon SimpleDB makes multiple copies of item data and uses an eventual consistency update model, performing a <a>GetAttributes</a> or <a>Select</a> operation (read) immediately after a <code>DeleteAttributes</code> or <a>PutAttributes</a> operation (write) might not return updated item data. </p>
@@ -1121,71 +1121,71 @@ proc validate_GetDeleteAttributes_601099(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601101 = query.getOrDefault("SignatureMethod")
-  valid_601101 = validateParameter(valid_601101, JString, required = true,
+  var valid_603103 = query.getOrDefault("SignatureMethod")
+  valid_603103 = validateParameter(valid_603103, JString, required = true,
                                  default = nil)
-  if valid_601101 != nil:
-    section.add "SignatureMethod", valid_601101
-  var valid_601102 = query.getOrDefault("Expected.Exists")
-  valid_601102 = validateParameter(valid_601102, JString, required = false,
+  if valid_603103 != nil:
+    section.add "SignatureMethod", valid_603103
+  var valid_603104 = query.getOrDefault("Expected.Exists")
+  valid_603104 = validateParameter(valid_603104, JString, required = false,
                                  default = nil)
-  if valid_601102 != nil:
-    section.add "Expected.Exists", valid_601102
-  var valid_601103 = query.getOrDefault("Attributes")
-  valid_601103 = validateParameter(valid_601103, JArray, required = false,
+  if valid_603104 != nil:
+    section.add "Expected.Exists", valid_603104
+  var valid_603105 = query.getOrDefault("Attributes")
+  valid_603105 = validateParameter(valid_603105, JArray, required = false,
                                  default = nil)
-  if valid_601103 != nil:
-    section.add "Attributes", valid_601103
-  var valid_601104 = query.getOrDefault("Signature")
-  valid_601104 = validateParameter(valid_601104, JString, required = true,
+  if valid_603105 != nil:
+    section.add "Attributes", valid_603105
+  var valid_603106 = query.getOrDefault("Signature")
+  valid_603106 = validateParameter(valid_603106, JString, required = true,
                                  default = nil)
-  if valid_601104 != nil:
-    section.add "Signature", valid_601104
-  var valid_601105 = query.getOrDefault("ItemName")
-  valid_601105 = validateParameter(valid_601105, JString, required = true,
+  if valid_603106 != nil:
+    section.add "Signature", valid_603106
+  var valid_603107 = query.getOrDefault("ItemName")
+  valid_603107 = validateParameter(valid_603107, JString, required = true,
                                  default = nil)
-  if valid_601105 != nil:
-    section.add "ItemName", valid_601105
-  var valid_601106 = query.getOrDefault("Action")
-  valid_601106 = validateParameter(valid_601106, JString, required = true,
+  if valid_603107 != nil:
+    section.add "ItemName", valid_603107
+  var valid_603108 = query.getOrDefault("Action")
+  valid_603108 = validateParameter(valid_603108, JString, required = true,
                                  default = newJString("DeleteAttributes"))
-  if valid_601106 != nil:
-    section.add "Action", valid_601106
-  var valid_601107 = query.getOrDefault("Expected.Value")
-  valid_601107 = validateParameter(valid_601107, JString, required = false,
+  if valid_603108 != nil:
+    section.add "Action", valid_603108
+  var valid_603109 = query.getOrDefault("Expected.Value")
+  valid_603109 = validateParameter(valid_603109, JString, required = false,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "Expected.Value", valid_601107
-  var valid_601108 = query.getOrDefault("Timestamp")
-  valid_601108 = validateParameter(valid_601108, JString, required = true,
+  if valid_603109 != nil:
+    section.add "Expected.Value", valid_603109
+  var valid_603110 = query.getOrDefault("Timestamp")
+  valid_603110 = validateParameter(valid_603110, JString, required = true,
                                  default = nil)
-  if valid_601108 != nil:
-    section.add "Timestamp", valid_601108
-  var valid_601109 = query.getOrDefault("SignatureVersion")
-  valid_601109 = validateParameter(valid_601109, JString, required = true,
+  if valid_603110 != nil:
+    section.add "Timestamp", valid_603110
+  var valid_603111 = query.getOrDefault("SignatureVersion")
+  valid_603111 = validateParameter(valid_603111, JString, required = true,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "SignatureVersion", valid_601109
-  var valid_601110 = query.getOrDefault("AWSAccessKeyId")
-  valid_601110 = validateParameter(valid_601110, JString, required = true,
+  if valid_603111 != nil:
+    section.add "SignatureVersion", valid_603111
+  var valid_603112 = query.getOrDefault("AWSAccessKeyId")
+  valid_603112 = validateParameter(valid_603112, JString, required = true,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "AWSAccessKeyId", valid_601110
-  var valid_601111 = query.getOrDefault("Expected.Name")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_603112 != nil:
+    section.add "AWSAccessKeyId", valid_603112
+  var valid_603113 = query.getOrDefault("Expected.Name")
+  valid_603113 = validateParameter(valid_603113, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "Expected.Name", valid_601111
-  var valid_601112 = query.getOrDefault("DomainName")
-  valid_601112 = validateParameter(valid_601112, JString, required = true,
+  if valid_603113 != nil:
+    section.add "Expected.Name", valid_603113
+  var valid_603114 = query.getOrDefault("DomainName")
+  valid_603114 = validateParameter(valid_603114, JString, required = true,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "DomainName", valid_601112
-  var valid_601113 = query.getOrDefault("Version")
-  valid_601113 = validateParameter(valid_601113, JString, required = true,
+  if valid_603114 != nil:
+    section.add "DomainName", valid_603114
+  var valid_603115 = query.getOrDefault("Version")
+  valid_603115 = validateParameter(valid_603115, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601113 != nil:
-    section.add "Version", valid_601113
+  if valid_603115 != nil:
+    section.add "Version", valid_603115
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1194,19 +1194,19 @@ proc validate_GetDeleteAttributes_601099(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601114: Call_GetDeleteAttributes_601098; path: JsonNode;
+proc call*(call_603116: Call_GetDeleteAttributes_603100; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Deletes one or more attributes associated with an item. If all attributes of the item are deleted, the item is deleted. </p> <note> If <code>DeleteAttributes</code> is called without being passed any attributes or values specified, all the attributes for the item are deleted. </note> <p> <code>DeleteAttributes</code> is an idempotent operation; running it multiple times on the same item or attribute does not result in an error response. </p> <p> Because Amazon SimpleDB makes multiple copies of item data and uses an eventual consistency update model, performing a <a>GetAttributes</a> or <a>Select</a> operation (read) immediately after a <code>DeleteAttributes</code> or <a>PutAttributes</a> operation (write) might not return updated item data. </p>
   ## 
-  let valid = call_601114.validator(path, query, header, formData, body)
-  let scheme = call_601114.pickScheme
+  let valid = call_603116.validator(path, query, header, formData, body)
+  let scheme = call_603116.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601114.url(scheme.get, call_601114.host, call_601114.base,
-                         call_601114.route, valid.getOrDefault("path"))
-  result = hook(call_601114, url, valid)
+  let url = call_603116.url(scheme.get, call_603116.host, call_603116.base,
+                         call_603116.route, valid.getOrDefault("path"))
+  result = hook(call_603116, url, valid)
 
-proc call*(call_601115: Call_GetDeleteAttributes_601098; SignatureMethod: string;
+proc call*(call_603117: Call_GetDeleteAttributes_603100; SignatureMethod: string;
           Signature: string; ItemName: string; Timestamp: string;
           SignatureVersion: string; AWSAccessKeyId: string; DomainName: string;
           ExpectedExists: string = ""; Attributes: JsonNode = nil;
@@ -1236,35 +1236,35 @@ proc call*(call_601115: Call_GetDeleteAttributes_601098; SignatureMethod: string
   ##   DomainName: string (required)
   ##             : The name of the domain in which to perform the operation.
   ##   Version: string (required)
-  var query_601116 = newJObject()
-  add(query_601116, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601116, "Expected.Exists", newJString(ExpectedExists))
+  var query_603118 = newJObject()
+  add(query_603118, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603118, "Expected.Exists", newJString(ExpectedExists))
   if Attributes != nil:
-    query_601116.add "Attributes", Attributes
-  add(query_601116, "Signature", newJString(Signature))
-  add(query_601116, "ItemName", newJString(ItemName))
-  add(query_601116, "Action", newJString(Action))
-  add(query_601116, "Expected.Value", newJString(ExpectedValue))
-  add(query_601116, "Timestamp", newJString(Timestamp))
-  add(query_601116, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601116, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601116, "Expected.Name", newJString(ExpectedName))
-  add(query_601116, "DomainName", newJString(DomainName))
-  add(query_601116, "Version", newJString(Version))
-  result = call_601115.call(nil, query_601116, nil, nil, nil)
+    query_603118.add "Attributes", Attributes
+  add(query_603118, "Signature", newJString(Signature))
+  add(query_603118, "ItemName", newJString(ItemName))
+  add(query_603118, "Action", newJString(Action))
+  add(query_603118, "Expected.Value", newJString(ExpectedValue))
+  add(query_603118, "Timestamp", newJString(Timestamp))
+  add(query_603118, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603118, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603118, "Expected.Name", newJString(ExpectedName))
+  add(query_603118, "DomainName", newJString(DomainName))
+  add(query_603118, "Version", newJString(Version))
+  result = call_603117.call(nil, query_603118, nil, nil, nil)
 
-var getDeleteAttributes* = Call_GetDeleteAttributes_601098(
+var getDeleteAttributes* = Call_GetDeleteAttributes_603100(
     name: "getDeleteAttributes", meth: HttpMethod.HttpGet,
     host: "sdb.amazonaws.com", route: "/#Action=DeleteAttributes",
-    validator: validate_GetDeleteAttributes_601099, base: "/",
-    url: url_GetDeleteAttributes_601100, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDeleteAttributes_603101, base: "/",
+    url: url_GetDeleteAttributes_603102, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeleteDomain_601151 = ref object of OpenApiRestCall_600410
-proc url_PostDeleteDomain_601153(protocol: Scheme; host: string; base: string;
+  Call_PostDeleteDomain_603153 = ref object of OpenApiRestCall_602417
+proc url_PostDeleteDomain_603155(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostDeleteDomain_601152(path: JsonNode; query: JsonNode;
+proc validate_PostDeleteDomain_603154(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p> The <code>DeleteDomain</code> operation deletes a domain. Any items (and their attributes) in the domain are deleted as well. The <code>DeleteDomain</code> operation might take 10 or more seconds to complete. </p> <note> Running <code>DeleteDomain</code> on a domain that does not exist or running the function multiple times using the same domain name will not result in an error response. </note>
@@ -1284,41 +1284,41 @@ proc validate_PostDeleteDomain_601152(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601154 = query.getOrDefault("SignatureMethod")
-  valid_601154 = validateParameter(valid_601154, JString, required = true,
+  var valid_603156 = query.getOrDefault("SignatureMethod")
+  valid_603156 = validateParameter(valid_603156, JString, required = true,
                                  default = nil)
-  if valid_601154 != nil:
-    section.add "SignatureMethod", valid_601154
-  var valid_601155 = query.getOrDefault("Signature")
-  valid_601155 = validateParameter(valid_601155, JString, required = true,
+  if valid_603156 != nil:
+    section.add "SignatureMethod", valid_603156
+  var valid_603157 = query.getOrDefault("Signature")
+  valid_603157 = validateParameter(valid_603157, JString, required = true,
                                  default = nil)
-  if valid_601155 != nil:
-    section.add "Signature", valid_601155
-  var valid_601156 = query.getOrDefault("Action")
-  valid_601156 = validateParameter(valid_601156, JString, required = true,
+  if valid_603157 != nil:
+    section.add "Signature", valid_603157
+  var valid_603158 = query.getOrDefault("Action")
+  valid_603158 = validateParameter(valid_603158, JString, required = true,
                                  default = newJString("DeleteDomain"))
-  if valid_601156 != nil:
-    section.add "Action", valid_601156
-  var valid_601157 = query.getOrDefault("Timestamp")
-  valid_601157 = validateParameter(valid_601157, JString, required = true,
+  if valid_603158 != nil:
+    section.add "Action", valid_603158
+  var valid_603159 = query.getOrDefault("Timestamp")
+  valid_603159 = validateParameter(valid_603159, JString, required = true,
                                  default = nil)
-  if valid_601157 != nil:
-    section.add "Timestamp", valid_601157
-  var valid_601158 = query.getOrDefault("SignatureVersion")
-  valid_601158 = validateParameter(valid_601158, JString, required = true,
+  if valid_603159 != nil:
+    section.add "Timestamp", valid_603159
+  var valid_603160 = query.getOrDefault("SignatureVersion")
+  valid_603160 = validateParameter(valid_603160, JString, required = true,
                                  default = nil)
-  if valid_601158 != nil:
-    section.add "SignatureVersion", valid_601158
-  var valid_601159 = query.getOrDefault("AWSAccessKeyId")
-  valid_601159 = validateParameter(valid_601159, JString, required = true,
+  if valid_603160 != nil:
+    section.add "SignatureVersion", valid_603160
+  var valid_603161 = query.getOrDefault("AWSAccessKeyId")
+  valid_603161 = validateParameter(valid_603161, JString, required = true,
                                  default = nil)
-  if valid_601159 != nil:
-    section.add "AWSAccessKeyId", valid_601159
-  var valid_601160 = query.getOrDefault("Version")
-  valid_601160 = validateParameter(valid_601160, JString, required = true,
+  if valid_603161 != nil:
+    section.add "AWSAccessKeyId", valid_603161
+  var valid_603162 = query.getOrDefault("Version")
+  valid_603162 = validateParameter(valid_603162, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601160 != nil:
-    section.add "Version", valid_601160
+  if valid_603162 != nil:
+    section.add "Version", valid_603162
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1328,28 +1328,28 @@ proc validate_PostDeleteDomain_601152(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `DomainName` field"
-  var valid_601161 = formData.getOrDefault("DomainName")
-  valid_601161 = validateParameter(valid_601161, JString, required = true,
+  var valid_603163 = formData.getOrDefault("DomainName")
+  valid_603163 = validateParameter(valid_603163, JString, required = true,
                                  default = nil)
-  if valid_601161 != nil:
-    section.add "DomainName", valid_601161
+  if valid_603163 != nil:
+    section.add "DomainName", valid_603163
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601162: Call_PostDeleteDomain_601151; path: JsonNode;
+proc call*(call_603164: Call_PostDeleteDomain_603153; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The <code>DeleteDomain</code> operation deletes a domain. Any items (and their attributes) in the domain are deleted as well. The <code>DeleteDomain</code> operation might take 10 or more seconds to complete. </p> <note> Running <code>DeleteDomain</code> on a domain that does not exist or running the function multiple times using the same domain name will not result in an error response. </note>
   ## 
-  let valid = call_601162.validator(path, query, header, formData, body)
-  let scheme = call_601162.pickScheme
+  let valid = call_603164.validator(path, query, header, formData, body)
+  let scheme = call_603164.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601162.url(scheme.get, call_601162.host, call_601162.base,
-                         call_601162.route, valid.getOrDefault("path"))
-  result = hook(call_601162, url, valid)
+  let url = call_603164.url(scheme.get, call_603164.host, call_603164.base,
+                         call_603164.route, valid.getOrDefault("path"))
+  result = hook(call_603164, url, valid)
 
-proc call*(call_601163: Call_PostDeleteDomain_601151; SignatureMethod: string;
+proc call*(call_603165: Call_PostDeleteDomain_603153; SignatureMethod: string;
           DomainName: string; Signature: string; Timestamp: string;
           SignatureVersion: string; AWSAccessKeyId: string;
           Action: string = "DeleteDomain"; Version: string = "2009-04-15"): Recallable =
@@ -1364,30 +1364,30 @@ proc call*(call_601163: Call_PostDeleteDomain_601151; SignatureMethod: string;
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601164 = newJObject()
-  var formData_601165 = newJObject()
-  add(query_601164, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601165, "DomainName", newJString(DomainName))
-  add(query_601164, "Signature", newJString(Signature))
-  add(query_601164, "Action", newJString(Action))
-  add(query_601164, "Timestamp", newJString(Timestamp))
-  add(query_601164, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601164, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601164, "Version", newJString(Version))
-  result = call_601163.call(nil, query_601164, nil, formData_601165, nil)
+  var query_603166 = newJObject()
+  var formData_603167 = newJObject()
+  add(query_603166, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603167, "DomainName", newJString(DomainName))
+  add(query_603166, "Signature", newJString(Signature))
+  add(query_603166, "Action", newJString(Action))
+  add(query_603166, "Timestamp", newJString(Timestamp))
+  add(query_603166, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603166, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603166, "Version", newJString(Version))
+  result = call_603165.call(nil, query_603166, nil, formData_603167, nil)
 
-var postDeleteDomain* = Call_PostDeleteDomain_601151(name: "postDeleteDomain",
+var postDeleteDomain* = Call_PostDeleteDomain_603153(name: "postDeleteDomain",
     meth: HttpMethod.HttpPost, host: "sdb.amazonaws.com",
-    route: "/#Action=DeleteDomain", validator: validate_PostDeleteDomain_601152,
-    base: "/", url: url_PostDeleteDomain_601153,
+    route: "/#Action=DeleteDomain", validator: validate_PostDeleteDomain_603154,
+    base: "/", url: url_PostDeleteDomain_603155,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeleteDomain_601137 = ref object of OpenApiRestCall_600410
-proc url_GetDeleteDomain_601139(protocol: Scheme; host: string; base: string;
+  Call_GetDeleteDomain_603139 = ref object of OpenApiRestCall_602417
+proc url_GetDeleteDomain_603141(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetDeleteDomain_601138(path: JsonNode; query: JsonNode;
+proc validate_GetDeleteDomain_603140(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p> The <code>DeleteDomain</code> operation deletes a domain. Any items (and their attributes) in the domain are deleted as well. The <code>DeleteDomain</code> operation might take 10 or more seconds to complete. </p> <note> Running <code>DeleteDomain</code> on a domain that does not exist or running the function multiple times using the same domain name will not result in an error response. </note>
@@ -1409,46 +1409,46 @@ proc validate_GetDeleteDomain_601138(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601140 = query.getOrDefault("SignatureMethod")
-  valid_601140 = validateParameter(valid_601140, JString, required = true,
+  var valid_603142 = query.getOrDefault("SignatureMethod")
+  valid_603142 = validateParameter(valid_603142, JString, required = true,
                                  default = nil)
-  if valid_601140 != nil:
-    section.add "SignatureMethod", valid_601140
-  var valid_601141 = query.getOrDefault("Signature")
-  valid_601141 = validateParameter(valid_601141, JString, required = true,
+  if valid_603142 != nil:
+    section.add "SignatureMethod", valid_603142
+  var valid_603143 = query.getOrDefault("Signature")
+  valid_603143 = validateParameter(valid_603143, JString, required = true,
                                  default = nil)
-  if valid_601141 != nil:
-    section.add "Signature", valid_601141
-  var valid_601142 = query.getOrDefault("Action")
-  valid_601142 = validateParameter(valid_601142, JString, required = true,
+  if valid_603143 != nil:
+    section.add "Signature", valid_603143
+  var valid_603144 = query.getOrDefault("Action")
+  valid_603144 = validateParameter(valid_603144, JString, required = true,
                                  default = newJString("DeleteDomain"))
-  if valid_601142 != nil:
-    section.add "Action", valid_601142
-  var valid_601143 = query.getOrDefault("Timestamp")
-  valid_601143 = validateParameter(valid_601143, JString, required = true,
+  if valid_603144 != nil:
+    section.add "Action", valid_603144
+  var valid_603145 = query.getOrDefault("Timestamp")
+  valid_603145 = validateParameter(valid_603145, JString, required = true,
                                  default = nil)
-  if valid_601143 != nil:
-    section.add "Timestamp", valid_601143
-  var valid_601144 = query.getOrDefault("SignatureVersion")
-  valid_601144 = validateParameter(valid_601144, JString, required = true,
+  if valid_603145 != nil:
+    section.add "Timestamp", valid_603145
+  var valid_603146 = query.getOrDefault("SignatureVersion")
+  valid_603146 = validateParameter(valid_603146, JString, required = true,
                                  default = nil)
-  if valid_601144 != nil:
-    section.add "SignatureVersion", valid_601144
-  var valid_601145 = query.getOrDefault("AWSAccessKeyId")
-  valid_601145 = validateParameter(valid_601145, JString, required = true,
+  if valid_603146 != nil:
+    section.add "SignatureVersion", valid_603146
+  var valid_603147 = query.getOrDefault("AWSAccessKeyId")
+  valid_603147 = validateParameter(valid_603147, JString, required = true,
                                  default = nil)
-  if valid_601145 != nil:
-    section.add "AWSAccessKeyId", valid_601145
-  var valid_601146 = query.getOrDefault("DomainName")
-  valid_601146 = validateParameter(valid_601146, JString, required = true,
+  if valid_603147 != nil:
+    section.add "AWSAccessKeyId", valid_603147
+  var valid_603148 = query.getOrDefault("DomainName")
+  valid_603148 = validateParameter(valid_603148, JString, required = true,
                                  default = nil)
-  if valid_601146 != nil:
-    section.add "DomainName", valid_601146
-  var valid_601147 = query.getOrDefault("Version")
-  valid_601147 = validateParameter(valid_601147, JString, required = true,
+  if valid_603148 != nil:
+    section.add "DomainName", valid_603148
+  var valid_603149 = query.getOrDefault("Version")
+  valid_603149 = validateParameter(valid_603149, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601147 != nil:
-    section.add "Version", valid_601147
+  if valid_603149 != nil:
+    section.add "Version", valid_603149
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1457,19 +1457,19 @@ proc validate_GetDeleteDomain_601138(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601148: Call_GetDeleteDomain_601137; path: JsonNode; query: JsonNode;
+proc call*(call_603150: Call_GetDeleteDomain_603139; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The <code>DeleteDomain</code> operation deletes a domain. Any items (and their attributes) in the domain are deleted as well. The <code>DeleteDomain</code> operation might take 10 or more seconds to complete. </p> <note> Running <code>DeleteDomain</code> on a domain that does not exist or running the function multiple times using the same domain name will not result in an error response. </note>
   ## 
-  let valid = call_601148.validator(path, query, header, formData, body)
-  let scheme = call_601148.pickScheme
+  let valid = call_603150.validator(path, query, header, formData, body)
+  let scheme = call_603150.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601148.url(scheme.get, call_601148.host, call_601148.base,
-                         call_601148.route, valid.getOrDefault("path"))
-  result = hook(call_601148, url, valid)
+  let url = call_603150.url(scheme.get, call_603150.host, call_603150.base,
+                         call_603150.route, valid.getOrDefault("path"))
+  result = hook(call_603150, url, valid)
 
-proc call*(call_601149: Call_GetDeleteDomain_601137; SignatureMethod: string;
+proc call*(call_603151: Call_GetDeleteDomain_603139; SignatureMethod: string;
           Signature: string; Timestamp: string; SignatureVersion: string;
           AWSAccessKeyId: string; DomainName: string;
           Action: string = "DeleteDomain"; Version: string = "2009-04-15"): Recallable =
@@ -1484,28 +1484,28 @@ proc call*(call_601149: Call_GetDeleteDomain_601137; SignatureMethod: string;
   ##   DomainName: string (required)
   ##             : The name of the domain to delete.
   ##   Version: string (required)
-  var query_601150 = newJObject()
-  add(query_601150, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601150, "Signature", newJString(Signature))
-  add(query_601150, "Action", newJString(Action))
-  add(query_601150, "Timestamp", newJString(Timestamp))
-  add(query_601150, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601150, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601150, "DomainName", newJString(DomainName))
-  add(query_601150, "Version", newJString(Version))
-  result = call_601149.call(nil, query_601150, nil, nil, nil)
+  var query_603152 = newJObject()
+  add(query_603152, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603152, "Signature", newJString(Signature))
+  add(query_603152, "Action", newJString(Action))
+  add(query_603152, "Timestamp", newJString(Timestamp))
+  add(query_603152, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603152, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603152, "DomainName", newJString(DomainName))
+  add(query_603152, "Version", newJString(Version))
+  result = call_603151.call(nil, query_603152, nil, nil, nil)
 
-var getDeleteDomain* = Call_GetDeleteDomain_601137(name: "getDeleteDomain",
+var getDeleteDomain* = Call_GetDeleteDomain_603139(name: "getDeleteDomain",
     meth: HttpMethod.HttpGet, host: "sdb.amazonaws.com",
-    route: "/#Action=DeleteDomain", validator: validate_GetDeleteDomain_601138,
-    base: "/", url: url_GetDeleteDomain_601139, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=DeleteDomain", validator: validate_GetDeleteDomain_603140,
+    base: "/", url: url_GetDeleteDomain_603141, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDomainMetadata_601180 = ref object of OpenApiRestCall_600410
-proc url_PostDomainMetadata_601182(protocol: Scheme; host: string; base: string;
+  Call_PostDomainMetadata_603182 = ref object of OpenApiRestCall_602417
+proc url_PostDomainMetadata_603184(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostDomainMetadata_601181(path: JsonNode; query: JsonNode;
+proc validate_PostDomainMetadata_603183(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ##  Returns information about the domain, including when the domain was created, the number of items and attributes in the domain, and the size of the attribute names and values. 
@@ -1525,41 +1525,41 @@ proc validate_PostDomainMetadata_601181(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601183 = query.getOrDefault("SignatureMethod")
-  valid_601183 = validateParameter(valid_601183, JString, required = true,
+  var valid_603185 = query.getOrDefault("SignatureMethod")
+  valid_603185 = validateParameter(valid_603185, JString, required = true,
                                  default = nil)
-  if valid_601183 != nil:
-    section.add "SignatureMethod", valid_601183
-  var valid_601184 = query.getOrDefault("Signature")
-  valid_601184 = validateParameter(valid_601184, JString, required = true,
+  if valid_603185 != nil:
+    section.add "SignatureMethod", valid_603185
+  var valid_603186 = query.getOrDefault("Signature")
+  valid_603186 = validateParameter(valid_603186, JString, required = true,
                                  default = nil)
-  if valid_601184 != nil:
-    section.add "Signature", valid_601184
-  var valid_601185 = query.getOrDefault("Action")
-  valid_601185 = validateParameter(valid_601185, JString, required = true,
+  if valid_603186 != nil:
+    section.add "Signature", valid_603186
+  var valid_603187 = query.getOrDefault("Action")
+  valid_603187 = validateParameter(valid_603187, JString, required = true,
                                  default = newJString("DomainMetadata"))
-  if valid_601185 != nil:
-    section.add "Action", valid_601185
-  var valid_601186 = query.getOrDefault("Timestamp")
-  valid_601186 = validateParameter(valid_601186, JString, required = true,
+  if valid_603187 != nil:
+    section.add "Action", valid_603187
+  var valid_603188 = query.getOrDefault("Timestamp")
+  valid_603188 = validateParameter(valid_603188, JString, required = true,
                                  default = nil)
-  if valid_601186 != nil:
-    section.add "Timestamp", valid_601186
-  var valid_601187 = query.getOrDefault("SignatureVersion")
-  valid_601187 = validateParameter(valid_601187, JString, required = true,
+  if valid_603188 != nil:
+    section.add "Timestamp", valid_603188
+  var valid_603189 = query.getOrDefault("SignatureVersion")
+  valid_603189 = validateParameter(valid_603189, JString, required = true,
                                  default = nil)
-  if valid_601187 != nil:
-    section.add "SignatureVersion", valid_601187
-  var valid_601188 = query.getOrDefault("AWSAccessKeyId")
-  valid_601188 = validateParameter(valid_601188, JString, required = true,
+  if valid_603189 != nil:
+    section.add "SignatureVersion", valid_603189
+  var valid_603190 = query.getOrDefault("AWSAccessKeyId")
+  valid_603190 = validateParameter(valid_603190, JString, required = true,
                                  default = nil)
-  if valid_601188 != nil:
-    section.add "AWSAccessKeyId", valid_601188
-  var valid_601189 = query.getOrDefault("Version")
-  valid_601189 = validateParameter(valid_601189, JString, required = true,
+  if valid_603190 != nil:
+    section.add "AWSAccessKeyId", valid_603190
+  var valid_603191 = query.getOrDefault("Version")
+  valid_603191 = validateParameter(valid_603191, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601189 != nil:
-    section.add "Version", valid_601189
+  if valid_603191 != nil:
+    section.add "Version", valid_603191
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1569,28 +1569,28 @@ proc validate_PostDomainMetadata_601181(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `DomainName` field"
-  var valid_601190 = formData.getOrDefault("DomainName")
-  valid_601190 = validateParameter(valid_601190, JString, required = true,
+  var valid_603192 = formData.getOrDefault("DomainName")
+  valid_603192 = validateParameter(valid_603192, JString, required = true,
                                  default = nil)
-  if valid_601190 != nil:
-    section.add "DomainName", valid_601190
+  if valid_603192 != nil:
+    section.add "DomainName", valid_603192
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601191: Call_PostDomainMetadata_601180; path: JsonNode;
+proc call*(call_603193: Call_PostDomainMetadata_603182; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  Returns information about the domain, including when the domain was created, the number of items and attributes in the domain, and the size of the attribute names and values. 
   ## 
-  let valid = call_601191.validator(path, query, header, formData, body)
-  let scheme = call_601191.pickScheme
+  let valid = call_603193.validator(path, query, header, formData, body)
+  let scheme = call_603193.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601191.url(scheme.get, call_601191.host, call_601191.base,
-                         call_601191.route, valid.getOrDefault("path"))
-  result = hook(call_601191, url, valid)
+  let url = call_603193.url(scheme.get, call_603193.host, call_603193.base,
+                         call_603193.route, valid.getOrDefault("path"))
+  result = hook(call_603193, url, valid)
 
-proc call*(call_601192: Call_PostDomainMetadata_601180; SignatureMethod: string;
+proc call*(call_603194: Call_PostDomainMetadata_603182; SignatureMethod: string;
           DomainName: string; Signature: string; Timestamp: string;
           SignatureVersion: string; AWSAccessKeyId: string;
           Action: string = "DomainMetadata"; Version: string = "2009-04-15"): Recallable =
@@ -1605,30 +1605,30 @@ proc call*(call_601192: Call_PostDomainMetadata_601180; SignatureMethod: string;
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601193 = newJObject()
-  var formData_601194 = newJObject()
-  add(query_601193, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601194, "DomainName", newJString(DomainName))
-  add(query_601193, "Signature", newJString(Signature))
-  add(query_601193, "Action", newJString(Action))
-  add(query_601193, "Timestamp", newJString(Timestamp))
-  add(query_601193, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601193, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601193, "Version", newJString(Version))
-  result = call_601192.call(nil, query_601193, nil, formData_601194, nil)
+  var query_603195 = newJObject()
+  var formData_603196 = newJObject()
+  add(query_603195, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603196, "DomainName", newJString(DomainName))
+  add(query_603195, "Signature", newJString(Signature))
+  add(query_603195, "Action", newJString(Action))
+  add(query_603195, "Timestamp", newJString(Timestamp))
+  add(query_603195, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603195, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603195, "Version", newJString(Version))
+  result = call_603194.call(nil, query_603195, nil, formData_603196, nil)
 
-var postDomainMetadata* = Call_PostDomainMetadata_601180(
+var postDomainMetadata* = Call_PostDomainMetadata_603182(
     name: "postDomainMetadata", meth: HttpMethod.HttpPost,
     host: "sdb.amazonaws.com", route: "/#Action=DomainMetadata",
-    validator: validate_PostDomainMetadata_601181, base: "/",
-    url: url_PostDomainMetadata_601182, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostDomainMetadata_603183, base: "/",
+    url: url_PostDomainMetadata_603184, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDomainMetadata_601166 = ref object of OpenApiRestCall_600410
-proc url_GetDomainMetadata_601168(protocol: Scheme; host: string; base: string;
+  Call_GetDomainMetadata_603168 = ref object of OpenApiRestCall_602417
+proc url_GetDomainMetadata_603170(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetDomainMetadata_601167(path: JsonNode; query: JsonNode;
+proc validate_GetDomainMetadata_603169(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ##  Returns information about the domain, including when the domain was created, the number of items and attributes in the domain, and the size of the attribute names and values. 
@@ -1650,46 +1650,46 @@ proc validate_GetDomainMetadata_601167(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601169 = query.getOrDefault("SignatureMethod")
-  valid_601169 = validateParameter(valid_601169, JString, required = true,
+  var valid_603171 = query.getOrDefault("SignatureMethod")
+  valid_603171 = validateParameter(valid_603171, JString, required = true,
                                  default = nil)
-  if valid_601169 != nil:
-    section.add "SignatureMethod", valid_601169
-  var valid_601170 = query.getOrDefault("Signature")
-  valid_601170 = validateParameter(valid_601170, JString, required = true,
+  if valid_603171 != nil:
+    section.add "SignatureMethod", valid_603171
+  var valid_603172 = query.getOrDefault("Signature")
+  valid_603172 = validateParameter(valid_603172, JString, required = true,
                                  default = nil)
-  if valid_601170 != nil:
-    section.add "Signature", valid_601170
-  var valid_601171 = query.getOrDefault("Action")
-  valid_601171 = validateParameter(valid_601171, JString, required = true,
+  if valid_603172 != nil:
+    section.add "Signature", valid_603172
+  var valid_603173 = query.getOrDefault("Action")
+  valid_603173 = validateParameter(valid_603173, JString, required = true,
                                  default = newJString("DomainMetadata"))
-  if valid_601171 != nil:
-    section.add "Action", valid_601171
-  var valid_601172 = query.getOrDefault("Timestamp")
-  valid_601172 = validateParameter(valid_601172, JString, required = true,
+  if valid_603173 != nil:
+    section.add "Action", valid_603173
+  var valid_603174 = query.getOrDefault("Timestamp")
+  valid_603174 = validateParameter(valid_603174, JString, required = true,
                                  default = nil)
-  if valid_601172 != nil:
-    section.add "Timestamp", valid_601172
-  var valid_601173 = query.getOrDefault("SignatureVersion")
-  valid_601173 = validateParameter(valid_601173, JString, required = true,
+  if valid_603174 != nil:
+    section.add "Timestamp", valid_603174
+  var valid_603175 = query.getOrDefault("SignatureVersion")
+  valid_603175 = validateParameter(valid_603175, JString, required = true,
                                  default = nil)
-  if valid_601173 != nil:
-    section.add "SignatureVersion", valid_601173
-  var valid_601174 = query.getOrDefault("AWSAccessKeyId")
-  valid_601174 = validateParameter(valid_601174, JString, required = true,
+  if valid_603175 != nil:
+    section.add "SignatureVersion", valid_603175
+  var valid_603176 = query.getOrDefault("AWSAccessKeyId")
+  valid_603176 = validateParameter(valid_603176, JString, required = true,
                                  default = nil)
-  if valid_601174 != nil:
-    section.add "AWSAccessKeyId", valid_601174
-  var valid_601175 = query.getOrDefault("DomainName")
-  valid_601175 = validateParameter(valid_601175, JString, required = true,
+  if valid_603176 != nil:
+    section.add "AWSAccessKeyId", valid_603176
+  var valid_603177 = query.getOrDefault("DomainName")
+  valid_603177 = validateParameter(valid_603177, JString, required = true,
                                  default = nil)
-  if valid_601175 != nil:
-    section.add "DomainName", valid_601175
-  var valid_601176 = query.getOrDefault("Version")
-  valid_601176 = validateParameter(valid_601176, JString, required = true,
+  if valid_603177 != nil:
+    section.add "DomainName", valid_603177
+  var valid_603178 = query.getOrDefault("Version")
+  valid_603178 = validateParameter(valid_603178, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601176 != nil:
-    section.add "Version", valid_601176
+  if valid_603178 != nil:
+    section.add "Version", valid_603178
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1698,19 +1698,19 @@ proc validate_GetDomainMetadata_601167(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601177: Call_GetDomainMetadata_601166; path: JsonNode;
+proc call*(call_603179: Call_GetDomainMetadata_603168; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  Returns information about the domain, including when the domain was created, the number of items and attributes in the domain, and the size of the attribute names and values. 
   ## 
-  let valid = call_601177.validator(path, query, header, formData, body)
-  let scheme = call_601177.pickScheme
+  let valid = call_603179.validator(path, query, header, formData, body)
+  let scheme = call_603179.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601177.url(scheme.get, call_601177.host, call_601177.base,
-                         call_601177.route, valid.getOrDefault("path"))
-  result = hook(call_601177, url, valid)
+  let url = call_603179.url(scheme.get, call_603179.host, call_603179.base,
+                         call_603179.route, valid.getOrDefault("path"))
+  result = hook(call_603179, url, valid)
 
-proc call*(call_601178: Call_GetDomainMetadata_601166; SignatureMethod: string;
+proc call*(call_603180: Call_GetDomainMetadata_603168; SignatureMethod: string;
           Signature: string; Timestamp: string; SignatureVersion: string;
           AWSAccessKeyId: string; DomainName: string;
           Action: string = "DomainMetadata"; Version: string = "2009-04-15"): Recallable =
@@ -1725,29 +1725,29 @@ proc call*(call_601178: Call_GetDomainMetadata_601166; SignatureMethod: string;
   ##   DomainName: string (required)
   ##             : The name of the domain for which to display the metadata of.
   ##   Version: string (required)
-  var query_601179 = newJObject()
-  add(query_601179, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601179, "Signature", newJString(Signature))
-  add(query_601179, "Action", newJString(Action))
-  add(query_601179, "Timestamp", newJString(Timestamp))
-  add(query_601179, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601179, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601179, "DomainName", newJString(DomainName))
-  add(query_601179, "Version", newJString(Version))
-  result = call_601178.call(nil, query_601179, nil, nil, nil)
+  var query_603181 = newJObject()
+  add(query_603181, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603181, "Signature", newJString(Signature))
+  add(query_603181, "Action", newJString(Action))
+  add(query_603181, "Timestamp", newJString(Timestamp))
+  add(query_603181, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603181, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603181, "DomainName", newJString(DomainName))
+  add(query_603181, "Version", newJString(Version))
+  result = call_603180.call(nil, query_603181, nil, nil, nil)
 
-var getDomainMetadata* = Call_GetDomainMetadata_601166(name: "getDomainMetadata",
+var getDomainMetadata* = Call_GetDomainMetadata_603168(name: "getDomainMetadata",
     meth: HttpMethod.HttpGet, host: "sdb.amazonaws.com",
-    route: "/#Action=DomainMetadata", validator: validate_GetDomainMetadata_601167,
-    base: "/", url: url_GetDomainMetadata_601168,
+    route: "/#Action=DomainMetadata", validator: validate_GetDomainMetadata_603169,
+    base: "/", url: url_GetDomainMetadata_603170,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostGetAttributes_601212 = ref object of OpenApiRestCall_600410
-proc url_PostGetAttributes_601214(protocol: Scheme; host: string; base: string;
+  Call_PostGetAttributes_603214 = ref object of OpenApiRestCall_602417
+proc url_PostGetAttributes_603216(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostGetAttributes_601213(path: JsonNode; query: JsonNode;
+proc validate_PostGetAttributes_603215(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p> Returns all of the attributes associated with the specified item. Optionally, the attributes returned can be limited to one or more attributes by specifying an attribute name parameter. </p> <p> If the item does not exist on the replica that was accessed for this operation, an empty set is returned. The system does not return an error as it cannot guarantee the item does not exist on other replicas. </p> <note> If GetAttributes is called without being passed any attribute names, all the attributes for the item are returned. </note>
@@ -1767,41 +1767,41 @@ proc validate_PostGetAttributes_601213(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601215 = query.getOrDefault("SignatureMethod")
-  valid_601215 = validateParameter(valid_601215, JString, required = true,
+  var valid_603217 = query.getOrDefault("SignatureMethod")
+  valid_603217 = validateParameter(valid_603217, JString, required = true,
                                  default = nil)
-  if valid_601215 != nil:
-    section.add "SignatureMethod", valid_601215
-  var valid_601216 = query.getOrDefault("Signature")
-  valid_601216 = validateParameter(valid_601216, JString, required = true,
+  if valid_603217 != nil:
+    section.add "SignatureMethod", valid_603217
+  var valid_603218 = query.getOrDefault("Signature")
+  valid_603218 = validateParameter(valid_603218, JString, required = true,
                                  default = nil)
-  if valid_601216 != nil:
-    section.add "Signature", valid_601216
-  var valid_601217 = query.getOrDefault("Action")
-  valid_601217 = validateParameter(valid_601217, JString, required = true,
+  if valid_603218 != nil:
+    section.add "Signature", valid_603218
+  var valid_603219 = query.getOrDefault("Action")
+  valid_603219 = validateParameter(valid_603219, JString, required = true,
                                  default = newJString("GetAttributes"))
-  if valid_601217 != nil:
-    section.add "Action", valid_601217
-  var valid_601218 = query.getOrDefault("Timestamp")
-  valid_601218 = validateParameter(valid_601218, JString, required = true,
+  if valid_603219 != nil:
+    section.add "Action", valid_603219
+  var valid_603220 = query.getOrDefault("Timestamp")
+  valid_603220 = validateParameter(valid_603220, JString, required = true,
                                  default = nil)
-  if valid_601218 != nil:
-    section.add "Timestamp", valid_601218
-  var valid_601219 = query.getOrDefault("SignatureVersion")
-  valid_601219 = validateParameter(valid_601219, JString, required = true,
+  if valid_603220 != nil:
+    section.add "Timestamp", valid_603220
+  var valid_603221 = query.getOrDefault("SignatureVersion")
+  valid_603221 = validateParameter(valid_603221, JString, required = true,
                                  default = nil)
-  if valid_601219 != nil:
-    section.add "SignatureVersion", valid_601219
-  var valid_601220 = query.getOrDefault("AWSAccessKeyId")
-  valid_601220 = validateParameter(valid_601220, JString, required = true,
+  if valid_603221 != nil:
+    section.add "SignatureVersion", valid_603221
+  var valid_603222 = query.getOrDefault("AWSAccessKeyId")
+  valid_603222 = validateParameter(valid_603222, JString, required = true,
                                  default = nil)
-  if valid_601220 != nil:
-    section.add "AWSAccessKeyId", valid_601220
-  var valid_601221 = query.getOrDefault("Version")
-  valid_601221 = validateParameter(valid_601221, JString, required = true,
+  if valid_603222 != nil:
+    section.add "AWSAccessKeyId", valid_603222
+  var valid_603223 = query.getOrDefault("Version")
+  valid_603223 = validateParameter(valid_603223, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601221 != nil:
-    section.add "Version", valid_601221
+  if valid_603223 != nil:
+    section.add "Version", valid_603223
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1817,42 +1817,42 @@ proc validate_PostGetAttributes_601213(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `DomainName` field"
-  var valid_601222 = formData.getOrDefault("DomainName")
-  valid_601222 = validateParameter(valid_601222, JString, required = true,
+  var valid_603224 = formData.getOrDefault("DomainName")
+  valid_603224 = validateParameter(valid_603224, JString, required = true,
                                  default = nil)
-  if valid_601222 != nil:
-    section.add "DomainName", valid_601222
-  var valid_601223 = formData.getOrDefault("ItemName")
-  valid_601223 = validateParameter(valid_601223, JString, required = true,
+  if valid_603224 != nil:
+    section.add "DomainName", valid_603224
+  var valid_603225 = formData.getOrDefault("ItemName")
+  valid_603225 = validateParameter(valid_603225, JString, required = true,
                                  default = nil)
-  if valid_601223 != nil:
-    section.add "ItemName", valid_601223
-  var valid_601224 = formData.getOrDefault("ConsistentRead")
-  valid_601224 = validateParameter(valid_601224, JBool, required = false, default = nil)
-  if valid_601224 != nil:
-    section.add "ConsistentRead", valid_601224
-  var valid_601225 = formData.getOrDefault("AttributeNames")
-  valid_601225 = validateParameter(valid_601225, JArray, required = false,
+  if valid_603225 != nil:
+    section.add "ItemName", valid_603225
+  var valid_603226 = formData.getOrDefault("ConsistentRead")
+  valid_603226 = validateParameter(valid_603226, JBool, required = false, default = nil)
+  if valid_603226 != nil:
+    section.add "ConsistentRead", valid_603226
+  var valid_603227 = formData.getOrDefault("AttributeNames")
+  valid_603227 = validateParameter(valid_603227, JArray, required = false,
                                  default = nil)
-  if valid_601225 != nil:
-    section.add "AttributeNames", valid_601225
+  if valid_603227 != nil:
+    section.add "AttributeNames", valid_603227
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601226: Call_PostGetAttributes_601212; path: JsonNode;
+proc call*(call_603228: Call_PostGetAttributes_603214; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Returns all of the attributes associated with the specified item. Optionally, the attributes returned can be limited to one or more attributes by specifying an attribute name parameter. </p> <p> If the item does not exist on the replica that was accessed for this operation, an empty set is returned. The system does not return an error as it cannot guarantee the item does not exist on other replicas. </p> <note> If GetAttributes is called without being passed any attribute names, all the attributes for the item are returned. </note>
   ## 
-  let valid = call_601226.validator(path, query, header, formData, body)
-  let scheme = call_601226.pickScheme
+  let valid = call_603228.validator(path, query, header, formData, body)
+  let scheme = call_603228.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601226.url(scheme.get, call_601226.host, call_601226.base,
-                         call_601226.route, valid.getOrDefault("path"))
-  result = hook(call_601226, url, valid)
+  let url = call_603228.url(scheme.get, call_603228.host, call_603228.base,
+                         call_603228.route, valid.getOrDefault("path"))
+  result = hook(call_603228, url, valid)
 
-proc call*(call_601227: Call_PostGetAttributes_601212; SignatureMethod: string;
+proc call*(call_603229: Call_PostGetAttributes_603214; SignatureMethod: string;
           DomainName: string; ItemName: string; Signature: string; Timestamp: string;
           SignatureVersion: string; AWSAccessKeyId: string;
           ConsistentRead: bool = false; Action: string = "GetAttributes";
@@ -1874,34 +1874,34 @@ proc call*(call_601227: Call_PostGetAttributes_601212; SignatureMethod: string;
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601228 = newJObject()
-  var formData_601229 = newJObject()
-  add(query_601228, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601229, "DomainName", newJString(DomainName))
-  add(formData_601229, "ItemName", newJString(ItemName))
-  add(formData_601229, "ConsistentRead", newJBool(ConsistentRead))
-  add(query_601228, "Signature", newJString(Signature))
-  add(query_601228, "Action", newJString(Action))
-  add(query_601228, "Timestamp", newJString(Timestamp))
+  var query_603230 = newJObject()
+  var formData_603231 = newJObject()
+  add(query_603230, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603231, "DomainName", newJString(DomainName))
+  add(formData_603231, "ItemName", newJString(ItemName))
+  add(formData_603231, "ConsistentRead", newJBool(ConsistentRead))
+  add(query_603230, "Signature", newJString(Signature))
+  add(query_603230, "Action", newJString(Action))
+  add(query_603230, "Timestamp", newJString(Timestamp))
   if AttributeNames != nil:
-    formData_601229.add "AttributeNames", AttributeNames
-  add(query_601228, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601228, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601228, "Version", newJString(Version))
-  result = call_601227.call(nil, query_601228, nil, formData_601229, nil)
+    formData_603231.add "AttributeNames", AttributeNames
+  add(query_603230, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603230, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603230, "Version", newJString(Version))
+  result = call_603229.call(nil, query_603230, nil, formData_603231, nil)
 
-var postGetAttributes* = Call_PostGetAttributes_601212(name: "postGetAttributes",
+var postGetAttributes* = Call_PostGetAttributes_603214(name: "postGetAttributes",
     meth: HttpMethod.HttpPost, host: "sdb.amazonaws.com",
-    route: "/#Action=GetAttributes", validator: validate_PostGetAttributes_601213,
-    base: "/", url: url_PostGetAttributes_601214,
+    route: "/#Action=GetAttributes", validator: validate_PostGetAttributes_603215,
+    base: "/", url: url_PostGetAttributes_603216,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGetAttributes_601195 = ref object of OpenApiRestCall_600410
-proc url_GetGetAttributes_601197(protocol: Scheme; host: string; base: string;
+  Call_GetGetAttributes_603197 = ref object of OpenApiRestCall_602417
+proc url_GetGetAttributes_603199(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetGetAttributes_601196(path: JsonNode; query: JsonNode;
+proc validate_GetGetAttributes_603198(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p> Returns all of the attributes associated with the specified item. Optionally, the attributes returned can be limited to one or more attributes by specifying an attribute name parameter. </p> <p> If the item does not exist on the replica that was accessed for this operation, an empty set is returned. The system does not return an error as it cannot guarantee the item does not exist on other replicas. </p> <note> If GetAttributes is called without being passed any attribute names, all the attributes for the item are returned. </note>
@@ -1929,60 +1929,60 @@ proc validate_GetGetAttributes_601196(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601198 = query.getOrDefault("SignatureMethod")
-  valid_601198 = validateParameter(valid_601198, JString, required = true,
+  var valid_603200 = query.getOrDefault("SignatureMethod")
+  valid_603200 = validateParameter(valid_603200, JString, required = true,
                                  default = nil)
-  if valid_601198 != nil:
-    section.add "SignatureMethod", valid_601198
-  var valid_601199 = query.getOrDefault("AttributeNames")
-  valid_601199 = validateParameter(valid_601199, JArray, required = false,
+  if valid_603200 != nil:
+    section.add "SignatureMethod", valid_603200
+  var valid_603201 = query.getOrDefault("AttributeNames")
+  valid_603201 = validateParameter(valid_603201, JArray, required = false,
                                  default = nil)
-  if valid_601199 != nil:
-    section.add "AttributeNames", valid_601199
-  var valid_601200 = query.getOrDefault("Signature")
-  valid_601200 = validateParameter(valid_601200, JString, required = true,
+  if valid_603201 != nil:
+    section.add "AttributeNames", valid_603201
+  var valid_603202 = query.getOrDefault("Signature")
+  valid_603202 = validateParameter(valid_603202, JString, required = true,
                                  default = nil)
-  if valid_601200 != nil:
-    section.add "Signature", valid_601200
-  var valid_601201 = query.getOrDefault("ItemName")
-  valid_601201 = validateParameter(valid_601201, JString, required = true,
+  if valid_603202 != nil:
+    section.add "Signature", valid_603202
+  var valid_603203 = query.getOrDefault("ItemName")
+  valid_603203 = validateParameter(valid_603203, JString, required = true,
                                  default = nil)
-  if valid_601201 != nil:
-    section.add "ItemName", valid_601201
-  var valid_601202 = query.getOrDefault("Action")
-  valid_601202 = validateParameter(valid_601202, JString, required = true,
+  if valid_603203 != nil:
+    section.add "ItemName", valid_603203
+  var valid_603204 = query.getOrDefault("Action")
+  valid_603204 = validateParameter(valid_603204, JString, required = true,
                                  default = newJString("GetAttributes"))
-  if valid_601202 != nil:
-    section.add "Action", valid_601202
-  var valid_601203 = query.getOrDefault("Timestamp")
-  valid_601203 = validateParameter(valid_601203, JString, required = true,
+  if valid_603204 != nil:
+    section.add "Action", valid_603204
+  var valid_603205 = query.getOrDefault("Timestamp")
+  valid_603205 = validateParameter(valid_603205, JString, required = true,
                                  default = nil)
-  if valid_601203 != nil:
-    section.add "Timestamp", valid_601203
-  var valid_601204 = query.getOrDefault("ConsistentRead")
-  valid_601204 = validateParameter(valid_601204, JBool, required = false, default = nil)
-  if valid_601204 != nil:
-    section.add "ConsistentRead", valid_601204
-  var valid_601205 = query.getOrDefault("SignatureVersion")
-  valid_601205 = validateParameter(valid_601205, JString, required = true,
+  if valid_603205 != nil:
+    section.add "Timestamp", valid_603205
+  var valid_603206 = query.getOrDefault("ConsistentRead")
+  valid_603206 = validateParameter(valid_603206, JBool, required = false, default = nil)
+  if valid_603206 != nil:
+    section.add "ConsistentRead", valid_603206
+  var valid_603207 = query.getOrDefault("SignatureVersion")
+  valid_603207 = validateParameter(valid_603207, JString, required = true,
                                  default = nil)
-  if valid_601205 != nil:
-    section.add "SignatureVersion", valid_601205
-  var valid_601206 = query.getOrDefault("AWSAccessKeyId")
-  valid_601206 = validateParameter(valid_601206, JString, required = true,
+  if valid_603207 != nil:
+    section.add "SignatureVersion", valid_603207
+  var valid_603208 = query.getOrDefault("AWSAccessKeyId")
+  valid_603208 = validateParameter(valid_603208, JString, required = true,
                                  default = nil)
-  if valid_601206 != nil:
-    section.add "AWSAccessKeyId", valid_601206
-  var valid_601207 = query.getOrDefault("DomainName")
-  valid_601207 = validateParameter(valid_601207, JString, required = true,
+  if valid_603208 != nil:
+    section.add "AWSAccessKeyId", valid_603208
+  var valid_603209 = query.getOrDefault("DomainName")
+  valid_603209 = validateParameter(valid_603209, JString, required = true,
                                  default = nil)
-  if valid_601207 != nil:
-    section.add "DomainName", valid_601207
-  var valid_601208 = query.getOrDefault("Version")
-  valid_601208 = validateParameter(valid_601208, JString, required = true,
+  if valid_603209 != nil:
+    section.add "DomainName", valid_603209
+  var valid_603210 = query.getOrDefault("Version")
+  valid_603210 = validateParameter(valid_603210, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601208 != nil:
-    section.add "Version", valid_601208
+  if valid_603210 != nil:
+    section.add "Version", valid_603210
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1991,19 +1991,19 @@ proc validate_GetGetAttributes_601196(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601209: Call_GetGetAttributes_601195; path: JsonNode;
+proc call*(call_603211: Call_GetGetAttributes_603197; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Returns all of the attributes associated with the specified item. Optionally, the attributes returned can be limited to one or more attributes by specifying an attribute name parameter. </p> <p> If the item does not exist on the replica that was accessed for this operation, an empty set is returned. The system does not return an error as it cannot guarantee the item does not exist on other replicas. </p> <note> If GetAttributes is called without being passed any attribute names, all the attributes for the item are returned. </note>
   ## 
-  let valid = call_601209.validator(path, query, header, formData, body)
-  let scheme = call_601209.pickScheme
+  let valid = call_603211.validator(path, query, header, formData, body)
+  let scheme = call_603211.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601209.url(scheme.get, call_601209.host, call_601209.base,
-                         call_601209.route, valid.getOrDefault("path"))
-  result = hook(call_601209, url, valid)
+  let url = call_603211.url(scheme.get, call_603211.host, call_603211.base,
+                         call_603211.route, valid.getOrDefault("path"))
+  result = hook(call_603211, url, valid)
 
-proc call*(call_601210: Call_GetGetAttributes_601195; SignatureMethod: string;
+proc call*(call_603212: Call_GetGetAttributes_603197; SignatureMethod: string;
           Signature: string; ItemName: string; Timestamp: string;
           SignatureVersion: string; AWSAccessKeyId: string; DomainName: string;
           AttributeNames: JsonNode = nil; Action: string = "GetAttributes";
@@ -2025,33 +2025,33 @@ proc call*(call_601210: Call_GetGetAttributes_601195; SignatureMethod: string;
   ##   DomainName: string (required)
   ##             : The name of the domain in which to perform the operation.
   ##   Version: string (required)
-  var query_601211 = newJObject()
-  add(query_601211, "SignatureMethod", newJString(SignatureMethod))
+  var query_603213 = newJObject()
+  add(query_603213, "SignatureMethod", newJString(SignatureMethod))
   if AttributeNames != nil:
-    query_601211.add "AttributeNames", AttributeNames
-  add(query_601211, "Signature", newJString(Signature))
-  add(query_601211, "ItemName", newJString(ItemName))
-  add(query_601211, "Action", newJString(Action))
-  add(query_601211, "Timestamp", newJString(Timestamp))
-  add(query_601211, "ConsistentRead", newJBool(ConsistentRead))
-  add(query_601211, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601211, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601211, "DomainName", newJString(DomainName))
-  add(query_601211, "Version", newJString(Version))
-  result = call_601210.call(nil, query_601211, nil, nil, nil)
+    query_603213.add "AttributeNames", AttributeNames
+  add(query_603213, "Signature", newJString(Signature))
+  add(query_603213, "ItemName", newJString(ItemName))
+  add(query_603213, "Action", newJString(Action))
+  add(query_603213, "Timestamp", newJString(Timestamp))
+  add(query_603213, "ConsistentRead", newJBool(ConsistentRead))
+  add(query_603213, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603213, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603213, "DomainName", newJString(DomainName))
+  add(query_603213, "Version", newJString(Version))
+  result = call_603212.call(nil, query_603213, nil, nil, nil)
 
-var getGetAttributes* = Call_GetGetAttributes_601195(name: "getGetAttributes",
+var getGetAttributes* = Call_GetGetAttributes_603197(name: "getGetAttributes",
     meth: HttpMethod.HttpGet, host: "sdb.amazonaws.com",
-    route: "/#Action=GetAttributes", validator: validate_GetGetAttributes_601196,
-    base: "/", url: url_GetGetAttributes_601197,
+    route: "/#Action=GetAttributes", validator: validate_GetGetAttributes_603198,
+    base: "/", url: url_GetGetAttributes_603199,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostListDomains_601245 = ref object of OpenApiRestCall_600410
-proc url_PostListDomains_601247(protocol: Scheme; host: string; base: string;
+  Call_PostListDomains_603247 = ref object of OpenApiRestCall_602417
+proc url_PostListDomains_603249(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostListDomains_601246(path: JsonNode; query: JsonNode;
+proc validate_PostListDomains_603248(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ##  The <code>ListDomains</code> operation lists all domains associated with the Access Key ID. It returns domain names up to the limit set by <a href="#MaxNumberOfDomains">MaxNumberOfDomains</a>. A <a href="#NextToken">NextToken</a> is returned if there are more than <code>MaxNumberOfDomains</code> domains. Calling <code>ListDomains</code> successive times with the <code>NextToken</code> provided by the operation returns up to <code>MaxNumberOfDomains</code> more domain names with each successive operation call. 
@@ -2071,41 +2071,41 @@ proc validate_PostListDomains_601246(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601248 = query.getOrDefault("SignatureMethod")
-  valid_601248 = validateParameter(valid_601248, JString, required = true,
+  var valid_603250 = query.getOrDefault("SignatureMethod")
+  valid_603250 = validateParameter(valid_603250, JString, required = true,
                                  default = nil)
-  if valid_601248 != nil:
-    section.add "SignatureMethod", valid_601248
-  var valid_601249 = query.getOrDefault("Signature")
-  valid_601249 = validateParameter(valid_601249, JString, required = true,
+  if valid_603250 != nil:
+    section.add "SignatureMethod", valid_603250
+  var valid_603251 = query.getOrDefault("Signature")
+  valid_603251 = validateParameter(valid_603251, JString, required = true,
                                  default = nil)
-  if valid_601249 != nil:
-    section.add "Signature", valid_601249
-  var valid_601250 = query.getOrDefault("Action")
-  valid_601250 = validateParameter(valid_601250, JString, required = true,
+  if valid_603251 != nil:
+    section.add "Signature", valid_603251
+  var valid_603252 = query.getOrDefault("Action")
+  valid_603252 = validateParameter(valid_603252, JString, required = true,
                                  default = newJString("ListDomains"))
-  if valid_601250 != nil:
-    section.add "Action", valid_601250
-  var valid_601251 = query.getOrDefault("Timestamp")
-  valid_601251 = validateParameter(valid_601251, JString, required = true,
+  if valid_603252 != nil:
+    section.add "Action", valid_603252
+  var valid_603253 = query.getOrDefault("Timestamp")
+  valid_603253 = validateParameter(valid_603253, JString, required = true,
                                  default = nil)
-  if valid_601251 != nil:
-    section.add "Timestamp", valid_601251
-  var valid_601252 = query.getOrDefault("SignatureVersion")
-  valid_601252 = validateParameter(valid_601252, JString, required = true,
+  if valid_603253 != nil:
+    section.add "Timestamp", valid_603253
+  var valid_603254 = query.getOrDefault("SignatureVersion")
+  valid_603254 = validateParameter(valid_603254, JString, required = true,
                                  default = nil)
-  if valid_601252 != nil:
-    section.add "SignatureVersion", valid_601252
-  var valid_601253 = query.getOrDefault("AWSAccessKeyId")
-  valid_601253 = validateParameter(valid_601253, JString, required = true,
+  if valid_603254 != nil:
+    section.add "SignatureVersion", valid_603254
+  var valid_603255 = query.getOrDefault("AWSAccessKeyId")
+  valid_603255 = validateParameter(valid_603255, JString, required = true,
                                  default = nil)
-  if valid_601253 != nil:
-    section.add "AWSAccessKeyId", valid_601253
-  var valid_601254 = query.getOrDefault("Version")
-  valid_601254 = validateParameter(valid_601254, JString, required = true,
+  if valid_603255 != nil:
+    section.add "AWSAccessKeyId", valid_603255
+  var valid_603256 = query.getOrDefault("Version")
+  valid_603256 = validateParameter(valid_603256, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601254 != nil:
-    section.add "Version", valid_601254
+  if valid_603256 != nil:
+    section.add "Version", valid_603256
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -2115,32 +2115,32 @@ proc validate_PostListDomains_601246(path: JsonNode; query: JsonNode;
   ##   MaxNumberOfDomains: JInt
   ##                     : The maximum number of domain names you want returned. The range is 1 to 100. The default setting is 100.
   section = newJObject()
-  var valid_601255 = formData.getOrDefault("NextToken")
-  valid_601255 = validateParameter(valid_601255, JString, required = false,
+  var valid_603257 = formData.getOrDefault("NextToken")
+  valid_603257 = validateParameter(valid_603257, JString, required = false,
                                  default = nil)
-  if valid_601255 != nil:
-    section.add "NextToken", valid_601255
-  var valid_601256 = formData.getOrDefault("MaxNumberOfDomains")
-  valid_601256 = validateParameter(valid_601256, JInt, required = false, default = nil)
-  if valid_601256 != nil:
-    section.add "MaxNumberOfDomains", valid_601256
+  if valid_603257 != nil:
+    section.add "NextToken", valid_603257
+  var valid_603258 = formData.getOrDefault("MaxNumberOfDomains")
+  valid_603258 = validateParameter(valid_603258, JInt, required = false, default = nil)
+  if valid_603258 != nil:
+    section.add "MaxNumberOfDomains", valid_603258
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601257: Call_PostListDomains_601245; path: JsonNode; query: JsonNode;
+proc call*(call_603259: Call_PostListDomains_603247; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  The <code>ListDomains</code> operation lists all domains associated with the Access Key ID. It returns domain names up to the limit set by <a href="#MaxNumberOfDomains">MaxNumberOfDomains</a>. A <a href="#NextToken">NextToken</a> is returned if there are more than <code>MaxNumberOfDomains</code> domains. Calling <code>ListDomains</code> successive times with the <code>NextToken</code> provided by the operation returns up to <code>MaxNumberOfDomains</code> more domain names with each successive operation call. 
   ## 
-  let valid = call_601257.validator(path, query, header, formData, body)
-  let scheme = call_601257.pickScheme
+  let valid = call_603259.validator(path, query, header, formData, body)
+  let scheme = call_603259.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601257.url(scheme.get, call_601257.host, call_601257.base,
-                         call_601257.route, valid.getOrDefault("path"))
-  result = hook(call_601257, url, valid)
+  let url = call_603259.url(scheme.get, call_603259.host, call_603259.base,
+                         call_603259.route, valid.getOrDefault("path"))
+  result = hook(call_603259, url, valid)
 
-proc call*(call_601258: Call_PostListDomains_601245; SignatureMethod: string;
+proc call*(call_603260: Call_PostListDomains_603247; SignatureMethod: string;
           Signature: string; Timestamp: string; SignatureVersion: string;
           AWSAccessKeyId: string; NextToken: string = "";
           Action: string = "ListDomains"; MaxNumberOfDomains: int = 0;
@@ -2158,30 +2158,30 @@ proc call*(call_601258: Call_PostListDomains_601245; SignatureMethod: string;
   ##   MaxNumberOfDomains: int
   ##                     : The maximum number of domain names you want returned. The range is 1 to 100. The default setting is 100.
   ##   Version: string (required)
-  var query_601259 = newJObject()
-  var formData_601260 = newJObject()
-  add(formData_601260, "NextToken", newJString(NextToken))
-  add(query_601259, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601259, "Signature", newJString(Signature))
-  add(query_601259, "Action", newJString(Action))
-  add(query_601259, "Timestamp", newJString(Timestamp))
-  add(query_601259, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601259, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(formData_601260, "MaxNumberOfDomains", newJInt(MaxNumberOfDomains))
-  add(query_601259, "Version", newJString(Version))
-  result = call_601258.call(nil, query_601259, nil, formData_601260, nil)
+  var query_603261 = newJObject()
+  var formData_603262 = newJObject()
+  add(formData_603262, "NextToken", newJString(NextToken))
+  add(query_603261, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603261, "Signature", newJString(Signature))
+  add(query_603261, "Action", newJString(Action))
+  add(query_603261, "Timestamp", newJString(Timestamp))
+  add(query_603261, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603261, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(formData_603262, "MaxNumberOfDomains", newJInt(MaxNumberOfDomains))
+  add(query_603261, "Version", newJString(Version))
+  result = call_603260.call(nil, query_603261, nil, formData_603262, nil)
 
-var postListDomains* = Call_PostListDomains_601245(name: "postListDomains",
+var postListDomains* = Call_PostListDomains_603247(name: "postListDomains",
     meth: HttpMethod.HttpPost, host: "sdb.amazonaws.com",
-    route: "/#Action=ListDomains", validator: validate_PostListDomains_601246,
-    base: "/", url: url_PostListDomains_601247, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=ListDomains", validator: validate_PostListDomains_603248,
+    base: "/", url: url_PostListDomains_603249, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetListDomains_601230 = ref object of OpenApiRestCall_600410
-proc url_GetListDomains_601232(protocol: Scheme; host: string; base: string;
+  Call_GetListDomains_603232 = ref object of OpenApiRestCall_602417
+proc url_GetListDomains_603234(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetListDomains_601231(path: JsonNode; query: JsonNode;
+proc validate_GetListDomains_603233(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ##  The <code>ListDomains</code> operation lists all domains associated with the Access Key ID. It returns domain names up to the limit set by <a href="#MaxNumberOfDomains">MaxNumberOfDomains</a>. A <a href="#NextToken">NextToken</a> is returned if there are more than <code>MaxNumberOfDomains</code> domains. Calling <code>ListDomains</code> successive times with the <code>NextToken</code> provided by the operation returns up to <code>MaxNumberOfDomains</code> more domain names with each successive operation call. 
@@ -2205,50 +2205,50 @@ proc validate_GetListDomains_601231(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601233 = query.getOrDefault("SignatureMethod")
-  valid_601233 = validateParameter(valid_601233, JString, required = true,
+  var valid_603235 = query.getOrDefault("SignatureMethod")
+  valid_603235 = validateParameter(valid_603235, JString, required = true,
                                  default = nil)
-  if valid_601233 != nil:
-    section.add "SignatureMethod", valid_601233
-  var valid_601234 = query.getOrDefault("Signature")
-  valid_601234 = validateParameter(valid_601234, JString, required = true,
+  if valid_603235 != nil:
+    section.add "SignatureMethod", valid_603235
+  var valid_603236 = query.getOrDefault("Signature")
+  valid_603236 = validateParameter(valid_603236, JString, required = true,
                                  default = nil)
-  if valid_601234 != nil:
-    section.add "Signature", valid_601234
-  var valid_601235 = query.getOrDefault("NextToken")
-  valid_601235 = validateParameter(valid_601235, JString, required = false,
+  if valid_603236 != nil:
+    section.add "Signature", valid_603236
+  var valid_603237 = query.getOrDefault("NextToken")
+  valid_603237 = validateParameter(valid_603237, JString, required = false,
                                  default = nil)
-  if valid_601235 != nil:
-    section.add "NextToken", valid_601235
-  var valid_601236 = query.getOrDefault("Action")
-  valid_601236 = validateParameter(valid_601236, JString, required = true,
+  if valid_603237 != nil:
+    section.add "NextToken", valid_603237
+  var valid_603238 = query.getOrDefault("Action")
+  valid_603238 = validateParameter(valid_603238, JString, required = true,
                                  default = newJString("ListDomains"))
-  if valid_601236 != nil:
-    section.add "Action", valid_601236
-  var valid_601237 = query.getOrDefault("Timestamp")
-  valid_601237 = validateParameter(valid_601237, JString, required = true,
+  if valid_603238 != nil:
+    section.add "Action", valid_603238
+  var valid_603239 = query.getOrDefault("Timestamp")
+  valid_603239 = validateParameter(valid_603239, JString, required = true,
                                  default = nil)
-  if valid_601237 != nil:
-    section.add "Timestamp", valid_601237
-  var valid_601238 = query.getOrDefault("SignatureVersion")
-  valid_601238 = validateParameter(valid_601238, JString, required = true,
+  if valid_603239 != nil:
+    section.add "Timestamp", valid_603239
+  var valid_603240 = query.getOrDefault("SignatureVersion")
+  valid_603240 = validateParameter(valid_603240, JString, required = true,
                                  default = nil)
-  if valid_601238 != nil:
-    section.add "SignatureVersion", valid_601238
-  var valid_601239 = query.getOrDefault("AWSAccessKeyId")
-  valid_601239 = validateParameter(valid_601239, JString, required = true,
+  if valid_603240 != nil:
+    section.add "SignatureVersion", valid_603240
+  var valid_603241 = query.getOrDefault("AWSAccessKeyId")
+  valid_603241 = validateParameter(valid_603241, JString, required = true,
                                  default = nil)
-  if valid_601239 != nil:
-    section.add "AWSAccessKeyId", valid_601239
-  var valid_601240 = query.getOrDefault("Version")
-  valid_601240 = validateParameter(valid_601240, JString, required = true,
+  if valid_603241 != nil:
+    section.add "AWSAccessKeyId", valid_603241
+  var valid_603242 = query.getOrDefault("Version")
+  valid_603242 = validateParameter(valid_603242, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601240 != nil:
-    section.add "Version", valid_601240
-  var valid_601241 = query.getOrDefault("MaxNumberOfDomains")
-  valid_601241 = validateParameter(valid_601241, JInt, required = false, default = nil)
-  if valid_601241 != nil:
-    section.add "MaxNumberOfDomains", valid_601241
+  if valid_603242 != nil:
+    section.add "Version", valid_603242
+  var valid_603243 = query.getOrDefault("MaxNumberOfDomains")
+  valid_603243 = validateParameter(valid_603243, JInt, required = false, default = nil)
+  if valid_603243 != nil:
+    section.add "MaxNumberOfDomains", valid_603243
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -2257,19 +2257,19 @@ proc validate_GetListDomains_601231(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601242: Call_GetListDomains_601230; path: JsonNode; query: JsonNode;
+proc call*(call_603244: Call_GetListDomains_603232; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ##  The <code>ListDomains</code> operation lists all domains associated with the Access Key ID. It returns domain names up to the limit set by <a href="#MaxNumberOfDomains">MaxNumberOfDomains</a>. A <a href="#NextToken">NextToken</a> is returned if there are more than <code>MaxNumberOfDomains</code> domains. Calling <code>ListDomains</code> successive times with the <code>NextToken</code> provided by the operation returns up to <code>MaxNumberOfDomains</code> more domain names with each successive operation call. 
   ## 
-  let valid = call_601242.validator(path, query, header, formData, body)
-  let scheme = call_601242.pickScheme
+  let valid = call_603244.validator(path, query, header, formData, body)
+  let scheme = call_603244.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601242.url(scheme.get, call_601242.host, call_601242.base,
-                         call_601242.route, valid.getOrDefault("path"))
-  result = hook(call_601242, url, valid)
+  let url = call_603244.url(scheme.get, call_603244.host, call_603244.base,
+                         call_603244.route, valid.getOrDefault("path"))
+  result = hook(call_603244, url, valid)
 
-proc call*(call_601243: Call_GetListDomains_601230; SignatureMethod: string;
+proc call*(call_603245: Call_GetListDomains_603232; SignatureMethod: string;
           Signature: string; Timestamp: string; SignatureVersion: string;
           AWSAccessKeyId: string; NextToken: string = "";
           Action: string = "ListDomains"; Version: string = "2009-04-15";
@@ -2287,29 +2287,29 @@ proc call*(call_601243: Call_GetListDomains_601230; SignatureMethod: string;
   ##   Version: string (required)
   ##   MaxNumberOfDomains: int
   ##                     : The maximum number of domain names you want returned. The range is 1 to 100. The default setting is 100.
-  var query_601244 = newJObject()
-  add(query_601244, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601244, "Signature", newJString(Signature))
-  add(query_601244, "NextToken", newJString(NextToken))
-  add(query_601244, "Action", newJString(Action))
-  add(query_601244, "Timestamp", newJString(Timestamp))
-  add(query_601244, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601244, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601244, "Version", newJString(Version))
-  add(query_601244, "MaxNumberOfDomains", newJInt(MaxNumberOfDomains))
-  result = call_601243.call(nil, query_601244, nil, nil, nil)
+  var query_603246 = newJObject()
+  add(query_603246, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603246, "Signature", newJString(Signature))
+  add(query_603246, "NextToken", newJString(NextToken))
+  add(query_603246, "Action", newJString(Action))
+  add(query_603246, "Timestamp", newJString(Timestamp))
+  add(query_603246, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603246, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603246, "Version", newJString(Version))
+  add(query_603246, "MaxNumberOfDomains", newJInt(MaxNumberOfDomains))
+  result = call_603245.call(nil, query_603246, nil, nil, nil)
 
-var getListDomains* = Call_GetListDomains_601230(name: "getListDomains",
+var getListDomains* = Call_GetListDomains_603232(name: "getListDomains",
     meth: HttpMethod.HttpGet, host: "sdb.amazonaws.com",
-    route: "/#Action=ListDomains", validator: validate_GetListDomains_601231,
-    base: "/", url: url_GetListDomains_601232, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=ListDomains", validator: validate_GetListDomains_603233,
+    base: "/", url: url_GetListDomains_603234, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostPutAttributes_601280 = ref object of OpenApiRestCall_600410
-proc url_PostPutAttributes_601282(protocol: Scheme; host: string; base: string;
+  Call_PostPutAttributes_603282 = ref object of OpenApiRestCall_602417
+proc url_PostPutAttributes_603284(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostPutAttributes_601281(path: JsonNode; query: JsonNode;
+proc validate_PostPutAttributes_603283(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p> The PutAttributes operation creates or replaces attributes in an item. The client may specify new attributes using a combination of the <code>Attribute.X.Name</code> and <code>Attribute.X.Value</code> parameters. The client specifies the first attribute by the parameters <code>Attribute.0.Name</code> and <code>Attribute.0.Value</code>, the second attribute by the parameters <code>Attribute.1.Name</code> and <code>Attribute.1.Value</code>, and so on. </p> <p> Attributes are uniquely identified in an item by their name/value combination. For example, a single item can have the attributes <code>{ "first_name", "first_value" }</code> and <code>{ "first_name", second_value" }</code>. However, it cannot have two attribute instances where both the <code>Attribute.X.Name</code> and <code>Attribute.X.Value</code> are the same. </p> <p> Optionally, the requestor can supply the <code>Replace</code> parameter for each individual attribute. Setting this value to <code>true</code> causes the new attribute value to replace the existing attribute value(s). For example, if an item has the attributes <code>{ 'a', '1' }</code>, <code>{ 'b', '2'}</code> and <code>{ 'b', '3' }</code> and the requestor calls <code>PutAttributes</code> using the attributes <code>{ 'b', '4' }</code> with the <code>Replace</code> parameter set to true, the final attributes of the item are changed to <code>{ 'a', '1' }</code> and <code>{ 'b', '4' }</code>, which replaces the previous values of the 'b' attribute with the new value. </p> <note> Using <code>PutAttributes</code> to replace attribute values that do not exist will not result in an error response. </note> <p> You cannot specify an empty string as an attribute name. </p> <p> Because Amazon SimpleDB makes multiple copies of client data and uses an eventual consistency update model, an immediate <a>GetAttributes</a> or <a>Select</a> operation (read) immediately after a <a>PutAttributes</a> or <a>DeleteAttributes</a> operation (write) might not return the updated data. </p> <p> The following limitations are enforced for this operation: <ul> <li>256 total attribute name-value pairs per item</li> <li>One billion attributes per domain</li> <li>10 GB of total user data storage per domain</li> </ul> </p>
@@ -2329,41 +2329,41 @@ proc validate_PostPutAttributes_601281(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601283 = query.getOrDefault("SignatureMethod")
-  valid_601283 = validateParameter(valid_601283, JString, required = true,
+  var valid_603285 = query.getOrDefault("SignatureMethod")
+  valid_603285 = validateParameter(valid_603285, JString, required = true,
                                  default = nil)
-  if valid_601283 != nil:
-    section.add "SignatureMethod", valid_601283
-  var valid_601284 = query.getOrDefault("Signature")
-  valid_601284 = validateParameter(valid_601284, JString, required = true,
+  if valid_603285 != nil:
+    section.add "SignatureMethod", valid_603285
+  var valid_603286 = query.getOrDefault("Signature")
+  valid_603286 = validateParameter(valid_603286, JString, required = true,
                                  default = nil)
-  if valid_601284 != nil:
-    section.add "Signature", valid_601284
-  var valid_601285 = query.getOrDefault("Action")
-  valid_601285 = validateParameter(valid_601285, JString, required = true,
+  if valid_603286 != nil:
+    section.add "Signature", valid_603286
+  var valid_603287 = query.getOrDefault("Action")
+  valid_603287 = validateParameter(valid_603287, JString, required = true,
                                  default = newJString("PutAttributes"))
-  if valid_601285 != nil:
-    section.add "Action", valid_601285
-  var valid_601286 = query.getOrDefault("Timestamp")
-  valid_601286 = validateParameter(valid_601286, JString, required = true,
+  if valid_603287 != nil:
+    section.add "Action", valid_603287
+  var valid_603288 = query.getOrDefault("Timestamp")
+  valid_603288 = validateParameter(valid_603288, JString, required = true,
                                  default = nil)
-  if valid_601286 != nil:
-    section.add "Timestamp", valid_601286
-  var valid_601287 = query.getOrDefault("SignatureVersion")
-  valid_601287 = validateParameter(valid_601287, JString, required = true,
+  if valid_603288 != nil:
+    section.add "Timestamp", valid_603288
+  var valid_603289 = query.getOrDefault("SignatureVersion")
+  valid_603289 = validateParameter(valid_603289, JString, required = true,
                                  default = nil)
-  if valid_601287 != nil:
-    section.add "SignatureVersion", valid_601287
-  var valid_601288 = query.getOrDefault("AWSAccessKeyId")
-  valid_601288 = validateParameter(valid_601288, JString, required = true,
+  if valid_603289 != nil:
+    section.add "SignatureVersion", valid_603289
+  var valid_603290 = query.getOrDefault("AWSAccessKeyId")
+  valid_603290 = validateParameter(valid_603290, JString, required = true,
                                  default = nil)
-  if valid_601288 != nil:
-    section.add "AWSAccessKeyId", valid_601288
-  var valid_601289 = query.getOrDefault("Version")
-  valid_601289 = validateParameter(valid_601289, JString, required = true,
+  if valid_603290 != nil:
+    section.add "AWSAccessKeyId", valid_603290
+  var valid_603291 = query.getOrDefault("Version")
+  valid_603291 = validateParameter(valid_603291, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601289 != nil:
-    section.add "Version", valid_601289
+  if valid_603291 != nil:
+    section.add "Version", valid_603291
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -2386,52 +2386,52 @@ proc validate_PostPutAttributes_601281(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `DomainName` field"
-  var valid_601290 = formData.getOrDefault("DomainName")
-  valid_601290 = validateParameter(valid_601290, JString, required = true,
+  var valid_603292 = formData.getOrDefault("DomainName")
+  valid_603292 = validateParameter(valid_603292, JString, required = true,
                                  default = nil)
-  if valid_601290 != nil:
-    section.add "DomainName", valid_601290
-  var valid_601291 = formData.getOrDefault("ItemName")
-  valid_601291 = validateParameter(valid_601291, JString, required = true,
+  if valid_603292 != nil:
+    section.add "DomainName", valid_603292
+  var valid_603293 = formData.getOrDefault("ItemName")
+  valid_603293 = validateParameter(valid_603293, JString, required = true,
                                  default = nil)
-  if valid_601291 != nil:
-    section.add "ItemName", valid_601291
-  var valid_601292 = formData.getOrDefault("Expected.Exists")
-  valid_601292 = validateParameter(valid_601292, JString, required = false,
+  if valid_603293 != nil:
+    section.add "ItemName", valid_603293
+  var valid_603294 = formData.getOrDefault("Expected.Exists")
+  valid_603294 = validateParameter(valid_603294, JString, required = false,
                                  default = nil)
-  if valid_601292 != nil:
-    section.add "Expected.Exists", valid_601292
-  var valid_601293 = formData.getOrDefault("Attributes")
-  valid_601293 = validateParameter(valid_601293, JArray, required = true, default = nil)
-  if valid_601293 != nil:
-    section.add "Attributes", valid_601293
-  var valid_601294 = formData.getOrDefault("Expected.Value")
-  valid_601294 = validateParameter(valid_601294, JString, required = false,
+  if valid_603294 != nil:
+    section.add "Expected.Exists", valid_603294
+  var valid_603295 = formData.getOrDefault("Attributes")
+  valid_603295 = validateParameter(valid_603295, JArray, required = true, default = nil)
+  if valid_603295 != nil:
+    section.add "Attributes", valid_603295
+  var valid_603296 = formData.getOrDefault("Expected.Value")
+  valid_603296 = validateParameter(valid_603296, JString, required = false,
                                  default = nil)
-  if valid_601294 != nil:
-    section.add "Expected.Value", valid_601294
-  var valid_601295 = formData.getOrDefault("Expected.Name")
-  valid_601295 = validateParameter(valid_601295, JString, required = false,
+  if valid_603296 != nil:
+    section.add "Expected.Value", valid_603296
+  var valid_603297 = formData.getOrDefault("Expected.Name")
+  valid_603297 = validateParameter(valid_603297, JString, required = false,
                                  default = nil)
-  if valid_601295 != nil:
-    section.add "Expected.Name", valid_601295
+  if valid_603297 != nil:
+    section.add "Expected.Name", valid_603297
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601296: Call_PostPutAttributes_601280; path: JsonNode;
+proc call*(call_603298: Call_PostPutAttributes_603282; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The PutAttributes operation creates or replaces attributes in an item. The client may specify new attributes using a combination of the <code>Attribute.X.Name</code> and <code>Attribute.X.Value</code> parameters. The client specifies the first attribute by the parameters <code>Attribute.0.Name</code> and <code>Attribute.0.Value</code>, the second attribute by the parameters <code>Attribute.1.Name</code> and <code>Attribute.1.Value</code>, and so on. </p> <p> Attributes are uniquely identified in an item by their name/value combination. For example, a single item can have the attributes <code>{ "first_name", "first_value" }</code> and <code>{ "first_name", second_value" }</code>. However, it cannot have two attribute instances where both the <code>Attribute.X.Name</code> and <code>Attribute.X.Value</code> are the same. </p> <p> Optionally, the requestor can supply the <code>Replace</code> parameter for each individual attribute. Setting this value to <code>true</code> causes the new attribute value to replace the existing attribute value(s). For example, if an item has the attributes <code>{ 'a', '1' }</code>, <code>{ 'b', '2'}</code> and <code>{ 'b', '3' }</code> and the requestor calls <code>PutAttributes</code> using the attributes <code>{ 'b', '4' }</code> with the <code>Replace</code> parameter set to true, the final attributes of the item are changed to <code>{ 'a', '1' }</code> and <code>{ 'b', '4' }</code>, which replaces the previous values of the 'b' attribute with the new value. </p> <note> Using <code>PutAttributes</code> to replace attribute values that do not exist will not result in an error response. </note> <p> You cannot specify an empty string as an attribute name. </p> <p> Because Amazon SimpleDB makes multiple copies of client data and uses an eventual consistency update model, an immediate <a>GetAttributes</a> or <a>Select</a> operation (read) immediately after a <a>PutAttributes</a> or <a>DeleteAttributes</a> operation (write) might not return the updated data. </p> <p> The following limitations are enforced for this operation: <ul> <li>256 total attribute name-value pairs per item</li> <li>One billion attributes per domain</li> <li>10 GB of total user data storage per domain</li> </ul> </p>
   ## 
-  let valid = call_601296.validator(path, query, header, formData, body)
-  let scheme = call_601296.pickScheme
+  let valid = call_603298.validator(path, query, header, formData, body)
+  let scheme = call_603298.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601296.url(scheme.get, call_601296.host, call_601296.base,
-                         call_601296.route, valid.getOrDefault("path"))
-  result = hook(call_601296, url, valid)
+  let url = call_603298.url(scheme.get, call_603298.host, call_603298.base,
+                         call_603298.route, valid.getOrDefault("path"))
+  result = hook(call_603298, url, valid)
 
-proc call*(call_601297: Call_PostPutAttributes_601280; SignatureMethod: string;
+proc call*(call_603299: Call_PostPutAttributes_603282; SignatureMethod: string;
           DomainName: string; ItemName: string; Signature: string;
           Attributes: JsonNode; Timestamp: string; SignatureVersion: string;
           AWSAccessKeyId: string; ExpectedExists: string = "";
@@ -2461,36 +2461,36 @@ proc call*(call_601297: Call_PostPutAttributes_601280; SignatureMethod: string;
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601298 = newJObject()
-  var formData_601299 = newJObject()
-  add(query_601298, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601299, "DomainName", newJString(DomainName))
-  add(formData_601299, "ItemName", newJString(ItemName))
-  add(formData_601299, "Expected.Exists", newJString(ExpectedExists))
-  add(query_601298, "Signature", newJString(Signature))
+  var query_603300 = newJObject()
+  var formData_603301 = newJObject()
+  add(query_603300, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603301, "DomainName", newJString(DomainName))
+  add(formData_603301, "ItemName", newJString(ItemName))
+  add(formData_603301, "Expected.Exists", newJString(ExpectedExists))
+  add(query_603300, "Signature", newJString(Signature))
   if Attributes != nil:
-    formData_601299.add "Attributes", Attributes
-  add(query_601298, "Action", newJString(Action))
-  add(query_601298, "Timestamp", newJString(Timestamp))
-  add(formData_601299, "Expected.Value", newJString(ExpectedValue))
-  add(formData_601299, "Expected.Name", newJString(ExpectedName))
-  add(query_601298, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601298, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601298, "Version", newJString(Version))
-  result = call_601297.call(nil, query_601298, nil, formData_601299, nil)
+    formData_603301.add "Attributes", Attributes
+  add(query_603300, "Action", newJString(Action))
+  add(query_603300, "Timestamp", newJString(Timestamp))
+  add(formData_603301, "Expected.Value", newJString(ExpectedValue))
+  add(formData_603301, "Expected.Name", newJString(ExpectedName))
+  add(query_603300, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603300, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603300, "Version", newJString(Version))
+  result = call_603299.call(nil, query_603300, nil, formData_603301, nil)
 
-var postPutAttributes* = Call_PostPutAttributes_601280(name: "postPutAttributes",
+var postPutAttributes* = Call_PostPutAttributes_603282(name: "postPutAttributes",
     meth: HttpMethod.HttpPost, host: "sdb.amazonaws.com",
-    route: "/#Action=PutAttributes", validator: validate_PostPutAttributes_601281,
-    base: "/", url: url_PostPutAttributes_601282,
+    route: "/#Action=PutAttributes", validator: validate_PostPutAttributes_603283,
+    base: "/", url: url_PostPutAttributes_603284,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetPutAttributes_601261 = ref object of OpenApiRestCall_600410
-proc url_GetPutAttributes_601263(protocol: Scheme; host: string; base: string;
+  Call_GetPutAttributes_603263 = ref object of OpenApiRestCall_602417
+proc url_GetPutAttributes_603265(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetPutAttributes_601262(path: JsonNode; query: JsonNode;
+proc validate_GetPutAttributes_603264(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p> The PutAttributes operation creates or replaces attributes in an item. The client may specify new attributes using a combination of the <code>Attribute.X.Name</code> and <code>Attribute.X.Value</code> parameters. The client specifies the first attribute by the parameters <code>Attribute.0.Name</code> and <code>Attribute.0.Value</code>, the second attribute by the parameters <code>Attribute.1.Name</code> and <code>Attribute.1.Value</code>, and so on. </p> <p> Attributes are uniquely identified in an item by their name/value combination. For example, a single item can have the attributes <code>{ "first_name", "first_value" }</code> and <code>{ "first_name", second_value" }</code>. However, it cannot have two attribute instances where both the <code>Attribute.X.Name</code> and <code>Attribute.X.Value</code> are the same. </p> <p> Optionally, the requestor can supply the <code>Replace</code> parameter for each individual attribute. Setting this value to <code>true</code> causes the new attribute value to replace the existing attribute value(s). For example, if an item has the attributes <code>{ 'a', '1' }</code>, <code>{ 'b', '2'}</code> and <code>{ 'b', '3' }</code> and the requestor calls <code>PutAttributes</code> using the attributes <code>{ 'b', '4' }</code> with the <code>Replace</code> parameter set to true, the final attributes of the item are changed to <code>{ 'a', '1' }</code> and <code>{ 'b', '4' }</code>, which replaces the previous values of the 'b' attribute with the new value. </p> <note> Using <code>PutAttributes</code> to replace attribute values that do not exist will not result in an error response. </note> <p> You cannot specify an empty string as an attribute name. </p> <p> Because Amazon SimpleDB makes multiple copies of client data and uses an eventual consistency update model, an immediate <a>GetAttributes</a> or <a>Select</a> operation (read) immediately after a <a>PutAttributes</a> or <a>DeleteAttributes</a> operation (write) might not return the updated data. </p> <p> The following limitations are enforced for this operation: <ul> <li>256 total attribute name-value pairs per item</li> <li>One billion attributes per domain</li> <li>10 GB of total user data storage per domain</li> </ul> </p>
@@ -2525,70 +2525,70 @@ proc validate_GetPutAttributes_601262(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601264 = query.getOrDefault("SignatureMethod")
-  valid_601264 = validateParameter(valid_601264, JString, required = true,
+  var valid_603266 = query.getOrDefault("SignatureMethod")
+  valid_603266 = validateParameter(valid_603266, JString, required = true,
                                  default = nil)
-  if valid_601264 != nil:
-    section.add "SignatureMethod", valid_601264
-  var valid_601265 = query.getOrDefault("Expected.Exists")
-  valid_601265 = validateParameter(valid_601265, JString, required = false,
+  if valid_603266 != nil:
+    section.add "SignatureMethod", valid_603266
+  var valid_603267 = query.getOrDefault("Expected.Exists")
+  valid_603267 = validateParameter(valid_603267, JString, required = false,
                                  default = nil)
-  if valid_601265 != nil:
-    section.add "Expected.Exists", valid_601265
-  var valid_601266 = query.getOrDefault("Attributes")
-  valid_601266 = validateParameter(valid_601266, JArray, required = true, default = nil)
-  if valid_601266 != nil:
-    section.add "Attributes", valid_601266
-  var valid_601267 = query.getOrDefault("Signature")
-  valid_601267 = validateParameter(valid_601267, JString, required = true,
+  if valid_603267 != nil:
+    section.add "Expected.Exists", valid_603267
+  var valid_603268 = query.getOrDefault("Attributes")
+  valid_603268 = validateParameter(valid_603268, JArray, required = true, default = nil)
+  if valid_603268 != nil:
+    section.add "Attributes", valid_603268
+  var valid_603269 = query.getOrDefault("Signature")
+  valid_603269 = validateParameter(valid_603269, JString, required = true,
                                  default = nil)
-  if valid_601267 != nil:
-    section.add "Signature", valid_601267
-  var valid_601268 = query.getOrDefault("ItemName")
-  valid_601268 = validateParameter(valid_601268, JString, required = true,
+  if valid_603269 != nil:
+    section.add "Signature", valid_603269
+  var valid_603270 = query.getOrDefault("ItemName")
+  valid_603270 = validateParameter(valid_603270, JString, required = true,
                                  default = nil)
-  if valid_601268 != nil:
-    section.add "ItemName", valid_601268
-  var valid_601269 = query.getOrDefault("Action")
-  valid_601269 = validateParameter(valid_601269, JString, required = true,
+  if valid_603270 != nil:
+    section.add "ItemName", valid_603270
+  var valid_603271 = query.getOrDefault("Action")
+  valid_603271 = validateParameter(valid_603271, JString, required = true,
                                  default = newJString("PutAttributes"))
-  if valid_601269 != nil:
-    section.add "Action", valid_601269
-  var valid_601270 = query.getOrDefault("Expected.Value")
-  valid_601270 = validateParameter(valid_601270, JString, required = false,
+  if valid_603271 != nil:
+    section.add "Action", valid_603271
+  var valid_603272 = query.getOrDefault("Expected.Value")
+  valid_603272 = validateParameter(valid_603272, JString, required = false,
                                  default = nil)
-  if valid_601270 != nil:
-    section.add "Expected.Value", valid_601270
-  var valid_601271 = query.getOrDefault("Timestamp")
-  valid_601271 = validateParameter(valid_601271, JString, required = true,
+  if valid_603272 != nil:
+    section.add "Expected.Value", valid_603272
+  var valid_603273 = query.getOrDefault("Timestamp")
+  valid_603273 = validateParameter(valid_603273, JString, required = true,
                                  default = nil)
-  if valid_601271 != nil:
-    section.add "Timestamp", valid_601271
-  var valid_601272 = query.getOrDefault("SignatureVersion")
-  valid_601272 = validateParameter(valid_601272, JString, required = true,
+  if valid_603273 != nil:
+    section.add "Timestamp", valid_603273
+  var valid_603274 = query.getOrDefault("SignatureVersion")
+  valid_603274 = validateParameter(valid_603274, JString, required = true,
                                  default = nil)
-  if valid_601272 != nil:
-    section.add "SignatureVersion", valid_601272
-  var valid_601273 = query.getOrDefault("AWSAccessKeyId")
-  valid_601273 = validateParameter(valid_601273, JString, required = true,
+  if valid_603274 != nil:
+    section.add "SignatureVersion", valid_603274
+  var valid_603275 = query.getOrDefault("AWSAccessKeyId")
+  valid_603275 = validateParameter(valid_603275, JString, required = true,
                                  default = nil)
-  if valid_601273 != nil:
-    section.add "AWSAccessKeyId", valid_601273
-  var valid_601274 = query.getOrDefault("Expected.Name")
-  valid_601274 = validateParameter(valid_601274, JString, required = false,
+  if valid_603275 != nil:
+    section.add "AWSAccessKeyId", valid_603275
+  var valid_603276 = query.getOrDefault("Expected.Name")
+  valid_603276 = validateParameter(valid_603276, JString, required = false,
                                  default = nil)
-  if valid_601274 != nil:
-    section.add "Expected.Name", valid_601274
-  var valid_601275 = query.getOrDefault("DomainName")
-  valid_601275 = validateParameter(valid_601275, JString, required = true,
+  if valid_603276 != nil:
+    section.add "Expected.Name", valid_603276
+  var valid_603277 = query.getOrDefault("DomainName")
+  valid_603277 = validateParameter(valid_603277, JString, required = true,
                                  default = nil)
-  if valid_601275 != nil:
-    section.add "DomainName", valid_601275
-  var valid_601276 = query.getOrDefault("Version")
-  valid_601276 = validateParameter(valid_601276, JString, required = true,
+  if valid_603277 != nil:
+    section.add "DomainName", valid_603277
+  var valid_603278 = query.getOrDefault("Version")
+  valid_603278 = validateParameter(valid_603278, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601276 != nil:
-    section.add "Version", valid_601276
+  if valid_603278 != nil:
+    section.add "Version", valid_603278
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -2597,19 +2597,19 @@ proc validate_GetPutAttributes_601262(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601277: Call_GetPutAttributes_601261; path: JsonNode;
+proc call*(call_603279: Call_GetPutAttributes_603263; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The PutAttributes operation creates or replaces attributes in an item. The client may specify new attributes using a combination of the <code>Attribute.X.Name</code> and <code>Attribute.X.Value</code> parameters. The client specifies the first attribute by the parameters <code>Attribute.0.Name</code> and <code>Attribute.0.Value</code>, the second attribute by the parameters <code>Attribute.1.Name</code> and <code>Attribute.1.Value</code>, and so on. </p> <p> Attributes are uniquely identified in an item by their name/value combination. For example, a single item can have the attributes <code>{ "first_name", "first_value" }</code> and <code>{ "first_name", second_value" }</code>. However, it cannot have two attribute instances where both the <code>Attribute.X.Name</code> and <code>Attribute.X.Value</code> are the same. </p> <p> Optionally, the requestor can supply the <code>Replace</code> parameter for each individual attribute. Setting this value to <code>true</code> causes the new attribute value to replace the existing attribute value(s). For example, if an item has the attributes <code>{ 'a', '1' }</code>, <code>{ 'b', '2'}</code> and <code>{ 'b', '3' }</code> and the requestor calls <code>PutAttributes</code> using the attributes <code>{ 'b', '4' }</code> with the <code>Replace</code> parameter set to true, the final attributes of the item are changed to <code>{ 'a', '1' }</code> and <code>{ 'b', '4' }</code>, which replaces the previous values of the 'b' attribute with the new value. </p> <note> Using <code>PutAttributes</code> to replace attribute values that do not exist will not result in an error response. </note> <p> You cannot specify an empty string as an attribute name. </p> <p> Because Amazon SimpleDB makes multiple copies of client data and uses an eventual consistency update model, an immediate <a>GetAttributes</a> or <a>Select</a> operation (read) immediately after a <a>PutAttributes</a> or <a>DeleteAttributes</a> operation (write) might not return the updated data. </p> <p> The following limitations are enforced for this operation: <ul> <li>256 total attribute name-value pairs per item</li> <li>One billion attributes per domain</li> <li>10 GB of total user data storage per domain</li> </ul> </p>
   ## 
-  let valid = call_601277.validator(path, query, header, formData, body)
-  let scheme = call_601277.pickScheme
+  let valid = call_603279.validator(path, query, header, formData, body)
+  let scheme = call_603279.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601277.url(scheme.get, call_601277.host, call_601277.base,
-                         call_601277.route, valid.getOrDefault("path"))
-  result = hook(call_601277, url, valid)
+  let url = call_603279.url(scheme.get, call_603279.host, call_603279.base,
+                         call_603279.route, valid.getOrDefault("path"))
+  result = hook(call_603279, url, valid)
 
-proc call*(call_601278: Call_GetPutAttributes_601261; SignatureMethod: string;
+proc call*(call_603280: Call_GetPutAttributes_603263; SignatureMethod: string;
           Attributes: JsonNode; Signature: string; ItemName: string;
           Timestamp: string; SignatureVersion: string; AWSAccessKeyId: string;
           DomainName: string; ExpectedExists: string = "";
@@ -2639,35 +2639,35 @@ proc call*(call_601278: Call_GetPutAttributes_601261; SignatureMethod: string;
   ##   DomainName: string (required)
   ##             : The name of the domain in which to perform the operation.
   ##   Version: string (required)
-  var query_601279 = newJObject()
-  add(query_601279, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601279, "Expected.Exists", newJString(ExpectedExists))
+  var query_603281 = newJObject()
+  add(query_603281, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603281, "Expected.Exists", newJString(ExpectedExists))
   if Attributes != nil:
-    query_601279.add "Attributes", Attributes
-  add(query_601279, "Signature", newJString(Signature))
-  add(query_601279, "ItemName", newJString(ItemName))
-  add(query_601279, "Action", newJString(Action))
-  add(query_601279, "Expected.Value", newJString(ExpectedValue))
-  add(query_601279, "Timestamp", newJString(Timestamp))
-  add(query_601279, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601279, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601279, "Expected.Name", newJString(ExpectedName))
-  add(query_601279, "DomainName", newJString(DomainName))
-  add(query_601279, "Version", newJString(Version))
-  result = call_601278.call(nil, query_601279, nil, nil, nil)
+    query_603281.add "Attributes", Attributes
+  add(query_603281, "Signature", newJString(Signature))
+  add(query_603281, "ItemName", newJString(ItemName))
+  add(query_603281, "Action", newJString(Action))
+  add(query_603281, "Expected.Value", newJString(ExpectedValue))
+  add(query_603281, "Timestamp", newJString(Timestamp))
+  add(query_603281, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603281, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603281, "Expected.Name", newJString(ExpectedName))
+  add(query_603281, "DomainName", newJString(DomainName))
+  add(query_603281, "Version", newJString(Version))
+  result = call_603280.call(nil, query_603281, nil, nil, nil)
 
-var getPutAttributes* = Call_GetPutAttributes_601261(name: "getPutAttributes",
+var getPutAttributes* = Call_GetPutAttributes_603263(name: "getPutAttributes",
     meth: HttpMethod.HttpGet, host: "sdb.amazonaws.com",
-    route: "/#Action=PutAttributes", validator: validate_GetPutAttributes_601262,
-    base: "/", url: url_GetPutAttributes_601263,
+    route: "/#Action=PutAttributes", validator: validate_GetPutAttributes_603264,
+    base: "/", url: url_GetPutAttributes_603265,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSelect_601316 = ref object of OpenApiRestCall_600410
-proc url_PostSelect_601318(protocol: Scheme; host: string; base: string; route: string;
+  Call_PostSelect_603318 = ref object of OpenApiRestCall_602417
+proc url_PostSelect_603320(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_PostSelect_601317(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostSelect_603319(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> The <code>Select</code> operation returns a set of attributes for <code>ItemNames</code> that match the select expression. <code>Select</code> is similar to the standard SQL SELECT statement. </p> <p> The total size of the response cannot exceed 1 MB in total size. Amazon SimpleDB automatically adjusts the number of items returned per page to enforce this limit. For example, if the client asks to retrieve 2500 items, but each individual item is 10 kB in size, the system returns 100 items and an appropriate <code>NextToken</code> so the client can access the next page of results. </p> <p> For information on how to construct select expressions, see Using Select to Create Amazon SimpleDB Queries in the Developer Guide. </p>
   ## 
@@ -2686,41 +2686,41 @@ proc validate_PostSelect_601317(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601319 = query.getOrDefault("SignatureMethod")
-  valid_601319 = validateParameter(valid_601319, JString, required = true,
+  var valid_603321 = query.getOrDefault("SignatureMethod")
+  valid_603321 = validateParameter(valid_603321, JString, required = true,
                                  default = nil)
-  if valid_601319 != nil:
-    section.add "SignatureMethod", valid_601319
-  var valid_601320 = query.getOrDefault("Signature")
-  valid_601320 = validateParameter(valid_601320, JString, required = true,
+  if valid_603321 != nil:
+    section.add "SignatureMethod", valid_603321
+  var valid_603322 = query.getOrDefault("Signature")
+  valid_603322 = validateParameter(valid_603322, JString, required = true,
                                  default = nil)
-  if valid_601320 != nil:
-    section.add "Signature", valid_601320
-  var valid_601321 = query.getOrDefault("Action")
-  valid_601321 = validateParameter(valid_601321, JString, required = true,
+  if valid_603322 != nil:
+    section.add "Signature", valid_603322
+  var valid_603323 = query.getOrDefault("Action")
+  valid_603323 = validateParameter(valid_603323, JString, required = true,
                                  default = newJString("Select"))
-  if valid_601321 != nil:
-    section.add "Action", valid_601321
-  var valid_601322 = query.getOrDefault("Timestamp")
-  valid_601322 = validateParameter(valid_601322, JString, required = true,
+  if valid_603323 != nil:
+    section.add "Action", valid_603323
+  var valid_603324 = query.getOrDefault("Timestamp")
+  valid_603324 = validateParameter(valid_603324, JString, required = true,
                                  default = nil)
-  if valid_601322 != nil:
-    section.add "Timestamp", valid_601322
-  var valid_601323 = query.getOrDefault("SignatureVersion")
-  valid_601323 = validateParameter(valid_601323, JString, required = true,
+  if valid_603324 != nil:
+    section.add "Timestamp", valid_603324
+  var valid_603325 = query.getOrDefault("SignatureVersion")
+  valid_603325 = validateParameter(valid_603325, JString, required = true,
                                  default = nil)
-  if valid_601323 != nil:
-    section.add "SignatureVersion", valid_601323
-  var valid_601324 = query.getOrDefault("AWSAccessKeyId")
-  valid_601324 = validateParameter(valid_601324, JString, required = true,
+  if valid_603325 != nil:
+    section.add "SignatureVersion", valid_603325
+  var valid_603326 = query.getOrDefault("AWSAccessKeyId")
+  valid_603326 = validateParameter(valid_603326, JString, required = true,
                                  default = nil)
-  if valid_601324 != nil:
-    section.add "AWSAccessKeyId", valid_601324
-  var valid_601325 = query.getOrDefault("Version")
-  valid_601325 = validateParameter(valid_601325, JString, required = true,
+  if valid_603326 != nil:
+    section.add "AWSAccessKeyId", valid_603326
+  var valid_603327 = query.getOrDefault("Version")
+  valid_603327 = validateParameter(valid_603327, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601325 != nil:
-    section.add "Version", valid_601325
+  if valid_603327 != nil:
+    section.add "Version", valid_603327
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -2732,38 +2732,38 @@ proc validate_PostSelect_601317(path: JsonNode; query: JsonNode; header: JsonNod
   ##   SelectExpression: JString (required)
   ##                   : The expression used to query the domain.
   section = newJObject()
-  var valid_601326 = formData.getOrDefault("NextToken")
-  valid_601326 = validateParameter(valid_601326, JString, required = false,
+  var valid_603328 = formData.getOrDefault("NextToken")
+  valid_603328 = validateParameter(valid_603328, JString, required = false,
                                  default = nil)
-  if valid_601326 != nil:
-    section.add "NextToken", valid_601326
-  var valid_601327 = formData.getOrDefault("ConsistentRead")
-  valid_601327 = validateParameter(valid_601327, JBool, required = false, default = nil)
-  if valid_601327 != nil:
-    section.add "ConsistentRead", valid_601327
+  if valid_603328 != nil:
+    section.add "NextToken", valid_603328
+  var valid_603329 = formData.getOrDefault("ConsistentRead")
+  valid_603329 = validateParameter(valid_603329, JBool, required = false, default = nil)
+  if valid_603329 != nil:
+    section.add "ConsistentRead", valid_603329
   assert formData != nil, "formData argument is necessary due to required `SelectExpression` field"
-  var valid_601328 = formData.getOrDefault("SelectExpression")
-  valid_601328 = validateParameter(valid_601328, JString, required = true,
+  var valid_603330 = formData.getOrDefault("SelectExpression")
+  valid_603330 = validateParameter(valid_603330, JString, required = true,
                                  default = nil)
-  if valid_601328 != nil:
-    section.add "SelectExpression", valid_601328
+  if valid_603330 != nil:
+    section.add "SelectExpression", valid_603330
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601329: Call_PostSelect_601316; path: JsonNode; query: JsonNode;
+proc call*(call_603331: Call_PostSelect_603318; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The <code>Select</code> operation returns a set of attributes for <code>ItemNames</code> that match the select expression. <code>Select</code> is similar to the standard SQL SELECT statement. </p> <p> The total size of the response cannot exceed 1 MB in total size. Amazon SimpleDB automatically adjusts the number of items returned per page to enforce this limit. For example, if the client asks to retrieve 2500 items, but each individual item is 10 kB in size, the system returns 100 items and an appropriate <code>NextToken</code> so the client can access the next page of results. </p> <p> For information on how to construct select expressions, see Using Select to Create Amazon SimpleDB Queries in the Developer Guide. </p>
   ## 
-  let valid = call_601329.validator(path, query, header, formData, body)
-  let scheme = call_601329.pickScheme
+  let valid = call_603331.validator(path, query, header, formData, body)
+  let scheme = call_603331.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601329.url(scheme.get, call_601329.host, call_601329.base,
-                         call_601329.route, valid.getOrDefault("path"))
-  result = hook(call_601329, url, valid)
+  let url = call_603331.url(scheme.get, call_603331.host, call_603331.base,
+                         call_603331.route, valid.getOrDefault("path"))
+  result = hook(call_603331, url, valid)
 
-proc call*(call_601330: Call_PostSelect_601316; SignatureMethod: string;
+proc call*(call_603332: Call_PostSelect_603318; SignatureMethod: string;
           Signature: string; Timestamp: string; SignatureVersion: string;
           AWSAccessKeyId: string; SelectExpression: string; NextToken: string = "";
           ConsistentRead: bool = false; Action: string = "Select";
@@ -2783,34 +2783,34 @@ proc call*(call_601330: Call_PostSelect_601316; SignatureMethod: string;
   ##   SelectExpression: string (required)
   ##                   : The expression used to query the domain.
   ##   Version: string (required)
-  var query_601331 = newJObject()
-  var formData_601332 = newJObject()
-  add(formData_601332, "NextToken", newJString(NextToken))
-  add(query_601331, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601332, "ConsistentRead", newJBool(ConsistentRead))
-  add(query_601331, "Signature", newJString(Signature))
-  add(query_601331, "Action", newJString(Action))
-  add(query_601331, "Timestamp", newJString(Timestamp))
-  add(query_601331, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601331, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(formData_601332, "SelectExpression", newJString(SelectExpression))
-  add(query_601331, "Version", newJString(Version))
-  result = call_601330.call(nil, query_601331, nil, formData_601332, nil)
+  var query_603333 = newJObject()
+  var formData_603334 = newJObject()
+  add(formData_603334, "NextToken", newJString(NextToken))
+  add(query_603333, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_603334, "ConsistentRead", newJBool(ConsistentRead))
+  add(query_603333, "Signature", newJString(Signature))
+  add(query_603333, "Action", newJString(Action))
+  add(query_603333, "Timestamp", newJString(Timestamp))
+  add(query_603333, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603333, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(formData_603334, "SelectExpression", newJString(SelectExpression))
+  add(query_603333, "Version", newJString(Version))
+  result = call_603332.call(nil, query_603333, nil, formData_603334, nil)
 
-var postSelect* = Call_PostSelect_601316(name: "postSelect",
+var postSelect* = Call_PostSelect_603318(name: "postSelect",
                                       meth: HttpMethod.HttpPost,
                                       host: "sdb.amazonaws.com",
                                       route: "/#Action=Select",
-                                      validator: validate_PostSelect_601317,
-                                      base: "/", url: url_PostSelect_601318,
+                                      validator: validate_PostSelect_603319,
+                                      base: "/", url: url_PostSelect_603320,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSelect_601300 = ref object of OpenApiRestCall_600410
-proc url_GetSelect_601302(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetSelect_603302 = ref object of OpenApiRestCall_602417
+proc url_GetSelect_603304(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_GetSelect_601301(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetSelect_603303(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> The <code>Select</code> operation returns a set of attributes for <code>ItemNames</code> that match the select expression. <code>Select</code> is similar to the standard SQL SELECT statement. </p> <p> The total size of the response cannot exceed 1 MB in total size. Amazon SimpleDB automatically adjusts the number of items returned per page to enforce this limit. For example, if the client asks to retrieve 2500 items, but each individual item is 10 kB in size, the system returns 100 items and an appropriate <code>NextToken</code> so the client can access the next page of results. </p> <p> For information on how to construct select expressions, see Using Select to Create Amazon SimpleDB Queries in the Developer Guide. </p>
   ## 
@@ -2835,55 +2835,55 @@ proc validate_GetSelect_601301(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `SignatureMethod` field"
-  var valid_601303 = query.getOrDefault("SignatureMethod")
-  valid_601303 = validateParameter(valid_601303, JString, required = true,
+  var valid_603305 = query.getOrDefault("SignatureMethod")
+  valid_603305 = validateParameter(valid_603305, JString, required = true,
                                  default = nil)
-  if valid_601303 != nil:
-    section.add "SignatureMethod", valid_601303
-  var valid_601304 = query.getOrDefault("Signature")
-  valid_601304 = validateParameter(valid_601304, JString, required = true,
+  if valid_603305 != nil:
+    section.add "SignatureMethod", valid_603305
+  var valid_603306 = query.getOrDefault("Signature")
+  valid_603306 = validateParameter(valid_603306, JString, required = true,
                                  default = nil)
-  if valid_601304 != nil:
-    section.add "Signature", valid_601304
-  var valid_601305 = query.getOrDefault("NextToken")
-  valid_601305 = validateParameter(valid_601305, JString, required = false,
+  if valid_603306 != nil:
+    section.add "Signature", valid_603306
+  var valid_603307 = query.getOrDefault("NextToken")
+  valid_603307 = validateParameter(valid_603307, JString, required = false,
                                  default = nil)
-  if valid_601305 != nil:
-    section.add "NextToken", valid_601305
-  var valid_601306 = query.getOrDefault("SelectExpression")
-  valid_601306 = validateParameter(valid_601306, JString, required = true,
+  if valid_603307 != nil:
+    section.add "NextToken", valid_603307
+  var valid_603308 = query.getOrDefault("SelectExpression")
+  valid_603308 = validateParameter(valid_603308, JString, required = true,
                                  default = nil)
-  if valid_601306 != nil:
-    section.add "SelectExpression", valid_601306
-  var valid_601307 = query.getOrDefault("Action")
-  valid_601307 = validateParameter(valid_601307, JString, required = true,
+  if valid_603308 != nil:
+    section.add "SelectExpression", valid_603308
+  var valid_603309 = query.getOrDefault("Action")
+  valid_603309 = validateParameter(valid_603309, JString, required = true,
                                  default = newJString("Select"))
-  if valid_601307 != nil:
-    section.add "Action", valid_601307
-  var valid_601308 = query.getOrDefault("Timestamp")
-  valid_601308 = validateParameter(valid_601308, JString, required = true,
+  if valid_603309 != nil:
+    section.add "Action", valid_603309
+  var valid_603310 = query.getOrDefault("Timestamp")
+  valid_603310 = validateParameter(valid_603310, JString, required = true,
                                  default = nil)
-  if valid_601308 != nil:
-    section.add "Timestamp", valid_601308
-  var valid_601309 = query.getOrDefault("ConsistentRead")
-  valid_601309 = validateParameter(valid_601309, JBool, required = false, default = nil)
-  if valid_601309 != nil:
-    section.add "ConsistentRead", valid_601309
-  var valid_601310 = query.getOrDefault("SignatureVersion")
-  valid_601310 = validateParameter(valid_601310, JString, required = true,
+  if valid_603310 != nil:
+    section.add "Timestamp", valid_603310
+  var valid_603311 = query.getOrDefault("ConsistentRead")
+  valid_603311 = validateParameter(valid_603311, JBool, required = false, default = nil)
+  if valid_603311 != nil:
+    section.add "ConsistentRead", valid_603311
+  var valid_603312 = query.getOrDefault("SignatureVersion")
+  valid_603312 = validateParameter(valid_603312, JString, required = true,
                                  default = nil)
-  if valid_601310 != nil:
-    section.add "SignatureVersion", valid_601310
-  var valid_601311 = query.getOrDefault("AWSAccessKeyId")
-  valid_601311 = validateParameter(valid_601311, JString, required = true,
+  if valid_603312 != nil:
+    section.add "SignatureVersion", valid_603312
+  var valid_603313 = query.getOrDefault("AWSAccessKeyId")
+  valid_603313 = validateParameter(valid_603313, JString, required = true,
                                  default = nil)
-  if valid_601311 != nil:
-    section.add "AWSAccessKeyId", valid_601311
-  var valid_601312 = query.getOrDefault("Version")
-  valid_601312 = validateParameter(valid_601312, JString, required = true,
+  if valid_603313 != nil:
+    section.add "AWSAccessKeyId", valid_603313
+  var valid_603314 = query.getOrDefault("Version")
+  valid_603314 = validateParameter(valid_603314, JString, required = true,
                                  default = newJString("2009-04-15"))
-  if valid_601312 != nil:
-    section.add "Version", valid_601312
+  if valid_603314 != nil:
+    section.add "Version", valid_603314
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -2892,19 +2892,19 @@ proc validate_GetSelect_601301(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_601313: Call_GetSelect_601300; path: JsonNode; query: JsonNode;
+proc call*(call_603315: Call_GetSelect_603302; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> The <code>Select</code> operation returns a set of attributes for <code>ItemNames</code> that match the select expression. <code>Select</code> is similar to the standard SQL SELECT statement. </p> <p> The total size of the response cannot exceed 1 MB in total size. Amazon SimpleDB automatically adjusts the number of items returned per page to enforce this limit. For example, if the client asks to retrieve 2500 items, but each individual item is 10 kB in size, the system returns 100 items and an appropriate <code>NextToken</code> so the client can access the next page of results. </p> <p> For information on how to construct select expressions, see Using Select to Create Amazon SimpleDB Queries in the Developer Guide. </p>
   ## 
-  let valid = call_601313.validator(path, query, header, formData, body)
-  let scheme = call_601313.pickScheme
+  let valid = call_603315.validator(path, query, header, formData, body)
+  let scheme = call_603315.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601313.url(scheme.get, call_601313.host, call_601313.base,
-                         call_601313.route, valid.getOrDefault("path"))
-  result = hook(call_601313, url, valid)
+  let url = call_603315.url(scheme.get, call_603315.host, call_603315.base,
+                         call_603315.route, valid.getOrDefault("path"))
+  result = hook(call_603315, url, valid)
 
-proc call*(call_601314: Call_GetSelect_601300; SignatureMethod: string;
+proc call*(call_603316: Call_GetSelect_603302; SignatureMethod: string;
           Signature: string; SelectExpression: string; Timestamp: string;
           SignatureVersion: string; AWSAccessKeyId: string; NextToken: string = "";
           Action: string = "Select"; ConsistentRead: bool = false;
@@ -2924,24 +2924,24 @@ proc call*(call_601314: Call_GetSelect_601300; SignatureMethod: string;
   ##   SignatureVersion: string (required)
   ##   AWSAccessKeyId: string (required)
   ##   Version: string (required)
-  var query_601315 = newJObject()
-  add(query_601315, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601315, "Signature", newJString(Signature))
-  add(query_601315, "NextToken", newJString(NextToken))
-  add(query_601315, "SelectExpression", newJString(SelectExpression))
-  add(query_601315, "Action", newJString(Action))
-  add(query_601315, "Timestamp", newJString(Timestamp))
-  add(query_601315, "ConsistentRead", newJBool(ConsistentRead))
-  add(query_601315, "SignatureVersion", newJString(SignatureVersion))
-  add(query_601315, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601315, "Version", newJString(Version))
-  result = call_601314.call(nil, query_601315, nil, nil, nil)
+  var query_603317 = newJObject()
+  add(query_603317, "SignatureMethod", newJString(SignatureMethod))
+  add(query_603317, "Signature", newJString(Signature))
+  add(query_603317, "NextToken", newJString(NextToken))
+  add(query_603317, "SelectExpression", newJString(SelectExpression))
+  add(query_603317, "Action", newJString(Action))
+  add(query_603317, "Timestamp", newJString(Timestamp))
+  add(query_603317, "ConsistentRead", newJBool(ConsistentRead))
+  add(query_603317, "SignatureVersion", newJString(SignatureVersion))
+  add(query_603317, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_603317, "Version", newJString(Version))
+  result = call_603316.call(nil, query_603317, nil, nil, nil)
 
-var getSelect* = Call_GetSelect_601300(name: "getSelect", meth: HttpMethod.HttpGet,
+var getSelect* = Call_GetSelect_603302(name: "getSelect", meth: HttpMethod.HttpGet,
                                     host: "sdb.amazonaws.com",
                                     route: "/#Action=Select",
-                                    validator: validate_GetSelect_601301,
-                                    base: "/", url: url_GetSelect_601302,
+                                    validator: validate_GetSelect_603303,
+                                    base: "/", url: url_GetSelect_603304,
                                     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
