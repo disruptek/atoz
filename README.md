@@ -21,14 +21,20 @@ import httpcore
 import atoz/sqs_20121105
 import atoz/sns_20100331
 
-let myQueues = getListQueues.call()
+let
+  # the call() gets arguments you might expect; they have sensible
+  # defaults depending upon the call, the API, whether they are
+  # required, what their types are, whether we can infer a default...
+  myQueues = getListQueues.call(QueueNamePrefix="production_")
 for response in myQueues.retried(tries=3):
   if response.code.is2xx:
     echo waitfor response.body
     break
 
 let
-  myTopics = getListTopics.call()
+  # you can usually override the API version, even to use a later
+  # version than the one you imported.  but, y'know, why would you?
+  myTopics = getListTopics.call(Version="1969-12-31")
   response = waitfor myTopics.retry(tries=3)
 if response.code.is2xx:
   echo waitfor response.body
