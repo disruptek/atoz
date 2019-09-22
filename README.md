@@ -51,7 +51,7 @@ Patches welcome!
 
 ## Feedback Needed on Versioning
 
-I'm thinking that AWS API version 2.531.0 is gonna have to be atoz-205310.0.0 simply because any change on the AWS side, or to our code generator, is going to be a potentially breaking one.  Please offer your thoughts in the issues...
+I'm thinking that AWS API version 2.531.0 is gonna have to be atoz version 2531.0.0 simply because any change on the AWS side, or to our code generator, is going to be a potentially breaking one.  Please offer your thoughts in the issues...
 
 ## License
 
