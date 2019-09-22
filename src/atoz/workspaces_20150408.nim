@@ -1943,12 +1943,118 @@ var describeWorkspaceImages* = Call_DescribeWorkspaceImages_603269(
     validator: validate_DescribeWorkspaceImages_603270, base: "/",
     url: url_DescribeWorkspaceImages_603271, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkspaces_603284 = ref object of OpenApiRestCall_602433
-proc url_DescribeWorkspaces_603286(protocol: Scheme; host: string; base: string;
+  Call_DescribeWorkspaceSnapshots_603284 = ref object of OpenApiRestCall_602433
+proc url_DescribeWorkspaceSnapshots_603286(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode): string =
+  result = $protocol & "://" & host & base & route
+
+proc validate_DescribeWorkspaceSnapshots_603285(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Describes the snapshots for the specified WorkSpace.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_603287 = header.getOrDefault("X-Amz-Date")
+  valid_603287 = validateParameter(valid_603287, JString, required = false,
+                                 default = nil)
+  if valid_603287 != nil:
+    section.add "X-Amz-Date", valid_603287
+  var valid_603288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603288 = validateParameter(valid_603288, JString, required = false,
+                                 default = nil)
+  if valid_603288 != nil:
+    section.add "X-Amz-Security-Token", valid_603288
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_603289 = header.getOrDefault("X-Amz-Target")
+  valid_603289 = validateParameter(valid_603289, JString, required = true, default = newJString(
+      "WorkspacesService.DescribeWorkspaceSnapshots"))
+  if valid_603289 != nil:
+    section.add "X-Amz-Target", valid_603289
+  var valid_603290 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603290 = validateParameter(valid_603290, JString, required = false,
+                                 default = nil)
+  if valid_603290 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603290
+  var valid_603291 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603291 = validateParameter(valid_603291, JString, required = false,
+                                 default = nil)
+  if valid_603291 != nil:
+    section.add "X-Amz-Algorithm", valid_603291
+  var valid_603292 = header.getOrDefault("X-Amz-Signature")
+  valid_603292 = validateParameter(valid_603292, JString, required = false,
+                                 default = nil)
+  if valid_603292 != nil:
+    section.add "X-Amz-Signature", valid_603292
+  var valid_603293 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603293 = validateParameter(valid_603293, JString, required = false,
+                                 default = nil)
+  if valid_603293 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603293
+  var valid_603294 = header.getOrDefault("X-Amz-Credential")
+  valid_603294 = validateParameter(valid_603294, JString, required = false,
+                                 default = nil)
+  if valid_603294 != nil:
+    section.add "X-Amz-Credential", valid_603294
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_603296: Call_DescribeWorkspaceSnapshots_603284; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Describes the snapshots for the specified WorkSpace.
+  ## 
+  let valid = call_603296.validator(path, query, header, formData, body)
+  let scheme = call_603296.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_603296.url(scheme.get, call_603296.host, call_603296.base,
+                         call_603296.route, valid.getOrDefault("path"))
+  result = hook(call_603296, url, valid)
+
+proc call*(call_603297: Call_DescribeWorkspaceSnapshots_603284; body: JsonNode): Recallable =
+  ## describeWorkspaceSnapshots
+  ## Describes the snapshots for the specified WorkSpace.
+  ##   body: JObject (required)
+  var body_603298 = newJObject()
+  if body != nil:
+    body_603298 = body
+  result = call_603297.call(nil, nil, nil, nil, body_603298)
+
+var describeWorkspaceSnapshots* = Call_DescribeWorkspaceSnapshots_603284(
+    name: "describeWorkspaceSnapshots", meth: HttpMethod.HttpPost,
+    host: "workspaces.amazonaws.com",
+    route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspaceSnapshots",
+    validator: validate_DescribeWorkspaceSnapshots_603285, base: "/",
+    url: url_DescribeWorkspaceSnapshots_603286,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeWorkspaces_603299 = ref object of OpenApiRestCall_602433
+proc url_DescribeWorkspaces_603301(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeWorkspaces_603285(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkspaces_603300(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Describes the specified WorkSpaces.</p> <p>You can filter the results by using the bundle identifier, directory identifier, or owner, but you can specify only one filter at a time.</p>
@@ -1963,16 +2069,16 @@ proc validate_DescribeWorkspaces_603285(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_603287 = query.getOrDefault("Limit")
-  valid_603287 = validateParameter(valid_603287, JString, required = false,
+  var valid_603302 = query.getOrDefault("Limit")
+  valid_603302 = validateParameter(valid_603302, JString, required = false,
                                  default = nil)
-  if valid_603287 != nil:
-    section.add "Limit", valid_603287
-  var valid_603288 = query.getOrDefault("NextToken")
-  valid_603288 = validateParameter(valid_603288, JString, required = false,
+  if valid_603302 != nil:
+    section.add "Limit", valid_603302
+  var valid_603303 = query.getOrDefault("NextToken")
+  valid_603303 = validateParameter(valid_603303, JString, required = false,
                                  default = nil)
-  if valid_603288 != nil:
-    section.add "NextToken", valid_603288
+  if valid_603303 != nil:
+    section.add "NextToken", valid_603303
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1984,48 +2090,48 @@ proc validate_DescribeWorkspaces_603285(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603289 = header.getOrDefault("X-Amz-Date")
-  valid_603289 = validateParameter(valid_603289, JString, required = false,
+  var valid_603304 = header.getOrDefault("X-Amz-Date")
+  valid_603304 = validateParameter(valid_603304, JString, required = false,
                                  default = nil)
-  if valid_603289 != nil:
-    section.add "X-Amz-Date", valid_603289
-  var valid_603290 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603290 = validateParameter(valid_603290, JString, required = false,
+  if valid_603304 != nil:
+    section.add "X-Amz-Date", valid_603304
+  var valid_603305 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603305 = validateParameter(valid_603305, JString, required = false,
                                  default = nil)
-  if valid_603290 != nil:
-    section.add "X-Amz-Security-Token", valid_603290
+  if valid_603305 != nil:
+    section.add "X-Amz-Security-Token", valid_603305
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603291 = header.getOrDefault("X-Amz-Target")
-  valid_603291 = validateParameter(valid_603291, JString, required = true, default = newJString(
+  var valid_603306 = header.getOrDefault("X-Amz-Target")
+  valid_603306 = validateParameter(valid_603306, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaces"))
-  if valid_603291 != nil:
-    section.add "X-Amz-Target", valid_603291
-  var valid_603292 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603292 = validateParameter(valid_603292, JString, required = false,
+  if valid_603306 != nil:
+    section.add "X-Amz-Target", valid_603306
+  var valid_603307 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603307 = validateParameter(valid_603307, JString, required = false,
                                  default = nil)
-  if valid_603292 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603292
-  var valid_603293 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603293 = validateParameter(valid_603293, JString, required = false,
+  if valid_603307 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603307
+  var valid_603308 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603308 = validateParameter(valid_603308, JString, required = false,
                                  default = nil)
-  if valid_603293 != nil:
-    section.add "X-Amz-Algorithm", valid_603293
-  var valid_603294 = header.getOrDefault("X-Amz-Signature")
-  valid_603294 = validateParameter(valid_603294, JString, required = false,
+  if valid_603308 != nil:
+    section.add "X-Amz-Algorithm", valid_603308
+  var valid_603309 = header.getOrDefault("X-Amz-Signature")
+  valid_603309 = validateParameter(valid_603309, JString, required = false,
                                  default = nil)
-  if valid_603294 != nil:
-    section.add "X-Amz-Signature", valid_603294
-  var valid_603295 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603295 = validateParameter(valid_603295, JString, required = false,
+  if valid_603309 != nil:
+    section.add "X-Amz-Signature", valid_603309
+  var valid_603310 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603310 = validateParameter(valid_603310, JString, required = false,
                                  default = nil)
-  if valid_603295 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603295
-  var valid_603296 = header.getOrDefault("X-Amz-Credential")
-  valid_603296 = validateParameter(valid_603296, JString, required = false,
+  if valid_603310 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603310
+  var valid_603311 = header.getOrDefault("X-Amz-Credential")
+  valid_603311 = validateParameter(valid_603311, JString, required = false,
                                  default = nil)
-  if valid_603296 != nil:
-    section.add "X-Amz-Credential", valid_603296
+  if valid_603311 != nil:
+    section.add "X-Amz-Credential", valid_603311
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2036,19 +2142,19 @@ proc validate_DescribeWorkspaces_603285(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603298: Call_DescribeWorkspaces_603284; path: JsonNode;
+proc call*(call_603313: Call_DescribeWorkspaces_603299; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the specified WorkSpaces.</p> <p>You can filter the results by using the bundle identifier, directory identifier, or owner, but you can specify only one filter at a time.</p>
   ## 
-  let valid = call_603298.validator(path, query, header, formData, body)
-  let scheme = call_603298.pickScheme
+  let valid = call_603313.validator(path, query, header, formData, body)
+  let scheme = call_603313.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603298.url(scheme.get, call_603298.host, call_603298.base,
-                         call_603298.route, valid.getOrDefault("path"))
-  result = hook(call_603298, url, valid)
+  let url = call_603313.url(scheme.get, call_603313.host, call_603313.base,
+                         call_603313.route, valid.getOrDefault("path"))
+  result = hook(call_603313, url, valid)
 
-proc call*(call_603299: Call_DescribeWorkspaces_603284; body: JsonNode;
+proc call*(call_603314: Call_DescribeWorkspaces_603299; body: JsonNode;
           Limit: string = ""; NextToken: string = ""): Recallable =
   ## describeWorkspaces
   ## <p>Describes the specified WorkSpaces.</p> <p>You can filter the results by using the bundle identifier, directory identifier, or owner, but you can specify only one filter at a time.</p>
@@ -2057,136 +2163,29 @@ proc call*(call_603299: Call_DescribeWorkspaces_603284; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_603300 = newJObject()
-  var body_603301 = newJObject()
-  add(query_603300, "Limit", newJString(Limit))
-  add(query_603300, "NextToken", newJString(NextToken))
+  var query_603315 = newJObject()
+  var body_603316 = newJObject()
+  add(query_603315, "Limit", newJString(Limit))
+  add(query_603315, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603301 = body
-  result = call_603299.call(nil, query_603300, nil, nil, body_603301)
+    body_603316 = body
+  result = call_603314.call(nil, query_603315, nil, nil, body_603316)
 
-var describeWorkspaces* = Call_DescribeWorkspaces_603284(
+var describeWorkspaces* = Call_DescribeWorkspaces_603299(
     name: "describeWorkspaces", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspaces",
-    validator: validate_DescribeWorkspaces_603285, base: "/",
-    url: url_DescribeWorkspaces_603286, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeWorkspaces_603300, base: "/",
+    url: url_DescribeWorkspaces_603301, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkspacesConnectionStatus_603302 = ref object of OpenApiRestCall_602433
-proc url_DescribeWorkspacesConnectionStatus_603304(protocol: Scheme; host: string;
+  Call_DescribeWorkspacesConnectionStatus_603317 = ref object of OpenApiRestCall_602433
+proc url_DescribeWorkspacesConnectionStatus_603319(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_DescribeWorkspacesConnectionStatus_603303(path: JsonNode;
+proc validate_DescribeWorkspacesConnectionStatus_603318(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the connection status of the specified WorkSpaces.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_603305 = header.getOrDefault("X-Amz-Date")
-  valid_603305 = validateParameter(valid_603305, JString, required = false,
-                                 default = nil)
-  if valid_603305 != nil:
-    section.add "X-Amz-Date", valid_603305
-  var valid_603306 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603306 = validateParameter(valid_603306, JString, required = false,
-                                 default = nil)
-  if valid_603306 != nil:
-    section.add "X-Amz-Security-Token", valid_603306
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603307 = header.getOrDefault("X-Amz-Target")
-  valid_603307 = validateParameter(valid_603307, JString, required = true, default = newJString(
-      "WorkspacesService.DescribeWorkspacesConnectionStatus"))
-  if valid_603307 != nil:
-    section.add "X-Amz-Target", valid_603307
-  var valid_603308 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603308 = validateParameter(valid_603308, JString, required = false,
-                                 default = nil)
-  if valid_603308 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603308
-  var valid_603309 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603309 = validateParameter(valid_603309, JString, required = false,
-                                 default = nil)
-  if valid_603309 != nil:
-    section.add "X-Amz-Algorithm", valid_603309
-  var valid_603310 = header.getOrDefault("X-Amz-Signature")
-  valid_603310 = validateParameter(valid_603310, JString, required = false,
-                                 default = nil)
-  if valid_603310 != nil:
-    section.add "X-Amz-Signature", valid_603310
-  var valid_603311 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603311 = validateParameter(valid_603311, JString, required = false,
-                                 default = nil)
-  if valid_603311 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603311
-  var valid_603312 = header.getOrDefault("X-Amz-Credential")
-  valid_603312 = validateParameter(valid_603312, JString, required = false,
-                                 default = nil)
-  if valid_603312 != nil:
-    section.add "X-Amz-Credential", valid_603312
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_603314: Call_DescribeWorkspacesConnectionStatus_603302;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## Describes the connection status of the specified WorkSpaces.
-  ## 
-  let valid = call_603314.validator(path, query, header, formData, body)
-  let scheme = call_603314.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603314.url(scheme.get, call_603314.host, call_603314.base,
-                         call_603314.route, valid.getOrDefault("path"))
-  result = hook(call_603314, url, valid)
-
-proc call*(call_603315: Call_DescribeWorkspacesConnectionStatus_603302;
-          body: JsonNode): Recallable =
-  ## describeWorkspacesConnectionStatus
-  ## Describes the connection status of the specified WorkSpaces.
-  ##   body: JObject (required)
-  var body_603316 = newJObject()
-  if body != nil:
-    body_603316 = body
-  result = call_603315.call(nil, nil, nil, nil, body_603316)
-
-var describeWorkspacesConnectionStatus* = Call_DescribeWorkspacesConnectionStatus_603302(
-    name: "describeWorkspacesConnectionStatus", meth: HttpMethod.HttpPost,
-    host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspacesConnectionStatus",
-    validator: validate_DescribeWorkspacesConnectionStatus_603303, base: "/",
-    url: url_DescribeWorkspacesConnectionStatus_603304,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DisassociateIpGroups_603317 = ref object of OpenApiRestCall_602433
-proc url_DisassociateIpGroups_603319(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
-
-proc validate_DisassociateIpGroups_603318(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Disassociates the specified IP access control group from the specified directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2218,7 +2217,7 @@ proc validate_DisassociateIpGroups_603318(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603322 = header.getOrDefault("X-Amz-Target")
   valid_603322 = validateParameter(valid_603322, JString, required = true, default = newJString(
-      "WorkspacesService.DisassociateIpGroups"))
+      "WorkspacesService.DescribeWorkspacesConnectionStatus"))
   if valid_603322 != nil:
     section.add "X-Amz-Target", valid_603322
   var valid_603323 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2256,9 +2255,10 @@ proc validate_DisassociateIpGroups_603318(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603329: Call_DisassociateIpGroups_603317; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Disassociates the specified IP access control group from the specified directory.
+proc call*(call_603329: Call_DescribeWorkspacesConnectionStatus_603317;
+          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
+          body: JsonNode): Recallable =
+  ## Describes the connection status of the specified WorkSpaces.
   ## 
   let valid = call_603329.validator(path, query, header, formData, body)
   let scheme = call_603329.pickScheme
@@ -2268,30 +2268,31 @@ proc call*(call_603329: Call_DisassociateIpGroups_603317; path: JsonNode;
                          call_603329.route, valid.getOrDefault("path"))
   result = hook(call_603329, url, valid)
 
-proc call*(call_603330: Call_DisassociateIpGroups_603317; body: JsonNode): Recallable =
-  ## disassociateIpGroups
-  ## Disassociates the specified IP access control group from the specified directory.
+proc call*(call_603330: Call_DescribeWorkspacesConnectionStatus_603317;
+          body: JsonNode): Recallable =
+  ## describeWorkspacesConnectionStatus
+  ## Describes the connection status of the specified WorkSpaces.
   ##   body: JObject (required)
   var body_603331 = newJObject()
   if body != nil:
     body_603331 = body
   result = call_603330.call(nil, nil, nil, nil, body_603331)
 
-var disassociateIpGroups* = Call_DisassociateIpGroups_603317(
-    name: "disassociateIpGroups", meth: HttpMethod.HttpPost,
-    host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.DisassociateIpGroups",
-    validator: validate_DisassociateIpGroups_603318, base: "/",
-    url: url_DisassociateIpGroups_603319, schemes: {Scheme.Https, Scheme.Http})
+var describeWorkspacesConnectionStatus* = Call_DescribeWorkspacesConnectionStatus_603317(
+    name: "describeWorkspacesConnectionStatus", meth: HttpMethod.HttpPost,
+    host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspacesConnectionStatus",
+    validator: validate_DescribeWorkspacesConnectionStatus_603318, base: "/",
+    url: url_DescribeWorkspacesConnectionStatus_603319,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ImportWorkspaceImage_603332 = ref object of OpenApiRestCall_602433
-proc url_ImportWorkspaceImage_603334(protocol: Scheme; host: string; base: string;
+  Call_DisassociateIpGroups_603332 = ref object of OpenApiRestCall_602433
+proc url_DisassociateIpGroups_603334(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ImportWorkspaceImage_603333(path: JsonNode; query: JsonNode;
+proc validate_DisassociateIpGroups_603333(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Imports the specified Windows 7 or Windows 10 bring your own license (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
+  ## Disassociates the specified IP access control group from the specified directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2323,7 +2324,7 @@ proc validate_ImportWorkspaceImage_603333(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603337 = header.getOrDefault("X-Amz-Target")
   valid_603337 = validateParameter(valid_603337, JString, required = true, default = newJString(
-      "WorkspacesService.ImportWorkspaceImage"))
+      "WorkspacesService.DisassociateIpGroups"))
   if valid_603337 != nil:
     section.add "X-Amz-Target", valid_603337
   var valid_603338 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2361,9 +2362,9 @@ proc validate_ImportWorkspaceImage_603333(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603344: Call_ImportWorkspaceImage_603332; path: JsonNode;
+proc call*(call_603344: Call_DisassociateIpGroups_603332; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Imports the specified Windows 7 or Windows 10 bring your own license (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
+  ## Disassociates the specified IP access control group from the specified directory.
   ## 
   let valid = call_603344.validator(path, query, header, formData, body)
   let scheme = call_603344.pickScheme
@@ -2373,30 +2374,30 @@ proc call*(call_603344: Call_ImportWorkspaceImage_603332; path: JsonNode;
                          call_603344.route, valid.getOrDefault("path"))
   result = hook(call_603344, url, valid)
 
-proc call*(call_603345: Call_ImportWorkspaceImage_603332; body: JsonNode): Recallable =
-  ## importWorkspaceImage
-  ## Imports the specified Windows 7 or Windows 10 bring your own license (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
+proc call*(call_603345: Call_DisassociateIpGroups_603332; body: JsonNode): Recallable =
+  ## disassociateIpGroups
+  ## Disassociates the specified IP access control group from the specified directory.
   ##   body: JObject (required)
   var body_603346 = newJObject()
   if body != nil:
     body_603346 = body
   result = call_603345.call(nil, nil, nil, nil, body_603346)
 
-var importWorkspaceImage* = Call_ImportWorkspaceImage_603332(
-    name: "importWorkspaceImage", meth: HttpMethod.HttpPost,
+var disassociateIpGroups* = Call_DisassociateIpGroups_603332(
+    name: "disassociateIpGroups", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.ImportWorkspaceImage",
-    validator: validate_ImportWorkspaceImage_603333, base: "/",
-    url: url_ImportWorkspaceImage_603334, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=WorkspacesService.DisassociateIpGroups",
+    validator: validate_DisassociateIpGroups_603333, base: "/",
+    url: url_DisassociateIpGroups_603334, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAvailableManagementCidrRanges_603347 = ref object of OpenApiRestCall_602433
-proc url_ListAvailableManagementCidrRanges_603349(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_ImportWorkspaceImage_603347 = ref object of OpenApiRestCall_602433
+proc url_ImportWorkspaceImage_603349(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ListAvailableManagementCidrRanges_603348(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable bring your own license (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
+proc validate_ImportWorkspaceImage_603348(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Imports the specified Windows 7 or Windows 10 bring your own license (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2428,7 +2429,7 @@ proc validate_ListAvailableManagementCidrRanges_603348(path: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603352 = header.getOrDefault("X-Amz-Target")
   valid_603352 = validateParameter(valid_603352, JString, required = true, default = newJString(
-      "WorkspacesService.ListAvailableManagementCidrRanges"))
+      "WorkspacesService.ImportWorkspaceImage"))
   if valid_603352 != nil:
     section.add "X-Amz-Target", valid_603352
   var valid_603353 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2466,10 +2467,9 @@ proc validate_ListAvailableManagementCidrRanges_603348(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603359: Call_ListAvailableManagementCidrRanges_603347;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable bring your own license (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
+proc call*(call_603359: Call_ImportWorkspaceImage_603347; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Imports the specified Windows 7 or Windows 10 bring your own license (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
   ## 
   let valid = call_603359.validator(path, query, header, formData, body)
   let scheme = call_603359.pickScheme
@@ -2479,31 +2479,30 @@ proc call*(call_603359: Call_ListAvailableManagementCidrRanges_603347;
                          call_603359.route, valid.getOrDefault("path"))
   result = hook(call_603359, url, valid)
 
-proc call*(call_603360: Call_ListAvailableManagementCidrRanges_603347;
-          body: JsonNode): Recallable =
-  ## listAvailableManagementCidrRanges
-  ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable bring your own license (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
+proc call*(call_603360: Call_ImportWorkspaceImage_603347; body: JsonNode): Recallable =
+  ## importWorkspaceImage
+  ## Imports the specified Windows 7 or Windows 10 bring your own license (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
   ##   body: JObject (required)
   var body_603361 = newJObject()
   if body != nil:
     body_603361 = body
   result = call_603360.call(nil, nil, nil, nil, body_603361)
 
-var listAvailableManagementCidrRanges* = Call_ListAvailableManagementCidrRanges_603347(
-    name: "listAvailableManagementCidrRanges", meth: HttpMethod.HttpPost,
-    host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.ListAvailableManagementCidrRanges",
-    validator: validate_ListAvailableManagementCidrRanges_603348, base: "/",
-    url: url_ListAvailableManagementCidrRanges_603349,
-    schemes: {Scheme.Https, Scheme.Http})
+var importWorkspaceImage* = Call_ImportWorkspaceImage_603347(
+    name: "importWorkspaceImage", meth: HttpMethod.HttpPost,
+    host: "workspaces.amazonaws.com",
+    route: "/#X-Amz-Target=WorkspacesService.ImportWorkspaceImage",
+    validator: validate_ImportWorkspaceImage_603348, base: "/",
+    url: url_ImportWorkspaceImage_603349, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyAccount_603362 = ref object of OpenApiRestCall_602433
-proc url_ModifyAccount_603364(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
+  Call_ListAvailableManagementCidrRanges_603362 = ref object of OpenApiRestCall_602433
+proc url_ListAvailableManagementCidrRanges_603364(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ModifyAccount_603363(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the configuration of bring your own license (BYOL) for the specified account.
+proc validate_ListAvailableManagementCidrRanges_603363(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable bring your own license (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2535,7 +2534,7 @@ proc validate_ModifyAccount_603363(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603367 = header.getOrDefault("X-Amz-Target")
   valid_603367 = validateParameter(valid_603367, JString, required = true, default = newJString(
-      "WorkspacesService.ModifyAccount"))
+      "WorkspacesService.ListAvailableManagementCidrRanges"))
   if valid_603367 != nil:
     section.add "X-Amz-Target", valid_603367
   var valid_603368 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2573,9 +2572,10 @@ proc validate_ModifyAccount_603363(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603374: Call_ModifyAccount_603362; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modifies the configuration of bring your own license (BYOL) for the specified account.
+proc call*(call_603374: Call_ListAvailableManagementCidrRanges_603362;
+          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
+          body: JsonNode): Recallable =
+  ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable bring your own license (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
   ## 
   let valid = call_603374.validator(path, query, header, formData, body)
   let scheme = call_603374.pickScheme
@@ -2585,29 +2585,31 @@ proc call*(call_603374: Call_ModifyAccount_603362; path: JsonNode; query: JsonNo
                          call_603374.route, valid.getOrDefault("path"))
   result = hook(call_603374, url, valid)
 
-proc call*(call_603375: Call_ModifyAccount_603362; body: JsonNode): Recallable =
-  ## modifyAccount
-  ## Modifies the configuration of bring your own license (BYOL) for the specified account.
+proc call*(call_603375: Call_ListAvailableManagementCidrRanges_603362;
+          body: JsonNode): Recallable =
+  ## listAvailableManagementCidrRanges
+  ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable bring your own license (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
   ##   body: JObject (required)
   var body_603376 = newJObject()
   if body != nil:
     body_603376 = body
   result = call_603375.call(nil, nil, nil, nil, body_603376)
 
-var modifyAccount* = Call_ModifyAccount_603362(name: "modifyAccount",
-    meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.ModifyAccount",
-    validator: validate_ModifyAccount_603363, base: "/", url: url_ModifyAccount_603364,
+var listAvailableManagementCidrRanges* = Call_ListAvailableManagementCidrRanges_603362(
+    name: "listAvailableManagementCidrRanges", meth: HttpMethod.HttpPost,
+    host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.ListAvailableManagementCidrRanges",
+    validator: validate_ListAvailableManagementCidrRanges_603363, base: "/",
+    url: url_ListAvailableManagementCidrRanges_603364,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyClientProperties_603377 = ref object of OpenApiRestCall_602433
-proc url_ModifyClientProperties_603379(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode): string =
+  Call_ModifyAccount_603377 = ref object of OpenApiRestCall_602433
+proc url_ModifyAccount_603379(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ModifyClientProperties_603378(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the properties of the specified Amazon WorkSpaces clients.
+proc validate_ModifyAccount_603378(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Modifies the configuration of bring your own license (BYOL) for the specified account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2639,7 +2641,7 @@ proc validate_ModifyClientProperties_603378(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603382 = header.getOrDefault("X-Amz-Target")
   valid_603382 = validateParameter(valid_603382, JString, required = true, default = newJString(
-      "WorkspacesService.ModifyClientProperties"))
+      "WorkspacesService.ModifyAccount"))
   if valid_603382 != nil:
     section.add "X-Amz-Target", valid_603382
   var valid_603383 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2677,9 +2679,9 @@ proc validate_ModifyClientProperties_603378(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603389: Call_ModifyClientProperties_603377; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modifies the properties of the specified Amazon WorkSpaces clients.
+proc call*(call_603389: Call_ModifyAccount_603377; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Modifies the configuration of bring your own license (BYOL) for the specified account.
   ## 
   let valid = call_603389.validator(path, query, header, formData, body)
   let scheme = call_603389.pickScheme
@@ -2689,30 +2691,29 @@ proc call*(call_603389: Call_ModifyClientProperties_603377; path: JsonNode;
                          call_603389.route, valid.getOrDefault("path"))
   result = hook(call_603389, url, valid)
 
-proc call*(call_603390: Call_ModifyClientProperties_603377; body: JsonNode): Recallable =
-  ## modifyClientProperties
-  ## Modifies the properties of the specified Amazon WorkSpaces clients.
+proc call*(call_603390: Call_ModifyAccount_603377; body: JsonNode): Recallable =
+  ## modifyAccount
+  ## Modifies the configuration of bring your own license (BYOL) for the specified account.
   ##   body: JObject (required)
   var body_603391 = newJObject()
   if body != nil:
     body_603391 = body
   result = call_603390.call(nil, nil, nil, nil, body_603391)
 
-var modifyClientProperties* = Call_ModifyClientProperties_603377(
-    name: "modifyClientProperties", meth: HttpMethod.HttpPost,
-    host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.ModifyClientProperties",
-    validator: validate_ModifyClientProperties_603378, base: "/",
-    url: url_ModifyClientProperties_603379, schemes: {Scheme.Https, Scheme.Http})
+var modifyAccount* = Call_ModifyAccount_603377(name: "modifyAccount",
+    meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
+    route: "/#X-Amz-Target=WorkspacesService.ModifyAccount",
+    validator: validate_ModifyAccount_603378, base: "/", url: url_ModifyAccount_603379,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyWorkspaceProperties_603392 = ref object of OpenApiRestCall_602433
-proc url_ModifyWorkspaceProperties_603394(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_ModifyClientProperties_603392 = ref object of OpenApiRestCall_602433
+proc url_ModifyClientProperties_603394(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ModifyWorkspaceProperties_603393(path: JsonNode; query: JsonNode;
+proc validate_ModifyClientProperties_603393(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the specified WorkSpace properties.
+  ## Modifies the properties of the specified Amazon WorkSpaces clients.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2744,7 +2745,7 @@ proc validate_ModifyWorkspaceProperties_603393(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603397 = header.getOrDefault("X-Amz-Target")
   valid_603397 = validateParameter(valid_603397, JString, required = true, default = newJString(
-      "WorkspacesService.ModifyWorkspaceProperties"))
+      "WorkspacesService.ModifyClientProperties"))
   if valid_603397 != nil:
     section.add "X-Amz-Target", valid_603397
   var valid_603398 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2782,9 +2783,9 @@ proc validate_ModifyWorkspaceProperties_603393(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603404: Call_ModifyWorkspaceProperties_603392; path: JsonNode;
+proc call*(call_603404: Call_ModifyClientProperties_603392; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modifies the specified WorkSpace properties.
+  ## Modifies the properties of the specified Amazon WorkSpaces clients.
   ## 
   let valid = call_603404.validator(path, query, header, formData, body)
   let scheme = call_603404.pickScheme
@@ -2794,31 +2795,30 @@ proc call*(call_603404: Call_ModifyWorkspaceProperties_603392; path: JsonNode;
                          call_603404.route, valid.getOrDefault("path"))
   result = hook(call_603404, url, valid)
 
-proc call*(call_603405: Call_ModifyWorkspaceProperties_603392; body: JsonNode): Recallable =
-  ## modifyWorkspaceProperties
-  ## Modifies the specified WorkSpace properties.
+proc call*(call_603405: Call_ModifyClientProperties_603392; body: JsonNode): Recallable =
+  ## modifyClientProperties
+  ## Modifies the properties of the specified Amazon WorkSpaces clients.
   ##   body: JObject (required)
   var body_603406 = newJObject()
   if body != nil:
     body_603406 = body
   result = call_603405.call(nil, nil, nil, nil, body_603406)
 
-var modifyWorkspaceProperties* = Call_ModifyWorkspaceProperties_603392(
-    name: "modifyWorkspaceProperties", meth: HttpMethod.HttpPost,
+var modifyClientProperties* = Call_ModifyClientProperties_603392(
+    name: "modifyClientProperties", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.ModifyWorkspaceProperties",
-    validator: validate_ModifyWorkspaceProperties_603393, base: "/",
-    url: url_ModifyWorkspaceProperties_603394,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=WorkspacesService.ModifyClientProperties",
+    validator: validate_ModifyClientProperties_603393, base: "/",
+    url: url_ModifyClientProperties_603394, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyWorkspaceState_603407 = ref object of OpenApiRestCall_602433
-proc url_ModifyWorkspaceState_603409(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
+  Call_ModifyWorkspaceProperties_603407 = ref object of OpenApiRestCall_602433
+proc url_ModifyWorkspaceProperties_603409(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_ModifyWorkspaceState_603408(path: JsonNode; query: JsonNode;
+proc validate_ModifyWorkspaceProperties_603408(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
+  ## Modifies the specified WorkSpace properties.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2850,7 +2850,7 @@ proc validate_ModifyWorkspaceState_603408(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603412 = header.getOrDefault("X-Amz-Target")
   valid_603412 = validateParameter(valid_603412, JString, required = true, default = newJString(
-      "WorkspacesService.ModifyWorkspaceState"))
+      "WorkspacesService.ModifyWorkspaceProperties"))
   if valid_603412 != nil:
     section.add "X-Amz-Target", valid_603412
   var valid_603413 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2888,9 +2888,9 @@ proc validate_ModifyWorkspaceState_603408(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603419: Call_ModifyWorkspaceState_603407; path: JsonNode;
+proc call*(call_603419: Call_ModifyWorkspaceProperties_603407; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
+  ## Modifies the specified WorkSpace properties.
   ## 
   let valid = call_603419.validator(path, query, header, formData, body)
   let scheme = call_603419.pickScheme
@@ -2900,31 +2900,31 @@ proc call*(call_603419: Call_ModifyWorkspaceState_603407; path: JsonNode;
                          call_603419.route, valid.getOrDefault("path"))
   result = hook(call_603419, url, valid)
 
-proc call*(call_603420: Call_ModifyWorkspaceState_603407; body: JsonNode): Recallable =
-  ## modifyWorkspaceState
-  ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
+proc call*(call_603420: Call_ModifyWorkspaceProperties_603407; body: JsonNode): Recallable =
+  ## modifyWorkspaceProperties
+  ## Modifies the specified WorkSpace properties.
   ##   body: JObject (required)
   var body_603421 = newJObject()
   if body != nil:
     body_603421 = body
   result = call_603420.call(nil, nil, nil, nil, body_603421)
 
-var modifyWorkspaceState* = Call_ModifyWorkspaceState_603407(
-    name: "modifyWorkspaceState", meth: HttpMethod.HttpPost,
+var modifyWorkspaceProperties* = Call_ModifyWorkspaceProperties_603407(
+    name: "modifyWorkspaceProperties", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.ModifyWorkspaceState",
-    validator: validate_ModifyWorkspaceState_603408, base: "/",
-    url: url_ModifyWorkspaceState_603409, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=WorkspacesService.ModifyWorkspaceProperties",
+    validator: validate_ModifyWorkspaceProperties_603408, base: "/",
+    url: url_ModifyWorkspaceProperties_603409,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RebootWorkspaces_603422 = ref object of OpenApiRestCall_602433
-proc url_RebootWorkspaces_603424(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode): string =
+  Call_ModifyWorkspaceState_603422 = ref object of OpenApiRestCall_602433
+proc url_ModifyWorkspaceState_603424(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_RebootWorkspaces_603423(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
+proc validate_ModifyWorkspaceState_603423(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2956,7 +2956,7 @@ proc validate_RebootWorkspaces_603423(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603427 = header.getOrDefault("X-Amz-Target")
   valid_603427 = validateParameter(valid_603427, JString, required = true, default = newJString(
-      "WorkspacesService.RebootWorkspaces"))
+      "WorkspacesService.ModifyWorkspaceState"))
   if valid_603427 != nil:
     section.add "X-Amz-Target", valid_603427
   var valid_603428 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2994,9 +2994,9 @@ proc validate_RebootWorkspaces_603423(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603434: Call_RebootWorkspaces_603422; path: JsonNode;
+proc call*(call_603434: Call_ModifyWorkspaceState_603422; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
+  ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
   ## 
   let valid = call_603434.validator(path, query, header, formData, body)
   let scheme = call_603434.pickScheme
@@ -3006,30 +3006,31 @@ proc call*(call_603434: Call_RebootWorkspaces_603422; path: JsonNode;
                          call_603434.route, valid.getOrDefault("path"))
   result = hook(call_603434, url, valid)
 
-proc call*(call_603435: Call_RebootWorkspaces_603422; body: JsonNode): Recallable =
-  ## rebootWorkspaces
-  ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
+proc call*(call_603435: Call_ModifyWorkspaceState_603422; body: JsonNode): Recallable =
+  ## modifyWorkspaceState
+  ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
   ##   body: JObject (required)
   var body_603436 = newJObject()
   if body != nil:
     body_603436 = body
   result = call_603435.call(nil, nil, nil, nil, body_603436)
 
-var rebootWorkspaces* = Call_RebootWorkspaces_603422(name: "rebootWorkspaces",
-    meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.RebootWorkspaces",
-    validator: validate_RebootWorkspaces_603423, base: "/",
-    url: url_RebootWorkspaces_603424, schemes: {Scheme.Https, Scheme.Http})
+var modifyWorkspaceState* = Call_ModifyWorkspaceState_603422(
+    name: "modifyWorkspaceState", meth: HttpMethod.HttpPost,
+    host: "workspaces.amazonaws.com",
+    route: "/#X-Amz-Target=WorkspacesService.ModifyWorkspaceState",
+    validator: validate_ModifyWorkspaceState_603423, base: "/",
+    url: url_ModifyWorkspaceState_603424, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RebuildWorkspaces_603437 = ref object of OpenApiRestCall_602433
-proc url_RebuildWorkspaces_603439(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode): string =
+  Call_RebootWorkspaces_603437 = ref object of OpenApiRestCall_602433
+proc url_RebootWorkspaces_603439(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_RebuildWorkspaces_603438(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
+proc validate_RebootWorkspaces_603438(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3061,7 +3062,7 @@ proc validate_RebuildWorkspaces_603438(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603442 = header.getOrDefault("X-Amz-Target")
   valid_603442 = validateParameter(valid_603442, JString, required = true, default = newJString(
-      "WorkspacesService.RebuildWorkspaces"))
+      "WorkspacesService.RebootWorkspaces"))
   if valid_603442 != nil:
     section.add "X-Amz-Target", valid_603442
   var valid_603443 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3099,9 +3100,9 @@ proc validate_RebuildWorkspaces_603438(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603449: Call_RebuildWorkspaces_603437; path: JsonNode;
+proc call*(call_603449: Call_RebootWorkspaces_603437; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
+  ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
   ## 
   let valid = call_603449.validator(path, query, header, formData, body)
   let scheme = call_603449.pickScheme
@@ -3111,29 +3112,30 @@ proc call*(call_603449: Call_RebuildWorkspaces_603437; path: JsonNode;
                          call_603449.route, valid.getOrDefault("path"))
   result = hook(call_603449, url, valid)
 
-proc call*(call_603450: Call_RebuildWorkspaces_603437; body: JsonNode): Recallable =
-  ## rebuildWorkspaces
-  ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
+proc call*(call_603450: Call_RebootWorkspaces_603437; body: JsonNode): Recallable =
+  ## rebootWorkspaces
+  ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
   ##   body: JObject (required)
   var body_603451 = newJObject()
   if body != nil:
     body_603451 = body
   result = call_603450.call(nil, nil, nil, nil, body_603451)
 
-var rebuildWorkspaces* = Call_RebuildWorkspaces_603437(name: "rebuildWorkspaces",
+var rebootWorkspaces* = Call_RebootWorkspaces_603437(name: "rebootWorkspaces",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.RebuildWorkspaces",
-    validator: validate_RebuildWorkspaces_603438, base: "/",
-    url: url_RebuildWorkspaces_603439, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=WorkspacesService.RebootWorkspaces",
+    validator: validate_RebootWorkspaces_603438, base: "/",
+    url: url_RebootWorkspaces_603439, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RevokeIpRules_603452 = ref object of OpenApiRestCall_602433
-proc url_RevokeIpRules_603454(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
+  Call_RebuildWorkspaces_603452 = ref object of OpenApiRestCall_602433
+proc url_RebuildWorkspaces_603454(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_RevokeIpRules_603453(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## Removes one or more rules from the specified IP access control group.
+proc validate_RebuildWorkspaces_603453(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3165,7 +3167,7 @@ proc validate_RevokeIpRules_603453(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603457 = header.getOrDefault("X-Amz-Target")
   valid_603457 = validateParameter(valid_603457, JString, required = true, default = newJString(
-      "WorkspacesService.RevokeIpRules"))
+      "WorkspacesService.RebuildWorkspaces"))
   if valid_603457 != nil:
     section.add "X-Amz-Target", valid_603457
   var valid_603458 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3203,9 +3205,9 @@ proc validate_RevokeIpRules_603453(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603464: Call_RevokeIpRules_603452; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Removes one or more rules from the specified IP access control group.
+proc call*(call_603464: Call_RebuildWorkspaces_603452; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
   ## 
   let valid = call_603464.validator(path, query, header, formData, body)
   let scheme = call_603464.pickScheme
@@ -3215,30 +3217,30 @@ proc call*(call_603464: Call_RevokeIpRules_603452; path: JsonNode; query: JsonNo
                          call_603464.route, valid.getOrDefault("path"))
   result = hook(call_603464, url, valid)
 
-proc call*(call_603465: Call_RevokeIpRules_603452; body: JsonNode): Recallable =
-  ## revokeIpRules
-  ## Removes one or more rules from the specified IP access control group.
+proc call*(call_603465: Call_RebuildWorkspaces_603452; body: JsonNode): Recallable =
+  ## rebuildWorkspaces
+  ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
   ##   body: JObject (required)
   var body_603466 = newJObject()
   if body != nil:
     body_603466 = body
   result = call_603465.call(nil, nil, nil, nil, body_603466)
 
-var revokeIpRules* = Call_RevokeIpRules_603452(name: "revokeIpRules",
+var rebuildWorkspaces* = Call_RebuildWorkspaces_603452(name: "rebuildWorkspaces",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.RevokeIpRules",
-    validator: validate_RevokeIpRules_603453, base: "/", url: url_RevokeIpRules_603454,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=WorkspacesService.RebuildWorkspaces",
+    validator: validate_RebuildWorkspaces_603453, base: "/",
+    url: url_RebuildWorkspaces_603454, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartWorkspaces_603467 = ref object of OpenApiRestCall_602433
-proc url_StartWorkspaces_603469(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode): string =
+  Call_RestoreWorkspace_603467 = ref object of OpenApiRestCall_602433
+proc url_RestoreWorkspace_603469(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_StartWorkspaces_603468(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode): JsonNode =
-  ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
+proc validate_RestoreWorkspace_603468(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## <p>Restores the specified WorkSpace to its last known healthy state.</p> <p>You cannot restore a WorkSpace unless its state is <code> AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Restoring a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/restore-workspace.html">Restore a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpace is completely restored.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3270,7 +3272,7 @@ proc validate_StartWorkspaces_603468(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603472 = header.getOrDefault("X-Amz-Target")
   valid_603472 = validateParameter(valid_603472, JString, required = true, default = newJString(
-      "WorkspacesService.StartWorkspaces"))
+      "WorkspacesService.RestoreWorkspace"))
   if valid_603472 != nil:
     section.add "X-Amz-Target", valid_603472
   var valid_603473 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3308,9 +3310,9 @@ proc validate_StartWorkspaces_603468(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603479: Call_StartWorkspaces_603467; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
+proc call*(call_603479: Call_RestoreWorkspace_603467; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Restores the specified WorkSpace to its last known healthy state.</p> <p>You cannot restore a WorkSpace unless its state is <code> AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Restoring a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/restore-workspace.html">Restore a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpace is completely restored.</p>
   ## 
   let valid = call_603479.validator(path, query, header, formData, body)
   let scheme = call_603479.pickScheme
@@ -3320,30 +3322,29 @@ proc call*(call_603479: Call_StartWorkspaces_603467; path: JsonNode; query: Json
                          call_603479.route, valid.getOrDefault("path"))
   result = hook(call_603479, url, valid)
 
-proc call*(call_603480: Call_StartWorkspaces_603467; body: JsonNode): Recallable =
-  ## startWorkspaces
-  ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
+proc call*(call_603480: Call_RestoreWorkspace_603467; body: JsonNode): Recallable =
+  ## restoreWorkspace
+  ## <p>Restores the specified WorkSpace to its last known healthy state.</p> <p>You cannot restore a WorkSpace unless its state is <code> AVAILABLE</code>, <code>ERROR</code>, or <code>UNHEALTHY</code>.</p> <p>Restoring a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/restore-workspace.html">Restore a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpace is completely restored.</p>
   ##   body: JObject (required)
   var body_603481 = newJObject()
   if body != nil:
     body_603481 = body
   result = call_603480.call(nil, nil, nil, nil, body_603481)
 
-var startWorkspaces* = Call_StartWorkspaces_603467(name: "startWorkspaces",
+var restoreWorkspace* = Call_RestoreWorkspace_603467(name: "restoreWorkspace",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.StartWorkspaces",
-    validator: validate_StartWorkspaces_603468, base: "/", url: url_StartWorkspaces_603469,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=WorkspacesService.RestoreWorkspace",
+    validator: validate_RestoreWorkspace_603468, base: "/",
+    url: url_RestoreWorkspace_603469, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopWorkspaces_603482 = ref object of OpenApiRestCall_602433
-proc url_StopWorkspaces_603484(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode): string =
+  Call_RevokeIpRules_603482 = ref object of OpenApiRestCall_602433
+proc url_RevokeIpRules_603484(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_StopWorkspaces_603483(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode): JsonNode =
-  ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
+proc validate_RevokeIpRules_603483(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Removes one or more rules from the specified IP access control group.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3375,7 +3376,7 @@ proc validate_StopWorkspaces_603483(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603487 = header.getOrDefault("X-Amz-Target")
   valid_603487 = validateParameter(valid_603487, JString, required = true, default = newJString(
-      "WorkspacesService.StopWorkspaces"))
+      "WorkspacesService.RevokeIpRules"))
   if valid_603487 != nil:
     section.add "X-Amz-Target", valid_603487
   var valid_603488 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3413,9 +3414,9 @@ proc validate_StopWorkspaces_603483(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603494: Call_StopWorkspaces_603482; path: JsonNode; query: JsonNode;
+proc call*(call_603494: Call_RevokeIpRules_603482; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
+  ## Removes one or more rules from the specified IP access control group.
   ## 
   let valid = call_603494.validator(path, query, header, formData, body)
   let scheme = call_603494.pickScheme
@@ -3425,30 +3426,30 @@ proc call*(call_603494: Call_StopWorkspaces_603482; path: JsonNode; query: JsonN
                          call_603494.route, valid.getOrDefault("path"))
   result = hook(call_603494, url, valid)
 
-proc call*(call_603495: Call_StopWorkspaces_603482; body: JsonNode): Recallable =
-  ## stopWorkspaces
-  ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
+proc call*(call_603495: Call_RevokeIpRules_603482; body: JsonNode): Recallable =
+  ## revokeIpRules
+  ## Removes one or more rules from the specified IP access control group.
   ##   body: JObject (required)
   var body_603496 = newJObject()
   if body != nil:
     body_603496 = body
   result = call_603495.call(nil, nil, nil, nil, body_603496)
 
-var stopWorkspaces* = Call_StopWorkspaces_603482(name: "stopWorkspaces",
+var revokeIpRules* = Call_RevokeIpRules_603482(name: "revokeIpRules",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.StopWorkspaces",
-    validator: validate_StopWorkspaces_603483, base: "/", url: url_StopWorkspaces_603484,
+    route: "/#X-Amz-Target=WorkspacesService.RevokeIpRules",
+    validator: validate_RevokeIpRules_603483, base: "/", url: url_RevokeIpRules_603484,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TerminateWorkspaces_603497 = ref object of OpenApiRestCall_602433
-proc url_TerminateWorkspaces_603499(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
+  Call_StartWorkspaces_603497 = ref object of OpenApiRestCall_602433
+proc url_StartWorkspaces_603499(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_TerminateWorkspaces_603498(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode): JsonNode =
-  ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
+proc validate_StartWorkspaces_603498(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode): JsonNode =
+  ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3480,7 +3481,7 @@ proc validate_TerminateWorkspaces_603498(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603502 = header.getOrDefault("X-Amz-Target")
   valid_603502 = validateParameter(valid_603502, JString, required = true, default = newJString(
-      "WorkspacesService.TerminateWorkspaces"))
+      "WorkspacesService.StartWorkspaces"))
   if valid_603502 != nil:
     section.add "X-Amz-Target", valid_603502
   var valid_603503 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3518,9 +3519,9 @@ proc validate_TerminateWorkspaces_603498(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603509: Call_TerminateWorkspaces_603497; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
+proc call*(call_603509: Call_StartWorkspaces_603497; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
   ## 
   let valid = call_603509.validator(path, query, header, formData, body)
   let scheme = call_603509.pickScheme
@@ -3530,30 +3531,30 @@ proc call*(call_603509: Call_TerminateWorkspaces_603497; path: JsonNode;
                          call_603509.route, valid.getOrDefault("path"))
   result = hook(call_603509, url, valid)
 
-proc call*(call_603510: Call_TerminateWorkspaces_603497; body: JsonNode): Recallable =
-  ## terminateWorkspaces
-  ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
+proc call*(call_603510: Call_StartWorkspaces_603497; body: JsonNode): Recallable =
+  ## startWorkspaces
+  ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
   ##   body: JObject (required)
   var body_603511 = newJObject()
   if body != nil:
     body_603511 = body
   result = call_603510.call(nil, nil, nil, nil, body_603511)
 
-var terminateWorkspaces* = Call_TerminateWorkspaces_603497(
-    name: "terminateWorkspaces", meth: HttpMethod.HttpPost,
-    host: "workspaces.amazonaws.com",
-    route: "/#X-Amz-Target=WorkspacesService.TerminateWorkspaces",
-    validator: validate_TerminateWorkspaces_603498, base: "/",
-    url: url_TerminateWorkspaces_603499, schemes: {Scheme.Https, Scheme.Http})
+var startWorkspaces* = Call_StartWorkspaces_603497(name: "startWorkspaces",
+    meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
+    route: "/#X-Amz-Target=WorkspacesService.StartWorkspaces",
+    validator: validate_StartWorkspaces_603498, base: "/", url: url_StartWorkspaces_603499,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRulesOfIpGroup_603512 = ref object of OpenApiRestCall_602433
-proc url_UpdateRulesOfIpGroup_603514(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
+  Call_StopWorkspaces_603512 = ref object of OpenApiRestCall_602433
+proc url_StopWorkspaces_603514(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode): string =
   result = $protocol & "://" & host & base & route
 
-proc validate_UpdateRulesOfIpGroup_603513(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Replaces the current rules of the specified IP access control group with the specified rules.
+proc validate_StopWorkspaces_603513(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode): JsonNode =
+  ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3585,7 +3586,7 @@ proc validate_UpdateRulesOfIpGroup_603513(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_603517 = header.getOrDefault("X-Amz-Target")
   valid_603517 = validateParameter(valid_603517, JString, required = true, default = newJString(
-      "WorkspacesService.UpdateRulesOfIpGroup"))
+      "WorkspacesService.StopWorkspaces"))
   if valid_603517 != nil:
     section.add "X-Amz-Target", valid_603517
   var valid_603518 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3623,9 +3624,9 @@ proc validate_UpdateRulesOfIpGroup_603513(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603524: Call_UpdateRulesOfIpGroup_603512; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Replaces the current rules of the specified IP access control group with the specified rules.
+proc call*(call_603524: Call_StopWorkspaces_603512; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
   ## 
   let valid = call_603524.validator(path, query, header, formData, body)
   let scheme = call_603524.pickScheme
@@ -3635,21 +3636,231 @@ proc call*(call_603524: Call_UpdateRulesOfIpGroup_603512; path: JsonNode;
                          call_603524.route, valid.getOrDefault("path"))
   result = hook(call_603524, url, valid)
 
-proc call*(call_603525: Call_UpdateRulesOfIpGroup_603512; body: JsonNode): Recallable =
-  ## updateRulesOfIpGroup
-  ## Replaces the current rules of the specified IP access control group with the specified rules.
+proc call*(call_603525: Call_StopWorkspaces_603512; body: JsonNode): Recallable =
+  ## stopWorkspaces
+  ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
   ##   body: JObject (required)
   var body_603526 = newJObject()
   if body != nil:
     body_603526 = body
   result = call_603525.call(nil, nil, nil, nil, body_603526)
 
-var updateRulesOfIpGroup* = Call_UpdateRulesOfIpGroup_603512(
+var stopWorkspaces* = Call_StopWorkspaces_603512(name: "stopWorkspaces",
+    meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
+    route: "/#X-Amz-Target=WorkspacesService.StopWorkspaces",
+    validator: validate_StopWorkspaces_603513, base: "/", url: url_StopWorkspaces_603514,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_TerminateWorkspaces_603527 = ref object of OpenApiRestCall_602433
+proc url_TerminateWorkspaces_603529(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode): string =
+  result = $protocol & "://" & host & base & route
+
+proc validate_TerminateWorkspaces_603528(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_603530 = header.getOrDefault("X-Amz-Date")
+  valid_603530 = validateParameter(valid_603530, JString, required = false,
+                                 default = nil)
+  if valid_603530 != nil:
+    section.add "X-Amz-Date", valid_603530
+  var valid_603531 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603531 = validateParameter(valid_603531, JString, required = false,
+                                 default = nil)
+  if valid_603531 != nil:
+    section.add "X-Amz-Security-Token", valid_603531
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_603532 = header.getOrDefault("X-Amz-Target")
+  valid_603532 = validateParameter(valid_603532, JString, required = true, default = newJString(
+      "WorkspacesService.TerminateWorkspaces"))
+  if valid_603532 != nil:
+    section.add "X-Amz-Target", valid_603532
+  var valid_603533 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603533 = validateParameter(valid_603533, JString, required = false,
+                                 default = nil)
+  if valid_603533 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603533
+  var valid_603534 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603534 = validateParameter(valid_603534, JString, required = false,
+                                 default = nil)
+  if valid_603534 != nil:
+    section.add "X-Amz-Algorithm", valid_603534
+  var valid_603535 = header.getOrDefault("X-Amz-Signature")
+  valid_603535 = validateParameter(valid_603535, JString, required = false,
+                                 default = nil)
+  if valid_603535 != nil:
+    section.add "X-Amz-Signature", valid_603535
+  var valid_603536 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603536 = validateParameter(valid_603536, JString, required = false,
+                                 default = nil)
+  if valid_603536 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603536
+  var valid_603537 = header.getOrDefault("X-Amz-Credential")
+  valid_603537 = validateParameter(valid_603537, JString, required = false,
+                                 default = nil)
+  if valid_603537 != nil:
+    section.add "X-Amz-Credential", valid_603537
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_603539: Call_TerminateWorkspaces_603527; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
+  ## 
+  let valid = call_603539.validator(path, query, header, formData, body)
+  let scheme = call_603539.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_603539.url(scheme.get, call_603539.host, call_603539.base,
+                         call_603539.route, valid.getOrDefault("path"))
+  result = hook(call_603539, url, valid)
+
+proc call*(call_603540: Call_TerminateWorkspaces_603527; body: JsonNode): Recallable =
+  ## terminateWorkspaces
+  ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
+  ##   body: JObject (required)
+  var body_603541 = newJObject()
+  if body != nil:
+    body_603541 = body
+  result = call_603540.call(nil, nil, nil, nil, body_603541)
+
+var terminateWorkspaces* = Call_TerminateWorkspaces_603527(
+    name: "terminateWorkspaces", meth: HttpMethod.HttpPost,
+    host: "workspaces.amazonaws.com",
+    route: "/#X-Amz-Target=WorkspacesService.TerminateWorkspaces",
+    validator: validate_TerminateWorkspaces_603528, base: "/",
+    url: url_TerminateWorkspaces_603529, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateRulesOfIpGroup_603542 = ref object of OpenApiRestCall_602433
+proc url_UpdateRulesOfIpGroup_603544(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode): string =
+  result = $protocol & "://" & host & base & route
+
+proc validate_UpdateRulesOfIpGroup_603543(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Replaces the current rules of the specified IP access control group with the specified rules.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_603545 = header.getOrDefault("X-Amz-Date")
+  valid_603545 = validateParameter(valid_603545, JString, required = false,
+                                 default = nil)
+  if valid_603545 != nil:
+    section.add "X-Amz-Date", valid_603545
+  var valid_603546 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603546 = validateParameter(valid_603546, JString, required = false,
+                                 default = nil)
+  if valid_603546 != nil:
+    section.add "X-Amz-Security-Token", valid_603546
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_603547 = header.getOrDefault("X-Amz-Target")
+  valid_603547 = validateParameter(valid_603547, JString, required = true, default = newJString(
+      "WorkspacesService.UpdateRulesOfIpGroup"))
+  if valid_603547 != nil:
+    section.add "X-Amz-Target", valid_603547
+  var valid_603548 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603548 = validateParameter(valid_603548, JString, required = false,
+                                 default = nil)
+  if valid_603548 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603548
+  var valid_603549 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603549 = validateParameter(valid_603549, JString, required = false,
+                                 default = nil)
+  if valid_603549 != nil:
+    section.add "X-Amz-Algorithm", valid_603549
+  var valid_603550 = header.getOrDefault("X-Amz-Signature")
+  valid_603550 = validateParameter(valid_603550, JString, required = false,
+                                 default = nil)
+  if valid_603550 != nil:
+    section.add "X-Amz-Signature", valid_603550
+  var valid_603551 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603551 = validateParameter(valid_603551, JString, required = false,
+                                 default = nil)
+  if valid_603551 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603551
+  var valid_603552 = header.getOrDefault("X-Amz-Credential")
+  valid_603552 = validateParameter(valid_603552, JString, required = false,
+                                 default = nil)
+  if valid_603552 != nil:
+    section.add "X-Amz-Credential", valid_603552
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_603554: Call_UpdateRulesOfIpGroup_603542; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Replaces the current rules of the specified IP access control group with the specified rules.
+  ## 
+  let valid = call_603554.validator(path, query, header, formData, body)
+  let scheme = call_603554.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_603554.url(scheme.get, call_603554.host, call_603554.base,
+                         call_603554.route, valid.getOrDefault("path"))
+  result = hook(call_603554, url, valid)
+
+proc call*(call_603555: Call_UpdateRulesOfIpGroup_603542; body: JsonNode): Recallable =
+  ## updateRulesOfIpGroup
+  ## Replaces the current rules of the specified IP access control group with the specified rules.
+  ##   body: JObject (required)
+  var body_603556 = newJObject()
+  if body != nil:
+    body_603556 = body
+  result = call_603555.call(nil, nil, nil, nil, body_603556)
+
+var updateRulesOfIpGroup* = Call_UpdateRulesOfIpGroup_603542(
     name: "updateRulesOfIpGroup", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.UpdateRulesOfIpGroup",
-    validator: validate_UpdateRulesOfIpGroup_603513, base: "/",
-    url: url_UpdateRulesOfIpGroup_603514, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateRulesOfIpGroup_603543, base: "/",
+    url: url_UpdateRulesOfIpGroup_603544, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -3689,7 +3900,6 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "
   auth &= "Signature=" & signature
   recall.headers["Authorization"] = auth
-  echo recall.headers
   recall.headers.del "Host"
   recall.url = $url
 

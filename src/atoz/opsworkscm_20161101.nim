@@ -1843,7 +1843,6 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "
   auth &= "Signature=" & signature
   recall.headers["Authorization"] = auth
-  echo recall.headers
   recall.headers.del "Host"
   recall.url = $url
 

@@ -10249,7 +10249,7 @@ proc url_TagResource_604331(protocol: Scheme; host: string; base: string;
 
 proc validate_TagResource_604330(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## Add resource tags to a Greengrass Resource. Valid resources are Group, Connector, Core, Device, Function, Logger, Subscription, and Resource Defintions, and also BulkDeploymentIds.
+  ## Adds tags to a Greengrass resource. Valid resources are 'Group', 'ConnectorDefinition', 'CoreDefinition', 'DeviceDefinition', 'FunctionDefinition', 'LoggerDefinition', 'SubscriptionDefinition', 'ResourceDefinition', and 'BulkDeployment'.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -10323,7 +10323,7 @@ proc validate_TagResource_604330(path: JsonNode; query: JsonNode; header: JsonNo
 
 proc call*(call_604341: Call_TagResource_604329; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Add resource tags to a Greengrass Resource. Valid resources are Group, Connector, Core, Device, Function, Logger, Subscription, and Resource Defintions, and also BulkDeploymentIds.
+  ## Adds tags to a Greengrass resource. Valid resources are 'Group', 'ConnectorDefinition', 'CoreDefinition', 'DeviceDefinition', 'FunctionDefinition', 'LoggerDefinition', 'SubscriptionDefinition', 'ResourceDefinition', and 'BulkDeployment'.
   ## 
   let valid = call_604341.validator(path, query, header, formData, body)
   let scheme = call_604341.pickScheme
@@ -10335,7 +10335,7 @@ proc call*(call_604341: Call_TagResource_604329; path: JsonNode; query: JsonNode
 
 proc call*(call_604342: Call_TagResource_604329; resourceArn: string; body: JsonNode): Recallable =
   ## tagResource
-  ## Add resource tags to a Greengrass Resource. Valid resources are Group, Connector, Core, Device, Function, Logger, Subscription, and Resource Defintions, and also BulkDeploymentIds.
+  ## Adds tags to a Greengrass resource. Valid resources are 'Group', 'ConnectorDefinition', 'CoreDefinition', 'DeviceDefinition', 'FunctionDefinition', 'LoggerDefinition', 'SubscriptionDefinition', 'ResourceDefinition', and 'BulkDeployment'.
   ##   resourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) of the resource.
   ##   body: JObject (required)
@@ -10867,7 +10867,6 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   auth &= "SignedHeaders=" & recall.headers.signedHeaders & ", "
   auth &= "Signature=" & signature
   recall.headers["Authorization"] = auth
-  echo recall.headers
   recall.headers.del "Host"
   recall.url = $url
 
