@@ -1,9 +1,9 @@
-version = "1.0.3"
+version = "2533.0.0"
 author = "disruptek"
 description = "Amazon Web Services (AWS) APIs"
 license = "MIT"
-requires "nim >= 0.20.0"
-requires "openapi 1.0.1"
-requires "sigv4 >= 1.0.0"
+requires "nim >= 1.0.0"
+requires "openapi 2.0.0"
+requires "sigv4 >= 1.0.1"
 
 srcDir = "src"

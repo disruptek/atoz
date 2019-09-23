@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS CloudHSM V2
@@ -27,17 +27,17 @@ type
     host*: string
     schemes*: set[Scheme]
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
-              path: JsonNode): string
+              path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602433 = ref object of OpenApiRestCall
+  OpenApiRestCall_600437 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602433](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600437](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602433): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600437): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,6 +74,14 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
+proc queryString(query: JsonNode): string =
+  var qs: seq[KeyVal]
+  if query == nil:
+    return ""
+  for k, v in query.pairs:
+    qs.add (key: k, val: v.getStr)
+  result = encodeQuery(qs)
+
 proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
@@ -130,14 +138,17 @@ const
       "ca-central-1": "cloudhsmv2.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "cloudhsmv2"
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CopyBackupToRegion_602770 = ref object of OpenApiRestCall_602433
-proc url_CopyBackupToRegion_602772(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CopyBackupToRegion_600774 = ref object of OpenApiRestCall_600437
+proc url_CopyBackupToRegion_600776(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CopyBackupToRegion_602771(path: JsonNode; query: JsonNode;
+proc validate_CopyBackupToRegion_600775(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Copy an AWS CloudHSM cluster backup to a different region.
@@ -158,48 +169,48 @@ proc validate_CopyBackupToRegion_602771(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_602884 = header.getOrDefault("X-Amz-Date")
-  valid_602884 = validateParameter(valid_602884, JString, required = false,
+  var valid_600888 = header.getOrDefault("X-Amz-Date")
+  valid_600888 = validateParameter(valid_600888, JString, required = false,
                                  default = nil)
-  if valid_602884 != nil:
-    section.add "X-Amz-Date", valid_602884
-  var valid_602885 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602885 = validateParameter(valid_602885, JString, required = false,
+  if valid_600888 != nil:
+    section.add "X-Amz-Date", valid_600888
+  var valid_600889 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600889 = validateParameter(valid_600889, JString, required = false,
                                  default = nil)
-  if valid_602885 != nil:
-    section.add "X-Amz-Security-Token", valid_602885
+  if valid_600889 != nil:
+    section.add "X-Amz-Security-Token", valid_600889
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602899 = header.getOrDefault("X-Amz-Target")
-  valid_602899 = validateParameter(valid_602899, JString, required = true, default = newJString(
+  var valid_600903 = header.getOrDefault("X-Amz-Target")
+  valid_600903 = validateParameter(valid_600903, JString, required = true, default = newJString(
       "BaldrApiService.CopyBackupToRegion"))
-  if valid_602899 != nil:
-    section.add "X-Amz-Target", valid_602899
-  var valid_602900 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602900 = validateParameter(valid_602900, JString, required = false,
+  if valid_600903 != nil:
+    section.add "X-Amz-Target", valid_600903
+  var valid_600904 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600904 = validateParameter(valid_600904, JString, required = false,
                                  default = nil)
-  if valid_602900 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602900
-  var valid_602901 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602901 = validateParameter(valid_602901, JString, required = false,
+  if valid_600904 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600904
+  var valid_600905 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600905 = validateParameter(valid_600905, JString, required = false,
                                  default = nil)
-  if valid_602901 != nil:
-    section.add "X-Amz-Algorithm", valid_602901
-  var valid_602902 = header.getOrDefault("X-Amz-Signature")
-  valid_602902 = validateParameter(valid_602902, JString, required = false,
+  if valid_600905 != nil:
+    section.add "X-Amz-Algorithm", valid_600905
+  var valid_600906 = header.getOrDefault("X-Amz-Signature")
+  valid_600906 = validateParameter(valid_600906, JString, required = false,
                                  default = nil)
-  if valid_602902 != nil:
-    section.add "X-Amz-Signature", valid_602902
-  var valid_602903 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602903 = validateParameter(valid_602903, JString, required = false,
+  if valid_600906 != nil:
+    section.add "X-Amz-Signature", valid_600906
+  var valid_600907 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600907 = validateParameter(valid_600907, JString, required = false,
                                  default = nil)
-  if valid_602903 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602903
-  var valid_602904 = header.getOrDefault("X-Amz-Credential")
-  valid_602904 = validateParameter(valid_602904, JString, required = false,
+  if valid_600907 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600907
+  var valid_600908 = header.getOrDefault("X-Amz-Credential")
+  valid_600908 = validateParameter(valid_600908, JString, required = false,
                                  default = nil)
-  if valid_602904 != nil:
-    section.add "X-Amz-Credential", valid_602904
+  if valid_600908 != nil:
+    section.add "X-Amz-Credential", valid_600908
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -210,40 +221,44 @@ proc validate_CopyBackupToRegion_602771(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602928: Call_CopyBackupToRegion_602770; path: JsonNode;
+proc call*(call_600932: Call_CopyBackupToRegion_600774; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Copy an AWS CloudHSM cluster backup to a different region.
   ## 
-  let valid = call_602928.validator(path, query, header, formData, body)
-  let scheme = call_602928.pickScheme
+  let valid = call_600932.validator(path, query, header, formData, body)
+  let scheme = call_600932.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602928.url(scheme.get, call_602928.host, call_602928.base,
-                         call_602928.route, valid.getOrDefault("path"))
-  result = hook(call_602928, url, valid)
+  let url = call_600932.url(scheme.get, call_600932.host, call_600932.base,
+                         call_600932.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_600932, url, valid)
 
-proc call*(call_602999: Call_CopyBackupToRegion_602770; body: JsonNode): Recallable =
+proc call*(call_601003: Call_CopyBackupToRegion_600774; body: JsonNode): Recallable =
   ## copyBackupToRegion
   ## Copy an AWS CloudHSM cluster backup to a different region.
   ##   body: JObject (required)
-  var body_603000 = newJObject()
+  var body_601004 = newJObject()
   if body != nil:
-    body_603000 = body
-  result = call_602999.call(nil, nil, nil, nil, body_603000)
+    body_601004 = body
+  result = call_601003.call(nil, nil, nil, nil, body_601004)
 
-var copyBackupToRegion* = Call_CopyBackupToRegion_602770(
+var copyBackupToRegion* = Call_CopyBackupToRegion_600774(
     name: "copyBackupToRegion", meth: HttpMethod.HttpPost,
     host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.CopyBackupToRegion",
-    validator: validate_CopyBackupToRegion_602771, base: "/",
-    url: url_CopyBackupToRegion_602772, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CopyBackupToRegion_600775, base: "/",
+    url: url_CopyBackupToRegion_600776, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateCluster_603039 = ref object of OpenApiRestCall_602433
-proc url_CreateCluster_603041(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateCluster_601043 = ref object of OpenApiRestCall_600437
+proc url_CreateCluster_601045(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateCluster_603040(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateCluster_601044(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a new AWS CloudHSM cluster.
   ## 
@@ -263,48 +278,48 @@ proc validate_CreateCluster_603040(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603042 = header.getOrDefault("X-Amz-Date")
-  valid_603042 = validateParameter(valid_603042, JString, required = false,
+  var valid_601046 = header.getOrDefault("X-Amz-Date")
+  valid_601046 = validateParameter(valid_601046, JString, required = false,
                                  default = nil)
-  if valid_603042 != nil:
-    section.add "X-Amz-Date", valid_603042
-  var valid_603043 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603043 = validateParameter(valid_603043, JString, required = false,
+  if valid_601046 != nil:
+    section.add "X-Amz-Date", valid_601046
+  var valid_601047 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601047 = validateParameter(valid_601047, JString, required = false,
                                  default = nil)
-  if valid_603043 != nil:
-    section.add "X-Amz-Security-Token", valid_603043
+  if valid_601047 != nil:
+    section.add "X-Amz-Security-Token", valid_601047
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603044 = header.getOrDefault("X-Amz-Target")
-  valid_603044 = validateParameter(valid_603044, JString, required = true, default = newJString(
+  var valid_601048 = header.getOrDefault("X-Amz-Target")
+  valid_601048 = validateParameter(valid_601048, JString, required = true, default = newJString(
       "BaldrApiService.CreateCluster"))
-  if valid_603044 != nil:
-    section.add "X-Amz-Target", valid_603044
-  var valid_603045 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603045 = validateParameter(valid_603045, JString, required = false,
+  if valid_601048 != nil:
+    section.add "X-Amz-Target", valid_601048
+  var valid_601049 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601049 = validateParameter(valid_601049, JString, required = false,
                                  default = nil)
-  if valid_603045 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603045
-  var valid_603046 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603046 = validateParameter(valid_603046, JString, required = false,
+  if valid_601049 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601049
+  var valid_601050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601050 = validateParameter(valid_601050, JString, required = false,
                                  default = nil)
-  if valid_603046 != nil:
-    section.add "X-Amz-Algorithm", valid_603046
-  var valid_603047 = header.getOrDefault("X-Amz-Signature")
-  valid_603047 = validateParameter(valid_603047, JString, required = false,
+  if valid_601050 != nil:
+    section.add "X-Amz-Algorithm", valid_601050
+  var valid_601051 = header.getOrDefault("X-Amz-Signature")
+  valid_601051 = validateParameter(valid_601051, JString, required = false,
                                  default = nil)
-  if valid_603047 != nil:
-    section.add "X-Amz-Signature", valid_603047
-  var valid_603048 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603048 = validateParameter(valid_603048, JString, required = false,
+  if valid_601051 != nil:
+    section.add "X-Amz-Signature", valid_601051
+  var valid_601052 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601052 = validateParameter(valid_601052, JString, required = false,
                                  default = nil)
-  if valid_603048 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603048
-  var valid_603049 = header.getOrDefault("X-Amz-Credential")
-  valid_603049 = validateParameter(valid_603049, JString, required = false,
+  if valid_601052 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601052
+  var valid_601053 = header.getOrDefault("X-Amz-Credential")
+  valid_601053 = validateParameter(valid_601053, JString, required = false,
                                  default = nil)
-  if valid_603049 != nil:
-    section.add "X-Amz-Credential", valid_603049
+  if valid_601053 != nil:
+    section.add "X-Amz-Credential", valid_601053
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -315,39 +330,43 @@ proc validate_CreateCluster_603040(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603051: Call_CreateCluster_603039; path: JsonNode; query: JsonNode;
+proc call*(call_601055: Call_CreateCluster_601043; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a new AWS CloudHSM cluster.
   ## 
-  let valid = call_603051.validator(path, query, header, formData, body)
-  let scheme = call_603051.pickScheme
+  let valid = call_601055.validator(path, query, header, formData, body)
+  let scheme = call_601055.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603051.url(scheme.get, call_603051.host, call_603051.base,
-                         call_603051.route, valid.getOrDefault("path"))
-  result = hook(call_603051, url, valid)
+  let url = call_601055.url(scheme.get, call_601055.host, call_601055.base,
+                         call_601055.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601055, url, valid)
 
-proc call*(call_603052: Call_CreateCluster_603039; body: JsonNode): Recallable =
+proc call*(call_601056: Call_CreateCluster_601043; body: JsonNode): Recallable =
   ## createCluster
   ## Creates a new AWS CloudHSM cluster.
   ##   body: JObject (required)
-  var body_603053 = newJObject()
+  var body_601057 = newJObject()
   if body != nil:
-    body_603053 = body
-  result = call_603052.call(nil, nil, nil, nil, body_603053)
+    body_601057 = body
+  result = call_601056.call(nil, nil, nil, nil, body_601057)
 
-var createCluster* = Call_CreateCluster_603039(name: "createCluster",
+var createCluster* = Call_CreateCluster_601043(name: "createCluster",
     meth: HttpMethod.HttpPost, host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.CreateCluster",
-    validator: validate_CreateCluster_603040, base: "/", url: url_CreateCluster_603041,
+    validator: validate_CreateCluster_601044, base: "/", url: url_CreateCluster_601045,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateHsm_603054 = ref object of OpenApiRestCall_602433
-proc url_CreateHsm_603056(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateHsm_601058 = ref object of OpenApiRestCall_600437
+proc url_CreateHsm_601060(protocol: Scheme; host: string; base: string; route: string;
+                         path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateHsm_603055(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateHsm_601059(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a new hardware security module (HSM) in the specified AWS CloudHSM cluster.
   ## 
@@ -367,48 +386,48 @@ proc validate_CreateHsm_603055(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603057 = header.getOrDefault("X-Amz-Date")
-  valid_603057 = validateParameter(valid_603057, JString, required = false,
+  var valid_601061 = header.getOrDefault("X-Amz-Date")
+  valid_601061 = validateParameter(valid_601061, JString, required = false,
                                  default = nil)
-  if valid_603057 != nil:
-    section.add "X-Amz-Date", valid_603057
-  var valid_603058 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603058 = validateParameter(valid_603058, JString, required = false,
+  if valid_601061 != nil:
+    section.add "X-Amz-Date", valid_601061
+  var valid_601062 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601062 = validateParameter(valid_601062, JString, required = false,
                                  default = nil)
-  if valid_603058 != nil:
-    section.add "X-Amz-Security-Token", valid_603058
+  if valid_601062 != nil:
+    section.add "X-Amz-Security-Token", valid_601062
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603059 = header.getOrDefault("X-Amz-Target")
-  valid_603059 = validateParameter(valid_603059, JString, required = true, default = newJString(
+  var valid_601063 = header.getOrDefault("X-Amz-Target")
+  valid_601063 = validateParameter(valid_601063, JString, required = true, default = newJString(
       "BaldrApiService.CreateHsm"))
-  if valid_603059 != nil:
-    section.add "X-Amz-Target", valid_603059
-  var valid_603060 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603060 = validateParameter(valid_603060, JString, required = false,
+  if valid_601063 != nil:
+    section.add "X-Amz-Target", valid_601063
+  var valid_601064 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601064 = validateParameter(valid_601064, JString, required = false,
                                  default = nil)
-  if valid_603060 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603060
-  var valid_603061 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603061 = validateParameter(valid_603061, JString, required = false,
+  if valid_601064 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601064
+  var valid_601065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601065 = validateParameter(valid_601065, JString, required = false,
                                  default = nil)
-  if valid_603061 != nil:
-    section.add "X-Amz-Algorithm", valid_603061
-  var valid_603062 = header.getOrDefault("X-Amz-Signature")
-  valid_603062 = validateParameter(valid_603062, JString, required = false,
+  if valid_601065 != nil:
+    section.add "X-Amz-Algorithm", valid_601065
+  var valid_601066 = header.getOrDefault("X-Amz-Signature")
+  valid_601066 = validateParameter(valid_601066, JString, required = false,
                                  default = nil)
-  if valid_603062 != nil:
-    section.add "X-Amz-Signature", valid_603062
-  var valid_603063 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603063 = validateParameter(valid_603063, JString, required = false,
+  if valid_601066 != nil:
+    section.add "X-Amz-Signature", valid_601066
+  var valid_601067 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601067 = validateParameter(valid_601067, JString, required = false,
                                  default = nil)
-  if valid_603063 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603063
-  var valid_603064 = header.getOrDefault("X-Amz-Credential")
-  valid_603064 = validateParameter(valid_603064, JString, required = false,
+  if valid_601067 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601067
+  var valid_601068 = header.getOrDefault("X-Amz-Credential")
+  valid_601068 = validateParameter(valid_601068, JString, required = false,
                                  default = nil)
-  if valid_603064 != nil:
-    section.add "X-Amz-Credential", valid_603064
+  if valid_601068 != nil:
+    section.add "X-Amz-Credential", valid_601068
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -419,39 +438,43 @@ proc validate_CreateHsm_603055(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603066: Call_CreateHsm_603054; path: JsonNode; query: JsonNode;
+proc call*(call_601070: Call_CreateHsm_601058; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a new hardware security module (HSM) in the specified AWS CloudHSM cluster.
   ## 
-  let valid = call_603066.validator(path, query, header, formData, body)
-  let scheme = call_603066.pickScheme
+  let valid = call_601070.validator(path, query, header, formData, body)
+  let scheme = call_601070.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603066.url(scheme.get, call_603066.host, call_603066.base,
-                         call_603066.route, valid.getOrDefault("path"))
-  result = hook(call_603066, url, valid)
+  let url = call_601070.url(scheme.get, call_601070.host, call_601070.base,
+                         call_601070.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601070, url, valid)
 
-proc call*(call_603067: Call_CreateHsm_603054; body: JsonNode): Recallable =
+proc call*(call_601071: Call_CreateHsm_601058; body: JsonNode): Recallable =
   ## createHsm
   ## Creates a new hardware security module (HSM) in the specified AWS CloudHSM cluster.
   ##   body: JObject (required)
-  var body_603068 = newJObject()
+  var body_601072 = newJObject()
   if body != nil:
-    body_603068 = body
-  result = call_603067.call(nil, nil, nil, nil, body_603068)
+    body_601072 = body
+  result = call_601071.call(nil, nil, nil, nil, body_601072)
 
-var createHsm* = Call_CreateHsm_603054(name: "createHsm", meth: HttpMethod.HttpPost,
+var createHsm* = Call_CreateHsm_601058(name: "createHsm", meth: HttpMethod.HttpPost,
                                     host: "cloudhsmv2.amazonaws.com", route: "/#X-Amz-Target=BaldrApiService.CreateHsm",
-                                    validator: validate_CreateHsm_603055,
-                                    base: "/", url: url_CreateHsm_603056,
+                                    validator: validate_CreateHsm_601059,
+                                    base: "/", url: url_CreateHsm_601060,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBackup_603069 = ref object of OpenApiRestCall_602433
-proc url_DeleteBackup_603071(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DeleteBackup_601073 = ref object of OpenApiRestCall_600437
+proc url_DeleteBackup_601075(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DeleteBackup_603070(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteBackup_601074(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request. For more information on restoring a backup, see <a>RestoreBackup</a> 
   ## 
@@ -471,48 +494,48 @@ proc validate_DeleteBackup_603070(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603072 = header.getOrDefault("X-Amz-Date")
-  valid_603072 = validateParameter(valid_603072, JString, required = false,
+  var valid_601076 = header.getOrDefault("X-Amz-Date")
+  valid_601076 = validateParameter(valid_601076, JString, required = false,
                                  default = nil)
-  if valid_603072 != nil:
-    section.add "X-Amz-Date", valid_603072
-  var valid_603073 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603073 = validateParameter(valid_603073, JString, required = false,
+  if valid_601076 != nil:
+    section.add "X-Amz-Date", valid_601076
+  var valid_601077 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601077 = validateParameter(valid_601077, JString, required = false,
                                  default = nil)
-  if valid_603073 != nil:
-    section.add "X-Amz-Security-Token", valid_603073
+  if valid_601077 != nil:
+    section.add "X-Amz-Security-Token", valid_601077
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603074 = header.getOrDefault("X-Amz-Target")
-  valid_603074 = validateParameter(valid_603074, JString, required = true, default = newJString(
+  var valid_601078 = header.getOrDefault("X-Amz-Target")
+  valid_601078 = validateParameter(valid_601078, JString, required = true, default = newJString(
       "BaldrApiService.DeleteBackup"))
-  if valid_603074 != nil:
-    section.add "X-Amz-Target", valid_603074
-  var valid_603075 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603075 = validateParameter(valid_603075, JString, required = false,
+  if valid_601078 != nil:
+    section.add "X-Amz-Target", valid_601078
+  var valid_601079 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601079 = validateParameter(valid_601079, JString, required = false,
                                  default = nil)
-  if valid_603075 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603075
-  var valid_603076 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603076 = validateParameter(valid_603076, JString, required = false,
+  if valid_601079 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601079
+  var valid_601080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601080 = validateParameter(valid_601080, JString, required = false,
                                  default = nil)
-  if valid_603076 != nil:
-    section.add "X-Amz-Algorithm", valid_603076
-  var valid_603077 = header.getOrDefault("X-Amz-Signature")
-  valid_603077 = validateParameter(valid_603077, JString, required = false,
+  if valid_601080 != nil:
+    section.add "X-Amz-Algorithm", valid_601080
+  var valid_601081 = header.getOrDefault("X-Amz-Signature")
+  valid_601081 = validateParameter(valid_601081, JString, required = false,
                                  default = nil)
-  if valid_603077 != nil:
-    section.add "X-Amz-Signature", valid_603077
-  var valid_603078 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603078 = validateParameter(valid_603078, JString, required = false,
+  if valid_601081 != nil:
+    section.add "X-Amz-Signature", valid_601081
+  var valid_601082 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601082 = validateParameter(valid_601082, JString, required = false,
                                  default = nil)
-  if valid_603078 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603078
-  var valid_603079 = header.getOrDefault("X-Amz-Credential")
-  valid_603079 = validateParameter(valid_603079, JString, required = false,
+  if valid_601082 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601082
+  var valid_601083 = header.getOrDefault("X-Amz-Credential")
+  valid_601083 = validateParameter(valid_601083, JString, required = false,
                                  default = nil)
-  if valid_603079 != nil:
-    section.add "X-Amz-Credential", valid_603079
+  if valid_601083 != nil:
+    section.add "X-Amz-Credential", valid_601083
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -523,39 +546,43 @@ proc validate_DeleteBackup_603070(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603081: Call_DeleteBackup_603069; path: JsonNode; query: JsonNode;
+proc call*(call_601085: Call_DeleteBackup_601073; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request. For more information on restoring a backup, see <a>RestoreBackup</a> 
   ## 
-  let valid = call_603081.validator(path, query, header, formData, body)
-  let scheme = call_603081.pickScheme
+  let valid = call_601085.validator(path, query, header, formData, body)
+  let scheme = call_601085.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603081.url(scheme.get, call_603081.host, call_603081.base,
-                         call_603081.route, valid.getOrDefault("path"))
-  result = hook(call_603081, url, valid)
+  let url = call_601085.url(scheme.get, call_601085.host, call_601085.base,
+                         call_601085.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601085, url, valid)
 
-proc call*(call_603082: Call_DeleteBackup_603069; body: JsonNode): Recallable =
+proc call*(call_601086: Call_DeleteBackup_601073; body: JsonNode): Recallable =
   ## deleteBackup
   ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request. For more information on restoring a backup, see <a>RestoreBackup</a> 
   ##   body: JObject (required)
-  var body_603083 = newJObject()
+  var body_601087 = newJObject()
   if body != nil:
-    body_603083 = body
-  result = call_603082.call(nil, nil, nil, nil, body_603083)
+    body_601087 = body
+  result = call_601086.call(nil, nil, nil, nil, body_601087)
 
-var deleteBackup* = Call_DeleteBackup_603069(name: "deleteBackup",
+var deleteBackup* = Call_DeleteBackup_601073(name: "deleteBackup",
     meth: HttpMethod.HttpPost, host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.DeleteBackup",
-    validator: validate_DeleteBackup_603070, base: "/", url: url_DeleteBackup_603071,
+    validator: validate_DeleteBackup_601074, base: "/", url: url_DeleteBackup_601075,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteCluster_603084 = ref object of OpenApiRestCall_602433
-proc url_DeleteCluster_603086(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DeleteCluster_601088 = ref object of OpenApiRestCall_600437
+proc url_DeleteCluster_601090(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DeleteCluster_603085(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteCluster_601089(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified AWS CloudHSM cluster. Before you can delete a cluster, you must delete all HSMs in the cluster. To see if the cluster contains any HSMs, use <a>DescribeClusters</a>. To delete an HSM, use <a>DeleteHsm</a>.
   ## 
@@ -575,48 +602,48 @@ proc validate_DeleteCluster_603085(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603087 = header.getOrDefault("X-Amz-Date")
-  valid_603087 = validateParameter(valid_603087, JString, required = false,
+  var valid_601091 = header.getOrDefault("X-Amz-Date")
+  valid_601091 = validateParameter(valid_601091, JString, required = false,
                                  default = nil)
-  if valid_603087 != nil:
-    section.add "X-Amz-Date", valid_603087
-  var valid_603088 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603088 = validateParameter(valid_603088, JString, required = false,
+  if valid_601091 != nil:
+    section.add "X-Amz-Date", valid_601091
+  var valid_601092 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601092 = validateParameter(valid_601092, JString, required = false,
                                  default = nil)
-  if valid_603088 != nil:
-    section.add "X-Amz-Security-Token", valid_603088
+  if valid_601092 != nil:
+    section.add "X-Amz-Security-Token", valid_601092
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603089 = header.getOrDefault("X-Amz-Target")
-  valid_603089 = validateParameter(valid_603089, JString, required = true, default = newJString(
+  var valid_601093 = header.getOrDefault("X-Amz-Target")
+  valid_601093 = validateParameter(valid_601093, JString, required = true, default = newJString(
       "BaldrApiService.DeleteCluster"))
-  if valid_603089 != nil:
-    section.add "X-Amz-Target", valid_603089
-  var valid_603090 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603090 = validateParameter(valid_603090, JString, required = false,
+  if valid_601093 != nil:
+    section.add "X-Amz-Target", valid_601093
+  var valid_601094 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601094 = validateParameter(valid_601094, JString, required = false,
                                  default = nil)
-  if valid_603090 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603090
-  var valid_603091 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603091 = validateParameter(valid_603091, JString, required = false,
+  if valid_601094 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601094
+  var valid_601095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601095 = validateParameter(valid_601095, JString, required = false,
                                  default = nil)
-  if valid_603091 != nil:
-    section.add "X-Amz-Algorithm", valid_603091
-  var valid_603092 = header.getOrDefault("X-Amz-Signature")
-  valid_603092 = validateParameter(valid_603092, JString, required = false,
+  if valid_601095 != nil:
+    section.add "X-Amz-Algorithm", valid_601095
+  var valid_601096 = header.getOrDefault("X-Amz-Signature")
+  valid_601096 = validateParameter(valid_601096, JString, required = false,
                                  default = nil)
-  if valid_603092 != nil:
-    section.add "X-Amz-Signature", valid_603092
-  var valid_603093 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603093 = validateParameter(valid_603093, JString, required = false,
+  if valid_601096 != nil:
+    section.add "X-Amz-Signature", valid_601096
+  var valid_601097 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601097 = validateParameter(valid_601097, JString, required = false,
                                  default = nil)
-  if valid_603093 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603093
-  var valid_603094 = header.getOrDefault("X-Amz-Credential")
-  valid_603094 = validateParameter(valid_603094, JString, required = false,
+  if valid_601097 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601097
+  var valid_601098 = header.getOrDefault("X-Amz-Credential")
+  valid_601098 = validateParameter(valid_601098, JString, required = false,
                                  default = nil)
-  if valid_603094 != nil:
-    section.add "X-Amz-Credential", valid_603094
+  if valid_601098 != nil:
+    section.add "X-Amz-Credential", valid_601098
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -627,39 +654,43 @@ proc validate_DeleteCluster_603085(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603096: Call_DeleteCluster_603084; path: JsonNode; query: JsonNode;
+proc call*(call_601100: Call_DeleteCluster_601088; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified AWS CloudHSM cluster. Before you can delete a cluster, you must delete all HSMs in the cluster. To see if the cluster contains any HSMs, use <a>DescribeClusters</a>. To delete an HSM, use <a>DeleteHsm</a>.
   ## 
-  let valid = call_603096.validator(path, query, header, formData, body)
-  let scheme = call_603096.pickScheme
+  let valid = call_601100.validator(path, query, header, formData, body)
+  let scheme = call_601100.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603096.url(scheme.get, call_603096.host, call_603096.base,
-                         call_603096.route, valid.getOrDefault("path"))
-  result = hook(call_603096, url, valid)
+  let url = call_601100.url(scheme.get, call_601100.host, call_601100.base,
+                         call_601100.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601100, url, valid)
 
-proc call*(call_603097: Call_DeleteCluster_603084; body: JsonNode): Recallable =
+proc call*(call_601101: Call_DeleteCluster_601088; body: JsonNode): Recallable =
   ## deleteCluster
   ## Deletes the specified AWS CloudHSM cluster. Before you can delete a cluster, you must delete all HSMs in the cluster. To see if the cluster contains any HSMs, use <a>DescribeClusters</a>. To delete an HSM, use <a>DeleteHsm</a>.
   ##   body: JObject (required)
-  var body_603098 = newJObject()
+  var body_601102 = newJObject()
   if body != nil:
-    body_603098 = body
-  result = call_603097.call(nil, nil, nil, nil, body_603098)
+    body_601102 = body
+  result = call_601101.call(nil, nil, nil, nil, body_601102)
 
-var deleteCluster* = Call_DeleteCluster_603084(name: "deleteCluster",
+var deleteCluster* = Call_DeleteCluster_601088(name: "deleteCluster",
     meth: HttpMethod.HttpPost, host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.DeleteCluster",
-    validator: validate_DeleteCluster_603085, base: "/", url: url_DeleteCluster_603086,
+    validator: validate_DeleteCluster_601089, base: "/", url: url_DeleteCluster_601090,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteHsm_603099 = ref object of OpenApiRestCall_602433
-proc url_DeleteHsm_603101(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DeleteHsm_601103 = ref object of OpenApiRestCall_600437
+proc url_DeleteHsm_601105(protocol: Scheme; host: string; base: string; route: string;
+                         path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DeleteHsm_603100(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteHsm_601104(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified HSM. To specify an HSM, you can use its identifier (ID), the IP address of the HSM's elastic network interface (ENI), or the ID of the HSM's ENI. You need to specify only one of these values. To find these values, use <a>DescribeClusters</a>.
   ## 
@@ -679,48 +710,48 @@ proc validate_DeleteHsm_603100(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603102 = header.getOrDefault("X-Amz-Date")
-  valid_603102 = validateParameter(valid_603102, JString, required = false,
+  var valid_601106 = header.getOrDefault("X-Amz-Date")
+  valid_601106 = validateParameter(valid_601106, JString, required = false,
                                  default = nil)
-  if valid_603102 != nil:
-    section.add "X-Amz-Date", valid_603102
-  var valid_603103 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603103 = validateParameter(valid_603103, JString, required = false,
+  if valid_601106 != nil:
+    section.add "X-Amz-Date", valid_601106
+  var valid_601107 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601107 = validateParameter(valid_601107, JString, required = false,
                                  default = nil)
-  if valid_603103 != nil:
-    section.add "X-Amz-Security-Token", valid_603103
+  if valid_601107 != nil:
+    section.add "X-Amz-Security-Token", valid_601107
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603104 = header.getOrDefault("X-Amz-Target")
-  valid_603104 = validateParameter(valid_603104, JString, required = true, default = newJString(
+  var valid_601108 = header.getOrDefault("X-Amz-Target")
+  valid_601108 = validateParameter(valid_601108, JString, required = true, default = newJString(
       "BaldrApiService.DeleteHsm"))
-  if valid_603104 != nil:
-    section.add "X-Amz-Target", valid_603104
-  var valid_603105 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603105 = validateParameter(valid_603105, JString, required = false,
+  if valid_601108 != nil:
+    section.add "X-Amz-Target", valid_601108
+  var valid_601109 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601109 = validateParameter(valid_601109, JString, required = false,
                                  default = nil)
-  if valid_603105 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603105
-  var valid_603106 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603106 = validateParameter(valid_603106, JString, required = false,
+  if valid_601109 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601109
+  var valid_601110 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601110 = validateParameter(valid_601110, JString, required = false,
                                  default = nil)
-  if valid_603106 != nil:
-    section.add "X-Amz-Algorithm", valid_603106
-  var valid_603107 = header.getOrDefault("X-Amz-Signature")
-  valid_603107 = validateParameter(valid_603107, JString, required = false,
+  if valid_601110 != nil:
+    section.add "X-Amz-Algorithm", valid_601110
+  var valid_601111 = header.getOrDefault("X-Amz-Signature")
+  valid_601111 = validateParameter(valid_601111, JString, required = false,
                                  default = nil)
-  if valid_603107 != nil:
-    section.add "X-Amz-Signature", valid_603107
-  var valid_603108 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603108 = validateParameter(valid_603108, JString, required = false,
+  if valid_601111 != nil:
+    section.add "X-Amz-Signature", valid_601111
+  var valid_601112 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601112 = validateParameter(valid_601112, JString, required = false,
                                  default = nil)
-  if valid_603108 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603108
-  var valid_603109 = header.getOrDefault("X-Amz-Credential")
-  valid_603109 = validateParameter(valid_603109, JString, required = false,
+  if valid_601112 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601112
+  var valid_601113 = header.getOrDefault("X-Amz-Credential")
+  valid_601113 = validateParameter(valid_601113, JString, required = false,
                                  default = nil)
-  if valid_603109 != nil:
-    section.add "X-Amz-Credential", valid_603109
+  if valid_601113 != nil:
+    section.add "X-Amz-Credential", valid_601113
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -731,39 +762,43 @@ proc validate_DeleteHsm_603100(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603111: Call_DeleteHsm_603099; path: JsonNode; query: JsonNode;
+proc call*(call_601115: Call_DeleteHsm_601103; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified HSM. To specify an HSM, you can use its identifier (ID), the IP address of the HSM's elastic network interface (ENI), or the ID of the HSM's ENI. You need to specify only one of these values. To find these values, use <a>DescribeClusters</a>.
   ## 
-  let valid = call_603111.validator(path, query, header, formData, body)
-  let scheme = call_603111.pickScheme
+  let valid = call_601115.validator(path, query, header, formData, body)
+  let scheme = call_601115.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603111.url(scheme.get, call_603111.host, call_603111.base,
-                         call_603111.route, valid.getOrDefault("path"))
-  result = hook(call_603111, url, valid)
+  let url = call_601115.url(scheme.get, call_601115.host, call_601115.base,
+                         call_601115.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601115, url, valid)
 
-proc call*(call_603112: Call_DeleteHsm_603099; body: JsonNode): Recallable =
+proc call*(call_601116: Call_DeleteHsm_601103; body: JsonNode): Recallable =
   ## deleteHsm
   ## Deletes the specified HSM. To specify an HSM, you can use its identifier (ID), the IP address of the HSM's elastic network interface (ENI), or the ID of the HSM's ENI. You need to specify only one of these values. To find these values, use <a>DescribeClusters</a>.
   ##   body: JObject (required)
-  var body_603113 = newJObject()
+  var body_601117 = newJObject()
   if body != nil:
-    body_603113 = body
-  result = call_603112.call(nil, nil, nil, nil, body_603113)
+    body_601117 = body
+  result = call_601116.call(nil, nil, nil, nil, body_601117)
 
-var deleteHsm* = Call_DeleteHsm_603099(name: "deleteHsm", meth: HttpMethod.HttpPost,
+var deleteHsm* = Call_DeleteHsm_601103(name: "deleteHsm", meth: HttpMethod.HttpPost,
                                     host: "cloudhsmv2.amazonaws.com", route: "/#X-Amz-Target=BaldrApiService.DeleteHsm",
-                                    validator: validate_DeleteHsm_603100,
-                                    base: "/", url: url_DeleteHsm_603101,
+                                    validator: validate_DeleteHsm_601104,
+                                    base: "/", url: url_DeleteHsm_601105,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeBackups_603114 = ref object of OpenApiRestCall_602433
-proc url_DescribeBackups_603116(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DescribeBackups_601118 = ref object of OpenApiRestCall_600437
+proc url_DescribeBackups_601120(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DescribeBackups_603115(path: JsonNode; query: JsonNode;
+proc validate_DescribeBackups_601119(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Gets information about backups of AWS CloudHSM clusters.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the backups. When the response contains only a subset of backups, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>DescribeBackups</code> request to get more backups. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more backups to get.</p>
@@ -778,16 +813,16 @@ proc validate_DescribeBackups_603115(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603117 = query.getOrDefault("NextToken")
-  valid_603117 = validateParameter(valid_603117, JString, required = false,
+  var valid_601121 = query.getOrDefault("NextToken")
+  valid_601121 = validateParameter(valid_601121, JString, required = false,
                                  default = nil)
-  if valid_603117 != nil:
-    section.add "NextToken", valid_603117
-  var valid_603118 = query.getOrDefault("MaxResults")
-  valid_603118 = validateParameter(valid_603118, JString, required = false,
+  if valid_601121 != nil:
+    section.add "NextToken", valid_601121
+  var valid_601122 = query.getOrDefault("MaxResults")
+  valid_601122 = validateParameter(valid_601122, JString, required = false,
                                  default = nil)
-  if valid_603118 != nil:
-    section.add "MaxResults", valid_603118
+  if valid_601122 != nil:
+    section.add "MaxResults", valid_601122
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -799,48 +834,48 @@ proc validate_DescribeBackups_603115(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603119 = header.getOrDefault("X-Amz-Date")
-  valid_603119 = validateParameter(valid_603119, JString, required = false,
+  var valid_601123 = header.getOrDefault("X-Amz-Date")
+  valid_601123 = validateParameter(valid_601123, JString, required = false,
                                  default = nil)
-  if valid_603119 != nil:
-    section.add "X-Amz-Date", valid_603119
-  var valid_603120 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603120 = validateParameter(valid_603120, JString, required = false,
+  if valid_601123 != nil:
+    section.add "X-Amz-Date", valid_601123
+  var valid_601124 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601124 = validateParameter(valid_601124, JString, required = false,
                                  default = nil)
-  if valid_603120 != nil:
-    section.add "X-Amz-Security-Token", valid_603120
+  if valid_601124 != nil:
+    section.add "X-Amz-Security-Token", valid_601124
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603121 = header.getOrDefault("X-Amz-Target")
-  valid_603121 = validateParameter(valid_603121, JString, required = true, default = newJString(
+  var valid_601125 = header.getOrDefault("X-Amz-Target")
+  valid_601125 = validateParameter(valid_601125, JString, required = true, default = newJString(
       "BaldrApiService.DescribeBackups"))
-  if valid_603121 != nil:
-    section.add "X-Amz-Target", valid_603121
-  var valid_603122 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603122 = validateParameter(valid_603122, JString, required = false,
+  if valid_601125 != nil:
+    section.add "X-Amz-Target", valid_601125
+  var valid_601126 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601126 = validateParameter(valid_601126, JString, required = false,
                                  default = nil)
-  if valid_603122 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603122
-  var valid_603123 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603123 = validateParameter(valid_603123, JString, required = false,
+  if valid_601126 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601126
+  var valid_601127 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601127 = validateParameter(valid_601127, JString, required = false,
                                  default = nil)
-  if valid_603123 != nil:
-    section.add "X-Amz-Algorithm", valid_603123
-  var valid_603124 = header.getOrDefault("X-Amz-Signature")
-  valid_603124 = validateParameter(valid_603124, JString, required = false,
+  if valid_601127 != nil:
+    section.add "X-Amz-Algorithm", valid_601127
+  var valid_601128 = header.getOrDefault("X-Amz-Signature")
+  valid_601128 = validateParameter(valid_601128, JString, required = false,
                                  default = nil)
-  if valid_603124 != nil:
-    section.add "X-Amz-Signature", valid_603124
-  var valid_603125 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603125 = validateParameter(valid_603125, JString, required = false,
+  if valid_601128 != nil:
+    section.add "X-Amz-Signature", valid_601128
+  var valid_601129 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601129 = validateParameter(valid_601129, JString, required = false,
                                  default = nil)
-  if valid_603125 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603125
-  var valid_603126 = header.getOrDefault("X-Amz-Credential")
-  valid_603126 = validateParameter(valid_603126, JString, required = false,
+  if valid_601129 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601129
+  var valid_601130 = header.getOrDefault("X-Amz-Credential")
+  valid_601130 = validateParameter(valid_601130, JString, required = false,
                                  default = nil)
-  if valid_603126 != nil:
-    section.add "X-Amz-Credential", valid_603126
+  if valid_601130 != nil:
+    section.add "X-Amz-Credential", valid_601130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -851,19 +886,20 @@ proc validate_DescribeBackups_603115(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603128: Call_DescribeBackups_603114; path: JsonNode; query: JsonNode;
+proc call*(call_601132: Call_DescribeBackups_601118; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about backups of AWS CloudHSM clusters.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the backups. When the response contains only a subset of backups, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>DescribeBackups</code> request to get more backups. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more backups to get.</p>
   ## 
-  let valid = call_603128.validator(path, query, header, formData, body)
-  let scheme = call_603128.pickScheme
+  let valid = call_601132.validator(path, query, header, formData, body)
+  let scheme = call_601132.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603128.url(scheme.get, call_603128.host, call_603128.base,
-                         call_603128.route, valid.getOrDefault("path"))
-  result = hook(call_603128, url, valid)
+  let url = call_601132.url(scheme.get, call_601132.host, call_601132.base,
+                         call_601132.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601132, url, valid)
 
-proc call*(call_603129: Call_DescribeBackups_603114; body: JsonNode;
+proc call*(call_601133: Call_DescribeBackups_601118; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## describeBackups
   ## <p>Gets information about backups of AWS CloudHSM clusters.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the backups. When the response contains only a subset of backups, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>DescribeBackups</code> request to get more backups. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more backups to get.</p>
@@ -872,26 +908,29 @@ proc call*(call_603129: Call_DescribeBackups_603114; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603130 = newJObject()
-  var body_603131 = newJObject()
-  add(query_603130, "NextToken", newJString(NextToken))
+  var query_601134 = newJObject()
+  var body_601135 = newJObject()
+  add(query_601134, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603131 = body
-  add(query_603130, "MaxResults", newJString(MaxResults))
-  result = call_603129.call(nil, query_603130, nil, nil, body_603131)
+    body_601135 = body
+  add(query_601134, "MaxResults", newJString(MaxResults))
+  result = call_601133.call(nil, query_601134, nil, nil, body_601135)
 
-var describeBackups* = Call_DescribeBackups_603114(name: "describeBackups",
+var describeBackups* = Call_DescribeBackups_601118(name: "describeBackups",
     meth: HttpMethod.HttpPost, host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.DescribeBackups",
-    validator: validate_DescribeBackups_603115, base: "/", url: url_DescribeBackups_603116,
+    validator: validate_DescribeBackups_601119, base: "/", url: url_DescribeBackups_601120,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeClusters_603133 = ref object of OpenApiRestCall_602433
-proc url_DescribeClusters_603135(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DescribeClusters_601137 = ref object of OpenApiRestCall_600437
+proc url_DescribeClusters_601139(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DescribeClusters_603134(path: JsonNode; query: JsonNode;
+proc validate_DescribeClusters_601138(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Gets information about AWS CloudHSM clusters.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the clusters. When the response contains only a subset of clusters, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>DescribeClusters</code> request to get more clusters. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more clusters to get.</p>
@@ -906,16 +945,16 @@ proc validate_DescribeClusters_603134(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603136 = query.getOrDefault("NextToken")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
+  var valid_601140 = query.getOrDefault("NextToken")
+  valid_601140 = validateParameter(valid_601140, JString, required = false,
                                  default = nil)
-  if valid_603136 != nil:
-    section.add "NextToken", valid_603136
-  var valid_603137 = query.getOrDefault("MaxResults")
-  valid_603137 = validateParameter(valid_603137, JString, required = false,
+  if valid_601140 != nil:
+    section.add "NextToken", valid_601140
+  var valid_601141 = query.getOrDefault("MaxResults")
+  valid_601141 = validateParameter(valid_601141, JString, required = false,
                                  default = nil)
-  if valid_603137 != nil:
-    section.add "MaxResults", valid_603137
+  if valid_601141 != nil:
+    section.add "MaxResults", valid_601141
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -927,48 +966,48 @@ proc validate_DescribeClusters_603134(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603138 = header.getOrDefault("X-Amz-Date")
-  valid_603138 = validateParameter(valid_603138, JString, required = false,
+  var valid_601142 = header.getOrDefault("X-Amz-Date")
+  valid_601142 = validateParameter(valid_601142, JString, required = false,
                                  default = nil)
-  if valid_603138 != nil:
-    section.add "X-Amz-Date", valid_603138
-  var valid_603139 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603139 = validateParameter(valid_603139, JString, required = false,
+  if valid_601142 != nil:
+    section.add "X-Amz-Date", valid_601142
+  var valid_601143 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601143 = validateParameter(valid_601143, JString, required = false,
                                  default = nil)
-  if valid_603139 != nil:
-    section.add "X-Amz-Security-Token", valid_603139
+  if valid_601143 != nil:
+    section.add "X-Amz-Security-Token", valid_601143
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603140 = header.getOrDefault("X-Amz-Target")
-  valid_603140 = validateParameter(valid_603140, JString, required = true, default = newJString(
+  var valid_601144 = header.getOrDefault("X-Amz-Target")
+  valid_601144 = validateParameter(valid_601144, JString, required = true, default = newJString(
       "BaldrApiService.DescribeClusters"))
-  if valid_603140 != nil:
-    section.add "X-Amz-Target", valid_603140
-  var valid_603141 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603141 = validateParameter(valid_603141, JString, required = false,
+  if valid_601144 != nil:
+    section.add "X-Amz-Target", valid_601144
+  var valid_601145 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601145 = validateParameter(valid_601145, JString, required = false,
                                  default = nil)
-  if valid_603141 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603141
-  var valid_603142 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603142 = validateParameter(valid_603142, JString, required = false,
+  if valid_601145 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601145
+  var valid_601146 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601146 = validateParameter(valid_601146, JString, required = false,
                                  default = nil)
-  if valid_603142 != nil:
-    section.add "X-Amz-Algorithm", valid_603142
-  var valid_603143 = header.getOrDefault("X-Amz-Signature")
-  valid_603143 = validateParameter(valid_603143, JString, required = false,
+  if valid_601146 != nil:
+    section.add "X-Amz-Algorithm", valid_601146
+  var valid_601147 = header.getOrDefault("X-Amz-Signature")
+  valid_601147 = validateParameter(valid_601147, JString, required = false,
                                  default = nil)
-  if valid_603143 != nil:
-    section.add "X-Amz-Signature", valid_603143
-  var valid_603144 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603144 = validateParameter(valid_603144, JString, required = false,
+  if valid_601147 != nil:
+    section.add "X-Amz-Signature", valid_601147
+  var valid_601148 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601148 = validateParameter(valid_601148, JString, required = false,
                                  default = nil)
-  if valid_603144 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603144
-  var valid_603145 = header.getOrDefault("X-Amz-Credential")
-  valid_603145 = validateParameter(valid_603145, JString, required = false,
+  if valid_601148 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601148
+  var valid_601149 = header.getOrDefault("X-Amz-Credential")
+  valid_601149 = validateParameter(valid_601149, JString, required = false,
                                  default = nil)
-  if valid_603145 != nil:
-    section.add "X-Amz-Credential", valid_603145
+  if valid_601149 != nil:
+    section.add "X-Amz-Credential", valid_601149
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -979,19 +1018,20 @@ proc validate_DescribeClusters_603134(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603147: Call_DescribeClusters_603133; path: JsonNode;
+proc call*(call_601151: Call_DescribeClusters_601137; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about AWS CloudHSM clusters.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the clusters. When the response contains only a subset of clusters, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>DescribeClusters</code> request to get more clusters. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more clusters to get.</p>
   ## 
-  let valid = call_603147.validator(path, query, header, formData, body)
-  let scheme = call_603147.pickScheme
+  let valid = call_601151.validator(path, query, header, formData, body)
+  let scheme = call_601151.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603147.url(scheme.get, call_603147.host, call_603147.base,
-                         call_603147.route, valid.getOrDefault("path"))
-  result = hook(call_603147, url, valid)
+  let url = call_601151.url(scheme.get, call_601151.host, call_601151.base,
+                         call_601151.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601151, url, valid)
 
-proc call*(call_603148: Call_DescribeClusters_603133; body: JsonNode;
+proc call*(call_601152: Call_DescribeClusters_601137; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## describeClusters
   ## <p>Gets information about AWS CloudHSM clusters.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the clusters. When the response contains only a subset of clusters, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>DescribeClusters</code> request to get more clusters. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more clusters to get.</p>
@@ -1000,26 +1040,29 @@ proc call*(call_603148: Call_DescribeClusters_603133; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603149 = newJObject()
-  var body_603150 = newJObject()
-  add(query_603149, "NextToken", newJString(NextToken))
+  var query_601153 = newJObject()
+  var body_601154 = newJObject()
+  add(query_601153, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603150 = body
-  add(query_603149, "MaxResults", newJString(MaxResults))
-  result = call_603148.call(nil, query_603149, nil, nil, body_603150)
+    body_601154 = body
+  add(query_601153, "MaxResults", newJString(MaxResults))
+  result = call_601152.call(nil, query_601153, nil, nil, body_601154)
 
-var describeClusters* = Call_DescribeClusters_603133(name: "describeClusters",
+var describeClusters* = Call_DescribeClusters_601137(name: "describeClusters",
     meth: HttpMethod.HttpPost, host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.DescribeClusters",
-    validator: validate_DescribeClusters_603134, base: "/",
-    url: url_DescribeClusters_603135, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeClusters_601138, base: "/",
+    url: url_DescribeClusters_601139, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_InitializeCluster_603151 = ref object of OpenApiRestCall_602433
-proc url_InitializeCluster_603153(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_InitializeCluster_601155 = ref object of OpenApiRestCall_600437
+proc url_InitializeCluster_601157(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_InitializeCluster_603152(path: JsonNode; query: JsonNode;
+proc validate_InitializeCluster_601156(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Claims an AWS CloudHSM cluster by submitting the cluster certificate issued by your issuing certificate authority (CA) and the CA's root certificate. Before you can claim a cluster, you must sign the cluster's certificate signing request (CSR) with your issuing CA. To get the cluster's CSR, use <a>DescribeClusters</a>.
@@ -1040,48 +1083,48 @@ proc validate_InitializeCluster_603152(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603154 = header.getOrDefault("X-Amz-Date")
-  valid_603154 = validateParameter(valid_603154, JString, required = false,
+  var valid_601158 = header.getOrDefault("X-Amz-Date")
+  valid_601158 = validateParameter(valid_601158, JString, required = false,
                                  default = nil)
-  if valid_603154 != nil:
-    section.add "X-Amz-Date", valid_603154
-  var valid_603155 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603155 = validateParameter(valid_603155, JString, required = false,
+  if valid_601158 != nil:
+    section.add "X-Amz-Date", valid_601158
+  var valid_601159 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601159 = validateParameter(valid_601159, JString, required = false,
                                  default = nil)
-  if valid_603155 != nil:
-    section.add "X-Amz-Security-Token", valid_603155
+  if valid_601159 != nil:
+    section.add "X-Amz-Security-Token", valid_601159
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603156 = header.getOrDefault("X-Amz-Target")
-  valid_603156 = validateParameter(valid_603156, JString, required = true, default = newJString(
+  var valid_601160 = header.getOrDefault("X-Amz-Target")
+  valid_601160 = validateParameter(valid_601160, JString, required = true, default = newJString(
       "BaldrApiService.InitializeCluster"))
-  if valid_603156 != nil:
-    section.add "X-Amz-Target", valid_603156
-  var valid_603157 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603157 = validateParameter(valid_603157, JString, required = false,
+  if valid_601160 != nil:
+    section.add "X-Amz-Target", valid_601160
+  var valid_601161 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601161 = validateParameter(valid_601161, JString, required = false,
                                  default = nil)
-  if valid_603157 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603157
-  var valid_603158 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603158 = validateParameter(valid_603158, JString, required = false,
+  if valid_601161 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601161
+  var valid_601162 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601162 = validateParameter(valid_601162, JString, required = false,
                                  default = nil)
-  if valid_603158 != nil:
-    section.add "X-Amz-Algorithm", valid_603158
-  var valid_603159 = header.getOrDefault("X-Amz-Signature")
-  valid_603159 = validateParameter(valid_603159, JString, required = false,
+  if valid_601162 != nil:
+    section.add "X-Amz-Algorithm", valid_601162
+  var valid_601163 = header.getOrDefault("X-Amz-Signature")
+  valid_601163 = validateParameter(valid_601163, JString, required = false,
                                  default = nil)
-  if valid_603159 != nil:
-    section.add "X-Amz-Signature", valid_603159
-  var valid_603160 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603160 = validateParameter(valid_603160, JString, required = false,
+  if valid_601163 != nil:
+    section.add "X-Amz-Signature", valid_601163
+  var valid_601164 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601164 = validateParameter(valid_601164, JString, required = false,
                                  default = nil)
-  if valid_603160 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603160
-  var valid_603161 = header.getOrDefault("X-Amz-Credential")
-  valid_603161 = validateParameter(valid_603161, JString, required = false,
+  if valid_601164 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601164
+  var valid_601165 = header.getOrDefault("X-Amz-Credential")
+  valid_601165 = validateParameter(valid_601165, JString, required = false,
                                  default = nil)
-  if valid_603161 != nil:
-    section.add "X-Amz-Credential", valid_603161
+  if valid_601165 != nil:
+    section.add "X-Amz-Credential", valid_601165
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1092,39 +1135,43 @@ proc validate_InitializeCluster_603152(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603163: Call_InitializeCluster_603151; path: JsonNode;
+proc call*(call_601167: Call_InitializeCluster_601155; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Claims an AWS CloudHSM cluster by submitting the cluster certificate issued by your issuing certificate authority (CA) and the CA's root certificate. Before you can claim a cluster, you must sign the cluster's certificate signing request (CSR) with your issuing CA. To get the cluster's CSR, use <a>DescribeClusters</a>.
   ## 
-  let valid = call_603163.validator(path, query, header, formData, body)
-  let scheme = call_603163.pickScheme
+  let valid = call_601167.validator(path, query, header, formData, body)
+  let scheme = call_601167.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603163.url(scheme.get, call_603163.host, call_603163.base,
-                         call_603163.route, valid.getOrDefault("path"))
-  result = hook(call_603163, url, valid)
+  let url = call_601167.url(scheme.get, call_601167.host, call_601167.base,
+                         call_601167.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601167, url, valid)
 
-proc call*(call_603164: Call_InitializeCluster_603151; body: JsonNode): Recallable =
+proc call*(call_601168: Call_InitializeCluster_601155; body: JsonNode): Recallable =
   ## initializeCluster
   ## Claims an AWS CloudHSM cluster by submitting the cluster certificate issued by your issuing certificate authority (CA) and the CA's root certificate. Before you can claim a cluster, you must sign the cluster's certificate signing request (CSR) with your issuing CA. To get the cluster's CSR, use <a>DescribeClusters</a>.
   ##   body: JObject (required)
-  var body_603165 = newJObject()
+  var body_601169 = newJObject()
   if body != nil:
-    body_603165 = body
-  result = call_603164.call(nil, nil, nil, nil, body_603165)
+    body_601169 = body
+  result = call_601168.call(nil, nil, nil, nil, body_601169)
 
-var initializeCluster* = Call_InitializeCluster_603151(name: "initializeCluster",
+var initializeCluster* = Call_InitializeCluster_601155(name: "initializeCluster",
     meth: HttpMethod.HttpPost, host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.InitializeCluster",
-    validator: validate_InitializeCluster_603152, base: "/",
-    url: url_InitializeCluster_603153, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_InitializeCluster_601156, base: "/",
+    url: url_InitializeCluster_601157, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTags_603166 = ref object of OpenApiRestCall_602433
-proc url_ListTags_603168(protocol: Scheme; host: string; base: string; route: string;
-                        path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListTags_601170 = ref object of OpenApiRestCall_600437
+proc url_ListTags_601172(protocol: Scheme; host: string; base: string; route: string;
+                        path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListTags_603167(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTags_601171(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets a list of tags for the specified AWS CloudHSM cluster.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the tags. When the response contains only a subset of tags, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>ListTags</code> request to get more tags. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more tags to get.</p>
   ## 
@@ -1138,16 +1185,16 @@ proc validate_ListTags_603167(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603169 = query.getOrDefault("NextToken")
-  valid_603169 = validateParameter(valid_603169, JString, required = false,
+  var valid_601173 = query.getOrDefault("NextToken")
+  valid_601173 = validateParameter(valid_601173, JString, required = false,
                                  default = nil)
-  if valid_603169 != nil:
-    section.add "NextToken", valid_603169
-  var valid_603170 = query.getOrDefault("MaxResults")
-  valid_603170 = validateParameter(valid_603170, JString, required = false,
+  if valid_601173 != nil:
+    section.add "NextToken", valid_601173
+  var valid_601174 = query.getOrDefault("MaxResults")
+  valid_601174 = validateParameter(valid_601174, JString, required = false,
                                  default = nil)
-  if valid_603170 != nil:
-    section.add "MaxResults", valid_603170
+  if valid_601174 != nil:
+    section.add "MaxResults", valid_601174
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1159,48 +1206,48 @@ proc validate_ListTags_603167(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603171 = header.getOrDefault("X-Amz-Date")
-  valid_603171 = validateParameter(valid_603171, JString, required = false,
+  var valid_601175 = header.getOrDefault("X-Amz-Date")
+  valid_601175 = validateParameter(valid_601175, JString, required = false,
                                  default = nil)
-  if valid_603171 != nil:
-    section.add "X-Amz-Date", valid_603171
-  var valid_603172 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603172 = validateParameter(valid_603172, JString, required = false,
+  if valid_601175 != nil:
+    section.add "X-Amz-Date", valid_601175
+  var valid_601176 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601176 = validateParameter(valid_601176, JString, required = false,
                                  default = nil)
-  if valid_603172 != nil:
-    section.add "X-Amz-Security-Token", valid_603172
+  if valid_601176 != nil:
+    section.add "X-Amz-Security-Token", valid_601176
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603173 = header.getOrDefault("X-Amz-Target")
-  valid_603173 = validateParameter(valid_603173, JString, required = true, default = newJString(
+  var valid_601177 = header.getOrDefault("X-Amz-Target")
+  valid_601177 = validateParameter(valid_601177, JString, required = true, default = newJString(
       "BaldrApiService.ListTags"))
-  if valid_603173 != nil:
-    section.add "X-Amz-Target", valid_603173
-  var valid_603174 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603174 = validateParameter(valid_603174, JString, required = false,
+  if valid_601177 != nil:
+    section.add "X-Amz-Target", valid_601177
+  var valid_601178 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601178 = validateParameter(valid_601178, JString, required = false,
                                  default = nil)
-  if valid_603174 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603174
-  var valid_603175 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603175 = validateParameter(valid_603175, JString, required = false,
+  if valid_601178 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601178
+  var valid_601179 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601179 = validateParameter(valid_601179, JString, required = false,
                                  default = nil)
-  if valid_603175 != nil:
-    section.add "X-Amz-Algorithm", valid_603175
-  var valid_603176 = header.getOrDefault("X-Amz-Signature")
-  valid_603176 = validateParameter(valid_603176, JString, required = false,
+  if valid_601179 != nil:
+    section.add "X-Amz-Algorithm", valid_601179
+  var valid_601180 = header.getOrDefault("X-Amz-Signature")
+  valid_601180 = validateParameter(valid_601180, JString, required = false,
                                  default = nil)
-  if valid_603176 != nil:
-    section.add "X-Amz-Signature", valid_603176
-  var valid_603177 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603177 = validateParameter(valid_603177, JString, required = false,
+  if valid_601180 != nil:
+    section.add "X-Amz-Signature", valid_601180
+  var valid_601181 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601181 = validateParameter(valid_601181, JString, required = false,
                                  default = nil)
-  if valid_603177 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603177
-  var valid_603178 = header.getOrDefault("X-Amz-Credential")
-  valid_603178 = validateParameter(valid_603178, JString, required = false,
+  if valid_601181 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601181
+  var valid_601182 = header.getOrDefault("X-Amz-Credential")
+  valid_601182 = validateParameter(valid_601182, JString, required = false,
                                  default = nil)
-  if valid_603178 != nil:
-    section.add "X-Amz-Credential", valid_603178
+  if valid_601182 != nil:
+    section.add "X-Amz-Credential", valid_601182
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1211,19 +1258,20 @@ proc validate_ListTags_603167(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603180: Call_ListTags_603166; path: JsonNode; query: JsonNode;
+proc call*(call_601184: Call_ListTags_601170; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets a list of tags for the specified AWS CloudHSM cluster.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the tags. When the response contains only a subset of tags, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>ListTags</code> request to get more tags. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more tags to get.</p>
   ## 
-  let valid = call_603180.validator(path, query, header, formData, body)
-  let scheme = call_603180.pickScheme
+  let valid = call_601184.validator(path, query, header, formData, body)
+  let scheme = call_601184.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603180.url(scheme.get, call_603180.host, call_603180.base,
-                         call_603180.route, valid.getOrDefault("path"))
-  result = hook(call_603180, url, valid)
+  let url = call_601184.url(scheme.get, call_601184.host, call_601184.base,
+                         call_601184.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601184, url, valid)
 
-proc call*(call_603181: Call_ListTags_603166; body: JsonNode; NextToken: string = "";
+proc call*(call_601185: Call_ListTags_601170; body: JsonNode; NextToken: string = "";
           MaxResults: string = ""): Recallable =
   ## listTags
   ## <p>Gets a list of tags for the specified AWS CloudHSM cluster.</p> <p>This is a paginated operation, which means that each response might contain only a subset of all the tags. When the response contains only a subset of tags, it includes a <code>NextToken</code> value. Use this value in a subsequent <code>ListTags</code> request to get more tags. When you receive a response with no <code>NextToken</code> (or an empty or null value), that means there are no more tags to get.</p>
@@ -1232,26 +1280,29 @@ proc call*(call_603181: Call_ListTags_603166; body: JsonNode; NextToken: string 
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603182 = newJObject()
-  var body_603183 = newJObject()
-  add(query_603182, "NextToken", newJString(NextToken))
+  var query_601186 = newJObject()
+  var body_601187 = newJObject()
+  add(query_601186, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603183 = body
-  add(query_603182, "MaxResults", newJString(MaxResults))
-  result = call_603181.call(nil, query_603182, nil, nil, body_603183)
+    body_601187 = body
+  add(query_601186, "MaxResults", newJString(MaxResults))
+  result = call_601185.call(nil, query_601186, nil, nil, body_601187)
 
-var listTags* = Call_ListTags_603166(name: "listTags", meth: HttpMethod.HttpPost,
+var listTags* = Call_ListTags_601170(name: "listTags", meth: HttpMethod.HttpPost,
                                   host: "cloudhsmv2.amazonaws.com", route: "/#X-Amz-Target=BaldrApiService.ListTags",
-                                  validator: validate_ListTags_603167, base: "/",
-                                  url: url_ListTags_603168,
+                                  validator: validate_ListTags_601171, base: "/",
+                                  url: url_ListTags_601172,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestoreBackup_603184 = ref object of OpenApiRestCall_602433
-proc url_RestoreBackup_603186(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_RestoreBackup_601188 = ref object of OpenApiRestCall_600437
+proc url_RestoreBackup_601190(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_RestoreBackup_603185(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RestoreBackup_601189(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For more information on deleting a backup, see <a>DeleteBackup</a>.
   ## 
@@ -1271,48 +1322,48 @@ proc validate_RestoreBackup_603185(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603187 = header.getOrDefault("X-Amz-Date")
-  valid_603187 = validateParameter(valid_603187, JString, required = false,
+  var valid_601191 = header.getOrDefault("X-Amz-Date")
+  valid_601191 = validateParameter(valid_601191, JString, required = false,
                                  default = nil)
-  if valid_603187 != nil:
-    section.add "X-Amz-Date", valid_603187
-  var valid_603188 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603188 = validateParameter(valid_603188, JString, required = false,
+  if valid_601191 != nil:
+    section.add "X-Amz-Date", valid_601191
+  var valid_601192 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601192 = validateParameter(valid_601192, JString, required = false,
                                  default = nil)
-  if valid_603188 != nil:
-    section.add "X-Amz-Security-Token", valid_603188
+  if valid_601192 != nil:
+    section.add "X-Amz-Security-Token", valid_601192
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603189 = header.getOrDefault("X-Amz-Target")
-  valid_603189 = validateParameter(valid_603189, JString, required = true, default = newJString(
+  var valid_601193 = header.getOrDefault("X-Amz-Target")
+  valid_601193 = validateParameter(valid_601193, JString, required = true, default = newJString(
       "BaldrApiService.RestoreBackup"))
-  if valid_603189 != nil:
-    section.add "X-Amz-Target", valid_603189
-  var valid_603190 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603190 = validateParameter(valid_603190, JString, required = false,
+  if valid_601193 != nil:
+    section.add "X-Amz-Target", valid_601193
+  var valid_601194 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601194 = validateParameter(valid_601194, JString, required = false,
                                  default = nil)
-  if valid_603190 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603190
-  var valid_603191 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603191 = validateParameter(valid_603191, JString, required = false,
+  if valid_601194 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601194
+  var valid_601195 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601195 = validateParameter(valid_601195, JString, required = false,
                                  default = nil)
-  if valid_603191 != nil:
-    section.add "X-Amz-Algorithm", valid_603191
-  var valid_603192 = header.getOrDefault("X-Amz-Signature")
-  valid_603192 = validateParameter(valid_603192, JString, required = false,
+  if valid_601195 != nil:
+    section.add "X-Amz-Algorithm", valid_601195
+  var valid_601196 = header.getOrDefault("X-Amz-Signature")
+  valid_601196 = validateParameter(valid_601196, JString, required = false,
                                  default = nil)
-  if valid_603192 != nil:
-    section.add "X-Amz-Signature", valid_603192
-  var valid_603193 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603193 = validateParameter(valid_603193, JString, required = false,
+  if valid_601196 != nil:
+    section.add "X-Amz-Signature", valid_601196
+  var valid_601197 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601197 = validateParameter(valid_601197, JString, required = false,
                                  default = nil)
-  if valid_603193 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603193
-  var valid_603194 = header.getOrDefault("X-Amz-Credential")
-  valid_603194 = validateParameter(valid_603194, JString, required = false,
+  if valid_601197 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601197
+  var valid_601198 = header.getOrDefault("X-Amz-Credential")
+  valid_601198 = validateParameter(valid_601198, JString, required = false,
                                  default = nil)
-  if valid_603194 != nil:
-    section.add "X-Amz-Credential", valid_603194
+  if valid_601198 != nil:
+    section.add "X-Amz-Credential", valid_601198
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1323,39 +1374,43 @@ proc validate_RestoreBackup_603185(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603196: Call_RestoreBackup_603184; path: JsonNode; query: JsonNode;
+proc call*(call_601200: Call_RestoreBackup_601188; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For more information on deleting a backup, see <a>DeleteBackup</a>.
   ## 
-  let valid = call_603196.validator(path, query, header, formData, body)
-  let scheme = call_603196.pickScheme
+  let valid = call_601200.validator(path, query, header, formData, body)
+  let scheme = call_601200.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603196.url(scheme.get, call_603196.host, call_603196.base,
-                         call_603196.route, valid.getOrDefault("path"))
-  result = hook(call_603196, url, valid)
+  let url = call_601200.url(scheme.get, call_601200.host, call_601200.base,
+                         call_601200.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601200, url, valid)
 
-proc call*(call_603197: Call_RestoreBackup_603184; body: JsonNode): Recallable =
+proc call*(call_601201: Call_RestoreBackup_601188; body: JsonNode): Recallable =
   ## restoreBackup
   ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For more information on deleting a backup, see <a>DeleteBackup</a>.
   ##   body: JObject (required)
-  var body_603198 = newJObject()
+  var body_601202 = newJObject()
   if body != nil:
-    body_603198 = body
-  result = call_603197.call(nil, nil, nil, nil, body_603198)
+    body_601202 = body
+  result = call_601201.call(nil, nil, nil, nil, body_601202)
 
-var restoreBackup* = Call_RestoreBackup_603184(name: "restoreBackup",
+var restoreBackup* = Call_RestoreBackup_601188(name: "restoreBackup",
     meth: HttpMethod.HttpPost, host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.RestoreBackup",
-    validator: validate_RestoreBackup_603185, base: "/", url: url_RestoreBackup_603186,
+    validator: validate_RestoreBackup_601189, base: "/", url: url_RestoreBackup_601190,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_603199 = ref object of OpenApiRestCall_602433
-proc url_TagResource_603201(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_TagResource_601203 = ref object of OpenApiRestCall_600437
+proc url_TagResource_601205(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_TagResource_603200(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_601204(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds or overwrites one or more tags for the specified AWS CloudHSM cluster.
   ## 
@@ -1375,48 +1430,48 @@ proc validate_TagResource_603200(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603202 = header.getOrDefault("X-Amz-Date")
-  valid_603202 = validateParameter(valid_603202, JString, required = false,
+  var valid_601206 = header.getOrDefault("X-Amz-Date")
+  valid_601206 = validateParameter(valid_601206, JString, required = false,
                                  default = nil)
-  if valid_603202 != nil:
-    section.add "X-Amz-Date", valid_603202
-  var valid_603203 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603203 = validateParameter(valid_603203, JString, required = false,
+  if valid_601206 != nil:
+    section.add "X-Amz-Date", valid_601206
+  var valid_601207 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601207 = validateParameter(valid_601207, JString, required = false,
                                  default = nil)
-  if valid_603203 != nil:
-    section.add "X-Amz-Security-Token", valid_603203
+  if valid_601207 != nil:
+    section.add "X-Amz-Security-Token", valid_601207
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603204 = header.getOrDefault("X-Amz-Target")
-  valid_603204 = validateParameter(valid_603204, JString, required = true, default = newJString(
+  var valid_601208 = header.getOrDefault("X-Amz-Target")
+  valid_601208 = validateParameter(valid_601208, JString, required = true, default = newJString(
       "BaldrApiService.TagResource"))
-  if valid_603204 != nil:
-    section.add "X-Amz-Target", valid_603204
-  var valid_603205 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603205 = validateParameter(valid_603205, JString, required = false,
+  if valid_601208 != nil:
+    section.add "X-Amz-Target", valid_601208
+  var valid_601209 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601209 = validateParameter(valid_601209, JString, required = false,
                                  default = nil)
-  if valid_603205 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603205
-  var valid_603206 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603206 = validateParameter(valid_603206, JString, required = false,
+  if valid_601209 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601209
+  var valid_601210 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601210 = validateParameter(valid_601210, JString, required = false,
                                  default = nil)
-  if valid_603206 != nil:
-    section.add "X-Amz-Algorithm", valid_603206
-  var valid_603207 = header.getOrDefault("X-Amz-Signature")
-  valid_603207 = validateParameter(valid_603207, JString, required = false,
+  if valid_601210 != nil:
+    section.add "X-Amz-Algorithm", valid_601210
+  var valid_601211 = header.getOrDefault("X-Amz-Signature")
+  valid_601211 = validateParameter(valid_601211, JString, required = false,
                                  default = nil)
-  if valid_603207 != nil:
-    section.add "X-Amz-Signature", valid_603207
-  var valid_603208 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603208 = validateParameter(valid_603208, JString, required = false,
+  if valid_601211 != nil:
+    section.add "X-Amz-Signature", valid_601211
+  var valid_601212 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601212 = validateParameter(valid_601212, JString, required = false,
                                  default = nil)
-  if valid_603208 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603208
-  var valid_603209 = header.getOrDefault("X-Amz-Credential")
-  valid_603209 = validateParameter(valid_603209, JString, required = false,
+  if valid_601212 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601212
+  var valid_601213 = header.getOrDefault("X-Amz-Credential")
+  valid_601213 = validateParameter(valid_601213, JString, required = false,
                                  default = nil)
-  if valid_603209 != nil:
-    section.add "X-Amz-Credential", valid_603209
+  if valid_601213 != nil:
+    section.add "X-Amz-Credential", valid_601213
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1427,40 +1482,44 @@ proc validate_TagResource_603200(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603211: Call_TagResource_603199; path: JsonNode; query: JsonNode;
+proc call*(call_601215: Call_TagResource_601203; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds or overwrites one or more tags for the specified AWS CloudHSM cluster.
   ## 
-  let valid = call_603211.validator(path, query, header, formData, body)
-  let scheme = call_603211.pickScheme
+  let valid = call_601215.validator(path, query, header, formData, body)
+  let scheme = call_601215.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603211.url(scheme.get, call_603211.host, call_603211.base,
-                         call_603211.route, valid.getOrDefault("path"))
-  result = hook(call_603211, url, valid)
+  let url = call_601215.url(scheme.get, call_601215.host, call_601215.base,
+                         call_601215.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601215, url, valid)
 
-proc call*(call_603212: Call_TagResource_603199; body: JsonNode): Recallable =
+proc call*(call_601216: Call_TagResource_601203; body: JsonNode): Recallable =
   ## tagResource
   ## Adds or overwrites one or more tags for the specified AWS CloudHSM cluster.
   ##   body: JObject (required)
-  var body_603213 = newJObject()
+  var body_601217 = newJObject()
   if body != nil:
-    body_603213 = body
-  result = call_603212.call(nil, nil, nil, nil, body_603213)
+    body_601217 = body
+  result = call_601216.call(nil, nil, nil, nil, body_601217)
 
-var tagResource* = Call_TagResource_603199(name: "tagResource",
+var tagResource* = Call_TagResource_601203(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "cloudhsmv2.amazonaws.com", route: "/#X-Amz-Target=BaldrApiService.TagResource",
-                                        validator: validate_TagResource_603200,
-                                        base: "/", url: url_TagResource_603201,
+                                        validator: validate_TagResource_601204,
+                                        base: "/", url: url_TagResource_601205,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_603214 = ref object of OpenApiRestCall_602433
-proc url_UntagResource_603216(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_UntagResource_601218 = ref object of OpenApiRestCall_600437
+proc url_UntagResource_601220(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_UntagResource_603215(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_601219(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes the specified tag or tags from the specified AWS CloudHSM cluster.
   ## 
@@ -1480,48 +1539,48 @@ proc validate_UntagResource_603215(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603217 = header.getOrDefault("X-Amz-Date")
-  valid_603217 = validateParameter(valid_603217, JString, required = false,
+  var valid_601221 = header.getOrDefault("X-Amz-Date")
+  valid_601221 = validateParameter(valid_601221, JString, required = false,
                                  default = nil)
-  if valid_603217 != nil:
-    section.add "X-Amz-Date", valid_603217
-  var valid_603218 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603218 = validateParameter(valid_603218, JString, required = false,
+  if valid_601221 != nil:
+    section.add "X-Amz-Date", valid_601221
+  var valid_601222 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601222 = validateParameter(valid_601222, JString, required = false,
                                  default = nil)
-  if valid_603218 != nil:
-    section.add "X-Amz-Security-Token", valid_603218
+  if valid_601222 != nil:
+    section.add "X-Amz-Security-Token", valid_601222
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603219 = header.getOrDefault("X-Amz-Target")
-  valid_603219 = validateParameter(valid_603219, JString, required = true, default = newJString(
+  var valid_601223 = header.getOrDefault("X-Amz-Target")
+  valid_601223 = validateParameter(valid_601223, JString, required = true, default = newJString(
       "BaldrApiService.UntagResource"))
-  if valid_603219 != nil:
-    section.add "X-Amz-Target", valid_603219
-  var valid_603220 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603220 = validateParameter(valid_603220, JString, required = false,
+  if valid_601223 != nil:
+    section.add "X-Amz-Target", valid_601223
+  var valid_601224 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601224 = validateParameter(valid_601224, JString, required = false,
                                  default = nil)
-  if valid_603220 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603220
-  var valid_603221 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603221 = validateParameter(valid_603221, JString, required = false,
+  if valid_601224 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601224
+  var valid_601225 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601225 = validateParameter(valid_601225, JString, required = false,
                                  default = nil)
-  if valid_603221 != nil:
-    section.add "X-Amz-Algorithm", valid_603221
-  var valid_603222 = header.getOrDefault("X-Amz-Signature")
-  valid_603222 = validateParameter(valid_603222, JString, required = false,
+  if valid_601225 != nil:
+    section.add "X-Amz-Algorithm", valid_601225
+  var valid_601226 = header.getOrDefault("X-Amz-Signature")
+  valid_601226 = validateParameter(valid_601226, JString, required = false,
                                  default = nil)
-  if valid_603222 != nil:
-    section.add "X-Amz-Signature", valid_603222
-  var valid_603223 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603223 = validateParameter(valid_603223, JString, required = false,
+  if valid_601226 != nil:
+    section.add "X-Amz-Signature", valid_601226
+  var valid_601227 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601227 = validateParameter(valid_601227, JString, required = false,
                                  default = nil)
-  if valid_603223 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603223
-  var valid_603224 = header.getOrDefault("X-Amz-Credential")
-  valid_603224 = validateParameter(valid_603224, JString, required = false,
+  if valid_601227 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601227
+  var valid_601228 = header.getOrDefault("X-Amz-Credential")
+  valid_601228 = validateParameter(valid_601228, JString, required = false,
                                  default = nil)
-  if valid_603224 != nil:
-    section.add "X-Amz-Credential", valid_603224
+  if valid_601228 != nil:
+    section.add "X-Amz-Credential", valid_601228
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1532,31 +1591,32 @@ proc validate_UntagResource_603215(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603226: Call_UntagResource_603214; path: JsonNode; query: JsonNode;
+proc call*(call_601230: Call_UntagResource_601218; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes the specified tag or tags from the specified AWS CloudHSM cluster.
   ## 
-  let valid = call_603226.validator(path, query, header, formData, body)
-  let scheme = call_603226.pickScheme
+  let valid = call_601230.validator(path, query, header, formData, body)
+  let scheme = call_601230.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603226.url(scheme.get, call_603226.host, call_603226.base,
-                         call_603226.route, valid.getOrDefault("path"))
-  result = hook(call_603226, url, valid)
+  let url = call_601230.url(scheme.get, call_601230.host, call_601230.base,
+                         call_601230.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601230, url, valid)
 
-proc call*(call_603227: Call_UntagResource_603214; body: JsonNode): Recallable =
+proc call*(call_601231: Call_UntagResource_601218; body: JsonNode): Recallable =
   ## untagResource
   ## Removes the specified tag or tags from the specified AWS CloudHSM cluster.
   ##   body: JObject (required)
-  var body_603228 = newJObject()
+  var body_601232 = newJObject()
   if body != nil:
-    body_603228 = body
-  result = call_603227.call(nil, nil, nil, nil, body_603228)
+    body_601232 = body
+  result = call_601231.call(nil, nil, nil, nil, body_601232)
 
-var untagResource* = Call_UntagResource_603214(name: "untagResource",
+var untagResource* = Call_UntagResource_601218(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "cloudhsmv2.amazonaws.com",
     route: "/#X-Amz-Target=BaldrApiService.UntagResource",
-    validator: validate_UntagResource_603215, base: "/", url: url_UntagResource_603216,
+    validator: validate_UntagResource_601219, base: "/", url: url_UntagResource_601220,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -1600,7 +1660,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.} =
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, "")
+  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
   result.sign(input.getOrDefault("query"), SHA256)

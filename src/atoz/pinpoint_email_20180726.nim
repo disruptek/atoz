@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Pinpoint Email Service
@@ -27,17 +27,17 @@ type
     host*: string
     schemes*: set[Scheme]
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
-              path: JsonNode): string
+              path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602417 = ref object of OpenApiRestCall
+  OpenApiRestCall_600421 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602417](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600421](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602417): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600421): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,6 +74,14 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
+proc queryString(query: JsonNode): string =
+  var qs: seq[KeyVal]
+  if query == nil:
+    return ""
+  for k, v in query.pairs:
+    qs.add (key: k, val: v.getStr)
+  result = encodeQuery(qs)
+
 proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
@@ -133,14 +141,17 @@ const
       "ca-central-1": "email.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "pinpoint-email"
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateConfigurationSet_603011 = ref object of OpenApiRestCall_602417
-proc url_CreateConfigurationSet_603013(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateConfigurationSet_601015 = ref object of OpenApiRestCall_600421
+proc url_CreateConfigurationSet_601017(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateConfigurationSet_603012(path: JsonNode; query: JsonNode;
+proc validate_CreateConfigurationSet_601016(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Create a configuration set. <i>Configuration sets</i> are groups of rules that you can apply to the emails you send using Amazon Pinpoint. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email. 
   ## 
@@ -159,41 +170,41 @@ proc validate_CreateConfigurationSet_603012(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603014 = header.getOrDefault("X-Amz-Date")
-  valid_603014 = validateParameter(valid_603014, JString, required = false,
+  var valid_601018 = header.getOrDefault("X-Amz-Date")
+  valid_601018 = validateParameter(valid_601018, JString, required = false,
                                  default = nil)
-  if valid_603014 != nil:
-    section.add "X-Amz-Date", valid_603014
-  var valid_603015 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603015 = validateParameter(valid_603015, JString, required = false,
+  if valid_601018 != nil:
+    section.add "X-Amz-Date", valid_601018
+  var valid_601019 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601019 = validateParameter(valid_601019, JString, required = false,
                                  default = nil)
-  if valid_603015 != nil:
-    section.add "X-Amz-Security-Token", valid_603015
-  var valid_603016 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603016 = validateParameter(valid_603016, JString, required = false,
+  if valid_601019 != nil:
+    section.add "X-Amz-Security-Token", valid_601019
+  var valid_601020 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601020 = validateParameter(valid_601020, JString, required = false,
                                  default = nil)
-  if valid_603016 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603016
-  var valid_603017 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603017 = validateParameter(valid_603017, JString, required = false,
+  if valid_601020 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601020
+  var valid_601021 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601021 = validateParameter(valid_601021, JString, required = false,
                                  default = nil)
-  if valid_603017 != nil:
-    section.add "X-Amz-Algorithm", valid_603017
-  var valid_603018 = header.getOrDefault("X-Amz-Signature")
-  valid_603018 = validateParameter(valid_603018, JString, required = false,
+  if valid_601021 != nil:
+    section.add "X-Amz-Algorithm", valid_601021
+  var valid_601022 = header.getOrDefault("X-Amz-Signature")
+  valid_601022 = validateParameter(valid_601022, JString, required = false,
                                  default = nil)
-  if valid_603018 != nil:
-    section.add "X-Amz-Signature", valid_603018
-  var valid_603019 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603019 = validateParameter(valid_603019, JString, required = false,
+  if valid_601022 != nil:
+    section.add "X-Amz-Signature", valid_601022
+  var valid_601023 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601023 = validateParameter(valid_601023, JString, required = false,
                                  default = nil)
-  if valid_603019 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603019
-  var valid_603020 = header.getOrDefault("X-Amz-Credential")
-  valid_603020 = validateParameter(valid_603020, JString, required = false,
+  if valid_601023 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601023
+  var valid_601024 = header.getOrDefault("X-Amz-Credential")
+  valid_601024 = validateParameter(valid_601024, JString, required = false,
                                  default = nil)
-  if valid_603020 != nil:
-    section.add "X-Amz-Credential", valid_603020
+  if valid_601024 != nil:
+    section.add "X-Amz-Credential", valid_601024
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -204,39 +215,43 @@ proc validate_CreateConfigurationSet_603012(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603022: Call_CreateConfigurationSet_603011; path: JsonNode;
+proc call*(call_601026: Call_CreateConfigurationSet_601015; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Create a configuration set. <i>Configuration sets</i> are groups of rules that you can apply to the emails you send using Amazon Pinpoint. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email. 
   ## 
-  let valid = call_603022.validator(path, query, header, formData, body)
-  let scheme = call_603022.pickScheme
+  let valid = call_601026.validator(path, query, header, formData, body)
+  let scheme = call_601026.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603022.url(scheme.get, call_603022.host, call_603022.base,
-                         call_603022.route, valid.getOrDefault("path"))
-  result = hook(call_603022, url, valid)
+  let url = call_601026.url(scheme.get, call_601026.host, call_601026.base,
+                         call_601026.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601026, url, valid)
 
-proc call*(call_603023: Call_CreateConfigurationSet_603011; body: JsonNode): Recallable =
+proc call*(call_601027: Call_CreateConfigurationSet_601015; body: JsonNode): Recallable =
   ## createConfigurationSet
   ## Create a configuration set. <i>Configuration sets</i> are groups of rules that you can apply to the emails you send using Amazon Pinpoint. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email. 
   ##   body: JObject (required)
-  var body_603024 = newJObject()
+  var body_601028 = newJObject()
   if body != nil:
-    body_603024 = body
-  result = call_603023.call(nil, nil, nil, nil, body_603024)
+    body_601028 = body
+  result = call_601027.call(nil, nil, nil, nil, body_601028)
 
-var createConfigurationSet* = Call_CreateConfigurationSet_603011(
+var createConfigurationSet* = Call_CreateConfigurationSet_601015(
     name: "createConfigurationSet", meth: HttpMethod.HttpPost,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets",
-    validator: validate_CreateConfigurationSet_603012, base: "/",
-    url: url_CreateConfigurationSet_603013, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateConfigurationSet_601016, base: "/",
+    url: url_CreateConfigurationSet_601017, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListConfigurationSets_602754 = ref object of OpenApiRestCall_602417
-proc url_ListConfigurationSets_602756(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListConfigurationSets_600758 = ref object of OpenApiRestCall_600421
+proc url_ListConfigurationSets_600760(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListConfigurationSets_602755(path: JsonNode; query: JsonNode;
+proc validate_ListConfigurationSets_600759(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>List all of the configuration sets associated with your Amazon Pinpoint account in the current region.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ## 
@@ -250,15 +265,15 @@ proc validate_ListConfigurationSets_602755(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : A token returned from a previous call to <code>ListConfigurationSets</code> to indicate the position in the list of configuration sets.
   section = newJObject()
-  var valid_602868 = query.getOrDefault("PageSize")
-  valid_602868 = validateParameter(valid_602868, JInt, required = false, default = nil)
-  if valid_602868 != nil:
-    section.add "PageSize", valid_602868
-  var valid_602869 = query.getOrDefault("NextToken")
-  valid_602869 = validateParameter(valid_602869, JString, required = false,
+  var valid_600872 = query.getOrDefault("PageSize")
+  valid_600872 = validateParameter(valid_600872, JInt, required = false, default = nil)
+  if valid_600872 != nil:
+    section.add "PageSize", valid_600872
+  var valid_600873 = query.getOrDefault("NextToken")
+  valid_600873 = validateParameter(valid_600873, JString, required = false,
                                  default = nil)
-  if valid_602869 != nil:
-    section.add "NextToken", valid_602869
+  if valid_600873 != nil:
+    section.add "NextToken", valid_600873
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -269,60 +284,61 @@ proc validate_ListConfigurationSets_602755(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_602870 = header.getOrDefault("X-Amz-Date")
-  valid_602870 = validateParameter(valid_602870, JString, required = false,
+  var valid_600874 = header.getOrDefault("X-Amz-Date")
+  valid_600874 = validateParameter(valid_600874, JString, required = false,
                                  default = nil)
-  if valid_602870 != nil:
-    section.add "X-Amz-Date", valid_602870
-  var valid_602871 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602871 = validateParameter(valid_602871, JString, required = false,
+  if valid_600874 != nil:
+    section.add "X-Amz-Date", valid_600874
+  var valid_600875 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600875 = validateParameter(valid_600875, JString, required = false,
                                  default = nil)
-  if valid_602871 != nil:
-    section.add "X-Amz-Security-Token", valid_602871
-  var valid_602872 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602872 = validateParameter(valid_602872, JString, required = false,
+  if valid_600875 != nil:
+    section.add "X-Amz-Security-Token", valid_600875
+  var valid_600876 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600876 = validateParameter(valid_600876, JString, required = false,
                                  default = nil)
-  if valid_602872 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602872
-  var valid_602873 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602873 = validateParameter(valid_602873, JString, required = false,
+  if valid_600876 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600876
+  var valid_600877 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600877 = validateParameter(valid_600877, JString, required = false,
                                  default = nil)
-  if valid_602873 != nil:
-    section.add "X-Amz-Algorithm", valid_602873
-  var valid_602874 = header.getOrDefault("X-Amz-Signature")
-  valid_602874 = validateParameter(valid_602874, JString, required = false,
+  if valid_600877 != nil:
+    section.add "X-Amz-Algorithm", valid_600877
+  var valid_600878 = header.getOrDefault("X-Amz-Signature")
+  valid_600878 = validateParameter(valid_600878, JString, required = false,
                                  default = nil)
-  if valid_602874 != nil:
-    section.add "X-Amz-Signature", valid_602874
-  var valid_602875 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602875 = validateParameter(valid_602875, JString, required = false,
+  if valid_600878 != nil:
+    section.add "X-Amz-Signature", valid_600878
+  var valid_600879 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600879 = validateParameter(valid_600879, JString, required = false,
                                  default = nil)
-  if valid_602875 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602875
-  var valid_602876 = header.getOrDefault("X-Amz-Credential")
-  valid_602876 = validateParameter(valid_602876, JString, required = false,
+  if valid_600879 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600879
+  var valid_600880 = header.getOrDefault("X-Amz-Credential")
+  valid_600880 = validateParameter(valid_600880, JString, required = false,
                                  default = nil)
-  if valid_602876 != nil:
-    section.add "X-Amz-Credential", valid_602876
+  if valid_600880 != nil:
+    section.add "X-Amz-Credential", valid_600880
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602899: Call_ListConfigurationSets_602754; path: JsonNode;
+proc call*(call_600903: Call_ListConfigurationSets_600758; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>List all of the configuration sets associated with your Amazon Pinpoint account in the current region.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ## 
-  let valid = call_602899.validator(path, query, header, formData, body)
-  let scheme = call_602899.pickScheme
+  let valid = call_600903.validator(path, query, header, formData, body)
+  let scheme = call_600903.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602899.url(scheme.get, call_602899.host, call_602899.base,
-                         call_602899.route, valid.getOrDefault("path"))
-  result = hook(call_602899, url, valid)
+  let url = call_600903.url(scheme.get, call_600903.host, call_600903.base,
+                         call_600903.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_600903, url, valid)
 
-proc call*(call_602970: Call_ListConfigurationSets_602754; PageSize: int = 0;
+proc call*(call_600974: Call_ListConfigurationSets_600758; PageSize: int = 0;
           NextToken: string = ""): Recallable =
   ## listConfigurationSets
   ## <p>List all of the configuration sets associated with your Amazon Pinpoint account in the current region.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
@@ -330,20 +346,23 @@ proc call*(call_602970: Call_ListConfigurationSets_602754; PageSize: int = 0;
   ##           : The number of results to show in a single call to <code>ListConfigurationSets</code>. If the number of results is larger than the number you specified in this parameter, then the response includes a <code>NextToken</code> element, which you can use to obtain additional results.
   ##   NextToken: string
   ##            : A token returned from a previous call to <code>ListConfigurationSets</code> to indicate the position in the list of configuration sets.
-  var query_602971 = newJObject()
-  add(query_602971, "PageSize", newJInt(PageSize))
-  add(query_602971, "NextToken", newJString(NextToken))
-  result = call_602970.call(nil, query_602971, nil, nil, nil)
+  var query_600975 = newJObject()
+  add(query_600975, "PageSize", newJInt(PageSize))
+  add(query_600975, "NextToken", newJString(NextToken))
+  result = call_600974.call(nil, query_600975, nil, nil, nil)
 
-var listConfigurationSets* = Call_ListConfigurationSets_602754(
+var listConfigurationSets* = Call_ListConfigurationSets_600758(
     name: "listConfigurationSets", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets",
-    validator: validate_ListConfigurationSets_602755, base: "/",
-    url: url_ListConfigurationSets_602756, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListConfigurationSets_600759, base: "/",
+    url: url_ListConfigurationSets_600760, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateConfigurationSetEventDestination_603053 = ref object of OpenApiRestCall_602417
-proc url_CreateConfigurationSetEventDestination_603055(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode): string =
+  Call_CreateConfigurationSetEventDestination_601057 = ref object of OpenApiRestCall_600421
+proc url_CreateConfigurationSetEventDestination_601059(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -354,9 +373,9 @@ proc url_CreateConfigurationSetEventDestination_603055(protocol: Scheme;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_CreateConfigurationSetEventDestination_603054(path: JsonNode;
+proc validate_CreateConfigurationSetEventDestination_601058(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Create an event destination. In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p> <p>A single configuration set can include more than one event destination.</p>
   ## 
@@ -367,11 +386,11 @@ proc validate_CreateConfigurationSetEventDestination_603054(path: JsonNode;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603056 = path.getOrDefault("ConfigurationSetName")
-  valid_603056 = validateParameter(valid_603056, JString, required = true,
+  var valid_601060 = path.getOrDefault("ConfigurationSetName")
+  valid_601060 = validateParameter(valid_601060, JString, required = true,
                                  default = nil)
-  if valid_603056 != nil:
-    section.add "ConfigurationSetName", valid_603056
+  if valid_601060 != nil:
+    section.add "ConfigurationSetName", valid_601060
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -384,41 +403,41 @@ proc validate_CreateConfigurationSetEventDestination_603054(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603057 = header.getOrDefault("X-Amz-Date")
-  valid_603057 = validateParameter(valid_603057, JString, required = false,
+  var valid_601061 = header.getOrDefault("X-Amz-Date")
+  valid_601061 = validateParameter(valid_601061, JString, required = false,
                                  default = nil)
-  if valid_603057 != nil:
-    section.add "X-Amz-Date", valid_603057
-  var valid_603058 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603058 = validateParameter(valid_603058, JString, required = false,
+  if valid_601061 != nil:
+    section.add "X-Amz-Date", valid_601061
+  var valid_601062 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601062 = validateParameter(valid_601062, JString, required = false,
                                  default = nil)
-  if valid_603058 != nil:
-    section.add "X-Amz-Security-Token", valid_603058
-  var valid_603059 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603059 = validateParameter(valid_603059, JString, required = false,
+  if valid_601062 != nil:
+    section.add "X-Amz-Security-Token", valid_601062
+  var valid_601063 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601063 = validateParameter(valid_601063, JString, required = false,
                                  default = nil)
-  if valid_603059 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603059
-  var valid_603060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603060 = validateParameter(valid_603060, JString, required = false,
+  if valid_601063 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601063
+  var valid_601064 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601064 = validateParameter(valid_601064, JString, required = false,
                                  default = nil)
-  if valid_603060 != nil:
-    section.add "X-Amz-Algorithm", valid_603060
-  var valid_603061 = header.getOrDefault("X-Amz-Signature")
-  valid_603061 = validateParameter(valid_603061, JString, required = false,
+  if valid_601064 != nil:
+    section.add "X-Amz-Algorithm", valid_601064
+  var valid_601065 = header.getOrDefault("X-Amz-Signature")
+  valid_601065 = validateParameter(valid_601065, JString, required = false,
                                  default = nil)
-  if valid_603061 != nil:
-    section.add "X-Amz-Signature", valid_603061
-  var valid_603062 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603062 = validateParameter(valid_603062, JString, required = false,
+  if valid_601065 != nil:
+    section.add "X-Amz-Signature", valid_601065
+  var valid_601066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601066 = validateParameter(valid_601066, JString, required = false,
                                  default = nil)
-  if valid_603062 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603062
-  var valid_603063 = header.getOrDefault("X-Amz-Credential")
-  valid_603063 = validateParameter(valid_603063, JString, required = false,
+  if valid_601066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601066
+  var valid_601067 = header.getOrDefault("X-Amz-Credential")
+  valid_601067 = validateParameter(valid_601067, JString, required = false,
                                  default = nil)
-  if valid_603063 != nil:
-    section.add "X-Amz-Credential", valid_603063
+  if valid_601067 != nil:
+    section.add "X-Amz-Credential", valid_601067
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -429,43 +448,47 @@ proc validate_CreateConfigurationSetEventDestination_603054(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603065: Call_CreateConfigurationSetEventDestination_603053;
+proc call*(call_601069: Call_CreateConfigurationSetEventDestination_601057;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Create an event destination. In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p> <p>A single configuration set can include more than one event destination.</p>
   ## 
-  let valid = call_603065.validator(path, query, header, formData, body)
-  let scheme = call_603065.pickScheme
+  let valid = call_601069.validator(path, query, header, formData, body)
+  let scheme = call_601069.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603065.url(scheme.get, call_603065.host, call_603065.base,
-                         call_603065.route, valid.getOrDefault("path"))
-  result = hook(call_603065, url, valid)
+  let url = call_601069.url(scheme.get, call_601069.host, call_601069.base,
+                         call_601069.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601069, url, valid)
 
-proc call*(call_603066: Call_CreateConfigurationSetEventDestination_603053;
+proc call*(call_601070: Call_CreateConfigurationSetEventDestination_601057;
           ConfigurationSetName: string; body: JsonNode): Recallable =
   ## createConfigurationSetEventDestination
   ## <p>Create an event destination. In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p> <p>A single configuration set can include more than one event destination.</p>
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   body: JObject (required)
-  var path_603067 = newJObject()
-  var body_603068 = newJObject()
-  add(path_603067, "ConfigurationSetName", newJString(ConfigurationSetName))
+  var path_601071 = newJObject()
+  var body_601072 = newJObject()
+  add(path_601071, "ConfigurationSetName", newJString(ConfigurationSetName))
   if body != nil:
-    body_603068 = body
-  result = call_603066.call(path_603067, nil, nil, nil, body_603068)
+    body_601072 = body
+  result = call_601070.call(path_601071, nil, nil, nil, body_601072)
 
-var createConfigurationSetEventDestination* = Call_CreateConfigurationSetEventDestination_603053(
+var createConfigurationSetEventDestination* = Call_CreateConfigurationSetEventDestination_601057(
     name: "createConfigurationSetEventDestination", meth: HttpMethod.HttpPost,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets/{ConfigurationSetName}/event-destinations",
-    validator: validate_CreateConfigurationSetEventDestination_603054, base: "/",
-    url: url_CreateConfigurationSetEventDestination_603055,
+    validator: validate_CreateConfigurationSetEventDestination_601058, base: "/",
+    url: url_CreateConfigurationSetEventDestination_601059,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetConfigurationSetEventDestinations_603025 = ref object of OpenApiRestCall_602417
-proc url_GetConfigurationSetEventDestinations_603027(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode): string =
+  Call_GetConfigurationSetEventDestinations_601029 = ref object of OpenApiRestCall_600421
+proc url_GetConfigurationSetEventDestinations_601031(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -476,9 +499,9 @@ proc url_GetConfigurationSetEventDestinations_603027(protocol: Scheme;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_GetConfigurationSetEventDestinations_603026(path: JsonNode;
+proc validate_GetConfigurationSetEventDestinations_601030(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieve a list of event destinations that are associated with a configuration set.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   ## 
@@ -489,11 +512,11 @@ proc validate_GetConfigurationSetEventDestinations_603026(path: JsonNode;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603042 = path.getOrDefault("ConfigurationSetName")
-  valid_603042 = validateParameter(valid_603042, JString, required = true,
+  var valid_601046 = path.getOrDefault("ConfigurationSetName")
+  valid_601046 = validateParameter(valid_601046, JString, required = true,
                                  default = nil)
-  if valid_603042 != nil:
-    section.add "ConfigurationSetName", valid_603042
+  if valid_601046 != nil:
+    section.add "ConfigurationSetName", valid_601046
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -506,83 +529,87 @@ proc validate_GetConfigurationSetEventDestinations_603026(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603043 = header.getOrDefault("X-Amz-Date")
-  valid_603043 = validateParameter(valid_603043, JString, required = false,
+  var valid_601047 = header.getOrDefault("X-Amz-Date")
+  valid_601047 = validateParameter(valid_601047, JString, required = false,
                                  default = nil)
-  if valid_603043 != nil:
-    section.add "X-Amz-Date", valid_603043
-  var valid_603044 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603044 = validateParameter(valid_603044, JString, required = false,
+  if valid_601047 != nil:
+    section.add "X-Amz-Date", valid_601047
+  var valid_601048 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601048 = validateParameter(valid_601048, JString, required = false,
                                  default = nil)
-  if valid_603044 != nil:
-    section.add "X-Amz-Security-Token", valid_603044
-  var valid_603045 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603045 = validateParameter(valid_603045, JString, required = false,
+  if valid_601048 != nil:
+    section.add "X-Amz-Security-Token", valid_601048
+  var valid_601049 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601049 = validateParameter(valid_601049, JString, required = false,
                                  default = nil)
-  if valid_603045 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603045
-  var valid_603046 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603046 = validateParameter(valid_603046, JString, required = false,
+  if valid_601049 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601049
+  var valid_601050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601050 = validateParameter(valid_601050, JString, required = false,
                                  default = nil)
-  if valid_603046 != nil:
-    section.add "X-Amz-Algorithm", valid_603046
-  var valid_603047 = header.getOrDefault("X-Amz-Signature")
-  valid_603047 = validateParameter(valid_603047, JString, required = false,
+  if valid_601050 != nil:
+    section.add "X-Amz-Algorithm", valid_601050
+  var valid_601051 = header.getOrDefault("X-Amz-Signature")
+  valid_601051 = validateParameter(valid_601051, JString, required = false,
                                  default = nil)
-  if valid_603047 != nil:
-    section.add "X-Amz-Signature", valid_603047
-  var valid_603048 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603048 = validateParameter(valid_603048, JString, required = false,
+  if valid_601051 != nil:
+    section.add "X-Amz-Signature", valid_601051
+  var valid_601052 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601052 = validateParameter(valid_601052, JString, required = false,
                                  default = nil)
-  if valid_603048 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603048
-  var valid_603049 = header.getOrDefault("X-Amz-Credential")
-  valid_603049 = validateParameter(valid_603049, JString, required = false,
+  if valid_601052 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601052
+  var valid_601053 = header.getOrDefault("X-Amz-Credential")
+  valid_601053 = validateParameter(valid_601053, JString, required = false,
                                  default = nil)
-  if valid_603049 != nil:
-    section.add "X-Amz-Credential", valid_603049
+  if valid_601053 != nil:
+    section.add "X-Amz-Credential", valid_601053
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603050: Call_GetConfigurationSetEventDestinations_603025;
+proc call*(call_601054: Call_GetConfigurationSetEventDestinations_601029;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Retrieve a list of event destinations that are associated with a configuration set.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   ## 
-  let valid = call_603050.validator(path, query, header, formData, body)
-  let scheme = call_603050.pickScheme
+  let valid = call_601054.validator(path, query, header, formData, body)
+  let scheme = call_601054.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603050.url(scheme.get, call_603050.host, call_603050.base,
-                         call_603050.route, valid.getOrDefault("path"))
-  result = hook(call_603050, url, valid)
+  let url = call_601054.url(scheme.get, call_601054.host, call_601054.base,
+                         call_601054.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601054, url, valid)
 
-proc call*(call_603051: Call_GetConfigurationSetEventDestinations_603025;
+proc call*(call_601055: Call_GetConfigurationSetEventDestinations_601029;
           ConfigurationSetName: string): Recallable =
   ## getConfigurationSetEventDestinations
   ## <p>Retrieve a list of event destinations that are associated with a configuration set.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
-  var path_603052 = newJObject()
-  add(path_603052, "ConfigurationSetName", newJString(ConfigurationSetName))
-  result = call_603051.call(path_603052, nil, nil, nil, nil)
+  var path_601056 = newJObject()
+  add(path_601056, "ConfigurationSetName", newJString(ConfigurationSetName))
+  result = call_601055.call(path_601056, nil, nil, nil, nil)
 
-var getConfigurationSetEventDestinations* = Call_GetConfigurationSetEventDestinations_603025(
+var getConfigurationSetEventDestinations* = Call_GetConfigurationSetEventDestinations_601029(
     name: "getConfigurationSetEventDestinations", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets/{ConfigurationSetName}/event-destinations",
-    validator: validate_GetConfigurationSetEventDestinations_603026, base: "/",
-    url: url_GetConfigurationSetEventDestinations_603027,
+    validator: validate_GetConfigurationSetEventDestinations_601030, base: "/",
+    url: url_GetConfigurationSetEventDestinations_601031,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDedicatedIpPool_603084 = ref object of OpenApiRestCall_602417
-proc url_CreateDedicatedIpPool_603086(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateDedicatedIpPool_601088 = ref object of OpenApiRestCall_600421
+proc url_CreateDedicatedIpPool_601090(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateDedicatedIpPool_603085(path: JsonNode; query: JsonNode;
+proc validate_CreateDedicatedIpPool_601089(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Create a new pool of dedicated IP addresses. A pool can include one or more dedicated IP addresses that are associated with your Amazon Pinpoint account. You can associate a pool with a configuration set. When you send an email that uses that configuration set, Amazon Pinpoint sends it using only the IP addresses in the associated pool.
   ## 
@@ -601,41 +628,41 @@ proc validate_CreateDedicatedIpPool_603085(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603087 = header.getOrDefault("X-Amz-Date")
-  valid_603087 = validateParameter(valid_603087, JString, required = false,
+  var valid_601091 = header.getOrDefault("X-Amz-Date")
+  valid_601091 = validateParameter(valid_601091, JString, required = false,
                                  default = nil)
-  if valid_603087 != nil:
-    section.add "X-Amz-Date", valid_603087
-  var valid_603088 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603088 = validateParameter(valid_603088, JString, required = false,
+  if valid_601091 != nil:
+    section.add "X-Amz-Date", valid_601091
+  var valid_601092 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601092 = validateParameter(valid_601092, JString, required = false,
                                  default = nil)
-  if valid_603088 != nil:
-    section.add "X-Amz-Security-Token", valid_603088
-  var valid_603089 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603089 = validateParameter(valid_603089, JString, required = false,
+  if valid_601092 != nil:
+    section.add "X-Amz-Security-Token", valid_601092
+  var valid_601093 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601093 = validateParameter(valid_601093, JString, required = false,
                                  default = nil)
-  if valid_603089 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603089
-  var valid_603090 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603090 = validateParameter(valid_603090, JString, required = false,
+  if valid_601093 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601093
+  var valid_601094 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601094 = validateParameter(valid_601094, JString, required = false,
                                  default = nil)
-  if valid_603090 != nil:
-    section.add "X-Amz-Algorithm", valid_603090
-  var valid_603091 = header.getOrDefault("X-Amz-Signature")
-  valid_603091 = validateParameter(valid_603091, JString, required = false,
+  if valid_601094 != nil:
+    section.add "X-Amz-Algorithm", valid_601094
+  var valid_601095 = header.getOrDefault("X-Amz-Signature")
+  valid_601095 = validateParameter(valid_601095, JString, required = false,
                                  default = nil)
-  if valid_603091 != nil:
-    section.add "X-Amz-Signature", valid_603091
-  var valid_603092 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603092 = validateParameter(valid_603092, JString, required = false,
+  if valid_601095 != nil:
+    section.add "X-Amz-Signature", valid_601095
+  var valid_601096 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601096 = validateParameter(valid_601096, JString, required = false,
                                  default = nil)
-  if valid_603092 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603092
-  var valid_603093 = header.getOrDefault("X-Amz-Credential")
-  valid_603093 = validateParameter(valid_603093, JString, required = false,
+  if valid_601096 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601096
+  var valid_601097 = header.getOrDefault("X-Amz-Credential")
+  valid_601097 = validateParameter(valid_601097, JString, required = false,
                                  default = nil)
-  if valid_603093 != nil:
-    section.add "X-Amz-Credential", valid_603093
+  if valid_601097 != nil:
+    section.add "X-Amz-Credential", valid_601097
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -646,39 +673,43 @@ proc validate_CreateDedicatedIpPool_603085(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603095: Call_CreateDedicatedIpPool_603084; path: JsonNode;
+proc call*(call_601099: Call_CreateDedicatedIpPool_601088; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Create a new pool of dedicated IP addresses. A pool can include one or more dedicated IP addresses that are associated with your Amazon Pinpoint account. You can associate a pool with a configuration set. When you send an email that uses that configuration set, Amazon Pinpoint sends it using only the IP addresses in the associated pool.
   ## 
-  let valid = call_603095.validator(path, query, header, formData, body)
-  let scheme = call_603095.pickScheme
+  let valid = call_601099.validator(path, query, header, formData, body)
+  let scheme = call_601099.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603095.url(scheme.get, call_603095.host, call_603095.base,
-                         call_603095.route, valid.getOrDefault("path"))
-  result = hook(call_603095, url, valid)
+  let url = call_601099.url(scheme.get, call_601099.host, call_601099.base,
+                         call_601099.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601099, url, valid)
 
-proc call*(call_603096: Call_CreateDedicatedIpPool_603084; body: JsonNode): Recallable =
+proc call*(call_601100: Call_CreateDedicatedIpPool_601088; body: JsonNode): Recallable =
   ## createDedicatedIpPool
   ## Create a new pool of dedicated IP addresses. A pool can include one or more dedicated IP addresses that are associated with your Amazon Pinpoint account. You can associate a pool with a configuration set. When you send an email that uses that configuration set, Amazon Pinpoint sends it using only the IP addresses in the associated pool.
   ##   body: JObject (required)
-  var body_603097 = newJObject()
+  var body_601101 = newJObject()
   if body != nil:
-    body_603097 = body
-  result = call_603096.call(nil, nil, nil, nil, body_603097)
+    body_601101 = body
+  result = call_601100.call(nil, nil, nil, nil, body_601101)
 
-var createDedicatedIpPool* = Call_CreateDedicatedIpPool_603084(
+var createDedicatedIpPool* = Call_CreateDedicatedIpPool_601088(
     name: "createDedicatedIpPool", meth: HttpMethod.HttpPost,
     host: "email.amazonaws.com", route: "/v1/email/dedicated-ip-pools",
-    validator: validate_CreateDedicatedIpPool_603085, base: "/",
-    url: url_CreateDedicatedIpPool_603086, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateDedicatedIpPool_601089, base: "/",
+    url: url_CreateDedicatedIpPool_601090, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDedicatedIpPools_603069 = ref object of OpenApiRestCall_602417
-proc url_ListDedicatedIpPools_603071(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListDedicatedIpPools_601073 = ref object of OpenApiRestCall_600421
+proc url_ListDedicatedIpPools_601075(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListDedicatedIpPools_603070(path: JsonNode; query: JsonNode;
+proc validate_ListDedicatedIpPools_601074(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## List all of the dedicated IP pools that exist in your Amazon Pinpoint account in the current AWS Region.
   ## 
@@ -692,15 +723,15 @@ proc validate_ListDedicatedIpPools_603070(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : A token returned from a previous call to <code>ListDedicatedIpPools</code> to indicate the position in the list of dedicated IP pools.
   section = newJObject()
-  var valid_603072 = query.getOrDefault("PageSize")
-  valid_603072 = validateParameter(valid_603072, JInt, required = false, default = nil)
-  if valid_603072 != nil:
-    section.add "PageSize", valid_603072
-  var valid_603073 = query.getOrDefault("NextToken")
-  valid_603073 = validateParameter(valid_603073, JString, required = false,
+  var valid_601076 = query.getOrDefault("PageSize")
+  valid_601076 = validateParameter(valid_601076, JInt, required = false, default = nil)
+  if valid_601076 != nil:
+    section.add "PageSize", valid_601076
+  var valid_601077 = query.getOrDefault("NextToken")
+  valid_601077 = validateParameter(valid_601077, JString, required = false,
                                  default = nil)
-  if valid_603073 != nil:
-    section.add "NextToken", valid_603073
+  if valid_601077 != nil:
+    section.add "NextToken", valid_601077
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -711,60 +742,61 @@ proc validate_ListDedicatedIpPools_603070(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603074 = header.getOrDefault("X-Amz-Date")
-  valid_603074 = validateParameter(valid_603074, JString, required = false,
+  var valid_601078 = header.getOrDefault("X-Amz-Date")
+  valid_601078 = validateParameter(valid_601078, JString, required = false,
                                  default = nil)
-  if valid_603074 != nil:
-    section.add "X-Amz-Date", valid_603074
-  var valid_603075 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603075 = validateParameter(valid_603075, JString, required = false,
+  if valid_601078 != nil:
+    section.add "X-Amz-Date", valid_601078
+  var valid_601079 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601079 = validateParameter(valid_601079, JString, required = false,
                                  default = nil)
-  if valid_603075 != nil:
-    section.add "X-Amz-Security-Token", valid_603075
-  var valid_603076 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603076 = validateParameter(valid_603076, JString, required = false,
+  if valid_601079 != nil:
+    section.add "X-Amz-Security-Token", valid_601079
+  var valid_601080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601080 = validateParameter(valid_601080, JString, required = false,
                                  default = nil)
-  if valid_603076 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603076
-  var valid_603077 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603077 = validateParameter(valid_603077, JString, required = false,
+  if valid_601080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601080
+  var valid_601081 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601081 = validateParameter(valid_601081, JString, required = false,
                                  default = nil)
-  if valid_603077 != nil:
-    section.add "X-Amz-Algorithm", valid_603077
-  var valid_603078 = header.getOrDefault("X-Amz-Signature")
-  valid_603078 = validateParameter(valid_603078, JString, required = false,
+  if valid_601081 != nil:
+    section.add "X-Amz-Algorithm", valid_601081
+  var valid_601082 = header.getOrDefault("X-Amz-Signature")
+  valid_601082 = validateParameter(valid_601082, JString, required = false,
                                  default = nil)
-  if valid_603078 != nil:
-    section.add "X-Amz-Signature", valid_603078
-  var valid_603079 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603079 = validateParameter(valid_603079, JString, required = false,
+  if valid_601082 != nil:
+    section.add "X-Amz-Signature", valid_601082
+  var valid_601083 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601083 = validateParameter(valid_601083, JString, required = false,
                                  default = nil)
-  if valid_603079 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603079
-  var valid_603080 = header.getOrDefault("X-Amz-Credential")
-  valid_603080 = validateParameter(valid_603080, JString, required = false,
+  if valid_601083 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601083
+  var valid_601084 = header.getOrDefault("X-Amz-Credential")
+  valid_601084 = validateParameter(valid_601084, JString, required = false,
                                  default = nil)
-  if valid_603080 != nil:
-    section.add "X-Amz-Credential", valid_603080
+  if valid_601084 != nil:
+    section.add "X-Amz-Credential", valid_601084
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603081: Call_ListDedicatedIpPools_603069; path: JsonNode;
+proc call*(call_601085: Call_ListDedicatedIpPools_601073; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List all of the dedicated IP pools that exist in your Amazon Pinpoint account in the current AWS Region.
   ## 
-  let valid = call_603081.validator(path, query, header, formData, body)
-  let scheme = call_603081.pickScheme
+  let valid = call_601085.validator(path, query, header, formData, body)
+  let scheme = call_601085.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603081.url(scheme.get, call_603081.host, call_603081.base,
-                         call_603081.route, valid.getOrDefault("path"))
-  result = hook(call_603081, url, valid)
+  let url = call_601085.url(scheme.get, call_601085.host, call_601085.base,
+                         call_601085.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601085, url, valid)
 
-proc call*(call_603082: Call_ListDedicatedIpPools_603069; PageSize: int = 0;
+proc call*(call_601086: Call_ListDedicatedIpPools_601073; PageSize: int = 0;
           NextToken: string = ""): Recallable =
   ## listDedicatedIpPools
   ## List all of the dedicated IP pools that exist in your Amazon Pinpoint account in the current AWS Region.
@@ -772,23 +804,26 @@ proc call*(call_603082: Call_ListDedicatedIpPools_603069; PageSize: int = 0;
   ##           : The number of results to show in a single call to <code>ListDedicatedIpPools</code>. If the number of results is larger than the number you specified in this parameter, then the response includes a <code>NextToken</code> element, which you can use to obtain additional results.
   ##   NextToken: string
   ##            : A token returned from a previous call to <code>ListDedicatedIpPools</code> to indicate the position in the list of dedicated IP pools.
-  var query_603083 = newJObject()
-  add(query_603083, "PageSize", newJInt(PageSize))
-  add(query_603083, "NextToken", newJString(NextToken))
-  result = call_603082.call(nil, query_603083, nil, nil, nil)
+  var query_601087 = newJObject()
+  add(query_601087, "PageSize", newJInt(PageSize))
+  add(query_601087, "NextToken", newJString(NextToken))
+  result = call_601086.call(nil, query_601087, nil, nil, nil)
 
-var listDedicatedIpPools* = Call_ListDedicatedIpPools_603069(
+var listDedicatedIpPools* = Call_ListDedicatedIpPools_601073(
     name: "listDedicatedIpPools", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/dedicated-ip-pools",
-    validator: validate_ListDedicatedIpPools_603070, base: "/",
-    url: url_ListDedicatedIpPools_603071, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListDedicatedIpPools_601074, base: "/",
+    url: url_ListDedicatedIpPools_601075, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDeliverabilityTestReport_603098 = ref object of OpenApiRestCall_602417
-proc url_CreateDeliverabilityTestReport_603100(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateDeliverabilityTestReport_601102 = ref object of OpenApiRestCall_600421
+proc url_CreateDeliverabilityTestReport_601104(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateDeliverabilityTestReport_603099(path: JsonNode;
+proc validate_CreateDeliverabilityTestReport_601103(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon Pinpoint then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
   ## 
@@ -807,41 +842,41 @@ proc validate_CreateDeliverabilityTestReport_603099(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603101 = header.getOrDefault("X-Amz-Date")
-  valid_603101 = validateParameter(valid_603101, JString, required = false,
+  var valid_601105 = header.getOrDefault("X-Amz-Date")
+  valid_601105 = validateParameter(valid_601105, JString, required = false,
                                  default = nil)
-  if valid_603101 != nil:
-    section.add "X-Amz-Date", valid_603101
-  var valid_603102 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603102 = validateParameter(valid_603102, JString, required = false,
+  if valid_601105 != nil:
+    section.add "X-Amz-Date", valid_601105
+  var valid_601106 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601106 = validateParameter(valid_601106, JString, required = false,
                                  default = nil)
-  if valid_603102 != nil:
-    section.add "X-Amz-Security-Token", valid_603102
-  var valid_603103 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603103 = validateParameter(valid_603103, JString, required = false,
+  if valid_601106 != nil:
+    section.add "X-Amz-Security-Token", valid_601106
+  var valid_601107 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601107 = validateParameter(valid_601107, JString, required = false,
                                  default = nil)
-  if valid_603103 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603103
-  var valid_603104 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603104 = validateParameter(valid_603104, JString, required = false,
+  if valid_601107 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601107
+  var valid_601108 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601108 = validateParameter(valid_601108, JString, required = false,
                                  default = nil)
-  if valid_603104 != nil:
-    section.add "X-Amz-Algorithm", valid_603104
-  var valid_603105 = header.getOrDefault("X-Amz-Signature")
-  valid_603105 = validateParameter(valid_603105, JString, required = false,
+  if valid_601108 != nil:
+    section.add "X-Amz-Algorithm", valid_601108
+  var valid_601109 = header.getOrDefault("X-Amz-Signature")
+  valid_601109 = validateParameter(valid_601109, JString, required = false,
                                  default = nil)
-  if valid_603105 != nil:
-    section.add "X-Amz-Signature", valid_603105
-  var valid_603106 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603106 = validateParameter(valid_603106, JString, required = false,
+  if valid_601109 != nil:
+    section.add "X-Amz-Signature", valid_601109
+  var valid_601110 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601110 = validateParameter(valid_601110, JString, required = false,
                                  default = nil)
-  if valid_603106 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603106
-  var valid_603107 = header.getOrDefault("X-Amz-Credential")
-  valid_603107 = validateParameter(valid_603107, JString, required = false,
+  if valid_601110 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601110
+  var valid_601111 = header.getOrDefault("X-Amz-Credential")
+  valid_601111 = validateParameter(valid_601111, JString, required = false,
                                  default = nil)
-  if valid_603107 != nil:
-    section.add "X-Amz-Credential", valid_603107
+  if valid_601111 != nil:
+    section.add "X-Amz-Credential", valid_601111
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -852,40 +887,44 @@ proc validate_CreateDeliverabilityTestReport_603099(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603109: Call_CreateDeliverabilityTestReport_603098; path: JsonNode;
+proc call*(call_601113: Call_CreateDeliverabilityTestReport_601102; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon Pinpoint then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
   ## 
-  let valid = call_603109.validator(path, query, header, formData, body)
-  let scheme = call_603109.pickScheme
+  let valid = call_601113.validator(path, query, header, formData, body)
+  let scheme = call_601113.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603109.url(scheme.get, call_603109.host, call_603109.base,
-                         call_603109.route, valid.getOrDefault("path"))
-  result = hook(call_603109, url, valid)
+  let url = call_601113.url(scheme.get, call_601113.host, call_601113.base,
+                         call_601113.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601113, url, valid)
 
-proc call*(call_603110: Call_CreateDeliverabilityTestReport_603098; body: JsonNode): Recallable =
+proc call*(call_601114: Call_CreateDeliverabilityTestReport_601102; body: JsonNode): Recallable =
   ## createDeliverabilityTestReport
   ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon Pinpoint then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
   ##   body: JObject (required)
-  var body_603111 = newJObject()
+  var body_601115 = newJObject()
   if body != nil:
-    body_603111 = body
-  result = call_603110.call(nil, nil, nil, nil, body_603111)
+    body_601115 = body
+  result = call_601114.call(nil, nil, nil, nil, body_601115)
 
-var createDeliverabilityTestReport* = Call_CreateDeliverabilityTestReport_603098(
+var createDeliverabilityTestReport* = Call_CreateDeliverabilityTestReport_601102(
     name: "createDeliverabilityTestReport", meth: HttpMethod.HttpPost,
     host: "email.amazonaws.com", route: "/v1/email/deliverability-dashboard/test",
-    validator: validate_CreateDeliverabilityTestReport_603099, base: "/",
-    url: url_CreateDeliverabilityTestReport_603100,
+    validator: validate_CreateDeliverabilityTestReport_601103, base: "/",
+    url: url_CreateDeliverabilityTestReport_601104,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateEmailIdentity_603127 = ref object of OpenApiRestCall_602417
-proc url_CreateEmailIdentity_603129(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateEmailIdentity_601131 = ref object of OpenApiRestCall_600421
+proc url_CreateEmailIdentity_601133(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateEmailIdentity_603128(path: JsonNode; query: JsonNode;
+proc validate_CreateEmailIdentity_601132(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Verifies an email identity for use with Amazon Pinpoint. In Amazon Pinpoint, an identity is an email address or domain that you use when you send email. Before you can use an identity to send email with Amazon Pinpoint, you first have to verify it. By verifying an address, you demonstrate that you're the owner of the address, and that you've given Amazon Pinpoint permission to send email from the address.</p> <p>When you verify an email address, Amazon Pinpoint sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain, this operation provides a set of DKIM tokens, which you can convert into CNAME tokens. You add these CNAME tokens to the DNS configuration for your domain. Your domain is verified when Amazon Pinpoint detects these records in the DNS configuration for your domain. It usually takes around 72 hours to complete the domain verification process.</p>
@@ -905,41 +944,41 @@ proc validate_CreateEmailIdentity_603128(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603130 = header.getOrDefault("X-Amz-Date")
-  valid_603130 = validateParameter(valid_603130, JString, required = false,
+  var valid_601134 = header.getOrDefault("X-Amz-Date")
+  valid_601134 = validateParameter(valid_601134, JString, required = false,
                                  default = nil)
-  if valid_603130 != nil:
-    section.add "X-Amz-Date", valid_603130
-  var valid_603131 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603131 = validateParameter(valid_603131, JString, required = false,
+  if valid_601134 != nil:
+    section.add "X-Amz-Date", valid_601134
+  var valid_601135 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601135 = validateParameter(valid_601135, JString, required = false,
                                  default = nil)
-  if valid_603131 != nil:
-    section.add "X-Amz-Security-Token", valid_603131
-  var valid_603132 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603132 = validateParameter(valid_603132, JString, required = false,
+  if valid_601135 != nil:
+    section.add "X-Amz-Security-Token", valid_601135
+  var valid_601136 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601136 = validateParameter(valid_601136, JString, required = false,
                                  default = nil)
-  if valid_603132 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603132
-  var valid_603133 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603133 = validateParameter(valid_603133, JString, required = false,
+  if valid_601136 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601136
+  var valid_601137 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601137 = validateParameter(valid_601137, JString, required = false,
                                  default = nil)
-  if valid_603133 != nil:
-    section.add "X-Amz-Algorithm", valid_603133
-  var valid_603134 = header.getOrDefault("X-Amz-Signature")
-  valid_603134 = validateParameter(valid_603134, JString, required = false,
+  if valid_601137 != nil:
+    section.add "X-Amz-Algorithm", valid_601137
+  var valid_601138 = header.getOrDefault("X-Amz-Signature")
+  valid_601138 = validateParameter(valid_601138, JString, required = false,
                                  default = nil)
-  if valid_603134 != nil:
-    section.add "X-Amz-Signature", valid_603134
-  var valid_603135 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603135 = validateParameter(valid_603135, JString, required = false,
+  if valid_601138 != nil:
+    section.add "X-Amz-Signature", valid_601138
+  var valid_601139 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601139 = validateParameter(valid_601139, JString, required = false,
                                  default = nil)
-  if valid_603135 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603135
-  var valid_603136 = header.getOrDefault("X-Amz-Credential")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
+  if valid_601139 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601139
+  var valid_601140 = header.getOrDefault("X-Amz-Credential")
+  valid_601140 = validateParameter(valid_601140, JString, required = false,
                                  default = nil)
-  if valid_603136 != nil:
-    section.add "X-Amz-Credential", valid_603136
+  if valid_601140 != nil:
+    section.add "X-Amz-Credential", valid_601140
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -950,39 +989,43 @@ proc validate_CreateEmailIdentity_603128(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603138: Call_CreateEmailIdentity_603127; path: JsonNode;
+proc call*(call_601142: Call_CreateEmailIdentity_601131; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Verifies an email identity for use with Amazon Pinpoint. In Amazon Pinpoint, an identity is an email address or domain that you use when you send email. Before you can use an identity to send email with Amazon Pinpoint, you first have to verify it. By verifying an address, you demonstrate that you're the owner of the address, and that you've given Amazon Pinpoint permission to send email from the address.</p> <p>When you verify an email address, Amazon Pinpoint sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain, this operation provides a set of DKIM tokens, which you can convert into CNAME tokens. You add these CNAME tokens to the DNS configuration for your domain. Your domain is verified when Amazon Pinpoint detects these records in the DNS configuration for your domain. It usually takes around 72 hours to complete the domain verification process.</p>
   ## 
-  let valid = call_603138.validator(path, query, header, formData, body)
-  let scheme = call_603138.pickScheme
+  let valid = call_601142.validator(path, query, header, formData, body)
+  let scheme = call_601142.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603138.url(scheme.get, call_603138.host, call_603138.base,
-                         call_603138.route, valid.getOrDefault("path"))
-  result = hook(call_603138, url, valid)
+  let url = call_601142.url(scheme.get, call_601142.host, call_601142.base,
+                         call_601142.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601142, url, valid)
 
-proc call*(call_603139: Call_CreateEmailIdentity_603127; body: JsonNode): Recallable =
+proc call*(call_601143: Call_CreateEmailIdentity_601131; body: JsonNode): Recallable =
   ## createEmailIdentity
   ## <p>Verifies an email identity for use with Amazon Pinpoint. In Amazon Pinpoint, an identity is an email address or domain that you use when you send email. Before you can use an identity to send email with Amazon Pinpoint, you first have to verify it. By verifying an address, you demonstrate that you're the owner of the address, and that you've given Amazon Pinpoint permission to send email from the address.</p> <p>When you verify an email address, Amazon Pinpoint sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain, this operation provides a set of DKIM tokens, which you can convert into CNAME tokens. You add these CNAME tokens to the DNS configuration for your domain. Your domain is verified when Amazon Pinpoint detects these records in the DNS configuration for your domain. It usually takes around 72 hours to complete the domain verification process.</p>
   ##   body: JObject (required)
-  var body_603140 = newJObject()
+  var body_601144 = newJObject()
   if body != nil:
-    body_603140 = body
-  result = call_603139.call(nil, nil, nil, nil, body_603140)
+    body_601144 = body
+  result = call_601143.call(nil, nil, nil, nil, body_601144)
 
-var createEmailIdentity* = Call_CreateEmailIdentity_603127(
+var createEmailIdentity* = Call_CreateEmailIdentity_601131(
     name: "createEmailIdentity", meth: HttpMethod.HttpPost,
     host: "email.amazonaws.com", route: "/v1/email/identities",
-    validator: validate_CreateEmailIdentity_603128, base: "/",
-    url: url_CreateEmailIdentity_603129, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateEmailIdentity_601132, base: "/",
+    url: url_CreateEmailIdentity_601133, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListEmailIdentities_603112 = ref object of OpenApiRestCall_602417
-proc url_ListEmailIdentities_603114(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListEmailIdentities_601116 = ref object of OpenApiRestCall_600421
+proc url_ListEmailIdentities_601118(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListEmailIdentities_603113(path: JsonNode; query: JsonNode;
+proc validate_ListEmailIdentities_601117(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns a list of all of the email identities that are associated with your Amazon Pinpoint account. An identity can be either an email address or a domain. This operation returns identities that are verified as well as those that aren't.
@@ -997,15 +1040,15 @@ proc validate_ListEmailIdentities_603113(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : A token returned from a previous call to <code>ListEmailIdentities</code> to indicate the position in the list of identities.
   section = newJObject()
-  var valid_603115 = query.getOrDefault("PageSize")
-  valid_603115 = validateParameter(valid_603115, JInt, required = false, default = nil)
-  if valid_603115 != nil:
-    section.add "PageSize", valid_603115
-  var valid_603116 = query.getOrDefault("NextToken")
-  valid_603116 = validateParameter(valid_603116, JString, required = false,
+  var valid_601119 = query.getOrDefault("PageSize")
+  valid_601119 = validateParameter(valid_601119, JInt, required = false, default = nil)
+  if valid_601119 != nil:
+    section.add "PageSize", valid_601119
+  var valid_601120 = query.getOrDefault("NextToken")
+  valid_601120 = validateParameter(valid_601120, JString, required = false,
                                  default = nil)
-  if valid_603116 != nil:
-    section.add "NextToken", valid_603116
+  if valid_601120 != nil:
+    section.add "NextToken", valid_601120
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1016,60 +1059,61 @@ proc validate_ListEmailIdentities_603113(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603117 = header.getOrDefault("X-Amz-Date")
-  valid_603117 = validateParameter(valid_603117, JString, required = false,
+  var valid_601121 = header.getOrDefault("X-Amz-Date")
+  valid_601121 = validateParameter(valid_601121, JString, required = false,
                                  default = nil)
-  if valid_603117 != nil:
-    section.add "X-Amz-Date", valid_603117
-  var valid_603118 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603118 = validateParameter(valid_603118, JString, required = false,
+  if valid_601121 != nil:
+    section.add "X-Amz-Date", valid_601121
+  var valid_601122 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601122 = validateParameter(valid_601122, JString, required = false,
                                  default = nil)
-  if valid_603118 != nil:
-    section.add "X-Amz-Security-Token", valid_603118
-  var valid_603119 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603119 = validateParameter(valid_603119, JString, required = false,
+  if valid_601122 != nil:
+    section.add "X-Amz-Security-Token", valid_601122
+  var valid_601123 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601123 = validateParameter(valid_601123, JString, required = false,
                                  default = nil)
-  if valid_603119 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603119
-  var valid_603120 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603120 = validateParameter(valid_603120, JString, required = false,
+  if valid_601123 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601123
+  var valid_601124 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601124 = validateParameter(valid_601124, JString, required = false,
                                  default = nil)
-  if valid_603120 != nil:
-    section.add "X-Amz-Algorithm", valid_603120
-  var valid_603121 = header.getOrDefault("X-Amz-Signature")
-  valid_603121 = validateParameter(valid_603121, JString, required = false,
+  if valid_601124 != nil:
+    section.add "X-Amz-Algorithm", valid_601124
+  var valid_601125 = header.getOrDefault("X-Amz-Signature")
+  valid_601125 = validateParameter(valid_601125, JString, required = false,
                                  default = nil)
-  if valid_603121 != nil:
-    section.add "X-Amz-Signature", valid_603121
-  var valid_603122 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603122 = validateParameter(valid_603122, JString, required = false,
+  if valid_601125 != nil:
+    section.add "X-Amz-Signature", valid_601125
+  var valid_601126 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601126 = validateParameter(valid_601126, JString, required = false,
                                  default = nil)
-  if valid_603122 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603122
-  var valid_603123 = header.getOrDefault("X-Amz-Credential")
-  valid_603123 = validateParameter(valid_603123, JString, required = false,
+  if valid_601126 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601126
+  var valid_601127 = header.getOrDefault("X-Amz-Credential")
+  valid_601127 = validateParameter(valid_601127, JString, required = false,
                                  default = nil)
-  if valid_603123 != nil:
-    section.add "X-Amz-Credential", valid_603123
+  if valid_601127 != nil:
+    section.add "X-Amz-Credential", valid_601127
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603124: Call_ListEmailIdentities_603112; path: JsonNode;
+proc call*(call_601128: Call_ListEmailIdentities_601116; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of all of the email identities that are associated with your Amazon Pinpoint account. An identity can be either an email address or a domain. This operation returns identities that are verified as well as those that aren't.
   ## 
-  let valid = call_603124.validator(path, query, header, formData, body)
-  let scheme = call_603124.pickScheme
+  let valid = call_601128.validator(path, query, header, formData, body)
+  let scheme = call_601128.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603124.url(scheme.get, call_603124.host, call_603124.base,
-                         call_603124.route, valid.getOrDefault("path"))
-  result = hook(call_603124, url, valid)
+  let url = call_601128.url(scheme.get, call_601128.host, call_601128.base,
+                         call_601128.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601128, url, valid)
 
-proc call*(call_603125: Call_ListEmailIdentities_603112; PageSize: int = 0;
+proc call*(call_601129: Call_ListEmailIdentities_601116; PageSize: int = 0;
           NextToken: string = ""): Recallable =
   ## listEmailIdentities
   ## Returns a list of all of the email identities that are associated with your Amazon Pinpoint account. An identity can be either an email address or a domain. This operation returns identities that are verified as well as those that aren't.
@@ -1077,20 +1121,23 @@ proc call*(call_603125: Call_ListEmailIdentities_603112; PageSize: int = 0;
   ##           : <p>The number of results to show in a single call to <code>ListEmailIdentities</code>. If the number of results is larger than the number you specified in this parameter, then the response includes a <code>NextToken</code> element, which you can use to obtain additional results.</p> <p>The value you specify has to be at least 0, and can be no more than 1000.</p>
   ##   NextToken: string
   ##            : A token returned from a previous call to <code>ListEmailIdentities</code> to indicate the position in the list of identities.
-  var query_603126 = newJObject()
-  add(query_603126, "PageSize", newJInt(PageSize))
-  add(query_603126, "NextToken", newJString(NextToken))
-  result = call_603125.call(nil, query_603126, nil, nil, nil)
+  var query_601130 = newJObject()
+  add(query_601130, "PageSize", newJInt(PageSize))
+  add(query_601130, "NextToken", newJString(NextToken))
+  result = call_601129.call(nil, query_601130, nil, nil, nil)
 
-var listEmailIdentities* = Call_ListEmailIdentities_603112(
+var listEmailIdentities* = Call_ListEmailIdentities_601116(
     name: "listEmailIdentities", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/identities",
-    validator: validate_ListEmailIdentities_603113, base: "/",
-    url: url_ListEmailIdentities_603114, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListEmailIdentities_601117, base: "/",
+    url: url_ListEmailIdentities_601118, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetConfigurationSet_603141 = ref object of OpenApiRestCall_602417
-proc url_GetConfigurationSet_603143(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
+  Call_GetConfigurationSet_601145 = ref object of OpenApiRestCall_600421
+proc url_GetConfigurationSet_601147(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -1100,9 +1147,9 @@ proc url_GetConfigurationSet_603143(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_GetConfigurationSet_603142(path: JsonNode; query: JsonNode;
+proc validate_GetConfigurationSet_601146(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Get information about an existing configuration set, including the dedicated IP pool that it's associated with, whether or not it's enabled for sending email, and more.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
@@ -1114,11 +1161,11 @@ proc validate_GetConfigurationSet_603142(path: JsonNode; query: JsonNode;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603144 = path.getOrDefault("ConfigurationSetName")
-  valid_603144 = validateParameter(valid_603144, JString, required = true,
+  var valid_601148 = path.getOrDefault("ConfigurationSetName")
+  valid_601148 = validateParameter(valid_601148, JString, required = true,
                                  default = nil)
-  if valid_603144 != nil:
-    section.add "ConfigurationSetName", valid_603144
+  if valid_601148 != nil:
+    section.add "ConfigurationSetName", valid_601148
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1131,79 +1178,83 @@ proc validate_GetConfigurationSet_603142(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603145 = header.getOrDefault("X-Amz-Date")
-  valid_603145 = validateParameter(valid_603145, JString, required = false,
+  var valid_601149 = header.getOrDefault("X-Amz-Date")
+  valid_601149 = validateParameter(valid_601149, JString, required = false,
                                  default = nil)
-  if valid_603145 != nil:
-    section.add "X-Amz-Date", valid_603145
-  var valid_603146 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603146 = validateParameter(valid_603146, JString, required = false,
+  if valid_601149 != nil:
+    section.add "X-Amz-Date", valid_601149
+  var valid_601150 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601150 = validateParameter(valid_601150, JString, required = false,
                                  default = nil)
-  if valid_603146 != nil:
-    section.add "X-Amz-Security-Token", valid_603146
-  var valid_603147 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603147 = validateParameter(valid_603147, JString, required = false,
+  if valid_601150 != nil:
+    section.add "X-Amz-Security-Token", valid_601150
+  var valid_601151 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601151 = validateParameter(valid_601151, JString, required = false,
                                  default = nil)
-  if valid_603147 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603147
-  var valid_603148 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603148 = validateParameter(valid_603148, JString, required = false,
+  if valid_601151 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601151
+  var valid_601152 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601152 = validateParameter(valid_601152, JString, required = false,
                                  default = nil)
-  if valid_603148 != nil:
-    section.add "X-Amz-Algorithm", valid_603148
-  var valid_603149 = header.getOrDefault("X-Amz-Signature")
-  valid_603149 = validateParameter(valid_603149, JString, required = false,
+  if valid_601152 != nil:
+    section.add "X-Amz-Algorithm", valid_601152
+  var valid_601153 = header.getOrDefault("X-Amz-Signature")
+  valid_601153 = validateParameter(valid_601153, JString, required = false,
                                  default = nil)
-  if valid_603149 != nil:
-    section.add "X-Amz-Signature", valid_603149
-  var valid_603150 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603150 = validateParameter(valid_603150, JString, required = false,
+  if valid_601153 != nil:
+    section.add "X-Amz-Signature", valid_601153
+  var valid_601154 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601154 = validateParameter(valid_601154, JString, required = false,
                                  default = nil)
-  if valid_603150 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603150
-  var valid_603151 = header.getOrDefault("X-Amz-Credential")
-  valid_603151 = validateParameter(valid_603151, JString, required = false,
+  if valid_601154 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601154
+  var valid_601155 = header.getOrDefault("X-Amz-Credential")
+  valid_601155 = validateParameter(valid_601155, JString, required = false,
                                  default = nil)
-  if valid_603151 != nil:
-    section.add "X-Amz-Credential", valid_603151
+  if valid_601155 != nil:
+    section.add "X-Amz-Credential", valid_601155
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603152: Call_GetConfigurationSet_603141; path: JsonNode;
+proc call*(call_601156: Call_GetConfigurationSet_601145; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Get information about an existing configuration set, including the dedicated IP pool that it's associated with, whether or not it's enabled for sending email, and more.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ## 
-  let valid = call_603152.validator(path, query, header, formData, body)
-  let scheme = call_603152.pickScheme
+  let valid = call_601156.validator(path, query, header, formData, body)
+  let scheme = call_601156.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603152.url(scheme.get, call_603152.host, call_603152.base,
-                         call_603152.route, valid.getOrDefault("path"))
-  result = hook(call_603152, url, valid)
+  let url = call_601156.url(scheme.get, call_601156.host, call_601156.base,
+                         call_601156.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601156, url, valid)
 
-proc call*(call_603153: Call_GetConfigurationSet_603141;
+proc call*(call_601157: Call_GetConfigurationSet_601145;
           ConfigurationSetName: string): Recallable =
   ## getConfigurationSet
   ## <p>Get information about an existing configuration set, including the dedicated IP pool that it's associated with, whether or not it's enabled for sending email, and more.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
-  var path_603154 = newJObject()
-  add(path_603154, "ConfigurationSetName", newJString(ConfigurationSetName))
-  result = call_603153.call(path_603154, nil, nil, nil, nil)
+  var path_601158 = newJObject()
+  add(path_601158, "ConfigurationSetName", newJString(ConfigurationSetName))
+  result = call_601157.call(path_601158, nil, nil, nil, nil)
 
-var getConfigurationSet* = Call_GetConfigurationSet_603141(
+var getConfigurationSet* = Call_GetConfigurationSet_601145(
     name: "getConfigurationSet", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com",
     route: "/v1/email/configuration-sets/{ConfigurationSetName}",
-    validator: validate_GetConfigurationSet_603142, base: "/",
-    url: url_GetConfigurationSet_603143, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetConfigurationSet_601146, base: "/",
+    url: url_GetConfigurationSet_601147, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteConfigurationSet_603155 = ref object of OpenApiRestCall_602417
-proc url_DeleteConfigurationSet_603157(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode): string =
+  Call_DeleteConfigurationSet_601159 = ref object of OpenApiRestCall_600421
+proc url_DeleteConfigurationSet_601161(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -1213,9 +1264,9 @@ proc url_DeleteConfigurationSet_603157(protocol: Scheme; host: string; base: str
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_DeleteConfigurationSet_603156(path: JsonNode; query: JsonNode;
+proc validate_DeleteConfigurationSet_601160(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Delete an existing configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ## 
@@ -1226,11 +1277,11 @@ proc validate_DeleteConfigurationSet_603156(path: JsonNode; query: JsonNode;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603158 = path.getOrDefault("ConfigurationSetName")
-  valid_603158 = validateParameter(valid_603158, JString, required = true,
+  var valid_601162 = path.getOrDefault("ConfigurationSetName")
+  valid_601162 = validateParameter(valid_601162, JString, required = true,
                                  default = nil)
-  if valid_603158 != nil:
-    section.add "ConfigurationSetName", valid_603158
+  if valid_601162 != nil:
+    section.add "ConfigurationSetName", valid_601162
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1243,79 +1294,83 @@ proc validate_DeleteConfigurationSet_603156(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603159 = header.getOrDefault("X-Amz-Date")
-  valid_603159 = validateParameter(valid_603159, JString, required = false,
+  var valid_601163 = header.getOrDefault("X-Amz-Date")
+  valid_601163 = validateParameter(valid_601163, JString, required = false,
                                  default = nil)
-  if valid_603159 != nil:
-    section.add "X-Amz-Date", valid_603159
-  var valid_603160 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603160 = validateParameter(valid_603160, JString, required = false,
+  if valid_601163 != nil:
+    section.add "X-Amz-Date", valid_601163
+  var valid_601164 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601164 = validateParameter(valid_601164, JString, required = false,
                                  default = nil)
-  if valid_603160 != nil:
-    section.add "X-Amz-Security-Token", valid_603160
-  var valid_603161 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603161 = validateParameter(valid_603161, JString, required = false,
+  if valid_601164 != nil:
+    section.add "X-Amz-Security-Token", valid_601164
+  var valid_601165 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601165 = validateParameter(valid_601165, JString, required = false,
                                  default = nil)
-  if valid_603161 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603161
-  var valid_603162 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603162 = validateParameter(valid_603162, JString, required = false,
+  if valid_601165 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601165
+  var valid_601166 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601166 = validateParameter(valid_601166, JString, required = false,
                                  default = nil)
-  if valid_603162 != nil:
-    section.add "X-Amz-Algorithm", valid_603162
-  var valid_603163 = header.getOrDefault("X-Amz-Signature")
-  valid_603163 = validateParameter(valid_603163, JString, required = false,
+  if valid_601166 != nil:
+    section.add "X-Amz-Algorithm", valid_601166
+  var valid_601167 = header.getOrDefault("X-Amz-Signature")
+  valid_601167 = validateParameter(valid_601167, JString, required = false,
                                  default = nil)
-  if valid_603163 != nil:
-    section.add "X-Amz-Signature", valid_603163
-  var valid_603164 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603164 = validateParameter(valid_603164, JString, required = false,
+  if valid_601167 != nil:
+    section.add "X-Amz-Signature", valid_601167
+  var valid_601168 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601168 = validateParameter(valid_601168, JString, required = false,
                                  default = nil)
-  if valid_603164 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603164
-  var valid_603165 = header.getOrDefault("X-Amz-Credential")
-  valid_603165 = validateParameter(valid_603165, JString, required = false,
+  if valid_601168 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601168
+  var valid_601169 = header.getOrDefault("X-Amz-Credential")
+  valid_601169 = validateParameter(valid_601169, JString, required = false,
                                  default = nil)
-  if valid_603165 != nil:
-    section.add "X-Amz-Credential", valid_603165
+  if valid_601169 != nil:
+    section.add "X-Amz-Credential", valid_601169
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603166: Call_DeleteConfigurationSet_603155; path: JsonNode;
+proc call*(call_601170: Call_DeleteConfigurationSet_601159; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Delete an existing configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ## 
-  let valid = call_603166.validator(path, query, header, formData, body)
-  let scheme = call_603166.pickScheme
+  let valid = call_601170.validator(path, query, header, formData, body)
+  let scheme = call_601170.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603166.url(scheme.get, call_603166.host, call_603166.base,
-                         call_603166.route, valid.getOrDefault("path"))
-  result = hook(call_603166, url, valid)
+  let url = call_601170.url(scheme.get, call_601170.host, call_601170.base,
+                         call_601170.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601170, url, valid)
 
-proc call*(call_603167: Call_DeleteConfigurationSet_603155;
+proc call*(call_601171: Call_DeleteConfigurationSet_601159;
           ConfigurationSetName: string): Recallable =
   ## deleteConfigurationSet
   ## <p>Delete an existing configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
-  var path_603168 = newJObject()
-  add(path_603168, "ConfigurationSetName", newJString(ConfigurationSetName))
-  result = call_603167.call(path_603168, nil, nil, nil, nil)
+  var path_601172 = newJObject()
+  add(path_601172, "ConfigurationSetName", newJString(ConfigurationSetName))
+  result = call_601171.call(path_601172, nil, nil, nil, nil)
 
-var deleteConfigurationSet* = Call_DeleteConfigurationSet_603155(
+var deleteConfigurationSet* = Call_DeleteConfigurationSet_601159(
     name: "deleteConfigurationSet", meth: HttpMethod.HttpDelete,
     host: "email.amazonaws.com",
     route: "/v1/email/configuration-sets/{ConfigurationSetName}",
-    validator: validate_DeleteConfigurationSet_603156, base: "/",
-    url: url_DeleteConfigurationSet_603157, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteConfigurationSet_601160, base: "/",
+    url: url_DeleteConfigurationSet_601161, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateConfigurationSetEventDestination_603169 = ref object of OpenApiRestCall_602417
-proc url_UpdateConfigurationSetEventDestination_603171(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode): string =
+  Call_UpdateConfigurationSetEventDestination_601173 = ref object of OpenApiRestCall_600421
+proc url_UpdateConfigurationSetEventDestination_601175(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -1329,9 +1384,9 @@ proc url_UpdateConfigurationSetEventDestination_603171(protocol: Scheme;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_UpdateConfigurationSetEventDestination_603170(path: JsonNode;
+proc validate_UpdateConfigurationSetEventDestination_601174(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Update the configuration of an event destination for a configuration set.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   ## 
@@ -1344,16 +1399,16 @@ proc validate_UpdateConfigurationSetEventDestination_603170(path: JsonNode;
   ##                       : <p>The name of an event destination.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603172 = path.getOrDefault("ConfigurationSetName")
-  valid_603172 = validateParameter(valid_603172, JString, required = true,
+  var valid_601176 = path.getOrDefault("ConfigurationSetName")
+  valid_601176 = validateParameter(valid_601176, JString, required = true,
                                  default = nil)
-  if valid_603172 != nil:
-    section.add "ConfigurationSetName", valid_603172
-  var valid_603173 = path.getOrDefault("EventDestinationName")
-  valid_603173 = validateParameter(valid_603173, JString, required = true,
+  if valid_601176 != nil:
+    section.add "ConfigurationSetName", valid_601176
+  var valid_601177 = path.getOrDefault("EventDestinationName")
+  valid_601177 = validateParameter(valid_601177, JString, required = true,
                                  default = nil)
-  if valid_603173 != nil:
-    section.add "EventDestinationName", valid_603173
+  if valid_601177 != nil:
+    section.add "EventDestinationName", valid_601177
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1366,41 +1421,41 @@ proc validate_UpdateConfigurationSetEventDestination_603170(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603174 = header.getOrDefault("X-Amz-Date")
-  valid_603174 = validateParameter(valid_603174, JString, required = false,
+  var valid_601178 = header.getOrDefault("X-Amz-Date")
+  valid_601178 = validateParameter(valid_601178, JString, required = false,
                                  default = nil)
-  if valid_603174 != nil:
-    section.add "X-Amz-Date", valid_603174
-  var valid_603175 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603175 = validateParameter(valid_603175, JString, required = false,
+  if valid_601178 != nil:
+    section.add "X-Amz-Date", valid_601178
+  var valid_601179 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601179 = validateParameter(valid_601179, JString, required = false,
                                  default = nil)
-  if valid_603175 != nil:
-    section.add "X-Amz-Security-Token", valid_603175
-  var valid_603176 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603176 = validateParameter(valid_603176, JString, required = false,
+  if valid_601179 != nil:
+    section.add "X-Amz-Security-Token", valid_601179
+  var valid_601180 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601180 = validateParameter(valid_601180, JString, required = false,
                                  default = nil)
-  if valid_603176 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603176
-  var valid_603177 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603177 = validateParameter(valid_603177, JString, required = false,
+  if valid_601180 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601180
+  var valid_601181 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601181 = validateParameter(valid_601181, JString, required = false,
                                  default = nil)
-  if valid_603177 != nil:
-    section.add "X-Amz-Algorithm", valid_603177
-  var valid_603178 = header.getOrDefault("X-Amz-Signature")
-  valid_603178 = validateParameter(valid_603178, JString, required = false,
+  if valid_601181 != nil:
+    section.add "X-Amz-Algorithm", valid_601181
+  var valid_601182 = header.getOrDefault("X-Amz-Signature")
+  valid_601182 = validateParameter(valid_601182, JString, required = false,
                                  default = nil)
-  if valid_603178 != nil:
-    section.add "X-Amz-Signature", valid_603178
-  var valid_603179 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603179 = validateParameter(valid_603179, JString, required = false,
+  if valid_601182 != nil:
+    section.add "X-Amz-Signature", valid_601182
+  var valid_601183 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601183 = validateParameter(valid_601183, JString, required = false,
                                  default = nil)
-  if valid_603179 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603179
-  var valid_603180 = header.getOrDefault("X-Amz-Credential")
-  valid_603180 = validateParameter(valid_603180, JString, required = false,
+  if valid_601183 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601183
+  var valid_601184 = header.getOrDefault("X-Amz-Credential")
+  valid_601184 = validateParameter(valid_601184, JString, required = false,
                                  default = nil)
-  if valid_603180 != nil:
-    section.add "X-Amz-Credential", valid_603180
+  if valid_601184 != nil:
+    section.add "X-Amz-Credential", valid_601184
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1411,20 +1466,21 @@ proc validate_UpdateConfigurationSetEventDestination_603170(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603182: Call_UpdateConfigurationSetEventDestination_603169;
+proc call*(call_601186: Call_UpdateConfigurationSetEventDestination_601173;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Update the configuration of an event destination for a configuration set.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   ## 
-  let valid = call_603182.validator(path, query, header, formData, body)
-  let scheme = call_603182.pickScheme
+  let valid = call_601186.validator(path, query, header, formData, body)
+  let scheme = call_601186.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603182.url(scheme.get, call_603182.host, call_603182.base,
-                         call_603182.route, valid.getOrDefault("path"))
-  result = hook(call_603182, url, valid)
+  let url = call_601186.url(scheme.get, call_601186.host, call_601186.base,
+                         call_601186.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601186, url, valid)
 
-proc call*(call_603183: Call_UpdateConfigurationSetEventDestination_603169;
+proc call*(call_601187: Call_UpdateConfigurationSetEventDestination_601173;
           ConfigurationSetName: string; body: JsonNode; EventDestinationName: string): Recallable =
   ## updateConfigurationSetEventDestination
   ## <p>Update the configuration of an event destination for a configuration set.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
@@ -1433,24 +1489,27 @@ proc call*(call_603183: Call_UpdateConfigurationSetEventDestination_603169;
   ##   body: JObject (required)
   ##   EventDestinationName: string (required)
   ##                       : <p>The name of an event destination.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
-  var path_603184 = newJObject()
-  var body_603185 = newJObject()
-  add(path_603184, "ConfigurationSetName", newJString(ConfigurationSetName))
+  var path_601188 = newJObject()
+  var body_601189 = newJObject()
+  add(path_601188, "ConfigurationSetName", newJString(ConfigurationSetName))
   if body != nil:
-    body_603185 = body
-  add(path_603184, "EventDestinationName", newJString(EventDestinationName))
-  result = call_603183.call(path_603184, nil, nil, nil, body_603185)
+    body_601189 = body
+  add(path_601188, "EventDestinationName", newJString(EventDestinationName))
+  result = call_601187.call(path_601188, nil, nil, nil, body_601189)
 
-var updateConfigurationSetEventDestination* = Call_UpdateConfigurationSetEventDestination_603169(
+var updateConfigurationSetEventDestination* = Call_UpdateConfigurationSetEventDestination_601173(
     name: "updateConfigurationSetEventDestination", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets/{ConfigurationSetName}/event-destinations/{EventDestinationName}",
-    validator: validate_UpdateConfigurationSetEventDestination_603170, base: "/",
-    url: url_UpdateConfigurationSetEventDestination_603171,
+    validator: validate_UpdateConfigurationSetEventDestination_601174, base: "/",
+    url: url_UpdateConfigurationSetEventDestination_601175,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteConfigurationSetEventDestination_603186 = ref object of OpenApiRestCall_602417
-proc url_DeleteConfigurationSetEventDestination_603188(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode): string =
+  Call_DeleteConfigurationSetEventDestination_601190 = ref object of OpenApiRestCall_600421
+proc url_DeleteConfigurationSetEventDestination_601192(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -1464,9 +1523,9 @@ proc url_DeleteConfigurationSetEventDestination_603188(protocol: Scheme;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_DeleteConfigurationSetEventDestination_603187(path: JsonNode;
+proc validate_DeleteConfigurationSetEventDestination_601191(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Delete an event destination.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   ## 
@@ -1479,16 +1538,16 @@ proc validate_DeleteConfigurationSetEventDestination_603187(path: JsonNode;
   ##                       : <p>The name of an event destination.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603189 = path.getOrDefault("ConfigurationSetName")
-  valid_603189 = validateParameter(valid_603189, JString, required = true,
+  var valid_601193 = path.getOrDefault("ConfigurationSetName")
+  valid_601193 = validateParameter(valid_601193, JString, required = true,
                                  default = nil)
-  if valid_603189 != nil:
-    section.add "ConfigurationSetName", valid_603189
-  var valid_603190 = path.getOrDefault("EventDestinationName")
-  valid_603190 = validateParameter(valid_603190, JString, required = true,
+  if valid_601193 != nil:
+    section.add "ConfigurationSetName", valid_601193
+  var valid_601194 = path.getOrDefault("EventDestinationName")
+  valid_601194 = validateParameter(valid_601194, JString, required = true,
                                  default = nil)
-  if valid_603190 != nil:
-    section.add "EventDestinationName", valid_603190
+  if valid_601194 != nil:
+    section.add "EventDestinationName", valid_601194
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1501,61 +1560,62 @@ proc validate_DeleteConfigurationSetEventDestination_603187(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603191 = header.getOrDefault("X-Amz-Date")
-  valid_603191 = validateParameter(valid_603191, JString, required = false,
+  var valid_601195 = header.getOrDefault("X-Amz-Date")
+  valid_601195 = validateParameter(valid_601195, JString, required = false,
                                  default = nil)
-  if valid_603191 != nil:
-    section.add "X-Amz-Date", valid_603191
-  var valid_603192 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603192 = validateParameter(valid_603192, JString, required = false,
+  if valid_601195 != nil:
+    section.add "X-Amz-Date", valid_601195
+  var valid_601196 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601196 = validateParameter(valid_601196, JString, required = false,
                                  default = nil)
-  if valid_603192 != nil:
-    section.add "X-Amz-Security-Token", valid_603192
-  var valid_603193 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603193 = validateParameter(valid_603193, JString, required = false,
+  if valid_601196 != nil:
+    section.add "X-Amz-Security-Token", valid_601196
+  var valid_601197 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601197 = validateParameter(valid_601197, JString, required = false,
                                  default = nil)
-  if valid_603193 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603193
-  var valid_603194 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603194 = validateParameter(valid_603194, JString, required = false,
+  if valid_601197 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601197
+  var valid_601198 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601198 = validateParameter(valid_601198, JString, required = false,
                                  default = nil)
-  if valid_603194 != nil:
-    section.add "X-Amz-Algorithm", valid_603194
-  var valid_603195 = header.getOrDefault("X-Amz-Signature")
-  valid_603195 = validateParameter(valid_603195, JString, required = false,
+  if valid_601198 != nil:
+    section.add "X-Amz-Algorithm", valid_601198
+  var valid_601199 = header.getOrDefault("X-Amz-Signature")
+  valid_601199 = validateParameter(valid_601199, JString, required = false,
                                  default = nil)
-  if valid_603195 != nil:
-    section.add "X-Amz-Signature", valid_603195
-  var valid_603196 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603196 = validateParameter(valid_603196, JString, required = false,
+  if valid_601199 != nil:
+    section.add "X-Amz-Signature", valid_601199
+  var valid_601200 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601200 = validateParameter(valid_601200, JString, required = false,
                                  default = nil)
-  if valid_603196 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603196
-  var valid_603197 = header.getOrDefault("X-Amz-Credential")
-  valid_603197 = validateParameter(valid_603197, JString, required = false,
+  if valid_601200 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601200
+  var valid_601201 = header.getOrDefault("X-Amz-Credential")
+  valid_601201 = validateParameter(valid_601201, JString, required = false,
                                  default = nil)
-  if valid_603197 != nil:
-    section.add "X-Amz-Credential", valid_603197
+  if valid_601201 != nil:
+    section.add "X-Amz-Credential", valid_601201
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603198: Call_DeleteConfigurationSetEventDestination_603186;
+proc call*(call_601202: Call_DeleteConfigurationSetEventDestination_601190;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Delete an event destination.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
   ## 
-  let valid = call_603198.validator(path, query, header, formData, body)
-  let scheme = call_603198.pickScheme
+  let valid = call_601202.validator(path, query, header, formData, body)
+  let scheme = call_601202.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603198.url(scheme.get, call_603198.host, call_603198.base,
-                         call_603198.route, valid.getOrDefault("path"))
-  result = hook(call_603198, url, valid)
+  let url = call_601202.url(scheme.get, call_601202.host, call_601202.base,
+                         call_601202.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601202, url, valid)
 
-proc call*(call_603199: Call_DeleteConfigurationSetEventDestination_603186;
+proc call*(call_601203: Call_DeleteConfigurationSetEventDestination_601190;
           ConfigurationSetName: string; EventDestinationName: string): Recallable =
   ## deleteConfigurationSetEventDestination
   ## <p>Delete an event destination.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
@@ -1563,21 +1623,24 @@ proc call*(call_603199: Call_DeleteConfigurationSetEventDestination_603186;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   EventDestinationName: string (required)
   ##                       : <p>The name of an event destination.</p> <p>In Amazon Pinpoint, <i>events</i> include message sends, deliveries, opens, clicks, bounces, and complaints. <i>Event destinations</i> are places that you can send information about these events to. For example, you can send event data to Amazon SNS to receive notifications when you receive bounces or complaints, or you can use Amazon Kinesis Data Firehose to stream data to Amazon S3 for long-term storage.</p>
-  var path_603200 = newJObject()
-  add(path_603200, "ConfigurationSetName", newJString(ConfigurationSetName))
-  add(path_603200, "EventDestinationName", newJString(EventDestinationName))
-  result = call_603199.call(path_603200, nil, nil, nil, nil)
+  var path_601204 = newJObject()
+  add(path_601204, "ConfigurationSetName", newJString(ConfigurationSetName))
+  add(path_601204, "EventDestinationName", newJString(EventDestinationName))
+  result = call_601203.call(path_601204, nil, nil, nil, nil)
 
-var deleteConfigurationSetEventDestination* = Call_DeleteConfigurationSetEventDestination_603186(
+var deleteConfigurationSetEventDestination* = Call_DeleteConfigurationSetEventDestination_601190(
     name: "deleteConfigurationSetEventDestination", meth: HttpMethod.HttpDelete,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets/{ConfigurationSetName}/event-destinations/{EventDestinationName}",
-    validator: validate_DeleteConfigurationSetEventDestination_603187, base: "/",
-    url: url_DeleteConfigurationSetEventDestination_603188,
+    validator: validate_DeleteConfigurationSetEventDestination_601191, base: "/",
+    url: url_DeleteConfigurationSetEventDestination_601192,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDedicatedIpPool_603201 = ref object of OpenApiRestCall_602417
-proc url_DeleteDedicatedIpPool_603203(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode): string =
+  Call_DeleteDedicatedIpPool_601205 = ref object of OpenApiRestCall_600421
+proc url_DeleteDedicatedIpPool_601207(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "PoolName" in path, "`PoolName` is a required path parameter"
   const
@@ -1586,9 +1649,9 @@ proc url_DeleteDedicatedIpPool_603203(protocol: Scheme; host: string; base: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_DeleteDedicatedIpPool_603202(path: JsonNode; query: JsonNode;
+proc validate_DeleteDedicatedIpPool_601206(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Delete a dedicated IP pool.
   ## 
@@ -1599,11 +1662,11 @@ proc validate_DeleteDedicatedIpPool_603202(path: JsonNode; query: JsonNode;
   ##           : The name of a dedicated IP pool.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `PoolName` field"
-  var valid_603204 = path.getOrDefault("PoolName")
-  valid_603204 = validateParameter(valid_603204, JString, required = true,
+  var valid_601208 = path.getOrDefault("PoolName")
+  valid_601208 = validateParameter(valid_601208, JString, required = true,
                                  default = nil)
-  if valid_603204 != nil:
-    section.add "PoolName", valid_603204
+  if valid_601208 != nil:
+    section.add "PoolName", valid_601208
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1616,77 +1679,81 @@ proc validate_DeleteDedicatedIpPool_603202(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603205 = header.getOrDefault("X-Amz-Date")
-  valid_603205 = validateParameter(valid_603205, JString, required = false,
+  var valid_601209 = header.getOrDefault("X-Amz-Date")
+  valid_601209 = validateParameter(valid_601209, JString, required = false,
                                  default = nil)
-  if valid_603205 != nil:
-    section.add "X-Amz-Date", valid_603205
-  var valid_603206 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603206 = validateParameter(valid_603206, JString, required = false,
+  if valid_601209 != nil:
+    section.add "X-Amz-Date", valid_601209
+  var valid_601210 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601210 = validateParameter(valid_601210, JString, required = false,
                                  default = nil)
-  if valid_603206 != nil:
-    section.add "X-Amz-Security-Token", valid_603206
-  var valid_603207 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603207 = validateParameter(valid_603207, JString, required = false,
+  if valid_601210 != nil:
+    section.add "X-Amz-Security-Token", valid_601210
+  var valid_601211 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601211 = validateParameter(valid_601211, JString, required = false,
                                  default = nil)
-  if valid_603207 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603207
-  var valid_603208 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603208 = validateParameter(valid_603208, JString, required = false,
+  if valid_601211 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601211
+  var valid_601212 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601212 = validateParameter(valid_601212, JString, required = false,
                                  default = nil)
-  if valid_603208 != nil:
-    section.add "X-Amz-Algorithm", valid_603208
-  var valid_603209 = header.getOrDefault("X-Amz-Signature")
-  valid_603209 = validateParameter(valid_603209, JString, required = false,
+  if valid_601212 != nil:
+    section.add "X-Amz-Algorithm", valid_601212
+  var valid_601213 = header.getOrDefault("X-Amz-Signature")
+  valid_601213 = validateParameter(valid_601213, JString, required = false,
                                  default = nil)
-  if valid_603209 != nil:
-    section.add "X-Amz-Signature", valid_603209
-  var valid_603210 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603210 = validateParameter(valid_603210, JString, required = false,
+  if valid_601213 != nil:
+    section.add "X-Amz-Signature", valid_601213
+  var valid_601214 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601214 = validateParameter(valid_601214, JString, required = false,
                                  default = nil)
-  if valid_603210 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603210
-  var valid_603211 = header.getOrDefault("X-Amz-Credential")
-  valid_603211 = validateParameter(valid_603211, JString, required = false,
+  if valid_601214 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601214
+  var valid_601215 = header.getOrDefault("X-Amz-Credential")
+  valid_601215 = validateParameter(valid_601215, JString, required = false,
                                  default = nil)
-  if valid_603211 != nil:
-    section.add "X-Amz-Credential", valid_603211
+  if valid_601215 != nil:
+    section.add "X-Amz-Credential", valid_601215
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603212: Call_DeleteDedicatedIpPool_603201; path: JsonNode;
+proc call*(call_601216: Call_DeleteDedicatedIpPool_601205; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Delete a dedicated IP pool.
   ## 
-  let valid = call_603212.validator(path, query, header, formData, body)
-  let scheme = call_603212.pickScheme
+  let valid = call_601216.validator(path, query, header, formData, body)
+  let scheme = call_601216.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603212.url(scheme.get, call_603212.host, call_603212.base,
-                         call_603212.route, valid.getOrDefault("path"))
-  result = hook(call_603212, url, valid)
+  let url = call_601216.url(scheme.get, call_601216.host, call_601216.base,
+                         call_601216.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601216, url, valid)
 
-proc call*(call_603213: Call_DeleteDedicatedIpPool_603201; PoolName: string): Recallable =
+proc call*(call_601217: Call_DeleteDedicatedIpPool_601205; PoolName: string): Recallable =
   ## deleteDedicatedIpPool
   ## Delete a dedicated IP pool.
   ##   PoolName: string (required)
   ##           : The name of a dedicated IP pool.
-  var path_603214 = newJObject()
-  add(path_603214, "PoolName", newJString(PoolName))
-  result = call_603213.call(path_603214, nil, nil, nil, nil)
+  var path_601218 = newJObject()
+  add(path_601218, "PoolName", newJString(PoolName))
+  result = call_601217.call(path_601218, nil, nil, nil, nil)
 
-var deleteDedicatedIpPool* = Call_DeleteDedicatedIpPool_603201(
+var deleteDedicatedIpPool* = Call_DeleteDedicatedIpPool_601205(
     name: "deleteDedicatedIpPool", meth: HttpMethod.HttpDelete,
     host: "email.amazonaws.com", route: "/v1/email/dedicated-ip-pools/{PoolName}",
-    validator: validate_DeleteDedicatedIpPool_603202, base: "/",
-    url: url_DeleteDedicatedIpPool_603203, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteDedicatedIpPool_601206, base: "/",
+    url: url_DeleteDedicatedIpPool_601207, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetEmailIdentity_603215 = ref object of OpenApiRestCall_602417
-proc url_GetEmailIdentity_603217(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode): string =
+  Call_GetEmailIdentity_601219 = ref object of OpenApiRestCall_600421
+proc url_GetEmailIdentity_601221(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "EmailIdentity" in path, "`EmailIdentity` is a required path parameter"
   const
@@ -1695,9 +1762,9 @@ proc url_GetEmailIdentity_603217(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_GetEmailIdentity_603216(path: JsonNode; query: JsonNode;
+proc validate_GetEmailIdentity_601220(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Provides information about a specific identity associated with your Amazon Pinpoint account, including the identity's verification status, its DKIM authentication status, and its custom Mail-From settings.
@@ -1710,11 +1777,11 @@ proc validate_GetEmailIdentity_603216(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailIdentity` field"
-  var valid_603218 = path.getOrDefault("EmailIdentity")
-  valid_603218 = validateParameter(valid_603218, JString, required = true,
+  var valid_601222 = path.getOrDefault("EmailIdentity")
+  valid_601222 = validateParameter(valid_601222, JString, required = true,
                                  default = nil)
-  if valid_603218 != nil:
-    section.add "EmailIdentity", valid_603218
+  if valid_601222 != nil:
+    section.add "EmailIdentity", valid_601222
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1727,77 +1794,81 @@ proc validate_GetEmailIdentity_603216(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603219 = header.getOrDefault("X-Amz-Date")
-  valid_603219 = validateParameter(valid_603219, JString, required = false,
+  var valid_601223 = header.getOrDefault("X-Amz-Date")
+  valid_601223 = validateParameter(valid_601223, JString, required = false,
                                  default = nil)
-  if valid_603219 != nil:
-    section.add "X-Amz-Date", valid_603219
-  var valid_603220 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603220 = validateParameter(valid_603220, JString, required = false,
+  if valid_601223 != nil:
+    section.add "X-Amz-Date", valid_601223
+  var valid_601224 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601224 = validateParameter(valid_601224, JString, required = false,
                                  default = nil)
-  if valid_603220 != nil:
-    section.add "X-Amz-Security-Token", valid_603220
-  var valid_603221 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603221 = validateParameter(valid_603221, JString, required = false,
+  if valid_601224 != nil:
+    section.add "X-Amz-Security-Token", valid_601224
+  var valid_601225 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601225 = validateParameter(valid_601225, JString, required = false,
                                  default = nil)
-  if valid_603221 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603221
-  var valid_603222 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603222 = validateParameter(valid_603222, JString, required = false,
+  if valid_601225 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601225
+  var valid_601226 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601226 = validateParameter(valid_601226, JString, required = false,
                                  default = nil)
-  if valid_603222 != nil:
-    section.add "X-Amz-Algorithm", valid_603222
-  var valid_603223 = header.getOrDefault("X-Amz-Signature")
-  valid_603223 = validateParameter(valid_603223, JString, required = false,
+  if valid_601226 != nil:
+    section.add "X-Amz-Algorithm", valid_601226
+  var valid_601227 = header.getOrDefault("X-Amz-Signature")
+  valid_601227 = validateParameter(valid_601227, JString, required = false,
                                  default = nil)
-  if valid_603223 != nil:
-    section.add "X-Amz-Signature", valid_603223
-  var valid_603224 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603224 = validateParameter(valid_603224, JString, required = false,
+  if valid_601227 != nil:
+    section.add "X-Amz-Signature", valid_601227
+  var valid_601228 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601228 = validateParameter(valid_601228, JString, required = false,
                                  default = nil)
-  if valid_603224 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603224
-  var valid_603225 = header.getOrDefault("X-Amz-Credential")
-  valid_603225 = validateParameter(valid_603225, JString, required = false,
+  if valid_601228 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601228
+  var valid_601229 = header.getOrDefault("X-Amz-Credential")
+  valid_601229 = validateParameter(valid_601229, JString, required = false,
                                  default = nil)
-  if valid_603225 != nil:
-    section.add "X-Amz-Credential", valid_603225
+  if valid_601229 != nil:
+    section.add "X-Amz-Credential", valid_601229
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603226: Call_GetEmailIdentity_603215; path: JsonNode;
+proc call*(call_601230: Call_GetEmailIdentity_601219; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Provides information about a specific identity associated with your Amazon Pinpoint account, including the identity's verification status, its DKIM authentication status, and its custom Mail-From settings.
   ## 
-  let valid = call_603226.validator(path, query, header, formData, body)
-  let scheme = call_603226.pickScheme
+  let valid = call_601230.validator(path, query, header, formData, body)
+  let scheme = call_601230.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603226.url(scheme.get, call_603226.host, call_603226.base,
-                         call_603226.route, valid.getOrDefault("path"))
-  result = hook(call_603226, url, valid)
+  let url = call_601230.url(scheme.get, call_601230.host, call_601230.base,
+                         call_601230.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601230, url, valid)
 
-proc call*(call_603227: Call_GetEmailIdentity_603215; EmailIdentity: string): Recallable =
+proc call*(call_601231: Call_GetEmailIdentity_601219; EmailIdentity: string): Recallable =
   ## getEmailIdentity
   ## Provides information about a specific identity associated with your Amazon Pinpoint account, including the identity's verification status, its DKIM authentication status, and its custom Mail-From settings.
   ##   EmailIdentity: string (required)
   ##                : The email identity that you want to retrieve details for.
-  var path_603228 = newJObject()
-  add(path_603228, "EmailIdentity", newJString(EmailIdentity))
-  result = call_603227.call(path_603228, nil, nil, nil, nil)
+  var path_601232 = newJObject()
+  add(path_601232, "EmailIdentity", newJString(EmailIdentity))
+  result = call_601231.call(path_601232, nil, nil, nil, nil)
 
-var getEmailIdentity* = Call_GetEmailIdentity_603215(name: "getEmailIdentity",
+var getEmailIdentity* = Call_GetEmailIdentity_601219(name: "getEmailIdentity",
     meth: HttpMethod.HttpGet, host: "email.amazonaws.com",
     route: "/v1/email/identities/{EmailIdentity}",
-    validator: validate_GetEmailIdentity_603216, base: "/",
-    url: url_GetEmailIdentity_603217, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetEmailIdentity_601220, base: "/",
+    url: url_GetEmailIdentity_601221, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteEmailIdentity_603229 = ref object of OpenApiRestCall_602417
-proc url_DeleteEmailIdentity_603231(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
+  Call_DeleteEmailIdentity_601233 = ref object of OpenApiRestCall_600421
+proc url_DeleteEmailIdentity_601235(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "EmailIdentity" in path, "`EmailIdentity` is a required path parameter"
   const
@@ -1806,9 +1877,9 @@ proc url_DeleteEmailIdentity_603231(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_DeleteEmailIdentity_603230(path: JsonNode; query: JsonNode;
+proc validate_DeleteEmailIdentity_601234(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Deletes an email identity that you previously verified for use with Amazon Pinpoint. An identity can be either an email address or a domain name.
@@ -1821,11 +1892,11 @@ proc validate_DeleteEmailIdentity_603230(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailIdentity` field"
-  var valid_603232 = path.getOrDefault("EmailIdentity")
-  valid_603232 = validateParameter(valid_603232, JString, required = true,
+  var valid_601236 = path.getOrDefault("EmailIdentity")
+  valid_601236 = validateParameter(valid_601236, JString, required = true,
                                  default = nil)
-  if valid_603232 != nil:
-    section.add "EmailIdentity", valid_603232
+  if valid_601236 != nil:
+    section.add "EmailIdentity", valid_601236
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1838,80 +1909,84 @@ proc validate_DeleteEmailIdentity_603230(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603233 = header.getOrDefault("X-Amz-Date")
-  valid_603233 = validateParameter(valid_603233, JString, required = false,
+  var valid_601237 = header.getOrDefault("X-Amz-Date")
+  valid_601237 = validateParameter(valid_601237, JString, required = false,
                                  default = nil)
-  if valid_603233 != nil:
-    section.add "X-Amz-Date", valid_603233
-  var valid_603234 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603234 = validateParameter(valid_603234, JString, required = false,
+  if valid_601237 != nil:
+    section.add "X-Amz-Date", valid_601237
+  var valid_601238 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601238 = validateParameter(valid_601238, JString, required = false,
                                  default = nil)
-  if valid_603234 != nil:
-    section.add "X-Amz-Security-Token", valid_603234
-  var valid_603235 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603235 = validateParameter(valid_603235, JString, required = false,
+  if valid_601238 != nil:
+    section.add "X-Amz-Security-Token", valid_601238
+  var valid_601239 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601239 = validateParameter(valid_601239, JString, required = false,
                                  default = nil)
-  if valid_603235 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603235
-  var valid_603236 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603236 = validateParameter(valid_603236, JString, required = false,
+  if valid_601239 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601239
+  var valid_601240 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601240 = validateParameter(valid_601240, JString, required = false,
                                  default = nil)
-  if valid_603236 != nil:
-    section.add "X-Amz-Algorithm", valid_603236
-  var valid_603237 = header.getOrDefault("X-Amz-Signature")
-  valid_603237 = validateParameter(valid_603237, JString, required = false,
+  if valid_601240 != nil:
+    section.add "X-Amz-Algorithm", valid_601240
+  var valid_601241 = header.getOrDefault("X-Amz-Signature")
+  valid_601241 = validateParameter(valid_601241, JString, required = false,
                                  default = nil)
-  if valid_603237 != nil:
-    section.add "X-Amz-Signature", valid_603237
-  var valid_603238 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603238 = validateParameter(valid_603238, JString, required = false,
+  if valid_601241 != nil:
+    section.add "X-Amz-Signature", valid_601241
+  var valid_601242 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601242 = validateParameter(valid_601242, JString, required = false,
                                  default = nil)
-  if valid_603238 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603238
-  var valid_603239 = header.getOrDefault("X-Amz-Credential")
-  valid_603239 = validateParameter(valid_603239, JString, required = false,
+  if valid_601242 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601242
+  var valid_601243 = header.getOrDefault("X-Amz-Credential")
+  valid_601243 = validateParameter(valid_601243, JString, required = false,
                                  default = nil)
-  if valid_603239 != nil:
-    section.add "X-Amz-Credential", valid_603239
+  if valid_601243 != nil:
+    section.add "X-Amz-Credential", valid_601243
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603240: Call_DeleteEmailIdentity_603229; path: JsonNode;
+proc call*(call_601244: Call_DeleteEmailIdentity_601233; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes an email identity that you previously verified for use with Amazon Pinpoint. An identity can be either an email address or a domain name.
   ## 
-  let valid = call_603240.validator(path, query, header, formData, body)
-  let scheme = call_603240.pickScheme
+  let valid = call_601244.validator(path, query, header, formData, body)
+  let scheme = call_601244.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603240.url(scheme.get, call_603240.host, call_603240.base,
-                         call_603240.route, valid.getOrDefault("path"))
-  result = hook(call_603240, url, valid)
+  let url = call_601244.url(scheme.get, call_601244.host, call_601244.base,
+                         call_601244.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601244, url, valid)
 
-proc call*(call_603241: Call_DeleteEmailIdentity_603229; EmailIdentity: string): Recallable =
+proc call*(call_601245: Call_DeleteEmailIdentity_601233; EmailIdentity: string): Recallable =
   ## deleteEmailIdentity
   ## Deletes an email identity that you previously verified for use with Amazon Pinpoint. An identity can be either an email address or a domain name.
   ##   EmailIdentity: string (required)
   ##                : The identity (that is, the email address or domain) that you want to delete from your Amazon Pinpoint account.
-  var path_603242 = newJObject()
-  add(path_603242, "EmailIdentity", newJString(EmailIdentity))
-  result = call_603241.call(path_603242, nil, nil, nil, nil)
+  var path_601246 = newJObject()
+  add(path_601246, "EmailIdentity", newJString(EmailIdentity))
+  result = call_601245.call(path_601246, nil, nil, nil, nil)
 
-var deleteEmailIdentity* = Call_DeleteEmailIdentity_603229(
+var deleteEmailIdentity* = Call_DeleteEmailIdentity_601233(
     name: "deleteEmailIdentity", meth: HttpMethod.HttpDelete,
     host: "email.amazonaws.com", route: "/v1/email/identities/{EmailIdentity}",
-    validator: validate_DeleteEmailIdentity_603230, base: "/",
-    url: url_DeleteEmailIdentity_603231, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteEmailIdentity_601234, base: "/",
+    url: url_DeleteEmailIdentity_601235, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAccount_603243 = ref object of OpenApiRestCall_602417
-proc url_GetAccount_603245(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetAccount_601247 = ref object of OpenApiRestCall_600421
+proc url_GetAccount_601249(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetAccount_603244(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetAccount_601248(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Obtain information about the email-sending status and capabilities of your Amazon Pinpoint account in the current AWS Region.
   ## 
@@ -1930,78 +2005,82 @@ proc validate_GetAccount_603244(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603246 = header.getOrDefault("X-Amz-Date")
-  valid_603246 = validateParameter(valid_603246, JString, required = false,
+  var valid_601250 = header.getOrDefault("X-Amz-Date")
+  valid_601250 = validateParameter(valid_601250, JString, required = false,
                                  default = nil)
-  if valid_603246 != nil:
-    section.add "X-Amz-Date", valid_603246
-  var valid_603247 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603247 = validateParameter(valid_603247, JString, required = false,
+  if valid_601250 != nil:
+    section.add "X-Amz-Date", valid_601250
+  var valid_601251 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601251 = validateParameter(valid_601251, JString, required = false,
                                  default = nil)
-  if valid_603247 != nil:
-    section.add "X-Amz-Security-Token", valid_603247
-  var valid_603248 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603248 = validateParameter(valid_603248, JString, required = false,
+  if valid_601251 != nil:
+    section.add "X-Amz-Security-Token", valid_601251
+  var valid_601252 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601252 = validateParameter(valid_601252, JString, required = false,
                                  default = nil)
-  if valid_603248 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603248
-  var valid_603249 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603249 = validateParameter(valid_603249, JString, required = false,
+  if valid_601252 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601252
+  var valid_601253 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601253 = validateParameter(valid_601253, JString, required = false,
                                  default = nil)
-  if valid_603249 != nil:
-    section.add "X-Amz-Algorithm", valid_603249
-  var valid_603250 = header.getOrDefault("X-Amz-Signature")
-  valid_603250 = validateParameter(valid_603250, JString, required = false,
+  if valid_601253 != nil:
+    section.add "X-Amz-Algorithm", valid_601253
+  var valid_601254 = header.getOrDefault("X-Amz-Signature")
+  valid_601254 = validateParameter(valid_601254, JString, required = false,
                                  default = nil)
-  if valid_603250 != nil:
-    section.add "X-Amz-Signature", valid_603250
-  var valid_603251 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603251 = validateParameter(valid_603251, JString, required = false,
+  if valid_601254 != nil:
+    section.add "X-Amz-Signature", valid_601254
+  var valid_601255 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601255 = validateParameter(valid_601255, JString, required = false,
                                  default = nil)
-  if valid_603251 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603251
-  var valid_603252 = header.getOrDefault("X-Amz-Credential")
-  valid_603252 = validateParameter(valid_603252, JString, required = false,
+  if valid_601255 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601255
+  var valid_601256 = header.getOrDefault("X-Amz-Credential")
+  valid_601256 = validateParameter(valid_601256, JString, required = false,
                                  default = nil)
-  if valid_603252 != nil:
-    section.add "X-Amz-Credential", valid_603252
+  if valid_601256 != nil:
+    section.add "X-Amz-Credential", valid_601256
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603253: Call_GetAccount_603243; path: JsonNode; query: JsonNode;
+proc call*(call_601257: Call_GetAccount_601247; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Obtain information about the email-sending status and capabilities of your Amazon Pinpoint account in the current AWS Region.
   ## 
-  let valid = call_603253.validator(path, query, header, formData, body)
-  let scheme = call_603253.pickScheme
+  let valid = call_601257.validator(path, query, header, formData, body)
+  let scheme = call_601257.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603253.url(scheme.get, call_603253.host, call_603253.base,
-                         call_603253.route, valid.getOrDefault("path"))
-  result = hook(call_603253, url, valid)
+  let url = call_601257.url(scheme.get, call_601257.host, call_601257.base,
+                         call_601257.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601257, url, valid)
 
-proc call*(call_603254: Call_GetAccount_603243): Recallable =
+proc call*(call_601258: Call_GetAccount_601247): Recallable =
   ## getAccount
   ## Obtain information about the email-sending status and capabilities of your Amazon Pinpoint account in the current AWS Region.
-  result = call_603254.call(nil, nil, nil, nil, nil)
+  result = call_601258.call(nil, nil, nil, nil, nil)
 
-var getAccount* = Call_GetAccount_603243(name: "getAccount",
+var getAccount* = Call_GetAccount_601247(name: "getAccount",
                                       meth: HttpMethod.HttpGet,
                                       host: "email.amazonaws.com",
                                       route: "/v1/email/account",
-                                      validator: validate_GetAccount_603244,
-                                      base: "/", url: url_GetAccount_603245,
+                                      validator: validate_GetAccount_601248,
+                                      base: "/", url: url_GetAccount_601249,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBlacklistReports_603255 = ref object of OpenApiRestCall_602417
-proc url_GetBlacklistReports_603257(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetBlacklistReports_601259 = ref object of OpenApiRestCall_600421
+proc url_GetBlacklistReports_601261(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetBlacklistReports_603256(path: JsonNode; query: JsonNode;
+proc validate_GetBlacklistReports_601260(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Retrieve a list of the blacklists that your dedicated IP addresses appear on.
@@ -2015,10 +2094,10 @@ proc validate_GetBlacklistReports_603256(path: JsonNode; query: JsonNode;
   ##                     : A list of IP addresses that you want to retrieve blacklist information about. You can only specify the dedicated IP addresses that you use to send email using Amazon Pinpoint or Amazon SES.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `BlacklistItemNames` field"
-  var valid_603258 = query.getOrDefault("BlacklistItemNames")
-  valid_603258 = validateParameter(valid_603258, JArray, required = true, default = nil)
-  if valid_603258 != nil:
-    section.add "BlacklistItemNames", valid_603258
+  var valid_601262 = query.getOrDefault("BlacklistItemNames")
+  valid_601262 = validateParameter(valid_601262, JArray, required = true, default = nil)
+  if valid_601262 != nil:
+    section.add "BlacklistItemNames", valid_601262
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2029,79 +2108,83 @@ proc validate_GetBlacklistReports_603256(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603259 = header.getOrDefault("X-Amz-Date")
-  valid_603259 = validateParameter(valid_603259, JString, required = false,
+  var valid_601263 = header.getOrDefault("X-Amz-Date")
+  valid_601263 = validateParameter(valid_601263, JString, required = false,
                                  default = nil)
-  if valid_603259 != nil:
-    section.add "X-Amz-Date", valid_603259
-  var valid_603260 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603260 = validateParameter(valid_603260, JString, required = false,
+  if valid_601263 != nil:
+    section.add "X-Amz-Date", valid_601263
+  var valid_601264 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601264 = validateParameter(valid_601264, JString, required = false,
                                  default = nil)
-  if valid_603260 != nil:
-    section.add "X-Amz-Security-Token", valid_603260
-  var valid_603261 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603261 = validateParameter(valid_603261, JString, required = false,
+  if valid_601264 != nil:
+    section.add "X-Amz-Security-Token", valid_601264
+  var valid_601265 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601265 = validateParameter(valid_601265, JString, required = false,
                                  default = nil)
-  if valid_603261 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603261
-  var valid_603262 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603262 = validateParameter(valid_603262, JString, required = false,
+  if valid_601265 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601265
+  var valid_601266 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601266 = validateParameter(valid_601266, JString, required = false,
                                  default = nil)
-  if valid_603262 != nil:
-    section.add "X-Amz-Algorithm", valid_603262
-  var valid_603263 = header.getOrDefault("X-Amz-Signature")
-  valid_603263 = validateParameter(valid_603263, JString, required = false,
+  if valid_601266 != nil:
+    section.add "X-Amz-Algorithm", valid_601266
+  var valid_601267 = header.getOrDefault("X-Amz-Signature")
+  valid_601267 = validateParameter(valid_601267, JString, required = false,
                                  default = nil)
-  if valid_603263 != nil:
-    section.add "X-Amz-Signature", valid_603263
-  var valid_603264 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603264 = validateParameter(valid_603264, JString, required = false,
+  if valid_601267 != nil:
+    section.add "X-Amz-Signature", valid_601267
+  var valid_601268 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601268 = validateParameter(valid_601268, JString, required = false,
                                  default = nil)
-  if valid_603264 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603264
-  var valid_603265 = header.getOrDefault("X-Amz-Credential")
-  valid_603265 = validateParameter(valid_603265, JString, required = false,
+  if valid_601268 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601268
+  var valid_601269 = header.getOrDefault("X-Amz-Credential")
+  valid_601269 = validateParameter(valid_601269, JString, required = false,
                                  default = nil)
-  if valid_603265 != nil:
-    section.add "X-Amz-Credential", valid_603265
+  if valid_601269 != nil:
+    section.add "X-Amz-Credential", valid_601269
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603266: Call_GetBlacklistReports_603255; path: JsonNode;
+proc call*(call_601270: Call_GetBlacklistReports_601259; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieve a list of the blacklists that your dedicated IP addresses appear on.
   ## 
-  let valid = call_603266.validator(path, query, header, formData, body)
-  let scheme = call_603266.pickScheme
+  let valid = call_601270.validator(path, query, header, formData, body)
+  let scheme = call_601270.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603266.url(scheme.get, call_603266.host, call_603266.base,
-                         call_603266.route, valid.getOrDefault("path"))
-  result = hook(call_603266, url, valid)
+  let url = call_601270.url(scheme.get, call_601270.host, call_601270.base,
+                         call_601270.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601270, url, valid)
 
-proc call*(call_603267: Call_GetBlacklistReports_603255;
+proc call*(call_601271: Call_GetBlacklistReports_601259;
           BlacklistItemNames: JsonNode): Recallable =
   ## getBlacklistReports
   ## Retrieve a list of the blacklists that your dedicated IP addresses appear on.
   ##   BlacklistItemNames: JArray (required)
   ##                     : A list of IP addresses that you want to retrieve blacklist information about. You can only specify the dedicated IP addresses that you use to send email using Amazon Pinpoint or Amazon SES.
-  var query_603268 = newJObject()
+  var query_601272 = newJObject()
   if BlacklistItemNames != nil:
-    query_603268.add "BlacklistItemNames", BlacklistItemNames
-  result = call_603267.call(nil, query_603268, nil, nil, nil)
+    query_601272.add "BlacklistItemNames", BlacklistItemNames
+  result = call_601271.call(nil, query_601272, nil, nil, nil)
 
-var getBlacklistReports* = Call_GetBlacklistReports_603255(
+var getBlacklistReports* = Call_GetBlacklistReports_601259(
     name: "getBlacklistReports", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/deliverability-dashboard/blacklist-report#BlacklistItemNames",
-    validator: validate_GetBlacklistReports_603256, base: "/",
-    url: url_GetBlacklistReports_603257, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBlacklistReports_601260, base: "/",
+    url: url_GetBlacklistReports_601261, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDedicatedIp_603269 = ref object of OpenApiRestCall_602417
-proc url_GetDedicatedIp_603271(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode): string =
+  Call_GetDedicatedIp_601273 = ref object of OpenApiRestCall_600421
+proc url_GetDedicatedIp_601275(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "IP" in path, "`IP` is a required path parameter"
   const
@@ -2110,9 +2193,9 @@ proc url_GetDedicatedIp_603271(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_GetDedicatedIp_603270(path: JsonNode; query: JsonNode;
+proc validate_GetDedicatedIp_601274(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Get information about a dedicated IP address, including the name of the dedicated IP pool that it's associated with, as well information about the automatic warm-up process for the address.
@@ -2124,11 +2207,11 @@ proc validate_GetDedicatedIp_603270(path: JsonNode; query: JsonNode;
   ##     : A dedicated IP address that is associated with your Amazon Pinpoint account.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `IP` field"
-  var valid_603272 = path.getOrDefault("IP")
-  valid_603272 = validateParameter(valid_603272, JString, required = true,
+  var valid_601276 = path.getOrDefault("IP")
+  valid_601276 = validateParameter(valid_601276, JString, required = true,
                                  default = nil)
-  if valid_603272 != nil:
-    section.add "IP", valid_603272
+  if valid_601276 != nil:
+    section.add "IP", valid_601276
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2141,79 +2224,83 @@ proc validate_GetDedicatedIp_603270(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603273 = header.getOrDefault("X-Amz-Date")
-  valid_603273 = validateParameter(valid_603273, JString, required = false,
+  var valid_601277 = header.getOrDefault("X-Amz-Date")
+  valid_601277 = validateParameter(valid_601277, JString, required = false,
                                  default = nil)
-  if valid_603273 != nil:
-    section.add "X-Amz-Date", valid_603273
-  var valid_603274 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603274 = validateParameter(valid_603274, JString, required = false,
+  if valid_601277 != nil:
+    section.add "X-Amz-Date", valid_601277
+  var valid_601278 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601278 = validateParameter(valid_601278, JString, required = false,
                                  default = nil)
-  if valid_603274 != nil:
-    section.add "X-Amz-Security-Token", valid_603274
-  var valid_603275 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603275 = validateParameter(valid_603275, JString, required = false,
+  if valid_601278 != nil:
+    section.add "X-Amz-Security-Token", valid_601278
+  var valid_601279 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601279 = validateParameter(valid_601279, JString, required = false,
                                  default = nil)
-  if valid_603275 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603275
-  var valid_603276 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603276 = validateParameter(valid_603276, JString, required = false,
+  if valid_601279 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601279
+  var valid_601280 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601280 = validateParameter(valid_601280, JString, required = false,
                                  default = nil)
-  if valid_603276 != nil:
-    section.add "X-Amz-Algorithm", valid_603276
-  var valid_603277 = header.getOrDefault("X-Amz-Signature")
-  valid_603277 = validateParameter(valid_603277, JString, required = false,
+  if valid_601280 != nil:
+    section.add "X-Amz-Algorithm", valid_601280
+  var valid_601281 = header.getOrDefault("X-Amz-Signature")
+  valid_601281 = validateParameter(valid_601281, JString, required = false,
                                  default = nil)
-  if valid_603277 != nil:
-    section.add "X-Amz-Signature", valid_603277
-  var valid_603278 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603278 = validateParameter(valid_603278, JString, required = false,
+  if valid_601281 != nil:
+    section.add "X-Amz-Signature", valid_601281
+  var valid_601282 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601282 = validateParameter(valid_601282, JString, required = false,
                                  default = nil)
-  if valid_603278 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603278
-  var valid_603279 = header.getOrDefault("X-Amz-Credential")
-  valid_603279 = validateParameter(valid_603279, JString, required = false,
+  if valid_601282 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601282
+  var valid_601283 = header.getOrDefault("X-Amz-Credential")
+  valid_601283 = validateParameter(valid_601283, JString, required = false,
                                  default = nil)
-  if valid_603279 != nil:
-    section.add "X-Amz-Credential", valid_603279
+  if valid_601283 != nil:
+    section.add "X-Amz-Credential", valid_601283
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603280: Call_GetDedicatedIp_603269; path: JsonNode; query: JsonNode;
+proc call*(call_601284: Call_GetDedicatedIp_601273; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Get information about a dedicated IP address, including the name of the dedicated IP pool that it's associated with, as well information about the automatic warm-up process for the address.
   ## 
-  let valid = call_603280.validator(path, query, header, formData, body)
-  let scheme = call_603280.pickScheme
+  let valid = call_601284.validator(path, query, header, formData, body)
+  let scheme = call_601284.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603280.url(scheme.get, call_603280.host, call_603280.base,
-                         call_603280.route, valid.getOrDefault("path"))
-  result = hook(call_603280, url, valid)
+  let url = call_601284.url(scheme.get, call_601284.host, call_601284.base,
+                         call_601284.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601284, url, valid)
 
-proc call*(call_603281: Call_GetDedicatedIp_603269; IP: string): Recallable =
+proc call*(call_601285: Call_GetDedicatedIp_601273; IP: string): Recallable =
   ## getDedicatedIp
   ## Get information about a dedicated IP address, including the name of the dedicated IP pool that it's associated with, as well information about the automatic warm-up process for the address.
   ##   IP: string (required)
   ##     : A dedicated IP address that is associated with your Amazon Pinpoint account.
-  var path_603282 = newJObject()
-  add(path_603282, "IP", newJString(IP))
-  result = call_603281.call(path_603282, nil, nil, nil, nil)
+  var path_601286 = newJObject()
+  add(path_601286, "IP", newJString(IP))
+  result = call_601285.call(path_601286, nil, nil, nil, nil)
 
-var getDedicatedIp* = Call_GetDedicatedIp_603269(name: "getDedicatedIp",
+var getDedicatedIp* = Call_GetDedicatedIp_601273(name: "getDedicatedIp",
     meth: HttpMethod.HttpGet, host: "email.amazonaws.com",
-    route: "/v1/email/dedicated-ips/{IP}", validator: validate_GetDedicatedIp_603270,
-    base: "/", url: url_GetDedicatedIp_603271, schemes: {Scheme.Https, Scheme.Http})
+    route: "/v1/email/dedicated-ips/{IP}", validator: validate_GetDedicatedIp_601274,
+    base: "/", url: url_GetDedicatedIp_601275, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDedicatedIps_603283 = ref object of OpenApiRestCall_602417
-proc url_GetDedicatedIps_603285(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetDedicatedIps_601287 = ref object of OpenApiRestCall_600421
+proc url_GetDedicatedIps_601289(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetDedicatedIps_603284(path: JsonNode; query: JsonNode;
+proc validate_GetDedicatedIps_601288(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## List the dedicated IP addresses that are associated with your Amazon Pinpoint account.
@@ -2230,20 +2317,20 @@ proc validate_GetDedicatedIps_603284(path: JsonNode; query: JsonNode;
   ##   PoolName: JString
   ##           : The name of a dedicated IP pool.
   section = newJObject()
-  var valid_603286 = query.getOrDefault("PageSize")
-  valid_603286 = validateParameter(valid_603286, JInt, required = false, default = nil)
-  if valid_603286 != nil:
-    section.add "PageSize", valid_603286
-  var valid_603287 = query.getOrDefault("NextToken")
-  valid_603287 = validateParameter(valid_603287, JString, required = false,
+  var valid_601290 = query.getOrDefault("PageSize")
+  valid_601290 = validateParameter(valid_601290, JInt, required = false, default = nil)
+  if valid_601290 != nil:
+    section.add "PageSize", valid_601290
+  var valid_601291 = query.getOrDefault("NextToken")
+  valid_601291 = validateParameter(valid_601291, JString, required = false,
                                  default = nil)
-  if valid_603287 != nil:
-    section.add "NextToken", valid_603287
-  var valid_603288 = query.getOrDefault("PoolName")
-  valid_603288 = validateParameter(valid_603288, JString, required = false,
+  if valid_601291 != nil:
+    section.add "NextToken", valid_601291
+  var valid_601292 = query.getOrDefault("PoolName")
+  valid_601292 = validateParameter(valid_601292, JString, required = false,
                                  default = nil)
-  if valid_603288 != nil:
-    section.add "PoolName", valid_603288
+  if valid_601292 != nil:
+    section.add "PoolName", valid_601292
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2254,60 +2341,61 @@ proc validate_GetDedicatedIps_603284(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603289 = header.getOrDefault("X-Amz-Date")
-  valid_603289 = validateParameter(valid_603289, JString, required = false,
+  var valid_601293 = header.getOrDefault("X-Amz-Date")
+  valid_601293 = validateParameter(valid_601293, JString, required = false,
                                  default = nil)
-  if valid_603289 != nil:
-    section.add "X-Amz-Date", valid_603289
-  var valid_603290 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603290 = validateParameter(valid_603290, JString, required = false,
+  if valid_601293 != nil:
+    section.add "X-Amz-Date", valid_601293
+  var valid_601294 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601294 = validateParameter(valid_601294, JString, required = false,
                                  default = nil)
-  if valid_603290 != nil:
-    section.add "X-Amz-Security-Token", valid_603290
-  var valid_603291 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603291 = validateParameter(valid_603291, JString, required = false,
+  if valid_601294 != nil:
+    section.add "X-Amz-Security-Token", valid_601294
+  var valid_601295 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601295 = validateParameter(valid_601295, JString, required = false,
                                  default = nil)
-  if valid_603291 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603291
-  var valid_603292 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603292 = validateParameter(valid_603292, JString, required = false,
+  if valid_601295 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601295
+  var valid_601296 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601296 = validateParameter(valid_601296, JString, required = false,
                                  default = nil)
-  if valid_603292 != nil:
-    section.add "X-Amz-Algorithm", valid_603292
-  var valid_603293 = header.getOrDefault("X-Amz-Signature")
-  valid_603293 = validateParameter(valid_603293, JString, required = false,
+  if valid_601296 != nil:
+    section.add "X-Amz-Algorithm", valid_601296
+  var valid_601297 = header.getOrDefault("X-Amz-Signature")
+  valid_601297 = validateParameter(valid_601297, JString, required = false,
                                  default = nil)
-  if valid_603293 != nil:
-    section.add "X-Amz-Signature", valid_603293
-  var valid_603294 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603294 = validateParameter(valid_603294, JString, required = false,
+  if valid_601297 != nil:
+    section.add "X-Amz-Signature", valid_601297
+  var valid_601298 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601298 = validateParameter(valid_601298, JString, required = false,
                                  default = nil)
-  if valid_603294 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603294
-  var valid_603295 = header.getOrDefault("X-Amz-Credential")
-  valid_603295 = validateParameter(valid_603295, JString, required = false,
+  if valid_601298 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601298
+  var valid_601299 = header.getOrDefault("X-Amz-Credential")
+  valid_601299 = validateParameter(valid_601299, JString, required = false,
                                  default = nil)
-  if valid_603295 != nil:
-    section.add "X-Amz-Credential", valid_603295
+  if valid_601299 != nil:
+    section.add "X-Amz-Credential", valid_601299
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603296: Call_GetDedicatedIps_603283; path: JsonNode; query: JsonNode;
+proc call*(call_601300: Call_GetDedicatedIps_601287; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List the dedicated IP addresses that are associated with your Amazon Pinpoint account.
   ## 
-  let valid = call_603296.validator(path, query, header, formData, body)
-  let scheme = call_603296.pickScheme
+  let valid = call_601300.validator(path, query, header, formData, body)
+  let scheme = call_601300.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603296.url(scheme.get, call_603296.host, call_603296.base,
-                         call_603296.route, valid.getOrDefault("path"))
-  result = hook(call_603296, url, valid)
+  let url = call_601300.url(scheme.get, call_601300.host, call_601300.base,
+                         call_601300.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601300, url, valid)
 
-proc call*(call_603297: Call_GetDedicatedIps_603283; PageSize: int = 0;
+proc call*(call_601301: Call_GetDedicatedIps_601287; PageSize: int = 0;
           NextToken: string = ""; PoolName: string = ""): Recallable =
   ## getDedicatedIps
   ## List the dedicated IP addresses that are associated with your Amazon Pinpoint account.
@@ -2317,23 +2405,26 @@ proc call*(call_603297: Call_GetDedicatedIps_603283; PageSize: int = 0;
   ##            : A token returned from a previous call to <code>GetDedicatedIps</code> to indicate the position of the dedicated IP pool in the list of IP pools.
   ##   PoolName: string
   ##           : The name of a dedicated IP pool.
-  var query_603298 = newJObject()
-  add(query_603298, "PageSize", newJInt(PageSize))
-  add(query_603298, "NextToken", newJString(NextToken))
-  add(query_603298, "PoolName", newJString(PoolName))
-  result = call_603297.call(nil, query_603298, nil, nil, nil)
+  var query_601302 = newJObject()
+  add(query_601302, "PageSize", newJInt(PageSize))
+  add(query_601302, "NextToken", newJString(NextToken))
+  add(query_601302, "PoolName", newJString(PoolName))
+  result = call_601301.call(nil, query_601302, nil, nil, nil)
 
-var getDedicatedIps* = Call_GetDedicatedIps_603283(name: "getDedicatedIps",
+var getDedicatedIps* = Call_GetDedicatedIps_601287(name: "getDedicatedIps",
     meth: HttpMethod.HttpGet, host: "email.amazonaws.com",
-    route: "/v1/email/dedicated-ips", validator: validate_GetDedicatedIps_603284,
-    base: "/", url: url_GetDedicatedIps_603285, schemes: {Scheme.Https, Scheme.Http})
+    route: "/v1/email/dedicated-ips", validator: validate_GetDedicatedIps_601288,
+    base: "/", url: url_GetDedicatedIps_601289, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutDeliverabilityDashboardOption_603311 = ref object of OpenApiRestCall_602417
-proc url_PutDeliverabilityDashboardOption_603313(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_PutDeliverabilityDashboardOption_601315 = ref object of OpenApiRestCall_600421
+proc url_PutDeliverabilityDashboardOption_601317(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_PutDeliverabilityDashboardOption_603312(path: JsonNode;
+proc validate_PutDeliverabilityDashboardOption_601316(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Enable or disable the Deliverability dashboard for your Amazon Pinpoint account. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email using Amazon Pinpoint. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon Pinpoint. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
   ## 
@@ -2352,41 +2443,41 @@ proc validate_PutDeliverabilityDashboardOption_603312(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603314 = header.getOrDefault("X-Amz-Date")
-  valid_603314 = validateParameter(valid_603314, JString, required = false,
+  var valid_601318 = header.getOrDefault("X-Amz-Date")
+  valid_601318 = validateParameter(valid_601318, JString, required = false,
                                  default = nil)
-  if valid_603314 != nil:
-    section.add "X-Amz-Date", valid_603314
-  var valid_603315 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603315 = validateParameter(valid_603315, JString, required = false,
+  if valid_601318 != nil:
+    section.add "X-Amz-Date", valid_601318
+  var valid_601319 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601319 = validateParameter(valid_601319, JString, required = false,
                                  default = nil)
-  if valid_603315 != nil:
-    section.add "X-Amz-Security-Token", valid_603315
-  var valid_603316 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603316 = validateParameter(valid_603316, JString, required = false,
+  if valid_601319 != nil:
+    section.add "X-Amz-Security-Token", valid_601319
+  var valid_601320 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601320 = validateParameter(valid_601320, JString, required = false,
                                  default = nil)
-  if valid_603316 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603316
-  var valid_603317 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603317 = validateParameter(valid_603317, JString, required = false,
+  if valid_601320 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601320
+  var valid_601321 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601321 = validateParameter(valid_601321, JString, required = false,
                                  default = nil)
-  if valid_603317 != nil:
-    section.add "X-Amz-Algorithm", valid_603317
-  var valid_603318 = header.getOrDefault("X-Amz-Signature")
-  valid_603318 = validateParameter(valid_603318, JString, required = false,
+  if valid_601321 != nil:
+    section.add "X-Amz-Algorithm", valid_601321
+  var valid_601322 = header.getOrDefault("X-Amz-Signature")
+  valid_601322 = validateParameter(valid_601322, JString, required = false,
                                  default = nil)
-  if valid_603318 != nil:
-    section.add "X-Amz-Signature", valid_603318
-  var valid_603319 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603319 = validateParameter(valid_603319, JString, required = false,
+  if valid_601322 != nil:
+    section.add "X-Amz-Signature", valid_601322
+  var valid_601323 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601323 = validateParameter(valid_601323, JString, required = false,
                                  default = nil)
-  if valid_603319 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603319
-  var valid_603320 = header.getOrDefault("X-Amz-Credential")
-  valid_603320 = validateParameter(valid_603320, JString, required = false,
+  if valid_601323 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601323
+  var valid_601324 = header.getOrDefault("X-Amz-Credential")
+  valid_601324 = validateParameter(valid_601324, JString, required = false,
                                  default = nil)
-  if valid_603320 != nil:
-    section.add "X-Amz-Credential", valid_603320
+  if valid_601324 != nil:
+    section.add "X-Amz-Credential", valid_601324
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2397,42 +2488,46 @@ proc validate_PutDeliverabilityDashboardOption_603312(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603322: Call_PutDeliverabilityDashboardOption_603311;
+proc call*(call_601326: Call_PutDeliverabilityDashboardOption_601315;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Enable or disable the Deliverability dashboard for your Amazon Pinpoint account. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email using Amazon Pinpoint. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon Pinpoint. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
   ## 
-  let valid = call_603322.validator(path, query, header, formData, body)
-  let scheme = call_603322.pickScheme
+  let valid = call_601326.validator(path, query, header, formData, body)
+  let scheme = call_601326.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603322.url(scheme.get, call_603322.host, call_603322.base,
-                         call_603322.route, valid.getOrDefault("path"))
-  result = hook(call_603322, url, valid)
+  let url = call_601326.url(scheme.get, call_601326.host, call_601326.base,
+                         call_601326.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601326, url, valid)
 
-proc call*(call_603323: Call_PutDeliverabilityDashboardOption_603311;
+proc call*(call_601327: Call_PutDeliverabilityDashboardOption_601315;
           body: JsonNode): Recallable =
   ## putDeliverabilityDashboardOption
   ## <p>Enable or disable the Deliverability dashboard for your Amazon Pinpoint account. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email using Amazon Pinpoint. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon Pinpoint. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
   ##   body: JObject (required)
-  var body_603324 = newJObject()
+  var body_601328 = newJObject()
   if body != nil:
-    body_603324 = body
-  result = call_603323.call(nil, nil, nil, nil, body_603324)
+    body_601328 = body
+  result = call_601327.call(nil, nil, nil, nil, body_601328)
 
-var putDeliverabilityDashboardOption* = Call_PutDeliverabilityDashboardOption_603311(
+var putDeliverabilityDashboardOption* = Call_PutDeliverabilityDashboardOption_601315(
     name: "putDeliverabilityDashboardOption", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/deliverability-dashboard",
-    validator: validate_PutDeliverabilityDashboardOption_603312, base: "/",
-    url: url_PutDeliverabilityDashboardOption_603313,
+    validator: validate_PutDeliverabilityDashboardOption_601316, base: "/",
+    url: url_PutDeliverabilityDashboardOption_601317,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeliverabilityDashboardOptions_603299 = ref object of OpenApiRestCall_602417
-proc url_GetDeliverabilityDashboardOptions_603301(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetDeliverabilityDashboardOptions_601303 = ref object of OpenApiRestCall_600421
+proc url_GetDeliverabilityDashboardOptions_601305(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetDeliverabilityDashboardOptions_603300(path: JsonNode;
+proc validate_GetDeliverabilityDashboardOptions_601304(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieve information about the status of the Deliverability dashboard for your Amazon Pinpoint account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email using Amazon Pinpoint. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon Pinpoint. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
   ## 
@@ -2451,75 +2546,79 @@ proc validate_GetDeliverabilityDashboardOptions_603300(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603302 = header.getOrDefault("X-Amz-Date")
-  valid_603302 = validateParameter(valid_603302, JString, required = false,
+  var valid_601306 = header.getOrDefault("X-Amz-Date")
+  valid_601306 = validateParameter(valid_601306, JString, required = false,
                                  default = nil)
-  if valid_603302 != nil:
-    section.add "X-Amz-Date", valid_603302
-  var valid_603303 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603303 = validateParameter(valid_603303, JString, required = false,
+  if valid_601306 != nil:
+    section.add "X-Amz-Date", valid_601306
+  var valid_601307 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601307 = validateParameter(valid_601307, JString, required = false,
                                  default = nil)
-  if valid_603303 != nil:
-    section.add "X-Amz-Security-Token", valid_603303
-  var valid_603304 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603304 = validateParameter(valid_603304, JString, required = false,
+  if valid_601307 != nil:
+    section.add "X-Amz-Security-Token", valid_601307
+  var valid_601308 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601308 = validateParameter(valid_601308, JString, required = false,
                                  default = nil)
-  if valid_603304 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603304
-  var valid_603305 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603305 = validateParameter(valid_603305, JString, required = false,
+  if valid_601308 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601308
+  var valid_601309 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601309 = validateParameter(valid_601309, JString, required = false,
                                  default = nil)
-  if valid_603305 != nil:
-    section.add "X-Amz-Algorithm", valid_603305
-  var valid_603306 = header.getOrDefault("X-Amz-Signature")
-  valid_603306 = validateParameter(valid_603306, JString, required = false,
+  if valid_601309 != nil:
+    section.add "X-Amz-Algorithm", valid_601309
+  var valid_601310 = header.getOrDefault("X-Amz-Signature")
+  valid_601310 = validateParameter(valid_601310, JString, required = false,
                                  default = nil)
-  if valid_603306 != nil:
-    section.add "X-Amz-Signature", valid_603306
-  var valid_603307 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603307 = validateParameter(valid_603307, JString, required = false,
+  if valid_601310 != nil:
+    section.add "X-Amz-Signature", valid_601310
+  var valid_601311 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601311 = validateParameter(valid_601311, JString, required = false,
                                  default = nil)
-  if valid_603307 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603307
-  var valid_603308 = header.getOrDefault("X-Amz-Credential")
-  valid_603308 = validateParameter(valid_603308, JString, required = false,
+  if valid_601311 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601311
+  var valid_601312 = header.getOrDefault("X-Amz-Credential")
+  valid_601312 = validateParameter(valid_601312, JString, required = false,
                                  default = nil)
-  if valid_603308 != nil:
-    section.add "X-Amz-Credential", valid_603308
+  if valid_601312 != nil:
+    section.add "X-Amz-Credential", valid_601312
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603309: Call_GetDeliverabilityDashboardOptions_603299;
+proc call*(call_601313: Call_GetDeliverabilityDashboardOptions_601303;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Retrieve information about the status of the Deliverability dashboard for your Amazon Pinpoint account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email using Amazon Pinpoint. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon Pinpoint. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
   ## 
-  let valid = call_603309.validator(path, query, header, formData, body)
-  let scheme = call_603309.pickScheme
+  let valid = call_601313.validator(path, query, header, formData, body)
+  let scheme = call_601313.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603309.url(scheme.get, call_603309.host, call_603309.base,
-                         call_603309.route, valid.getOrDefault("path"))
-  result = hook(call_603309, url, valid)
+  let url = call_601313.url(scheme.get, call_601313.host, call_601313.base,
+                         call_601313.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601313, url, valid)
 
-proc call*(call_603310: Call_GetDeliverabilityDashboardOptions_603299): Recallable =
+proc call*(call_601314: Call_GetDeliverabilityDashboardOptions_601303): Recallable =
   ## getDeliverabilityDashboardOptions
   ## <p>Retrieve information about the status of the Deliverability dashboard for your Amazon Pinpoint account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email using Amazon Pinpoint. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon Pinpoint. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
-  result = call_603310.call(nil, nil, nil, nil, nil)
+  result = call_601314.call(nil, nil, nil, nil, nil)
 
-var getDeliverabilityDashboardOptions* = Call_GetDeliverabilityDashboardOptions_603299(
+var getDeliverabilityDashboardOptions* = Call_GetDeliverabilityDashboardOptions_601303(
     name: "getDeliverabilityDashboardOptions", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/deliverability-dashboard",
-    validator: validate_GetDeliverabilityDashboardOptions_603300, base: "/",
-    url: url_GetDeliverabilityDashboardOptions_603301,
+    validator: validate_GetDeliverabilityDashboardOptions_601304, base: "/",
+    url: url_GetDeliverabilityDashboardOptions_601305,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeliverabilityTestReport_603325 = ref object of OpenApiRestCall_602417
-proc url_GetDeliverabilityTestReport_603327(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_GetDeliverabilityTestReport_601329 = ref object of OpenApiRestCall_600421
+proc url_GetDeliverabilityTestReport_601331(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ReportId" in path, "`ReportId` is a required path parameter"
   const
@@ -2529,9 +2628,9 @@ proc url_GetDeliverabilityTestReport_603327(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_GetDeliverabilityTestReport_603326(path: JsonNode; query: JsonNode;
+proc validate_GetDeliverabilityTestReport_601330(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieve the results of a predictive inbox placement test.
   ## 
@@ -2542,11 +2641,11 @@ proc validate_GetDeliverabilityTestReport_603326(path: JsonNode; query: JsonNode
   ##           : A unique string that identifies a Deliverability dashboard report.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ReportId` field"
-  var valid_603328 = path.getOrDefault("ReportId")
-  valid_603328 = validateParameter(valid_603328, JString, required = true,
+  var valid_601332 = path.getOrDefault("ReportId")
+  valid_601332 = validateParameter(valid_601332, JString, required = true,
                                  default = nil)
-  if valid_603328 != nil:
-    section.add "ReportId", valid_603328
+  if valid_601332 != nil:
+    section.add "ReportId", valid_601332
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2559,79 +2658,83 @@ proc validate_GetDeliverabilityTestReport_603326(path: JsonNode; query: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603329 = header.getOrDefault("X-Amz-Date")
-  valid_603329 = validateParameter(valid_603329, JString, required = false,
+  var valid_601333 = header.getOrDefault("X-Amz-Date")
+  valid_601333 = validateParameter(valid_601333, JString, required = false,
                                  default = nil)
-  if valid_603329 != nil:
-    section.add "X-Amz-Date", valid_603329
-  var valid_603330 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603330 = validateParameter(valid_603330, JString, required = false,
+  if valid_601333 != nil:
+    section.add "X-Amz-Date", valid_601333
+  var valid_601334 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601334 = validateParameter(valid_601334, JString, required = false,
                                  default = nil)
-  if valid_603330 != nil:
-    section.add "X-Amz-Security-Token", valid_603330
-  var valid_603331 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603331 = validateParameter(valid_603331, JString, required = false,
+  if valid_601334 != nil:
+    section.add "X-Amz-Security-Token", valid_601334
+  var valid_601335 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601335 = validateParameter(valid_601335, JString, required = false,
                                  default = nil)
-  if valid_603331 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603331
-  var valid_603332 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603332 = validateParameter(valid_603332, JString, required = false,
+  if valid_601335 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601335
+  var valid_601336 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601336 = validateParameter(valid_601336, JString, required = false,
                                  default = nil)
-  if valid_603332 != nil:
-    section.add "X-Amz-Algorithm", valid_603332
-  var valid_603333 = header.getOrDefault("X-Amz-Signature")
-  valid_603333 = validateParameter(valid_603333, JString, required = false,
+  if valid_601336 != nil:
+    section.add "X-Amz-Algorithm", valid_601336
+  var valid_601337 = header.getOrDefault("X-Amz-Signature")
+  valid_601337 = validateParameter(valid_601337, JString, required = false,
                                  default = nil)
-  if valid_603333 != nil:
-    section.add "X-Amz-Signature", valid_603333
-  var valid_603334 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603334 = validateParameter(valid_603334, JString, required = false,
+  if valid_601337 != nil:
+    section.add "X-Amz-Signature", valid_601337
+  var valid_601338 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601338 = validateParameter(valid_601338, JString, required = false,
                                  default = nil)
-  if valid_603334 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603334
-  var valid_603335 = header.getOrDefault("X-Amz-Credential")
-  valid_603335 = validateParameter(valid_603335, JString, required = false,
+  if valid_601338 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601338
+  var valid_601339 = header.getOrDefault("X-Amz-Credential")
+  valid_601339 = validateParameter(valid_601339, JString, required = false,
                                  default = nil)
-  if valid_603335 != nil:
-    section.add "X-Amz-Credential", valid_603335
+  if valid_601339 != nil:
+    section.add "X-Amz-Credential", valid_601339
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603336: Call_GetDeliverabilityTestReport_603325; path: JsonNode;
+proc call*(call_601340: Call_GetDeliverabilityTestReport_601329; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieve the results of a predictive inbox placement test.
   ## 
-  let valid = call_603336.validator(path, query, header, formData, body)
-  let scheme = call_603336.pickScheme
+  let valid = call_601340.validator(path, query, header, formData, body)
+  let scheme = call_601340.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603336.url(scheme.get, call_603336.host, call_603336.base,
-                         call_603336.route, valid.getOrDefault("path"))
-  result = hook(call_603336, url, valid)
+  let url = call_601340.url(scheme.get, call_601340.host, call_601340.base,
+                         call_601340.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601340, url, valid)
 
-proc call*(call_603337: Call_GetDeliverabilityTestReport_603325; ReportId: string): Recallable =
+proc call*(call_601341: Call_GetDeliverabilityTestReport_601329; ReportId: string): Recallable =
   ## getDeliverabilityTestReport
   ## Retrieve the results of a predictive inbox placement test.
   ##   ReportId: string (required)
   ##           : A unique string that identifies a Deliverability dashboard report.
-  var path_603338 = newJObject()
-  add(path_603338, "ReportId", newJString(ReportId))
-  result = call_603337.call(path_603338, nil, nil, nil, nil)
+  var path_601342 = newJObject()
+  add(path_601342, "ReportId", newJString(ReportId))
+  result = call_601341.call(path_601342, nil, nil, nil, nil)
 
-var getDeliverabilityTestReport* = Call_GetDeliverabilityTestReport_603325(
+var getDeliverabilityTestReport* = Call_GetDeliverabilityTestReport_601329(
     name: "getDeliverabilityTestReport", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com",
     route: "/v1/email/deliverability-dashboard/test-reports/{ReportId}",
-    validator: validate_GetDeliverabilityTestReport_603326, base: "/",
-    url: url_GetDeliverabilityTestReport_603327,
+    validator: validate_GetDeliverabilityTestReport_601330, base: "/",
+    url: url_GetDeliverabilityTestReport_601331,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDomainDeliverabilityCampaign_603339 = ref object of OpenApiRestCall_602417
-proc url_GetDomainDeliverabilityCampaign_603341(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_GetDomainDeliverabilityCampaign_601343 = ref object of OpenApiRestCall_600421
+proc url_GetDomainDeliverabilityCampaign_601345(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "CampaignId" in path, "`CampaignId` is a required path parameter"
   const
@@ -2641,9 +2744,9 @@ proc url_GetDomainDeliverabilityCampaign_603341(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_GetDomainDeliverabilityCampaign_603340(path: JsonNode;
+proc validate_GetDomainDeliverabilityCampaign_601344(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieve all the deliverability data for a specific campaign. This data is available for a campaign only if the campaign sent email by using a domain that the Deliverability dashboard is enabled for (<code>PutDeliverabilityDashboardOption</code> operation).
   ## 
@@ -2655,11 +2758,11 @@ proc validate_GetDomainDeliverabilityCampaign_603340(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `CampaignId` field"
-  var valid_603342 = path.getOrDefault("CampaignId")
-  valid_603342 = validateParameter(valid_603342, JString, required = true,
+  var valid_601346 = path.getOrDefault("CampaignId")
+  valid_601346 = validateParameter(valid_601346, JString, required = true,
                                  default = nil)
-  if valid_603342 != nil:
-    section.add "CampaignId", valid_603342
+  if valid_601346 != nil:
+    section.add "CampaignId", valid_601346
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2672,81 +2775,85 @@ proc validate_GetDomainDeliverabilityCampaign_603340(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603343 = header.getOrDefault("X-Amz-Date")
-  valid_603343 = validateParameter(valid_603343, JString, required = false,
+  var valid_601347 = header.getOrDefault("X-Amz-Date")
+  valid_601347 = validateParameter(valid_601347, JString, required = false,
                                  default = nil)
-  if valid_603343 != nil:
-    section.add "X-Amz-Date", valid_603343
-  var valid_603344 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603344 = validateParameter(valid_603344, JString, required = false,
+  if valid_601347 != nil:
+    section.add "X-Amz-Date", valid_601347
+  var valid_601348 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601348 = validateParameter(valid_601348, JString, required = false,
                                  default = nil)
-  if valid_603344 != nil:
-    section.add "X-Amz-Security-Token", valid_603344
-  var valid_603345 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603345 = validateParameter(valid_603345, JString, required = false,
+  if valid_601348 != nil:
+    section.add "X-Amz-Security-Token", valid_601348
+  var valid_601349 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601349 = validateParameter(valid_601349, JString, required = false,
                                  default = nil)
-  if valid_603345 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603345
-  var valid_603346 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603346 = validateParameter(valid_603346, JString, required = false,
+  if valid_601349 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601349
+  var valid_601350 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601350 = validateParameter(valid_601350, JString, required = false,
                                  default = nil)
-  if valid_603346 != nil:
-    section.add "X-Amz-Algorithm", valid_603346
-  var valid_603347 = header.getOrDefault("X-Amz-Signature")
-  valid_603347 = validateParameter(valid_603347, JString, required = false,
+  if valid_601350 != nil:
+    section.add "X-Amz-Algorithm", valid_601350
+  var valid_601351 = header.getOrDefault("X-Amz-Signature")
+  valid_601351 = validateParameter(valid_601351, JString, required = false,
                                  default = nil)
-  if valid_603347 != nil:
-    section.add "X-Amz-Signature", valid_603347
-  var valid_603348 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603348 = validateParameter(valid_603348, JString, required = false,
+  if valid_601351 != nil:
+    section.add "X-Amz-Signature", valid_601351
+  var valid_601352 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601352 = validateParameter(valid_601352, JString, required = false,
                                  default = nil)
-  if valid_603348 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603348
-  var valid_603349 = header.getOrDefault("X-Amz-Credential")
-  valid_603349 = validateParameter(valid_603349, JString, required = false,
+  if valid_601352 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601352
+  var valid_601353 = header.getOrDefault("X-Amz-Credential")
+  valid_601353 = validateParameter(valid_601353, JString, required = false,
                                  default = nil)
-  if valid_603349 != nil:
-    section.add "X-Amz-Credential", valid_603349
+  if valid_601353 != nil:
+    section.add "X-Amz-Credential", valid_601353
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603350: Call_GetDomainDeliverabilityCampaign_603339;
+proc call*(call_601354: Call_GetDomainDeliverabilityCampaign_601343;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Retrieve all the deliverability data for a specific campaign. This data is available for a campaign only if the campaign sent email by using a domain that the Deliverability dashboard is enabled for (<code>PutDeliverabilityDashboardOption</code> operation).
   ## 
-  let valid = call_603350.validator(path, query, header, formData, body)
-  let scheme = call_603350.pickScheme
+  let valid = call_601354.validator(path, query, header, formData, body)
+  let scheme = call_601354.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603350.url(scheme.get, call_603350.host, call_603350.base,
-                         call_603350.route, valid.getOrDefault("path"))
-  result = hook(call_603350, url, valid)
+  let url = call_601354.url(scheme.get, call_601354.host, call_601354.base,
+                         call_601354.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601354, url, valid)
 
-proc call*(call_603351: Call_GetDomainDeliverabilityCampaign_603339;
+proc call*(call_601355: Call_GetDomainDeliverabilityCampaign_601343;
           CampaignId: string): Recallable =
   ## getDomainDeliverabilityCampaign
   ## Retrieve all the deliverability data for a specific campaign. This data is available for a campaign only if the campaign sent email by using a domain that the Deliverability dashboard is enabled for (<code>PutDeliverabilityDashboardOption</code> operation).
   ##   CampaignId: string (required)
   ##             : The unique identifier for the campaign. Amazon Pinpoint automatically generates and assigns this identifier to a campaign. This value is not the same as the campaign identifier that Amazon Pinpoint assigns to campaigns that you create and manage by using the Amazon Pinpoint API or the Amazon Pinpoint console.
-  var path_603352 = newJObject()
-  add(path_603352, "CampaignId", newJString(CampaignId))
-  result = call_603351.call(path_603352, nil, nil, nil, nil)
+  var path_601356 = newJObject()
+  add(path_601356, "CampaignId", newJString(CampaignId))
+  result = call_601355.call(path_601356, nil, nil, nil, nil)
 
-var getDomainDeliverabilityCampaign* = Call_GetDomainDeliverabilityCampaign_603339(
+var getDomainDeliverabilityCampaign* = Call_GetDomainDeliverabilityCampaign_601343(
     name: "getDomainDeliverabilityCampaign", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com",
     route: "/v1/email/deliverability-dashboard/campaigns/{CampaignId}",
-    validator: validate_GetDomainDeliverabilityCampaign_603340, base: "/",
-    url: url_GetDomainDeliverabilityCampaign_603341,
+    validator: validate_GetDomainDeliverabilityCampaign_601344, base: "/",
+    url: url_GetDomainDeliverabilityCampaign_601345,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDomainStatisticsReport_603353 = ref object of OpenApiRestCall_602417
-proc url_GetDomainStatisticsReport_603355(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_GetDomainStatisticsReport_601357 = ref object of OpenApiRestCall_600421
+proc url_GetDomainStatisticsReport_601359(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "Domain" in path, "`Domain` is a required path parameter"
   const
@@ -2757,9 +2864,9 @@ proc url_GetDomainStatisticsReport_603355(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_GetDomainStatisticsReport_603354(path: JsonNode; query: JsonNode;
+proc validate_GetDomainStatisticsReport_601358(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieve inbox placement and engagement rates for the domains that you use to send email.
   ## 
@@ -2770,11 +2877,11 @@ proc validate_GetDomainStatisticsReport_603354(path: JsonNode; query: JsonNode;
   ##         : The domain that you want to obtain deliverability metrics for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Domain` field"
-  var valid_603356 = path.getOrDefault("Domain")
-  valid_603356 = validateParameter(valid_603356, JString, required = true,
+  var valid_601360 = path.getOrDefault("Domain")
+  valid_601360 = validateParameter(valid_601360, JString, required = true,
                                  default = nil)
-  if valid_603356 != nil:
-    section.add "Domain", valid_603356
+  if valid_601360 != nil:
+    section.add "Domain", valid_601360
   result.add "path", section
   ## parameters in `query` object:
   ##   EndDate: JString (required)
@@ -2783,16 +2890,16 @@ proc validate_GetDomainStatisticsReport_603354(path: JsonNode; query: JsonNode;
   ##            : The first day (in Unix time) that you want to obtain domain deliverability metrics for.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `EndDate` field"
-  var valid_603357 = query.getOrDefault("EndDate")
-  valid_603357 = validateParameter(valid_603357, JString, required = true,
+  var valid_601361 = query.getOrDefault("EndDate")
+  valid_601361 = validateParameter(valid_601361, JString, required = true,
                                  default = nil)
-  if valid_603357 != nil:
-    section.add "EndDate", valid_603357
-  var valid_603358 = query.getOrDefault("StartDate")
-  valid_603358 = validateParameter(valid_603358, JString, required = true,
+  if valid_601361 != nil:
+    section.add "EndDate", valid_601361
+  var valid_601362 = query.getOrDefault("StartDate")
+  valid_601362 = validateParameter(valid_601362, JString, required = true,
                                  default = nil)
-  if valid_603358 != nil:
-    section.add "StartDate", valid_603358
+  if valid_601362 != nil:
+    section.add "StartDate", valid_601362
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2803,60 +2910,61 @@ proc validate_GetDomainStatisticsReport_603354(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603359 = header.getOrDefault("X-Amz-Date")
-  valid_603359 = validateParameter(valid_603359, JString, required = false,
+  var valid_601363 = header.getOrDefault("X-Amz-Date")
+  valid_601363 = validateParameter(valid_601363, JString, required = false,
                                  default = nil)
-  if valid_603359 != nil:
-    section.add "X-Amz-Date", valid_603359
-  var valid_603360 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603360 = validateParameter(valid_603360, JString, required = false,
+  if valid_601363 != nil:
+    section.add "X-Amz-Date", valid_601363
+  var valid_601364 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601364 = validateParameter(valid_601364, JString, required = false,
                                  default = nil)
-  if valid_603360 != nil:
-    section.add "X-Amz-Security-Token", valid_603360
-  var valid_603361 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603361 = validateParameter(valid_603361, JString, required = false,
+  if valid_601364 != nil:
+    section.add "X-Amz-Security-Token", valid_601364
+  var valid_601365 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601365 = validateParameter(valid_601365, JString, required = false,
                                  default = nil)
-  if valid_603361 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603361
-  var valid_603362 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603362 = validateParameter(valid_603362, JString, required = false,
+  if valid_601365 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601365
+  var valid_601366 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601366 = validateParameter(valid_601366, JString, required = false,
                                  default = nil)
-  if valid_603362 != nil:
-    section.add "X-Amz-Algorithm", valid_603362
-  var valid_603363 = header.getOrDefault("X-Amz-Signature")
-  valid_603363 = validateParameter(valid_603363, JString, required = false,
+  if valid_601366 != nil:
+    section.add "X-Amz-Algorithm", valid_601366
+  var valid_601367 = header.getOrDefault("X-Amz-Signature")
+  valid_601367 = validateParameter(valid_601367, JString, required = false,
                                  default = nil)
-  if valid_603363 != nil:
-    section.add "X-Amz-Signature", valid_603363
-  var valid_603364 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603364 = validateParameter(valid_603364, JString, required = false,
+  if valid_601367 != nil:
+    section.add "X-Amz-Signature", valid_601367
+  var valid_601368 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601368 = validateParameter(valid_601368, JString, required = false,
                                  default = nil)
-  if valid_603364 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603364
-  var valid_603365 = header.getOrDefault("X-Amz-Credential")
-  valid_603365 = validateParameter(valid_603365, JString, required = false,
+  if valid_601368 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601368
+  var valid_601369 = header.getOrDefault("X-Amz-Credential")
+  valid_601369 = validateParameter(valid_601369, JString, required = false,
                                  default = nil)
-  if valid_603365 != nil:
-    section.add "X-Amz-Credential", valid_603365
+  if valid_601369 != nil:
+    section.add "X-Amz-Credential", valid_601369
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603366: Call_GetDomainStatisticsReport_603353; path: JsonNode;
+proc call*(call_601370: Call_GetDomainStatisticsReport_601357; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieve inbox placement and engagement rates for the domains that you use to send email.
   ## 
-  let valid = call_603366.validator(path, query, header, formData, body)
-  let scheme = call_603366.pickScheme
+  let valid = call_601370.validator(path, query, header, formData, body)
+  let scheme = call_601370.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603366.url(scheme.get, call_603366.host, call_603366.base,
-                         call_603366.route, valid.getOrDefault("path"))
-  result = hook(call_603366, url, valid)
+  let url = call_601370.url(scheme.get, call_601370.host, call_601370.base,
+                         call_601370.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601370, url, valid)
 
-proc call*(call_603367: Call_GetDomainStatisticsReport_603353; Domain: string;
+proc call*(call_601371: Call_GetDomainStatisticsReport_601357; Domain: string;
           EndDate: string; StartDate: string): Recallable =
   ## getDomainStatisticsReport
   ## Retrieve inbox placement and engagement rates for the domains that you use to send email.
@@ -2866,26 +2974,29 @@ proc call*(call_603367: Call_GetDomainStatisticsReport_603353; Domain: string;
   ##          : The last day (in Unix time) that you want to obtain domain deliverability metrics for. The <code>EndDate</code> that you specify has to be less than or equal to 30 days after the <code>StartDate</code>.
   ##   StartDate: string (required)
   ##            : The first day (in Unix time) that you want to obtain domain deliverability metrics for.
-  var path_603368 = newJObject()
-  var query_603369 = newJObject()
-  add(path_603368, "Domain", newJString(Domain))
-  add(query_603369, "EndDate", newJString(EndDate))
-  add(query_603369, "StartDate", newJString(StartDate))
-  result = call_603367.call(path_603368, query_603369, nil, nil, nil)
+  var path_601372 = newJObject()
+  var query_601373 = newJObject()
+  add(path_601372, "Domain", newJString(Domain))
+  add(query_601373, "EndDate", newJString(EndDate))
+  add(query_601373, "StartDate", newJString(StartDate))
+  result = call_601371.call(path_601372, query_601373, nil, nil, nil)
 
-var getDomainStatisticsReport* = Call_GetDomainStatisticsReport_603353(
+var getDomainStatisticsReport* = Call_GetDomainStatisticsReport_601357(
     name: "getDomainStatisticsReport", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/deliverability-dashboard/statistics-report/{Domain}#StartDate&EndDate",
-    validator: validate_GetDomainStatisticsReport_603354, base: "/",
-    url: url_GetDomainStatisticsReport_603355,
+    validator: validate_GetDomainStatisticsReport_601358, base: "/",
+    url: url_GetDomainStatisticsReport_601359,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDeliverabilityTestReports_603370 = ref object of OpenApiRestCall_602417
-proc url_ListDeliverabilityTestReports_603372(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListDeliverabilityTestReports_601374 = ref object of OpenApiRestCall_600421
+proc url_ListDeliverabilityTestReports_601376(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListDeliverabilityTestReports_603371(path: JsonNode; query: JsonNode;
+proc validate_ListDeliverabilityTestReports_601375(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Show a list of the predictive inbox placement tests that you've performed, regardless of their statuses. For predictive inbox placement tests that are complete, you can use the <code>GetDeliverabilityTestReport</code> operation to view the results.
   ## 
@@ -2899,15 +3010,15 @@ proc validate_ListDeliverabilityTestReports_603371(path: JsonNode; query: JsonNo
   ##   NextToken: JString
   ##            : A token returned from a previous call to <code>ListDeliverabilityTestReports</code> to indicate the position in the list of predictive inbox placement tests.
   section = newJObject()
-  var valid_603373 = query.getOrDefault("PageSize")
-  valid_603373 = validateParameter(valid_603373, JInt, required = false, default = nil)
-  if valid_603373 != nil:
-    section.add "PageSize", valid_603373
-  var valid_603374 = query.getOrDefault("NextToken")
-  valid_603374 = validateParameter(valid_603374, JString, required = false,
+  var valid_601377 = query.getOrDefault("PageSize")
+  valid_601377 = validateParameter(valid_601377, JInt, required = false, default = nil)
+  if valid_601377 != nil:
+    section.add "PageSize", valid_601377
+  var valid_601378 = query.getOrDefault("NextToken")
+  valid_601378 = validateParameter(valid_601378, JString, required = false,
                                  default = nil)
-  if valid_603374 != nil:
-    section.add "NextToken", valid_603374
+  if valid_601378 != nil:
+    section.add "NextToken", valid_601378
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2918,60 +3029,61 @@ proc validate_ListDeliverabilityTestReports_603371(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603375 = header.getOrDefault("X-Amz-Date")
-  valid_603375 = validateParameter(valid_603375, JString, required = false,
+  var valid_601379 = header.getOrDefault("X-Amz-Date")
+  valid_601379 = validateParameter(valid_601379, JString, required = false,
                                  default = nil)
-  if valid_603375 != nil:
-    section.add "X-Amz-Date", valid_603375
-  var valid_603376 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603376 = validateParameter(valid_603376, JString, required = false,
+  if valid_601379 != nil:
+    section.add "X-Amz-Date", valid_601379
+  var valid_601380 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601380 = validateParameter(valid_601380, JString, required = false,
                                  default = nil)
-  if valid_603376 != nil:
-    section.add "X-Amz-Security-Token", valid_603376
-  var valid_603377 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603377 = validateParameter(valid_603377, JString, required = false,
+  if valid_601380 != nil:
+    section.add "X-Amz-Security-Token", valid_601380
+  var valid_601381 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601381 = validateParameter(valid_601381, JString, required = false,
                                  default = nil)
-  if valid_603377 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603377
-  var valid_603378 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603378 = validateParameter(valid_603378, JString, required = false,
+  if valid_601381 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601381
+  var valid_601382 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601382 = validateParameter(valid_601382, JString, required = false,
                                  default = nil)
-  if valid_603378 != nil:
-    section.add "X-Amz-Algorithm", valid_603378
-  var valid_603379 = header.getOrDefault("X-Amz-Signature")
-  valid_603379 = validateParameter(valid_603379, JString, required = false,
+  if valid_601382 != nil:
+    section.add "X-Amz-Algorithm", valid_601382
+  var valid_601383 = header.getOrDefault("X-Amz-Signature")
+  valid_601383 = validateParameter(valid_601383, JString, required = false,
                                  default = nil)
-  if valid_603379 != nil:
-    section.add "X-Amz-Signature", valid_603379
-  var valid_603380 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603380 = validateParameter(valid_603380, JString, required = false,
+  if valid_601383 != nil:
+    section.add "X-Amz-Signature", valid_601383
+  var valid_601384 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601384 = validateParameter(valid_601384, JString, required = false,
                                  default = nil)
-  if valid_603380 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603380
-  var valid_603381 = header.getOrDefault("X-Amz-Credential")
-  valid_603381 = validateParameter(valid_603381, JString, required = false,
+  if valid_601384 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601384
+  var valid_601385 = header.getOrDefault("X-Amz-Credential")
+  valid_601385 = validateParameter(valid_601385, JString, required = false,
                                  default = nil)
-  if valid_603381 != nil:
-    section.add "X-Amz-Credential", valid_603381
+  if valid_601385 != nil:
+    section.add "X-Amz-Credential", valid_601385
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603382: Call_ListDeliverabilityTestReports_603370; path: JsonNode;
+proc call*(call_601386: Call_ListDeliverabilityTestReports_601374; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Show a list of the predictive inbox placement tests that you've performed, regardless of their statuses. For predictive inbox placement tests that are complete, you can use the <code>GetDeliverabilityTestReport</code> operation to view the results.
   ## 
-  let valid = call_603382.validator(path, query, header, formData, body)
-  let scheme = call_603382.pickScheme
+  let valid = call_601386.validator(path, query, header, formData, body)
+  let scheme = call_601386.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603382.url(scheme.get, call_603382.host, call_603382.base,
-                         call_603382.route, valid.getOrDefault("path"))
-  result = hook(call_603382, url, valid)
+  let url = call_601386.url(scheme.get, call_601386.host, call_601386.base,
+                         call_601386.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601386, url, valid)
 
-proc call*(call_603383: Call_ListDeliverabilityTestReports_603370;
+proc call*(call_601387: Call_ListDeliverabilityTestReports_601374;
           PageSize: int = 0; NextToken: string = ""): Recallable =
   ## listDeliverabilityTestReports
   ## Show a list of the predictive inbox placement tests that you've performed, regardless of their statuses. For predictive inbox placement tests that are complete, you can use the <code>GetDeliverabilityTestReport</code> operation to view the results.
@@ -2979,22 +3091,25 @@ proc call*(call_603383: Call_ListDeliverabilityTestReports_603370;
   ##           : <p>The number of results to show in a single call to <code>ListDeliverabilityTestReports</code>. If the number of results is larger than the number you specified in this parameter, then the response includes a <code>NextToken</code> element, which you can use to obtain additional results.</p> <p>The value you specify has to be at least 0, and can be no more than 1000.</p>
   ##   NextToken: string
   ##            : A token returned from a previous call to <code>ListDeliverabilityTestReports</code> to indicate the position in the list of predictive inbox placement tests.
-  var query_603384 = newJObject()
-  add(query_603384, "PageSize", newJInt(PageSize))
-  add(query_603384, "NextToken", newJString(NextToken))
-  result = call_603383.call(nil, query_603384, nil, nil, nil)
+  var query_601388 = newJObject()
+  add(query_601388, "PageSize", newJInt(PageSize))
+  add(query_601388, "NextToken", newJString(NextToken))
+  result = call_601387.call(nil, query_601388, nil, nil, nil)
 
-var listDeliverabilityTestReports* = Call_ListDeliverabilityTestReports_603370(
+var listDeliverabilityTestReports* = Call_ListDeliverabilityTestReports_601374(
     name: "listDeliverabilityTestReports", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com",
     route: "/v1/email/deliverability-dashboard/test-reports",
-    validator: validate_ListDeliverabilityTestReports_603371, base: "/",
-    url: url_ListDeliverabilityTestReports_603372,
+    validator: validate_ListDeliverabilityTestReports_601375, base: "/",
+    url: url_ListDeliverabilityTestReports_601376,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDomainDeliverabilityCampaigns_603385 = ref object of OpenApiRestCall_602417
-proc url_ListDomainDeliverabilityCampaigns_603387(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_ListDomainDeliverabilityCampaigns_601389 = ref object of OpenApiRestCall_600421
+proc url_ListDomainDeliverabilityCampaigns_601391(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "SubscribedDomain" in path,
         "`SubscribedDomain` is a required path parameter"
@@ -3006,9 +3121,9 @@ proc url_ListDomainDeliverabilityCampaigns_603387(protocol: Scheme; host: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_ListDomainDeliverabilityCampaigns_603386(path: JsonNode;
+proc validate_ListDomainDeliverabilityCampaigns_601390(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieve deliverability data for all the campaigns that used a specific domain to send email during a specified time range. This data is available for a domain only if you enabled the Deliverability dashboard (<code>PutDeliverabilityDashboardOption</code> operation) for the domain.
   ## 
@@ -3020,11 +3135,11 @@ proc validate_ListDomainDeliverabilityCampaigns_603386(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `SubscribedDomain` field"
-  var valid_603388 = path.getOrDefault("SubscribedDomain")
-  valid_603388 = validateParameter(valid_603388, JString, required = true,
+  var valid_601392 = path.getOrDefault("SubscribedDomain")
+  valid_601392 = validateParameter(valid_601392, JString, required = true,
                                  default = nil)
-  if valid_603388 != nil:
-    section.add "SubscribedDomain", valid_603388
+  if valid_601392 != nil:
+    section.add "SubscribedDomain", valid_601392
   result.add "path", section
   ## parameters in `query` object:
   ##   EndDate: JString (required)
@@ -3037,25 +3152,25 @@ proc validate_ListDomainDeliverabilityCampaigns_603386(path: JsonNode;
   ##            : The first day, in Unix time format, that you want to obtain deliverability data for.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `EndDate` field"
-  var valid_603389 = query.getOrDefault("EndDate")
-  valid_603389 = validateParameter(valid_603389, JString, required = true,
+  var valid_601393 = query.getOrDefault("EndDate")
+  valid_601393 = validateParameter(valid_601393, JString, required = true,
                                  default = nil)
-  if valid_603389 != nil:
-    section.add "EndDate", valid_603389
-  var valid_603390 = query.getOrDefault("PageSize")
-  valid_603390 = validateParameter(valid_603390, JInt, required = false, default = nil)
-  if valid_603390 != nil:
-    section.add "PageSize", valid_603390
-  var valid_603391 = query.getOrDefault("NextToken")
-  valid_603391 = validateParameter(valid_603391, JString, required = false,
+  if valid_601393 != nil:
+    section.add "EndDate", valid_601393
+  var valid_601394 = query.getOrDefault("PageSize")
+  valid_601394 = validateParameter(valid_601394, JInt, required = false, default = nil)
+  if valid_601394 != nil:
+    section.add "PageSize", valid_601394
+  var valid_601395 = query.getOrDefault("NextToken")
+  valid_601395 = validateParameter(valid_601395, JString, required = false,
                                  default = nil)
-  if valid_603391 != nil:
-    section.add "NextToken", valid_603391
-  var valid_603392 = query.getOrDefault("StartDate")
-  valid_603392 = validateParameter(valid_603392, JString, required = true,
+  if valid_601395 != nil:
+    section.add "NextToken", valid_601395
+  var valid_601396 = query.getOrDefault("StartDate")
+  valid_601396 = validateParameter(valid_601396, JString, required = true,
                                  default = nil)
-  if valid_603392 != nil:
-    section.add "StartDate", valid_603392
+  if valid_601396 != nil:
+    section.add "StartDate", valid_601396
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3066,61 +3181,62 @@ proc validate_ListDomainDeliverabilityCampaigns_603386(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603393 = header.getOrDefault("X-Amz-Date")
-  valid_603393 = validateParameter(valid_603393, JString, required = false,
+  var valid_601397 = header.getOrDefault("X-Amz-Date")
+  valid_601397 = validateParameter(valid_601397, JString, required = false,
                                  default = nil)
-  if valid_603393 != nil:
-    section.add "X-Amz-Date", valid_603393
-  var valid_603394 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603394 = validateParameter(valid_603394, JString, required = false,
+  if valid_601397 != nil:
+    section.add "X-Amz-Date", valid_601397
+  var valid_601398 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601398 = validateParameter(valid_601398, JString, required = false,
                                  default = nil)
-  if valid_603394 != nil:
-    section.add "X-Amz-Security-Token", valid_603394
-  var valid_603395 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603395 = validateParameter(valid_603395, JString, required = false,
+  if valid_601398 != nil:
+    section.add "X-Amz-Security-Token", valid_601398
+  var valid_601399 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601399 = validateParameter(valid_601399, JString, required = false,
                                  default = nil)
-  if valid_603395 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603395
-  var valid_603396 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603396 = validateParameter(valid_603396, JString, required = false,
+  if valid_601399 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601399
+  var valid_601400 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601400 = validateParameter(valid_601400, JString, required = false,
                                  default = nil)
-  if valid_603396 != nil:
-    section.add "X-Amz-Algorithm", valid_603396
-  var valid_603397 = header.getOrDefault("X-Amz-Signature")
-  valid_603397 = validateParameter(valid_603397, JString, required = false,
+  if valid_601400 != nil:
+    section.add "X-Amz-Algorithm", valid_601400
+  var valid_601401 = header.getOrDefault("X-Amz-Signature")
+  valid_601401 = validateParameter(valid_601401, JString, required = false,
                                  default = nil)
-  if valid_603397 != nil:
-    section.add "X-Amz-Signature", valid_603397
-  var valid_603398 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603398 = validateParameter(valid_603398, JString, required = false,
+  if valid_601401 != nil:
+    section.add "X-Amz-Signature", valid_601401
+  var valid_601402 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601402 = validateParameter(valid_601402, JString, required = false,
                                  default = nil)
-  if valid_603398 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603398
-  var valid_603399 = header.getOrDefault("X-Amz-Credential")
-  valid_603399 = validateParameter(valid_603399, JString, required = false,
+  if valid_601402 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601402
+  var valid_601403 = header.getOrDefault("X-Amz-Credential")
+  valid_601403 = validateParameter(valid_601403, JString, required = false,
                                  default = nil)
-  if valid_603399 != nil:
-    section.add "X-Amz-Credential", valid_603399
+  if valid_601403 != nil:
+    section.add "X-Amz-Credential", valid_601403
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603400: Call_ListDomainDeliverabilityCampaigns_603385;
+proc call*(call_601404: Call_ListDomainDeliverabilityCampaigns_601389;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Retrieve deliverability data for all the campaigns that used a specific domain to send email during a specified time range. This data is available for a domain only if you enabled the Deliverability dashboard (<code>PutDeliverabilityDashboardOption</code> operation) for the domain.
   ## 
-  let valid = call_603400.validator(path, query, header, formData, body)
-  let scheme = call_603400.pickScheme
+  let valid = call_601404.validator(path, query, header, formData, body)
+  let scheme = call_601404.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603400.url(scheme.get, call_603400.host, call_603400.base,
-                         call_603400.route, valid.getOrDefault("path"))
-  result = hook(call_603400, url, valid)
+  let url = call_601404.url(scheme.get, call_601404.host, call_601404.base,
+                         call_601404.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601404, url, valid)
 
-proc call*(call_603401: Call_ListDomainDeliverabilityCampaigns_603385;
+proc call*(call_601405: Call_ListDomainDeliverabilityCampaigns_601389;
           EndDate: string; SubscribedDomain: string; StartDate: string;
           PageSize: int = 0; NextToken: string = ""): Recallable =
   ## listDomainDeliverabilityCampaigns
@@ -3135,28 +3251,31 @@ proc call*(call_603401: Call_ListDomainDeliverabilityCampaigns_603385;
   ##                   : The domain to obtain deliverability data for.
   ##   StartDate: string (required)
   ##            : The first day, in Unix time format, that you want to obtain deliverability data for.
-  var path_603402 = newJObject()
-  var query_603403 = newJObject()
-  add(query_603403, "EndDate", newJString(EndDate))
-  add(query_603403, "PageSize", newJInt(PageSize))
-  add(query_603403, "NextToken", newJString(NextToken))
-  add(path_603402, "SubscribedDomain", newJString(SubscribedDomain))
-  add(query_603403, "StartDate", newJString(StartDate))
-  result = call_603401.call(path_603402, query_603403, nil, nil, nil)
+  var path_601406 = newJObject()
+  var query_601407 = newJObject()
+  add(query_601407, "EndDate", newJString(EndDate))
+  add(query_601407, "PageSize", newJInt(PageSize))
+  add(query_601407, "NextToken", newJString(NextToken))
+  add(path_601406, "SubscribedDomain", newJString(SubscribedDomain))
+  add(query_601407, "StartDate", newJString(StartDate))
+  result = call_601405.call(path_601406, query_601407, nil, nil, nil)
 
-var listDomainDeliverabilityCampaigns* = Call_ListDomainDeliverabilityCampaigns_603385(
+var listDomainDeliverabilityCampaigns* = Call_ListDomainDeliverabilityCampaigns_601389(
     name: "listDomainDeliverabilityCampaigns", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/deliverability-dashboard/domains/{SubscribedDomain}/campaigns#StartDate&EndDate",
-    validator: validate_ListDomainDeliverabilityCampaigns_603386, base: "/",
-    url: url_ListDomainDeliverabilityCampaigns_603387,
+    validator: validate_ListDomainDeliverabilityCampaigns_601390, base: "/",
+    url: url_ListDomainDeliverabilityCampaigns_601391,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_603404 = ref object of OpenApiRestCall_602417
-proc url_ListTagsForResource_603406(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListTagsForResource_601408 = ref object of OpenApiRestCall_600421
+proc url_ListTagsForResource_601410(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListTagsForResource_603405(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_601409(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Retrieve a list of the tags (keys and values) that are associated with a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource in Amazon Pinpoint. Each tag consists of a required <i>tag key</i> and an optional associated <i>tag value</i>. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.
@@ -3171,11 +3290,11 @@ proc validate_ListTagsForResource_603405(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `ResourceArn` field"
-  var valid_603407 = query.getOrDefault("ResourceArn")
-  valid_603407 = validateParameter(valid_603407, JString, required = true,
+  var valid_601411 = query.getOrDefault("ResourceArn")
+  valid_601411 = validateParameter(valid_601411, JString, required = true,
                                  default = nil)
-  if valid_603407 != nil:
-    section.add "ResourceArn", valid_603407
+  if valid_601411 != nil:
+    section.add "ResourceArn", valid_601411
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3186,80 +3305,84 @@ proc validate_ListTagsForResource_603405(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603408 = header.getOrDefault("X-Amz-Date")
-  valid_603408 = validateParameter(valid_603408, JString, required = false,
+  var valid_601412 = header.getOrDefault("X-Amz-Date")
+  valid_601412 = validateParameter(valid_601412, JString, required = false,
                                  default = nil)
-  if valid_603408 != nil:
-    section.add "X-Amz-Date", valid_603408
-  var valid_603409 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603409 = validateParameter(valid_603409, JString, required = false,
+  if valid_601412 != nil:
+    section.add "X-Amz-Date", valid_601412
+  var valid_601413 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601413 = validateParameter(valid_601413, JString, required = false,
                                  default = nil)
-  if valid_603409 != nil:
-    section.add "X-Amz-Security-Token", valid_603409
-  var valid_603410 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603410 = validateParameter(valid_603410, JString, required = false,
+  if valid_601413 != nil:
+    section.add "X-Amz-Security-Token", valid_601413
+  var valid_601414 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601414 = validateParameter(valid_601414, JString, required = false,
                                  default = nil)
-  if valid_603410 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603410
-  var valid_603411 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603411 = validateParameter(valid_603411, JString, required = false,
+  if valid_601414 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601414
+  var valid_601415 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601415 = validateParameter(valid_601415, JString, required = false,
                                  default = nil)
-  if valid_603411 != nil:
-    section.add "X-Amz-Algorithm", valid_603411
-  var valid_603412 = header.getOrDefault("X-Amz-Signature")
-  valid_603412 = validateParameter(valid_603412, JString, required = false,
+  if valid_601415 != nil:
+    section.add "X-Amz-Algorithm", valid_601415
+  var valid_601416 = header.getOrDefault("X-Amz-Signature")
+  valid_601416 = validateParameter(valid_601416, JString, required = false,
                                  default = nil)
-  if valid_603412 != nil:
-    section.add "X-Amz-Signature", valid_603412
-  var valid_603413 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603413 = validateParameter(valid_603413, JString, required = false,
+  if valid_601416 != nil:
+    section.add "X-Amz-Signature", valid_601416
+  var valid_601417 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601417 = validateParameter(valid_601417, JString, required = false,
                                  default = nil)
-  if valid_603413 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603413
-  var valid_603414 = header.getOrDefault("X-Amz-Credential")
-  valid_603414 = validateParameter(valid_603414, JString, required = false,
+  if valid_601417 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601417
+  var valid_601418 = header.getOrDefault("X-Amz-Credential")
+  valid_601418 = validateParameter(valid_601418, JString, required = false,
                                  default = nil)
-  if valid_603414 != nil:
-    section.add "X-Amz-Credential", valid_603414
+  if valid_601418 != nil:
+    section.add "X-Amz-Credential", valid_601418
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603415: Call_ListTagsForResource_603404; path: JsonNode;
+proc call*(call_601419: Call_ListTagsForResource_601408; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieve a list of the tags (keys and values) that are associated with a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource in Amazon Pinpoint. Each tag consists of a required <i>tag key</i> and an optional associated <i>tag value</i>. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.
   ## 
-  let valid = call_603415.validator(path, query, header, formData, body)
-  let scheme = call_603415.pickScheme
+  let valid = call_601419.validator(path, query, header, formData, body)
+  let scheme = call_601419.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603415.url(scheme.get, call_603415.host, call_603415.base,
-                         call_603415.route, valid.getOrDefault("path"))
-  result = hook(call_603415, url, valid)
+  let url = call_601419.url(scheme.get, call_601419.host, call_601419.base,
+                         call_601419.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601419, url, valid)
 
-proc call*(call_603416: Call_ListTagsForResource_603404; ResourceArn: string): Recallable =
+proc call*(call_601420: Call_ListTagsForResource_601408; ResourceArn: string): Recallable =
   ## listTagsForResource
   ## Retrieve a list of the tags (keys and values) that are associated with a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource in Amazon Pinpoint. Each tag consists of a required <i>tag key</i> and an optional associated <i>tag value</i>. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.
   ##   ResourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) of the resource that you want to retrieve tag information for.
-  var query_603417 = newJObject()
-  add(query_603417, "ResourceArn", newJString(ResourceArn))
-  result = call_603416.call(nil, query_603417, nil, nil, nil)
+  var query_601421 = newJObject()
+  add(query_601421, "ResourceArn", newJString(ResourceArn))
+  result = call_601420.call(nil, query_601421, nil, nil, nil)
 
-var listTagsForResource* = Call_ListTagsForResource_603404(
+var listTagsForResource* = Call_ListTagsForResource_601408(
     name: "listTagsForResource", meth: HttpMethod.HttpGet,
     host: "email.amazonaws.com", route: "/v1/email/tags#ResourceArn",
-    validator: validate_ListTagsForResource_603405, base: "/",
-    url: url_ListTagsForResource_603406, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_601409, base: "/",
+    url: url_ListTagsForResource_601410, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutAccountDedicatedIpWarmupAttributes_603418 = ref object of OpenApiRestCall_602417
-proc url_PutAccountDedicatedIpWarmupAttributes_603420(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_PutAccountDedicatedIpWarmupAttributes_601422 = ref object of OpenApiRestCall_600421
+proc url_PutAccountDedicatedIpWarmupAttributes_601424(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_PutAccountDedicatedIpWarmupAttributes_603419(path: JsonNode;
+proc validate_PutAccountDedicatedIpWarmupAttributes_601423(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Enable or disable the automatic warm-up feature for dedicated IP addresses.
   ## 
@@ -3278,41 +3401,41 @@ proc validate_PutAccountDedicatedIpWarmupAttributes_603419(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603421 = header.getOrDefault("X-Amz-Date")
-  valid_603421 = validateParameter(valid_603421, JString, required = false,
+  var valid_601425 = header.getOrDefault("X-Amz-Date")
+  valid_601425 = validateParameter(valid_601425, JString, required = false,
                                  default = nil)
-  if valid_603421 != nil:
-    section.add "X-Amz-Date", valid_603421
-  var valid_603422 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603422 = validateParameter(valid_603422, JString, required = false,
+  if valid_601425 != nil:
+    section.add "X-Amz-Date", valid_601425
+  var valid_601426 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601426 = validateParameter(valid_601426, JString, required = false,
                                  default = nil)
-  if valid_603422 != nil:
-    section.add "X-Amz-Security-Token", valid_603422
-  var valid_603423 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603423 = validateParameter(valid_603423, JString, required = false,
+  if valid_601426 != nil:
+    section.add "X-Amz-Security-Token", valid_601426
+  var valid_601427 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601427 = validateParameter(valid_601427, JString, required = false,
                                  default = nil)
-  if valid_603423 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603423
-  var valid_603424 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603424 = validateParameter(valid_603424, JString, required = false,
+  if valid_601427 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601427
+  var valid_601428 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601428 = validateParameter(valid_601428, JString, required = false,
                                  default = nil)
-  if valid_603424 != nil:
-    section.add "X-Amz-Algorithm", valid_603424
-  var valid_603425 = header.getOrDefault("X-Amz-Signature")
-  valid_603425 = validateParameter(valid_603425, JString, required = false,
+  if valid_601428 != nil:
+    section.add "X-Amz-Algorithm", valid_601428
+  var valid_601429 = header.getOrDefault("X-Amz-Signature")
+  valid_601429 = validateParameter(valid_601429, JString, required = false,
                                  default = nil)
-  if valid_603425 != nil:
-    section.add "X-Amz-Signature", valid_603425
-  var valid_603426 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603426 = validateParameter(valid_603426, JString, required = false,
+  if valid_601429 != nil:
+    section.add "X-Amz-Signature", valid_601429
+  var valid_601430 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601430 = validateParameter(valid_601430, JString, required = false,
                                  default = nil)
-  if valid_603426 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603426
-  var valid_603427 = header.getOrDefault("X-Amz-Credential")
-  valid_603427 = validateParameter(valid_603427, JString, required = false,
+  if valid_601430 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601430
+  var valid_601431 = header.getOrDefault("X-Amz-Credential")
+  valid_601431 = validateParameter(valid_601431, JString, required = false,
                                  default = nil)
-  if valid_603427 != nil:
-    section.add "X-Amz-Credential", valid_603427
+  if valid_601431 != nil:
+    section.add "X-Amz-Credential", valid_601431
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3323,42 +3446,46 @@ proc validate_PutAccountDedicatedIpWarmupAttributes_603419(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603429: Call_PutAccountDedicatedIpWarmupAttributes_603418;
+proc call*(call_601433: Call_PutAccountDedicatedIpWarmupAttributes_601422;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Enable or disable the automatic warm-up feature for dedicated IP addresses.
   ## 
-  let valid = call_603429.validator(path, query, header, formData, body)
-  let scheme = call_603429.pickScheme
+  let valid = call_601433.validator(path, query, header, formData, body)
+  let scheme = call_601433.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603429.url(scheme.get, call_603429.host, call_603429.base,
-                         call_603429.route, valid.getOrDefault("path"))
-  result = hook(call_603429, url, valid)
+  let url = call_601433.url(scheme.get, call_601433.host, call_601433.base,
+                         call_601433.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601433, url, valid)
 
-proc call*(call_603430: Call_PutAccountDedicatedIpWarmupAttributes_603418;
+proc call*(call_601434: Call_PutAccountDedicatedIpWarmupAttributes_601422;
           body: JsonNode): Recallable =
   ## putAccountDedicatedIpWarmupAttributes
   ## Enable or disable the automatic warm-up feature for dedicated IP addresses.
   ##   body: JObject (required)
-  var body_603431 = newJObject()
+  var body_601435 = newJObject()
   if body != nil:
-    body_603431 = body
-  result = call_603430.call(nil, nil, nil, nil, body_603431)
+    body_601435 = body
+  result = call_601434.call(nil, nil, nil, nil, body_601435)
 
-var putAccountDedicatedIpWarmupAttributes* = Call_PutAccountDedicatedIpWarmupAttributes_603418(
+var putAccountDedicatedIpWarmupAttributes* = Call_PutAccountDedicatedIpWarmupAttributes_601422(
     name: "putAccountDedicatedIpWarmupAttributes", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/account/dedicated-ips/warmup",
-    validator: validate_PutAccountDedicatedIpWarmupAttributes_603419, base: "/",
-    url: url_PutAccountDedicatedIpWarmupAttributes_603420,
+    validator: validate_PutAccountDedicatedIpWarmupAttributes_601423, base: "/",
+    url: url_PutAccountDedicatedIpWarmupAttributes_601424,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutAccountSendingAttributes_603432 = ref object of OpenApiRestCall_602417
-proc url_PutAccountSendingAttributes_603434(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_PutAccountSendingAttributes_601436 = ref object of OpenApiRestCall_600421
+proc url_PutAccountSendingAttributes_601438(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_PutAccountSendingAttributes_603433(path: JsonNode; query: JsonNode;
+proc validate_PutAccountSendingAttributes_601437(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Enable or disable the ability of your account to send email.
   ## 
@@ -3377,41 +3504,41 @@ proc validate_PutAccountSendingAttributes_603433(path: JsonNode; query: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603435 = header.getOrDefault("X-Amz-Date")
-  valid_603435 = validateParameter(valid_603435, JString, required = false,
+  var valid_601439 = header.getOrDefault("X-Amz-Date")
+  valid_601439 = validateParameter(valid_601439, JString, required = false,
                                  default = nil)
-  if valid_603435 != nil:
-    section.add "X-Amz-Date", valid_603435
-  var valid_603436 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603436 = validateParameter(valid_603436, JString, required = false,
+  if valid_601439 != nil:
+    section.add "X-Amz-Date", valid_601439
+  var valid_601440 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601440 = validateParameter(valid_601440, JString, required = false,
                                  default = nil)
-  if valid_603436 != nil:
-    section.add "X-Amz-Security-Token", valid_603436
-  var valid_603437 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603437 = validateParameter(valid_603437, JString, required = false,
+  if valid_601440 != nil:
+    section.add "X-Amz-Security-Token", valid_601440
+  var valid_601441 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601441 = validateParameter(valid_601441, JString, required = false,
                                  default = nil)
-  if valid_603437 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603437
-  var valid_603438 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603438 = validateParameter(valid_603438, JString, required = false,
+  if valid_601441 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601441
+  var valid_601442 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601442 = validateParameter(valid_601442, JString, required = false,
                                  default = nil)
-  if valid_603438 != nil:
-    section.add "X-Amz-Algorithm", valid_603438
-  var valid_603439 = header.getOrDefault("X-Amz-Signature")
-  valid_603439 = validateParameter(valid_603439, JString, required = false,
+  if valid_601442 != nil:
+    section.add "X-Amz-Algorithm", valid_601442
+  var valid_601443 = header.getOrDefault("X-Amz-Signature")
+  valid_601443 = validateParameter(valid_601443, JString, required = false,
                                  default = nil)
-  if valid_603439 != nil:
-    section.add "X-Amz-Signature", valid_603439
-  var valid_603440 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603440 = validateParameter(valid_603440, JString, required = false,
+  if valid_601443 != nil:
+    section.add "X-Amz-Signature", valid_601443
+  var valid_601444 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601444 = validateParameter(valid_601444, JString, required = false,
                                  default = nil)
-  if valid_603440 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603440
-  var valid_603441 = header.getOrDefault("X-Amz-Credential")
-  valid_603441 = validateParameter(valid_603441, JString, required = false,
+  if valid_601444 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601444
+  var valid_601445 = header.getOrDefault("X-Amz-Credential")
+  valid_601445 = validateParameter(valid_601445, JString, required = false,
                                  default = nil)
-  if valid_603441 != nil:
-    section.add "X-Amz-Credential", valid_603441
+  if valid_601445 != nil:
+    section.add "X-Amz-Credential", valid_601445
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3422,37 +3549,41 @@ proc validate_PutAccountSendingAttributes_603433(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603443: Call_PutAccountSendingAttributes_603432; path: JsonNode;
+proc call*(call_601447: Call_PutAccountSendingAttributes_601436; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Enable or disable the ability of your account to send email.
   ## 
-  let valid = call_603443.validator(path, query, header, formData, body)
-  let scheme = call_603443.pickScheme
+  let valid = call_601447.validator(path, query, header, formData, body)
+  let scheme = call_601447.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603443.url(scheme.get, call_603443.host, call_603443.base,
-                         call_603443.route, valid.getOrDefault("path"))
-  result = hook(call_603443, url, valid)
+  let url = call_601447.url(scheme.get, call_601447.host, call_601447.base,
+                         call_601447.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601447, url, valid)
 
-proc call*(call_603444: Call_PutAccountSendingAttributes_603432; body: JsonNode): Recallable =
+proc call*(call_601448: Call_PutAccountSendingAttributes_601436; body: JsonNode): Recallable =
   ## putAccountSendingAttributes
   ## Enable or disable the ability of your account to send email.
   ##   body: JObject (required)
-  var body_603445 = newJObject()
+  var body_601449 = newJObject()
   if body != nil:
-    body_603445 = body
-  result = call_603444.call(nil, nil, nil, nil, body_603445)
+    body_601449 = body
+  result = call_601448.call(nil, nil, nil, nil, body_601449)
 
-var putAccountSendingAttributes* = Call_PutAccountSendingAttributes_603432(
+var putAccountSendingAttributes* = Call_PutAccountSendingAttributes_601436(
     name: "putAccountSendingAttributes", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/account/sending",
-    validator: validate_PutAccountSendingAttributes_603433, base: "/",
-    url: url_PutAccountSendingAttributes_603434,
+    validator: validate_PutAccountSendingAttributes_601437, base: "/",
+    url: url_PutAccountSendingAttributes_601438,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutConfigurationSetDeliveryOptions_603446 = ref object of OpenApiRestCall_602417
-proc url_PutConfigurationSetDeliveryOptions_603448(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_PutConfigurationSetDeliveryOptions_601450 = ref object of OpenApiRestCall_600421
+proc url_PutConfigurationSetDeliveryOptions_601452(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -3463,9 +3594,9 @@ proc url_PutConfigurationSetDeliveryOptions_603448(protocol: Scheme; host: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutConfigurationSetDeliveryOptions_603447(path: JsonNode;
+proc validate_PutConfigurationSetDeliveryOptions_601451(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Associate a configuration set with a dedicated IP pool. You can use dedicated IP pools to create groups of dedicated IP addresses for sending specific types of email.
   ## 
@@ -3476,11 +3607,11 @@ proc validate_PutConfigurationSetDeliveryOptions_603447(path: JsonNode;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603449 = path.getOrDefault("ConfigurationSetName")
-  valid_603449 = validateParameter(valid_603449, JString, required = true,
+  var valid_601453 = path.getOrDefault("ConfigurationSetName")
+  valid_601453 = validateParameter(valid_601453, JString, required = true,
                                  default = nil)
-  if valid_603449 != nil:
-    section.add "ConfigurationSetName", valid_603449
+  if valid_601453 != nil:
+    section.add "ConfigurationSetName", valid_601453
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3493,41 +3624,41 @@ proc validate_PutConfigurationSetDeliveryOptions_603447(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603450 = header.getOrDefault("X-Amz-Date")
-  valid_603450 = validateParameter(valid_603450, JString, required = false,
+  var valid_601454 = header.getOrDefault("X-Amz-Date")
+  valid_601454 = validateParameter(valid_601454, JString, required = false,
                                  default = nil)
-  if valid_603450 != nil:
-    section.add "X-Amz-Date", valid_603450
-  var valid_603451 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603451 = validateParameter(valid_603451, JString, required = false,
+  if valid_601454 != nil:
+    section.add "X-Amz-Date", valid_601454
+  var valid_601455 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601455 = validateParameter(valid_601455, JString, required = false,
                                  default = nil)
-  if valid_603451 != nil:
-    section.add "X-Amz-Security-Token", valid_603451
-  var valid_603452 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603452 = validateParameter(valid_603452, JString, required = false,
+  if valid_601455 != nil:
+    section.add "X-Amz-Security-Token", valid_601455
+  var valid_601456 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601456 = validateParameter(valid_601456, JString, required = false,
                                  default = nil)
-  if valid_603452 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603452
-  var valid_603453 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603453 = validateParameter(valid_603453, JString, required = false,
+  if valid_601456 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601456
+  var valid_601457 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601457 = validateParameter(valid_601457, JString, required = false,
                                  default = nil)
-  if valid_603453 != nil:
-    section.add "X-Amz-Algorithm", valid_603453
-  var valid_603454 = header.getOrDefault("X-Amz-Signature")
-  valid_603454 = validateParameter(valid_603454, JString, required = false,
+  if valid_601457 != nil:
+    section.add "X-Amz-Algorithm", valid_601457
+  var valid_601458 = header.getOrDefault("X-Amz-Signature")
+  valid_601458 = validateParameter(valid_601458, JString, required = false,
                                  default = nil)
-  if valid_603454 != nil:
-    section.add "X-Amz-Signature", valid_603454
-  var valid_603455 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603455 = validateParameter(valid_603455, JString, required = false,
+  if valid_601458 != nil:
+    section.add "X-Amz-Signature", valid_601458
+  var valid_601459 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601459 = validateParameter(valid_601459, JString, required = false,
                                  default = nil)
-  if valid_603455 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603455
-  var valid_603456 = header.getOrDefault("X-Amz-Credential")
-  valid_603456 = validateParameter(valid_603456, JString, required = false,
+  if valid_601459 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601459
+  var valid_601460 = header.getOrDefault("X-Amz-Credential")
+  valid_601460 = validateParameter(valid_601460, JString, required = false,
                                  default = nil)
-  if valid_603456 != nil:
-    section.add "X-Amz-Credential", valid_603456
+  if valid_601460 != nil:
+    section.add "X-Amz-Credential", valid_601460
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3538,43 +3669,47 @@ proc validate_PutConfigurationSetDeliveryOptions_603447(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603458: Call_PutConfigurationSetDeliveryOptions_603446;
+proc call*(call_601462: Call_PutConfigurationSetDeliveryOptions_601450;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Associate a configuration set with a dedicated IP pool. You can use dedicated IP pools to create groups of dedicated IP addresses for sending specific types of email.
   ## 
-  let valid = call_603458.validator(path, query, header, formData, body)
-  let scheme = call_603458.pickScheme
+  let valid = call_601462.validator(path, query, header, formData, body)
+  let scheme = call_601462.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603458.url(scheme.get, call_603458.host, call_603458.base,
-                         call_603458.route, valid.getOrDefault("path"))
-  result = hook(call_603458, url, valid)
+  let url = call_601462.url(scheme.get, call_601462.host, call_601462.base,
+                         call_601462.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601462, url, valid)
 
-proc call*(call_603459: Call_PutConfigurationSetDeliveryOptions_603446;
+proc call*(call_601463: Call_PutConfigurationSetDeliveryOptions_601450;
           ConfigurationSetName: string; body: JsonNode): Recallable =
   ## putConfigurationSetDeliveryOptions
   ## Associate a configuration set with a dedicated IP pool. You can use dedicated IP pools to create groups of dedicated IP addresses for sending specific types of email.
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   body: JObject (required)
-  var path_603460 = newJObject()
-  var body_603461 = newJObject()
-  add(path_603460, "ConfigurationSetName", newJString(ConfigurationSetName))
+  var path_601464 = newJObject()
+  var body_601465 = newJObject()
+  add(path_601464, "ConfigurationSetName", newJString(ConfigurationSetName))
   if body != nil:
-    body_603461 = body
-  result = call_603459.call(path_603460, nil, nil, nil, body_603461)
+    body_601465 = body
+  result = call_601463.call(path_601464, nil, nil, nil, body_601465)
 
-var putConfigurationSetDeliveryOptions* = Call_PutConfigurationSetDeliveryOptions_603446(
+var putConfigurationSetDeliveryOptions* = Call_PutConfigurationSetDeliveryOptions_601450(
     name: "putConfigurationSetDeliveryOptions", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets/{ConfigurationSetName}/delivery-options",
-    validator: validate_PutConfigurationSetDeliveryOptions_603447, base: "/",
-    url: url_PutConfigurationSetDeliveryOptions_603448,
+    validator: validate_PutConfigurationSetDeliveryOptions_601451, base: "/",
+    url: url_PutConfigurationSetDeliveryOptions_601452,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutConfigurationSetReputationOptions_603462 = ref object of OpenApiRestCall_602417
-proc url_PutConfigurationSetReputationOptions_603464(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode): string =
+  Call_PutConfigurationSetReputationOptions_601466 = ref object of OpenApiRestCall_600421
+proc url_PutConfigurationSetReputationOptions_601468(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -3585,9 +3720,9 @@ proc url_PutConfigurationSetReputationOptions_603464(protocol: Scheme;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutConfigurationSetReputationOptions_603463(path: JsonNode;
+proc validate_PutConfigurationSetReputationOptions_601467(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Enable or disable collection of reputation metrics for emails that you send using a particular configuration set in a specific AWS Region.
   ## 
@@ -3598,11 +3733,11 @@ proc validate_PutConfigurationSetReputationOptions_603463(path: JsonNode;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603465 = path.getOrDefault("ConfigurationSetName")
-  valid_603465 = validateParameter(valid_603465, JString, required = true,
+  var valid_601469 = path.getOrDefault("ConfigurationSetName")
+  valid_601469 = validateParameter(valid_601469, JString, required = true,
                                  default = nil)
-  if valid_603465 != nil:
-    section.add "ConfigurationSetName", valid_603465
+  if valid_601469 != nil:
+    section.add "ConfigurationSetName", valid_601469
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3615,41 +3750,41 @@ proc validate_PutConfigurationSetReputationOptions_603463(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603466 = header.getOrDefault("X-Amz-Date")
-  valid_603466 = validateParameter(valid_603466, JString, required = false,
+  var valid_601470 = header.getOrDefault("X-Amz-Date")
+  valid_601470 = validateParameter(valid_601470, JString, required = false,
                                  default = nil)
-  if valid_603466 != nil:
-    section.add "X-Amz-Date", valid_603466
-  var valid_603467 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603467 = validateParameter(valid_603467, JString, required = false,
+  if valid_601470 != nil:
+    section.add "X-Amz-Date", valid_601470
+  var valid_601471 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601471 = validateParameter(valid_601471, JString, required = false,
                                  default = nil)
-  if valid_603467 != nil:
-    section.add "X-Amz-Security-Token", valid_603467
-  var valid_603468 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603468 = validateParameter(valid_603468, JString, required = false,
+  if valid_601471 != nil:
+    section.add "X-Amz-Security-Token", valid_601471
+  var valid_601472 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601472 = validateParameter(valid_601472, JString, required = false,
                                  default = nil)
-  if valid_603468 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603468
-  var valid_603469 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603469 = validateParameter(valid_603469, JString, required = false,
+  if valid_601472 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601472
+  var valid_601473 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601473 = validateParameter(valid_601473, JString, required = false,
                                  default = nil)
-  if valid_603469 != nil:
-    section.add "X-Amz-Algorithm", valid_603469
-  var valid_603470 = header.getOrDefault("X-Amz-Signature")
-  valid_603470 = validateParameter(valid_603470, JString, required = false,
+  if valid_601473 != nil:
+    section.add "X-Amz-Algorithm", valid_601473
+  var valid_601474 = header.getOrDefault("X-Amz-Signature")
+  valid_601474 = validateParameter(valid_601474, JString, required = false,
                                  default = nil)
-  if valid_603470 != nil:
-    section.add "X-Amz-Signature", valid_603470
-  var valid_603471 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603471 = validateParameter(valid_603471, JString, required = false,
+  if valid_601474 != nil:
+    section.add "X-Amz-Signature", valid_601474
+  var valid_601475 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601475 = validateParameter(valid_601475, JString, required = false,
                                  default = nil)
-  if valid_603471 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603471
-  var valid_603472 = header.getOrDefault("X-Amz-Credential")
-  valid_603472 = validateParameter(valid_603472, JString, required = false,
+  if valid_601475 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601475
+  var valid_601476 = header.getOrDefault("X-Amz-Credential")
+  valid_601476 = validateParameter(valid_601476, JString, required = false,
                                  default = nil)
-  if valid_603472 != nil:
-    section.add "X-Amz-Credential", valid_603472
+  if valid_601476 != nil:
+    section.add "X-Amz-Credential", valid_601476
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3660,43 +3795,47 @@ proc validate_PutConfigurationSetReputationOptions_603463(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603474: Call_PutConfigurationSetReputationOptions_603462;
+proc call*(call_601478: Call_PutConfigurationSetReputationOptions_601466;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Enable or disable collection of reputation metrics for emails that you send using a particular configuration set in a specific AWS Region.
   ## 
-  let valid = call_603474.validator(path, query, header, formData, body)
-  let scheme = call_603474.pickScheme
+  let valid = call_601478.validator(path, query, header, formData, body)
+  let scheme = call_601478.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603474.url(scheme.get, call_603474.host, call_603474.base,
-                         call_603474.route, valid.getOrDefault("path"))
-  result = hook(call_603474, url, valid)
+  let url = call_601478.url(scheme.get, call_601478.host, call_601478.base,
+                         call_601478.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601478, url, valid)
 
-proc call*(call_603475: Call_PutConfigurationSetReputationOptions_603462;
+proc call*(call_601479: Call_PutConfigurationSetReputationOptions_601466;
           ConfigurationSetName: string; body: JsonNode): Recallable =
   ## putConfigurationSetReputationOptions
   ## Enable or disable collection of reputation metrics for emails that you send using a particular configuration set in a specific AWS Region.
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   body: JObject (required)
-  var path_603476 = newJObject()
-  var body_603477 = newJObject()
-  add(path_603476, "ConfigurationSetName", newJString(ConfigurationSetName))
+  var path_601480 = newJObject()
+  var body_601481 = newJObject()
+  add(path_601480, "ConfigurationSetName", newJString(ConfigurationSetName))
   if body != nil:
-    body_603477 = body
-  result = call_603475.call(path_603476, nil, nil, nil, body_603477)
+    body_601481 = body
+  result = call_601479.call(path_601480, nil, nil, nil, body_601481)
 
-var putConfigurationSetReputationOptions* = Call_PutConfigurationSetReputationOptions_603462(
+var putConfigurationSetReputationOptions* = Call_PutConfigurationSetReputationOptions_601466(
     name: "putConfigurationSetReputationOptions", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets/{ConfigurationSetName}/reputation-options",
-    validator: validate_PutConfigurationSetReputationOptions_603463, base: "/",
-    url: url_PutConfigurationSetReputationOptions_603464,
+    validator: validate_PutConfigurationSetReputationOptions_601467, base: "/",
+    url: url_PutConfigurationSetReputationOptions_601468,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutConfigurationSetSendingOptions_603478 = ref object of OpenApiRestCall_602417
-proc url_PutConfigurationSetSendingOptions_603480(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_PutConfigurationSetSendingOptions_601482 = ref object of OpenApiRestCall_600421
+proc url_PutConfigurationSetSendingOptions_601484(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -3707,9 +3846,9 @@ proc url_PutConfigurationSetSendingOptions_603480(protocol: Scheme; host: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutConfigurationSetSendingOptions_603479(path: JsonNode;
+proc validate_PutConfigurationSetSendingOptions_601483(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Enable or disable email sending for messages that use a particular configuration set in a specific AWS Region.
   ## 
@@ -3720,11 +3859,11 @@ proc validate_PutConfigurationSetSendingOptions_603479(path: JsonNode;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603481 = path.getOrDefault("ConfigurationSetName")
-  valid_603481 = validateParameter(valid_603481, JString, required = true,
+  var valid_601485 = path.getOrDefault("ConfigurationSetName")
+  valid_601485 = validateParameter(valid_601485, JString, required = true,
                                  default = nil)
-  if valid_603481 != nil:
-    section.add "ConfigurationSetName", valid_603481
+  if valid_601485 != nil:
+    section.add "ConfigurationSetName", valid_601485
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3737,41 +3876,41 @@ proc validate_PutConfigurationSetSendingOptions_603479(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603482 = header.getOrDefault("X-Amz-Date")
-  valid_603482 = validateParameter(valid_603482, JString, required = false,
+  var valid_601486 = header.getOrDefault("X-Amz-Date")
+  valid_601486 = validateParameter(valid_601486, JString, required = false,
                                  default = nil)
-  if valid_603482 != nil:
-    section.add "X-Amz-Date", valid_603482
-  var valid_603483 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603483 = validateParameter(valid_603483, JString, required = false,
+  if valid_601486 != nil:
+    section.add "X-Amz-Date", valid_601486
+  var valid_601487 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601487 = validateParameter(valid_601487, JString, required = false,
                                  default = nil)
-  if valid_603483 != nil:
-    section.add "X-Amz-Security-Token", valid_603483
-  var valid_603484 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603484 = validateParameter(valid_603484, JString, required = false,
+  if valid_601487 != nil:
+    section.add "X-Amz-Security-Token", valid_601487
+  var valid_601488 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601488 = validateParameter(valid_601488, JString, required = false,
                                  default = nil)
-  if valid_603484 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603484
-  var valid_603485 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603485 = validateParameter(valid_603485, JString, required = false,
+  if valid_601488 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601488
+  var valid_601489 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601489 = validateParameter(valid_601489, JString, required = false,
                                  default = nil)
-  if valid_603485 != nil:
-    section.add "X-Amz-Algorithm", valid_603485
-  var valid_603486 = header.getOrDefault("X-Amz-Signature")
-  valid_603486 = validateParameter(valid_603486, JString, required = false,
+  if valid_601489 != nil:
+    section.add "X-Amz-Algorithm", valid_601489
+  var valid_601490 = header.getOrDefault("X-Amz-Signature")
+  valid_601490 = validateParameter(valid_601490, JString, required = false,
                                  default = nil)
-  if valid_603486 != nil:
-    section.add "X-Amz-Signature", valid_603486
-  var valid_603487 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603487 = validateParameter(valid_603487, JString, required = false,
+  if valid_601490 != nil:
+    section.add "X-Amz-Signature", valid_601490
+  var valid_601491 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601491 = validateParameter(valid_601491, JString, required = false,
                                  default = nil)
-  if valid_603487 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603487
-  var valid_603488 = header.getOrDefault("X-Amz-Credential")
-  valid_603488 = validateParameter(valid_603488, JString, required = false,
+  if valid_601491 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601491
+  var valid_601492 = header.getOrDefault("X-Amz-Credential")
+  valid_601492 = validateParameter(valid_601492, JString, required = false,
                                  default = nil)
-  if valid_603488 != nil:
-    section.add "X-Amz-Credential", valid_603488
+  if valid_601492 != nil:
+    section.add "X-Amz-Credential", valid_601492
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3782,44 +3921,48 @@ proc validate_PutConfigurationSetSendingOptions_603479(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603490: Call_PutConfigurationSetSendingOptions_603478;
+proc call*(call_601494: Call_PutConfigurationSetSendingOptions_601482;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Enable or disable email sending for messages that use a particular configuration set in a specific AWS Region.
   ## 
-  let valid = call_603490.validator(path, query, header, formData, body)
-  let scheme = call_603490.pickScheme
+  let valid = call_601494.validator(path, query, header, formData, body)
+  let scheme = call_601494.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603490.url(scheme.get, call_603490.host, call_603490.base,
-                         call_603490.route, valid.getOrDefault("path"))
-  result = hook(call_603490, url, valid)
+  let url = call_601494.url(scheme.get, call_601494.host, call_601494.base,
+                         call_601494.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601494, url, valid)
 
-proc call*(call_603491: Call_PutConfigurationSetSendingOptions_603478;
+proc call*(call_601495: Call_PutConfigurationSetSendingOptions_601482;
           ConfigurationSetName: string; body: JsonNode): Recallable =
   ## putConfigurationSetSendingOptions
   ## Enable or disable email sending for messages that use a particular configuration set in a specific AWS Region.
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   body: JObject (required)
-  var path_603492 = newJObject()
-  var body_603493 = newJObject()
-  add(path_603492, "ConfigurationSetName", newJString(ConfigurationSetName))
+  var path_601496 = newJObject()
+  var body_601497 = newJObject()
+  add(path_601496, "ConfigurationSetName", newJString(ConfigurationSetName))
   if body != nil:
-    body_603493 = body
-  result = call_603491.call(path_603492, nil, nil, nil, body_603493)
+    body_601497 = body
+  result = call_601495.call(path_601496, nil, nil, nil, body_601497)
 
-var putConfigurationSetSendingOptions* = Call_PutConfigurationSetSendingOptions_603478(
+var putConfigurationSetSendingOptions* = Call_PutConfigurationSetSendingOptions_601482(
     name: "putConfigurationSetSendingOptions", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com",
     route: "/v1/email/configuration-sets/{ConfigurationSetName}/sending",
-    validator: validate_PutConfigurationSetSendingOptions_603479, base: "/",
-    url: url_PutConfigurationSetSendingOptions_603480,
+    validator: validate_PutConfigurationSetSendingOptions_601483, base: "/",
+    url: url_PutConfigurationSetSendingOptions_601484,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutConfigurationSetTrackingOptions_603494 = ref object of OpenApiRestCall_602417
-proc url_PutConfigurationSetTrackingOptions_603496(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_PutConfigurationSetTrackingOptions_601498 = ref object of OpenApiRestCall_600421
+proc url_PutConfigurationSetTrackingOptions_601500(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "ConfigurationSetName" in path,
         "`ConfigurationSetName` is a required path parameter"
@@ -3830,9 +3973,9 @@ proc url_PutConfigurationSetTrackingOptions_603496(protocol: Scheme; host: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutConfigurationSetTrackingOptions_603495(path: JsonNode;
+proc validate_PutConfigurationSetTrackingOptions_601499(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Specify a custom domain to use for open and click tracking elements in email that you send using Amazon Pinpoint.
   ## 
@@ -3843,11 +3986,11 @@ proc validate_PutConfigurationSetTrackingOptions_603495(path: JsonNode;
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ConfigurationSetName` field"
-  var valid_603497 = path.getOrDefault("ConfigurationSetName")
-  valid_603497 = validateParameter(valid_603497, JString, required = true,
+  var valid_601501 = path.getOrDefault("ConfigurationSetName")
+  valid_601501 = validateParameter(valid_601501, JString, required = true,
                                  default = nil)
-  if valid_603497 != nil:
-    section.add "ConfigurationSetName", valid_603497
+  if valid_601501 != nil:
+    section.add "ConfigurationSetName", valid_601501
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3860,41 +4003,41 @@ proc validate_PutConfigurationSetTrackingOptions_603495(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603498 = header.getOrDefault("X-Amz-Date")
-  valid_603498 = validateParameter(valid_603498, JString, required = false,
+  var valid_601502 = header.getOrDefault("X-Amz-Date")
+  valid_601502 = validateParameter(valid_601502, JString, required = false,
                                  default = nil)
-  if valid_603498 != nil:
-    section.add "X-Amz-Date", valid_603498
-  var valid_603499 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603499 = validateParameter(valid_603499, JString, required = false,
+  if valid_601502 != nil:
+    section.add "X-Amz-Date", valid_601502
+  var valid_601503 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601503 = validateParameter(valid_601503, JString, required = false,
                                  default = nil)
-  if valid_603499 != nil:
-    section.add "X-Amz-Security-Token", valid_603499
-  var valid_603500 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603500 = validateParameter(valid_603500, JString, required = false,
+  if valid_601503 != nil:
+    section.add "X-Amz-Security-Token", valid_601503
+  var valid_601504 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601504 = validateParameter(valid_601504, JString, required = false,
                                  default = nil)
-  if valid_603500 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603500
-  var valid_603501 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603501 = validateParameter(valid_603501, JString, required = false,
+  if valid_601504 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601504
+  var valid_601505 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601505 = validateParameter(valid_601505, JString, required = false,
                                  default = nil)
-  if valid_603501 != nil:
-    section.add "X-Amz-Algorithm", valid_603501
-  var valid_603502 = header.getOrDefault("X-Amz-Signature")
-  valid_603502 = validateParameter(valid_603502, JString, required = false,
+  if valid_601505 != nil:
+    section.add "X-Amz-Algorithm", valid_601505
+  var valid_601506 = header.getOrDefault("X-Amz-Signature")
+  valid_601506 = validateParameter(valid_601506, JString, required = false,
                                  default = nil)
-  if valid_603502 != nil:
-    section.add "X-Amz-Signature", valid_603502
-  var valid_603503 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603503 = validateParameter(valid_603503, JString, required = false,
+  if valid_601506 != nil:
+    section.add "X-Amz-Signature", valid_601506
+  var valid_601507 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601507 = validateParameter(valid_601507, JString, required = false,
                                  default = nil)
-  if valid_603503 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603503
-  var valid_603504 = header.getOrDefault("X-Amz-Credential")
-  valid_603504 = validateParameter(valid_603504, JString, required = false,
+  if valid_601507 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601507
+  var valid_601508 = header.getOrDefault("X-Amz-Credential")
+  valid_601508 = validateParameter(valid_601508, JString, required = false,
                                  default = nil)
-  if valid_603504 != nil:
-    section.add "X-Amz-Credential", valid_603504
+  if valid_601508 != nil:
+    section.add "X-Amz-Credential", valid_601508
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3905,43 +4048,47 @@ proc validate_PutConfigurationSetTrackingOptions_603495(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603506: Call_PutConfigurationSetTrackingOptions_603494;
+proc call*(call_601510: Call_PutConfigurationSetTrackingOptions_601498;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Specify a custom domain to use for open and click tracking elements in email that you send using Amazon Pinpoint.
   ## 
-  let valid = call_603506.validator(path, query, header, formData, body)
-  let scheme = call_603506.pickScheme
+  let valid = call_601510.validator(path, query, header, formData, body)
+  let scheme = call_601510.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603506.url(scheme.get, call_603506.host, call_603506.base,
-                         call_603506.route, valid.getOrDefault("path"))
-  result = hook(call_603506, url, valid)
+  let url = call_601510.url(scheme.get, call_601510.host, call_601510.base,
+                         call_601510.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601510, url, valid)
 
-proc call*(call_603507: Call_PutConfigurationSetTrackingOptions_603494;
+proc call*(call_601511: Call_PutConfigurationSetTrackingOptions_601498;
           ConfigurationSetName: string; body: JsonNode): Recallable =
   ## putConfigurationSetTrackingOptions
   ## Specify a custom domain to use for open and click tracking elements in email that you send using Amazon Pinpoint.
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p>In Amazon Pinpoint, <i>configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   body: JObject (required)
-  var path_603508 = newJObject()
-  var body_603509 = newJObject()
-  add(path_603508, "ConfigurationSetName", newJString(ConfigurationSetName))
+  var path_601512 = newJObject()
+  var body_601513 = newJObject()
+  add(path_601512, "ConfigurationSetName", newJString(ConfigurationSetName))
   if body != nil:
-    body_603509 = body
-  result = call_603507.call(path_603508, nil, nil, nil, body_603509)
+    body_601513 = body
+  result = call_601511.call(path_601512, nil, nil, nil, body_601513)
 
-var putConfigurationSetTrackingOptions* = Call_PutConfigurationSetTrackingOptions_603494(
+var putConfigurationSetTrackingOptions* = Call_PutConfigurationSetTrackingOptions_601498(
     name: "putConfigurationSetTrackingOptions", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/configuration-sets/{ConfigurationSetName}/tracking-options",
-    validator: validate_PutConfigurationSetTrackingOptions_603495, base: "/",
-    url: url_PutConfigurationSetTrackingOptions_603496,
+    validator: validate_PutConfigurationSetTrackingOptions_601499, base: "/",
+    url: url_PutConfigurationSetTrackingOptions_601500,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutDedicatedIpInPool_603510 = ref object of OpenApiRestCall_602417
-proc url_PutDedicatedIpInPool_603512(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
+  Call_PutDedicatedIpInPool_601514 = ref object of OpenApiRestCall_600421
+proc url_PutDedicatedIpInPool_601516(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "IP" in path, "`IP` is a required path parameter"
   const
@@ -3951,9 +4098,9 @@ proc url_PutDedicatedIpInPool_603512(protocol: Scheme; host: string; base: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutDedicatedIpInPool_603511(path: JsonNode; query: JsonNode;
+proc validate_PutDedicatedIpInPool_601515(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Move a dedicated IP address to an existing dedicated IP pool.</p> <note> <p>The dedicated IP address that you specify must already exist, and must be associated with your Amazon Pinpoint account. </p> <p>The dedicated IP pool you specify must already exist. You can create a new pool by using the <code>CreateDedicatedIpPool</code> operation.</p> </note>
   ## 
@@ -3964,11 +4111,11 @@ proc validate_PutDedicatedIpInPool_603511(path: JsonNode; query: JsonNode;
   ##     : A dedicated IP address that is associated with your Amazon Pinpoint account.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `IP` field"
-  var valid_603513 = path.getOrDefault("IP")
-  valid_603513 = validateParameter(valid_603513, JString, required = true,
+  var valid_601517 = path.getOrDefault("IP")
+  valid_601517 = validateParameter(valid_601517, JString, required = true,
                                  default = nil)
-  if valid_603513 != nil:
-    section.add "IP", valid_603513
+  if valid_601517 != nil:
+    section.add "IP", valid_601517
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3981,41 +4128,41 @@ proc validate_PutDedicatedIpInPool_603511(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603514 = header.getOrDefault("X-Amz-Date")
-  valid_603514 = validateParameter(valid_603514, JString, required = false,
+  var valid_601518 = header.getOrDefault("X-Amz-Date")
+  valid_601518 = validateParameter(valid_601518, JString, required = false,
                                  default = nil)
-  if valid_603514 != nil:
-    section.add "X-Amz-Date", valid_603514
-  var valid_603515 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603515 = validateParameter(valid_603515, JString, required = false,
+  if valid_601518 != nil:
+    section.add "X-Amz-Date", valid_601518
+  var valid_601519 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601519 = validateParameter(valid_601519, JString, required = false,
                                  default = nil)
-  if valid_603515 != nil:
-    section.add "X-Amz-Security-Token", valid_603515
-  var valid_603516 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603516 = validateParameter(valid_603516, JString, required = false,
+  if valid_601519 != nil:
+    section.add "X-Amz-Security-Token", valid_601519
+  var valid_601520 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601520 = validateParameter(valid_601520, JString, required = false,
                                  default = nil)
-  if valid_603516 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603516
-  var valid_603517 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603517 = validateParameter(valid_603517, JString, required = false,
+  if valid_601520 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601520
+  var valid_601521 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601521 = validateParameter(valid_601521, JString, required = false,
                                  default = nil)
-  if valid_603517 != nil:
-    section.add "X-Amz-Algorithm", valid_603517
-  var valid_603518 = header.getOrDefault("X-Amz-Signature")
-  valid_603518 = validateParameter(valid_603518, JString, required = false,
+  if valid_601521 != nil:
+    section.add "X-Amz-Algorithm", valid_601521
+  var valid_601522 = header.getOrDefault("X-Amz-Signature")
+  valid_601522 = validateParameter(valid_601522, JString, required = false,
                                  default = nil)
-  if valid_603518 != nil:
-    section.add "X-Amz-Signature", valid_603518
-  var valid_603519 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603519 = validateParameter(valid_603519, JString, required = false,
+  if valid_601522 != nil:
+    section.add "X-Amz-Signature", valid_601522
+  var valid_601523 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601523 = validateParameter(valid_601523, JString, required = false,
                                  default = nil)
-  if valid_603519 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603519
-  var valid_603520 = header.getOrDefault("X-Amz-Credential")
-  valid_603520 = validateParameter(valid_603520, JString, required = false,
+  if valid_601523 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601523
+  var valid_601524 = header.getOrDefault("X-Amz-Credential")
+  valid_601524 = validateParameter(valid_601524, JString, required = false,
                                  default = nil)
-  if valid_603520 != nil:
-    section.add "X-Amz-Credential", valid_603520
+  if valid_601524 != nil:
+    section.add "X-Amz-Credential", valid_601524
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4026,40 +4173,44 @@ proc validate_PutDedicatedIpInPool_603511(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603522: Call_PutDedicatedIpInPool_603510; path: JsonNode;
+proc call*(call_601526: Call_PutDedicatedIpInPool_601514; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Move a dedicated IP address to an existing dedicated IP pool.</p> <note> <p>The dedicated IP address that you specify must already exist, and must be associated with your Amazon Pinpoint account. </p> <p>The dedicated IP pool you specify must already exist. You can create a new pool by using the <code>CreateDedicatedIpPool</code> operation.</p> </note>
   ## 
-  let valid = call_603522.validator(path, query, header, formData, body)
-  let scheme = call_603522.pickScheme
+  let valid = call_601526.validator(path, query, header, formData, body)
+  let scheme = call_601526.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603522.url(scheme.get, call_603522.host, call_603522.base,
-                         call_603522.route, valid.getOrDefault("path"))
-  result = hook(call_603522, url, valid)
+  let url = call_601526.url(scheme.get, call_601526.host, call_601526.base,
+                         call_601526.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601526, url, valid)
 
-proc call*(call_603523: Call_PutDedicatedIpInPool_603510; IP: string; body: JsonNode): Recallable =
+proc call*(call_601527: Call_PutDedicatedIpInPool_601514; IP: string; body: JsonNode): Recallable =
   ## putDedicatedIpInPool
   ## <p>Move a dedicated IP address to an existing dedicated IP pool.</p> <note> <p>The dedicated IP address that you specify must already exist, and must be associated with your Amazon Pinpoint account. </p> <p>The dedicated IP pool you specify must already exist. You can create a new pool by using the <code>CreateDedicatedIpPool</code> operation.</p> </note>
   ##   IP: string (required)
   ##     : A dedicated IP address that is associated with your Amazon Pinpoint account.
   ##   body: JObject (required)
-  var path_603524 = newJObject()
-  var body_603525 = newJObject()
-  add(path_603524, "IP", newJString(IP))
+  var path_601528 = newJObject()
+  var body_601529 = newJObject()
+  add(path_601528, "IP", newJString(IP))
   if body != nil:
-    body_603525 = body
-  result = call_603523.call(path_603524, nil, nil, nil, body_603525)
+    body_601529 = body
+  result = call_601527.call(path_601528, nil, nil, nil, body_601529)
 
-var putDedicatedIpInPool* = Call_PutDedicatedIpInPool_603510(
+var putDedicatedIpInPool* = Call_PutDedicatedIpInPool_601514(
     name: "putDedicatedIpInPool", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/dedicated-ips/{IP}/pool",
-    validator: validate_PutDedicatedIpInPool_603511, base: "/",
-    url: url_PutDedicatedIpInPool_603512, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutDedicatedIpInPool_601515, base: "/",
+    url: url_PutDedicatedIpInPool_601516, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutDedicatedIpWarmupAttributes_603526 = ref object of OpenApiRestCall_602417
-proc url_PutDedicatedIpWarmupAttributes_603528(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_PutDedicatedIpWarmupAttributes_601530 = ref object of OpenApiRestCall_600421
+proc url_PutDedicatedIpWarmupAttributes_601532(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "IP" in path, "`IP` is a required path parameter"
   const
@@ -4069,9 +4220,9 @@ proc url_PutDedicatedIpWarmupAttributes_603528(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutDedicatedIpWarmupAttributes_603527(path: JsonNode;
+proc validate_PutDedicatedIpWarmupAttributes_601531(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p/>
   ## 
@@ -4082,11 +4233,11 @@ proc validate_PutDedicatedIpWarmupAttributes_603527(path: JsonNode;
   ##     : A dedicated IP address that is associated with your Amazon Pinpoint account.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `IP` field"
-  var valid_603529 = path.getOrDefault("IP")
-  valid_603529 = validateParameter(valid_603529, JString, required = true,
+  var valid_601533 = path.getOrDefault("IP")
+  valid_601533 = validateParameter(valid_601533, JString, required = true,
                                  default = nil)
-  if valid_603529 != nil:
-    section.add "IP", valid_603529
+  if valid_601533 != nil:
+    section.add "IP", valid_601533
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4099,41 +4250,41 @@ proc validate_PutDedicatedIpWarmupAttributes_603527(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603530 = header.getOrDefault("X-Amz-Date")
-  valid_603530 = validateParameter(valid_603530, JString, required = false,
+  var valid_601534 = header.getOrDefault("X-Amz-Date")
+  valid_601534 = validateParameter(valid_601534, JString, required = false,
                                  default = nil)
-  if valid_603530 != nil:
-    section.add "X-Amz-Date", valid_603530
-  var valid_603531 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603531 = validateParameter(valid_603531, JString, required = false,
+  if valid_601534 != nil:
+    section.add "X-Amz-Date", valid_601534
+  var valid_601535 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601535 = validateParameter(valid_601535, JString, required = false,
                                  default = nil)
-  if valid_603531 != nil:
-    section.add "X-Amz-Security-Token", valid_603531
-  var valid_603532 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603532 = validateParameter(valid_603532, JString, required = false,
+  if valid_601535 != nil:
+    section.add "X-Amz-Security-Token", valid_601535
+  var valid_601536 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601536 = validateParameter(valid_601536, JString, required = false,
                                  default = nil)
-  if valid_603532 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603532
-  var valid_603533 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603533 = validateParameter(valid_603533, JString, required = false,
+  if valid_601536 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601536
+  var valid_601537 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601537 = validateParameter(valid_601537, JString, required = false,
                                  default = nil)
-  if valid_603533 != nil:
-    section.add "X-Amz-Algorithm", valid_603533
-  var valid_603534 = header.getOrDefault("X-Amz-Signature")
-  valid_603534 = validateParameter(valid_603534, JString, required = false,
+  if valid_601537 != nil:
+    section.add "X-Amz-Algorithm", valid_601537
+  var valid_601538 = header.getOrDefault("X-Amz-Signature")
+  valid_601538 = validateParameter(valid_601538, JString, required = false,
                                  default = nil)
-  if valid_603534 != nil:
-    section.add "X-Amz-Signature", valid_603534
-  var valid_603535 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603535 = validateParameter(valid_603535, JString, required = false,
+  if valid_601538 != nil:
+    section.add "X-Amz-Signature", valid_601538
+  var valid_601539 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601539 = validateParameter(valid_601539, JString, required = false,
                                  default = nil)
-  if valid_603535 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603535
-  var valid_603536 = header.getOrDefault("X-Amz-Credential")
-  valid_603536 = validateParameter(valid_603536, JString, required = false,
+  if valid_601539 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601539
+  var valid_601540 = header.getOrDefault("X-Amz-Credential")
+  valid_601540 = validateParameter(valid_601540, JString, required = false,
                                  default = nil)
-  if valid_603536 != nil:
-    section.add "X-Amz-Credential", valid_603536
+  if valid_601540 != nil:
+    section.add "X-Amz-Credential", valid_601540
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4144,42 +4295,46 @@ proc validate_PutDedicatedIpWarmupAttributes_603527(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603538: Call_PutDedicatedIpWarmupAttributes_603526; path: JsonNode;
+proc call*(call_601542: Call_PutDedicatedIpWarmupAttributes_601530; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p/>
   ## 
-  let valid = call_603538.validator(path, query, header, formData, body)
-  let scheme = call_603538.pickScheme
+  let valid = call_601542.validator(path, query, header, formData, body)
+  let scheme = call_601542.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603538.url(scheme.get, call_603538.host, call_603538.base,
-                         call_603538.route, valid.getOrDefault("path"))
-  result = hook(call_603538, url, valid)
+  let url = call_601542.url(scheme.get, call_601542.host, call_601542.base,
+                         call_601542.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601542, url, valid)
 
-proc call*(call_603539: Call_PutDedicatedIpWarmupAttributes_603526; IP: string;
+proc call*(call_601543: Call_PutDedicatedIpWarmupAttributes_601530; IP: string;
           body: JsonNode): Recallable =
   ## putDedicatedIpWarmupAttributes
   ## <p/>
   ##   IP: string (required)
   ##     : A dedicated IP address that is associated with your Amazon Pinpoint account.
   ##   body: JObject (required)
-  var path_603540 = newJObject()
-  var body_603541 = newJObject()
-  add(path_603540, "IP", newJString(IP))
+  var path_601544 = newJObject()
+  var body_601545 = newJObject()
+  add(path_601544, "IP", newJString(IP))
   if body != nil:
-    body_603541 = body
-  result = call_603539.call(path_603540, nil, nil, nil, body_603541)
+    body_601545 = body
+  result = call_601543.call(path_601544, nil, nil, nil, body_601545)
 
-var putDedicatedIpWarmupAttributes* = Call_PutDedicatedIpWarmupAttributes_603526(
+var putDedicatedIpWarmupAttributes* = Call_PutDedicatedIpWarmupAttributes_601530(
     name: "putDedicatedIpWarmupAttributes", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com", route: "/v1/email/dedicated-ips/{IP}/warmup",
-    validator: validate_PutDedicatedIpWarmupAttributes_603527, base: "/",
-    url: url_PutDedicatedIpWarmupAttributes_603528,
+    validator: validate_PutDedicatedIpWarmupAttributes_601531, base: "/",
+    url: url_PutDedicatedIpWarmupAttributes_601532,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutEmailIdentityDkimAttributes_603542 = ref object of OpenApiRestCall_602417
-proc url_PutEmailIdentityDkimAttributes_603544(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_PutEmailIdentityDkimAttributes_601546 = ref object of OpenApiRestCall_600421
+proc url_PutEmailIdentityDkimAttributes_601548(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "EmailIdentity" in path, "`EmailIdentity` is a required path parameter"
   const
@@ -4189,9 +4344,9 @@ proc url_PutEmailIdentityDkimAttributes_603544(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutEmailIdentityDkimAttributes_603543(path: JsonNode;
+proc validate_PutEmailIdentityDkimAttributes_601547(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Used to enable or disable DKIM authentication for an email identity.
   ## 
@@ -4203,11 +4358,11 @@ proc validate_PutEmailIdentityDkimAttributes_603543(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailIdentity` field"
-  var valid_603545 = path.getOrDefault("EmailIdentity")
-  valid_603545 = validateParameter(valid_603545, JString, required = true,
+  var valid_601549 = path.getOrDefault("EmailIdentity")
+  valid_601549 = validateParameter(valid_601549, JString, required = true,
                                  default = nil)
-  if valid_603545 != nil:
-    section.add "EmailIdentity", valid_603545
+  if valid_601549 != nil:
+    section.add "EmailIdentity", valid_601549
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4220,41 +4375,41 @@ proc validate_PutEmailIdentityDkimAttributes_603543(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603546 = header.getOrDefault("X-Amz-Date")
-  valid_603546 = validateParameter(valid_603546, JString, required = false,
+  var valid_601550 = header.getOrDefault("X-Amz-Date")
+  valid_601550 = validateParameter(valid_601550, JString, required = false,
                                  default = nil)
-  if valid_603546 != nil:
-    section.add "X-Amz-Date", valid_603546
-  var valid_603547 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603547 = validateParameter(valid_603547, JString, required = false,
+  if valid_601550 != nil:
+    section.add "X-Amz-Date", valid_601550
+  var valid_601551 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601551 = validateParameter(valid_601551, JString, required = false,
                                  default = nil)
-  if valid_603547 != nil:
-    section.add "X-Amz-Security-Token", valid_603547
-  var valid_603548 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603548 = validateParameter(valid_603548, JString, required = false,
+  if valid_601551 != nil:
+    section.add "X-Amz-Security-Token", valid_601551
+  var valid_601552 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601552 = validateParameter(valid_601552, JString, required = false,
                                  default = nil)
-  if valid_603548 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603548
-  var valid_603549 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603549 = validateParameter(valid_603549, JString, required = false,
+  if valid_601552 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601552
+  var valid_601553 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601553 = validateParameter(valid_601553, JString, required = false,
                                  default = nil)
-  if valid_603549 != nil:
-    section.add "X-Amz-Algorithm", valid_603549
-  var valid_603550 = header.getOrDefault("X-Amz-Signature")
-  valid_603550 = validateParameter(valid_603550, JString, required = false,
+  if valid_601553 != nil:
+    section.add "X-Amz-Algorithm", valid_601553
+  var valid_601554 = header.getOrDefault("X-Amz-Signature")
+  valid_601554 = validateParameter(valid_601554, JString, required = false,
                                  default = nil)
-  if valid_603550 != nil:
-    section.add "X-Amz-Signature", valid_603550
-  var valid_603551 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603551 = validateParameter(valid_603551, JString, required = false,
+  if valid_601554 != nil:
+    section.add "X-Amz-Signature", valid_601554
+  var valid_601555 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601555 = validateParameter(valid_601555, JString, required = false,
                                  default = nil)
-  if valid_603551 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603551
-  var valid_603552 = header.getOrDefault("X-Amz-Credential")
-  valid_603552 = validateParameter(valid_603552, JString, required = false,
+  if valid_601555 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601555
+  var valid_601556 = header.getOrDefault("X-Amz-Credential")
+  valid_601556 = validateParameter(valid_601556, JString, required = false,
                                  default = nil)
-  if valid_603552 != nil:
-    section.add "X-Amz-Credential", valid_603552
+  if valid_601556 != nil:
+    section.add "X-Amz-Credential", valid_601556
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4265,43 +4420,47 @@ proc validate_PutEmailIdentityDkimAttributes_603543(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603554: Call_PutEmailIdentityDkimAttributes_603542; path: JsonNode;
+proc call*(call_601558: Call_PutEmailIdentityDkimAttributes_601546; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Used to enable or disable DKIM authentication for an email identity.
   ## 
-  let valid = call_603554.validator(path, query, header, formData, body)
-  let scheme = call_603554.pickScheme
+  let valid = call_601558.validator(path, query, header, formData, body)
+  let scheme = call_601558.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603554.url(scheme.get, call_603554.host, call_603554.base,
-                         call_603554.route, valid.getOrDefault("path"))
-  result = hook(call_603554, url, valid)
+  let url = call_601558.url(scheme.get, call_601558.host, call_601558.base,
+                         call_601558.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601558, url, valid)
 
-proc call*(call_603555: Call_PutEmailIdentityDkimAttributes_603542;
+proc call*(call_601559: Call_PutEmailIdentityDkimAttributes_601546;
           EmailIdentity: string; body: JsonNode): Recallable =
   ## putEmailIdentityDkimAttributes
   ## Used to enable or disable DKIM authentication for an email identity.
   ##   EmailIdentity: string (required)
   ##                : The email identity that you want to change the DKIM settings for.
   ##   body: JObject (required)
-  var path_603556 = newJObject()
-  var body_603557 = newJObject()
-  add(path_603556, "EmailIdentity", newJString(EmailIdentity))
+  var path_601560 = newJObject()
+  var body_601561 = newJObject()
+  add(path_601560, "EmailIdentity", newJString(EmailIdentity))
   if body != nil:
-    body_603557 = body
-  result = call_603555.call(path_603556, nil, nil, nil, body_603557)
+    body_601561 = body
+  result = call_601559.call(path_601560, nil, nil, nil, body_601561)
 
-var putEmailIdentityDkimAttributes* = Call_PutEmailIdentityDkimAttributes_603542(
+var putEmailIdentityDkimAttributes* = Call_PutEmailIdentityDkimAttributes_601546(
     name: "putEmailIdentityDkimAttributes", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com",
     route: "/v1/email/identities/{EmailIdentity}/dkim",
-    validator: validate_PutEmailIdentityDkimAttributes_603543, base: "/",
-    url: url_PutEmailIdentityDkimAttributes_603544,
+    validator: validate_PutEmailIdentityDkimAttributes_601547, base: "/",
+    url: url_PutEmailIdentityDkimAttributes_601548,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutEmailIdentityFeedbackAttributes_603558 = ref object of OpenApiRestCall_602417
-proc url_PutEmailIdentityFeedbackAttributes_603560(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_PutEmailIdentityFeedbackAttributes_601562 = ref object of OpenApiRestCall_600421
+proc url_PutEmailIdentityFeedbackAttributes_601564(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "EmailIdentity" in path, "`EmailIdentity` is a required path parameter"
   const
@@ -4311,9 +4470,9 @@ proc url_PutEmailIdentityFeedbackAttributes_603560(protocol: Scheme; host: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutEmailIdentityFeedbackAttributes_603559(path: JsonNode;
+proc validate_PutEmailIdentityFeedbackAttributes_601563(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>When you enable feedback forwarding, Amazon Pinpoint sends you email notifications when bounce or complaint events occur. Amazon Pinpoint sends this notification to the address that you specified in the Return-Path header of the original email.</p> <p>When you disable feedback forwarding, Amazon Pinpoint sends notifications through other mechanisms, such as by notifying an Amazon SNS topic. You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications, Amazon Pinpoint sends an email notification when these events occur (even if this setting is disabled).</p>
   ## 
@@ -4325,11 +4484,11 @@ proc validate_PutEmailIdentityFeedbackAttributes_603559(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailIdentity` field"
-  var valid_603561 = path.getOrDefault("EmailIdentity")
-  valid_603561 = validateParameter(valid_603561, JString, required = true,
+  var valid_601565 = path.getOrDefault("EmailIdentity")
+  valid_601565 = validateParameter(valid_601565, JString, required = true,
                                  default = nil)
-  if valid_603561 != nil:
-    section.add "EmailIdentity", valid_603561
+  if valid_601565 != nil:
+    section.add "EmailIdentity", valid_601565
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4342,41 +4501,41 @@ proc validate_PutEmailIdentityFeedbackAttributes_603559(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603562 = header.getOrDefault("X-Amz-Date")
-  valid_603562 = validateParameter(valid_603562, JString, required = false,
+  var valid_601566 = header.getOrDefault("X-Amz-Date")
+  valid_601566 = validateParameter(valid_601566, JString, required = false,
                                  default = nil)
-  if valid_603562 != nil:
-    section.add "X-Amz-Date", valid_603562
-  var valid_603563 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603563 = validateParameter(valid_603563, JString, required = false,
+  if valid_601566 != nil:
+    section.add "X-Amz-Date", valid_601566
+  var valid_601567 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601567 = validateParameter(valid_601567, JString, required = false,
                                  default = nil)
-  if valid_603563 != nil:
-    section.add "X-Amz-Security-Token", valid_603563
-  var valid_603564 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603564 = validateParameter(valid_603564, JString, required = false,
+  if valid_601567 != nil:
+    section.add "X-Amz-Security-Token", valid_601567
+  var valid_601568 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601568 = validateParameter(valid_601568, JString, required = false,
                                  default = nil)
-  if valid_603564 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603564
-  var valid_603565 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603565 = validateParameter(valid_603565, JString, required = false,
+  if valid_601568 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601568
+  var valid_601569 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601569 = validateParameter(valid_601569, JString, required = false,
                                  default = nil)
-  if valid_603565 != nil:
-    section.add "X-Amz-Algorithm", valid_603565
-  var valid_603566 = header.getOrDefault("X-Amz-Signature")
-  valid_603566 = validateParameter(valid_603566, JString, required = false,
+  if valid_601569 != nil:
+    section.add "X-Amz-Algorithm", valid_601569
+  var valid_601570 = header.getOrDefault("X-Amz-Signature")
+  valid_601570 = validateParameter(valid_601570, JString, required = false,
                                  default = nil)
-  if valid_603566 != nil:
-    section.add "X-Amz-Signature", valid_603566
-  var valid_603567 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603567 = validateParameter(valid_603567, JString, required = false,
+  if valid_601570 != nil:
+    section.add "X-Amz-Signature", valid_601570
+  var valid_601571 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601571 = validateParameter(valid_601571, JString, required = false,
                                  default = nil)
-  if valid_603567 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603567
-  var valid_603568 = header.getOrDefault("X-Amz-Credential")
-  valid_603568 = validateParameter(valid_603568, JString, required = false,
+  if valid_601571 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601571
+  var valid_601572 = header.getOrDefault("X-Amz-Credential")
+  valid_601572 = validateParameter(valid_601572, JString, required = false,
                                  default = nil)
-  if valid_603568 != nil:
-    section.add "X-Amz-Credential", valid_603568
+  if valid_601572 != nil:
+    section.add "X-Amz-Credential", valid_601572
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4387,44 +4546,48 @@ proc validate_PutEmailIdentityFeedbackAttributes_603559(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603570: Call_PutEmailIdentityFeedbackAttributes_603558;
+proc call*(call_601574: Call_PutEmailIdentityFeedbackAttributes_601562;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>When you enable feedback forwarding, Amazon Pinpoint sends you email notifications when bounce or complaint events occur. Amazon Pinpoint sends this notification to the address that you specified in the Return-Path header of the original email.</p> <p>When you disable feedback forwarding, Amazon Pinpoint sends notifications through other mechanisms, such as by notifying an Amazon SNS topic. You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications, Amazon Pinpoint sends an email notification when these events occur (even if this setting is disabled).</p>
   ## 
-  let valid = call_603570.validator(path, query, header, formData, body)
-  let scheme = call_603570.pickScheme
+  let valid = call_601574.validator(path, query, header, formData, body)
+  let scheme = call_601574.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603570.url(scheme.get, call_603570.host, call_603570.base,
-                         call_603570.route, valid.getOrDefault("path"))
-  result = hook(call_603570, url, valid)
+  let url = call_601574.url(scheme.get, call_601574.host, call_601574.base,
+                         call_601574.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601574, url, valid)
 
-proc call*(call_603571: Call_PutEmailIdentityFeedbackAttributes_603558;
+proc call*(call_601575: Call_PutEmailIdentityFeedbackAttributes_601562;
           EmailIdentity: string; body: JsonNode): Recallable =
   ## putEmailIdentityFeedbackAttributes
   ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>When you enable feedback forwarding, Amazon Pinpoint sends you email notifications when bounce or complaint events occur. Amazon Pinpoint sends this notification to the address that you specified in the Return-Path header of the original email.</p> <p>When you disable feedback forwarding, Amazon Pinpoint sends notifications through other mechanisms, such as by notifying an Amazon SNS topic. You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications, Amazon Pinpoint sends an email notification when these events occur (even if this setting is disabled).</p>
   ##   EmailIdentity: string (required)
   ##                : The email identity that you want to configure bounce and complaint feedback forwarding for.
   ##   body: JObject (required)
-  var path_603572 = newJObject()
-  var body_603573 = newJObject()
-  add(path_603572, "EmailIdentity", newJString(EmailIdentity))
+  var path_601576 = newJObject()
+  var body_601577 = newJObject()
+  add(path_601576, "EmailIdentity", newJString(EmailIdentity))
   if body != nil:
-    body_603573 = body
-  result = call_603571.call(path_603572, nil, nil, nil, body_603573)
+    body_601577 = body
+  result = call_601575.call(path_601576, nil, nil, nil, body_601577)
 
-var putEmailIdentityFeedbackAttributes* = Call_PutEmailIdentityFeedbackAttributes_603558(
+var putEmailIdentityFeedbackAttributes* = Call_PutEmailIdentityFeedbackAttributes_601562(
     name: "putEmailIdentityFeedbackAttributes", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com",
     route: "/v1/email/identities/{EmailIdentity}/feedback",
-    validator: validate_PutEmailIdentityFeedbackAttributes_603559, base: "/",
-    url: url_PutEmailIdentityFeedbackAttributes_603560,
+    validator: validate_PutEmailIdentityFeedbackAttributes_601563, base: "/",
+    url: url_PutEmailIdentityFeedbackAttributes_601564,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutEmailIdentityMailFromAttributes_603574 = ref object of OpenApiRestCall_602417
-proc url_PutEmailIdentityMailFromAttributes_603576(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
+  Call_PutEmailIdentityMailFromAttributes_601578 = ref object of OpenApiRestCall_600421
+proc url_PutEmailIdentityMailFromAttributes_601580(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "EmailIdentity" in path, "`EmailIdentity` is a required path parameter"
   const
@@ -4434,9 +4597,9 @@ proc url_PutEmailIdentityMailFromAttributes_603576(protocol: Scheme; host: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result = $protocol & "://" & host & base & hydrated.get
+  result.path = base & hydrated.get
 
-proc validate_PutEmailIdentityMailFromAttributes_603575(path: JsonNode;
+proc validate_PutEmailIdentityMailFromAttributes_601579(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
   ## 
@@ -4448,11 +4611,11 @@ proc validate_PutEmailIdentityMailFromAttributes_603575(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailIdentity` field"
-  var valid_603577 = path.getOrDefault("EmailIdentity")
-  valid_603577 = validateParameter(valid_603577, JString, required = true,
+  var valid_601581 = path.getOrDefault("EmailIdentity")
+  valid_601581 = validateParameter(valid_601581, JString, required = true,
                                  default = nil)
-  if valid_603577 != nil:
-    section.add "EmailIdentity", valid_603577
+  if valid_601581 != nil:
+    section.add "EmailIdentity", valid_601581
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4465,41 +4628,41 @@ proc validate_PutEmailIdentityMailFromAttributes_603575(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603578 = header.getOrDefault("X-Amz-Date")
-  valid_603578 = validateParameter(valid_603578, JString, required = false,
+  var valid_601582 = header.getOrDefault("X-Amz-Date")
+  valid_601582 = validateParameter(valid_601582, JString, required = false,
                                  default = nil)
-  if valid_603578 != nil:
-    section.add "X-Amz-Date", valid_603578
-  var valid_603579 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603579 = validateParameter(valid_603579, JString, required = false,
+  if valid_601582 != nil:
+    section.add "X-Amz-Date", valid_601582
+  var valid_601583 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601583 = validateParameter(valid_601583, JString, required = false,
                                  default = nil)
-  if valid_603579 != nil:
-    section.add "X-Amz-Security-Token", valid_603579
-  var valid_603580 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603580 = validateParameter(valid_603580, JString, required = false,
+  if valid_601583 != nil:
+    section.add "X-Amz-Security-Token", valid_601583
+  var valid_601584 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601584 = validateParameter(valid_601584, JString, required = false,
                                  default = nil)
-  if valid_603580 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603580
-  var valid_603581 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603581 = validateParameter(valid_603581, JString, required = false,
+  if valid_601584 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601584
+  var valid_601585 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601585 = validateParameter(valid_601585, JString, required = false,
                                  default = nil)
-  if valid_603581 != nil:
-    section.add "X-Amz-Algorithm", valid_603581
-  var valid_603582 = header.getOrDefault("X-Amz-Signature")
-  valid_603582 = validateParameter(valid_603582, JString, required = false,
+  if valid_601585 != nil:
+    section.add "X-Amz-Algorithm", valid_601585
+  var valid_601586 = header.getOrDefault("X-Amz-Signature")
+  valid_601586 = validateParameter(valid_601586, JString, required = false,
                                  default = nil)
-  if valid_603582 != nil:
-    section.add "X-Amz-Signature", valid_603582
-  var valid_603583 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603583 = validateParameter(valid_603583, JString, required = false,
+  if valid_601586 != nil:
+    section.add "X-Amz-Signature", valid_601586
+  var valid_601587 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601587 = validateParameter(valid_601587, JString, required = false,
                                  default = nil)
-  if valid_603583 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603583
-  var valid_603584 = header.getOrDefault("X-Amz-Credential")
-  valid_603584 = validateParameter(valid_603584, JString, required = false,
+  if valid_601587 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601587
+  var valid_601588 = header.getOrDefault("X-Amz-Credential")
+  valid_601588 = validateParameter(valid_601588, JString, required = false,
                                  default = nil)
-  if valid_603584 != nil:
-    section.add "X-Amz-Credential", valid_603584
+  if valid_601588 != nil:
+    section.add "X-Amz-Credential", valid_601588
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4510,47 +4673,51 @@ proc validate_PutEmailIdentityMailFromAttributes_603575(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603586: Call_PutEmailIdentityMailFromAttributes_603574;
+proc call*(call_601590: Call_PutEmailIdentityMailFromAttributes_601578;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
   ## 
-  let valid = call_603586.validator(path, query, header, formData, body)
-  let scheme = call_603586.pickScheme
+  let valid = call_601590.validator(path, query, header, formData, body)
+  let scheme = call_601590.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603586.url(scheme.get, call_603586.host, call_603586.base,
-                         call_603586.route, valid.getOrDefault("path"))
-  result = hook(call_603586, url, valid)
+  let url = call_601590.url(scheme.get, call_601590.host, call_601590.base,
+                         call_601590.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601590, url, valid)
 
-proc call*(call_603587: Call_PutEmailIdentityMailFromAttributes_603574;
+proc call*(call_601591: Call_PutEmailIdentityMailFromAttributes_601578;
           EmailIdentity: string; body: JsonNode): Recallable =
   ## putEmailIdentityMailFromAttributes
   ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
   ##   EmailIdentity: string (required)
   ##                : The verified email identity that you want to set up the custom MAIL FROM domain for.
   ##   body: JObject (required)
-  var path_603588 = newJObject()
-  var body_603589 = newJObject()
-  add(path_603588, "EmailIdentity", newJString(EmailIdentity))
+  var path_601592 = newJObject()
+  var body_601593 = newJObject()
+  add(path_601592, "EmailIdentity", newJString(EmailIdentity))
   if body != nil:
-    body_603589 = body
-  result = call_603587.call(path_603588, nil, nil, nil, body_603589)
+    body_601593 = body
+  result = call_601591.call(path_601592, nil, nil, nil, body_601593)
 
-var putEmailIdentityMailFromAttributes* = Call_PutEmailIdentityMailFromAttributes_603574(
+var putEmailIdentityMailFromAttributes* = Call_PutEmailIdentityMailFromAttributes_601578(
     name: "putEmailIdentityMailFromAttributes", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com",
     route: "/v1/email/identities/{EmailIdentity}/mail-from",
-    validator: validate_PutEmailIdentityMailFromAttributes_603575, base: "/",
-    url: url_PutEmailIdentityMailFromAttributes_603576,
+    validator: validate_PutEmailIdentityMailFromAttributes_601579, base: "/",
+    url: url_PutEmailIdentityMailFromAttributes_601580,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SendEmail_603590 = ref object of OpenApiRestCall_602417
-proc url_SendEmail_603592(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_SendEmail_601594 = ref object of OpenApiRestCall_600421
+proc url_SendEmail_601596(protocol: Scheme; host: string; base: string; route: string;
+                         path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_SendEmail_603591(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_SendEmail_601595(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sends an email message. You can use the Amazon Pinpoint Email API to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and Amazon Pinpoint assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
   ## 
@@ -4569,41 +4736,41 @@ proc validate_SendEmail_603591(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603593 = header.getOrDefault("X-Amz-Date")
-  valid_603593 = validateParameter(valid_603593, JString, required = false,
+  var valid_601597 = header.getOrDefault("X-Amz-Date")
+  valid_601597 = validateParameter(valid_601597, JString, required = false,
                                  default = nil)
-  if valid_603593 != nil:
-    section.add "X-Amz-Date", valid_603593
-  var valid_603594 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603594 = validateParameter(valid_603594, JString, required = false,
+  if valid_601597 != nil:
+    section.add "X-Amz-Date", valid_601597
+  var valid_601598 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601598 = validateParameter(valid_601598, JString, required = false,
                                  default = nil)
-  if valid_603594 != nil:
-    section.add "X-Amz-Security-Token", valid_603594
-  var valid_603595 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603595 = validateParameter(valid_603595, JString, required = false,
+  if valid_601598 != nil:
+    section.add "X-Amz-Security-Token", valid_601598
+  var valid_601599 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601599 = validateParameter(valid_601599, JString, required = false,
                                  default = nil)
-  if valid_603595 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603595
-  var valid_603596 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603596 = validateParameter(valid_603596, JString, required = false,
+  if valid_601599 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601599
+  var valid_601600 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601600 = validateParameter(valid_601600, JString, required = false,
                                  default = nil)
-  if valid_603596 != nil:
-    section.add "X-Amz-Algorithm", valid_603596
-  var valid_603597 = header.getOrDefault("X-Amz-Signature")
-  valid_603597 = validateParameter(valid_603597, JString, required = false,
+  if valid_601600 != nil:
+    section.add "X-Amz-Algorithm", valid_601600
+  var valid_601601 = header.getOrDefault("X-Amz-Signature")
+  valid_601601 = validateParameter(valid_601601, JString, required = false,
                                  default = nil)
-  if valid_603597 != nil:
-    section.add "X-Amz-Signature", valid_603597
-  var valid_603598 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603598 = validateParameter(valid_603598, JString, required = false,
+  if valid_601601 != nil:
+    section.add "X-Amz-Signature", valid_601601
+  var valid_601602 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601602 = validateParameter(valid_601602, JString, required = false,
                                  default = nil)
-  if valid_603598 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603598
-  var valid_603599 = header.getOrDefault("X-Amz-Credential")
-  valid_603599 = validateParameter(valid_603599, JString, required = false,
+  if valid_601602 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601602
+  var valid_601603 = header.getOrDefault("X-Amz-Credential")
+  valid_601603 = validateParameter(valid_601603, JString, required = false,
                                  default = nil)
-  if valid_603599 != nil:
-    section.add "X-Amz-Credential", valid_603599
+  if valid_601603 != nil:
+    section.add "X-Amz-Credential", valid_601603
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4614,40 +4781,44 @@ proc validate_SendEmail_603591(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603601: Call_SendEmail_603590; path: JsonNode; query: JsonNode;
+proc call*(call_601605: Call_SendEmail_601594; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sends an email message. You can use the Amazon Pinpoint Email API to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and Amazon Pinpoint assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
   ## 
-  let valid = call_603601.validator(path, query, header, formData, body)
-  let scheme = call_603601.pickScheme
+  let valid = call_601605.validator(path, query, header, formData, body)
+  let scheme = call_601605.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603601.url(scheme.get, call_603601.host, call_603601.base,
-                         call_603601.route, valid.getOrDefault("path"))
-  result = hook(call_603601, url, valid)
+  let url = call_601605.url(scheme.get, call_601605.host, call_601605.base,
+                         call_601605.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601605, url, valid)
 
-proc call*(call_603602: Call_SendEmail_603590; body: JsonNode): Recallable =
+proc call*(call_601606: Call_SendEmail_601594; body: JsonNode): Recallable =
   ## sendEmail
   ## <p>Sends an email message. You can use the Amazon Pinpoint Email API to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and Amazon Pinpoint assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_603603 = newJObject()
+  var body_601607 = newJObject()
   if body != nil:
-    body_603603 = body
-  result = call_603602.call(nil, nil, nil, nil, body_603603)
+    body_601607 = body
+  result = call_601606.call(nil, nil, nil, nil, body_601607)
 
-var sendEmail* = Call_SendEmail_603590(name: "sendEmail", meth: HttpMethod.HttpPost,
+var sendEmail* = Call_SendEmail_601594(name: "sendEmail", meth: HttpMethod.HttpPost,
                                     host: "email.amazonaws.com",
                                     route: "/v1/email/outbound-emails",
-                                    validator: validate_SendEmail_603591,
-                                    base: "/", url: url_SendEmail_603592,
+                                    validator: validate_SendEmail_601595,
+                                    base: "/", url: url_SendEmail_601596,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_603604 = ref object of OpenApiRestCall_602417
-proc url_TagResource_603606(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_TagResource_601608 = ref object of OpenApiRestCall_600421
+proc url_TagResource_601610(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_TagResource_603605(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_601609(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Add one or more tags (keys and values) to a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource in Amazon Pinpoint. Tags can help you categorize and manage resources in different ways, such as by purpose, owner, environment, or other criteria. A resource can have as many as 50 tags.</p> <p>Each tag consists of a required <i>tag key</i> and an associated <i>tag value</i>, both of which you define. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.</p>
   ## 
@@ -4666,41 +4837,41 @@ proc validate_TagResource_603605(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603607 = header.getOrDefault("X-Amz-Date")
-  valid_603607 = validateParameter(valid_603607, JString, required = false,
+  var valid_601611 = header.getOrDefault("X-Amz-Date")
+  valid_601611 = validateParameter(valid_601611, JString, required = false,
                                  default = nil)
-  if valid_603607 != nil:
-    section.add "X-Amz-Date", valid_603607
-  var valid_603608 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603608 = validateParameter(valid_603608, JString, required = false,
+  if valid_601611 != nil:
+    section.add "X-Amz-Date", valid_601611
+  var valid_601612 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601612 = validateParameter(valid_601612, JString, required = false,
                                  default = nil)
-  if valid_603608 != nil:
-    section.add "X-Amz-Security-Token", valid_603608
-  var valid_603609 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603609 = validateParameter(valid_603609, JString, required = false,
+  if valid_601612 != nil:
+    section.add "X-Amz-Security-Token", valid_601612
+  var valid_601613 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601613 = validateParameter(valid_601613, JString, required = false,
                                  default = nil)
-  if valid_603609 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603609
-  var valid_603610 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603610 = validateParameter(valid_603610, JString, required = false,
+  if valid_601613 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601613
+  var valid_601614 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601614 = validateParameter(valid_601614, JString, required = false,
                                  default = nil)
-  if valid_603610 != nil:
-    section.add "X-Amz-Algorithm", valid_603610
-  var valid_603611 = header.getOrDefault("X-Amz-Signature")
-  valid_603611 = validateParameter(valid_603611, JString, required = false,
+  if valid_601614 != nil:
+    section.add "X-Amz-Algorithm", valid_601614
+  var valid_601615 = header.getOrDefault("X-Amz-Signature")
+  valid_601615 = validateParameter(valid_601615, JString, required = false,
                                  default = nil)
-  if valid_603611 != nil:
-    section.add "X-Amz-Signature", valid_603611
-  var valid_603612 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603612 = validateParameter(valid_603612, JString, required = false,
+  if valid_601615 != nil:
+    section.add "X-Amz-Signature", valid_601615
+  var valid_601616 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601616 = validateParameter(valid_601616, JString, required = false,
                                  default = nil)
-  if valid_603612 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603612
-  var valid_603613 = header.getOrDefault("X-Amz-Credential")
-  valid_603613 = validateParameter(valid_603613, JString, required = false,
+  if valid_601616 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601616
+  var valid_601617 = header.getOrDefault("X-Amz-Credential")
+  valid_601617 = validateParameter(valid_601617, JString, required = false,
                                  default = nil)
-  if valid_603613 != nil:
-    section.add "X-Amz-Credential", valid_603613
+  if valid_601617 != nil:
+    section.add "X-Amz-Credential", valid_601617
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4711,41 +4882,45 @@ proc validate_TagResource_603605(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603615: Call_TagResource_603604; path: JsonNode; query: JsonNode;
+proc call*(call_601619: Call_TagResource_601608; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Add one or more tags (keys and values) to a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource in Amazon Pinpoint. Tags can help you categorize and manage resources in different ways, such as by purpose, owner, environment, or other criteria. A resource can have as many as 50 tags.</p> <p>Each tag consists of a required <i>tag key</i> and an associated <i>tag value</i>, both of which you define. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.</p>
   ## 
-  let valid = call_603615.validator(path, query, header, formData, body)
-  let scheme = call_603615.pickScheme
+  let valid = call_601619.validator(path, query, header, formData, body)
+  let scheme = call_601619.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603615.url(scheme.get, call_603615.host, call_603615.base,
-                         call_603615.route, valid.getOrDefault("path"))
-  result = hook(call_603615, url, valid)
+  let url = call_601619.url(scheme.get, call_601619.host, call_601619.base,
+                         call_601619.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601619, url, valid)
 
-proc call*(call_603616: Call_TagResource_603604; body: JsonNode): Recallable =
+proc call*(call_601620: Call_TagResource_601608; body: JsonNode): Recallable =
   ## tagResource
   ## <p>Add one or more tags (keys and values) to a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource in Amazon Pinpoint. Tags can help you categorize and manage resources in different ways, such as by purpose, owner, environment, or other criteria. A resource can have as many as 50 tags.</p> <p>Each tag consists of a required <i>tag key</i> and an associated <i>tag value</i>, both of which you define. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.</p>
   ##   body: JObject (required)
-  var body_603617 = newJObject()
+  var body_601621 = newJObject()
   if body != nil:
-    body_603617 = body
-  result = call_603616.call(nil, nil, nil, nil, body_603617)
+    body_601621 = body
+  result = call_601620.call(nil, nil, nil, nil, body_601621)
 
-var tagResource* = Call_TagResource_603604(name: "tagResource",
+var tagResource* = Call_TagResource_601608(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "email.amazonaws.com",
                                         route: "/v1/email/tags",
-                                        validator: validate_TagResource_603605,
-                                        base: "/", url: url_TagResource_603606,
+                                        validator: validate_TagResource_601609,
+                                        base: "/", url: url_TagResource_601610,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_603618 = ref object of OpenApiRestCall_602417
-proc url_UntagResource_603620(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_UntagResource_601622 = ref object of OpenApiRestCall_600421
+proc url_UntagResource_601624(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_UntagResource_603619(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_601623(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Remove one or more tags (keys and values) from a specified resource.
   ## 
@@ -4762,15 +4937,15 @@ proc validate_UntagResource_603619(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `ResourceArn` field"
-  var valid_603621 = query.getOrDefault("ResourceArn")
-  valid_603621 = validateParameter(valid_603621, JString, required = true,
+  var valid_601625 = query.getOrDefault("ResourceArn")
+  valid_601625 = validateParameter(valid_601625, JString, required = true,
                                  default = nil)
-  if valid_603621 != nil:
-    section.add "ResourceArn", valid_603621
-  var valid_603622 = query.getOrDefault("TagKeys")
-  valid_603622 = validateParameter(valid_603622, JArray, required = true, default = nil)
-  if valid_603622 != nil:
-    section.add "TagKeys", valid_603622
+  if valid_601625 != nil:
+    section.add "ResourceArn", valid_601625
+  var valid_601626 = query.getOrDefault("TagKeys")
+  valid_601626 = validateParameter(valid_601626, JArray, required = true, default = nil)
+  if valid_601626 != nil:
+    section.add "TagKeys", valid_601626
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4781,60 +4956,61 @@ proc validate_UntagResource_603619(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603623 = header.getOrDefault("X-Amz-Date")
-  valid_603623 = validateParameter(valid_603623, JString, required = false,
+  var valid_601627 = header.getOrDefault("X-Amz-Date")
+  valid_601627 = validateParameter(valid_601627, JString, required = false,
                                  default = nil)
-  if valid_603623 != nil:
-    section.add "X-Amz-Date", valid_603623
-  var valid_603624 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603624 = validateParameter(valid_603624, JString, required = false,
+  if valid_601627 != nil:
+    section.add "X-Amz-Date", valid_601627
+  var valid_601628 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601628 = validateParameter(valid_601628, JString, required = false,
                                  default = nil)
-  if valid_603624 != nil:
-    section.add "X-Amz-Security-Token", valid_603624
-  var valid_603625 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603625 = validateParameter(valid_603625, JString, required = false,
+  if valid_601628 != nil:
+    section.add "X-Amz-Security-Token", valid_601628
+  var valid_601629 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601629 = validateParameter(valid_601629, JString, required = false,
                                  default = nil)
-  if valid_603625 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603625
-  var valid_603626 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603626 = validateParameter(valid_603626, JString, required = false,
+  if valid_601629 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601629
+  var valid_601630 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601630 = validateParameter(valid_601630, JString, required = false,
                                  default = nil)
-  if valid_603626 != nil:
-    section.add "X-Amz-Algorithm", valid_603626
-  var valid_603627 = header.getOrDefault("X-Amz-Signature")
-  valid_603627 = validateParameter(valid_603627, JString, required = false,
+  if valid_601630 != nil:
+    section.add "X-Amz-Algorithm", valid_601630
+  var valid_601631 = header.getOrDefault("X-Amz-Signature")
+  valid_601631 = validateParameter(valid_601631, JString, required = false,
                                  default = nil)
-  if valid_603627 != nil:
-    section.add "X-Amz-Signature", valid_603627
-  var valid_603628 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603628 = validateParameter(valid_603628, JString, required = false,
+  if valid_601631 != nil:
+    section.add "X-Amz-Signature", valid_601631
+  var valid_601632 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601632 = validateParameter(valid_601632, JString, required = false,
                                  default = nil)
-  if valid_603628 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603628
-  var valid_603629 = header.getOrDefault("X-Amz-Credential")
-  valid_603629 = validateParameter(valid_603629, JString, required = false,
+  if valid_601632 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601632
+  var valid_601633 = header.getOrDefault("X-Amz-Credential")
+  valid_601633 = validateParameter(valid_601633, JString, required = false,
                                  default = nil)
-  if valid_603629 != nil:
-    section.add "X-Amz-Credential", valid_603629
+  if valid_601633 != nil:
+    section.add "X-Amz-Credential", valid_601633
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603630: Call_UntagResource_603618; path: JsonNode; query: JsonNode;
+proc call*(call_601634: Call_UntagResource_601622; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Remove one or more tags (keys and values) from a specified resource.
   ## 
-  let valid = call_603630.validator(path, query, header, formData, body)
-  let scheme = call_603630.pickScheme
+  let valid = call_601634.validator(path, query, header, formData, body)
+  let scheme = call_601634.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603630.url(scheme.get, call_603630.host, call_603630.base,
-                         call_603630.route, valid.getOrDefault("path"))
-  result = hook(call_603630, url, valid)
+  let url = call_601634.url(scheme.get, call_601634.host, call_601634.base,
+                         call_601634.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601634, url, valid)
 
-proc call*(call_603631: Call_UntagResource_603618; ResourceArn: string;
+proc call*(call_601635: Call_UntagResource_601622; ResourceArn: string;
           TagKeys: JsonNode): Recallable =
   ## untagResource
   ## Remove one or more tags (keys and values) from a specified resource.
@@ -4843,16 +5019,16 @@ proc call*(call_603631: Call_UntagResource_603618; ResourceArn: string;
   ##   TagKeys: JArray (required)
   ##          : <p>The tags (tag keys) that you want to remove from the resource. When you specify a tag key, the action removes both that key and its associated tag value.</p> <p>To remove more than one tag from the resource, append the <code>TagKeys</code> parameter and argument for each additional tag to remove, separated by an ampersand. For example: 
   ## <code>/v1/email/tags?ResourceArn=ResourceArn&amp;TagKeys=Key1&amp;TagKeys=Key2</code> </p>
-  var query_603632 = newJObject()
-  add(query_603632, "ResourceArn", newJString(ResourceArn))
+  var query_601636 = newJObject()
+  add(query_601636, "ResourceArn", newJString(ResourceArn))
   if TagKeys != nil:
-    query_603632.add "TagKeys", TagKeys
-  result = call_603631.call(nil, query_603632, nil, nil, nil)
+    query_601636.add "TagKeys", TagKeys
+  result = call_601635.call(nil, query_601636, nil, nil, nil)
 
-var untagResource* = Call_UntagResource_603618(name: "untagResource",
+var untagResource* = Call_UntagResource_601622(name: "untagResource",
     meth: HttpMethod.HttpDelete, host: "email.amazonaws.com",
     route: "/v1/email/tags#ResourceArn&TagKeys",
-    validator: validate_UntagResource_603619, base: "/", url: url_UntagResource_603620,
+    validator: validate_UntagResource_601623, base: "/", url: url_UntagResource_601624,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -4896,7 +5072,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.} =
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, "")
+  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
   result.sign(input.getOrDefault("query"), SHA256)

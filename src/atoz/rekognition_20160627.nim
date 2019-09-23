@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Rekognition
@@ -27,17 +27,17 @@ type
     host*: string
     schemes*: set[Scheme]
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
-              path: JsonNode): string
+              path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602434 = ref object of OpenApiRestCall
+  OpenApiRestCall_600438 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602434](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600438](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602434): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600438): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,6 +74,14 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
+proc queryString(query: JsonNode): string =
+  var qs: seq[KeyVal]
+  if query == nil:
+    return ""
+  for k, v in query.pairs:
+    qs.add (key: k, val: v.getStr)
+  result = encodeQuery(qs)
+
 proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
@@ -128,14 +136,17 @@ const
       "ca-central-1": "rekognition.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "rekognition"
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CompareFaces_602771 = ref object of OpenApiRestCall_602434
-proc url_CompareFaces_602773(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CompareFaces_600775 = ref object of OpenApiRestCall_600438
+proc url_CompareFaces_600777(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CompareFaces_602772(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CompareFaces_600776(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Compares a face in the <i>source</i> input image with each of the 100 largest faces detected in the <i>target</i> input image. </p> <note> <p> If the source image contains multiple faces, the service detects the largest face and compares it with each face detected in the target image. </p> </note> <p>You pass the input and target images either as base64-encoded image bytes or as references to images in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn't supported. The image must be formatted as a PNG or JPEG file. </p> <p>In response, the operation returns an array of face matches ordered by similarity score in descending order. For each face match, the response provides a bounding box of the face, facial landmarks, pose details (pitch, role, and yaw), quality (brightness and sharpness), and confidence value (indicating the level of confidence that the bounding box contains a face). The response also provides a similarity score, which indicates how closely the faces match. </p> <note> <p>By default, only faces with a similarity score of greater than or equal to 80% are returned in the response. You can change this value by specifying the <code>SimilarityThreshold</code> parameter.</p> </note> <p> <code>CompareFaces</code> also returns an array of faces that don't match the source image. For each face, it returns a bounding box, confidence value, landmarks, pose details, and quality. The response also returns information about the face in the source image, including the bounding box of the face and confidence value.</p> <p>If the image doesn't contain Exif metadata, <code>CompareFaces</code> returns orientation information for the source and target images. Use these values to display the images with the correct image orientation.</p> <p>If no faces are detected in the source or target images, <code>CompareFaces</code> returns an <code>InvalidParameterException</code> error. </p> <note> <p> This is a stateless API operation. That is, data returned by this operation doesn't persist.</p> </note> <p>For an example, see Comparing Faces in Images in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:CompareFaces</code> action.</p>
   ## 
@@ -155,48 +166,48 @@ proc validate_CompareFaces_602772(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_602885 = header.getOrDefault("X-Amz-Date")
-  valid_602885 = validateParameter(valid_602885, JString, required = false,
+  var valid_600889 = header.getOrDefault("X-Amz-Date")
+  valid_600889 = validateParameter(valid_600889, JString, required = false,
                                  default = nil)
-  if valid_602885 != nil:
-    section.add "X-Amz-Date", valid_602885
-  var valid_602886 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602886 = validateParameter(valid_602886, JString, required = false,
+  if valid_600889 != nil:
+    section.add "X-Amz-Date", valid_600889
+  var valid_600890 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600890 = validateParameter(valid_600890, JString, required = false,
                                  default = nil)
-  if valid_602886 != nil:
-    section.add "X-Amz-Security-Token", valid_602886
+  if valid_600890 != nil:
+    section.add "X-Amz-Security-Token", valid_600890
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602900 = header.getOrDefault("X-Amz-Target")
-  valid_602900 = validateParameter(valid_602900, JString, required = true, default = newJString(
+  var valid_600904 = header.getOrDefault("X-Amz-Target")
+  valid_600904 = validateParameter(valid_600904, JString, required = true, default = newJString(
       "RekognitionService.CompareFaces"))
-  if valid_602900 != nil:
-    section.add "X-Amz-Target", valid_602900
-  var valid_602901 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602901 = validateParameter(valid_602901, JString, required = false,
+  if valid_600904 != nil:
+    section.add "X-Amz-Target", valid_600904
+  var valid_600905 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600905 = validateParameter(valid_600905, JString, required = false,
                                  default = nil)
-  if valid_602901 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602901
-  var valid_602902 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602902 = validateParameter(valid_602902, JString, required = false,
+  if valid_600905 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600905
+  var valid_600906 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600906 = validateParameter(valid_600906, JString, required = false,
                                  default = nil)
-  if valid_602902 != nil:
-    section.add "X-Amz-Algorithm", valid_602902
-  var valid_602903 = header.getOrDefault("X-Amz-Signature")
-  valid_602903 = validateParameter(valid_602903, JString, required = false,
+  if valid_600906 != nil:
+    section.add "X-Amz-Algorithm", valid_600906
+  var valid_600907 = header.getOrDefault("X-Amz-Signature")
+  valid_600907 = validateParameter(valid_600907, JString, required = false,
                                  default = nil)
-  if valid_602903 != nil:
-    section.add "X-Amz-Signature", valid_602903
-  var valid_602904 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602904 = validateParameter(valid_602904, JString, required = false,
+  if valid_600907 != nil:
+    section.add "X-Amz-Signature", valid_600907
+  var valid_600908 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600908 = validateParameter(valid_600908, JString, required = false,
                                  default = nil)
-  if valid_602904 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602904
-  var valid_602905 = header.getOrDefault("X-Amz-Credential")
-  valid_602905 = validateParameter(valid_602905, JString, required = false,
+  if valid_600908 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600908
+  var valid_600909 = header.getOrDefault("X-Amz-Credential")
+  valid_600909 = validateParameter(valid_600909, JString, required = false,
                                  default = nil)
-  if valid_602905 != nil:
-    section.add "X-Amz-Credential", valid_602905
+  if valid_600909 != nil:
+    section.add "X-Amz-Credential", valid_600909
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -207,39 +218,43 @@ proc validate_CompareFaces_602772(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_602929: Call_CompareFaces_602771; path: JsonNode; query: JsonNode;
+proc call*(call_600933: Call_CompareFaces_600775; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Compares a face in the <i>source</i> input image with each of the 100 largest faces detected in the <i>target</i> input image. </p> <note> <p> If the source image contains multiple faces, the service detects the largest face and compares it with each face detected in the target image. </p> </note> <p>You pass the input and target images either as base64-encoded image bytes or as references to images in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn't supported. The image must be formatted as a PNG or JPEG file. </p> <p>In response, the operation returns an array of face matches ordered by similarity score in descending order. For each face match, the response provides a bounding box of the face, facial landmarks, pose details (pitch, role, and yaw), quality (brightness and sharpness), and confidence value (indicating the level of confidence that the bounding box contains a face). The response also provides a similarity score, which indicates how closely the faces match. </p> <note> <p>By default, only faces with a similarity score of greater than or equal to 80% are returned in the response. You can change this value by specifying the <code>SimilarityThreshold</code> parameter.</p> </note> <p> <code>CompareFaces</code> also returns an array of faces that don't match the source image. For each face, it returns a bounding box, confidence value, landmarks, pose details, and quality. The response also returns information about the face in the source image, including the bounding box of the face and confidence value.</p> <p>If the image doesn't contain Exif metadata, <code>CompareFaces</code> returns orientation information for the source and target images. Use these values to display the images with the correct image orientation.</p> <p>If no faces are detected in the source or target images, <code>CompareFaces</code> returns an <code>InvalidParameterException</code> error. </p> <note> <p> This is a stateless API operation. That is, data returned by this operation doesn't persist.</p> </note> <p>For an example, see Comparing Faces in Images in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:CompareFaces</code> action.</p>
   ## 
-  let valid = call_602929.validator(path, query, header, formData, body)
-  let scheme = call_602929.pickScheme
+  let valid = call_600933.validator(path, query, header, formData, body)
+  let scheme = call_600933.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602929.url(scheme.get, call_602929.host, call_602929.base,
-                         call_602929.route, valid.getOrDefault("path"))
-  result = hook(call_602929, url, valid)
+  let url = call_600933.url(scheme.get, call_600933.host, call_600933.base,
+                         call_600933.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_600933, url, valid)
 
-proc call*(call_603000: Call_CompareFaces_602771; body: JsonNode): Recallable =
+proc call*(call_601004: Call_CompareFaces_600775; body: JsonNode): Recallable =
   ## compareFaces
   ## <p>Compares a face in the <i>source</i> input image with each of the 100 largest faces detected in the <i>target</i> input image. </p> <note> <p> If the source image contains multiple faces, the service detects the largest face and compares it with each face detected in the target image. </p> </note> <p>You pass the input and target images either as base64-encoded image bytes or as references to images in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn't supported. The image must be formatted as a PNG or JPEG file. </p> <p>In response, the operation returns an array of face matches ordered by similarity score in descending order. For each face match, the response provides a bounding box of the face, facial landmarks, pose details (pitch, role, and yaw), quality (brightness and sharpness), and confidence value (indicating the level of confidence that the bounding box contains a face). The response also provides a similarity score, which indicates how closely the faces match. </p> <note> <p>By default, only faces with a similarity score of greater than or equal to 80% are returned in the response. You can change this value by specifying the <code>SimilarityThreshold</code> parameter.</p> </note> <p> <code>CompareFaces</code> also returns an array of faces that don't match the source image. For each face, it returns a bounding box, confidence value, landmarks, pose details, and quality. The response also returns information about the face in the source image, including the bounding box of the face and confidence value.</p> <p>If the image doesn't contain Exif metadata, <code>CompareFaces</code> returns orientation information for the source and target images. Use these values to display the images with the correct image orientation.</p> <p>If no faces are detected in the source or target images, <code>CompareFaces</code> returns an <code>InvalidParameterException</code> error. </p> <note> <p> This is a stateless API operation. That is, data returned by this operation doesn't persist.</p> </note> <p>For an example, see Comparing Faces in Images in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:CompareFaces</code> action.</p>
   ##   body: JObject (required)
-  var body_603001 = newJObject()
+  var body_601005 = newJObject()
   if body != nil:
-    body_603001 = body
-  result = call_603000.call(nil, nil, nil, nil, body_603001)
+    body_601005 = body
+  result = call_601004.call(nil, nil, nil, nil, body_601005)
 
-var compareFaces* = Call_CompareFaces_602771(name: "compareFaces",
+var compareFaces* = Call_CompareFaces_600775(name: "compareFaces",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.CompareFaces",
-    validator: validate_CompareFaces_602772, base: "/", url: url_CompareFaces_602773,
+    validator: validate_CompareFaces_600776, base: "/", url: url_CompareFaces_600777,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateCollection_603040 = ref object of OpenApiRestCall_602434
-proc url_CreateCollection_603042(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateCollection_601044 = ref object of OpenApiRestCall_600438
+proc url_CreateCollection_601046(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateCollection_603041(path: JsonNode; query: JsonNode;
+proc validate_CreateCollection_601045(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates a collection in an AWS Region. You can add faces to the collection using the <a>IndexFaces</a> operation. </p> <p>For example, you might create collections, one for each of your application users. A user can then index faces using the <code>IndexFaces</code> operation and persist results in a specific collection. Then, a user can search the collection for faces in the user-specific container. </p> <p>When you create a collection, it is associated with the latest version of the face model version.</p> <note> <p>Collection names are case-sensitive.</p> </note> <p>This operation requires permissions to perform the <code>rekognition:CreateCollection</code> action.</p>
@@ -260,48 +275,48 @@ proc validate_CreateCollection_603041(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603043 = header.getOrDefault("X-Amz-Date")
-  valid_603043 = validateParameter(valid_603043, JString, required = false,
+  var valid_601047 = header.getOrDefault("X-Amz-Date")
+  valid_601047 = validateParameter(valid_601047, JString, required = false,
                                  default = nil)
-  if valid_603043 != nil:
-    section.add "X-Amz-Date", valid_603043
-  var valid_603044 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603044 = validateParameter(valid_603044, JString, required = false,
+  if valid_601047 != nil:
+    section.add "X-Amz-Date", valid_601047
+  var valid_601048 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601048 = validateParameter(valid_601048, JString, required = false,
                                  default = nil)
-  if valid_603044 != nil:
-    section.add "X-Amz-Security-Token", valid_603044
+  if valid_601048 != nil:
+    section.add "X-Amz-Security-Token", valid_601048
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603045 = header.getOrDefault("X-Amz-Target")
-  valid_603045 = validateParameter(valid_603045, JString, required = true, default = newJString(
+  var valid_601049 = header.getOrDefault("X-Amz-Target")
+  valid_601049 = validateParameter(valid_601049, JString, required = true, default = newJString(
       "RekognitionService.CreateCollection"))
-  if valid_603045 != nil:
-    section.add "X-Amz-Target", valid_603045
-  var valid_603046 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603046 = validateParameter(valid_603046, JString, required = false,
+  if valid_601049 != nil:
+    section.add "X-Amz-Target", valid_601049
+  var valid_601050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601050 = validateParameter(valid_601050, JString, required = false,
                                  default = nil)
-  if valid_603046 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603046
-  var valid_603047 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603047 = validateParameter(valid_603047, JString, required = false,
+  if valid_601050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601050
+  var valid_601051 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601051 = validateParameter(valid_601051, JString, required = false,
                                  default = nil)
-  if valid_603047 != nil:
-    section.add "X-Amz-Algorithm", valid_603047
-  var valid_603048 = header.getOrDefault("X-Amz-Signature")
-  valid_603048 = validateParameter(valid_603048, JString, required = false,
+  if valid_601051 != nil:
+    section.add "X-Amz-Algorithm", valid_601051
+  var valid_601052 = header.getOrDefault("X-Amz-Signature")
+  valid_601052 = validateParameter(valid_601052, JString, required = false,
                                  default = nil)
-  if valid_603048 != nil:
-    section.add "X-Amz-Signature", valid_603048
-  var valid_603049 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603049 = validateParameter(valid_603049, JString, required = false,
+  if valid_601052 != nil:
+    section.add "X-Amz-Signature", valid_601052
+  var valid_601053 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601053 = validateParameter(valid_601053, JString, required = false,
                                  default = nil)
-  if valid_603049 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603049
-  var valid_603050 = header.getOrDefault("X-Amz-Credential")
-  valid_603050 = validateParameter(valid_603050, JString, required = false,
+  if valid_601053 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601053
+  var valid_601054 = header.getOrDefault("X-Amz-Credential")
+  valid_601054 = validateParameter(valid_601054, JString, required = false,
                                  default = nil)
-  if valid_603050 != nil:
-    section.add "X-Amz-Credential", valid_603050
+  if valid_601054 != nil:
+    section.add "X-Amz-Credential", valid_601054
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -312,39 +327,43 @@ proc validate_CreateCollection_603041(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603052: Call_CreateCollection_603040; path: JsonNode;
+proc call*(call_601056: Call_CreateCollection_601044; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a collection in an AWS Region. You can add faces to the collection using the <a>IndexFaces</a> operation. </p> <p>For example, you might create collections, one for each of your application users. A user can then index faces using the <code>IndexFaces</code> operation and persist results in a specific collection. Then, a user can search the collection for faces in the user-specific container. </p> <p>When you create a collection, it is associated with the latest version of the face model version.</p> <note> <p>Collection names are case-sensitive.</p> </note> <p>This operation requires permissions to perform the <code>rekognition:CreateCollection</code> action.</p>
   ## 
-  let valid = call_603052.validator(path, query, header, formData, body)
-  let scheme = call_603052.pickScheme
+  let valid = call_601056.validator(path, query, header, formData, body)
+  let scheme = call_601056.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603052.url(scheme.get, call_603052.host, call_603052.base,
-                         call_603052.route, valid.getOrDefault("path"))
-  result = hook(call_603052, url, valid)
+  let url = call_601056.url(scheme.get, call_601056.host, call_601056.base,
+                         call_601056.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601056, url, valid)
 
-proc call*(call_603053: Call_CreateCollection_603040; body: JsonNode): Recallable =
+proc call*(call_601057: Call_CreateCollection_601044; body: JsonNode): Recallable =
   ## createCollection
   ## <p>Creates a collection in an AWS Region. You can add faces to the collection using the <a>IndexFaces</a> operation. </p> <p>For example, you might create collections, one for each of your application users. A user can then index faces using the <code>IndexFaces</code> operation and persist results in a specific collection. Then, a user can search the collection for faces in the user-specific container. </p> <p>When you create a collection, it is associated with the latest version of the face model version.</p> <note> <p>Collection names are case-sensitive.</p> </note> <p>This operation requires permissions to perform the <code>rekognition:CreateCollection</code> action.</p>
   ##   body: JObject (required)
-  var body_603054 = newJObject()
+  var body_601058 = newJObject()
   if body != nil:
-    body_603054 = body
-  result = call_603053.call(nil, nil, nil, nil, body_603054)
+    body_601058 = body
+  result = call_601057.call(nil, nil, nil, nil, body_601058)
 
-var createCollection* = Call_CreateCollection_603040(name: "createCollection",
+var createCollection* = Call_CreateCollection_601044(name: "createCollection",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.CreateCollection",
-    validator: validate_CreateCollection_603041, base: "/",
-    url: url_CreateCollection_603042, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateCollection_601045, base: "/",
+    url: url_CreateCollection_601046, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateStreamProcessor_603055 = ref object of OpenApiRestCall_602434
-proc url_CreateStreamProcessor_603057(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateStreamProcessor_601059 = ref object of OpenApiRestCall_600438
+proc url_CreateStreamProcessor_601061(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateStreamProcessor_603056(path: JsonNode; query: JsonNode;
+proc validate_CreateStreamProcessor_601060(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an Amazon Rekognition stream processor that you can use to detect and recognize faces in a streaming video.</p> <p>Amazon Rekognition Video is a consumer of live video from Amazon Kinesis Video Streams. Amazon Rekognition Video sends analysis results to Amazon Kinesis Data Streams.</p> <p>You provide as input a Kinesis video stream (<code>Input</code>) and a Kinesis data stream (<code>Output</code>) stream. You also specify the face recognition criteria in <code>Settings</code>. For example, the collection containing faces that you want to recognize. Use <code>Name</code> to assign an identifier for the stream processor. You use <code>Name</code> to manage the stream processor. For example, you can start processing the source video by calling <a>StartStreamProcessor</a> with the <code>Name</code> field. </p> <p>After you have finished analyzing a streaming video, use <a>StopStreamProcessor</a> to stop processing. You can delete the stream processor by calling <a>DeleteStreamProcessor</a>.</p>
   ## 
@@ -364,48 +383,48 @@ proc validate_CreateStreamProcessor_603056(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603058 = header.getOrDefault("X-Amz-Date")
-  valid_603058 = validateParameter(valid_603058, JString, required = false,
+  var valid_601062 = header.getOrDefault("X-Amz-Date")
+  valid_601062 = validateParameter(valid_601062, JString, required = false,
                                  default = nil)
-  if valid_603058 != nil:
-    section.add "X-Amz-Date", valid_603058
-  var valid_603059 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603059 = validateParameter(valid_603059, JString, required = false,
+  if valid_601062 != nil:
+    section.add "X-Amz-Date", valid_601062
+  var valid_601063 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601063 = validateParameter(valid_601063, JString, required = false,
                                  default = nil)
-  if valid_603059 != nil:
-    section.add "X-Amz-Security-Token", valid_603059
+  if valid_601063 != nil:
+    section.add "X-Amz-Security-Token", valid_601063
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603060 = header.getOrDefault("X-Amz-Target")
-  valid_603060 = validateParameter(valid_603060, JString, required = true, default = newJString(
+  var valid_601064 = header.getOrDefault("X-Amz-Target")
+  valid_601064 = validateParameter(valid_601064, JString, required = true, default = newJString(
       "RekognitionService.CreateStreamProcessor"))
-  if valid_603060 != nil:
-    section.add "X-Amz-Target", valid_603060
-  var valid_603061 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603061 = validateParameter(valid_603061, JString, required = false,
+  if valid_601064 != nil:
+    section.add "X-Amz-Target", valid_601064
+  var valid_601065 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601065 = validateParameter(valid_601065, JString, required = false,
                                  default = nil)
-  if valid_603061 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603061
-  var valid_603062 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603062 = validateParameter(valid_603062, JString, required = false,
+  if valid_601065 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601065
+  var valid_601066 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601066 = validateParameter(valid_601066, JString, required = false,
                                  default = nil)
-  if valid_603062 != nil:
-    section.add "X-Amz-Algorithm", valid_603062
-  var valid_603063 = header.getOrDefault("X-Amz-Signature")
-  valid_603063 = validateParameter(valid_603063, JString, required = false,
+  if valid_601066 != nil:
+    section.add "X-Amz-Algorithm", valid_601066
+  var valid_601067 = header.getOrDefault("X-Amz-Signature")
+  valid_601067 = validateParameter(valid_601067, JString, required = false,
                                  default = nil)
-  if valid_603063 != nil:
-    section.add "X-Amz-Signature", valid_603063
-  var valid_603064 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603064 = validateParameter(valid_603064, JString, required = false,
+  if valid_601067 != nil:
+    section.add "X-Amz-Signature", valid_601067
+  var valid_601068 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601068 = validateParameter(valid_601068, JString, required = false,
                                  default = nil)
-  if valid_603064 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603064
-  var valid_603065 = header.getOrDefault("X-Amz-Credential")
-  valid_603065 = validateParameter(valid_603065, JString, required = false,
+  if valid_601068 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601068
+  var valid_601069 = header.getOrDefault("X-Amz-Credential")
+  valid_601069 = validateParameter(valid_601069, JString, required = false,
                                  default = nil)
-  if valid_603065 != nil:
-    section.add "X-Amz-Credential", valid_603065
+  if valid_601069 != nil:
+    section.add "X-Amz-Credential", valid_601069
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -416,40 +435,44 @@ proc validate_CreateStreamProcessor_603056(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603067: Call_CreateStreamProcessor_603055; path: JsonNode;
+proc call*(call_601071: Call_CreateStreamProcessor_601059; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an Amazon Rekognition stream processor that you can use to detect and recognize faces in a streaming video.</p> <p>Amazon Rekognition Video is a consumer of live video from Amazon Kinesis Video Streams. Amazon Rekognition Video sends analysis results to Amazon Kinesis Data Streams.</p> <p>You provide as input a Kinesis video stream (<code>Input</code>) and a Kinesis data stream (<code>Output</code>) stream. You also specify the face recognition criteria in <code>Settings</code>. For example, the collection containing faces that you want to recognize. Use <code>Name</code> to assign an identifier for the stream processor. You use <code>Name</code> to manage the stream processor. For example, you can start processing the source video by calling <a>StartStreamProcessor</a> with the <code>Name</code> field. </p> <p>After you have finished analyzing a streaming video, use <a>StopStreamProcessor</a> to stop processing. You can delete the stream processor by calling <a>DeleteStreamProcessor</a>.</p>
   ## 
-  let valid = call_603067.validator(path, query, header, formData, body)
-  let scheme = call_603067.pickScheme
+  let valid = call_601071.validator(path, query, header, formData, body)
+  let scheme = call_601071.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603067.url(scheme.get, call_603067.host, call_603067.base,
-                         call_603067.route, valid.getOrDefault("path"))
-  result = hook(call_603067, url, valid)
+  let url = call_601071.url(scheme.get, call_601071.host, call_601071.base,
+                         call_601071.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601071, url, valid)
 
-proc call*(call_603068: Call_CreateStreamProcessor_603055; body: JsonNode): Recallable =
+proc call*(call_601072: Call_CreateStreamProcessor_601059; body: JsonNode): Recallable =
   ## createStreamProcessor
   ## <p>Creates an Amazon Rekognition stream processor that you can use to detect and recognize faces in a streaming video.</p> <p>Amazon Rekognition Video is a consumer of live video from Amazon Kinesis Video Streams. Amazon Rekognition Video sends analysis results to Amazon Kinesis Data Streams.</p> <p>You provide as input a Kinesis video stream (<code>Input</code>) and a Kinesis data stream (<code>Output</code>) stream. You also specify the face recognition criteria in <code>Settings</code>. For example, the collection containing faces that you want to recognize. Use <code>Name</code> to assign an identifier for the stream processor. You use <code>Name</code> to manage the stream processor. For example, you can start processing the source video by calling <a>StartStreamProcessor</a> with the <code>Name</code> field. </p> <p>After you have finished analyzing a streaming video, use <a>StopStreamProcessor</a> to stop processing. You can delete the stream processor by calling <a>DeleteStreamProcessor</a>.</p>
   ##   body: JObject (required)
-  var body_603069 = newJObject()
+  var body_601073 = newJObject()
   if body != nil:
-    body_603069 = body
-  result = call_603068.call(nil, nil, nil, nil, body_603069)
+    body_601073 = body
+  result = call_601072.call(nil, nil, nil, nil, body_601073)
 
-var createStreamProcessor* = Call_CreateStreamProcessor_603055(
+var createStreamProcessor* = Call_CreateStreamProcessor_601059(
     name: "createStreamProcessor", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.CreateStreamProcessor",
-    validator: validate_CreateStreamProcessor_603056, base: "/",
-    url: url_CreateStreamProcessor_603057, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateStreamProcessor_601060, base: "/",
+    url: url_CreateStreamProcessor_601061, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteCollection_603070 = ref object of OpenApiRestCall_602434
-proc url_DeleteCollection_603072(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DeleteCollection_601074 = ref object of OpenApiRestCall_600438
+proc url_DeleteCollection_601076(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DeleteCollection_603071(path: JsonNode; query: JsonNode;
+proc validate_DeleteCollection_601075(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes the specified collection. Note that this operation removes all faces in the collection. For an example, see <a>delete-collection-procedure</a>.</p> <p>This operation requires permissions to perform the <code>rekognition:DeleteCollection</code> action.</p>
@@ -470,48 +493,48 @@ proc validate_DeleteCollection_603071(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603073 = header.getOrDefault("X-Amz-Date")
-  valid_603073 = validateParameter(valid_603073, JString, required = false,
+  var valid_601077 = header.getOrDefault("X-Amz-Date")
+  valid_601077 = validateParameter(valid_601077, JString, required = false,
                                  default = nil)
-  if valid_603073 != nil:
-    section.add "X-Amz-Date", valid_603073
-  var valid_603074 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603074 = validateParameter(valid_603074, JString, required = false,
+  if valid_601077 != nil:
+    section.add "X-Amz-Date", valid_601077
+  var valid_601078 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601078 = validateParameter(valid_601078, JString, required = false,
                                  default = nil)
-  if valid_603074 != nil:
-    section.add "X-Amz-Security-Token", valid_603074
+  if valid_601078 != nil:
+    section.add "X-Amz-Security-Token", valid_601078
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603075 = header.getOrDefault("X-Amz-Target")
-  valid_603075 = validateParameter(valid_603075, JString, required = true, default = newJString(
+  var valid_601079 = header.getOrDefault("X-Amz-Target")
+  valid_601079 = validateParameter(valid_601079, JString, required = true, default = newJString(
       "RekognitionService.DeleteCollection"))
-  if valid_603075 != nil:
-    section.add "X-Amz-Target", valid_603075
-  var valid_603076 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603076 = validateParameter(valid_603076, JString, required = false,
+  if valid_601079 != nil:
+    section.add "X-Amz-Target", valid_601079
+  var valid_601080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601080 = validateParameter(valid_601080, JString, required = false,
                                  default = nil)
-  if valid_603076 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603076
-  var valid_603077 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603077 = validateParameter(valid_603077, JString, required = false,
+  if valid_601080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601080
+  var valid_601081 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601081 = validateParameter(valid_601081, JString, required = false,
                                  default = nil)
-  if valid_603077 != nil:
-    section.add "X-Amz-Algorithm", valid_603077
-  var valid_603078 = header.getOrDefault("X-Amz-Signature")
-  valid_603078 = validateParameter(valid_603078, JString, required = false,
+  if valid_601081 != nil:
+    section.add "X-Amz-Algorithm", valid_601081
+  var valid_601082 = header.getOrDefault("X-Amz-Signature")
+  valid_601082 = validateParameter(valid_601082, JString, required = false,
                                  default = nil)
-  if valid_603078 != nil:
-    section.add "X-Amz-Signature", valid_603078
-  var valid_603079 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603079 = validateParameter(valid_603079, JString, required = false,
+  if valid_601082 != nil:
+    section.add "X-Amz-Signature", valid_601082
+  var valid_601083 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601083 = validateParameter(valid_601083, JString, required = false,
                                  default = nil)
-  if valid_603079 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603079
-  var valid_603080 = header.getOrDefault("X-Amz-Credential")
-  valid_603080 = validateParameter(valid_603080, JString, required = false,
+  if valid_601083 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601083
+  var valid_601084 = header.getOrDefault("X-Amz-Credential")
+  valid_601084 = validateParameter(valid_601084, JString, required = false,
                                  default = nil)
-  if valid_603080 != nil:
-    section.add "X-Amz-Credential", valid_603080
+  if valid_601084 != nil:
+    section.add "X-Amz-Credential", valid_601084
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -522,39 +545,43 @@ proc validate_DeleteCollection_603071(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603082: Call_DeleteCollection_603070; path: JsonNode;
+proc call*(call_601086: Call_DeleteCollection_601074; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified collection. Note that this operation removes all faces in the collection. For an example, see <a>delete-collection-procedure</a>.</p> <p>This operation requires permissions to perform the <code>rekognition:DeleteCollection</code> action.</p>
   ## 
-  let valid = call_603082.validator(path, query, header, formData, body)
-  let scheme = call_603082.pickScheme
+  let valid = call_601086.validator(path, query, header, formData, body)
+  let scheme = call_601086.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603082.url(scheme.get, call_603082.host, call_603082.base,
-                         call_603082.route, valid.getOrDefault("path"))
-  result = hook(call_603082, url, valid)
+  let url = call_601086.url(scheme.get, call_601086.host, call_601086.base,
+                         call_601086.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601086, url, valid)
 
-proc call*(call_603083: Call_DeleteCollection_603070; body: JsonNode): Recallable =
+proc call*(call_601087: Call_DeleteCollection_601074; body: JsonNode): Recallable =
   ## deleteCollection
   ## <p>Deletes the specified collection. Note that this operation removes all faces in the collection. For an example, see <a>delete-collection-procedure</a>.</p> <p>This operation requires permissions to perform the <code>rekognition:DeleteCollection</code> action.</p>
   ##   body: JObject (required)
-  var body_603084 = newJObject()
+  var body_601088 = newJObject()
   if body != nil:
-    body_603084 = body
-  result = call_603083.call(nil, nil, nil, nil, body_603084)
+    body_601088 = body
+  result = call_601087.call(nil, nil, nil, nil, body_601088)
 
-var deleteCollection* = Call_DeleteCollection_603070(name: "deleteCollection",
+var deleteCollection* = Call_DeleteCollection_601074(name: "deleteCollection",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.DeleteCollection",
-    validator: validate_DeleteCollection_603071, base: "/",
-    url: url_DeleteCollection_603072, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteCollection_601075, base: "/",
+    url: url_DeleteCollection_601076, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteFaces_603085 = ref object of OpenApiRestCall_602434
-proc url_DeleteFaces_603087(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DeleteFaces_601089 = ref object of OpenApiRestCall_600438
+proc url_DeleteFaces_601091(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DeleteFaces_603086(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteFaces_601090(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes faces from a collection. You specify a collection ID and an array of face IDs to remove from the collection.</p> <p>This operation requires permissions to perform the <code>rekognition:DeleteFaces</code> action.</p>
   ## 
@@ -574,48 +601,48 @@ proc validate_DeleteFaces_603086(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603088 = header.getOrDefault("X-Amz-Date")
-  valid_603088 = validateParameter(valid_603088, JString, required = false,
+  var valid_601092 = header.getOrDefault("X-Amz-Date")
+  valid_601092 = validateParameter(valid_601092, JString, required = false,
                                  default = nil)
-  if valid_603088 != nil:
-    section.add "X-Amz-Date", valid_603088
-  var valid_603089 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603089 = validateParameter(valid_603089, JString, required = false,
+  if valid_601092 != nil:
+    section.add "X-Amz-Date", valid_601092
+  var valid_601093 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601093 = validateParameter(valid_601093, JString, required = false,
                                  default = nil)
-  if valid_603089 != nil:
-    section.add "X-Amz-Security-Token", valid_603089
+  if valid_601093 != nil:
+    section.add "X-Amz-Security-Token", valid_601093
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603090 = header.getOrDefault("X-Amz-Target")
-  valid_603090 = validateParameter(valid_603090, JString, required = true, default = newJString(
+  var valid_601094 = header.getOrDefault("X-Amz-Target")
+  valid_601094 = validateParameter(valid_601094, JString, required = true, default = newJString(
       "RekognitionService.DeleteFaces"))
-  if valid_603090 != nil:
-    section.add "X-Amz-Target", valid_603090
-  var valid_603091 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603091 = validateParameter(valid_603091, JString, required = false,
+  if valid_601094 != nil:
+    section.add "X-Amz-Target", valid_601094
+  var valid_601095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601095 = validateParameter(valid_601095, JString, required = false,
                                  default = nil)
-  if valid_603091 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603091
-  var valid_603092 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603092 = validateParameter(valid_603092, JString, required = false,
+  if valid_601095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601095
+  var valid_601096 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601096 = validateParameter(valid_601096, JString, required = false,
                                  default = nil)
-  if valid_603092 != nil:
-    section.add "X-Amz-Algorithm", valid_603092
-  var valid_603093 = header.getOrDefault("X-Amz-Signature")
-  valid_603093 = validateParameter(valid_603093, JString, required = false,
+  if valid_601096 != nil:
+    section.add "X-Amz-Algorithm", valid_601096
+  var valid_601097 = header.getOrDefault("X-Amz-Signature")
+  valid_601097 = validateParameter(valid_601097, JString, required = false,
                                  default = nil)
-  if valid_603093 != nil:
-    section.add "X-Amz-Signature", valid_603093
-  var valid_603094 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603094 = validateParameter(valid_603094, JString, required = false,
+  if valid_601097 != nil:
+    section.add "X-Amz-Signature", valid_601097
+  var valid_601098 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601098 = validateParameter(valid_601098, JString, required = false,
                                  default = nil)
-  if valid_603094 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603094
-  var valid_603095 = header.getOrDefault("X-Amz-Credential")
-  valid_603095 = validateParameter(valid_603095, JString, required = false,
+  if valid_601098 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601098
+  var valid_601099 = header.getOrDefault("X-Amz-Credential")
+  valid_601099 = validateParameter(valid_601099, JString, required = false,
                                  default = nil)
-  if valid_603095 != nil:
-    section.add "X-Amz-Credential", valid_603095
+  if valid_601099 != nil:
+    section.add "X-Amz-Credential", valid_601099
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -626,40 +653,44 @@ proc validate_DeleteFaces_603086(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603097: Call_DeleteFaces_603085; path: JsonNode; query: JsonNode;
+proc call*(call_601101: Call_DeleteFaces_601089; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes faces from a collection. You specify a collection ID and an array of face IDs to remove from the collection.</p> <p>This operation requires permissions to perform the <code>rekognition:DeleteFaces</code> action.</p>
   ## 
-  let valid = call_603097.validator(path, query, header, formData, body)
-  let scheme = call_603097.pickScheme
+  let valid = call_601101.validator(path, query, header, formData, body)
+  let scheme = call_601101.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603097.url(scheme.get, call_603097.host, call_603097.base,
-                         call_603097.route, valid.getOrDefault("path"))
-  result = hook(call_603097, url, valid)
+  let url = call_601101.url(scheme.get, call_601101.host, call_601101.base,
+                         call_601101.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601101, url, valid)
 
-proc call*(call_603098: Call_DeleteFaces_603085; body: JsonNode): Recallable =
+proc call*(call_601102: Call_DeleteFaces_601089; body: JsonNode): Recallable =
   ## deleteFaces
   ## <p>Deletes faces from a collection. You specify a collection ID and an array of face IDs to remove from the collection.</p> <p>This operation requires permissions to perform the <code>rekognition:DeleteFaces</code> action.</p>
   ##   body: JObject (required)
-  var body_603099 = newJObject()
+  var body_601103 = newJObject()
   if body != nil:
-    body_603099 = body
-  result = call_603098.call(nil, nil, nil, nil, body_603099)
+    body_601103 = body
+  result = call_601102.call(nil, nil, nil, nil, body_601103)
 
-var deleteFaces* = Call_DeleteFaces_603085(name: "deleteFaces",
+var deleteFaces* = Call_DeleteFaces_601089(name: "deleteFaces",
                                         meth: HttpMethod.HttpPost,
                                         host: "rekognition.amazonaws.com", route: "/#X-Amz-Target=RekognitionService.DeleteFaces",
-                                        validator: validate_DeleteFaces_603086,
-                                        base: "/", url: url_DeleteFaces_603087,
+                                        validator: validate_DeleteFaces_601090,
+                                        base: "/", url: url_DeleteFaces_601091,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteStreamProcessor_603100 = ref object of OpenApiRestCall_602434
-proc url_DeleteStreamProcessor_603102(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DeleteStreamProcessor_601104 = ref object of OpenApiRestCall_600438
+proc url_DeleteStreamProcessor_601106(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DeleteStreamProcessor_603101(path: JsonNode; query: JsonNode;
+proc validate_DeleteStreamProcessor_601105(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the stream processor identified by <code>Name</code>. You assign the value for <code>Name</code> when you create the stream processor with <a>CreateStreamProcessor</a>. You might not be able to use the same name for a stream processor for a few seconds after calling <code>DeleteStreamProcessor</code>.
   ## 
@@ -679,48 +710,48 @@ proc validate_DeleteStreamProcessor_603101(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603103 = header.getOrDefault("X-Amz-Date")
-  valid_603103 = validateParameter(valid_603103, JString, required = false,
+  var valid_601107 = header.getOrDefault("X-Amz-Date")
+  valid_601107 = validateParameter(valid_601107, JString, required = false,
                                  default = nil)
-  if valid_603103 != nil:
-    section.add "X-Amz-Date", valid_603103
-  var valid_603104 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603104 = validateParameter(valid_603104, JString, required = false,
+  if valid_601107 != nil:
+    section.add "X-Amz-Date", valid_601107
+  var valid_601108 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601108 = validateParameter(valid_601108, JString, required = false,
                                  default = nil)
-  if valid_603104 != nil:
-    section.add "X-Amz-Security-Token", valid_603104
+  if valid_601108 != nil:
+    section.add "X-Amz-Security-Token", valid_601108
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603105 = header.getOrDefault("X-Amz-Target")
-  valid_603105 = validateParameter(valid_603105, JString, required = true, default = newJString(
+  var valid_601109 = header.getOrDefault("X-Amz-Target")
+  valid_601109 = validateParameter(valid_601109, JString, required = true, default = newJString(
       "RekognitionService.DeleteStreamProcessor"))
-  if valid_603105 != nil:
-    section.add "X-Amz-Target", valid_603105
-  var valid_603106 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603106 = validateParameter(valid_603106, JString, required = false,
+  if valid_601109 != nil:
+    section.add "X-Amz-Target", valid_601109
+  var valid_601110 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601110 = validateParameter(valid_601110, JString, required = false,
                                  default = nil)
-  if valid_603106 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603106
-  var valid_603107 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603107 = validateParameter(valid_603107, JString, required = false,
+  if valid_601110 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601110
+  var valid_601111 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601111 = validateParameter(valid_601111, JString, required = false,
                                  default = nil)
-  if valid_603107 != nil:
-    section.add "X-Amz-Algorithm", valid_603107
-  var valid_603108 = header.getOrDefault("X-Amz-Signature")
-  valid_603108 = validateParameter(valid_603108, JString, required = false,
+  if valid_601111 != nil:
+    section.add "X-Amz-Algorithm", valid_601111
+  var valid_601112 = header.getOrDefault("X-Amz-Signature")
+  valid_601112 = validateParameter(valid_601112, JString, required = false,
                                  default = nil)
-  if valid_603108 != nil:
-    section.add "X-Amz-Signature", valid_603108
-  var valid_603109 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603109 = validateParameter(valid_603109, JString, required = false,
+  if valid_601112 != nil:
+    section.add "X-Amz-Signature", valid_601112
+  var valid_601113 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601113 = validateParameter(valid_601113, JString, required = false,
                                  default = nil)
-  if valid_603109 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603109
-  var valid_603110 = header.getOrDefault("X-Amz-Credential")
-  valid_603110 = validateParameter(valid_603110, JString, required = false,
+  if valid_601113 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601113
+  var valid_601114 = header.getOrDefault("X-Amz-Credential")
+  valid_601114 = validateParameter(valid_601114, JString, required = false,
                                  default = nil)
-  if valid_603110 != nil:
-    section.add "X-Amz-Credential", valid_603110
+  if valid_601114 != nil:
+    section.add "X-Amz-Credential", valid_601114
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -731,40 +762,44 @@ proc validate_DeleteStreamProcessor_603101(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603112: Call_DeleteStreamProcessor_603100; path: JsonNode;
+proc call*(call_601116: Call_DeleteStreamProcessor_601104; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the stream processor identified by <code>Name</code>. You assign the value for <code>Name</code> when you create the stream processor with <a>CreateStreamProcessor</a>. You might not be able to use the same name for a stream processor for a few seconds after calling <code>DeleteStreamProcessor</code>.
   ## 
-  let valid = call_603112.validator(path, query, header, formData, body)
-  let scheme = call_603112.pickScheme
+  let valid = call_601116.validator(path, query, header, formData, body)
+  let scheme = call_601116.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603112.url(scheme.get, call_603112.host, call_603112.base,
-                         call_603112.route, valid.getOrDefault("path"))
-  result = hook(call_603112, url, valid)
+  let url = call_601116.url(scheme.get, call_601116.host, call_601116.base,
+                         call_601116.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601116, url, valid)
 
-proc call*(call_603113: Call_DeleteStreamProcessor_603100; body: JsonNode): Recallable =
+proc call*(call_601117: Call_DeleteStreamProcessor_601104; body: JsonNode): Recallable =
   ## deleteStreamProcessor
   ## Deletes the stream processor identified by <code>Name</code>. You assign the value for <code>Name</code> when you create the stream processor with <a>CreateStreamProcessor</a>. You might not be able to use the same name for a stream processor for a few seconds after calling <code>DeleteStreamProcessor</code>.
   ##   body: JObject (required)
-  var body_603114 = newJObject()
+  var body_601118 = newJObject()
   if body != nil:
-    body_603114 = body
-  result = call_603113.call(nil, nil, nil, nil, body_603114)
+    body_601118 = body
+  result = call_601117.call(nil, nil, nil, nil, body_601118)
 
-var deleteStreamProcessor* = Call_DeleteStreamProcessor_603100(
+var deleteStreamProcessor* = Call_DeleteStreamProcessor_601104(
     name: "deleteStreamProcessor", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.DeleteStreamProcessor",
-    validator: validate_DeleteStreamProcessor_603101, base: "/",
-    url: url_DeleteStreamProcessor_603102, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteStreamProcessor_601105, base: "/",
+    url: url_DeleteStreamProcessor_601106, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCollection_603115 = ref object of OpenApiRestCall_602434
-proc url_DescribeCollection_603117(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DescribeCollection_601119 = ref object of OpenApiRestCall_600438
+proc url_DescribeCollection_601121(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DescribeCollection_603116(path: JsonNode; query: JsonNode;
+proc validate_DescribeCollection_601120(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Describes the specified collection. You can use <code>DescribeCollection</code> to get information, such as the number of faces indexed into a collection and the version of the model used by the collection for face detection.</p> <p>For more information, see Describing a Collection in the Amazon Rekognition Developer Guide.</p>
@@ -785,48 +820,48 @@ proc validate_DescribeCollection_603116(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603118 = header.getOrDefault("X-Amz-Date")
-  valid_603118 = validateParameter(valid_603118, JString, required = false,
+  var valid_601122 = header.getOrDefault("X-Amz-Date")
+  valid_601122 = validateParameter(valid_601122, JString, required = false,
                                  default = nil)
-  if valid_603118 != nil:
-    section.add "X-Amz-Date", valid_603118
-  var valid_603119 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603119 = validateParameter(valid_603119, JString, required = false,
+  if valid_601122 != nil:
+    section.add "X-Amz-Date", valid_601122
+  var valid_601123 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601123 = validateParameter(valid_601123, JString, required = false,
                                  default = nil)
-  if valid_603119 != nil:
-    section.add "X-Amz-Security-Token", valid_603119
+  if valid_601123 != nil:
+    section.add "X-Amz-Security-Token", valid_601123
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603120 = header.getOrDefault("X-Amz-Target")
-  valid_603120 = validateParameter(valid_603120, JString, required = true, default = newJString(
+  var valid_601124 = header.getOrDefault("X-Amz-Target")
+  valid_601124 = validateParameter(valid_601124, JString, required = true, default = newJString(
       "RekognitionService.DescribeCollection"))
-  if valid_603120 != nil:
-    section.add "X-Amz-Target", valid_603120
-  var valid_603121 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603121 = validateParameter(valid_603121, JString, required = false,
+  if valid_601124 != nil:
+    section.add "X-Amz-Target", valid_601124
+  var valid_601125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601125 = validateParameter(valid_601125, JString, required = false,
                                  default = nil)
-  if valid_603121 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603121
-  var valid_603122 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603122 = validateParameter(valid_603122, JString, required = false,
+  if valid_601125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601125
+  var valid_601126 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601126 = validateParameter(valid_601126, JString, required = false,
                                  default = nil)
-  if valid_603122 != nil:
-    section.add "X-Amz-Algorithm", valid_603122
-  var valid_603123 = header.getOrDefault("X-Amz-Signature")
-  valid_603123 = validateParameter(valid_603123, JString, required = false,
+  if valid_601126 != nil:
+    section.add "X-Amz-Algorithm", valid_601126
+  var valid_601127 = header.getOrDefault("X-Amz-Signature")
+  valid_601127 = validateParameter(valid_601127, JString, required = false,
                                  default = nil)
-  if valid_603123 != nil:
-    section.add "X-Amz-Signature", valid_603123
-  var valid_603124 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603124 = validateParameter(valid_603124, JString, required = false,
+  if valid_601127 != nil:
+    section.add "X-Amz-Signature", valid_601127
+  var valid_601128 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601128 = validateParameter(valid_601128, JString, required = false,
                                  default = nil)
-  if valid_603124 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603124
-  var valid_603125 = header.getOrDefault("X-Amz-Credential")
-  valid_603125 = validateParameter(valid_603125, JString, required = false,
+  if valid_601128 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601128
+  var valid_601129 = header.getOrDefault("X-Amz-Credential")
+  valid_601129 = validateParameter(valid_601129, JString, required = false,
                                  default = nil)
-  if valid_603125 != nil:
-    section.add "X-Amz-Credential", valid_603125
+  if valid_601129 != nil:
+    section.add "X-Amz-Credential", valid_601129
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -837,40 +872,45 @@ proc validate_DescribeCollection_603116(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603127: Call_DescribeCollection_603115; path: JsonNode;
+proc call*(call_601131: Call_DescribeCollection_601119; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the specified collection. You can use <code>DescribeCollection</code> to get information, such as the number of faces indexed into a collection and the version of the model used by the collection for face detection.</p> <p>For more information, see Describing a Collection in the Amazon Rekognition Developer Guide.</p>
   ## 
-  let valid = call_603127.validator(path, query, header, formData, body)
-  let scheme = call_603127.pickScheme
+  let valid = call_601131.validator(path, query, header, formData, body)
+  let scheme = call_601131.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603127.url(scheme.get, call_603127.host, call_603127.base,
-                         call_603127.route, valid.getOrDefault("path"))
-  result = hook(call_603127, url, valid)
+  let url = call_601131.url(scheme.get, call_601131.host, call_601131.base,
+                         call_601131.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601131, url, valid)
 
-proc call*(call_603128: Call_DescribeCollection_603115; body: JsonNode): Recallable =
+proc call*(call_601132: Call_DescribeCollection_601119; body: JsonNode): Recallable =
   ## describeCollection
   ## <p>Describes the specified collection. You can use <code>DescribeCollection</code> to get information, such as the number of faces indexed into a collection and the version of the model used by the collection for face detection.</p> <p>For more information, see Describing a Collection in the Amazon Rekognition Developer Guide.</p>
   ##   body: JObject (required)
-  var body_603129 = newJObject()
+  var body_601133 = newJObject()
   if body != nil:
-    body_603129 = body
-  result = call_603128.call(nil, nil, nil, nil, body_603129)
+    body_601133 = body
+  result = call_601132.call(nil, nil, nil, nil, body_601133)
 
-var describeCollection* = Call_DescribeCollection_603115(
+var describeCollection* = Call_DescribeCollection_601119(
     name: "describeCollection", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.DescribeCollection",
-    validator: validate_DescribeCollection_603116, base: "/",
-    url: url_DescribeCollection_603117, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeCollection_601120, base: "/",
+    url: url_DescribeCollection_601121, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStreamProcessor_603130 = ref object of OpenApiRestCall_602434
-proc url_DescribeStreamProcessor_603132(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DescribeStreamProcessor_601134 = ref object of OpenApiRestCall_600438
+proc url_DescribeStreamProcessor_601136(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DescribeStreamProcessor_603131(path: JsonNode; query: JsonNode;
+proc validate_DescribeStreamProcessor_601135(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Provides information about a stream processor created by <a>CreateStreamProcessor</a>. You can get information about the input and output streams, the input parameters for the face recognition being performed, and the current status of the stream processor.
   ## 
@@ -890,48 +930,48 @@ proc validate_DescribeStreamProcessor_603131(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603133 = header.getOrDefault("X-Amz-Date")
-  valid_603133 = validateParameter(valid_603133, JString, required = false,
+  var valid_601137 = header.getOrDefault("X-Amz-Date")
+  valid_601137 = validateParameter(valid_601137, JString, required = false,
                                  default = nil)
-  if valid_603133 != nil:
-    section.add "X-Amz-Date", valid_603133
-  var valid_603134 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603134 = validateParameter(valid_603134, JString, required = false,
+  if valid_601137 != nil:
+    section.add "X-Amz-Date", valid_601137
+  var valid_601138 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601138 = validateParameter(valid_601138, JString, required = false,
                                  default = nil)
-  if valid_603134 != nil:
-    section.add "X-Amz-Security-Token", valid_603134
+  if valid_601138 != nil:
+    section.add "X-Amz-Security-Token", valid_601138
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603135 = header.getOrDefault("X-Amz-Target")
-  valid_603135 = validateParameter(valid_603135, JString, required = true, default = newJString(
+  var valid_601139 = header.getOrDefault("X-Amz-Target")
+  valid_601139 = validateParameter(valid_601139, JString, required = true, default = newJString(
       "RekognitionService.DescribeStreamProcessor"))
-  if valid_603135 != nil:
-    section.add "X-Amz-Target", valid_603135
-  var valid_603136 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
+  if valid_601139 != nil:
+    section.add "X-Amz-Target", valid_601139
+  var valid_601140 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601140 = validateParameter(valid_601140, JString, required = false,
                                  default = nil)
-  if valid_603136 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603136
-  var valid_603137 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603137 = validateParameter(valid_603137, JString, required = false,
+  if valid_601140 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601140
+  var valid_601141 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601141 = validateParameter(valid_601141, JString, required = false,
                                  default = nil)
-  if valid_603137 != nil:
-    section.add "X-Amz-Algorithm", valid_603137
-  var valid_603138 = header.getOrDefault("X-Amz-Signature")
-  valid_603138 = validateParameter(valid_603138, JString, required = false,
+  if valid_601141 != nil:
+    section.add "X-Amz-Algorithm", valid_601141
+  var valid_601142 = header.getOrDefault("X-Amz-Signature")
+  valid_601142 = validateParameter(valid_601142, JString, required = false,
                                  default = nil)
-  if valid_603138 != nil:
-    section.add "X-Amz-Signature", valid_603138
-  var valid_603139 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603139 = validateParameter(valid_603139, JString, required = false,
+  if valid_601142 != nil:
+    section.add "X-Amz-Signature", valid_601142
+  var valid_601143 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601143 = validateParameter(valid_601143, JString, required = false,
                                  default = nil)
-  if valid_603139 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603139
-  var valid_603140 = header.getOrDefault("X-Amz-Credential")
-  valid_603140 = validateParameter(valid_603140, JString, required = false,
+  if valid_601143 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601143
+  var valid_601144 = header.getOrDefault("X-Amz-Credential")
+  valid_601144 = validateParameter(valid_601144, JString, required = false,
                                  default = nil)
-  if valid_603140 != nil:
-    section.add "X-Amz-Credential", valid_603140
+  if valid_601144 != nil:
+    section.add "X-Amz-Credential", valid_601144
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -942,40 +982,44 @@ proc validate_DescribeStreamProcessor_603131(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603142: Call_DescribeStreamProcessor_603130; path: JsonNode;
+proc call*(call_601146: Call_DescribeStreamProcessor_601134; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Provides information about a stream processor created by <a>CreateStreamProcessor</a>. You can get information about the input and output streams, the input parameters for the face recognition being performed, and the current status of the stream processor.
   ## 
-  let valid = call_603142.validator(path, query, header, formData, body)
-  let scheme = call_603142.pickScheme
+  let valid = call_601146.validator(path, query, header, formData, body)
+  let scheme = call_601146.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603142.url(scheme.get, call_603142.host, call_603142.base,
-                         call_603142.route, valid.getOrDefault("path"))
-  result = hook(call_603142, url, valid)
+  let url = call_601146.url(scheme.get, call_601146.host, call_601146.base,
+                         call_601146.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601146, url, valid)
 
-proc call*(call_603143: Call_DescribeStreamProcessor_603130; body: JsonNode): Recallable =
+proc call*(call_601147: Call_DescribeStreamProcessor_601134; body: JsonNode): Recallable =
   ## describeStreamProcessor
   ## Provides information about a stream processor created by <a>CreateStreamProcessor</a>. You can get information about the input and output streams, the input parameters for the face recognition being performed, and the current status of the stream processor.
   ##   body: JObject (required)
-  var body_603144 = newJObject()
+  var body_601148 = newJObject()
   if body != nil:
-    body_603144 = body
-  result = call_603143.call(nil, nil, nil, nil, body_603144)
+    body_601148 = body
+  result = call_601147.call(nil, nil, nil, nil, body_601148)
 
-var describeStreamProcessor* = Call_DescribeStreamProcessor_603130(
+var describeStreamProcessor* = Call_DescribeStreamProcessor_601134(
     name: "describeStreamProcessor", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.DescribeStreamProcessor",
-    validator: validate_DescribeStreamProcessor_603131, base: "/",
-    url: url_DescribeStreamProcessor_603132, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeStreamProcessor_601135, base: "/",
+    url: url_DescribeStreamProcessor_601136, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetectFaces_603145 = ref object of OpenApiRestCall_602434
-proc url_DetectFaces_603147(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DetectFaces_601149 = ref object of OpenApiRestCall_600438
+proc url_DetectFaces_601151(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DetectFaces_603146(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DetectFaces_601150(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Detects faces within an image that is provided as input.</p> <p> <code>DetectFaces</code> detects the 100 largest faces in the image. For each face detected, the operation returns face details. These details include a bounding box of the face, a confidence value (that the bounding box contains a face), and a fixed set of attributes such as facial landmarks (for example, coordinates of eye and mouth), gender, presence of beard, sunglasses, and so on. </p> <p>The face-detection algorithm is most effective on frontal faces. For non-frontal or obscured faces, the algorithm might not detect the faces or might detect faces with lower confidence. </p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <note> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> </note> <p>This operation requires permissions to perform the <code>rekognition:DetectFaces</code> action. </p>
   ## 
@@ -995,48 +1039,48 @@ proc validate_DetectFaces_603146(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603148 = header.getOrDefault("X-Amz-Date")
-  valid_603148 = validateParameter(valid_603148, JString, required = false,
+  var valid_601152 = header.getOrDefault("X-Amz-Date")
+  valid_601152 = validateParameter(valid_601152, JString, required = false,
                                  default = nil)
-  if valid_603148 != nil:
-    section.add "X-Amz-Date", valid_603148
-  var valid_603149 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603149 = validateParameter(valid_603149, JString, required = false,
+  if valid_601152 != nil:
+    section.add "X-Amz-Date", valid_601152
+  var valid_601153 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601153 = validateParameter(valid_601153, JString, required = false,
                                  default = nil)
-  if valid_603149 != nil:
-    section.add "X-Amz-Security-Token", valid_603149
+  if valid_601153 != nil:
+    section.add "X-Amz-Security-Token", valid_601153
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603150 = header.getOrDefault("X-Amz-Target")
-  valid_603150 = validateParameter(valid_603150, JString, required = true, default = newJString(
+  var valid_601154 = header.getOrDefault("X-Amz-Target")
+  valid_601154 = validateParameter(valid_601154, JString, required = true, default = newJString(
       "RekognitionService.DetectFaces"))
-  if valid_603150 != nil:
-    section.add "X-Amz-Target", valid_603150
-  var valid_603151 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603151 = validateParameter(valid_603151, JString, required = false,
+  if valid_601154 != nil:
+    section.add "X-Amz-Target", valid_601154
+  var valid_601155 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601155 = validateParameter(valid_601155, JString, required = false,
                                  default = nil)
-  if valid_603151 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603151
-  var valid_603152 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603152 = validateParameter(valid_603152, JString, required = false,
+  if valid_601155 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601155
+  var valid_601156 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601156 = validateParameter(valid_601156, JString, required = false,
                                  default = nil)
-  if valid_603152 != nil:
-    section.add "X-Amz-Algorithm", valid_603152
-  var valid_603153 = header.getOrDefault("X-Amz-Signature")
-  valid_603153 = validateParameter(valid_603153, JString, required = false,
+  if valid_601156 != nil:
+    section.add "X-Amz-Algorithm", valid_601156
+  var valid_601157 = header.getOrDefault("X-Amz-Signature")
+  valid_601157 = validateParameter(valid_601157, JString, required = false,
                                  default = nil)
-  if valid_603153 != nil:
-    section.add "X-Amz-Signature", valid_603153
-  var valid_603154 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603154 = validateParameter(valid_603154, JString, required = false,
+  if valid_601157 != nil:
+    section.add "X-Amz-Signature", valid_601157
+  var valid_601158 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601158 = validateParameter(valid_601158, JString, required = false,
                                  default = nil)
-  if valid_603154 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603154
-  var valid_603155 = header.getOrDefault("X-Amz-Credential")
-  valid_603155 = validateParameter(valid_603155, JString, required = false,
+  if valid_601158 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601158
+  var valid_601159 = header.getOrDefault("X-Amz-Credential")
+  valid_601159 = validateParameter(valid_601159, JString, required = false,
                                  default = nil)
-  if valid_603155 != nil:
-    section.add "X-Amz-Credential", valid_603155
+  if valid_601159 != nil:
+    section.add "X-Amz-Credential", valid_601159
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1047,40 +1091,44 @@ proc validate_DetectFaces_603146(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603157: Call_DetectFaces_603145; path: JsonNode; query: JsonNode;
+proc call*(call_601161: Call_DetectFaces_601149; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Detects faces within an image that is provided as input.</p> <p> <code>DetectFaces</code> detects the 100 largest faces in the image. For each face detected, the operation returns face details. These details include a bounding box of the face, a confidence value (that the bounding box contains a face), and a fixed set of attributes such as facial landmarks (for example, coordinates of eye and mouth), gender, presence of beard, sunglasses, and so on. </p> <p>The face-detection algorithm is most effective on frontal faces. For non-frontal or obscured faces, the algorithm might not detect the faces or might detect faces with lower confidence. </p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <note> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> </note> <p>This operation requires permissions to perform the <code>rekognition:DetectFaces</code> action. </p>
   ## 
-  let valid = call_603157.validator(path, query, header, formData, body)
-  let scheme = call_603157.pickScheme
+  let valid = call_601161.validator(path, query, header, formData, body)
+  let scheme = call_601161.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603157.url(scheme.get, call_603157.host, call_603157.base,
-                         call_603157.route, valid.getOrDefault("path"))
-  result = hook(call_603157, url, valid)
+  let url = call_601161.url(scheme.get, call_601161.host, call_601161.base,
+                         call_601161.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601161, url, valid)
 
-proc call*(call_603158: Call_DetectFaces_603145; body: JsonNode): Recallable =
+proc call*(call_601162: Call_DetectFaces_601149; body: JsonNode): Recallable =
   ## detectFaces
   ## <p>Detects faces within an image that is provided as input.</p> <p> <code>DetectFaces</code> detects the 100 largest faces in the image. For each face detected, the operation returns face details. These details include a bounding box of the face, a confidence value (that the bounding box contains a face), and a fixed set of attributes such as facial landmarks (for example, coordinates of eye and mouth), gender, presence of beard, sunglasses, and so on. </p> <p>The face-detection algorithm is most effective on frontal faces. For non-frontal or obscured faces, the algorithm might not detect the faces or might detect faces with lower confidence. </p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <note> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> </note> <p>This operation requires permissions to perform the <code>rekognition:DetectFaces</code> action. </p>
   ##   body: JObject (required)
-  var body_603159 = newJObject()
+  var body_601163 = newJObject()
   if body != nil:
-    body_603159 = body
-  result = call_603158.call(nil, nil, nil, nil, body_603159)
+    body_601163 = body
+  result = call_601162.call(nil, nil, nil, nil, body_601163)
 
-var detectFaces* = Call_DetectFaces_603145(name: "detectFaces",
+var detectFaces* = Call_DetectFaces_601149(name: "detectFaces",
                                         meth: HttpMethod.HttpPost,
                                         host: "rekognition.amazonaws.com", route: "/#X-Amz-Target=RekognitionService.DetectFaces",
-                                        validator: validate_DetectFaces_603146,
-                                        base: "/", url: url_DetectFaces_603147,
+                                        validator: validate_DetectFaces_601150,
+                                        base: "/", url: url_DetectFaces_601151,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetectLabels_603160 = ref object of OpenApiRestCall_602434
-proc url_DetectLabels_603162(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DetectLabels_601164 = ref object of OpenApiRestCall_600438
+proc url_DetectLabels_601166(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DetectLabels_603161(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DetectLabels_601165(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Detects instances of real-world entities within an image (JPEG or PNG) provided as input. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; and concepts like landscape, evening, and nature. </p> <p>For an example, see Analyzing Images Stored in an Amazon S3 Bucket in the Amazon Rekognition Developer Guide.</p> <note> <p> <code>DetectLabels</code> does not support the detection of activities. However, activity detection is supported for label detection in videos. For more information, see StartLabelDetection in the Amazon Rekognition Developer Guide.</p> </note> <p>You pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> For each object, scene, and concept the API returns one or more labels. Each label provides the object name, and the level of confidence that the image contains the object. For example, suppose the input image has a lighthouse, the sea, and a rock. The response includes all three labels, one for each object. </p> <p> <code>{Name: lighthouse, Confidence: 98.4629}</code> </p> <p> <code>{Name: rock,Confidence: 79.2097}</code> </p> <p> <code> {Name: sea,Confidence: 75.061}</code> </p> <p>In the preceding example, the operation returns one label for each of the three objects. The operation can also return multiple labels for the same object in the image. For example, if the input image shows a flower (for example, a tulip), the operation might return the following three labels. </p> <p> <code>{Name: flower,Confidence: 99.0562}</code> </p> <p> <code>{Name: plant,Confidence: 99.0562}</code> </p> <p> <code>{Name: tulip,Confidence: 99.0562}</code> </p> <p>In this example, the detection algorithm more precisely identifies the flower as a tulip.</p> <p>In response, the API returns an array of labels. In addition, the response also includes the orientation correction. Optionally, you can specify <code>MinConfidence</code> to control the confidence threshold for the labels returned. The default is 55%. You can also add the <code>MaxLabels</code> parameter to limit the number of labels returned. </p> <note> <p>If the object detected is a person, the operation doesn't provide the same facial details that the <a>DetectFaces</a> operation provides.</p> </note> <p> <code>DetectLabels</code> returns bounding boxes for instances of common object labels in an array of <a>Instance</a> objects. An <code>Instance</code> object contains a <a>BoundingBox</a> object, for the location of the label on the image. It also includes the confidence by which the bounding box was detected.</p> <p> <code>DetectLabels</code> also returns a hierarchical taxonomy of detected labels. For example, a detected car might be assigned the label <i>car</i>. The label <i>car</i> has two parent labels: <i>Vehicle</i> (its parent) and <i>Transportation</i> (its grandparent). The response returns the entire list of ancestors for a label. Each ancestor is a unique label in the response. In the previous example, <i>Car</i>, <i>Vehicle</i>, and <i>Transportation</i> are returned as unique labels in the response. </p> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> <p>This operation requires permissions to perform the <code>rekognition:DetectLabels</code> action. </p>
   ## 
@@ -1100,48 +1148,48 @@ proc validate_DetectLabels_603161(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603163 = header.getOrDefault("X-Amz-Date")
-  valid_603163 = validateParameter(valid_603163, JString, required = false,
+  var valid_601167 = header.getOrDefault("X-Amz-Date")
+  valid_601167 = validateParameter(valid_601167, JString, required = false,
                                  default = nil)
-  if valid_603163 != nil:
-    section.add "X-Amz-Date", valid_603163
-  var valid_603164 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603164 = validateParameter(valid_603164, JString, required = false,
+  if valid_601167 != nil:
+    section.add "X-Amz-Date", valid_601167
+  var valid_601168 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601168 = validateParameter(valid_601168, JString, required = false,
                                  default = nil)
-  if valid_603164 != nil:
-    section.add "X-Amz-Security-Token", valid_603164
+  if valid_601168 != nil:
+    section.add "X-Amz-Security-Token", valid_601168
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603165 = header.getOrDefault("X-Amz-Target")
-  valid_603165 = validateParameter(valid_603165, JString, required = true, default = newJString(
+  var valid_601169 = header.getOrDefault("X-Amz-Target")
+  valid_601169 = validateParameter(valid_601169, JString, required = true, default = newJString(
       "RekognitionService.DetectLabels"))
-  if valid_603165 != nil:
-    section.add "X-Amz-Target", valid_603165
-  var valid_603166 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603166 = validateParameter(valid_603166, JString, required = false,
+  if valid_601169 != nil:
+    section.add "X-Amz-Target", valid_601169
+  var valid_601170 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601170 = validateParameter(valid_601170, JString, required = false,
                                  default = nil)
-  if valid_603166 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603166
-  var valid_603167 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603167 = validateParameter(valid_603167, JString, required = false,
+  if valid_601170 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601170
+  var valid_601171 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601171 = validateParameter(valid_601171, JString, required = false,
                                  default = nil)
-  if valid_603167 != nil:
-    section.add "X-Amz-Algorithm", valid_603167
-  var valid_603168 = header.getOrDefault("X-Amz-Signature")
-  valid_603168 = validateParameter(valid_603168, JString, required = false,
+  if valid_601171 != nil:
+    section.add "X-Amz-Algorithm", valid_601171
+  var valid_601172 = header.getOrDefault("X-Amz-Signature")
+  valid_601172 = validateParameter(valid_601172, JString, required = false,
                                  default = nil)
-  if valid_603168 != nil:
-    section.add "X-Amz-Signature", valid_603168
-  var valid_603169 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603169 = validateParameter(valid_603169, JString, required = false,
+  if valid_601172 != nil:
+    section.add "X-Amz-Signature", valid_601172
+  var valid_601173 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601173 = validateParameter(valid_601173, JString, required = false,
                                  default = nil)
-  if valid_603169 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603169
-  var valid_603170 = header.getOrDefault("X-Amz-Credential")
-  valid_603170 = validateParameter(valid_603170, JString, required = false,
+  if valid_601173 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601173
+  var valid_601174 = header.getOrDefault("X-Amz-Credential")
+  valid_601174 = validateParameter(valid_601174, JString, required = false,
                                  default = nil)
-  if valid_603170 != nil:
-    section.add "X-Amz-Credential", valid_603170
+  if valid_601174 != nil:
+    section.add "X-Amz-Credential", valid_601174
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1152,39 +1200,43 @@ proc validate_DetectLabels_603161(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603172: Call_DetectLabels_603160; path: JsonNode; query: JsonNode;
+proc call*(call_601176: Call_DetectLabels_601164; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Detects instances of real-world entities within an image (JPEG or PNG) provided as input. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; and concepts like landscape, evening, and nature. </p> <p>For an example, see Analyzing Images Stored in an Amazon S3 Bucket in the Amazon Rekognition Developer Guide.</p> <note> <p> <code>DetectLabels</code> does not support the detection of activities. However, activity detection is supported for label detection in videos. For more information, see StartLabelDetection in the Amazon Rekognition Developer Guide.</p> </note> <p>You pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> For each object, scene, and concept the API returns one or more labels. Each label provides the object name, and the level of confidence that the image contains the object. For example, suppose the input image has a lighthouse, the sea, and a rock. The response includes all three labels, one for each object. </p> <p> <code>{Name: lighthouse, Confidence: 98.4629}</code> </p> <p> <code>{Name: rock,Confidence: 79.2097}</code> </p> <p> <code> {Name: sea,Confidence: 75.061}</code> </p> <p>In the preceding example, the operation returns one label for each of the three objects. The operation can also return multiple labels for the same object in the image. For example, if the input image shows a flower (for example, a tulip), the operation might return the following three labels. </p> <p> <code>{Name: flower,Confidence: 99.0562}</code> </p> <p> <code>{Name: plant,Confidence: 99.0562}</code> </p> <p> <code>{Name: tulip,Confidence: 99.0562}</code> </p> <p>In this example, the detection algorithm more precisely identifies the flower as a tulip.</p> <p>In response, the API returns an array of labels. In addition, the response also includes the orientation correction. Optionally, you can specify <code>MinConfidence</code> to control the confidence threshold for the labels returned. The default is 55%. You can also add the <code>MaxLabels</code> parameter to limit the number of labels returned. </p> <note> <p>If the object detected is a person, the operation doesn't provide the same facial details that the <a>DetectFaces</a> operation provides.</p> </note> <p> <code>DetectLabels</code> returns bounding boxes for instances of common object labels in an array of <a>Instance</a> objects. An <code>Instance</code> object contains a <a>BoundingBox</a> object, for the location of the label on the image. It also includes the confidence by which the bounding box was detected.</p> <p> <code>DetectLabels</code> also returns a hierarchical taxonomy of detected labels. For example, a detected car might be assigned the label <i>car</i>. The label <i>car</i> has two parent labels: <i>Vehicle</i> (its parent) and <i>Transportation</i> (its grandparent). The response returns the entire list of ancestors for a label. Each ancestor is a unique label in the response. In the previous example, <i>Car</i>, <i>Vehicle</i>, and <i>Transportation</i> are returned as unique labels in the response. </p> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> <p>This operation requires permissions to perform the <code>rekognition:DetectLabels</code> action. </p>
   ## 
-  let valid = call_603172.validator(path, query, header, formData, body)
-  let scheme = call_603172.pickScheme
+  let valid = call_601176.validator(path, query, header, formData, body)
+  let scheme = call_601176.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603172.url(scheme.get, call_603172.host, call_603172.base,
-                         call_603172.route, valid.getOrDefault("path"))
-  result = hook(call_603172, url, valid)
+  let url = call_601176.url(scheme.get, call_601176.host, call_601176.base,
+                         call_601176.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601176, url, valid)
 
-proc call*(call_603173: Call_DetectLabels_603160; body: JsonNode): Recallable =
+proc call*(call_601177: Call_DetectLabels_601164; body: JsonNode): Recallable =
   ## detectLabels
   ## <p>Detects instances of real-world entities within an image (JPEG or PNG) provided as input. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; and concepts like landscape, evening, and nature. </p> <p>For an example, see Analyzing Images Stored in an Amazon S3 Bucket in the Amazon Rekognition Developer Guide.</p> <note> <p> <code>DetectLabels</code> does not support the detection of activities. However, activity detection is supported for label detection in videos. For more information, see StartLabelDetection in the Amazon Rekognition Developer Guide.</p> </note> <p>You pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> For each object, scene, and concept the API returns one or more labels. Each label provides the object name, and the level of confidence that the image contains the object. For example, suppose the input image has a lighthouse, the sea, and a rock. The response includes all three labels, one for each object. </p> <p> <code>{Name: lighthouse, Confidence: 98.4629}</code> </p> <p> <code>{Name: rock,Confidence: 79.2097}</code> </p> <p> <code> {Name: sea,Confidence: 75.061}</code> </p> <p>In the preceding example, the operation returns one label for each of the three objects. The operation can also return multiple labels for the same object in the image. For example, if the input image shows a flower (for example, a tulip), the operation might return the following three labels. </p> <p> <code>{Name: flower,Confidence: 99.0562}</code> </p> <p> <code>{Name: plant,Confidence: 99.0562}</code> </p> <p> <code>{Name: tulip,Confidence: 99.0562}</code> </p> <p>In this example, the detection algorithm more precisely identifies the flower as a tulip.</p> <p>In response, the API returns an array of labels. In addition, the response also includes the orientation correction. Optionally, you can specify <code>MinConfidence</code> to control the confidence threshold for the labels returned. The default is 55%. You can also add the <code>MaxLabels</code> parameter to limit the number of labels returned. </p> <note> <p>If the object detected is a person, the operation doesn't provide the same facial details that the <a>DetectFaces</a> operation provides.</p> </note> <p> <code>DetectLabels</code> returns bounding boxes for instances of common object labels in an array of <a>Instance</a> objects. An <code>Instance</code> object contains a <a>BoundingBox</a> object, for the location of the label on the image. It also includes the confidence by which the bounding box was detected.</p> <p> <code>DetectLabels</code> also returns a hierarchical taxonomy of detected labels. For example, a detected car might be assigned the label <i>car</i>. The label <i>car</i> has two parent labels: <i>Vehicle</i> (its parent) and <i>Transportation</i> (its grandparent). The response returns the entire list of ancestors for a label. Each ancestor is a unique label in the response. In the previous example, <i>Car</i>, <i>Vehicle</i>, and <i>Transportation</i> are returned as unique labels in the response. </p> <p>This is a stateless API operation. That is, the operation does not persist any data.</p> <p>This operation requires permissions to perform the <code>rekognition:DetectLabels</code> action. </p>
   ##   body: JObject (required)
-  var body_603174 = newJObject()
+  var body_601178 = newJObject()
   if body != nil:
-    body_603174 = body
-  result = call_603173.call(nil, nil, nil, nil, body_603174)
+    body_601178 = body
+  result = call_601177.call(nil, nil, nil, nil, body_601178)
 
-var detectLabels* = Call_DetectLabels_603160(name: "detectLabels",
+var detectLabels* = Call_DetectLabels_601164(name: "detectLabels",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.DetectLabels",
-    validator: validate_DetectLabels_603161, base: "/", url: url_DetectLabels_603162,
+    validator: validate_DetectLabels_601165, base: "/", url: url_DetectLabels_601166,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetectModerationLabels_603175 = ref object of OpenApiRestCall_602434
-proc url_DetectModerationLabels_603177(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DetectModerationLabels_601179 = ref object of OpenApiRestCall_600438
+proc url_DetectModerationLabels_601181(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DetectModerationLabels_603176(path: JsonNode; query: JsonNode;
+proc validate_DetectModerationLabels_601180(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Detects unsafe content in a specified JPEG or PNG format image. Use <code>DetectModerationLabels</code> to moderate images depending on your requirements. For example, you might want to filter images that contain nudity, but not images containing suggestive content.</p> <p>To filter images, use the labels returned by <code>DetectModerationLabels</code> to determine which types of content are appropriate.</p> <p>For information about moderation labels, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p>
   ## 
@@ -1204,48 +1256,48 @@ proc validate_DetectModerationLabels_603176(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603178 = header.getOrDefault("X-Amz-Date")
-  valid_603178 = validateParameter(valid_603178, JString, required = false,
+  var valid_601182 = header.getOrDefault("X-Amz-Date")
+  valid_601182 = validateParameter(valid_601182, JString, required = false,
                                  default = nil)
-  if valid_603178 != nil:
-    section.add "X-Amz-Date", valid_603178
-  var valid_603179 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603179 = validateParameter(valid_603179, JString, required = false,
+  if valid_601182 != nil:
+    section.add "X-Amz-Date", valid_601182
+  var valid_601183 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601183 = validateParameter(valid_601183, JString, required = false,
                                  default = nil)
-  if valid_603179 != nil:
-    section.add "X-Amz-Security-Token", valid_603179
+  if valid_601183 != nil:
+    section.add "X-Amz-Security-Token", valid_601183
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603180 = header.getOrDefault("X-Amz-Target")
-  valid_603180 = validateParameter(valid_603180, JString, required = true, default = newJString(
+  var valid_601184 = header.getOrDefault("X-Amz-Target")
+  valid_601184 = validateParameter(valid_601184, JString, required = true, default = newJString(
       "RekognitionService.DetectModerationLabels"))
-  if valid_603180 != nil:
-    section.add "X-Amz-Target", valid_603180
-  var valid_603181 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603181 = validateParameter(valid_603181, JString, required = false,
+  if valid_601184 != nil:
+    section.add "X-Amz-Target", valid_601184
+  var valid_601185 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601185 = validateParameter(valid_601185, JString, required = false,
                                  default = nil)
-  if valid_603181 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603181
-  var valid_603182 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603182 = validateParameter(valid_603182, JString, required = false,
+  if valid_601185 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601185
+  var valid_601186 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601186 = validateParameter(valid_601186, JString, required = false,
                                  default = nil)
-  if valid_603182 != nil:
-    section.add "X-Amz-Algorithm", valid_603182
-  var valid_603183 = header.getOrDefault("X-Amz-Signature")
-  valid_603183 = validateParameter(valid_603183, JString, required = false,
+  if valid_601186 != nil:
+    section.add "X-Amz-Algorithm", valid_601186
+  var valid_601187 = header.getOrDefault("X-Amz-Signature")
+  valid_601187 = validateParameter(valid_601187, JString, required = false,
                                  default = nil)
-  if valid_603183 != nil:
-    section.add "X-Amz-Signature", valid_603183
-  var valid_603184 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603184 = validateParameter(valid_603184, JString, required = false,
+  if valid_601187 != nil:
+    section.add "X-Amz-Signature", valid_601187
+  var valid_601188 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601188 = validateParameter(valid_601188, JString, required = false,
                                  default = nil)
-  if valid_603184 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603184
-  var valid_603185 = header.getOrDefault("X-Amz-Credential")
-  valid_603185 = validateParameter(valid_603185, JString, required = false,
+  if valid_601188 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601188
+  var valid_601189 = header.getOrDefault("X-Amz-Credential")
+  valid_601189 = validateParameter(valid_601189, JString, required = false,
                                  default = nil)
-  if valid_603185 != nil:
-    section.add "X-Amz-Credential", valid_603185
+  if valid_601189 != nil:
+    section.add "X-Amz-Credential", valid_601189
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1256,40 +1308,44 @@ proc validate_DetectModerationLabels_603176(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603187: Call_DetectModerationLabels_603175; path: JsonNode;
+proc call*(call_601191: Call_DetectModerationLabels_601179; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Detects unsafe content in a specified JPEG or PNG format image. Use <code>DetectModerationLabels</code> to moderate images depending on your requirements. For example, you might want to filter images that contain nudity, but not images containing suggestive content.</p> <p>To filter images, use the labels returned by <code>DetectModerationLabels</code> to determine which types of content are appropriate.</p> <p>For information about moderation labels, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p>
   ## 
-  let valid = call_603187.validator(path, query, header, formData, body)
-  let scheme = call_603187.pickScheme
+  let valid = call_601191.validator(path, query, header, formData, body)
+  let scheme = call_601191.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603187.url(scheme.get, call_603187.host, call_603187.base,
-                         call_603187.route, valid.getOrDefault("path"))
-  result = hook(call_603187, url, valid)
+  let url = call_601191.url(scheme.get, call_601191.host, call_601191.base,
+                         call_601191.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601191, url, valid)
 
-proc call*(call_603188: Call_DetectModerationLabels_603175; body: JsonNode): Recallable =
+proc call*(call_601192: Call_DetectModerationLabels_601179; body: JsonNode): Recallable =
   ## detectModerationLabels
   ## <p>Detects unsafe content in a specified JPEG or PNG format image. Use <code>DetectModerationLabels</code> to moderate images depending on your requirements. For example, you might want to filter images that contain nudity, but not images containing suggestive content.</p> <p>To filter images, use the labels returned by <code>DetectModerationLabels</code> to determine which types of content are appropriate.</p> <p>For information about moderation labels, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p>
   ##   body: JObject (required)
-  var body_603189 = newJObject()
+  var body_601193 = newJObject()
   if body != nil:
-    body_603189 = body
-  result = call_603188.call(nil, nil, nil, nil, body_603189)
+    body_601193 = body
+  result = call_601192.call(nil, nil, nil, nil, body_601193)
 
-var detectModerationLabels* = Call_DetectModerationLabels_603175(
+var detectModerationLabels* = Call_DetectModerationLabels_601179(
     name: "detectModerationLabels", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.DetectModerationLabels",
-    validator: validate_DetectModerationLabels_603176, base: "/",
-    url: url_DetectModerationLabels_603177, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DetectModerationLabels_601180, base: "/",
+    url: url_DetectModerationLabels_601181, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetectText_603190 = ref object of OpenApiRestCall_602434
-proc url_DetectText_603192(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DetectText_601194 = ref object of OpenApiRestCall_600438
+proc url_DetectText_601196(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DetectText_603191(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DetectText_601195(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Detects text in the input image and converts it into machine-readable text.</p> <p>Pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, you must pass it as a reference to an image in an Amazon S3 bucket. For the AWS CLI, passing image bytes is not supported. The image must be either a .png or .jpeg formatted file. </p> <p>The <code>DetectText</code> operation returns text in an array of <a>TextDetection</a> elements, <code>TextDetections</code>. Each <code>TextDetection</code> element provides information about a single word or line of text that was detected in the image. </p> <p>A word is one or more ISO basic latin script characters that are not separated by spaces. <code>DetectText</code> can detect up to 50 words in an image.</p> <p>A line is a string of equally spaced words. A line isn't necessarily a complete sentence. For example, a driver's license number is detected as a line. A line ends when there is no aligned text after it. Also, a line ends when there is a large gap between words, relative to the length of the words. This means, depending on the gap between words, Amazon Rekognition may detect multiple lines in text aligned in the same direction. Periods don't represent the end of a line. If a sentence spans multiple lines, the <code>DetectText</code> operation returns multiple lines.</p> <p>To determine whether a <code>TextDetection</code> element is a line of text or a word, use the <code>TextDetection</code> object <code>Type</code> field. </p> <p>To be detected, text must be within +/- 90 degrees orientation of the horizontal axis.</p> <p>For more information, see DetectText in the Amazon Rekognition Developer Guide.</p>
   ## 
@@ -1309,48 +1365,48 @@ proc validate_DetectText_603191(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603193 = header.getOrDefault("X-Amz-Date")
-  valid_603193 = validateParameter(valid_603193, JString, required = false,
+  var valid_601197 = header.getOrDefault("X-Amz-Date")
+  valid_601197 = validateParameter(valid_601197, JString, required = false,
                                  default = nil)
-  if valid_603193 != nil:
-    section.add "X-Amz-Date", valid_603193
-  var valid_603194 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603194 = validateParameter(valid_603194, JString, required = false,
+  if valid_601197 != nil:
+    section.add "X-Amz-Date", valid_601197
+  var valid_601198 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601198 = validateParameter(valid_601198, JString, required = false,
                                  default = nil)
-  if valid_603194 != nil:
-    section.add "X-Amz-Security-Token", valid_603194
+  if valid_601198 != nil:
+    section.add "X-Amz-Security-Token", valid_601198
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603195 = header.getOrDefault("X-Amz-Target")
-  valid_603195 = validateParameter(valid_603195, JString, required = true, default = newJString(
+  var valid_601199 = header.getOrDefault("X-Amz-Target")
+  valid_601199 = validateParameter(valid_601199, JString, required = true, default = newJString(
       "RekognitionService.DetectText"))
-  if valid_603195 != nil:
-    section.add "X-Amz-Target", valid_603195
-  var valid_603196 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603196 = validateParameter(valid_603196, JString, required = false,
+  if valid_601199 != nil:
+    section.add "X-Amz-Target", valid_601199
+  var valid_601200 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601200 = validateParameter(valid_601200, JString, required = false,
                                  default = nil)
-  if valid_603196 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603196
-  var valid_603197 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603197 = validateParameter(valid_603197, JString, required = false,
+  if valid_601200 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601200
+  var valid_601201 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601201 = validateParameter(valid_601201, JString, required = false,
                                  default = nil)
-  if valid_603197 != nil:
-    section.add "X-Amz-Algorithm", valid_603197
-  var valid_603198 = header.getOrDefault("X-Amz-Signature")
-  valid_603198 = validateParameter(valid_603198, JString, required = false,
+  if valid_601201 != nil:
+    section.add "X-Amz-Algorithm", valid_601201
+  var valid_601202 = header.getOrDefault("X-Amz-Signature")
+  valid_601202 = validateParameter(valid_601202, JString, required = false,
                                  default = nil)
-  if valid_603198 != nil:
-    section.add "X-Amz-Signature", valid_603198
-  var valid_603199 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603199 = validateParameter(valid_603199, JString, required = false,
+  if valid_601202 != nil:
+    section.add "X-Amz-Signature", valid_601202
+  var valid_601203 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601203 = validateParameter(valid_601203, JString, required = false,
                                  default = nil)
-  if valid_603199 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603199
-  var valid_603200 = header.getOrDefault("X-Amz-Credential")
-  valid_603200 = validateParameter(valid_603200, JString, required = false,
+  if valid_601203 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601203
+  var valid_601204 = header.getOrDefault("X-Amz-Credential")
+  valid_601204 = validateParameter(valid_601204, JString, required = false,
                                  default = nil)
-  if valid_603200 != nil:
-    section.add "X-Amz-Credential", valid_603200
+  if valid_601204 != nil:
+    section.add "X-Amz-Credential", valid_601204
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1361,40 +1417,44 @@ proc validate_DetectText_603191(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603202: Call_DetectText_603190; path: JsonNode; query: JsonNode;
+proc call*(call_601206: Call_DetectText_601194; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Detects text in the input image and converts it into machine-readable text.</p> <p>Pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, you must pass it as a reference to an image in an Amazon S3 bucket. For the AWS CLI, passing image bytes is not supported. The image must be either a .png or .jpeg formatted file. </p> <p>The <code>DetectText</code> operation returns text in an array of <a>TextDetection</a> elements, <code>TextDetections</code>. Each <code>TextDetection</code> element provides information about a single word or line of text that was detected in the image. </p> <p>A word is one or more ISO basic latin script characters that are not separated by spaces. <code>DetectText</code> can detect up to 50 words in an image.</p> <p>A line is a string of equally spaced words. A line isn't necessarily a complete sentence. For example, a driver's license number is detected as a line. A line ends when there is no aligned text after it. Also, a line ends when there is a large gap between words, relative to the length of the words. This means, depending on the gap between words, Amazon Rekognition may detect multiple lines in text aligned in the same direction. Periods don't represent the end of a line. If a sentence spans multiple lines, the <code>DetectText</code> operation returns multiple lines.</p> <p>To determine whether a <code>TextDetection</code> element is a line of text or a word, use the <code>TextDetection</code> object <code>Type</code> field. </p> <p>To be detected, text must be within +/- 90 degrees orientation of the horizontal axis.</p> <p>For more information, see DetectText in the Amazon Rekognition Developer Guide.</p>
   ## 
-  let valid = call_603202.validator(path, query, header, formData, body)
-  let scheme = call_603202.pickScheme
+  let valid = call_601206.validator(path, query, header, formData, body)
+  let scheme = call_601206.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603202.url(scheme.get, call_603202.host, call_603202.base,
-                         call_603202.route, valid.getOrDefault("path"))
-  result = hook(call_603202, url, valid)
+  let url = call_601206.url(scheme.get, call_601206.host, call_601206.base,
+                         call_601206.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601206, url, valid)
 
-proc call*(call_603203: Call_DetectText_603190; body: JsonNode): Recallable =
+proc call*(call_601207: Call_DetectText_601194; body: JsonNode): Recallable =
   ## detectText
   ## <p>Detects text in the input image and converts it into machine-readable text.</p> <p>Pass the input image as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, you must pass it as a reference to an image in an Amazon S3 bucket. For the AWS CLI, passing image bytes is not supported. The image must be either a .png or .jpeg formatted file. </p> <p>The <code>DetectText</code> operation returns text in an array of <a>TextDetection</a> elements, <code>TextDetections</code>. Each <code>TextDetection</code> element provides information about a single word or line of text that was detected in the image. </p> <p>A word is one or more ISO basic latin script characters that are not separated by spaces. <code>DetectText</code> can detect up to 50 words in an image.</p> <p>A line is a string of equally spaced words. A line isn't necessarily a complete sentence. For example, a driver's license number is detected as a line. A line ends when there is no aligned text after it. Also, a line ends when there is a large gap between words, relative to the length of the words. This means, depending on the gap between words, Amazon Rekognition may detect multiple lines in text aligned in the same direction. Periods don't represent the end of a line. If a sentence spans multiple lines, the <code>DetectText</code> operation returns multiple lines.</p> <p>To determine whether a <code>TextDetection</code> element is a line of text or a word, use the <code>TextDetection</code> object <code>Type</code> field. </p> <p>To be detected, text must be within +/- 90 degrees orientation of the horizontal axis.</p> <p>For more information, see DetectText in the Amazon Rekognition Developer Guide.</p>
   ##   body: JObject (required)
-  var body_603204 = newJObject()
+  var body_601208 = newJObject()
   if body != nil:
-    body_603204 = body
-  result = call_603203.call(nil, nil, nil, nil, body_603204)
+    body_601208 = body
+  result = call_601207.call(nil, nil, nil, nil, body_601208)
 
-var detectText* = Call_DetectText_603190(name: "detectText",
+var detectText* = Call_DetectText_601194(name: "detectText",
                                       meth: HttpMethod.HttpPost,
                                       host: "rekognition.amazonaws.com", route: "/#X-Amz-Target=RekognitionService.DetectText",
-                                      validator: validate_DetectText_603191,
-                                      base: "/", url: url_DetectText_603192,
+                                      validator: validate_DetectText_601195,
+                                      base: "/", url: url_DetectText_601196,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCelebrityInfo_603205 = ref object of OpenApiRestCall_602434
-proc url_GetCelebrityInfo_603207(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetCelebrityInfo_601209 = ref object of OpenApiRestCall_600438
+proc url_GetCelebrityInfo_601211(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetCelebrityInfo_603206(path: JsonNode; query: JsonNode;
+proc validate_GetCelebrityInfo_601210(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Gets the name and additional information about a celebrity based on his or her Amazon Rekognition ID. The additional information is returned as an array of URLs. If there is no additional information about the celebrity, this list is empty.</p> <p>For more information, see Recognizing Celebrities in an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:GetCelebrityInfo</code> action. </p>
@@ -1415,48 +1475,48 @@ proc validate_GetCelebrityInfo_603206(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603208 = header.getOrDefault("X-Amz-Date")
-  valid_603208 = validateParameter(valid_603208, JString, required = false,
+  var valid_601212 = header.getOrDefault("X-Amz-Date")
+  valid_601212 = validateParameter(valid_601212, JString, required = false,
                                  default = nil)
-  if valid_603208 != nil:
-    section.add "X-Amz-Date", valid_603208
-  var valid_603209 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603209 = validateParameter(valid_603209, JString, required = false,
+  if valid_601212 != nil:
+    section.add "X-Amz-Date", valid_601212
+  var valid_601213 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601213 = validateParameter(valid_601213, JString, required = false,
                                  default = nil)
-  if valid_603209 != nil:
-    section.add "X-Amz-Security-Token", valid_603209
+  if valid_601213 != nil:
+    section.add "X-Amz-Security-Token", valid_601213
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603210 = header.getOrDefault("X-Amz-Target")
-  valid_603210 = validateParameter(valid_603210, JString, required = true, default = newJString(
+  var valid_601214 = header.getOrDefault("X-Amz-Target")
+  valid_601214 = validateParameter(valid_601214, JString, required = true, default = newJString(
       "RekognitionService.GetCelebrityInfo"))
-  if valid_603210 != nil:
-    section.add "X-Amz-Target", valid_603210
-  var valid_603211 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603211 = validateParameter(valid_603211, JString, required = false,
+  if valid_601214 != nil:
+    section.add "X-Amz-Target", valid_601214
+  var valid_601215 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601215 = validateParameter(valid_601215, JString, required = false,
                                  default = nil)
-  if valid_603211 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603211
-  var valid_603212 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603212 = validateParameter(valid_603212, JString, required = false,
+  if valid_601215 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601215
+  var valid_601216 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601216 = validateParameter(valid_601216, JString, required = false,
                                  default = nil)
-  if valid_603212 != nil:
-    section.add "X-Amz-Algorithm", valid_603212
-  var valid_603213 = header.getOrDefault("X-Amz-Signature")
-  valid_603213 = validateParameter(valid_603213, JString, required = false,
+  if valid_601216 != nil:
+    section.add "X-Amz-Algorithm", valid_601216
+  var valid_601217 = header.getOrDefault("X-Amz-Signature")
+  valid_601217 = validateParameter(valid_601217, JString, required = false,
                                  default = nil)
-  if valid_603213 != nil:
-    section.add "X-Amz-Signature", valid_603213
-  var valid_603214 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603214 = validateParameter(valid_603214, JString, required = false,
+  if valid_601217 != nil:
+    section.add "X-Amz-Signature", valid_601217
+  var valid_601218 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601218 = validateParameter(valid_601218, JString, required = false,
                                  default = nil)
-  if valid_603214 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603214
-  var valid_603215 = header.getOrDefault("X-Amz-Credential")
-  valid_603215 = validateParameter(valid_603215, JString, required = false,
+  if valid_601218 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601218
+  var valid_601219 = header.getOrDefault("X-Amz-Credential")
+  valid_601219 = validateParameter(valid_601219, JString, required = false,
                                  default = nil)
-  if valid_603215 != nil:
-    section.add "X-Amz-Credential", valid_603215
+  if valid_601219 != nil:
+    section.add "X-Amz-Credential", valid_601219
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1467,39 +1527,44 @@ proc validate_GetCelebrityInfo_603206(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603217: Call_GetCelebrityInfo_603205; path: JsonNode;
+proc call*(call_601221: Call_GetCelebrityInfo_601209; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the name and additional information about a celebrity based on his or her Amazon Rekognition ID. The additional information is returned as an array of URLs. If there is no additional information about the celebrity, this list is empty.</p> <p>For more information, see Recognizing Celebrities in an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:GetCelebrityInfo</code> action. </p>
   ## 
-  let valid = call_603217.validator(path, query, header, formData, body)
-  let scheme = call_603217.pickScheme
+  let valid = call_601221.validator(path, query, header, formData, body)
+  let scheme = call_601221.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603217.url(scheme.get, call_603217.host, call_603217.base,
-                         call_603217.route, valid.getOrDefault("path"))
-  result = hook(call_603217, url, valid)
+  let url = call_601221.url(scheme.get, call_601221.host, call_601221.base,
+                         call_601221.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601221, url, valid)
 
-proc call*(call_603218: Call_GetCelebrityInfo_603205; body: JsonNode): Recallable =
+proc call*(call_601222: Call_GetCelebrityInfo_601209; body: JsonNode): Recallable =
   ## getCelebrityInfo
   ## <p>Gets the name and additional information about a celebrity based on his or her Amazon Rekognition ID. The additional information is returned as an array of URLs. If there is no additional information about the celebrity, this list is empty.</p> <p>For more information, see Recognizing Celebrities in an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:GetCelebrityInfo</code> action. </p>
   ##   body: JObject (required)
-  var body_603219 = newJObject()
+  var body_601223 = newJObject()
   if body != nil:
-    body_603219 = body
-  result = call_603218.call(nil, nil, nil, nil, body_603219)
+    body_601223 = body
+  result = call_601222.call(nil, nil, nil, nil, body_601223)
 
-var getCelebrityInfo* = Call_GetCelebrityInfo_603205(name: "getCelebrityInfo",
+var getCelebrityInfo* = Call_GetCelebrityInfo_601209(name: "getCelebrityInfo",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.GetCelebrityInfo",
-    validator: validate_GetCelebrityInfo_603206, base: "/",
-    url: url_GetCelebrityInfo_603207, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetCelebrityInfo_601210, base: "/",
+    url: url_GetCelebrityInfo_601211, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCelebrityRecognition_603220 = ref object of OpenApiRestCall_602434
-proc url_GetCelebrityRecognition_603222(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetCelebrityRecognition_601224 = ref object of OpenApiRestCall_600438
+proc url_GetCelebrityRecognition_601226(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetCelebrityRecognition_603221(path: JsonNode; query: JsonNode;
+proc validate_GetCelebrityRecognition_601225(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets the celebrity recognition results for a Amazon Rekognition Video analysis started by <a>StartCelebrityRecognition</a>.</p> <p>Celebrity recognition in a video is an asynchronous operation. Analysis is started by a call to <a>StartCelebrityRecognition</a> which returns a job identifier (<code>JobId</code>). When the celebrity recognition operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartCelebrityRecognition</code>. To get the results of the celebrity recognition analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetCelebrityDetection</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartCelebrityDetection</code>. </p> <p>For more information, see Working With Stored Videos in the Amazon Rekognition Developer Guide.</p> <p> <code>GetCelebrityRecognition</code> returns detected celebrities and the time(s) they are detected in an array (<code>Celebrities</code>) of <a>CelebrityRecognition</a> objects. Each <code>CelebrityRecognition</code> contains information about the celebrity in a <a>CelebrityDetail</a> object and the time, <code>Timestamp</code>, the celebrity was detected. </p> <note> <p> <code>GetCelebrityRecognition</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. For more information, see FaceDetail in the Amazon Rekognition Developer Guide. </p> </note> <p>By default, the <code>Celebrities</code> array is sorted by time (milliseconds from the start of the video). You can also sort the array by celebrity by specifying the value <code>ID</code> in the <code>SortBy</code> input parameter.</p> <p>The <code>CelebrityDetail</code> object includes the celebrity identifer and additional information urls. If you don't store the additional information urls, you can get them later by calling <a>GetCelebrityInfo</a> with the celebrity identifer.</p> <p>No information is returned for faces not recognized as celebrities.</p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetCelebrityDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetCelebrityRecognition</code>.</p>
   ## 
@@ -1513,16 +1578,16 @@ proc validate_GetCelebrityRecognition_603221(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603223 = query.getOrDefault("NextToken")
-  valid_603223 = validateParameter(valid_603223, JString, required = false,
+  var valid_601227 = query.getOrDefault("NextToken")
+  valid_601227 = validateParameter(valid_601227, JString, required = false,
                                  default = nil)
-  if valid_603223 != nil:
-    section.add "NextToken", valid_603223
-  var valid_603224 = query.getOrDefault("MaxResults")
-  valid_603224 = validateParameter(valid_603224, JString, required = false,
+  if valid_601227 != nil:
+    section.add "NextToken", valid_601227
+  var valid_601228 = query.getOrDefault("MaxResults")
+  valid_601228 = validateParameter(valid_601228, JString, required = false,
                                  default = nil)
-  if valid_603224 != nil:
-    section.add "MaxResults", valid_603224
+  if valid_601228 != nil:
+    section.add "MaxResults", valid_601228
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1534,48 +1599,48 @@ proc validate_GetCelebrityRecognition_603221(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603225 = header.getOrDefault("X-Amz-Date")
-  valid_603225 = validateParameter(valid_603225, JString, required = false,
+  var valid_601229 = header.getOrDefault("X-Amz-Date")
+  valid_601229 = validateParameter(valid_601229, JString, required = false,
                                  default = nil)
-  if valid_603225 != nil:
-    section.add "X-Amz-Date", valid_603225
-  var valid_603226 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603226 = validateParameter(valid_603226, JString, required = false,
+  if valid_601229 != nil:
+    section.add "X-Amz-Date", valid_601229
+  var valid_601230 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601230 = validateParameter(valid_601230, JString, required = false,
                                  default = nil)
-  if valid_603226 != nil:
-    section.add "X-Amz-Security-Token", valid_603226
+  if valid_601230 != nil:
+    section.add "X-Amz-Security-Token", valid_601230
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603227 = header.getOrDefault("X-Amz-Target")
-  valid_603227 = validateParameter(valid_603227, JString, required = true, default = newJString(
+  var valid_601231 = header.getOrDefault("X-Amz-Target")
+  valid_601231 = validateParameter(valid_601231, JString, required = true, default = newJString(
       "RekognitionService.GetCelebrityRecognition"))
-  if valid_603227 != nil:
-    section.add "X-Amz-Target", valid_603227
-  var valid_603228 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603228 = validateParameter(valid_603228, JString, required = false,
+  if valid_601231 != nil:
+    section.add "X-Amz-Target", valid_601231
+  var valid_601232 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601232 = validateParameter(valid_601232, JString, required = false,
                                  default = nil)
-  if valid_603228 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603228
-  var valid_603229 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603229 = validateParameter(valid_603229, JString, required = false,
+  if valid_601232 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601232
+  var valid_601233 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601233 = validateParameter(valid_601233, JString, required = false,
                                  default = nil)
-  if valid_603229 != nil:
-    section.add "X-Amz-Algorithm", valid_603229
-  var valid_603230 = header.getOrDefault("X-Amz-Signature")
-  valid_603230 = validateParameter(valid_603230, JString, required = false,
+  if valid_601233 != nil:
+    section.add "X-Amz-Algorithm", valid_601233
+  var valid_601234 = header.getOrDefault("X-Amz-Signature")
+  valid_601234 = validateParameter(valid_601234, JString, required = false,
                                  default = nil)
-  if valid_603230 != nil:
-    section.add "X-Amz-Signature", valid_603230
-  var valid_603231 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603231 = validateParameter(valid_603231, JString, required = false,
+  if valid_601234 != nil:
+    section.add "X-Amz-Signature", valid_601234
+  var valid_601235 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601235 = validateParameter(valid_601235, JString, required = false,
                                  default = nil)
-  if valid_603231 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603231
-  var valid_603232 = header.getOrDefault("X-Amz-Credential")
-  valid_603232 = validateParameter(valid_603232, JString, required = false,
+  if valid_601235 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601235
+  var valid_601236 = header.getOrDefault("X-Amz-Credential")
+  valid_601236 = validateParameter(valid_601236, JString, required = false,
                                  default = nil)
-  if valid_603232 != nil:
-    section.add "X-Amz-Credential", valid_603232
+  if valid_601236 != nil:
+    section.add "X-Amz-Credential", valid_601236
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1586,19 +1651,20 @@ proc validate_GetCelebrityRecognition_603221(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603234: Call_GetCelebrityRecognition_603220; path: JsonNode;
+proc call*(call_601238: Call_GetCelebrityRecognition_601224; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the celebrity recognition results for a Amazon Rekognition Video analysis started by <a>StartCelebrityRecognition</a>.</p> <p>Celebrity recognition in a video is an asynchronous operation. Analysis is started by a call to <a>StartCelebrityRecognition</a> which returns a job identifier (<code>JobId</code>). When the celebrity recognition operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartCelebrityRecognition</code>. To get the results of the celebrity recognition analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetCelebrityDetection</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartCelebrityDetection</code>. </p> <p>For more information, see Working With Stored Videos in the Amazon Rekognition Developer Guide.</p> <p> <code>GetCelebrityRecognition</code> returns detected celebrities and the time(s) they are detected in an array (<code>Celebrities</code>) of <a>CelebrityRecognition</a> objects. Each <code>CelebrityRecognition</code> contains information about the celebrity in a <a>CelebrityDetail</a> object and the time, <code>Timestamp</code>, the celebrity was detected. </p> <note> <p> <code>GetCelebrityRecognition</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. For more information, see FaceDetail in the Amazon Rekognition Developer Guide. </p> </note> <p>By default, the <code>Celebrities</code> array is sorted by time (milliseconds from the start of the video). You can also sort the array by celebrity by specifying the value <code>ID</code> in the <code>SortBy</code> input parameter.</p> <p>The <code>CelebrityDetail</code> object includes the celebrity identifer and additional information urls. If you don't store the additional information urls, you can get them later by calling <a>GetCelebrityInfo</a> with the celebrity identifer.</p> <p>No information is returned for faces not recognized as celebrities.</p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetCelebrityDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetCelebrityRecognition</code>.</p>
   ## 
-  let valid = call_603234.validator(path, query, header, formData, body)
-  let scheme = call_603234.pickScheme
+  let valid = call_601238.validator(path, query, header, formData, body)
+  let scheme = call_601238.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603234.url(scheme.get, call_603234.host, call_603234.base,
-                         call_603234.route, valid.getOrDefault("path"))
-  result = hook(call_603234, url, valid)
+  let url = call_601238.url(scheme.get, call_601238.host, call_601238.base,
+                         call_601238.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601238, url, valid)
 
-proc call*(call_603235: Call_GetCelebrityRecognition_603220; body: JsonNode;
+proc call*(call_601239: Call_GetCelebrityRecognition_601224; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## getCelebrityRecognition
   ## <p>Gets the celebrity recognition results for a Amazon Rekognition Video analysis started by <a>StartCelebrityRecognition</a>.</p> <p>Celebrity recognition in a video is an asynchronous operation. Analysis is started by a call to <a>StartCelebrityRecognition</a> which returns a job identifier (<code>JobId</code>). When the celebrity recognition operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartCelebrityRecognition</code>. To get the results of the celebrity recognition analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetCelebrityDetection</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartCelebrityDetection</code>. </p> <p>For more information, see Working With Stored Videos in the Amazon Rekognition Developer Guide.</p> <p> <code>GetCelebrityRecognition</code> returns detected celebrities and the time(s) they are detected in an array (<code>Celebrities</code>) of <a>CelebrityRecognition</a> objects. Each <code>CelebrityRecognition</code> contains information about the celebrity in a <a>CelebrityDetail</a> object and the time, <code>Timestamp</code>, the celebrity was detected. </p> <note> <p> <code>GetCelebrityRecognition</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. For more information, see FaceDetail in the Amazon Rekognition Developer Guide. </p> </note> <p>By default, the <code>Celebrities</code> array is sorted by time (milliseconds from the start of the video). You can also sort the array by celebrity by specifying the value <code>ID</code> in the <code>SortBy</code> input parameter.</p> <p>The <code>CelebrityDetail</code> object includes the celebrity identifer and additional information urls. If you don't store the additional information urls, you can get them later by calling <a>GetCelebrityInfo</a> with the celebrity identifer.</p> <p>No information is returned for faces not recognized as celebrities.</p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetCelebrityDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetCelebrityRecognition</code>.</p>
@@ -1607,27 +1673,30 @@ proc call*(call_603235: Call_GetCelebrityRecognition_603220; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603236 = newJObject()
-  var body_603237 = newJObject()
-  add(query_603236, "NextToken", newJString(NextToken))
+  var query_601240 = newJObject()
+  var body_601241 = newJObject()
+  add(query_601240, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603237 = body
-  add(query_603236, "MaxResults", newJString(MaxResults))
-  result = call_603235.call(nil, query_603236, nil, nil, body_603237)
+    body_601241 = body
+  add(query_601240, "MaxResults", newJString(MaxResults))
+  result = call_601239.call(nil, query_601240, nil, nil, body_601241)
 
-var getCelebrityRecognition* = Call_GetCelebrityRecognition_603220(
+var getCelebrityRecognition* = Call_GetCelebrityRecognition_601224(
     name: "getCelebrityRecognition", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.GetCelebrityRecognition",
-    validator: validate_GetCelebrityRecognition_603221, base: "/",
-    url: url_GetCelebrityRecognition_603222, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetCelebrityRecognition_601225, base: "/",
+    url: url_GetCelebrityRecognition_601226, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetContentModeration_603239 = ref object of OpenApiRestCall_602434
-proc url_GetContentModeration_603241(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetContentModeration_601243 = ref object of OpenApiRestCall_600438
+proc url_GetContentModeration_601245(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetContentModeration_603240(path: JsonNode; query: JsonNode;
+proc validate_GetContentModeration_601244(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets the unsafe content analysis results for a Amazon Rekognition Video analysis started by <a>StartContentModeration</a>.</p> <p>Unsafe content analysis of a video is an asynchronous operation. You start analysis by calling <a>StartContentModeration</a> which returns a job identifier (<code>JobId</code>). When analysis finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartContentModeration</code>. To get the results of the unsafe content analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetContentModeration</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartContentModeration</code>. </p> <p>For more information, see Working with Stored Videos in the Amazon Rekognition Devlopers Guide.</p> <p> <code>GetContentModeration</code> returns detected unsafe content labels, and the time they are detected, in an array, <code>ModerationLabels</code>, of <a>ContentModerationDetection</a> objects. </p> <p>By default, the moderated labels are returned sorted by time, in milliseconds from the start of the video. You can also sort them by moderated label by specifying <code>NAME</code> for the <code>SortBy</code> input parameter. </p> <p>Since video analysis can return a large number of results, use the <code>MaxResults</code> parameter to limit the number of labels returned in a single call to <code>GetContentModeration</code>. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetContentModeration</code> and populate the <code>NextToken</code> request parameter with the value of <code>NextToken</code> returned from the previous call to <code>GetContentModeration</code>.</p> <p>For more information, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p>
   ## 
@@ -1641,16 +1710,16 @@ proc validate_GetContentModeration_603240(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603242 = query.getOrDefault("NextToken")
-  valid_603242 = validateParameter(valid_603242, JString, required = false,
+  var valid_601246 = query.getOrDefault("NextToken")
+  valid_601246 = validateParameter(valid_601246, JString, required = false,
                                  default = nil)
-  if valid_603242 != nil:
-    section.add "NextToken", valid_603242
-  var valid_603243 = query.getOrDefault("MaxResults")
-  valid_603243 = validateParameter(valid_603243, JString, required = false,
+  if valid_601246 != nil:
+    section.add "NextToken", valid_601246
+  var valid_601247 = query.getOrDefault("MaxResults")
+  valid_601247 = validateParameter(valid_601247, JString, required = false,
                                  default = nil)
-  if valid_603243 != nil:
-    section.add "MaxResults", valid_603243
+  if valid_601247 != nil:
+    section.add "MaxResults", valid_601247
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1662,48 +1731,48 @@ proc validate_GetContentModeration_603240(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603244 = header.getOrDefault("X-Amz-Date")
-  valid_603244 = validateParameter(valid_603244, JString, required = false,
+  var valid_601248 = header.getOrDefault("X-Amz-Date")
+  valid_601248 = validateParameter(valid_601248, JString, required = false,
                                  default = nil)
-  if valid_603244 != nil:
-    section.add "X-Amz-Date", valid_603244
-  var valid_603245 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603245 = validateParameter(valid_603245, JString, required = false,
+  if valid_601248 != nil:
+    section.add "X-Amz-Date", valid_601248
+  var valid_601249 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601249 = validateParameter(valid_601249, JString, required = false,
                                  default = nil)
-  if valid_603245 != nil:
-    section.add "X-Amz-Security-Token", valid_603245
+  if valid_601249 != nil:
+    section.add "X-Amz-Security-Token", valid_601249
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603246 = header.getOrDefault("X-Amz-Target")
-  valid_603246 = validateParameter(valid_603246, JString, required = true, default = newJString(
+  var valid_601250 = header.getOrDefault("X-Amz-Target")
+  valid_601250 = validateParameter(valid_601250, JString, required = true, default = newJString(
       "RekognitionService.GetContentModeration"))
-  if valid_603246 != nil:
-    section.add "X-Amz-Target", valid_603246
-  var valid_603247 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603247 = validateParameter(valid_603247, JString, required = false,
+  if valid_601250 != nil:
+    section.add "X-Amz-Target", valid_601250
+  var valid_601251 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601251 = validateParameter(valid_601251, JString, required = false,
                                  default = nil)
-  if valid_603247 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603247
-  var valid_603248 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603248 = validateParameter(valid_603248, JString, required = false,
+  if valid_601251 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601251
+  var valid_601252 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601252 = validateParameter(valid_601252, JString, required = false,
                                  default = nil)
-  if valid_603248 != nil:
-    section.add "X-Amz-Algorithm", valid_603248
-  var valid_603249 = header.getOrDefault("X-Amz-Signature")
-  valid_603249 = validateParameter(valid_603249, JString, required = false,
+  if valid_601252 != nil:
+    section.add "X-Amz-Algorithm", valid_601252
+  var valid_601253 = header.getOrDefault("X-Amz-Signature")
+  valid_601253 = validateParameter(valid_601253, JString, required = false,
                                  default = nil)
-  if valid_603249 != nil:
-    section.add "X-Amz-Signature", valid_603249
-  var valid_603250 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603250 = validateParameter(valid_603250, JString, required = false,
+  if valid_601253 != nil:
+    section.add "X-Amz-Signature", valid_601253
+  var valid_601254 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601254 = validateParameter(valid_601254, JString, required = false,
                                  default = nil)
-  if valid_603250 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603250
-  var valid_603251 = header.getOrDefault("X-Amz-Credential")
-  valid_603251 = validateParameter(valid_603251, JString, required = false,
+  if valid_601254 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601254
+  var valid_601255 = header.getOrDefault("X-Amz-Credential")
+  valid_601255 = validateParameter(valid_601255, JString, required = false,
                                  default = nil)
-  if valid_603251 != nil:
-    section.add "X-Amz-Credential", valid_603251
+  if valid_601255 != nil:
+    section.add "X-Amz-Credential", valid_601255
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1714,19 +1783,20 @@ proc validate_GetContentModeration_603240(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603253: Call_GetContentModeration_603239; path: JsonNode;
+proc call*(call_601257: Call_GetContentModeration_601243; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the unsafe content analysis results for a Amazon Rekognition Video analysis started by <a>StartContentModeration</a>.</p> <p>Unsafe content analysis of a video is an asynchronous operation. You start analysis by calling <a>StartContentModeration</a> which returns a job identifier (<code>JobId</code>). When analysis finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartContentModeration</code>. To get the results of the unsafe content analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetContentModeration</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartContentModeration</code>. </p> <p>For more information, see Working with Stored Videos in the Amazon Rekognition Devlopers Guide.</p> <p> <code>GetContentModeration</code> returns detected unsafe content labels, and the time they are detected, in an array, <code>ModerationLabels</code>, of <a>ContentModerationDetection</a> objects. </p> <p>By default, the moderated labels are returned sorted by time, in milliseconds from the start of the video. You can also sort them by moderated label by specifying <code>NAME</code> for the <code>SortBy</code> input parameter. </p> <p>Since video analysis can return a large number of results, use the <code>MaxResults</code> parameter to limit the number of labels returned in a single call to <code>GetContentModeration</code>. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetContentModeration</code> and populate the <code>NextToken</code> request parameter with the value of <code>NextToken</code> returned from the previous call to <code>GetContentModeration</code>.</p> <p>For more information, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p>
   ## 
-  let valid = call_603253.validator(path, query, header, formData, body)
-  let scheme = call_603253.pickScheme
+  let valid = call_601257.validator(path, query, header, formData, body)
+  let scheme = call_601257.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603253.url(scheme.get, call_603253.host, call_603253.base,
-                         call_603253.route, valid.getOrDefault("path"))
-  result = hook(call_603253, url, valid)
+  let url = call_601257.url(scheme.get, call_601257.host, call_601257.base,
+                         call_601257.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601257, url, valid)
 
-proc call*(call_603254: Call_GetContentModeration_603239; body: JsonNode;
+proc call*(call_601258: Call_GetContentModeration_601243; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## getContentModeration
   ## <p>Gets the unsafe content analysis results for a Amazon Rekognition Video analysis started by <a>StartContentModeration</a>.</p> <p>Unsafe content analysis of a video is an asynchronous operation. You start analysis by calling <a>StartContentModeration</a> which returns a job identifier (<code>JobId</code>). When analysis finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartContentModeration</code>. To get the results of the unsafe content analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetContentModeration</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartContentModeration</code>. </p> <p>For more information, see Working with Stored Videos in the Amazon Rekognition Devlopers Guide.</p> <p> <code>GetContentModeration</code> returns detected unsafe content labels, and the time they are detected, in an array, <code>ModerationLabels</code>, of <a>ContentModerationDetection</a> objects. </p> <p>By default, the moderated labels are returned sorted by time, in milliseconds from the start of the video. You can also sort them by moderated label by specifying <code>NAME</code> for the <code>SortBy</code> input parameter. </p> <p>Since video analysis can return a large number of results, use the <code>MaxResults</code> parameter to limit the number of labels returned in a single call to <code>GetContentModeration</code>. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetContentModeration</code> and populate the <code>NextToken</code> request parameter with the value of <code>NextToken</code> returned from the previous call to <code>GetContentModeration</code>.</p> <p>For more information, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p>
@@ -1735,27 +1805,30 @@ proc call*(call_603254: Call_GetContentModeration_603239; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603255 = newJObject()
-  var body_603256 = newJObject()
-  add(query_603255, "NextToken", newJString(NextToken))
+  var query_601259 = newJObject()
+  var body_601260 = newJObject()
+  add(query_601259, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603256 = body
-  add(query_603255, "MaxResults", newJString(MaxResults))
-  result = call_603254.call(nil, query_603255, nil, nil, body_603256)
+    body_601260 = body
+  add(query_601259, "MaxResults", newJString(MaxResults))
+  result = call_601258.call(nil, query_601259, nil, nil, body_601260)
 
-var getContentModeration* = Call_GetContentModeration_603239(
+var getContentModeration* = Call_GetContentModeration_601243(
     name: "getContentModeration", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.GetContentModeration",
-    validator: validate_GetContentModeration_603240, base: "/",
-    url: url_GetContentModeration_603241, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetContentModeration_601244, base: "/",
+    url: url_GetContentModeration_601245, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetFaceDetection_603257 = ref object of OpenApiRestCall_602434
-proc url_GetFaceDetection_603259(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetFaceDetection_601261 = ref object of OpenApiRestCall_600438
+proc url_GetFaceDetection_601263(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetFaceDetection_603258(path: JsonNode; query: JsonNode;
+proc validate_GetFaceDetection_601262(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Gets face detection results for a Amazon Rekognition Video analysis started by <a>StartFaceDetection</a>.</p> <p>Face detection with Amazon Rekognition Video is an asynchronous operation. You start face detection by calling <a>StartFaceDetection</a> which returns a job identifier (<code>JobId</code>). When the face detection operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartFaceDetection</code>. To get the results of the face detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceDetection</code>.</p> <p> <code>GetFaceDetection</code> returns an array of detected faces (<code>Faces</code>) sorted by the time the faces were detected. </p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetFaceDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetFaceDetection</code>.</p>
@@ -1770,16 +1843,16 @@ proc validate_GetFaceDetection_603258(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603260 = query.getOrDefault("NextToken")
-  valid_603260 = validateParameter(valid_603260, JString, required = false,
+  var valid_601264 = query.getOrDefault("NextToken")
+  valid_601264 = validateParameter(valid_601264, JString, required = false,
                                  default = nil)
-  if valid_603260 != nil:
-    section.add "NextToken", valid_603260
-  var valid_603261 = query.getOrDefault("MaxResults")
-  valid_603261 = validateParameter(valid_603261, JString, required = false,
+  if valid_601264 != nil:
+    section.add "NextToken", valid_601264
+  var valid_601265 = query.getOrDefault("MaxResults")
+  valid_601265 = validateParameter(valid_601265, JString, required = false,
                                  default = nil)
-  if valid_603261 != nil:
-    section.add "MaxResults", valid_603261
+  if valid_601265 != nil:
+    section.add "MaxResults", valid_601265
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1791,48 +1864,48 @@ proc validate_GetFaceDetection_603258(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603262 = header.getOrDefault("X-Amz-Date")
-  valid_603262 = validateParameter(valid_603262, JString, required = false,
+  var valid_601266 = header.getOrDefault("X-Amz-Date")
+  valid_601266 = validateParameter(valid_601266, JString, required = false,
                                  default = nil)
-  if valid_603262 != nil:
-    section.add "X-Amz-Date", valid_603262
-  var valid_603263 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603263 = validateParameter(valid_603263, JString, required = false,
+  if valid_601266 != nil:
+    section.add "X-Amz-Date", valid_601266
+  var valid_601267 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601267 = validateParameter(valid_601267, JString, required = false,
                                  default = nil)
-  if valid_603263 != nil:
-    section.add "X-Amz-Security-Token", valid_603263
+  if valid_601267 != nil:
+    section.add "X-Amz-Security-Token", valid_601267
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603264 = header.getOrDefault("X-Amz-Target")
-  valid_603264 = validateParameter(valid_603264, JString, required = true, default = newJString(
+  var valid_601268 = header.getOrDefault("X-Amz-Target")
+  valid_601268 = validateParameter(valid_601268, JString, required = true, default = newJString(
       "RekognitionService.GetFaceDetection"))
-  if valid_603264 != nil:
-    section.add "X-Amz-Target", valid_603264
-  var valid_603265 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603265 = validateParameter(valid_603265, JString, required = false,
+  if valid_601268 != nil:
+    section.add "X-Amz-Target", valid_601268
+  var valid_601269 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601269 = validateParameter(valid_601269, JString, required = false,
                                  default = nil)
-  if valid_603265 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603265
-  var valid_603266 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603266 = validateParameter(valid_603266, JString, required = false,
+  if valid_601269 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601269
+  var valid_601270 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601270 = validateParameter(valid_601270, JString, required = false,
                                  default = nil)
-  if valid_603266 != nil:
-    section.add "X-Amz-Algorithm", valid_603266
-  var valid_603267 = header.getOrDefault("X-Amz-Signature")
-  valid_603267 = validateParameter(valid_603267, JString, required = false,
+  if valid_601270 != nil:
+    section.add "X-Amz-Algorithm", valid_601270
+  var valid_601271 = header.getOrDefault("X-Amz-Signature")
+  valid_601271 = validateParameter(valid_601271, JString, required = false,
                                  default = nil)
-  if valid_603267 != nil:
-    section.add "X-Amz-Signature", valid_603267
-  var valid_603268 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603268 = validateParameter(valid_603268, JString, required = false,
+  if valid_601271 != nil:
+    section.add "X-Amz-Signature", valid_601271
+  var valid_601272 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601272 = validateParameter(valid_601272, JString, required = false,
                                  default = nil)
-  if valid_603268 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603268
-  var valid_603269 = header.getOrDefault("X-Amz-Credential")
-  valid_603269 = validateParameter(valid_603269, JString, required = false,
+  if valid_601272 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601272
+  var valid_601273 = header.getOrDefault("X-Amz-Credential")
+  valid_601273 = validateParameter(valid_601273, JString, required = false,
                                  default = nil)
-  if valid_603269 != nil:
-    section.add "X-Amz-Credential", valid_603269
+  if valid_601273 != nil:
+    section.add "X-Amz-Credential", valid_601273
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1843,19 +1916,20 @@ proc validate_GetFaceDetection_603258(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603271: Call_GetFaceDetection_603257; path: JsonNode;
+proc call*(call_601275: Call_GetFaceDetection_601261; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets face detection results for a Amazon Rekognition Video analysis started by <a>StartFaceDetection</a>.</p> <p>Face detection with Amazon Rekognition Video is an asynchronous operation. You start face detection by calling <a>StartFaceDetection</a> which returns a job identifier (<code>JobId</code>). When the face detection operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartFaceDetection</code>. To get the results of the face detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceDetection</code>.</p> <p> <code>GetFaceDetection</code> returns an array of detected faces (<code>Faces</code>) sorted by the time the faces were detected. </p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetFaceDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetFaceDetection</code>.</p>
   ## 
-  let valid = call_603271.validator(path, query, header, formData, body)
-  let scheme = call_603271.pickScheme
+  let valid = call_601275.validator(path, query, header, formData, body)
+  let scheme = call_601275.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603271.url(scheme.get, call_603271.host, call_603271.base,
-                         call_603271.route, valid.getOrDefault("path"))
-  result = hook(call_603271, url, valid)
+  let url = call_601275.url(scheme.get, call_601275.host, call_601275.base,
+                         call_601275.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601275, url, valid)
 
-proc call*(call_603272: Call_GetFaceDetection_603257; body: JsonNode;
+proc call*(call_601276: Call_GetFaceDetection_601261; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## getFaceDetection
   ## <p>Gets face detection results for a Amazon Rekognition Video analysis started by <a>StartFaceDetection</a>.</p> <p>Face detection with Amazon Rekognition Video is an asynchronous operation. You start face detection by calling <a>StartFaceDetection</a> which returns a job identifier (<code>JobId</code>). When the face detection operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartFaceDetection</code>. To get the results of the face detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceDetection</code>.</p> <p> <code>GetFaceDetection</code> returns an array of detected faces (<code>Faces</code>) sorted by the time the faces were detected. </p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetFaceDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetFaceDetection</code>.</p>
@@ -1864,26 +1938,29 @@ proc call*(call_603272: Call_GetFaceDetection_603257; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603273 = newJObject()
-  var body_603274 = newJObject()
-  add(query_603273, "NextToken", newJString(NextToken))
+  var query_601277 = newJObject()
+  var body_601278 = newJObject()
+  add(query_601277, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603274 = body
-  add(query_603273, "MaxResults", newJString(MaxResults))
-  result = call_603272.call(nil, query_603273, nil, nil, body_603274)
+    body_601278 = body
+  add(query_601277, "MaxResults", newJString(MaxResults))
+  result = call_601276.call(nil, query_601277, nil, nil, body_601278)
 
-var getFaceDetection* = Call_GetFaceDetection_603257(name: "getFaceDetection",
+var getFaceDetection* = Call_GetFaceDetection_601261(name: "getFaceDetection",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.GetFaceDetection",
-    validator: validate_GetFaceDetection_603258, base: "/",
-    url: url_GetFaceDetection_603259, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetFaceDetection_601262, base: "/",
+    url: url_GetFaceDetection_601263, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetFaceSearch_603275 = ref object of OpenApiRestCall_602434
-proc url_GetFaceSearch_603277(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetFaceSearch_601279 = ref object of OpenApiRestCall_600438
+proc url_GetFaceSearch_601281(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetFaceSearch_603276(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetFaceSearch_601280(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets the face search results for Amazon Rekognition Video face search started by <a>StartFaceSearch</a>. The search returns faces in a collection that match the faces of persons detected in a video. It also includes the time(s) that faces are matched in the video.</p> <p>Face search in a video is an asynchronous operation. You start face search by calling to <a>StartFaceSearch</a> which returns a job identifier (<code>JobId</code>). When the search operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartFaceSearch</code>. To get the search results, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetFaceSearch</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceSearch</code>.</p> <p>For more information, see Searching Faces in a Collection in the Amazon Rekognition Developer Guide.</p> <p>The search results are retured in an array, <code>Persons</code>, of <a>PersonMatch</a> objects. Each<code>PersonMatch</code> element contains details about the matching faces in the input collection, person information (facial attributes, bounding boxes, and person identifer) for the matched person, and the time the person was matched in the video.</p> <note> <p> <code>GetFaceSearch</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. For more information, see FaceDetail in the Amazon Rekognition Developer Guide. </p> </note> <p>By default, the <code>Persons</code> array is sorted by the time, in milliseconds from the start of the video, persons are matched. You can also sort by persons by specifying <code>INDEX</code> for the <code>SORTBY</code> input parameter.</p>
   ## 
@@ -1897,16 +1974,16 @@ proc validate_GetFaceSearch_603276(path: JsonNode; query: JsonNode; header: Json
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603278 = query.getOrDefault("NextToken")
-  valid_603278 = validateParameter(valid_603278, JString, required = false,
+  var valid_601282 = query.getOrDefault("NextToken")
+  valid_601282 = validateParameter(valid_601282, JString, required = false,
                                  default = nil)
-  if valid_603278 != nil:
-    section.add "NextToken", valid_603278
-  var valid_603279 = query.getOrDefault("MaxResults")
-  valid_603279 = validateParameter(valid_603279, JString, required = false,
+  if valid_601282 != nil:
+    section.add "NextToken", valid_601282
+  var valid_601283 = query.getOrDefault("MaxResults")
+  valid_601283 = validateParameter(valid_601283, JString, required = false,
                                  default = nil)
-  if valid_603279 != nil:
-    section.add "MaxResults", valid_603279
+  if valid_601283 != nil:
+    section.add "MaxResults", valid_601283
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1918,48 +1995,48 @@ proc validate_GetFaceSearch_603276(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603280 = header.getOrDefault("X-Amz-Date")
-  valid_603280 = validateParameter(valid_603280, JString, required = false,
+  var valid_601284 = header.getOrDefault("X-Amz-Date")
+  valid_601284 = validateParameter(valid_601284, JString, required = false,
                                  default = nil)
-  if valid_603280 != nil:
-    section.add "X-Amz-Date", valid_603280
-  var valid_603281 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603281 = validateParameter(valid_603281, JString, required = false,
+  if valid_601284 != nil:
+    section.add "X-Amz-Date", valid_601284
+  var valid_601285 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601285 = validateParameter(valid_601285, JString, required = false,
                                  default = nil)
-  if valid_603281 != nil:
-    section.add "X-Amz-Security-Token", valid_603281
+  if valid_601285 != nil:
+    section.add "X-Amz-Security-Token", valid_601285
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603282 = header.getOrDefault("X-Amz-Target")
-  valid_603282 = validateParameter(valid_603282, JString, required = true, default = newJString(
+  var valid_601286 = header.getOrDefault("X-Amz-Target")
+  valid_601286 = validateParameter(valid_601286, JString, required = true, default = newJString(
       "RekognitionService.GetFaceSearch"))
-  if valid_603282 != nil:
-    section.add "X-Amz-Target", valid_603282
-  var valid_603283 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603283 = validateParameter(valid_603283, JString, required = false,
+  if valid_601286 != nil:
+    section.add "X-Amz-Target", valid_601286
+  var valid_601287 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601287 = validateParameter(valid_601287, JString, required = false,
                                  default = nil)
-  if valid_603283 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603283
-  var valid_603284 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603284 = validateParameter(valid_603284, JString, required = false,
+  if valid_601287 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601287
+  var valid_601288 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601288 = validateParameter(valid_601288, JString, required = false,
                                  default = nil)
-  if valid_603284 != nil:
-    section.add "X-Amz-Algorithm", valid_603284
-  var valid_603285 = header.getOrDefault("X-Amz-Signature")
-  valid_603285 = validateParameter(valid_603285, JString, required = false,
+  if valid_601288 != nil:
+    section.add "X-Amz-Algorithm", valid_601288
+  var valid_601289 = header.getOrDefault("X-Amz-Signature")
+  valid_601289 = validateParameter(valid_601289, JString, required = false,
                                  default = nil)
-  if valid_603285 != nil:
-    section.add "X-Amz-Signature", valid_603285
-  var valid_603286 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603286 = validateParameter(valid_603286, JString, required = false,
+  if valid_601289 != nil:
+    section.add "X-Amz-Signature", valid_601289
+  var valid_601290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601290 = validateParameter(valid_601290, JString, required = false,
                                  default = nil)
-  if valid_603286 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603286
-  var valid_603287 = header.getOrDefault("X-Amz-Credential")
-  valid_603287 = validateParameter(valid_603287, JString, required = false,
+  if valid_601290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601290
+  var valid_601291 = header.getOrDefault("X-Amz-Credential")
+  valid_601291 = validateParameter(valid_601291, JString, required = false,
                                  default = nil)
-  if valid_603287 != nil:
-    section.add "X-Amz-Credential", valid_603287
+  if valid_601291 != nil:
+    section.add "X-Amz-Credential", valid_601291
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1970,19 +2047,20 @@ proc validate_GetFaceSearch_603276(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603289: Call_GetFaceSearch_603275; path: JsonNode; query: JsonNode;
+proc call*(call_601293: Call_GetFaceSearch_601279; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the face search results for Amazon Rekognition Video face search started by <a>StartFaceSearch</a>. The search returns faces in a collection that match the faces of persons detected in a video. It also includes the time(s) that faces are matched in the video.</p> <p>Face search in a video is an asynchronous operation. You start face search by calling to <a>StartFaceSearch</a> which returns a job identifier (<code>JobId</code>). When the search operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartFaceSearch</code>. To get the search results, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetFaceSearch</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceSearch</code>.</p> <p>For more information, see Searching Faces in a Collection in the Amazon Rekognition Developer Guide.</p> <p>The search results are retured in an array, <code>Persons</code>, of <a>PersonMatch</a> objects. Each<code>PersonMatch</code> element contains details about the matching faces in the input collection, person information (facial attributes, bounding boxes, and person identifer) for the matched person, and the time the person was matched in the video.</p> <note> <p> <code>GetFaceSearch</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. For more information, see FaceDetail in the Amazon Rekognition Developer Guide. </p> </note> <p>By default, the <code>Persons</code> array is sorted by the time, in milliseconds from the start of the video, persons are matched. You can also sort by persons by specifying <code>INDEX</code> for the <code>SORTBY</code> input parameter.</p>
   ## 
-  let valid = call_603289.validator(path, query, header, formData, body)
-  let scheme = call_603289.pickScheme
+  let valid = call_601293.validator(path, query, header, formData, body)
+  let scheme = call_601293.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603289.url(scheme.get, call_603289.host, call_603289.base,
-                         call_603289.route, valid.getOrDefault("path"))
-  result = hook(call_603289, url, valid)
+  let url = call_601293.url(scheme.get, call_601293.host, call_601293.base,
+                         call_601293.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601293, url, valid)
 
-proc call*(call_603290: Call_GetFaceSearch_603275; body: JsonNode;
+proc call*(call_601294: Call_GetFaceSearch_601279; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## getFaceSearch
   ## <p>Gets the face search results for Amazon Rekognition Video face search started by <a>StartFaceSearch</a>. The search returns faces in a collection that match the faces of persons detected in a video. It also includes the time(s) that faces are matched in the video.</p> <p>Face search in a video is an asynchronous operation. You start face search by calling to <a>StartFaceSearch</a> which returns a job identifier (<code>JobId</code>). When the search operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartFaceSearch</code>. To get the search results, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <code>GetFaceSearch</code> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceSearch</code>.</p> <p>For more information, see Searching Faces in a Collection in the Amazon Rekognition Developer Guide.</p> <p>The search results are retured in an array, <code>Persons</code>, of <a>PersonMatch</a> objects. Each<code>PersonMatch</code> element contains details about the matching faces in the input collection, person information (facial attributes, bounding boxes, and person identifer) for the matched person, and the time the person was matched in the video.</p> <note> <p> <code>GetFaceSearch</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. For more information, see FaceDetail in the Amazon Rekognition Developer Guide. </p> </note> <p>By default, the <code>Persons</code> array is sorted by the time, in milliseconds from the start of the video, persons are matched. You can also sort by persons by specifying <code>INDEX</code> for the <code>SORTBY</code> input parameter.</p>
@@ -1991,26 +2069,29 @@ proc call*(call_603290: Call_GetFaceSearch_603275; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603291 = newJObject()
-  var body_603292 = newJObject()
-  add(query_603291, "NextToken", newJString(NextToken))
+  var query_601295 = newJObject()
+  var body_601296 = newJObject()
+  add(query_601295, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603292 = body
-  add(query_603291, "MaxResults", newJString(MaxResults))
-  result = call_603290.call(nil, query_603291, nil, nil, body_603292)
+    body_601296 = body
+  add(query_601295, "MaxResults", newJString(MaxResults))
+  result = call_601294.call(nil, query_601295, nil, nil, body_601296)
 
-var getFaceSearch* = Call_GetFaceSearch_603275(name: "getFaceSearch",
+var getFaceSearch* = Call_GetFaceSearch_601279(name: "getFaceSearch",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.GetFaceSearch",
-    validator: validate_GetFaceSearch_603276, base: "/", url: url_GetFaceSearch_603277,
+    validator: validate_GetFaceSearch_601280, base: "/", url: url_GetFaceSearch_601281,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLabelDetection_603293 = ref object of OpenApiRestCall_602434
-proc url_GetLabelDetection_603295(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetLabelDetection_601297 = ref object of OpenApiRestCall_600438
+proc url_GetLabelDetection_601299(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetLabelDetection_603294(path: JsonNode; query: JsonNode;
+proc validate_GetLabelDetection_601298(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Gets the label detection results of a Amazon Rekognition Video analysis started by <a>StartLabelDetection</a>. </p> <p>The label detection operation is started by a call to <a>StartLabelDetection</a> which returns a job identifier (<code>JobId</code>). When the label detection operation finishes, Amazon Rekognition publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartlabelDetection</code>. To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p> <code>GetLabelDetection</code> returns an array of detected labels (<code>Labels</code>) sorted by the time the labels were detected. You can also sort by the label name by specifying <code>NAME</code> for the <code>SortBy</code> input parameter.</p> <p>The labels returned include the label name, the percentage confidence in the accuracy of the detected label, and the time the label was detected in the video.</p> <p>The returned labels also include bounding box information for common objects, a hierarchical taxonomy of detected labels, and the version of the label model used for detection.</p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetlabelDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetLabelDetection</code>.</p>
@@ -2025,16 +2106,16 @@ proc validate_GetLabelDetection_603294(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603296 = query.getOrDefault("NextToken")
-  valid_603296 = validateParameter(valid_603296, JString, required = false,
+  var valid_601300 = query.getOrDefault("NextToken")
+  valid_601300 = validateParameter(valid_601300, JString, required = false,
                                  default = nil)
-  if valid_603296 != nil:
-    section.add "NextToken", valid_603296
-  var valid_603297 = query.getOrDefault("MaxResults")
-  valid_603297 = validateParameter(valid_603297, JString, required = false,
+  if valid_601300 != nil:
+    section.add "NextToken", valid_601300
+  var valid_601301 = query.getOrDefault("MaxResults")
+  valid_601301 = validateParameter(valid_601301, JString, required = false,
                                  default = nil)
-  if valid_603297 != nil:
-    section.add "MaxResults", valid_603297
+  if valid_601301 != nil:
+    section.add "MaxResults", valid_601301
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2046,48 +2127,48 @@ proc validate_GetLabelDetection_603294(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603298 = header.getOrDefault("X-Amz-Date")
-  valid_603298 = validateParameter(valid_603298, JString, required = false,
+  var valid_601302 = header.getOrDefault("X-Amz-Date")
+  valid_601302 = validateParameter(valid_601302, JString, required = false,
                                  default = nil)
-  if valid_603298 != nil:
-    section.add "X-Amz-Date", valid_603298
-  var valid_603299 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603299 = validateParameter(valid_603299, JString, required = false,
+  if valid_601302 != nil:
+    section.add "X-Amz-Date", valid_601302
+  var valid_601303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601303 = validateParameter(valid_601303, JString, required = false,
                                  default = nil)
-  if valid_603299 != nil:
-    section.add "X-Amz-Security-Token", valid_603299
+  if valid_601303 != nil:
+    section.add "X-Amz-Security-Token", valid_601303
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603300 = header.getOrDefault("X-Amz-Target")
-  valid_603300 = validateParameter(valid_603300, JString, required = true, default = newJString(
+  var valid_601304 = header.getOrDefault("X-Amz-Target")
+  valid_601304 = validateParameter(valid_601304, JString, required = true, default = newJString(
       "RekognitionService.GetLabelDetection"))
-  if valid_603300 != nil:
-    section.add "X-Amz-Target", valid_603300
-  var valid_603301 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603301 = validateParameter(valid_603301, JString, required = false,
+  if valid_601304 != nil:
+    section.add "X-Amz-Target", valid_601304
+  var valid_601305 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601305 = validateParameter(valid_601305, JString, required = false,
                                  default = nil)
-  if valid_603301 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603301
-  var valid_603302 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603302 = validateParameter(valid_603302, JString, required = false,
+  if valid_601305 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601305
+  var valid_601306 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601306 = validateParameter(valid_601306, JString, required = false,
                                  default = nil)
-  if valid_603302 != nil:
-    section.add "X-Amz-Algorithm", valid_603302
-  var valid_603303 = header.getOrDefault("X-Amz-Signature")
-  valid_603303 = validateParameter(valid_603303, JString, required = false,
+  if valid_601306 != nil:
+    section.add "X-Amz-Algorithm", valid_601306
+  var valid_601307 = header.getOrDefault("X-Amz-Signature")
+  valid_601307 = validateParameter(valid_601307, JString, required = false,
                                  default = nil)
-  if valid_603303 != nil:
-    section.add "X-Amz-Signature", valid_603303
-  var valid_603304 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603304 = validateParameter(valid_603304, JString, required = false,
+  if valid_601307 != nil:
+    section.add "X-Amz-Signature", valid_601307
+  var valid_601308 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601308 = validateParameter(valid_601308, JString, required = false,
                                  default = nil)
-  if valid_603304 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603304
-  var valid_603305 = header.getOrDefault("X-Amz-Credential")
-  valid_603305 = validateParameter(valid_603305, JString, required = false,
+  if valid_601308 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601308
+  var valid_601309 = header.getOrDefault("X-Amz-Credential")
+  valid_601309 = validateParameter(valid_601309, JString, required = false,
                                  default = nil)
-  if valid_603305 != nil:
-    section.add "X-Amz-Credential", valid_603305
+  if valid_601309 != nil:
+    section.add "X-Amz-Credential", valid_601309
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2098,19 +2179,20 @@ proc validate_GetLabelDetection_603294(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603307: Call_GetLabelDetection_603293; path: JsonNode;
+proc call*(call_601311: Call_GetLabelDetection_601297; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the label detection results of a Amazon Rekognition Video analysis started by <a>StartLabelDetection</a>. </p> <p>The label detection operation is started by a call to <a>StartLabelDetection</a> which returns a job identifier (<code>JobId</code>). When the label detection operation finishes, Amazon Rekognition publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartlabelDetection</code>. To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p> <code>GetLabelDetection</code> returns an array of detected labels (<code>Labels</code>) sorted by the time the labels were detected. You can also sort by the label name by specifying <code>NAME</code> for the <code>SortBy</code> input parameter.</p> <p>The labels returned include the label name, the percentage confidence in the accuracy of the detected label, and the time the label was detected in the video.</p> <p>The returned labels also include bounding box information for common objects, a hierarchical taxonomy of detected labels, and the version of the label model used for detection.</p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetlabelDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetLabelDetection</code>.</p>
   ## 
-  let valid = call_603307.validator(path, query, header, formData, body)
-  let scheme = call_603307.pickScheme
+  let valid = call_601311.validator(path, query, header, formData, body)
+  let scheme = call_601311.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603307.url(scheme.get, call_603307.host, call_603307.base,
-                         call_603307.route, valid.getOrDefault("path"))
-  result = hook(call_603307, url, valid)
+  let url = call_601311.url(scheme.get, call_601311.host, call_601311.base,
+                         call_601311.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601311, url, valid)
 
-proc call*(call_603308: Call_GetLabelDetection_603293; body: JsonNode;
+proc call*(call_601312: Call_GetLabelDetection_601297; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## getLabelDetection
   ## <p>Gets the label detection results of a Amazon Rekognition Video analysis started by <a>StartLabelDetection</a>. </p> <p>The label detection operation is started by a call to <a>StartLabelDetection</a> which returns a job identifier (<code>JobId</code>). When the label detection operation finishes, Amazon Rekognition publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartlabelDetection</code>. To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p> <code>GetLabelDetection</code> returns an array of detected labels (<code>Labels</code>) sorted by the time the labels were detected. You can also sort by the label name by specifying <code>NAME</code> for the <code>SortBy</code> input parameter.</p> <p>The labels returned include the label name, the percentage confidence in the accuracy of the detected label, and the time the label was detected in the video.</p> <p>The returned labels also include bounding box information for common objects, a hierarchical taxonomy of detected labels, and the version of the label model used for detection.</p> <p>Use MaxResults parameter to limit the number of labels returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetlabelDetection</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetLabelDetection</code>.</p>
@@ -2119,26 +2201,29 @@ proc call*(call_603308: Call_GetLabelDetection_603293; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603309 = newJObject()
-  var body_603310 = newJObject()
-  add(query_603309, "NextToken", newJString(NextToken))
+  var query_601313 = newJObject()
+  var body_601314 = newJObject()
+  add(query_601313, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603310 = body
-  add(query_603309, "MaxResults", newJString(MaxResults))
-  result = call_603308.call(nil, query_603309, nil, nil, body_603310)
+    body_601314 = body
+  add(query_601313, "MaxResults", newJString(MaxResults))
+  result = call_601312.call(nil, query_601313, nil, nil, body_601314)
 
-var getLabelDetection* = Call_GetLabelDetection_603293(name: "getLabelDetection",
+var getLabelDetection* = Call_GetLabelDetection_601297(name: "getLabelDetection",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.GetLabelDetection",
-    validator: validate_GetLabelDetection_603294, base: "/",
-    url: url_GetLabelDetection_603295, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetLabelDetection_601298, base: "/",
+    url: url_GetLabelDetection_601299, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetPersonTracking_603311 = ref object of OpenApiRestCall_602434
-proc url_GetPersonTracking_603313(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetPersonTracking_601315 = ref object of OpenApiRestCall_600438
+proc url_GetPersonTracking_601317(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetPersonTracking_603312(path: JsonNode; query: JsonNode;
+proc validate_GetPersonTracking_601316(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Gets the path tracking results of a Amazon Rekognition Video analysis started by <a>StartPersonTracking</a>.</p> <p>The person path tracking operation is started by a call to <code>StartPersonTracking</code> which returns a job identifier (<code>JobId</code>). When the operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartPersonTracking</code>.</p> <p>To get the results of the person path tracking operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetPersonTracking</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartPersonTracking</code>.</p> <p> <code>GetPersonTracking</code> returns an array, <code>Persons</code>, of tracked persons and the time(s) their paths were tracked in the video. </p> <note> <p> <code>GetPersonTracking</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. </p> <p>For more information, see FaceDetail in the Amazon Rekognition Developer Guide.</p> </note> <p>By default, the array is sorted by the time(s) a person's path is tracked in the video. You can sort by tracked persons by specifying <code>INDEX</code> for the <code>SortBy</code> input parameter.</p> <p>Use the <code>MaxResults</code> parameter to limit the number of items returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetPersonTracking</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetPersonTracking</code>.</p>
@@ -2153,16 +2238,16 @@ proc validate_GetPersonTracking_603312(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603314 = query.getOrDefault("NextToken")
-  valid_603314 = validateParameter(valid_603314, JString, required = false,
+  var valid_601318 = query.getOrDefault("NextToken")
+  valid_601318 = validateParameter(valid_601318, JString, required = false,
                                  default = nil)
-  if valid_603314 != nil:
-    section.add "NextToken", valid_603314
-  var valid_603315 = query.getOrDefault("MaxResults")
-  valid_603315 = validateParameter(valid_603315, JString, required = false,
+  if valid_601318 != nil:
+    section.add "NextToken", valid_601318
+  var valid_601319 = query.getOrDefault("MaxResults")
+  valid_601319 = validateParameter(valid_601319, JString, required = false,
                                  default = nil)
-  if valid_603315 != nil:
-    section.add "MaxResults", valid_603315
+  if valid_601319 != nil:
+    section.add "MaxResults", valid_601319
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2174,48 +2259,48 @@ proc validate_GetPersonTracking_603312(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603316 = header.getOrDefault("X-Amz-Date")
-  valid_603316 = validateParameter(valid_603316, JString, required = false,
+  var valid_601320 = header.getOrDefault("X-Amz-Date")
+  valid_601320 = validateParameter(valid_601320, JString, required = false,
                                  default = nil)
-  if valid_603316 != nil:
-    section.add "X-Amz-Date", valid_603316
-  var valid_603317 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603317 = validateParameter(valid_603317, JString, required = false,
+  if valid_601320 != nil:
+    section.add "X-Amz-Date", valid_601320
+  var valid_601321 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601321 = validateParameter(valid_601321, JString, required = false,
                                  default = nil)
-  if valid_603317 != nil:
-    section.add "X-Amz-Security-Token", valid_603317
+  if valid_601321 != nil:
+    section.add "X-Amz-Security-Token", valid_601321
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603318 = header.getOrDefault("X-Amz-Target")
-  valid_603318 = validateParameter(valid_603318, JString, required = true, default = newJString(
+  var valid_601322 = header.getOrDefault("X-Amz-Target")
+  valid_601322 = validateParameter(valid_601322, JString, required = true, default = newJString(
       "RekognitionService.GetPersonTracking"))
-  if valid_603318 != nil:
-    section.add "X-Amz-Target", valid_603318
-  var valid_603319 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603319 = validateParameter(valid_603319, JString, required = false,
+  if valid_601322 != nil:
+    section.add "X-Amz-Target", valid_601322
+  var valid_601323 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601323 = validateParameter(valid_601323, JString, required = false,
                                  default = nil)
-  if valid_603319 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603319
-  var valid_603320 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603320 = validateParameter(valid_603320, JString, required = false,
+  if valid_601323 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601323
+  var valid_601324 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601324 = validateParameter(valid_601324, JString, required = false,
                                  default = nil)
-  if valid_603320 != nil:
-    section.add "X-Amz-Algorithm", valid_603320
-  var valid_603321 = header.getOrDefault("X-Amz-Signature")
-  valid_603321 = validateParameter(valid_603321, JString, required = false,
+  if valid_601324 != nil:
+    section.add "X-Amz-Algorithm", valid_601324
+  var valid_601325 = header.getOrDefault("X-Amz-Signature")
+  valid_601325 = validateParameter(valid_601325, JString, required = false,
                                  default = nil)
-  if valid_603321 != nil:
-    section.add "X-Amz-Signature", valid_603321
-  var valid_603322 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603322 = validateParameter(valid_603322, JString, required = false,
+  if valid_601325 != nil:
+    section.add "X-Amz-Signature", valid_601325
+  var valid_601326 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601326 = validateParameter(valid_601326, JString, required = false,
                                  default = nil)
-  if valid_603322 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603322
-  var valid_603323 = header.getOrDefault("X-Amz-Credential")
-  valid_603323 = validateParameter(valid_603323, JString, required = false,
+  if valid_601326 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601326
+  var valid_601327 = header.getOrDefault("X-Amz-Credential")
+  valid_601327 = validateParameter(valid_601327, JString, required = false,
                                  default = nil)
-  if valid_603323 != nil:
-    section.add "X-Amz-Credential", valid_603323
+  if valid_601327 != nil:
+    section.add "X-Amz-Credential", valid_601327
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2226,19 +2311,20 @@ proc validate_GetPersonTracking_603312(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603325: Call_GetPersonTracking_603311; path: JsonNode;
+proc call*(call_601329: Call_GetPersonTracking_601315; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the path tracking results of a Amazon Rekognition Video analysis started by <a>StartPersonTracking</a>.</p> <p>The person path tracking operation is started by a call to <code>StartPersonTracking</code> which returns a job identifier (<code>JobId</code>). When the operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartPersonTracking</code>.</p> <p>To get the results of the person path tracking operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetPersonTracking</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartPersonTracking</code>.</p> <p> <code>GetPersonTracking</code> returns an array, <code>Persons</code>, of tracked persons and the time(s) their paths were tracked in the video. </p> <note> <p> <code>GetPersonTracking</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. </p> <p>For more information, see FaceDetail in the Amazon Rekognition Developer Guide.</p> </note> <p>By default, the array is sorted by the time(s) a person's path is tracked in the video. You can sort by tracked persons by specifying <code>INDEX</code> for the <code>SortBy</code> input parameter.</p> <p>Use the <code>MaxResults</code> parameter to limit the number of items returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetPersonTracking</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetPersonTracking</code>.</p>
   ## 
-  let valid = call_603325.validator(path, query, header, formData, body)
-  let scheme = call_603325.pickScheme
+  let valid = call_601329.validator(path, query, header, formData, body)
+  let scheme = call_601329.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603325.url(scheme.get, call_603325.host, call_603325.base,
-                         call_603325.route, valid.getOrDefault("path"))
-  result = hook(call_603325, url, valid)
+  let url = call_601329.url(scheme.get, call_601329.host, call_601329.base,
+                         call_601329.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601329, url, valid)
 
-proc call*(call_603326: Call_GetPersonTracking_603311; body: JsonNode;
+proc call*(call_601330: Call_GetPersonTracking_601315; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## getPersonTracking
   ## <p>Gets the path tracking results of a Amazon Rekognition Video analysis started by <a>StartPersonTracking</a>.</p> <p>The person path tracking operation is started by a call to <code>StartPersonTracking</code> which returns a job identifier (<code>JobId</code>). When the operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to <code>StartPersonTracking</code>.</p> <p>To get the results of the person path tracking operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetPersonTracking</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartPersonTracking</code>.</p> <p> <code>GetPersonTracking</code> returns an array, <code>Persons</code>, of tracked persons and the time(s) their paths were tracked in the video. </p> <note> <p> <code>GetPersonTracking</code> only returns the default facial attributes (<code>BoundingBox</code>, <code>Confidence</code>, <code>Landmarks</code>, <code>Pose</code>, and <code>Quality</code>). The other facial attributes listed in the <code>Face</code> object of the following response syntax are not returned. </p> <p>For more information, see FaceDetail in the Amazon Rekognition Developer Guide.</p> </note> <p>By default, the array is sorted by the time(s) a person's path is tracked in the video. You can sort by tracked persons by specifying <code>INDEX</code> for the <code>SortBy</code> input parameter.</p> <p>Use the <code>MaxResults</code> parameter to limit the number of items returned. If there are more results than specified in <code>MaxResults</code>, the value of <code>NextToken</code> in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call <code>GetPersonTracking</code> and populate the <code>NextToken</code> request parameter with the token value returned from the previous call to <code>GetPersonTracking</code>.</p>
@@ -2247,26 +2333,29 @@ proc call*(call_603326: Call_GetPersonTracking_603311; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603327 = newJObject()
-  var body_603328 = newJObject()
-  add(query_603327, "NextToken", newJString(NextToken))
+  var query_601331 = newJObject()
+  var body_601332 = newJObject()
+  add(query_601331, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603328 = body
-  add(query_603327, "MaxResults", newJString(MaxResults))
-  result = call_603326.call(nil, query_603327, nil, nil, body_603328)
+    body_601332 = body
+  add(query_601331, "MaxResults", newJString(MaxResults))
+  result = call_601330.call(nil, query_601331, nil, nil, body_601332)
 
-var getPersonTracking* = Call_GetPersonTracking_603311(name: "getPersonTracking",
+var getPersonTracking* = Call_GetPersonTracking_601315(name: "getPersonTracking",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.GetPersonTracking",
-    validator: validate_GetPersonTracking_603312, base: "/",
-    url: url_GetPersonTracking_603313, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetPersonTracking_601316, base: "/",
+    url: url_GetPersonTracking_601317, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_IndexFaces_603329 = ref object of OpenApiRestCall_602434
-proc url_IndexFaces_603331(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_IndexFaces_601333 = ref object of OpenApiRestCall_600438
+proc url_IndexFaces_601335(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_IndexFaces_603330(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_IndexFaces_601334(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Detects faces in the input image and adds them to the specified collection. </p> <p>Amazon Rekognition doesn't save the actual faces that are detected. Instead, the underlying detection algorithm first detects the faces in the input image. For each face, the algorithm extracts facial features into a feature vector, and stores it in the backend database. Amazon Rekognition uses feature vectors when it performs face match and search operations using the <a>SearchFaces</a> and <a>SearchFacesByImage</a> operations.</p> <p>For more information, see Adding Faces to a Collection in the Amazon Rekognition Developer Guide.</p> <p>To get the number of faces in a collection, call <a>DescribeCollection</a>. </p> <p>If you're using version 1.0 of the face detection model, <code>IndexFaces</code> indexes the 15 largest faces in the input image. Later versions of the face detection model index the 100 largest faces in the input image. </p> <p>If you're using version 4 or later of the face model, image orientation information is not returned in the <code>OrientationCorrection</code> field. </p> <p>To determine which version of the model you're using, call <a>DescribeCollection</a> and supply the collection ID. You can also get the model version from the value of <code>FaceModelVersion</code> in the response from <code>IndexFaces</code> </p> <p>For more information, see Model Versioning in the Amazon Rekognition Developer Guide.</p> <p>If you provide the optional <code>ExternalImageID</code> for the input image you provided, Amazon Rekognition associates this ID with all faces that it detects. When you call the <a>ListFaces</a> operation, the response returns the external ID. You can use this external image ID to create a client-side index to associate the faces with each image. You can then use the index to find all faces in an image.</p> <p>You can specify the maximum number of faces to index with the <code>MaxFaces</code> input parameter. This is useful when you want to index the largest faces in an image and don't want to index smaller faces, such as those belonging to people standing in the background.</p> <p>The <code>QualityFilter</code> input parameter allows you to filter out detected faces that don’t meet the required quality bar chosen by Amazon Rekognition. The quality bar is based on a variety of common use cases. By default, <code>IndexFaces</code> filters detected faces. You can also explicitly filter detected faces by specifying <code>AUTO</code> for the value of <code>QualityFilter</code>. If you do not want to filter detected faces, specify <code>NONE</code>. </p> <note> <p>To use quality filtering, you need a collection associated with version 3 of the face model. To get the version of the face model associated with a collection, call <a>DescribeCollection</a>. </p> </note> <p>Information about faces detected in an image, but not indexed, is returned in an array of <a>UnindexedFace</a> objects, <code>UnindexedFaces</code>. Faces aren't indexed for reasons such as:</p> <ul> <li> <p>The number of faces detected exceeds the value of the <code>MaxFaces</code> request parameter.</p> </li> <li> <p>The face is too small compared to the image dimensions.</p> </li> <li> <p>The face is too blurry.</p> </li> <li> <p>The image is too dark.</p> </li> <li> <p>The face has an extreme pose.</p> </li> </ul> <p>In response, the <code>IndexFaces</code> operation returns an array of metadata for all detected faces, <code>FaceRecords</code>. This includes: </p> <ul> <li> <p>The bounding box, <code>BoundingBox</code>, of the detected face. </p> </li> <li> <p>A confidence value, <code>Confidence</code>, which indicates the confidence that the bounding box contains a face.</p> </li> <li> <p>A face ID, <code>FaceId</code>, assigned by the service for each face that's detected and stored.</p> </li> <li> <p>An image ID, <code>ImageId</code>, assigned by the service for the input image.</p> </li> </ul> <p>If you request all facial attributes (by using the <code>detectionAttributes</code> parameter), Amazon Rekognition returns detailed facial attributes, such as facial landmarks (for example, location of eye and mouth) and other facial attributes like gender. If you provide the same image, specify the same collection, and use the same external ID in the <code>IndexFaces</code> operation, Amazon Rekognition doesn't save duplicate face metadata.</p> <p/> <p>The input image is passed either as base64-encoded image bytes, or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn't supported. The image must be formatted as a PNG or JPEG file. </p> <p>This operation requires permissions to perform the <code>rekognition:IndexFaces</code> action.</p>
   ## 
@@ -2286,48 +2375,48 @@ proc validate_IndexFaces_603330(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603332 = header.getOrDefault("X-Amz-Date")
-  valid_603332 = validateParameter(valid_603332, JString, required = false,
+  var valid_601336 = header.getOrDefault("X-Amz-Date")
+  valid_601336 = validateParameter(valid_601336, JString, required = false,
                                  default = nil)
-  if valid_603332 != nil:
-    section.add "X-Amz-Date", valid_603332
-  var valid_603333 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603333 = validateParameter(valid_603333, JString, required = false,
+  if valid_601336 != nil:
+    section.add "X-Amz-Date", valid_601336
+  var valid_601337 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601337 = validateParameter(valid_601337, JString, required = false,
                                  default = nil)
-  if valid_603333 != nil:
-    section.add "X-Amz-Security-Token", valid_603333
+  if valid_601337 != nil:
+    section.add "X-Amz-Security-Token", valid_601337
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603334 = header.getOrDefault("X-Amz-Target")
-  valid_603334 = validateParameter(valid_603334, JString, required = true, default = newJString(
+  var valid_601338 = header.getOrDefault("X-Amz-Target")
+  valid_601338 = validateParameter(valid_601338, JString, required = true, default = newJString(
       "RekognitionService.IndexFaces"))
-  if valid_603334 != nil:
-    section.add "X-Amz-Target", valid_603334
-  var valid_603335 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603335 = validateParameter(valid_603335, JString, required = false,
+  if valid_601338 != nil:
+    section.add "X-Amz-Target", valid_601338
+  var valid_601339 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601339 = validateParameter(valid_601339, JString, required = false,
                                  default = nil)
-  if valid_603335 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603335
-  var valid_603336 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603336 = validateParameter(valid_603336, JString, required = false,
+  if valid_601339 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601339
+  var valid_601340 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601340 = validateParameter(valid_601340, JString, required = false,
                                  default = nil)
-  if valid_603336 != nil:
-    section.add "X-Amz-Algorithm", valid_603336
-  var valid_603337 = header.getOrDefault("X-Amz-Signature")
-  valid_603337 = validateParameter(valid_603337, JString, required = false,
+  if valid_601340 != nil:
+    section.add "X-Amz-Algorithm", valid_601340
+  var valid_601341 = header.getOrDefault("X-Amz-Signature")
+  valid_601341 = validateParameter(valid_601341, JString, required = false,
                                  default = nil)
-  if valid_603337 != nil:
-    section.add "X-Amz-Signature", valid_603337
-  var valid_603338 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603338 = validateParameter(valid_603338, JString, required = false,
+  if valid_601341 != nil:
+    section.add "X-Amz-Signature", valid_601341
+  var valid_601342 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601342 = validateParameter(valid_601342, JString, required = false,
                                  default = nil)
-  if valid_603338 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603338
-  var valid_603339 = header.getOrDefault("X-Amz-Credential")
-  valid_603339 = validateParameter(valid_603339, JString, required = false,
+  if valid_601342 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601342
+  var valid_601343 = header.getOrDefault("X-Amz-Credential")
+  valid_601343 = validateParameter(valid_601343, JString, required = false,
                                  default = nil)
-  if valid_603339 != nil:
-    section.add "X-Amz-Credential", valid_603339
+  if valid_601343 != nil:
+    section.add "X-Amz-Credential", valid_601343
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2338,40 +2427,44 @@ proc validate_IndexFaces_603330(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603341: Call_IndexFaces_603329; path: JsonNode; query: JsonNode;
+proc call*(call_601345: Call_IndexFaces_601333; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Detects faces in the input image and adds them to the specified collection. </p> <p>Amazon Rekognition doesn't save the actual faces that are detected. Instead, the underlying detection algorithm first detects the faces in the input image. For each face, the algorithm extracts facial features into a feature vector, and stores it in the backend database. Amazon Rekognition uses feature vectors when it performs face match and search operations using the <a>SearchFaces</a> and <a>SearchFacesByImage</a> operations.</p> <p>For more information, see Adding Faces to a Collection in the Amazon Rekognition Developer Guide.</p> <p>To get the number of faces in a collection, call <a>DescribeCollection</a>. </p> <p>If you're using version 1.0 of the face detection model, <code>IndexFaces</code> indexes the 15 largest faces in the input image. Later versions of the face detection model index the 100 largest faces in the input image. </p> <p>If you're using version 4 or later of the face model, image orientation information is not returned in the <code>OrientationCorrection</code> field. </p> <p>To determine which version of the model you're using, call <a>DescribeCollection</a> and supply the collection ID. You can also get the model version from the value of <code>FaceModelVersion</code> in the response from <code>IndexFaces</code> </p> <p>For more information, see Model Versioning in the Amazon Rekognition Developer Guide.</p> <p>If you provide the optional <code>ExternalImageID</code> for the input image you provided, Amazon Rekognition associates this ID with all faces that it detects. When you call the <a>ListFaces</a> operation, the response returns the external ID. You can use this external image ID to create a client-side index to associate the faces with each image. You can then use the index to find all faces in an image.</p> <p>You can specify the maximum number of faces to index with the <code>MaxFaces</code> input parameter. This is useful when you want to index the largest faces in an image and don't want to index smaller faces, such as those belonging to people standing in the background.</p> <p>The <code>QualityFilter</code> input parameter allows you to filter out detected faces that don’t meet the required quality bar chosen by Amazon Rekognition. The quality bar is based on a variety of common use cases. By default, <code>IndexFaces</code> filters detected faces. You can also explicitly filter detected faces by specifying <code>AUTO</code> for the value of <code>QualityFilter</code>. If you do not want to filter detected faces, specify <code>NONE</code>. </p> <note> <p>To use quality filtering, you need a collection associated with version 3 of the face model. To get the version of the face model associated with a collection, call <a>DescribeCollection</a>. </p> </note> <p>Information about faces detected in an image, but not indexed, is returned in an array of <a>UnindexedFace</a> objects, <code>UnindexedFaces</code>. Faces aren't indexed for reasons such as:</p> <ul> <li> <p>The number of faces detected exceeds the value of the <code>MaxFaces</code> request parameter.</p> </li> <li> <p>The face is too small compared to the image dimensions.</p> </li> <li> <p>The face is too blurry.</p> </li> <li> <p>The image is too dark.</p> </li> <li> <p>The face has an extreme pose.</p> </li> </ul> <p>In response, the <code>IndexFaces</code> operation returns an array of metadata for all detected faces, <code>FaceRecords</code>. This includes: </p> <ul> <li> <p>The bounding box, <code>BoundingBox</code>, of the detected face. </p> </li> <li> <p>A confidence value, <code>Confidence</code>, which indicates the confidence that the bounding box contains a face.</p> </li> <li> <p>A face ID, <code>FaceId</code>, assigned by the service for each face that's detected and stored.</p> </li> <li> <p>An image ID, <code>ImageId</code>, assigned by the service for the input image.</p> </li> </ul> <p>If you request all facial attributes (by using the <code>detectionAttributes</code> parameter), Amazon Rekognition returns detailed facial attributes, such as facial landmarks (for example, location of eye and mouth) and other facial attributes like gender. If you provide the same image, specify the same collection, and use the same external ID in the <code>IndexFaces</code> operation, Amazon Rekognition doesn't save duplicate face metadata.</p> <p/> <p>The input image is passed either as base64-encoded image bytes, or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn't supported. The image must be formatted as a PNG or JPEG file. </p> <p>This operation requires permissions to perform the <code>rekognition:IndexFaces</code> action.</p>
   ## 
-  let valid = call_603341.validator(path, query, header, formData, body)
-  let scheme = call_603341.pickScheme
+  let valid = call_601345.validator(path, query, header, formData, body)
+  let scheme = call_601345.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603341.url(scheme.get, call_603341.host, call_603341.base,
-                         call_603341.route, valid.getOrDefault("path"))
-  result = hook(call_603341, url, valid)
+  let url = call_601345.url(scheme.get, call_601345.host, call_601345.base,
+                         call_601345.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601345, url, valid)
 
-proc call*(call_603342: Call_IndexFaces_603329; body: JsonNode): Recallable =
+proc call*(call_601346: Call_IndexFaces_601333; body: JsonNode): Recallable =
   ## indexFaces
   ## <p>Detects faces in the input image and adds them to the specified collection. </p> <p>Amazon Rekognition doesn't save the actual faces that are detected. Instead, the underlying detection algorithm first detects the faces in the input image. For each face, the algorithm extracts facial features into a feature vector, and stores it in the backend database. Amazon Rekognition uses feature vectors when it performs face match and search operations using the <a>SearchFaces</a> and <a>SearchFacesByImage</a> operations.</p> <p>For more information, see Adding Faces to a Collection in the Amazon Rekognition Developer Guide.</p> <p>To get the number of faces in a collection, call <a>DescribeCollection</a>. </p> <p>If you're using version 1.0 of the face detection model, <code>IndexFaces</code> indexes the 15 largest faces in the input image. Later versions of the face detection model index the 100 largest faces in the input image. </p> <p>If you're using version 4 or later of the face model, image orientation information is not returned in the <code>OrientationCorrection</code> field. </p> <p>To determine which version of the model you're using, call <a>DescribeCollection</a> and supply the collection ID. You can also get the model version from the value of <code>FaceModelVersion</code> in the response from <code>IndexFaces</code> </p> <p>For more information, see Model Versioning in the Amazon Rekognition Developer Guide.</p> <p>If you provide the optional <code>ExternalImageID</code> for the input image you provided, Amazon Rekognition associates this ID with all faces that it detects. When you call the <a>ListFaces</a> operation, the response returns the external ID. You can use this external image ID to create a client-side index to associate the faces with each image. You can then use the index to find all faces in an image.</p> <p>You can specify the maximum number of faces to index with the <code>MaxFaces</code> input parameter. This is useful when you want to index the largest faces in an image and don't want to index smaller faces, such as those belonging to people standing in the background.</p> <p>The <code>QualityFilter</code> input parameter allows you to filter out detected faces that don’t meet the required quality bar chosen by Amazon Rekognition. The quality bar is based on a variety of common use cases. By default, <code>IndexFaces</code> filters detected faces. You can also explicitly filter detected faces by specifying <code>AUTO</code> for the value of <code>QualityFilter</code>. If you do not want to filter detected faces, specify <code>NONE</code>. </p> <note> <p>To use quality filtering, you need a collection associated with version 3 of the face model. To get the version of the face model associated with a collection, call <a>DescribeCollection</a>. </p> </note> <p>Information about faces detected in an image, but not indexed, is returned in an array of <a>UnindexedFace</a> objects, <code>UnindexedFaces</code>. Faces aren't indexed for reasons such as:</p> <ul> <li> <p>The number of faces detected exceeds the value of the <code>MaxFaces</code> request parameter.</p> </li> <li> <p>The face is too small compared to the image dimensions.</p> </li> <li> <p>The face is too blurry.</p> </li> <li> <p>The image is too dark.</p> </li> <li> <p>The face has an extreme pose.</p> </li> </ul> <p>In response, the <code>IndexFaces</code> operation returns an array of metadata for all detected faces, <code>FaceRecords</code>. This includes: </p> <ul> <li> <p>The bounding box, <code>BoundingBox</code>, of the detected face. </p> </li> <li> <p>A confidence value, <code>Confidence</code>, which indicates the confidence that the bounding box contains a face.</p> </li> <li> <p>A face ID, <code>FaceId</code>, assigned by the service for each face that's detected and stored.</p> </li> <li> <p>An image ID, <code>ImageId</code>, assigned by the service for the input image.</p> </li> </ul> <p>If you request all facial attributes (by using the <code>detectionAttributes</code> parameter), Amazon Rekognition returns detailed facial attributes, such as facial landmarks (for example, location of eye and mouth) and other facial attributes like gender. If you provide the same image, specify the same collection, and use the same external ID in the <code>IndexFaces</code> operation, Amazon Rekognition doesn't save duplicate face metadata.</p> <p/> <p>The input image is passed either as base64-encoded image bytes, or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn't supported. The image must be formatted as a PNG or JPEG file. </p> <p>This operation requires permissions to perform the <code>rekognition:IndexFaces</code> action.</p>
   ##   body: JObject (required)
-  var body_603343 = newJObject()
+  var body_601347 = newJObject()
   if body != nil:
-    body_603343 = body
-  result = call_603342.call(nil, nil, nil, nil, body_603343)
+    body_601347 = body
+  result = call_601346.call(nil, nil, nil, nil, body_601347)
 
-var indexFaces* = Call_IndexFaces_603329(name: "indexFaces",
+var indexFaces* = Call_IndexFaces_601333(name: "indexFaces",
                                       meth: HttpMethod.HttpPost,
                                       host: "rekognition.amazonaws.com", route: "/#X-Amz-Target=RekognitionService.IndexFaces",
-                                      validator: validate_IndexFaces_603330,
-                                      base: "/", url: url_IndexFaces_603331,
+                                      validator: validate_IndexFaces_601334,
+                                      base: "/", url: url_IndexFaces_601335,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCollections_603344 = ref object of OpenApiRestCall_602434
-proc url_ListCollections_603346(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListCollections_601348 = ref object of OpenApiRestCall_600438
+proc url_ListCollections_601350(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListCollections_603345(path: JsonNode; query: JsonNode;
+proc validate_ListCollections_601349(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Returns list of collection IDs in your account. If the result is truncated, the response also provides a <code>NextToken</code> that you can use in the subsequent request to fetch the next set of collection IDs.</p> <p>For an example, see Listing Collections in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:ListCollections</code> action.</p>
@@ -2386,16 +2479,16 @@ proc validate_ListCollections_603345(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603347 = query.getOrDefault("NextToken")
-  valid_603347 = validateParameter(valid_603347, JString, required = false,
+  var valid_601351 = query.getOrDefault("NextToken")
+  valid_601351 = validateParameter(valid_601351, JString, required = false,
                                  default = nil)
-  if valid_603347 != nil:
-    section.add "NextToken", valid_603347
-  var valid_603348 = query.getOrDefault("MaxResults")
-  valid_603348 = validateParameter(valid_603348, JString, required = false,
+  if valid_601351 != nil:
+    section.add "NextToken", valid_601351
+  var valid_601352 = query.getOrDefault("MaxResults")
+  valid_601352 = validateParameter(valid_601352, JString, required = false,
                                  default = nil)
-  if valid_603348 != nil:
-    section.add "MaxResults", valid_603348
+  if valid_601352 != nil:
+    section.add "MaxResults", valid_601352
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2407,48 +2500,48 @@ proc validate_ListCollections_603345(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603349 = header.getOrDefault("X-Amz-Date")
-  valid_603349 = validateParameter(valid_603349, JString, required = false,
+  var valid_601353 = header.getOrDefault("X-Amz-Date")
+  valid_601353 = validateParameter(valid_601353, JString, required = false,
                                  default = nil)
-  if valid_603349 != nil:
-    section.add "X-Amz-Date", valid_603349
-  var valid_603350 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603350 = validateParameter(valid_603350, JString, required = false,
+  if valid_601353 != nil:
+    section.add "X-Amz-Date", valid_601353
+  var valid_601354 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601354 = validateParameter(valid_601354, JString, required = false,
                                  default = nil)
-  if valid_603350 != nil:
-    section.add "X-Amz-Security-Token", valid_603350
+  if valid_601354 != nil:
+    section.add "X-Amz-Security-Token", valid_601354
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603351 = header.getOrDefault("X-Amz-Target")
-  valid_603351 = validateParameter(valid_603351, JString, required = true, default = newJString(
+  var valid_601355 = header.getOrDefault("X-Amz-Target")
+  valid_601355 = validateParameter(valid_601355, JString, required = true, default = newJString(
       "RekognitionService.ListCollections"))
-  if valid_603351 != nil:
-    section.add "X-Amz-Target", valid_603351
-  var valid_603352 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603352 = validateParameter(valid_603352, JString, required = false,
+  if valid_601355 != nil:
+    section.add "X-Amz-Target", valid_601355
+  var valid_601356 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601356 = validateParameter(valid_601356, JString, required = false,
                                  default = nil)
-  if valid_603352 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603352
-  var valid_603353 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603353 = validateParameter(valid_603353, JString, required = false,
+  if valid_601356 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601356
+  var valid_601357 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601357 = validateParameter(valid_601357, JString, required = false,
                                  default = nil)
-  if valid_603353 != nil:
-    section.add "X-Amz-Algorithm", valid_603353
-  var valid_603354 = header.getOrDefault("X-Amz-Signature")
-  valid_603354 = validateParameter(valid_603354, JString, required = false,
+  if valid_601357 != nil:
+    section.add "X-Amz-Algorithm", valid_601357
+  var valid_601358 = header.getOrDefault("X-Amz-Signature")
+  valid_601358 = validateParameter(valid_601358, JString, required = false,
                                  default = nil)
-  if valid_603354 != nil:
-    section.add "X-Amz-Signature", valid_603354
-  var valid_603355 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603355 = validateParameter(valid_603355, JString, required = false,
+  if valid_601358 != nil:
+    section.add "X-Amz-Signature", valid_601358
+  var valid_601359 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601359 = validateParameter(valid_601359, JString, required = false,
                                  default = nil)
-  if valid_603355 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603355
-  var valid_603356 = header.getOrDefault("X-Amz-Credential")
-  valid_603356 = validateParameter(valid_603356, JString, required = false,
+  if valid_601359 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601359
+  var valid_601360 = header.getOrDefault("X-Amz-Credential")
+  valid_601360 = validateParameter(valid_601360, JString, required = false,
                                  default = nil)
-  if valid_603356 != nil:
-    section.add "X-Amz-Credential", valid_603356
+  if valid_601360 != nil:
+    section.add "X-Amz-Credential", valid_601360
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2459,19 +2552,20 @@ proc validate_ListCollections_603345(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603358: Call_ListCollections_603344; path: JsonNode; query: JsonNode;
+proc call*(call_601362: Call_ListCollections_601348; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns list of collection IDs in your account. If the result is truncated, the response also provides a <code>NextToken</code> that you can use in the subsequent request to fetch the next set of collection IDs.</p> <p>For an example, see Listing Collections in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:ListCollections</code> action.</p>
   ## 
-  let valid = call_603358.validator(path, query, header, formData, body)
-  let scheme = call_603358.pickScheme
+  let valid = call_601362.validator(path, query, header, formData, body)
+  let scheme = call_601362.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603358.url(scheme.get, call_603358.host, call_603358.base,
-                         call_603358.route, valid.getOrDefault("path"))
-  result = hook(call_603358, url, valid)
+  let url = call_601362.url(scheme.get, call_601362.host, call_601362.base,
+                         call_601362.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601362, url, valid)
 
-proc call*(call_603359: Call_ListCollections_603344; body: JsonNode;
+proc call*(call_601363: Call_ListCollections_601348; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listCollections
   ## <p>Returns list of collection IDs in your account. If the result is truncated, the response also provides a <code>NextToken</code> that you can use in the subsequent request to fetch the next set of collection IDs.</p> <p>For an example, see Listing Collections in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:ListCollections</code> action.</p>
@@ -2480,26 +2574,29 @@ proc call*(call_603359: Call_ListCollections_603344; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603360 = newJObject()
-  var body_603361 = newJObject()
-  add(query_603360, "NextToken", newJString(NextToken))
+  var query_601364 = newJObject()
+  var body_601365 = newJObject()
+  add(query_601364, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603361 = body
-  add(query_603360, "MaxResults", newJString(MaxResults))
-  result = call_603359.call(nil, query_603360, nil, nil, body_603361)
+    body_601365 = body
+  add(query_601364, "MaxResults", newJString(MaxResults))
+  result = call_601363.call(nil, query_601364, nil, nil, body_601365)
 
-var listCollections* = Call_ListCollections_603344(name: "listCollections",
+var listCollections* = Call_ListCollections_601348(name: "listCollections",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.ListCollections",
-    validator: validate_ListCollections_603345, base: "/", url: url_ListCollections_603346,
+    validator: validate_ListCollections_601349, base: "/", url: url_ListCollections_601350,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListFaces_603362 = ref object of OpenApiRestCall_602434
-proc url_ListFaces_603364(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListFaces_601366 = ref object of OpenApiRestCall_600438
+proc url_ListFaces_601368(protocol: Scheme; host: string; base: string; route: string;
+                         path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListFaces_603363(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListFaces_601367(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns metadata for faces in the specified collection. This metadata includes information such as the bounding box coordinates, the confidence (that the bounding box contains a face), and face ID. For an example, see Listing Faces in a Collection in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:ListFaces</code> action.</p>
   ## 
@@ -2513,16 +2610,16 @@ proc validate_ListFaces_603363(path: JsonNode; query: JsonNode; header: JsonNode
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603365 = query.getOrDefault("NextToken")
-  valid_603365 = validateParameter(valid_603365, JString, required = false,
+  var valid_601369 = query.getOrDefault("NextToken")
+  valid_601369 = validateParameter(valid_601369, JString, required = false,
                                  default = nil)
-  if valid_603365 != nil:
-    section.add "NextToken", valid_603365
-  var valid_603366 = query.getOrDefault("MaxResults")
-  valid_603366 = validateParameter(valid_603366, JString, required = false,
+  if valid_601369 != nil:
+    section.add "NextToken", valid_601369
+  var valid_601370 = query.getOrDefault("MaxResults")
+  valid_601370 = validateParameter(valid_601370, JString, required = false,
                                  default = nil)
-  if valid_603366 != nil:
-    section.add "MaxResults", valid_603366
+  if valid_601370 != nil:
+    section.add "MaxResults", valid_601370
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2534,48 +2631,48 @@ proc validate_ListFaces_603363(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603367 = header.getOrDefault("X-Amz-Date")
-  valid_603367 = validateParameter(valid_603367, JString, required = false,
+  var valid_601371 = header.getOrDefault("X-Amz-Date")
+  valid_601371 = validateParameter(valid_601371, JString, required = false,
                                  default = nil)
-  if valid_603367 != nil:
-    section.add "X-Amz-Date", valid_603367
-  var valid_603368 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603368 = validateParameter(valid_603368, JString, required = false,
+  if valid_601371 != nil:
+    section.add "X-Amz-Date", valid_601371
+  var valid_601372 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601372 = validateParameter(valid_601372, JString, required = false,
                                  default = nil)
-  if valid_603368 != nil:
-    section.add "X-Amz-Security-Token", valid_603368
+  if valid_601372 != nil:
+    section.add "X-Amz-Security-Token", valid_601372
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603369 = header.getOrDefault("X-Amz-Target")
-  valid_603369 = validateParameter(valid_603369, JString, required = true, default = newJString(
+  var valid_601373 = header.getOrDefault("X-Amz-Target")
+  valid_601373 = validateParameter(valid_601373, JString, required = true, default = newJString(
       "RekognitionService.ListFaces"))
-  if valid_603369 != nil:
-    section.add "X-Amz-Target", valid_603369
-  var valid_603370 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603370 = validateParameter(valid_603370, JString, required = false,
+  if valid_601373 != nil:
+    section.add "X-Amz-Target", valid_601373
+  var valid_601374 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601374 = validateParameter(valid_601374, JString, required = false,
                                  default = nil)
-  if valid_603370 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603370
-  var valid_603371 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603371 = validateParameter(valid_603371, JString, required = false,
+  if valid_601374 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601374
+  var valid_601375 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601375 = validateParameter(valid_601375, JString, required = false,
                                  default = nil)
-  if valid_603371 != nil:
-    section.add "X-Amz-Algorithm", valid_603371
-  var valid_603372 = header.getOrDefault("X-Amz-Signature")
-  valid_603372 = validateParameter(valid_603372, JString, required = false,
+  if valid_601375 != nil:
+    section.add "X-Amz-Algorithm", valid_601375
+  var valid_601376 = header.getOrDefault("X-Amz-Signature")
+  valid_601376 = validateParameter(valid_601376, JString, required = false,
                                  default = nil)
-  if valid_603372 != nil:
-    section.add "X-Amz-Signature", valid_603372
-  var valid_603373 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603373 = validateParameter(valid_603373, JString, required = false,
+  if valid_601376 != nil:
+    section.add "X-Amz-Signature", valid_601376
+  var valid_601377 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601377 = validateParameter(valid_601377, JString, required = false,
                                  default = nil)
-  if valid_603373 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603373
-  var valid_603374 = header.getOrDefault("X-Amz-Credential")
-  valid_603374 = validateParameter(valid_603374, JString, required = false,
+  if valid_601377 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601377
+  var valid_601378 = header.getOrDefault("X-Amz-Credential")
+  valid_601378 = validateParameter(valid_601378, JString, required = false,
                                  default = nil)
-  if valid_603374 != nil:
-    section.add "X-Amz-Credential", valid_603374
+  if valid_601378 != nil:
+    section.add "X-Amz-Credential", valid_601378
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2586,19 +2683,20 @@ proc validate_ListFaces_603363(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603376: Call_ListFaces_603362; path: JsonNode; query: JsonNode;
+proc call*(call_601380: Call_ListFaces_601366; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns metadata for faces in the specified collection. This metadata includes information such as the bounding box coordinates, the confidence (that the bounding box contains a face), and face ID. For an example, see Listing Faces in a Collection in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:ListFaces</code> action.</p>
   ## 
-  let valid = call_603376.validator(path, query, header, formData, body)
-  let scheme = call_603376.pickScheme
+  let valid = call_601380.validator(path, query, header, formData, body)
+  let scheme = call_601380.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603376.url(scheme.get, call_603376.host, call_603376.base,
-                         call_603376.route, valid.getOrDefault("path"))
-  result = hook(call_603376, url, valid)
+  let url = call_601380.url(scheme.get, call_601380.host, call_601380.base,
+                         call_601380.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601380, url, valid)
 
-proc call*(call_603377: Call_ListFaces_603362; body: JsonNode;
+proc call*(call_601381: Call_ListFaces_601366; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listFaces
   ## <p>Returns metadata for faces in the specified collection. This metadata includes information such as the bounding box coordinates, the confidence (that the bounding box contains a face), and face ID. For an example, see Listing Faces in a Collection in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:ListFaces</code> action.</p>
@@ -2607,26 +2705,29 @@ proc call*(call_603377: Call_ListFaces_603362; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603378 = newJObject()
-  var body_603379 = newJObject()
-  add(query_603378, "NextToken", newJString(NextToken))
+  var query_601382 = newJObject()
+  var body_601383 = newJObject()
+  add(query_601382, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603379 = body
-  add(query_603378, "MaxResults", newJString(MaxResults))
-  result = call_603377.call(nil, query_603378, nil, nil, body_603379)
+    body_601383 = body
+  add(query_601382, "MaxResults", newJString(MaxResults))
+  result = call_601381.call(nil, query_601382, nil, nil, body_601383)
 
-var listFaces* = Call_ListFaces_603362(name: "listFaces", meth: HttpMethod.HttpPost,
+var listFaces* = Call_ListFaces_601366(name: "listFaces", meth: HttpMethod.HttpPost,
                                     host: "rekognition.amazonaws.com", route: "/#X-Amz-Target=RekognitionService.ListFaces",
-                                    validator: validate_ListFaces_603363,
-                                    base: "/", url: url_ListFaces_603364,
+                                    validator: validate_ListFaces_601367,
+                                    base: "/", url: url_ListFaces_601368,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListStreamProcessors_603380 = ref object of OpenApiRestCall_602434
-proc url_ListStreamProcessors_603382(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListStreamProcessors_601384 = ref object of OpenApiRestCall_600438
+proc url_ListStreamProcessors_601386(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListStreamProcessors_603381(path: JsonNode; query: JsonNode;
+proc validate_ListStreamProcessors_601385(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of stream processors that you have created with <a>CreateStreamProcessor</a>. 
   ## 
@@ -2640,16 +2741,16 @@ proc validate_ListStreamProcessors_603381(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_603383 = query.getOrDefault("NextToken")
-  valid_603383 = validateParameter(valid_603383, JString, required = false,
+  var valid_601387 = query.getOrDefault("NextToken")
+  valid_601387 = validateParameter(valid_601387, JString, required = false,
                                  default = nil)
-  if valid_603383 != nil:
-    section.add "NextToken", valid_603383
-  var valid_603384 = query.getOrDefault("MaxResults")
-  valid_603384 = validateParameter(valid_603384, JString, required = false,
+  if valid_601387 != nil:
+    section.add "NextToken", valid_601387
+  var valid_601388 = query.getOrDefault("MaxResults")
+  valid_601388 = validateParameter(valid_601388, JString, required = false,
                                  default = nil)
-  if valid_603384 != nil:
-    section.add "MaxResults", valid_603384
+  if valid_601388 != nil:
+    section.add "MaxResults", valid_601388
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2661,48 +2762,48 @@ proc validate_ListStreamProcessors_603381(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603385 = header.getOrDefault("X-Amz-Date")
-  valid_603385 = validateParameter(valid_603385, JString, required = false,
+  var valid_601389 = header.getOrDefault("X-Amz-Date")
+  valid_601389 = validateParameter(valid_601389, JString, required = false,
                                  default = nil)
-  if valid_603385 != nil:
-    section.add "X-Amz-Date", valid_603385
-  var valid_603386 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603386 = validateParameter(valid_603386, JString, required = false,
+  if valid_601389 != nil:
+    section.add "X-Amz-Date", valid_601389
+  var valid_601390 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601390 = validateParameter(valid_601390, JString, required = false,
                                  default = nil)
-  if valid_603386 != nil:
-    section.add "X-Amz-Security-Token", valid_603386
+  if valid_601390 != nil:
+    section.add "X-Amz-Security-Token", valid_601390
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603387 = header.getOrDefault("X-Amz-Target")
-  valid_603387 = validateParameter(valid_603387, JString, required = true, default = newJString(
+  var valid_601391 = header.getOrDefault("X-Amz-Target")
+  valid_601391 = validateParameter(valid_601391, JString, required = true, default = newJString(
       "RekognitionService.ListStreamProcessors"))
-  if valid_603387 != nil:
-    section.add "X-Amz-Target", valid_603387
-  var valid_603388 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603388 = validateParameter(valid_603388, JString, required = false,
+  if valid_601391 != nil:
+    section.add "X-Amz-Target", valid_601391
+  var valid_601392 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601392 = validateParameter(valid_601392, JString, required = false,
                                  default = nil)
-  if valid_603388 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603388
-  var valid_603389 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603389 = validateParameter(valid_603389, JString, required = false,
+  if valid_601392 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601392
+  var valid_601393 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601393 = validateParameter(valid_601393, JString, required = false,
                                  default = nil)
-  if valid_603389 != nil:
-    section.add "X-Amz-Algorithm", valid_603389
-  var valid_603390 = header.getOrDefault("X-Amz-Signature")
-  valid_603390 = validateParameter(valid_603390, JString, required = false,
+  if valid_601393 != nil:
+    section.add "X-Amz-Algorithm", valid_601393
+  var valid_601394 = header.getOrDefault("X-Amz-Signature")
+  valid_601394 = validateParameter(valid_601394, JString, required = false,
                                  default = nil)
-  if valid_603390 != nil:
-    section.add "X-Amz-Signature", valid_603390
-  var valid_603391 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603391 = validateParameter(valid_603391, JString, required = false,
+  if valid_601394 != nil:
+    section.add "X-Amz-Signature", valid_601394
+  var valid_601395 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601395 = validateParameter(valid_601395, JString, required = false,
                                  default = nil)
-  if valid_603391 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603391
-  var valid_603392 = header.getOrDefault("X-Amz-Credential")
-  valid_603392 = validateParameter(valid_603392, JString, required = false,
+  if valid_601395 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601395
+  var valid_601396 = header.getOrDefault("X-Amz-Credential")
+  valid_601396 = validateParameter(valid_601396, JString, required = false,
                                  default = nil)
-  if valid_603392 != nil:
-    section.add "X-Amz-Credential", valid_603392
+  if valid_601396 != nil:
+    section.add "X-Amz-Credential", valid_601396
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2713,19 +2814,20 @@ proc validate_ListStreamProcessors_603381(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603394: Call_ListStreamProcessors_603380; path: JsonNode;
+proc call*(call_601398: Call_ListStreamProcessors_601384; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of stream processors that you have created with <a>CreateStreamProcessor</a>. 
   ## 
-  let valid = call_603394.validator(path, query, header, formData, body)
-  let scheme = call_603394.pickScheme
+  let valid = call_601398.validator(path, query, header, formData, body)
+  let scheme = call_601398.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603394.url(scheme.get, call_603394.host, call_603394.base,
-                         call_603394.route, valid.getOrDefault("path"))
-  result = hook(call_603394, url, valid)
+  let url = call_601398.url(scheme.get, call_601398.host, call_601398.base,
+                         call_601398.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601398, url, valid)
 
-proc call*(call_603395: Call_ListStreamProcessors_603380; body: JsonNode;
+proc call*(call_601399: Call_ListStreamProcessors_601384; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listStreamProcessors
   ## Gets a list of stream processors that you have created with <a>CreateStreamProcessor</a>. 
@@ -2734,27 +2836,30 @@ proc call*(call_603395: Call_ListStreamProcessors_603380; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_603396 = newJObject()
-  var body_603397 = newJObject()
-  add(query_603396, "NextToken", newJString(NextToken))
+  var query_601400 = newJObject()
+  var body_601401 = newJObject()
+  add(query_601400, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603397 = body
-  add(query_603396, "MaxResults", newJString(MaxResults))
-  result = call_603395.call(nil, query_603396, nil, nil, body_603397)
+    body_601401 = body
+  add(query_601400, "MaxResults", newJString(MaxResults))
+  result = call_601399.call(nil, query_601400, nil, nil, body_601401)
 
-var listStreamProcessors* = Call_ListStreamProcessors_603380(
+var listStreamProcessors* = Call_ListStreamProcessors_601384(
     name: "listStreamProcessors", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.ListStreamProcessors",
-    validator: validate_ListStreamProcessors_603381, base: "/",
-    url: url_ListStreamProcessors_603382, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListStreamProcessors_601385, base: "/",
+    url: url_ListStreamProcessors_601386, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RecognizeCelebrities_603398 = ref object of OpenApiRestCall_602434
-proc url_RecognizeCelebrities_603400(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_RecognizeCelebrities_601402 = ref object of OpenApiRestCall_600438
+proc url_RecognizeCelebrities_601404(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_RecognizeCelebrities_603399(path: JsonNode; query: JsonNode;
+proc validate_RecognizeCelebrities_601403(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns an array of celebrities recognized in the input image. For more information, see Recognizing Celebrities in the Amazon Rekognition Developer Guide. </p> <p> <code>RecognizeCelebrities</code> returns the 100 largest faces in the image. It lists recognized celebrities in the <code>CelebrityFaces</code> array and unrecognized faces in the <code>UnrecognizedFaces</code> array. <code>RecognizeCelebrities</code> doesn't return celebrities whose faces aren't among the largest 100 faces in the image.</p> <p>For each celebrity recognized, <code>RecognizeCelebrities</code> returns a <code>Celebrity</code> object. The <code>Celebrity</code> object contains the celebrity name, ID, URL links to additional information, match confidence, and a <code>ComparedFace</code> object that you can use to locate the celebrity's face on the image.</p> <p>Amazon Rekognition doesn't retain information about which images a celebrity has been recognized in. Your application must store this information and use the <code>Celebrity</code> ID property as a unique identifier for the celebrity. If you don't store the celebrity name or additional information URLs returned by <code>RecognizeCelebrities</code>, you will need the ID to identify the celebrity in a call to the <a>GetCelebrityInfo</a> operation.</p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p>For an example, see Recognizing Celebrities in an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:RecognizeCelebrities</code> operation.</p>
   ## 
@@ -2774,48 +2879,48 @@ proc validate_RecognizeCelebrities_603399(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603401 = header.getOrDefault("X-Amz-Date")
-  valid_603401 = validateParameter(valid_603401, JString, required = false,
+  var valid_601405 = header.getOrDefault("X-Amz-Date")
+  valid_601405 = validateParameter(valid_601405, JString, required = false,
                                  default = nil)
-  if valid_603401 != nil:
-    section.add "X-Amz-Date", valid_603401
-  var valid_603402 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603402 = validateParameter(valid_603402, JString, required = false,
+  if valid_601405 != nil:
+    section.add "X-Amz-Date", valid_601405
+  var valid_601406 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601406 = validateParameter(valid_601406, JString, required = false,
                                  default = nil)
-  if valid_603402 != nil:
-    section.add "X-Amz-Security-Token", valid_603402
+  if valid_601406 != nil:
+    section.add "X-Amz-Security-Token", valid_601406
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603403 = header.getOrDefault("X-Amz-Target")
-  valid_603403 = validateParameter(valid_603403, JString, required = true, default = newJString(
+  var valid_601407 = header.getOrDefault("X-Amz-Target")
+  valid_601407 = validateParameter(valid_601407, JString, required = true, default = newJString(
       "RekognitionService.RecognizeCelebrities"))
-  if valid_603403 != nil:
-    section.add "X-Amz-Target", valid_603403
-  var valid_603404 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603404 = validateParameter(valid_603404, JString, required = false,
+  if valid_601407 != nil:
+    section.add "X-Amz-Target", valid_601407
+  var valid_601408 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601408 = validateParameter(valid_601408, JString, required = false,
                                  default = nil)
-  if valid_603404 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603404
-  var valid_603405 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603405 = validateParameter(valid_603405, JString, required = false,
+  if valid_601408 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601408
+  var valid_601409 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601409 = validateParameter(valid_601409, JString, required = false,
                                  default = nil)
-  if valid_603405 != nil:
-    section.add "X-Amz-Algorithm", valid_603405
-  var valid_603406 = header.getOrDefault("X-Amz-Signature")
-  valid_603406 = validateParameter(valid_603406, JString, required = false,
+  if valid_601409 != nil:
+    section.add "X-Amz-Algorithm", valid_601409
+  var valid_601410 = header.getOrDefault("X-Amz-Signature")
+  valid_601410 = validateParameter(valid_601410, JString, required = false,
                                  default = nil)
-  if valid_603406 != nil:
-    section.add "X-Amz-Signature", valid_603406
-  var valid_603407 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603407 = validateParameter(valid_603407, JString, required = false,
+  if valid_601410 != nil:
+    section.add "X-Amz-Signature", valid_601410
+  var valid_601411 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601411 = validateParameter(valid_601411, JString, required = false,
                                  default = nil)
-  if valid_603407 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603407
-  var valid_603408 = header.getOrDefault("X-Amz-Credential")
-  valid_603408 = validateParameter(valid_603408, JString, required = false,
+  if valid_601411 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601411
+  var valid_601412 = header.getOrDefault("X-Amz-Credential")
+  valid_601412 = validateParameter(valid_601412, JString, required = false,
                                  default = nil)
-  if valid_603408 != nil:
-    section.add "X-Amz-Credential", valid_603408
+  if valid_601412 != nil:
+    section.add "X-Amz-Credential", valid_601412
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2826,40 +2931,44 @@ proc validate_RecognizeCelebrities_603399(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603410: Call_RecognizeCelebrities_603398; path: JsonNode;
+proc call*(call_601414: Call_RecognizeCelebrities_601402; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns an array of celebrities recognized in the input image. For more information, see Recognizing Celebrities in the Amazon Rekognition Developer Guide. </p> <p> <code>RecognizeCelebrities</code> returns the 100 largest faces in the image. It lists recognized celebrities in the <code>CelebrityFaces</code> array and unrecognized faces in the <code>UnrecognizedFaces</code> array. <code>RecognizeCelebrities</code> doesn't return celebrities whose faces aren't among the largest 100 faces in the image.</p> <p>For each celebrity recognized, <code>RecognizeCelebrities</code> returns a <code>Celebrity</code> object. The <code>Celebrity</code> object contains the celebrity name, ID, URL links to additional information, match confidence, and a <code>ComparedFace</code> object that you can use to locate the celebrity's face on the image.</p> <p>Amazon Rekognition doesn't retain information about which images a celebrity has been recognized in. Your application must store this information and use the <code>Celebrity</code> ID property as a unique identifier for the celebrity. If you don't store the celebrity name or additional information URLs returned by <code>RecognizeCelebrities</code>, you will need the ID to identify the celebrity in a call to the <a>GetCelebrityInfo</a> operation.</p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p>For an example, see Recognizing Celebrities in an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:RecognizeCelebrities</code> operation.</p>
   ## 
-  let valid = call_603410.validator(path, query, header, formData, body)
-  let scheme = call_603410.pickScheme
+  let valid = call_601414.validator(path, query, header, formData, body)
+  let scheme = call_601414.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603410.url(scheme.get, call_603410.host, call_603410.base,
-                         call_603410.route, valid.getOrDefault("path"))
-  result = hook(call_603410, url, valid)
+  let url = call_601414.url(scheme.get, call_601414.host, call_601414.base,
+                         call_601414.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601414, url, valid)
 
-proc call*(call_603411: Call_RecognizeCelebrities_603398; body: JsonNode): Recallable =
+proc call*(call_601415: Call_RecognizeCelebrities_601402; body: JsonNode): Recallable =
   ## recognizeCelebrities
   ## <p>Returns an array of celebrities recognized in the input image. For more information, see Recognizing Celebrities in the Amazon Rekognition Developer Guide. </p> <p> <code>RecognizeCelebrities</code> returns the 100 largest faces in the image. It lists recognized celebrities in the <code>CelebrityFaces</code> array and unrecognized faces in the <code>UnrecognizedFaces</code> array. <code>RecognizeCelebrities</code> doesn't return celebrities whose faces aren't among the largest 100 faces in the image.</p> <p>For each celebrity recognized, <code>RecognizeCelebrities</code> returns a <code>Celebrity</code> object. The <code>Celebrity</code> object contains the celebrity name, ID, URL links to additional information, match confidence, and a <code>ComparedFace</code> object that you can use to locate the celebrity's face on the image.</p> <p>Amazon Rekognition doesn't retain information about which images a celebrity has been recognized in. Your application must store this information and use the <code>Celebrity</code> ID property as a unique identifier for the celebrity. If you don't store the celebrity name or additional information URLs returned by <code>RecognizeCelebrities</code>, you will need the ID to identify the celebrity in a call to the <a>GetCelebrityInfo</a> operation.</p> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p>For an example, see Recognizing Celebrities in an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:RecognizeCelebrities</code> operation.</p>
   ##   body: JObject (required)
-  var body_603412 = newJObject()
+  var body_601416 = newJObject()
   if body != nil:
-    body_603412 = body
-  result = call_603411.call(nil, nil, nil, nil, body_603412)
+    body_601416 = body
+  result = call_601415.call(nil, nil, nil, nil, body_601416)
 
-var recognizeCelebrities* = Call_RecognizeCelebrities_603398(
+var recognizeCelebrities* = Call_RecognizeCelebrities_601402(
     name: "recognizeCelebrities", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.RecognizeCelebrities",
-    validator: validate_RecognizeCelebrities_603399, base: "/",
-    url: url_RecognizeCelebrities_603400, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RecognizeCelebrities_601403, base: "/",
+    url: url_RecognizeCelebrities_601404, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SearchFaces_603413 = ref object of OpenApiRestCall_602434
-proc url_SearchFaces_603415(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_SearchFaces_601417 = ref object of OpenApiRestCall_600438
+proc url_SearchFaces_601419(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_SearchFaces_603414(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_SearchFaces_601418(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>For a given input face ID, searches for matching faces in the collection the face belongs to. You get a face ID when you add a face to the collection using the <a>IndexFaces</a> operation. The operation compares the features of the input face with faces in the specified collection. </p> <note> <p>You can also search faces without indexing faces by using the <code>SearchFacesByImage</code> operation.</p> </note> <p> The operation response returns an array of faces that match, ordered by similarity score with the highest similarity first. More specifically, it is an array of metadata for each face match that is found. Along with the metadata, the response also includes a <code>confidence</code> value for each face match, indicating the confidence that the specific face matches the input face. </p> <p>For an example, see Searching for a Face Using Its Face ID in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:SearchFaces</code> action.</p>
   ## 
@@ -2879,48 +2988,48 @@ proc validate_SearchFaces_603414(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603416 = header.getOrDefault("X-Amz-Date")
-  valid_603416 = validateParameter(valid_603416, JString, required = false,
+  var valid_601420 = header.getOrDefault("X-Amz-Date")
+  valid_601420 = validateParameter(valid_601420, JString, required = false,
                                  default = nil)
-  if valid_603416 != nil:
-    section.add "X-Amz-Date", valid_603416
-  var valid_603417 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603417 = validateParameter(valid_603417, JString, required = false,
+  if valid_601420 != nil:
+    section.add "X-Amz-Date", valid_601420
+  var valid_601421 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601421 = validateParameter(valid_601421, JString, required = false,
                                  default = nil)
-  if valid_603417 != nil:
-    section.add "X-Amz-Security-Token", valid_603417
+  if valid_601421 != nil:
+    section.add "X-Amz-Security-Token", valid_601421
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603418 = header.getOrDefault("X-Amz-Target")
-  valid_603418 = validateParameter(valid_603418, JString, required = true, default = newJString(
+  var valid_601422 = header.getOrDefault("X-Amz-Target")
+  valid_601422 = validateParameter(valid_601422, JString, required = true, default = newJString(
       "RekognitionService.SearchFaces"))
-  if valid_603418 != nil:
-    section.add "X-Amz-Target", valid_603418
-  var valid_603419 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603419 = validateParameter(valid_603419, JString, required = false,
+  if valid_601422 != nil:
+    section.add "X-Amz-Target", valid_601422
+  var valid_601423 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601423 = validateParameter(valid_601423, JString, required = false,
                                  default = nil)
-  if valid_603419 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603419
-  var valid_603420 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603420 = validateParameter(valid_603420, JString, required = false,
+  if valid_601423 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601423
+  var valid_601424 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601424 = validateParameter(valid_601424, JString, required = false,
                                  default = nil)
-  if valid_603420 != nil:
-    section.add "X-Amz-Algorithm", valid_603420
-  var valid_603421 = header.getOrDefault("X-Amz-Signature")
-  valid_603421 = validateParameter(valid_603421, JString, required = false,
+  if valid_601424 != nil:
+    section.add "X-Amz-Algorithm", valid_601424
+  var valid_601425 = header.getOrDefault("X-Amz-Signature")
+  valid_601425 = validateParameter(valid_601425, JString, required = false,
                                  default = nil)
-  if valid_603421 != nil:
-    section.add "X-Amz-Signature", valid_603421
-  var valid_603422 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603422 = validateParameter(valid_603422, JString, required = false,
+  if valid_601425 != nil:
+    section.add "X-Amz-Signature", valid_601425
+  var valid_601426 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601426 = validateParameter(valid_601426, JString, required = false,
                                  default = nil)
-  if valid_603422 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603422
-  var valid_603423 = header.getOrDefault("X-Amz-Credential")
-  valid_603423 = validateParameter(valid_603423, JString, required = false,
+  if valid_601426 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601426
+  var valid_601427 = header.getOrDefault("X-Amz-Credential")
+  valid_601427 = validateParameter(valid_601427, JString, required = false,
                                  default = nil)
-  if valid_603423 != nil:
-    section.add "X-Amz-Credential", valid_603423
+  if valid_601427 != nil:
+    section.add "X-Amz-Credential", valid_601427
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2931,40 +3040,44 @@ proc validate_SearchFaces_603414(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603425: Call_SearchFaces_603413; path: JsonNode; query: JsonNode;
+proc call*(call_601429: Call_SearchFaces_601417; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>For a given input face ID, searches for matching faces in the collection the face belongs to. You get a face ID when you add a face to the collection using the <a>IndexFaces</a> operation. The operation compares the features of the input face with faces in the specified collection. </p> <note> <p>You can also search faces without indexing faces by using the <code>SearchFacesByImage</code> operation.</p> </note> <p> The operation response returns an array of faces that match, ordered by similarity score with the highest similarity first. More specifically, it is an array of metadata for each face match that is found. Along with the metadata, the response also includes a <code>confidence</code> value for each face match, indicating the confidence that the specific face matches the input face. </p> <p>For an example, see Searching for a Face Using Its Face ID in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:SearchFaces</code> action.</p>
   ## 
-  let valid = call_603425.validator(path, query, header, formData, body)
-  let scheme = call_603425.pickScheme
+  let valid = call_601429.validator(path, query, header, formData, body)
+  let scheme = call_601429.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603425.url(scheme.get, call_603425.host, call_603425.base,
-                         call_603425.route, valid.getOrDefault("path"))
-  result = hook(call_603425, url, valid)
+  let url = call_601429.url(scheme.get, call_601429.host, call_601429.base,
+                         call_601429.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601429, url, valid)
 
-proc call*(call_603426: Call_SearchFaces_603413; body: JsonNode): Recallable =
+proc call*(call_601430: Call_SearchFaces_601417; body: JsonNode): Recallable =
   ## searchFaces
   ## <p>For a given input face ID, searches for matching faces in the collection the face belongs to. You get a face ID when you add a face to the collection using the <a>IndexFaces</a> operation. The operation compares the features of the input face with faces in the specified collection. </p> <note> <p>You can also search faces without indexing faces by using the <code>SearchFacesByImage</code> operation.</p> </note> <p> The operation response returns an array of faces that match, ordered by similarity score with the highest similarity first. More specifically, it is an array of metadata for each face match that is found. Along with the metadata, the response also includes a <code>confidence</code> value for each face match, indicating the confidence that the specific face matches the input face. </p> <p>For an example, see Searching for a Face Using Its Face ID in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:SearchFaces</code> action.</p>
   ##   body: JObject (required)
-  var body_603427 = newJObject()
+  var body_601431 = newJObject()
   if body != nil:
-    body_603427 = body
-  result = call_603426.call(nil, nil, nil, nil, body_603427)
+    body_601431 = body
+  result = call_601430.call(nil, nil, nil, nil, body_601431)
 
-var searchFaces* = Call_SearchFaces_603413(name: "searchFaces",
+var searchFaces* = Call_SearchFaces_601417(name: "searchFaces",
                                         meth: HttpMethod.HttpPost,
                                         host: "rekognition.amazonaws.com", route: "/#X-Amz-Target=RekognitionService.SearchFaces",
-                                        validator: validate_SearchFaces_603414,
-                                        base: "/", url: url_SearchFaces_603415,
+                                        validator: validate_SearchFaces_601418,
+                                        base: "/", url: url_SearchFaces_601419,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SearchFacesByImage_603428 = ref object of OpenApiRestCall_602434
-proc url_SearchFacesByImage_603430(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_SearchFacesByImage_601432 = ref object of OpenApiRestCall_600438
+proc url_SearchFacesByImage_601434(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_SearchFacesByImage_603429(path: JsonNode; query: JsonNode;
+proc validate_SearchFacesByImage_601433(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>For a given input image, first detects the largest face in the image, and then searches the specified collection for matching faces. The operation compares the features of the input face with faces in the specified collection. </p> <note> <p>To search for all faces in an input image, you might first call the <a>IndexFaces</a> operation, and then use the face IDs returned in subsequent calls to the <a>SearchFaces</a> operation. </p> <p> You can also call the <code>DetectFaces</code> operation and use the bounding boxes in the response to make face crops, which then you can pass in to the <code>SearchFacesByImage</code> operation. </p> </note> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> The response returns an array of faces that match, ordered by similarity score with the highest similarity first. More specifically, it is an array of metadata for each face match found. Along with the metadata, the response also includes a <code>similarity</code> indicating how similar the face is to the input face. In the response, the operation also returns the bounding box (and a confidence level that the bounding box contains a face) of the face that Amazon Rekognition used for the input image. </p> <p>For an example, Searching for a Face Using an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:SearchFacesByImage</code> action.</p>
@@ -2985,48 +3098,48 @@ proc validate_SearchFacesByImage_603429(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603431 = header.getOrDefault("X-Amz-Date")
-  valid_603431 = validateParameter(valid_603431, JString, required = false,
+  var valid_601435 = header.getOrDefault("X-Amz-Date")
+  valid_601435 = validateParameter(valid_601435, JString, required = false,
                                  default = nil)
-  if valid_603431 != nil:
-    section.add "X-Amz-Date", valid_603431
-  var valid_603432 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603432 = validateParameter(valid_603432, JString, required = false,
+  if valid_601435 != nil:
+    section.add "X-Amz-Date", valid_601435
+  var valid_601436 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601436 = validateParameter(valid_601436, JString, required = false,
                                  default = nil)
-  if valid_603432 != nil:
-    section.add "X-Amz-Security-Token", valid_603432
+  if valid_601436 != nil:
+    section.add "X-Amz-Security-Token", valid_601436
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603433 = header.getOrDefault("X-Amz-Target")
-  valid_603433 = validateParameter(valid_603433, JString, required = true, default = newJString(
+  var valid_601437 = header.getOrDefault("X-Amz-Target")
+  valid_601437 = validateParameter(valid_601437, JString, required = true, default = newJString(
       "RekognitionService.SearchFacesByImage"))
-  if valid_603433 != nil:
-    section.add "X-Amz-Target", valid_603433
-  var valid_603434 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603434 = validateParameter(valid_603434, JString, required = false,
+  if valid_601437 != nil:
+    section.add "X-Amz-Target", valid_601437
+  var valid_601438 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601438 = validateParameter(valid_601438, JString, required = false,
                                  default = nil)
-  if valid_603434 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603434
-  var valid_603435 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603435 = validateParameter(valid_603435, JString, required = false,
+  if valid_601438 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601438
+  var valid_601439 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601439 = validateParameter(valid_601439, JString, required = false,
                                  default = nil)
-  if valid_603435 != nil:
-    section.add "X-Amz-Algorithm", valid_603435
-  var valid_603436 = header.getOrDefault("X-Amz-Signature")
-  valid_603436 = validateParameter(valid_603436, JString, required = false,
+  if valid_601439 != nil:
+    section.add "X-Amz-Algorithm", valid_601439
+  var valid_601440 = header.getOrDefault("X-Amz-Signature")
+  valid_601440 = validateParameter(valid_601440, JString, required = false,
                                  default = nil)
-  if valid_603436 != nil:
-    section.add "X-Amz-Signature", valid_603436
-  var valid_603437 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603437 = validateParameter(valid_603437, JString, required = false,
+  if valid_601440 != nil:
+    section.add "X-Amz-Signature", valid_601440
+  var valid_601441 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601441 = validateParameter(valid_601441, JString, required = false,
                                  default = nil)
-  if valid_603437 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603437
-  var valid_603438 = header.getOrDefault("X-Amz-Credential")
-  valid_603438 = validateParameter(valid_603438, JString, required = false,
+  if valid_601441 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601441
+  var valid_601442 = header.getOrDefault("X-Amz-Credential")
+  valid_601442 = validateParameter(valid_601442, JString, required = false,
                                  default = nil)
-  if valid_603438 != nil:
-    section.add "X-Amz-Credential", valid_603438
+  if valid_601442 != nil:
+    section.add "X-Amz-Credential", valid_601442
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3037,40 +3150,44 @@ proc validate_SearchFacesByImage_603429(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603440: Call_SearchFacesByImage_603428; path: JsonNode;
+proc call*(call_601444: Call_SearchFacesByImage_601432; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>For a given input image, first detects the largest face in the image, and then searches the specified collection for matching faces. The operation compares the features of the input face with faces in the specified collection. </p> <note> <p>To search for all faces in an input image, you might first call the <a>IndexFaces</a> operation, and then use the face IDs returned in subsequent calls to the <a>SearchFaces</a> operation. </p> <p> You can also call the <code>DetectFaces</code> operation and use the bounding boxes in the response to make face crops, which then you can pass in to the <code>SearchFacesByImage</code> operation. </p> </note> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> The response returns an array of faces that match, ordered by similarity score with the highest similarity first. More specifically, it is an array of metadata for each face match found. Along with the metadata, the response also includes a <code>similarity</code> indicating how similar the face is to the input face. In the response, the operation also returns the bounding box (and a confidence level that the bounding box contains a face) of the face that Amazon Rekognition used for the input image. </p> <p>For an example, Searching for a Face Using an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:SearchFacesByImage</code> action.</p>
   ## 
-  let valid = call_603440.validator(path, query, header, formData, body)
-  let scheme = call_603440.pickScheme
+  let valid = call_601444.validator(path, query, header, formData, body)
+  let scheme = call_601444.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603440.url(scheme.get, call_603440.host, call_603440.base,
-                         call_603440.route, valid.getOrDefault("path"))
-  result = hook(call_603440, url, valid)
+  let url = call_601444.url(scheme.get, call_601444.host, call_601444.base,
+                         call_601444.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601444, url, valid)
 
-proc call*(call_603441: Call_SearchFacesByImage_603428; body: JsonNode): Recallable =
+proc call*(call_601445: Call_SearchFacesByImage_601432; body: JsonNode): Recallable =
   ## searchFacesByImage
   ## <p>For a given input image, first detects the largest face in the image, and then searches the specified collection for matching faces. The operation compares the features of the input face with faces in the specified collection. </p> <note> <p>To search for all faces in an input image, you might first call the <a>IndexFaces</a> operation, and then use the face IDs returned in subsequent calls to the <a>SearchFaces</a> operation. </p> <p> You can also call the <code>DetectFaces</code> operation and use the bounding boxes in the response to make face crops, which then you can pass in to the <code>SearchFacesByImage</code> operation. </p> </note> <p>You pass the input image either as base64-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file. </p> <p> The response returns an array of faces that match, ordered by similarity score with the highest similarity first. More specifically, it is an array of metadata for each face match found. Along with the metadata, the response also includes a <code>similarity</code> indicating how similar the face is to the input face. In the response, the operation also returns the bounding box (and a confidence level that the bounding box contains a face) of the face that Amazon Rekognition used for the input image. </p> <p>For an example, Searching for a Face Using an Image in the Amazon Rekognition Developer Guide.</p> <p>This operation requires permissions to perform the <code>rekognition:SearchFacesByImage</code> action.</p>
   ##   body: JObject (required)
-  var body_603442 = newJObject()
+  var body_601446 = newJObject()
   if body != nil:
-    body_603442 = body
-  result = call_603441.call(nil, nil, nil, nil, body_603442)
+    body_601446 = body
+  result = call_601445.call(nil, nil, nil, nil, body_601446)
 
-var searchFacesByImage* = Call_SearchFacesByImage_603428(
+var searchFacesByImage* = Call_SearchFacesByImage_601432(
     name: "searchFacesByImage", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.SearchFacesByImage",
-    validator: validate_SearchFacesByImage_603429, base: "/",
-    url: url_SearchFacesByImage_603430, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SearchFacesByImage_601433, base: "/",
+    url: url_SearchFacesByImage_601434, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartCelebrityRecognition_603443 = ref object of OpenApiRestCall_602434
-proc url_StartCelebrityRecognition_603445(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_StartCelebrityRecognition_601447 = ref object of OpenApiRestCall_600438
+proc url_StartCelebrityRecognition_601449(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_StartCelebrityRecognition_603444(path: JsonNode; query: JsonNode;
+proc validate_StartCelebrityRecognition_601448(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts asynchronous recognition of celebrities in a stored video.</p> <p>Amazon Rekognition Video can detect celebrities in a video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartCelebrityRecognition</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the analysis. When celebrity recognition analysis is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the results of the celebrity recognition analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetCelebrityRecognition</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartCelebrityRecognition</code>. </p> <p>For more information, see Recognizing Celebrities in the Amazon Rekognition Developer Guide.</p>
   ## 
@@ -3090,48 +3207,48 @@ proc validate_StartCelebrityRecognition_603444(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603446 = header.getOrDefault("X-Amz-Date")
-  valid_603446 = validateParameter(valid_603446, JString, required = false,
+  var valid_601450 = header.getOrDefault("X-Amz-Date")
+  valid_601450 = validateParameter(valid_601450, JString, required = false,
                                  default = nil)
-  if valid_603446 != nil:
-    section.add "X-Amz-Date", valid_603446
-  var valid_603447 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603447 = validateParameter(valid_603447, JString, required = false,
+  if valid_601450 != nil:
+    section.add "X-Amz-Date", valid_601450
+  var valid_601451 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601451 = validateParameter(valid_601451, JString, required = false,
                                  default = nil)
-  if valid_603447 != nil:
-    section.add "X-Amz-Security-Token", valid_603447
+  if valid_601451 != nil:
+    section.add "X-Amz-Security-Token", valid_601451
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603448 = header.getOrDefault("X-Amz-Target")
-  valid_603448 = validateParameter(valid_603448, JString, required = true, default = newJString(
+  var valid_601452 = header.getOrDefault("X-Amz-Target")
+  valid_601452 = validateParameter(valid_601452, JString, required = true, default = newJString(
       "RekognitionService.StartCelebrityRecognition"))
-  if valid_603448 != nil:
-    section.add "X-Amz-Target", valid_603448
-  var valid_603449 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603449 = validateParameter(valid_603449, JString, required = false,
+  if valid_601452 != nil:
+    section.add "X-Amz-Target", valid_601452
+  var valid_601453 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601453 = validateParameter(valid_601453, JString, required = false,
                                  default = nil)
-  if valid_603449 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603449
-  var valid_603450 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603450 = validateParameter(valid_603450, JString, required = false,
+  if valid_601453 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601453
+  var valid_601454 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601454 = validateParameter(valid_601454, JString, required = false,
                                  default = nil)
-  if valid_603450 != nil:
-    section.add "X-Amz-Algorithm", valid_603450
-  var valid_603451 = header.getOrDefault("X-Amz-Signature")
-  valid_603451 = validateParameter(valid_603451, JString, required = false,
+  if valid_601454 != nil:
+    section.add "X-Amz-Algorithm", valid_601454
+  var valid_601455 = header.getOrDefault("X-Amz-Signature")
+  valid_601455 = validateParameter(valid_601455, JString, required = false,
                                  default = nil)
-  if valid_603451 != nil:
-    section.add "X-Amz-Signature", valid_603451
-  var valid_603452 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603452 = validateParameter(valid_603452, JString, required = false,
+  if valid_601455 != nil:
+    section.add "X-Amz-Signature", valid_601455
+  var valid_601456 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601456 = validateParameter(valid_601456, JString, required = false,
                                  default = nil)
-  if valid_603452 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603452
-  var valid_603453 = header.getOrDefault("X-Amz-Credential")
-  valid_603453 = validateParameter(valid_603453, JString, required = false,
+  if valid_601456 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601456
+  var valid_601457 = header.getOrDefault("X-Amz-Credential")
+  valid_601457 = validateParameter(valid_601457, JString, required = false,
                                  default = nil)
-  if valid_603453 != nil:
-    section.add "X-Amz-Credential", valid_603453
+  if valid_601457 != nil:
+    section.add "X-Amz-Credential", valid_601457
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3142,41 +3259,45 @@ proc validate_StartCelebrityRecognition_603444(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603455: Call_StartCelebrityRecognition_603443; path: JsonNode;
+proc call*(call_601459: Call_StartCelebrityRecognition_601447; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts asynchronous recognition of celebrities in a stored video.</p> <p>Amazon Rekognition Video can detect celebrities in a video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartCelebrityRecognition</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the analysis. When celebrity recognition analysis is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the results of the celebrity recognition analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetCelebrityRecognition</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartCelebrityRecognition</code>. </p> <p>For more information, see Recognizing Celebrities in the Amazon Rekognition Developer Guide.</p>
   ## 
-  let valid = call_603455.validator(path, query, header, formData, body)
-  let scheme = call_603455.pickScheme
+  let valid = call_601459.validator(path, query, header, formData, body)
+  let scheme = call_601459.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603455.url(scheme.get, call_603455.host, call_603455.base,
-                         call_603455.route, valid.getOrDefault("path"))
-  result = hook(call_603455, url, valid)
+  let url = call_601459.url(scheme.get, call_601459.host, call_601459.base,
+                         call_601459.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601459, url, valid)
 
-proc call*(call_603456: Call_StartCelebrityRecognition_603443; body: JsonNode): Recallable =
+proc call*(call_601460: Call_StartCelebrityRecognition_601447; body: JsonNode): Recallable =
   ## startCelebrityRecognition
   ## <p>Starts asynchronous recognition of celebrities in a stored video.</p> <p>Amazon Rekognition Video can detect celebrities in a video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartCelebrityRecognition</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the analysis. When celebrity recognition analysis is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the results of the celebrity recognition analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetCelebrityRecognition</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartCelebrityRecognition</code>. </p> <p>For more information, see Recognizing Celebrities in the Amazon Rekognition Developer Guide.</p>
   ##   body: JObject (required)
-  var body_603457 = newJObject()
+  var body_601461 = newJObject()
   if body != nil:
-    body_603457 = body
-  result = call_603456.call(nil, nil, nil, nil, body_603457)
+    body_601461 = body
+  result = call_601460.call(nil, nil, nil, nil, body_601461)
 
-var startCelebrityRecognition* = Call_StartCelebrityRecognition_603443(
+var startCelebrityRecognition* = Call_StartCelebrityRecognition_601447(
     name: "startCelebrityRecognition", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.StartCelebrityRecognition",
-    validator: validate_StartCelebrityRecognition_603444, base: "/",
-    url: url_StartCelebrityRecognition_603445,
+    validator: validate_StartCelebrityRecognition_601448, base: "/",
+    url: url_StartCelebrityRecognition_601449,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartContentModeration_603458 = ref object of OpenApiRestCall_602434
-proc url_StartContentModeration_603460(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_StartContentModeration_601462 = ref object of OpenApiRestCall_600438
+proc url_StartContentModeration_601464(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_StartContentModeration_603459(path: JsonNode; query: JsonNode;
+proc validate_StartContentModeration_601463(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> Starts asynchronous detection of unsafe content in a stored video.</p> <p>Amazon Rekognition Video can moderate content in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartContentModeration</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the analysis. When unsafe content analysis is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>.</p> <p>To get the results of the unsafe content analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetContentModeration</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartContentModeration</code>. </p> <p>For more information, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p>
   ## 
@@ -3196,48 +3317,48 @@ proc validate_StartContentModeration_603459(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603461 = header.getOrDefault("X-Amz-Date")
-  valid_603461 = validateParameter(valid_603461, JString, required = false,
+  var valid_601465 = header.getOrDefault("X-Amz-Date")
+  valid_601465 = validateParameter(valid_601465, JString, required = false,
                                  default = nil)
-  if valid_603461 != nil:
-    section.add "X-Amz-Date", valid_603461
-  var valid_603462 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603462 = validateParameter(valid_603462, JString, required = false,
+  if valid_601465 != nil:
+    section.add "X-Amz-Date", valid_601465
+  var valid_601466 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601466 = validateParameter(valid_601466, JString, required = false,
                                  default = nil)
-  if valid_603462 != nil:
-    section.add "X-Amz-Security-Token", valid_603462
+  if valid_601466 != nil:
+    section.add "X-Amz-Security-Token", valid_601466
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603463 = header.getOrDefault("X-Amz-Target")
-  valid_603463 = validateParameter(valid_603463, JString, required = true, default = newJString(
+  var valid_601467 = header.getOrDefault("X-Amz-Target")
+  valid_601467 = validateParameter(valid_601467, JString, required = true, default = newJString(
       "RekognitionService.StartContentModeration"))
-  if valid_603463 != nil:
-    section.add "X-Amz-Target", valid_603463
-  var valid_603464 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603464 = validateParameter(valid_603464, JString, required = false,
+  if valid_601467 != nil:
+    section.add "X-Amz-Target", valid_601467
+  var valid_601468 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601468 = validateParameter(valid_601468, JString, required = false,
                                  default = nil)
-  if valid_603464 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603464
-  var valid_603465 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603465 = validateParameter(valid_603465, JString, required = false,
+  if valid_601468 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601468
+  var valid_601469 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601469 = validateParameter(valid_601469, JString, required = false,
                                  default = nil)
-  if valid_603465 != nil:
-    section.add "X-Amz-Algorithm", valid_603465
-  var valid_603466 = header.getOrDefault("X-Amz-Signature")
-  valid_603466 = validateParameter(valid_603466, JString, required = false,
+  if valid_601469 != nil:
+    section.add "X-Amz-Algorithm", valid_601469
+  var valid_601470 = header.getOrDefault("X-Amz-Signature")
+  valid_601470 = validateParameter(valid_601470, JString, required = false,
                                  default = nil)
-  if valid_603466 != nil:
-    section.add "X-Amz-Signature", valid_603466
-  var valid_603467 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603467 = validateParameter(valid_603467, JString, required = false,
+  if valid_601470 != nil:
+    section.add "X-Amz-Signature", valid_601470
+  var valid_601471 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601471 = validateParameter(valid_601471, JString, required = false,
                                  default = nil)
-  if valid_603467 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603467
-  var valid_603468 = header.getOrDefault("X-Amz-Credential")
-  valid_603468 = validateParameter(valid_603468, JString, required = false,
+  if valid_601471 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601471
+  var valid_601472 = header.getOrDefault("X-Amz-Credential")
+  valid_601472 = validateParameter(valid_601472, JString, required = false,
                                  default = nil)
-  if valid_603468 != nil:
-    section.add "X-Amz-Credential", valid_603468
+  if valid_601472 != nil:
+    section.add "X-Amz-Credential", valid_601472
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3248,40 +3369,44 @@ proc validate_StartContentModeration_603459(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603470: Call_StartContentModeration_603458; path: JsonNode;
+proc call*(call_601474: Call_StartContentModeration_601462; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Starts asynchronous detection of unsafe content in a stored video.</p> <p>Amazon Rekognition Video can moderate content in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartContentModeration</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the analysis. When unsafe content analysis is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>.</p> <p>To get the results of the unsafe content analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetContentModeration</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartContentModeration</code>. </p> <p>For more information, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p>
   ## 
-  let valid = call_603470.validator(path, query, header, formData, body)
-  let scheme = call_603470.pickScheme
+  let valid = call_601474.validator(path, query, header, formData, body)
+  let scheme = call_601474.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603470.url(scheme.get, call_603470.host, call_603470.base,
-                         call_603470.route, valid.getOrDefault("path"))
-  result = hook(call_603470, url, valid)
+  let url = call_601474.url(scheme.get, call_601474.host, call_601474.base,
+                         call_601474.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601474, url, valid)
 
-proc call*(call_603471: Call_StartContentModeration_603458; body: JsonNode): Recallable =
+proc call*(call_601475: Call_StartContentModeration_601462; body: JsonNode): Recallable =
   ## startContentModeration
   ## <p> Starts asynchronous detection of unsafe content in a stored video.</p> <p>Amazon Rekognition Video can moderate content in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartContentModeration</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the analysis. When unsafe content analysis is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>.</p> <p>To get the results of the unsafe content analysis, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetContentModeration</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartContentModeration</code>. </p> <p>For more information, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.</p>
   ##   body: JObject (required)
-  var body_603472 = newJObject()
+  var body_601476 = newJObject()
   if body != nil:
-    body_603472 = body
-  result = call_603471.call(nil, nil, nil, nil, body_603472)
+    body_601476 = body
+  result = call_601475.call(nil, nil, nil, nil, body_601476)
 
-var startContentModeration* = Call_StartContentModeration_603458(
+var startContentModeration* = Call_StartContentModeration_601462(
     name: "startContentModeration", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.StartContentModeration",
-    validator: validate_StartContentModeration_603459, base: "/",
-    url: url_StartContentModeration_603460, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartContentModeration_601463, base: "/",
+    url: url_StartContentModeration_601464, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartFaceDetection_603473 = ref object of OpenApiRestCall_602434
-proc url_StartFaceDetection_603475(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_StartFaceDetection_601477 = ref object of OpenApiRestCall_600438
+proc url_StartFaceDetection_601479(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_StartFaceDetection_603474(path: JsonNode; query: JsonNode;
+proc validate_StartFaceDetection_601478(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Starts asynchronous detection of faces in a stored video.</p> <p>Amazon Rekognition Video can detect faces in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartFaceDetection</code> returns a job identifier (<code>JobId</code>) that you use to get the results of the operation. When face detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the results of the face detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceDetection</code>.</p> <p>For more information, see Detecting Faces in a Stored Video in the Amazon Rekognition Developer Guide.</p>
@@ -3302,48 +3427,48 @@ proc validate_StartFaceDetection_603474(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603476 = header.getOrDefault("X-Amz-Date")
-  valid_603476 = validateParameter(valid_603476, JString, required = false,
+  var valid_601480 = header.getOrDefault("X-Amz-Date")
+  valid_601480 = validateParameter(valid_601480, JString, required = false,
                                  default = nil)
-  if valid_603476 != nil:
-    section.add "X-Amz-Date", valid_603476
-  var valid_603477 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603477 = validateParameter(valid_603477, JString, required = false,
+  if valid_601480 != nil:
+    section.add "X-Amz-Date", valid_601480
+  var valid_601481 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601481 = validateParameter(valid_601481, JString, required = false,
                                  default = nil)
-  if valid_603477 != nil:
-    section.add "X-Amz-Security-Token", valid_603477
+  if valid_601481 != nil:
+    section.add "X-Amz-Security-Token", valid_601481
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603478 = header.getOrDefault("X-Amz-Target")
-  valid_603478 = validateParameter(valid_603478, JString, required = true, default = newJString(
+  var valid_601482 = header.getOrDefault("X-Amz-Target")
+  valid_601482 = validateParameter(valid_601482, JString, required = true, default = newJString(
       "RekognitionService.StartFaceDetection"))
-  if valid_603478 != nil:
-    section.add "X-Amz-Target", valid_603478
-  var valid_603479 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603479 = validateParameter(valid_603479, JString, required = false,
+  if valid_601482 != nil:
+    section.add "X-Amz-Target", valid_601482
+  var valid_601483 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601483 = validateParameter(valid_601483, JString, required = false,
                                  default = nil)
-  if valid_603479 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603479
-  var valid_603480 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603480 = validateParameter(valid_603480, JString, required = false,
+  if valid_601483 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601483
+  var valid_601484 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601484 = validateParameter(valid_601484, JString, required = false,
                                  default = nil)
-  if valid_603480 != nil:
-    section.add "X-Amz-Algorithm", valid_603480
-  var valid_603481 = header.getOrDefault("X-Amz-Signature")
-  valid_603481 = validateParameter(valid_603481, JString, required = false,
+  if valid_601484 != nil:
+    section.add "X-Amz-Algorithm", valid_601484
+  var valid_601485 = header.getOrDefault("X-Amz-Signature")
+  valid_601485 = validateParameter(valid_601485, JString, required = false,
                                  default = nil)
-  if valid_603481 != nil:
-    section.add "X-Amz-Signature", valid_603481
-  var valid_603482 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603482 = validateParameter(valid_603482, JString, required = false,
+  if valid_601485 != nil:
+    section.add "X-Amz-Signature", valid_601485
+  var valid_601486 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601486 = validateParameter(valid_601486, JString, required = false,
                                  default = nil)
-  if valid_603482 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603482
-  var valid_603483 = header.getOrDefault("X-Amz-Credential")
-  valid_603483 = validateParameter(valid_603483, JString, required = false,
+  if valid_601486 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601486
+  var valid_601487 = header.getOrDefault("X-Amz-Credential")
+  valid_601487 = validateParameter(valid_601487, JString, required = false,
                                  default = nil)
-  if valid_603483 != nil:
-    section.add "X-Amz-Credential", valid_603483
+  if valid_601487 != nil:
+    section.add "X-Amz-Credential", valid_601487
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3354,40 +3479,44 @@ proc validate_StartFaceDetection_603474(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603485: Call_StartFaceDetection_603473; path: JsonNode;
+proc call*(call_601489: Call_StartFaceDetection_601477; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts asynchronous detection of faces in a stored video.</p> <p>Amazon Rekognition Video can detect faces in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartFaceDetection</code> returns a job identifier (<code>JobId</code>) that you use to get the results of the operation. When face detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the results of the face detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceDetection</code>.</p> <p>For more information, see Detecting Faces in a Stored Video in the Amazon Rekognition Developer Guide.</p>
   ## 
-  let valid = call_603485.validator(path, query, header, formData, body)
-  let scheme = call_603485.pickScheme
+  let valid = call_601489.validator(path, query, header, formData, body)
+  let scheme = call_601489.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603485.url(scheme.get, call_603485.host, call_603485.base,
-                         call_603485.route, valid.getOrDefault("path"))
-  result = hook(call_603485, url, valid)
+  let url = call_601489.url(scheme.get, call_601489.host, call_601489.base,
+                         call_601489.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601489, url, valid)
 
-proc call*(call_603486: Call_StartFaceDetection_603473; body: JsonNode): Recallable =
+proc call*(call_601490: Call_StartFaceDetection_601477; body: JsonNode): Recallable =
   ## startFaceDetection
   ## <p>Starts asynchronous detection of faces in a stored video.</p> <p>Amazon Rekognition Video can detect faces in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartFaceDetection</code> returns a job identifier (<code>JobId</code>) that you use to get the results of the operation. When face detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the results of the face detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceDetection</code>.</p> <p>For more information, see Detecting Faces in a Stored Video in the Amazon Rekognition Developer Guide.</p>
   ##   body: JObject (required)
-  var body_603487 = newJObject()
+  var body_601491 = newJObject()
   if body != nil:
-    body_603487 = body
-  result = call_603486.call(nil, nil, nil, nil, body_603487)
+    body_601491 = body
+  result = call_601490.call(nil, nil, nil, nil, body_601491)
 
-var startFaceDetection* = Call_StartFaceDetection_603473(
+var startFaceDetection* = Call_StartFaceDetection_601477(
     name: "startFaceDetection", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.StartFaceDetection",
-    validator: validate_StartFaceDetection_603474, base: "/",
-    url: url_StartFaceDetection_603475, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartFaceDetection_601478, base: "/",
+    url: url_StartFaceDetection_601479, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartFaceSearch_603488 = ref object of OpenApiRestCall_602434
-proc url_StartFaceSearch_603490(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_StartFaceSearch_601492 = ref object of OpenApiRestCall_600438
+proc url_StartFaceSearch_601494(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_StartFaceSearch_603489(path: JsonNode; query: JsonNode;
+proc validate_StartFaceSearch_601493(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Starts the asynchronous search for faces in a collection that match the faces of persons detected in a stored video.</p> <p>The video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartFaceSearch</code> returns a job identifier (<code>JobId</code>) which you use to get the search results once the search has completed. When searching is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the search results, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceSearch</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceSearch</code>. For more information, see <a>procedure-person-search-videos</a>.</p>
@@ -3408,48 +3537,48 @@ proc validate_StartFaceSearch_603489(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603491 = header.getOrDefault("X-Amz-Date")
-  valid_603491 = validateParameter(valid_603491, JString, required = false,
+  var valid_601495 = header.getOrDefault("X-Amz-Date")
+  valid_601495 = validateParameter(valid_601495, JString, required = false,
                                  default = nil)
-  if valid_603491 != nil:
-    section.add "X-Amz-Date", valid_603491
-  var valid_603492 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603492 = validateParameter(valid_603492, JString, required = false,
+  if valid_601495 != nil:
+    section.add "X-Amz-Date", valid_601495
+  var valid_601496 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601496 = validateParameter(valid_601496, JString, required = false,
                                  default = nil)
-  if valid_603492 != nil:
-    section.add "X-Amz-Security-Token", valid_603492
+  if valid_601496 != nil:
+    section.add "X-Amz-Security-Token", valid_601496
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603493 = header.getOrDefault("X-Amz-Target")
-  valid_603493 = validateParameter(valid_603493, JString, required = true, default = newJString(
+  var valid_601497 = header.getOrDefault("X-Amz-Target")
+  valid_601497 = validateParameter(valid_601497, JString, required = true, default = newJString(
       "RekognitionService.StartFaceSearch"))
-  if valid_603493 != nil:
-    section.add "X-Amz-Target", valid_603493
-  var valid_603494 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603494 = validateParameter(valid_603494, JString, required = false,
+  if valid_601497 != nil:
+    section.add "X-Amz-Target", valid_601497
+  var valid_601498 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601498 = validateParameter(valid_601498, JString, required = false,
                                  default = nil)
-  if valid_603494 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603494
-  var valid_603495 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603495 = validateParameter(valid_603495, JString, required = false,
+  if valid_601498 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601498
+  var valid_601499 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601499 = validateParameter(valid_601499, JString, required = false,
                                  default = nil)
-  if valid_603495 != nil:
-    section.add "X-Amz-Algorithm", valid_603495
-  var valid_603496 = header.getOrDefault("X-Amz-Signature")
-  valid_603496 = validateParameter(valid_603496, JString, required = false,
+  if valid_601499 != nil:
+    section.add "X-Amz-Algorithm", valid_601499
+  var valid_601500 = header.getOrDefault("X-Amz-Signature")
+  valid_601500 = validateParameter(valid_601500, JString, required = false,
                                  default = nil)
-  if valid_603496 != nil:
-    section.add "X-Amz-Signature", valid_603496
-  var valid_603497 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603497 = validateParameter(valid_603497, JString, required = false,
+  if valid_601500 != nil:
+    section.add "X-Amz-Signature", valid_601500
+  var valid_601501 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601501 = validateParameter(valid_601501, JString, required = false,
                                  default = nil)
-  if valid_603497 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603497
-  var valid_603498 = header.getOrDefault("X-Amz-Credential")
-  valid_603498 = validateParameter(valid_603498, JString, required = false,
+  if valid_601501 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601501
+  var valid_601502 = header.getOrDefault("X-Amz-Credential")
+  valid_601502 = validateParameter(valid_601502, JString, required = false,
                                  default = nil)
-  if valid_603498 != nil:
-    section.add "X-Amz-Credential", valid_603498
+  if valid_601502 != nil:
+    section.add "X-Amz-Credential", valid_601502
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3460,39 +3589,43 @@ proc validate_StartFaceSearch_603489(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603500: Call_StartFaceSearch_603488; path: JsonNode; query: JsonNode;
+proc call*(call_601504: Call_StartFaceSearch_601492; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts the asynchronous search for faces in a collection that match the faces of persons detected in a stored video.</p> <p>The video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartFaceSearch</code> returns a job identifier (<code>JobId</code>) which you use to get the search results once the search has completed. When searching is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the search results, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceSearch</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceSearch</code>. For more information, see <a>procedure-person-search-videos</a>.</p>
   ## 
-  let valid = call_603500.validator(path, query, header, formData, body)
-  let scheme = call_603500.pickScheme
+  let valid = call_601504.validator(path, query, header, formData, body)
+  let scheme = call_601504.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603500.url(scheme.get, call_603500.host, call_603500.base,
-                         call_603500.route, valid.getOrDefault("path"))
-  result = hook(call_603500, url, valid)
+  let url = call_601504.url(scheme.get, call_601504.host, call_601504.base,
+                         call_601504.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601504, url, valid)
 
-proc call*(call_603501: Call_StartFaceSearch_603488; body: JsonNode): Recallable =
+proc call*(call_601505: Call_StartFaceSearch_601492; body: JsonNode): Recallable =
   ## startFaceSearch
   ## <p>Starts the asynchronous search for faces in a collection that match the faces of persons detected in a stored video.</p> <p>The video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartFaceSearch</code> returns a job identifier (<code>JobId</code>) which you use to get the search results once the search has completed. When searching is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. To get the search results, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceSearch</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartFaceSearch</code>. For more information, see <a>procedure-person-search-videos</a>.</p>
   ##   body: JObject (required)
-  var body_603502 = newJObject()
+  var body_601506 = newJObject()
   if body != nil:
-    body_603502 = body
-  result = call_603501.call(nil, nil, nil, nil, body_603502)
+    body_601506 = body
+  result = call_601505.call(nil, nil, nil, nil, body_601506)
 
-var startFaceSearch* = Call_StartFaceSearch_603488(name: "startFaceSearch",
+var startFaceSearch* = Call_StartFaceSearch_601492(name: "startFaceSearch",
     meth: HttpMethod.HttpPost, host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.StartFaceSearch",
-    validator: validate_StartFaceSearch_603489, base: "/", url: url_StartFaceSearch_603490,
+    validator: validate_StartFaceSearch_601493, base: "/", url: url_StartFaceSearch_601494,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartLabelDetection_603503 = ref object of OpenApiRestCall_602434
-proc url_StartLabelDetection_603505(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_StartLabelDetection_601507 = ref object of OpenApiRestCall_600438
+proc url_StartLabelDetection_601509(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_StartLabelDetection_603504(path: JsonNode; query: JsonNode;
+proc validate_StartLabelDetection_601508(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Starts asynchronous detection of labels in a stored video.</p> <p>Amazon Rekognition Video can detect labels in a video. Labels are instances of real-world entities. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; concepts like landscape, evening, and nature; and activities like a person getting out of a car or a person skiing.</p> <p>The video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartLabelDetection</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>.</p> <p>To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p/>
@@ -3513,48 +3646,48 @@ proc validate_StartLabelDetection_603504(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603506 = header.getOrDefault("X-Amz-Date")
-  valid_603506 = validateParameter(valid_603506, JString, required = false,
+  var valid_601510 = header.getOrDefault("X-Amz-Date")
+  valid_601510 = validateParameter(valid_601510, JString, required = false,
                                  default = nil)
-  if valid_603506 != nil:
-    section.add "X-Amz-Date", valid_603506
-  var valid_603507 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603507 = validateParameter(valid_603507, JString, required = false,
+  if valid_601510 != nil:
+    section.add "X-Amz-Date", valid_601510
+  var valid_601511 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601511 = validateParameter(valid_601511, JString, required = false,
                                  default = nil)
-  if valid_603507 != nil:
-    section.add "X-Amz-Security-Token", valid_603507
+  if valid_601511 != nil:
+    section.add "X-Amz-Security-Token", valid_601511
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603508 = header.getOrDefault("X-Amz-Target")
-  valid_603508 = validateParameter(valid_603508, JString, required = true, default = newJString(
+  var valid_601512 = header.getOrDefault("X-Amz-Target")
+  valid_601512 = validateParameter(valid_601512, JString, required = true, default = newJString(
       "RekognitionService.StartLabelDetection"))
-  if valid_603508 != nil:
-    section.add "X-Amz-Target", valid_603508
-  var valid_603509 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603509 = validateParameter(valid_603509, JString, required = false,
+  if valid_601512 != nil:
+    section.add "X-Amz-Target", valid_601512
+  var valid_601513 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601513 = validateParameter(valid_601513, JString, required = false,
                                  default = nil)
-  if valid_603509 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603509
-  var valid_603510 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603510 = validateParameter(valid_603510, JString, required = false,
+  if valid_601513 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601513
+  var valid_601514 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601514 = validateParameter(valid_601514, JString, required = false,
                                  default = nil)
-  if valid_603510 != nil:
-    section.add "X-Amz-Algorithm", valid_603510
-  var valid_603511 = header.getOrDefault("X-Amz-Signature")
-  valid_603511 = validateParameter(valid_603511, JString, required = false,
+  if valid_601514 != nil:
+    section.add "X-Amz-Algorithm", valid_601514
+  var valid_601515 = header.getOrDefault("X-Amz-Signature")
+  valid_601515 = validateParameter(valid_601515, JString, required = false,
                                  default = nil)
-  if valid_603511 != nil:
-    section.add "X-Amz-Signature", valid_603511
-  var valid_603512 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603512 = validateParameter(valid_603512, JString, required = false,
+  if valid_601515 != nil:
+    section.add "X-Amz-Signature", valid_601515
+  var valid_601516 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601516 = validateParameter(valid_601516, JString, required = false,
                                  default = nil)
-  if valid_603512 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603512
-  var valid_603513 = header.getOrDefault("X-Amz-Credential")
-  valid_603513 = validateParameter(valid_603513, JString, required = false,
+  if valid_601516 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601516
+  var valid_601517 = header.getOrDefault("X-Amz-Credential")
+  valid_601517 = validateParameter(valid_601517, JString, required = false,
                                  default = nil)
-  if valid_603513 != nil:
-    section.add "X-Amz-Credential", valid_603513
+  if valid_601517 != nil:
+    section.add "X-Amz-Credential", valid_601517
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3565,40 +3698,44 @@ proc validate_StartLabelDetection_603504(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603515: Call_StartLabelDetection_603503; path: JsonNode;
+proc call*(call_601519: Call_StartLabelDetection_601507; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts asynchronous detection of labels in a stored video.</p> <p>Amazon Rekognition Video can detect labels in a video. Labels are instances of real-world entities. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; concepts like landscape, evening, and nature; and activities like a person getting out of a car or a person skiing.</p> <p>The video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartLabelDetection</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>.</p> <p>To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p/>
   ## 
-  let valid = call_603515.validator(path, query, header, formData, body)
-  let scheme = call_603515.pickScheme
+  let valid = call_601519.validator(path, query, header, formData, body)
+  let scheme = call_601519.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603515.url(scheme.get, call_603515.host, call_603515.base,
-                         call_603515.route, valid.getOrDefault("path"))
-  result = hook(call_603515, url, valid)
+  let url = call_601519.url(scheme.get, call_601519.host, call_601519.base,
+                         call_601519.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601519, url, valid)
 
-proc call*(call_603516: Call_StartLabelDetection_603503; body: JsonNode): Recallable =
+proc call*(call_601520: Call_StartLabelDetection_601507; body: JsonNode): Recallable =
   ## startLabelDetection
   ## <p>Starts asynchronous detection of labels in a stored video.</p> <p>Amazon Rekognition Video can detect labels in a video. Labels are instances of real-world entities. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; concepts like landscape, evening, and nature; and activities like a person getting out of a car or a person skiing.</p> <p>The video must be stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartLabelDetection</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>.</p> <p>To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetLabelDetection</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartLabelDetection</code>.</p> <p/>
   ##   body: JObject (required)
-  var body_603517 = newJObject()
+  var body_601521 = newJObject()
   if body != nil:
-    body_603517 = body
-  result = call_603516.call(nil, nil, nil, nil, body_603517)
+    body_601521 = body
+  result = call_601520.call(nil, nil, nil, nil, body_601521)
 
-var startLabelDetection* = Call_StartLabelDetection_603503(
+var startLabelDetection* = Call_StartLabelDetection_601507(
     name: "startLabelDetection", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.StartLabelDetection",
-    validator: validate_StartLabelDetection_603504, base: "/",
-    url: url_StartLabelDetection_603505, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartLabelDetection_601508, base: "/",
+    url: url_StartLabelDetection_601509, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartPersonTracking_603518 = ref object of OpenApiRestCall_602434
-proc url_StartPersonTracking_603520(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_StartPersonTracking_601522 = ref object of OpenApiRestCall_600438
+proc url_StartPersonTracking_601524(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_StartPersonTracking_603519(path: JsonNode; query: JsonNode;
+proc validate_StartPersonTracking_601523(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Starts the asynchronous tracking of a person's path in a stored video.</p> <p>Amazon Rekognition Video can track the path of people in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartPersonTracking</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. </p> <p>To get the results of the person detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetPersonTracking</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartPersonTracking</code>.</p>
@@ -3619,48 +3756,48 @@ proc validate_StartPersonTracking_603519(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603521 = header.getOrDefault("X-Amz-Date")
-  valid_603521 = validateParameter(valid_603521, JString, required = false,
+  var valid_601525 = header.getOrDefault("X-Amz-Date")
+  valid_601525 = validateParameter(valid_601525, JString, required = false,
                                  default = nil)
-  if valid_603521 != nil:
-    section.add "X-Amz-Date", valid_603521
-  var valid_603522 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603522 = validateParameter(valid_603522, JString, required = false,
+  if valid_601525 != nil:
+    section.add "X-Amz-Date", valid_601525
+  var valid_601526 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601526 = validateParameter(valid_601526, JString, required = false,
                                  default = nil)
-  if valid_603522 != nil:
-    section.add "X-Amz-Security-Token", valid_603522
+  if valid_601526 != nil:
+    section.add "X-Amz-Security-Token", valid_601526
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603523 = header.getOrDefault("X-Amz-Target")
-  valid_603523 = validateParameter(valid_603523, JString, required = true, default = newJString(
+  var valid_601527 = header.getOrDefault("X-Amz-Target")
+  valid_601527 = validateParameter(valid_601527, JString, required = true, default = newJString(
       "RekognitionService.StartPersonTracking"))
-  if valid_603523 != nil:
-    section.add "X-Amz-Target", valid_603523
-  var valid_603524 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603524 = validateParameter(valid_603524, JString, required = false,
+  if valid_601527 != nil:
+    section.add "X-Amz-Target", valid_601527
+  var valid_601528 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601528 = validateParameter(valid_601528, JString, required = false,
                                  default = nil)
-  if valid_603524 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603524
-  var valid_603525 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603525 = validateParameter(valid_603525, JString, required = false,
+  if valid_601528 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601528
+  var valid_601529 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601529 = validateParameter(valid_601529, JString, required = false,
                                  default = nil)
-  if valid_603525 != nil:
-    section.add "X-Amz-Algorithm", valid_603525
-  var valid_603526 = header.getOrDefault("X-Amz-Signature")
-  valid_603526 = validateParameter(valid_603526, JString, required = false,
+  if valid_601529 != nil:
+    section.add "X-Amz-Algorithm", valid_601529
+  var valid_601530 = header.getOrDefault("X-Amz-Signature")
+  valid_601530 = validateParameter(valid_601530, JString, required = false,
                                  default = nil)
-  if valid_603526 != nil:
-    section.add "X-Amz-Signature", valid_603526
-  var valid_603527 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603527 = validateParameter(valid_603527, JString, required = false,
+  if valid_601530 != nil:
+    section.add "X-Amz-Signature", valid_601530
+  var valid_601531 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601531 = validateParameter(valid_601531, JString, required = false,
                                  default = nil)
-  if valid_603527 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603527
-  var valid_603528 = header.getOrDefault("X-Amz-Credential")
-  valid_603528 = validateParameter(valid_603528, JString, required = false,
+  if valid_601531 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601531
+  var valid_601532 = header.getOrDefault("X-Amz-Credential")
+  valid_601532 = validateParameter(valid_601532, JString, required = false,
                                  default = nil)
-  if valid_603528 != nil:
-    section.add "X-Amz-Credential", valid_603528
+  if valid_601532 != nil:
+    section.add "X-Amz-Credential", valid_601532
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3671,40 +3808,44 @@ proc validate_StartPersonTracking_603519(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603530: Call_StartPersonTracking_603518; path: JsonNode;
+proc call*(call_601534: Call_StartPersonTracking_601522; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts the asynchronous tracking of a person's path in a stored video.</p> <p>Amazon Rekognition Video can track the path of people in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartPersonTracking</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. </p> <p>To get the results of the person detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetPersonTracking</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartPersonTracking</code>.</p>
   ## 
-  let valid = call_603530.validator(path, query, header, formData, body)
-  let scheme = call_603530.pickScheme
+  let valid = call_601534.validator(path, query, header, formData, body)
+  let scheme = call_601534.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603530.url(scheme.get, call_603530.host, call_603530.base,
-                         call_603530.route, valid.getOrDefault("path"))
-  result = hook(call_603530, url, valid)
+  let url = call_601534.url(scheme.get, call_601534.host, call_601534.base,
+                         call_601534.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601534, url, valid)
 
-proc call*(call_603531: Call_StartPersonTracking_603518; body: JsonNode): Recallable =
+proc call*(call_601535: Call_StartPersonTracking_601522; body: JsonNode): Recallable =
   ## startPersonTracking
   ## <p>Starts the asynchronous tracking of a person's path in a stored video.</p> <p>Amazon Rekognition Video can track the path of people in a video stored in an Amazon S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of the video. <code>StartPersonTracking</code> returns a job identifier (<code>JobId</code>) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition publishes a completion status to the Amazon Simple Notification Service topic that you specify in <code>NotificationChannel</code>. </p> <p>To get the results of the person detection operation, first check that the status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If so, call <a>GetPersonTracking</a> and pass the job identifier (<code>JobId</code>) from the initial call to <code>StartPersonTracking</code>.</p>
   ##   body: JObject (required)
-  var body_603532 = newJObject()
+  var body_601536 = newJObject()
   if body != nil:
-    body_603532 = body
-  result = call_603531.call(nil, nil, nil, nil, body_603532)
+    body_601536 = body
+  result = call_601535.call(nil, nil, nil, nil, body_601536)
 
-var startPersonTracking* = Call_StartPersonTracking_603518(
+var startPersonTracking* = Call_StartPersonTracking_601522(
     name: "startPersonTracking", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.StartPersonTracking",
-    validator: validate_StartPersonTracking_603519, base: "/",
-    url: url_StartPersonTracking_603520, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartPersonTracking_601523, base: "/",
+    url: url_StartPersonTracking_601524, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartStreamProcessor_603533 = ref object of OpenApiRestCall_602434
-proc url_StartStreamProcessor_603535(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_StartStreamProcessor_601537 = ref object of OpenApiRestCall_600438
+proc url_StartStreamProcessor_601539(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_StartStreamProcessor_603534(path: JsonNode; query: JsonNode;
+proc validate_StartStreamProcessor_601538(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Starts processing a stream processor. You create a stream processor by calling <a>CreateStreamProcessor</a>. To tell <code>StartStreamProcessor</code> which stream processor to start, use the value of the <code>Name</code> field specified in the call to <code>CreateStreamProcessor</code>.
   ## 
@@ -3724,48 +3865,48 @@ proc validate_StartStreamProcessor_603534(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603536 = header.getOrDefault("X-Amz-Date")
-  valid_603536 = validateParameter(valid_603536, JString, required = false,
+  var valid_601540 = header.getOrDefault("X-Amz-Date")
+  valid_601540 = validateParameter(valid_601540, JString, required = false,
                                  default = nil)
-  if valid_603536 != nil:
-    section.add "X-Amz-Date", valid_603536
-  var valid_603537 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603537 = validateParameter(valid_603537, JString, required = false,
+  if valid_601540 != nil:
+    section.add "X-Amz-Date", valid_601540
+  var valid_601541 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601541 = validateParameter(valid_601541, JString, required = false,
                                  default = nil)
-  if valid_603537 != nil:
-    section.add "X-Amz-Security-Token", valid_603537
+  if valid_601541 != nil:
+    section.add "X-Amz-Security-Token", valid_601541
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603538 = header.getOrDefault("X-Amz-Target")
-  valid_603538 = validateParameter(valid_603538, JString, required = true, default = newJString(
+  var valid_601542 = header.getOrDefault("X-Amz-Target")
+  valid_601542 = validateParameter(valid_601542, JString, required = true, default = newJString(
       "RekognitionService.StartStreamProcessor"))
-  if valid_603538 != nil:
-    section.add "X-Amz-Target", valid_603538
-  var valid_603539 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603539 = validateParameter(valid_603539, JString, required = false,
+  if valid_601542 != nil:
+    section.add "X-Amz-Target", valid_601542
+  var valid_601543 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601543 = validateParameter(valid_601543, JString, required = false,
                                  default = nil)
-  if valid_603539 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603539
-  var valid_603540 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603540 = validateParameter(valid_603540, JString, required = false,
+  if valid_601543 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601543
+  var valid_601544 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601544 = validateParameter(valid_601544, JString, required = false,
                                  default = nil)
-  if valid_603540 != nil:
-    section.add "X-Amz-Algorithm", valid_603540
-  var valid_603541 = header.getOrDefault("X-Amz-Signature")
-  valid_603541 = validateParameter(valid_603541, JString, required = false,
+  if valid_601544 != nil:
+    section.add "X-Amz-Algorithm", valid_601544
+  var valid_601545 = header.getOrDefault("X-Amz-Signature")
+  valid_601545 = validateParameter(valid_601545, JString, required = false,
                                  default = nil)
-  if valid_603541 != nil:
-    section.add "X-Amz-Signature", valid_603541
-  var valid_603542 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603542 = validateParameter(valid_603542, JString, required = false,
+  if valid_601545 != nil:
+    section.add "X-Amz-Signature", valid_601545
+  var valid_601546 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601546 = validateParameter(valid_601546, JString, required = false,
                                  default = nil)
-  if valid_603542 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603542
-  var valid_603543 = header.getOrDefault("X-Amz-Credential")
-  valid_603543 = validateParameter(valid_603543, JString, required = false,
+  if valid_601546 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601546
+  var valid_601547 = header.getOrDefault("X-Amz-Credential")
+  valid_601547 = validateParameter(valid_601547, JString, required = false,
                                  default = nil)
-  if valid_603543 != nil:
-    section.add "X-Amz-Credential", valid_603543
+  if valid_601547 != nil:
+    section.add "X-Amz-Credential", valid_601547
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3776,40 +3917,44 @@ proc validate_StartStreamProcessor_603534(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603545: Call_StartStreamProcessor_603533; path: JsonNode;
+proc call*(call_601549: Call_StartStreamProcessor_601537; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Starts processing a stream processor. You create a stream processor by calling <a>CreateStreamProcessor</a>. To tell <code>StartStreamProcessor</code> which stream processor to start, use the value of the <code>Name</code> field specified in the call to <code>CreateStreamProcessor</code>.
   ## 
-  let valid = call_603545.validator(path, query, header, formData, body)
-  let scheme = call_603545.pickScheme
+  let valid = call_601549.validator(path, query, header, formData, body)
+  let scheme = call_601549.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603545.url(scheme.get, call_603545.host, call_603545.base,
-                         call_603545.route, valid.getOrDefault("path"))
-  result = hook(call_603545, url, valid)
+  let url = call_601549.url(scheme.get, call_601549.host, call_601549.base,
+                         call_601549.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601549, url, valid)
 
-proc call*(call_603546: Call_StartStreamProcessor_603533; body: JsonNode): Recallable =
+proc call*(call_601550: Call_StartStreamProcessor_601537; body: JsonNode): Recallable =
   ## startStreamProcessor
   ## Starts processing a stream processor. You create a stream processor by calling <a>CreateStreamProcessor</a>. To tell <code>StartStreamProcessor</code> which stream processor to start, use the value of the <code>Name</code> field specified in the call to <code>CreateStreamProcessor</code>.
   ##   body: JObject (required)
-  var body_603547 = newJObject()
+  var body_601551 = newJObject()
   if body != nil:
-    body_603547 = body
-  result = call_603546.call(nil, nil, nil, nil, body_603547)
+    body_601551 = body
+  result = call_601550.call(nil, nil, nil, nil, body_601551)
 
-var startStreamProcessor* = Call_StartStreamProcessor_603533(
+var startStreamProcessor* = Call_StartStreamProcessor_601537(
     name: "startStreamProcessor", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.StartStreamProcessor",
-    validator: validate_StartStreamProcessor_603534, base: "/",
-    url: url_StartStreamProcessor_603535, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartStreamProcessor_601538, base: "/",
+    url: url_StartStreamProcessor_601539, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopStreamProcessor_603548 = ref object of OpenApiRestCall_602434
-proc url_StopStreamProcessor_603550(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_StopStreamProcessor_601552 = ref object of OpenApiRestCall_600438
+proc url_StopStreamProcessor_601554(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_StopStreamProcessor_603549(path: JsonNode; query: JsonNode;
+proc validate_StopStreamProcessor_601553(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Stops a running stream processor that was created by <a>CreateStreamProcessor</a>.
@@ -3830,48 +3975,48 @@ proc validate_StopStreamProcessor_603549(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603551 = header.getOrDefault("X-Amz-Date")
-  valid_603551 = validateParameter(valid_603551, JString, required = false,
+  var valid_601555 = header.getOrDefault("X-Amz-Date")
+  valid_601555 = validateParameter(valid_601555, JString, required = false,
                                  default = nil)
-  if valid_603551 != nil:
-    section.add "X-Amz-Date", valid_603551
-  var valid_603552 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603552 = validateParameter(valid_603552, JString, required = false,
+  if valid_601555 != nil:
+    section.add "X-Amz-Date", valid_601555
+  var valid_601556 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601556 = validateParameter(valid_601556, JString, required = false,
                                  default = nil)
-  if valid_603552 != nil:
-    section.add "X-Amz-Security-Token", valid_603552
+  if valid_601556 != nil:
+    section.add "X-Amz-Security-Token", valid_601556
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603553 = header.getOrDefault("X-Amz-Target")
-  valid_603553 = validateParameter(valid_603553, JString, required = true, default = newJString(
+  var valid_601557 = header.getOrDefault("X-Amz-Target")
+  valid_601557 = validateParameter(valid_601557, JString, required = true, default = newJString(
       "RekognitionService.StopStreamProcessor"))
-  if valid_603553 != nil:
-    section.add "X-Amz-Target", valid_603553
-  var valid_603554 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603554 = validateParameter(valid_603554, JString, required = false,
+  if valid_601557 != nil:
+    section.add "X-Amz-Target", valid_601557
+  var valid_601558 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601558 = validateParameter(valid_601558, JString, required = false,
                                  default = nil)
-  if valid_603554 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603554
-  var valid_603555 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603555 = validateParameter(valid_603555, JString, required = false,
+  if valid_601558 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601558
+  var valid_601559 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601559 = validateParameter(valid_601559, JString, required = false,
                                  default = nil)
-  if valid_603555 != nil:
-    section.add "X-Amz-Algorithm", valid_603555
-  var valid_603556 = header.getOrDefault("X-Amz-Signature")
-  valid_603556 = validateParameter(valid_603556, JString, required = false,
+  if valid_601559 != nil:
+    section.add "X-Amz-Algorithm", valid_601559
+  var valid_601560 = header.getOrDefault("X-Amz-Signature")
+  valid_601560 = validateParameter(valid_601560, JString, required = false,
                                  default = nil)
-  if valid_603556 != nil:
-    section.add "X-Amz-Signature", valid_603556
-  var valid_603557 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603557 = validateParameter(valid_603557, JString, required = false,
+  if valid_601560 != nil:
+    section.add "X-Amz-Signature", valid_601560
+  var valid_601561 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601561 = validateParameter(valid_601561, JString, required = false,
                                  default = nil)
-  if valid_603557 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603557
-  var valid_603558 = header.getOrDefault("X-Amz-Credential")
-  valid_603558 = validateParameter(valid_603558, JString, required = false,
+  if valid_601561 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601561
+  var valid_601562 = header.getOrDefault("X-Amz-Credential")
+  valid_601562 = validateParameter(valid_601562, JString, required = false,
                                  default = nil)
-  if valid_603558 != nil:
-    section.add "X-Amz-Credential", valid_603558
+  if valid_601562 != nil:
+    section.add "X-Amz-Credential", valid_601562
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3882,33 +4027,34 @@ proc validate_StopStreamProcessor_603549(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603560: Call_StopStreamProcessor_603548; path: JsonNode;
+proc call*(call_601564: Call_StopStreamProcessor_601552; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Stops a running stream processor that was created by <a>CreateStreamProcessor</a>.
   ## 
-  let valid = call_603560.validator(path, query, header, formData, body)
-  let scheme = call_603560.pickScheme
+  let valid = call_601564.validator(path, query, header, formData, body)
+  let scheme = call_601564.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603560.url(scheme.get, call_603560.host, call_603560.base,
-                         call_603560.route, valid.getOrDefault("path"))
-  result = hook(call_603560, url, valid)
+  let url = call_601564.url(scheme.get, call_601564.host, call_601564.base,
+                         call_601564.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601564, url, valid)
 
-proc call*(call_603561: Call_StopStreamProcessor_603548; body: JsonNode): Recallable =
+proc call*(call_601565: Call_StopStreamProcessor_601552; body: JsonNode): Recallable =
   ## stopStreamProcessor
   ## Stops a running stream processor that was created by <a>CreateStreamProcessor</a>.
   ##   body: JObject (required)
-  var body_603562 = newJObject()
+  var body_601566 = newJObject()
   if body != nil:
-    body_603562 = body
-  result = call_603561.call(nil, nil, nil, nil, body_603562)
+    body_601566 = body
+  result = call_601565.call(nil, nil, nil, nil, body_601566)
 
-var stopStreamProcessor* = Call_StopStreamProcessor_603548(
+var stopStreamProcessor* = Call_StopStreamProcessor_601552(
     name: "stopStreamProcessor", meth: HttpMethod.HttpPost,
     host: "rekognition.amazonaws.com",
     route: "/#X-Amz-Target=RekognitionService.StopStreamProcessor",
-    validator: validate_StopStreamProcessor_603549, base: "/",
-    url: url_StopStreamProcessor_603550, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StopStreamProcessor_601553, base: "/",
+    url: url_StopStreamProcessor_601554, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -3951,7 +4097,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.} =
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, "")
+  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
   result.sign(input.getOrDefault("query"), SHA256)

@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon DynamoDB
@@ -27,17 +27,17 @@ type
     host*: string
     schemes*: set[Scheme]
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
-              path: JsonNode): string
+              path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602433 = ref object of OpenApiRestCall
+  OpenApiRestCall_600437 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602433](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600437](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602433): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600437): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,6 +74,14 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
+proc queryString(query: JsonNode): string =
+  var qs: seq[KeyVal]
+  if query == nil:
+    return ""
+  for k, v in query.pairs:
+    qs.add (key: k, val: v.getStr)
+  result = encodeQuery(qs)
+
 proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
@@ -130,14 +138,17 @@ const
       "ca-central-1": "dynamodb.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "dynamodb"
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_BatchGetItem_602770 = ref object of OpenApiRestCall_602433
-proc url_BatchGetItem_602772(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_BatchGetItem_600774 = ref object of OpenApiRestCall_600437
+proc url_BatchGetItem_600776(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_BatchGetItem_602771(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_BatchGetItem_600775(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves the attributes for multiple items from multiple tables using their primary keys.</p> <p>The maximum number of item attributes that can be retrieved for a single operation is 100. Also, the number of items retrieved is constrained by a 1 MB the size limit. If the response size limit is exceeded or a partial result is returned due to an internal processing failure, Amazon DynamoDB returns an <code>UnprocessedKeys</code> value so you can retry the operation starting with the next item to get.</p> <p>Amazon DynamoDB automatically adjusts the number of items returned per page to enforce this limit. For example, even if you ask to retrieve 100 items, but each individual item is 50k in size, the system returns 20 items and an appropriate <code>UnprocessedKeys</code> value so you can get the next page of results. If necessary, your application needs its own logic to assemble the pages of results into one set.</p>
   ## 
@@ -149,11 +160,11 @@ proc validate_BatchGetItem_602771(path: JsonNode; query: JsonNode; header: JsonN
   ##   RequestItems: JString
   ##               : Pagination token
   section = newJObject()
-  var valid_602884 = query.getOrDefault("RequestItems")
-  valid_602884 = validateParameter(valid_602884, JString, required = false,
+  var valid_600888 = query.getOrDefault("RequestItems")
+  valid_600888 = validateParameter(valid_600888, JString, required = false,
                                  default = nil)
-  if valid_602884 != nil:
-    section.add "RequestItems", valid_602884
+  if valid_600888 != nil:
+    section.add "RequestItems", valid_600888
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -165,48 +176,48 @@ proc validate_BatchGetItem_602771(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_602885 = header.getOrDefault("X-Amz-Date")
-  valid_602885 = validateParameter(valid_602885, JString, required = false,
+  var valid_600889 = header.getOrDefault("X-Amz-Date")
+  valid_600889 = validateParameter(valid_600889, JString, required = false,
                                  default = nil)
-  if valid_602885 != nil:
-    section.add "X-Amz-Date", valid_602885
-  var valid_602886 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602886 = validateParameter(valid_602886, JString, required = false,
+  if valid_600889 != nil:
+    section.add "X-Amz-Date", valid_600889
+  var valid_600890 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600890 = validateParameter(valid_600890, JString, required = false,
                                  default = nil)
-  if valid_602886 != nil:
-    section.add "X-Amz-Security-Token", valid_602886
+  if valid_600890 != nil:
+    section.add "X-Amz-Security-Token", valid_600890
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602900 = header.getOrDefault("X-Amz-Target")
-  valid_602900 = validateParameter(valid_602900, JString, required = true, default = newJString(
+  var valid_600904 = header.getOrDefault("X-Amz-Target")
+  valid_600904 = validateParameter(valid_600904, JString, required = true, default = newJString(
       "DynamoDB_20111205.BatchGetItem"))
-  if valid_602900 != nil:
-    section.add "X-Amz-Target", valid_602900
-  var valid_602901 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602901 = validateParameter(valid_602901, JString, required = false,
+  if valid_600904 != nil:
+    section.add "X-Amz-Target", valid_600904
+  var valid_600905 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600905 = validateParameter(valid_600905, JString, required = false,
                                  default = nil)
-  if valid_602901 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602901
-  var valid_602902 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602902 = validateParameter(valid_602902, JString, required = false,
+  if valid_600905 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600905
+  var valid_600906 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600906 = validateParameter(valid_600906, JString, required = false,
                                  default = nil)
-  if valid_602902 != nil:
-    section.add "X-Amz-Algorithm", valid_602902
-  var valid_602903 = header.getOrDefault("X-Amz-Signature")
-  valid_602903 = validateParameter(valid_602903, JString, required = false,
+  if valid_600906 != nil:
+    section.add "X-Amz-Algorithm", valid_600906
+  var valid_600907 = header.getOrDefault("X-Amz-Signature")
+  valid_600907 = validateParameter(valid_600907, JString, required = false,
                                  default = nil)
-  if valid_602903 != nil:
-    section.add "X-Amz-Signature", valid_602903
-  var valid_602904 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602904 = validateParameter(valid_602904, JString, required = false,
+  if valid_600907 != nil:
+    section.add "X-Amz-Signature", valid_600907
+  var valid_600908 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600908 = validateParameter(valid_600908, JString, required = false,
                                  default = nil)
-  if valid_602904 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602904
-  var valid_602905 = header.getOrDefault("X-Amz-Credential")
-  valid_602905 = validateParameter(valid_602905, JString, required = false,
+  if valid_600908 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600908
+  var valid_600909 = header.getOrDefault("X-Amz-Credential")
+  valid_600909 = validateParameter(valid_600909, JString, required = false,
                                  default = nil)
-  if valid_602905 != nil:
-    section.add "X-Amz-Credential", valid_602905
+  if valid_600909 != nil:
+    section.add "X-Amz-Credential", valid_600909
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -217,44 +228,48 @@ proc validate_BatchGetItem_602771(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_602929: Call_BatchGetItem_602770; path: JsonNode; query: JsonNode;
+proc call*(call_600933: Call_BatchGetItem_600774; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves the attributes for multiple items from multiple tables using their primary keys.</p> <p>The maximum number of item attributes that can be retrieved for a single operation is 100. Also, the number of items retrieved is constrained by a 1 MB the size limit. If the response size limit is exceeded or a partial result is returned due to an internal processing failure, Amazon DynamoDB returns an <code>UnprocessedKeys</code> value so you can retry the operation starting with the next item to get.</p> <p>Amazon DynamoDB automatically adjusts the number of items returned per page to enforce this limit. For example, even if you ask to retrieve 100 items, but each individual item is 50k in size, the system returns 20 items and an appropriate <code>UnprocessedKeys</code> value so you can get the next page of results. If necessary, your application needs its own logic to assemble the pages of results into one set.</p>
   ## 
-  let valid = call_602929.validator(path, query, header, formData, body)
-  let scheme = call_602929.pickScheme
+  let valid = call_600933.validator(path, query, header, formData, body)
+  let scheme = call_600933.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602929.url(scheme.get, call_602929.host, call_602929.base,
-                         call_602929.route, valid.getOrDefault("path"))
-  result = hook(call_602929, url, valid)
+  let url = call_600933.url(scheme.get, call_600933.host, call_600933.base,
+                         call_600933.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_600933, url, valid)
 
-proc call*(call_603000: Call_BatchGetItem_602770; body: JsonNode;
+proc call*(call_601004: Call_BatchGetItem_600774; body: JsonNode;
           RequestItems: string = ""): Recallable =
   ## batchGetItem
   ## <p>Retrieves the attributes for multiple items from multiple tables using their primary keys.</p> <p>The maximum number of item attributes that can be retrieved for a single operation is 100. Also, the number of items retrieved is constrained by a 1 MB the size limit. If the response size limit is exceeded or a partial result is returned due to an internal processing failure, Amazon DynamoDB returns an <code>UnprocessedKeys</code> value so you can retry the operation starting with the next item to get.</p> <p>Amazon DynamoDB automatically adjusts the number of items returned per page to enforce this limit. For example, even if you ask to retrieve 100 items, but each individual item is 50k in size, the system returns 20 items and an appropriate <code>UnprocessedKeys</code> value so you can get the next page of results. If necessary, your application needs its own logic to assemble the pages of results into one set.</p>
   ##   RequestItems: string
   ##               : Pagination token
   ##   body: JObject (required)
-  var query_603001 = newJObject()
-  var body_603003 = newJObject()
-  add(query_603001, "RequestItems", newJString(RequestItems))
+  var query_601005 = newJObject()
+  var body_601007 = newJObject()
+  add(query_601005, "RequestItems", newJString(RequestItems))
   if body != nil:
-    body_603003 = body
-  result = call_603000.call(nil, query_603001, nil, nil, body_603003)
+    body_601007 = body
+  result = call_601004.call(nil, query_601005, nil, nil, body_601007)
 
-var batchGetItem* = Call_BatchGetItem_602770(name: "batchGetItem",
+var batchGetItem* = Call_BatchGetItem_600774(name: "batchGetItem",
     meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20111205.BatchGetItem",
-    validator: validate_BatchGetItem_602771, base: "/", url: url_BatchGetItem_602772,
+    validator: validate_BatchGetItem_600775, base: "/", url: url_BatchGetItem_600776,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_BatchWriteItem_603042 = ref object of OpenApiRestCall_602433
-proc url_BatchWriteItem_603044(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_BatchWriteItem_601046 = ref object of OpenApiRestCall_600437
+proc url_BatchWriteItem_601048(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_BatchWriteItem_603043(path: JsonNode; query: JsonNode;
+proc validate_BatchWriteItem_601047(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Allows to execute a batch of Put and/or Delete Requests for many tables in a single call. A total of 25 requests are allowed.</p> <p>There are no transaction guarantees provided by this API. It does not allow conditional puts nor does it support return values.</p>
@@ -275,48 +290,48 @@ proc validate_BatchWriteItem_603043(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603045 = header.getOrDefault("X-Amz-Date")
-  valid_603045 = validateParameter(valid_603045, JString, required = false,
+  var valid_601049 = header.getOrDefault("X-Amz-Date")
+  valid_601049 = validateParameter(valid_601049, JString, required = false,
                                  default = nil)
-  if valid_603045 != nil:
-    section.add "X-Amz-Date", valid_603045
-  var valid_603046 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603046 = validateParameter(valid_603046, JString, required = false,
+  if valid_601049 != nil:
+    section.add "X-Amz-Date", valid_601049
+  var valid_601050 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601050 = validateParameter(valid_601050, JString, required = false,
                                  default = nil)
-  if valid_603046 != nil:
-    section.add "X-Amz-Security-Token", valid_603046
+  if valid_601050 != nil:
+    section.add "X-Amz-Security-Token", valid_601050
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603047 = header.getOrDefault("X-Amz-Target")
-  valid_603047 = validateParameter(valid_603047, JString, required = true, default = newJString(
+  var valid_601051 = header.getOrDefault("X-Amz-Target")
+  valid_601051 = validateParameter(valid_601051, JString, required = true, default = newJString(
       "DynamoDB_20111205.BatchWriteItem"))
-  if valid_603047 != nil:
-    section.add "X-Amz-Target", valid_603047
-  var valid_603048 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603048 = validateParameter(valid_603048, JString, required = false,
+  if valid_601051 != nil:
+    section.add "X-Amz-Target", valid_601051
+  var valid_601052 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601052 = validateParameter(valid_601052, JString, required = false,
                                  default = nil)
-  if valid_603048 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603048
-  var valid_603049 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603049 = validateParameter(valid_603049, JString, required = false,
+  if valid_601052 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601052
+  var valid_601053 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601053 = validateParameter(valid_601053, JString, required = false,
                                  default = nil)
-  if valid_603049 != nil:
-    section.add "X-Amz-Algorithm", valid_603049
-  var valid_603050 = header.getOrDefault("X-Amz-Signature")
-  valid_603050 = validateParameter(valid_603050, JString, required = false,
+  if valid_601053 != nil:
+    section.add "X-Amz-Algorithm", valid_601053
+  var valid_601054 = header.getOrDefault("X-Amz-Signature")
+  valid_601054 = validateParameter(valid_601054, JString, required = false,
                                  default = nil)
-  if valid_603050 != nil:
-    section.add "X-Amz-Signature", valid_603050
-  var valid_603051 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603051 = validateParameter(valid_603051, JString, required = false,
+  if valid_601054 != nil:
+    section.add "X-Amz-Signature", valid_601054
+  var valid_601055 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601055 = validateParameter(valid_601055, JString, required = false,
                                  default = nil)
-  if valid_603051 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603051
-  var valid_603052 = header.getOrDefault("X-Amz-Credential")
-  valid_603052 = validateParameter(valid_603052, JString, required = false,
+  if valid_601055 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601055
+  var valid_601056 = header.getOrDefault("X-Amz-Credential")
+  valid_601056 = validateParameter(valid_601056, JString, required = false,
                                  default = nil)
-  if valid_603052 != nil:
-    section.add "X-Amz-Credential", valid_603052
+  if valid_601056 != nil:
+    section.add "X-Amz-Credential", valid_601056
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -327,39 +342,43 @@ proc validate_BatchWriteItem_603043(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603054: Call_BatchWriteItem_603042; path: JsonNode; query: JsonNode;
+proc call*(call_601058: Call_BatchWriteItem_601046; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Allows to execute a batch of Put and/or Delete Requests for many tables in a single call. A total of 25 requests are allowed.</p> <p>There are no transaction guarantees provided by this API. It does not allow conditional puts nor does it support return values.</p>
   ## 
-  let valid = call_603054.validator(path, query, header, formData, body)
-  let scheme = call_603054.pickScheme
+  let valid = call_601058.validator(path, query, header, formData, body)
+  let scheme = call_601058.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603054.url(scheme.get, call_603054.host, call_603054.base,
-                         call_603054.route, valid.getOrDefault("path"))
-  result = hook(call_603054, url, valid)
+  let url = call_601058.url(scheme.get, call_601058.host, call_601058.base,
+                         call_601058.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601058, url, valid)
 
-proc call*(call_603055: Call_BatchWriteItem_603042; body: JsonNode): Recallable =
+proc call*(call_601059: Call_BatchWriteItem_601046; body: JsonNode): Recallable =
   ## batchWriteItem
   ## <p>Allows to execute a batch of Put and/or Delete Requests for many tables in a single call. A total of 25 requests are allowed.</p> <p>There are no transaction guarantees provided by this API. It does not allow conditional puts nor does it support return values.</p>
   ##   body: JObject (required)
-  var body_603056 = newJObject()
+  var body_601060 = newJObject()
   if body != nil:
-    body_603056 = body
-  result = call_603055.call(nil, nil, nil, nil, body_603056)
+    body_601060 = body
+  result = call_601059.call(nil, nil, nil, nil, body_601060)
 
-var batchWriteItem* = Call_BatchWriteItem_603042(name: "batchWriteItem",
+var batchWriteItem* = Call_BatchWriteItem_601046(name: "batchWriteItem",
     meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20111205.BatchWriteItem",
-    validator: validate_BatchWriteItem_603043, base: "/", url: url_BatchWriteItem_603044,
+    validator: validate_BatchWriteItem_601047, base: "/", url: url_BatchWriteItem_601048,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTable_603057 = ref object of OpenApiRestCall_602433
-proc url_CreateTable_603059(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_CreateTable_601061 = ref object of OpenApiRestCall_600437
+proc url_CreateTable_601063(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_CreateTable_603058(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateTable_601062(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds a new table to your account.</p> <p>The table name must be unique among those associated with the AWS Account issuing the request, and the AWS Region that receives the request (e.g. <code>us-east-1</code>).</p> <p>The <code>CreateTable</code> operation triggers an asynchronous workflow to begin creating the table. Amazon DynamoDB immediately returns the state of the table (<code>CREATING</code>) until the table is in the <code>ACTIVE</code> state. Once the table is in the <code>ACTIVE</code> state, you can perform data plane operations.</p>
   ## 
@@ -379,48 +398,48 @@ proc validate_CreateTable_603058(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603060 = header.getOrDefault("X-Amz-Date")
-  valid_603060 = validateParameter(valid_603060, JString, required = false,
+  var valid_601064 = header.getOrDefault("X-Amz-Date")
+  valid_601064 = validateParameter(valid_601064, JString, required = false,
                                  default = nil)
-  if valid_603060 != nil:
-    section.add "X-Amz-Date", valid_603060
-  var valid_603061 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603061 = validateParameter(valid_603061, JString, required = false,
+  if valid_601064 != nil:
+    section.add "X-Amz-Date", valid_601064
+  var valid_601065 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601065 = validateParameter(valid_601065, JString, required = false,
                                  default = nil)
-  if valid_603061 != nil:
-    section.add "X-Amz-Security-Token", valid_603061
+  if valid_601065 != nil:
+    section.add "X-Amz-Security-Token", valid_601065
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603062 = header.getOrDefault("X-Amz-Target")
-  valid_603062 = validateParameter(valid_603062, JString, required = true, default = newJString(
+  var valid_601066 = header.getOrDefault("X-Amz-Target")
+  valid_601066 = validateParameter(valid_601066, JString, required = true, default = newJString(
       "DynamoDB_20111205.CreateTable"))
-  if valid_603062 != nil:
-    section.add "X-Amz-Target", valid_603062
-  var valid_603063 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603063 = validateParameter(valid_603063, JString, required = false,
+  if valid_601066 != nil:
+    section.add "X-Amz-Target", valid_601066
+  var valid_601067 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601067 = validateParameter(valid_601067, JString, required = false,
                                  default = nil)
-  if valid_603063 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603063
-  var valid_603064 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603064 = validateParameter(valid_603064, JString, required = false,
+  if valid_601067 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601067
+  var valid_601068 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601068 = validateParameter(valid_601068, JString, required = false,
                                  default = nil)
-  if valid_603064 != nil:
-    section.add "X-Amz-Algorithm", valid_603064
-  var valid_603065 = header.getOrDefault("X-Amz-Signature")
-  valid_603065 = validateParameter(valid_603065, JString, required = false,
+  if valid_601068 != nil:
+    section.add "X-Amz-Algorithm", valid_601068
+  var valid_601069 = header.getOrDefault("X-Amz-Signature")
+  valid_601069 = validateParameter(valid_601069, JString, required = false,
                                  default = nil)
-  if valid_603065 != nil:
-    section.add "X-Amz-Signature", valid_603065
-  var valid_603066 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603066 = validateParameter(valid_603066, JString, required = false,
+  if valid_601069 != nil:
+    section.add "X-Amz-Signature", valid_601069
+  var valid_601070 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601070 = validateParameter(valid_601070, JString, required = false,
                                  default = nil)
-  if valid_603066 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603066
-  var valid_603067 = header.getOrDefault("X-Amz-Credential")
-  valid_603067 = validateParameter(valid_603067, JString, required = false,
+  if valid_601070 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601070
+  var valid_601071 = header.getOrDefault("X-Amz-Credential")
+  valid_601071 = validateParameter(valid_601071, JString, required = false,
                                  default = nil)
-  if valid_603067 != nil:
-    section.add "X-Amz-Credential", valid_603067
+  if valid_601071 != nil:
+    section.add "X-Amz-Credential", valid_601071
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -431,40 +450,44 @@ proc validate_CreateTable_603058(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603069: Call_CreateTable_603057; path: JsonNode; query: JsonNode;
+proc call*(call_601073: Call_CreateTable_601061; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds a new table to your account.</p> <p>The table name must be unique among those associated with the AWS Account issuing the request, and the AWS Region that receives the request (e.g. <code>us-east-1</code>).</p> <p>The <code>CreateTable</code> operation triggers an asynchronous workflow to begin creating the table. Amazon DynamoDB immediately returns the state of the table (<code>CREATING</code>) until the table is in the <code>ACTIVE</code> state. Once the table is in the <code>ACTIVE</code> state, you can perform data plane operations.</p>
   ## 
-  let valid = call_603069.validator(path, query, header, formData, body)
-  let scheme = call_603069.pickScheme
+  let valid = call_601073.validator(path, query, header, formData, body)
+  let scheme = call_601073.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603069.url(scheme.get, call_603069.host, call_603069.base,
-                         call_603069.route, valid.getOrDefault("path"))
-  result = hook(call_603069, url, valid)
+  let url = call_601073.url(scheme.get, call_601073.host, call_601073.base,
+                         call_601073.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601073, url, valid)
 
-proc call*(call_603070: Call_CreateTable_603057; body: JsonNode): Recallable =
+proc call*(call_601074: Call_CreateTable_601061; body: JsonNode): Recallable =
   ## createTable
   ## <p>Adds a new table to your account.</p> <p>The table name must be unique among those associated with the AWS Account issuing the request, and the AWS Region that receives the request (e.g. <code>us-east-1</code>).</p> <p>The <code>CreateTable</code> operation triggers an asynchronous workflow to begin creating the table. Amazon DynamoDB immediately returns the state of the table (<code>CREATING</code>) until the table is in the <code>ACTIVE</code> state. Once the table is in the <code>ACTIVE</code> state, you can perform data plane operations.</p>
   ##   body: JObject (required)
-  var body_603071 = newJObject()
+  var body_601075 = newJObject()
   if body != nil:
-    body_603071 = body
-  result = call_603070.call(nil, nil, nil, nil, body_603071)
+    body_601075 = body
+  result = call_601074.call(nil, nil, nil, nil, body_601075)
 
-var createTable* = Call_CreateTable_603057(name: "createTable",
+var createTable* = Call_CreateTable_601061(name: "createTable",
                                         meth: HttpMethod.HttpPost,
                                         host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20111205.CreateTable",
-                                        validator: validate_CreateTable_603058,
-                                        base: "/", url: url_CreateTable_603059,
+                                        validator: validate_CreateTable_601062,
+                                        base: "/", url: url_CreateTable_601063,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteItem_603072 = ref object of OpenApiRestCall_602433
-proc url_DeleteItem_603074(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DeleteItem_601076 = ref object of OpenApiRestCall_600437
+proc url_DeleteItem_601078(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DeleteItem_603073(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteItem_601077(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a single item in a table by primary key.</p> <p>You can perform a conditional delete operation that deletes the item if it exists, or if it has an expected attribute value.</p>
   ## 
@@ -484,48 +507,48 @@ proc validate_DeleteItem_603073(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603075 = header.getOrDefault("X-Amz-Date")
-  valid_603075 = validateParameter(valid_603075, JString, required = false,
+  var valid_601079 = header.getOrDefault("X-Amz-Date")
+  valid_601079 = validateParameter(valid_601079, JString, required = false,
                                  default = nil)
-  if valid_603075 != nil:
-    section.add "X-Amz-Date", valid_603075
-  var valid_603076 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603076 = validateParameter(valid_603076, JString, required = false,
+  if valid_601079 != nil:
+    section.add "X-Amz-Date", valid_601079
+  var valid_601080 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601080 = validateParameter(valid_601080, JString, required = false,
                                  default = nil)
-  if valid_603076 != nil:
-    section.add "X-Amz-Security-Token", valid_603076
+  if valid_601080 != nil:
+    section.add "X-Amz-Security-Token", valid_601080
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603077 = header.getOrDefault("X-Amz-Target")
-  valid_603077 = validateParameter(valid_603077, JString, required = true, default = newJString(
+  var valid_601081 = header.getOrDefault("X-Amz-Target")
+  valid_601081 = validateParameter(valid_601081, JString, required = true, default = newJString(
       "DynamoDB_20111205.DeleteItem"))
-  if valid_603077 != nil:
-    section.add "X-Amz-Target", valid_603077
-  var valid_603078 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603078 = validateParameter(valid_603078, JString, required = false,
+  if valid_601081 != nil:
+    section.add "X-Amz-Target", valid_601081
+  var valid_601082 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601082 = validateParameter(valid_601082, JString, required = false,
                                  default = nil)
-  if valid_603078 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603078
-  var valid_603079 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603079 = validateParameter(valid_603079, JString, required = false,
+  if valid_601082 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601082
+  var valid_601083 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601083 = validateParameter(valid_601083, JString, required = false,
                                  default = nil)
-  if valid_603079 != nil:
-    section.add "X-Amz-Algorithm", valid_603079
-  var valid_603080 = header.getOrDefault("X-Amz-Signature")
-  valid_603080 = validateParameter(valid_603080, JString, required = false,
+  if valid_601083 != nil:
+    section.add "X-Amz-Algorithm", valid_601083
+  var valid_601084 = header.getOrDefault("X-Amz-Signature")
+  valid_601084 = validateParameter(valid_601084, JString, required = false,
                                  default = nil)
-  if valid_603080 != nil:
-    section.add "X-Amz-Signature", valid_603080
-  var valid_603081 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603081 = validateParameter(valid_603081, JString, required = false,
+  if valid_601084 != nil:
+    section.add "X-Amz-Signature", valid_601084
+  var valid_601085 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601085 = validateParameter(valid_601085, JString, required = false,
                                  default = nil)
-  if valid_603081 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603081
-  var valid_603082 = header.getOrDefault("X-Amz-Credential")
-  valid_603082 = validateParameter(valid_603082, JString, required = false,
+  if valid_601085 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601085
+  var valid_601086 = header.getOrDefault("X-Amz-Credential")
+  valid_601086 = validateParameter(valid_601086, JString, required = false,
                                  default = nil)
-  if valid_603082 != nil:
-    section.add "X-Amz-Credential", valid_603082
+  if valid_601086 != nil:
+    section.add "X-Amz-Credential", valid_601086
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -536,40 +559,44 @@ proc validate_DeleteItem_603073(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603084: Call_DeleteItem_603072; path: JsonNode; query: JsonNode;
+proc call*(call_601088: Call_DeleteItem_601076; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a single item in a table by primary key.</p> <p>You can perform a conditional delete operation that deletes the item if it exists, or if it has an expected attribute value.</p>
   ## 
-  let valid = call_603084.validator(path, query, header, formData, body)
-  let scheme = call_603084.pickScheme
+  let valid = call_601088.validator(path, query, header, formData, body)
+  let scheme = call_601088.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603084.url(scheme.get, call_603084.host, call_603084.base,
-                         call_603084.route, valid.getOrDefault("path"))
-  result = hook(call_603084, url, valid)
+  let url = call_601088.url(scheme.get, call_601088.host, call_601088.base,
+                         call_601088.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601088, url, valid)
 
-proc call*(call_603085: Call_DeleteItem_603072; body: JsonNode): Recallable =
+proc call*(call_601089: Call_DeleteItem_601076; body: JsonNode): Recallable =
   ## deleteItem
   ## <p>Deletes a single item in a table by primary key.</p> <p>You can perform a conditional delete operation that deletes the item if it exists, or if it has an expected attribute value.</p>
   ##   body: JObject (required)
-  var body_603086 = newJObject()
+  var body_601090 = newJObject()
   if body != nil:
-    body_603086 = body
-  result = call_603085.call(nil, nil, nil, nil, body_603086)
+    body_601090 = body
+  result = call_601089.call(nil, nil, nil, nil, body_601090)
 
-var deleteItem* = Call_DeleteItem_603072(name: "deleteItem",
+var deleteItem* = Call_DeleteItem_601076(name: "deleteItem",
                                       meth: HttpMethod.HttpPost,
                                       host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20111205.DeleteItem",
-                                      validator: validate_DeleteItem_603073,
-                                      base: "/", url: url_DeleteItem_603074,
+                                      validator: validate_DeleteItem_601077,
+                                      base: "/", url: url_DeleteItem_601078,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTable_603087 = ref object of OpenApiRestCall_602433
-proc url_DeleteTable_603089(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DeleteTable_601091 = ref object of OpenApiRestCall_600437
+proc url_DeleteTable_601093(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DeleteTable_603088(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteTable_601092(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a table and all of its items.</p> <p>If the table is in the <code>ACTIVE</code> state, you can delete it. If a table is in <code>CREATING</code> or <code>UPDATING</code> states then Amazon DynamoDB returns a <code>ResourceInUseException</code>. If the specified table does not exist, Amazon DynamoDB returns a <code>ResourceNotFoundException</code>.</p>
   ## 
@@ -589,48 +616,48 @@ proc validate_DeleteTable_603088(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603090 = header.getOrDefault("X-Amz-Date")
-  valid_603090 = validateParameter(valid_603090, JString, required = false,
+  var valid_601094 = header.getOrDefault("X-Amz-Date")
+  valid_601094 = validateParameter(valid_601094, JString, required = false,
                                  default = nil)
-  if valid_603090 != nil:
-    section.add "X-Amz-Date", valid_603090
-  var valid_603091 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603091 = validateParameter(valid_603091, JString, required = false,
+  if valid_601094 != nil:
+    section.add "X-Amz-Date", valid_601094
+  var valid_601095 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601095 = validateParameter(valid_601095, JString, required = false,
                                  default = nil)
-  if valid_603091 != nil:
-    section.add "X-Amz-Security-Token", valid_603091
+  if valid_601095 != nil:
+    section.add "X-Amz-Security-Token", valid_601095
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603092 = header.getOrDefault("X-Amz-Target")
-  valid_603092 = validateParameter(valid_603092, JString, required = true, default = newJString(
+  var valid_601096 = header.getOrDefault("X-Amz-Target")
+  valid_601096 = validateParameter(valid_601096, JString, required = true, default = newJString(
       "DynamoDB_20111205.DeleteTable"))
-  if valid_603092 != nil:
-    section.add "X-Amz-Target", valid_603092
-  var valid_603093 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603093 = validateParameter(valid_603093, JString, required = false,
+  if valid_601096 != nil:
+    section.add "X-Amz-Target", valid_601096
+  var valid_601097 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601097 = validateParameter(valid_601097, JString, required = false,
                                  default = nil)
-  if valid_603093 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603093
-  var valid_603094 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603094 = validateParameter(valid_603094, JString, required = false,
+  if valid_601097 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601097
+  var valid_601098 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601098 = validateParameter(valid_601098, JString, required = false,
                                  default = nil)
-  if valid_603094 != nil:
-    section.add "X-Amz-Algorithm", valid_603094
-  var valid_603095 = header.getOrDefault("X-Amz-Signature")
-  valid_603095 = validateParameter(valid_603095, JString, required = false,
+  if valid_601098 != nil:
+    section.add "X-Amz-Algorithm", valid_601098
+  var valid_601099 = header.getOrDefault("X-Amz-Signature")
+  valid_601099 = validateParameter(valid_601099, JString, required = false,
                                  default = nil)
-  if valid_603095 != nil:
-    section.add "X-Amz-Signature", valid_603095
-  var valid_603096 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603096 = validateParameter(valid_603096, JString, required = false,
+  if valid_601099 != nil:
+    section.add "X-Amz-Signature", valid_601099
+  var valid_601100 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601100 = validateParameter(valid_601100, JString, required = false,
                                  default = nil)
-  if valid_603096 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603096
-  var valid_603097 = header.getOrDefault("X-Amz-Credential")
-  valid_603097 = validateParameter(valid_603097, JString, required = false,
+  if valid_601100 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601100
+  var valid_601101 = header.getOrDefault("X-Amz-Credential")
+  valid_601101 = validateParameter(valid_601101, JString, required = false,
                                  default = nil)
-  if valid_603097 != nil:
-    section.add "X-Amz-Credential", valid_603097
+  if valid_601101 != nil:
+    section.add "X-Amz-Credential", valid_601101
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -641,40 +668,44 @@ proc validate_DeleteTable_603088(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603099: Call_DeleteTable_603087; path: JsonNode; query: JsonNode;
+proc call*(call_601103: Call_DeleteTable_601091; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a table and all of its items.</p> <p>If the table is in the <code>ACTIVE</code> state, you can delete it. If a table is in <code>CREATING</code> or <code>UPDATING</code> states then Amazon DynamoDB returns a <code>ResourceInUseException</code>. If the specified table does not exist, Amazon DynamoDB returns a <code>ResourceNotFoundException</code>.</p>
   ## 
-  let valid = call_603099.validator(path, query, header, formData, body)
-  let scheme = call_603099.pickScheme
+  let valid = call_601103.validator(path, query, header, formData, body)
+  let scheme = call_601103.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603099.url(scheme.get, call_603099.host, call_603099.base,
-                         call_603099.route, valid.getOrDefault("path"))
-  result = hook(call_603099, url, valid)
+  let url = call_601103.url(scheme.get, call_601103.host, call_601103.base,
+                         call_601103.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601103, url, valid)
 
-proc call*(call_603100: Call_DeleteTable_603087; body: JsonNode): Recallable =
+proc call*(call_601104: Call_DeleteTable_601091; body: JsonNode): Recallable =
   ## deleteTable
   ## <p>Deletes a table and all of its items.</p> <p>If the table is in the <code>ACTIVE</code> state, you can delete it. If a table is in <code>CREATING</code> or <code>UPDATING</code> states then Amazon DynamoDB returns a <code>ResourceInUseException</code>. If the specified table does not exist, Amazon DynamoDB returns a <code>ResourceNotFoundException</code>.</p>
   ##   body: JObject (required)
-  var body_603101 = newJObject()
+  var body_601105 = newJObject()
   if body != nil:
-    body_603101 = body
-  result = call_603100.call(nil, nil, nil, nil, body_603101)
+    body_601105 = body
+  result = call_601104.call(nil, nil, nil, nil, body_601105)
 
-var deleteTable* = Call_DeleteTable_603087(name: "deleteTable",
+var deleteTable* = Call_DeleteTable_601091(name: "deleteTable",
                                         meth: HttpMethod.HttpPost,
                                         host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20111205.DeleteTable",
-                                        validator: validate_DeleteTable_603088,
-                                        base: "/", url: url_DeleteTable_603089,
+                                        validator: validate_DeleteTable_601092,
+                                        base: "/", url: url_DeleteTable_601093,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTable_603102 = ref object of OpenApiRestCall_602433
-proc url_DescribeTable_603104(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_DescribeTable_601106 = ref object of OpenApiRestCall_600437
+proc url_DescribeTable_601108(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_DescribeTable_603103(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeTable_601107(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves information about the table, including the current status of the table, the primary key schema and when the table was created.</p> <p>If the table does not exist, Amazon DynamoDB returns a <code>ResourceNotFoundException</code>.</p>
   ## 
@@ -694,48 +725,48 @@ proc validate_DescribeTable_603103(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603105 = header.getOrDefault("X-Amz-Date")
-  valid_603105 = validateParameter(valid_603105, JString, required = false,
+  var valid_601109 = header.getOrDefault("X-Amz-Date")
+  valid_601109 = validateParameter(valid_601109, JString, required = false,
                                  default = nil)
-  if valid_603105 != nil:
-    section.add "X-Amz-Date", valid_603105
-  var valid_603106 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603106 = validateParameter(valid_603106, JString, required = false,
+  if valid_601109 != nil:
+    section.add "X-Amz-Date", valid_601109
+  var valid_601110 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601110 = validateParameter(valid_601110, JString, required = false,
                                  default = nil)
-  if valid_603106 != nil:
-    section.add "X-Amz-Security-Token", valid_603106
+  if valid_601110 != nil:
+    section.add "X-Amz-Security-Token", valid_601110
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603107 = header.getOrDefault("X-Amz-Target")
-  valid_603107 = validateParameter(valid_603107, JString, required = true, default = newJString(
+  var valid_601111 = header.getOrDefault("X-Amz-Target")
+  valid_601111 = validateParameter(valid_601111, JString, required = true, default = newJString(
       "DynamoDB_20111205.DescribeTable"))
-  if valid_603107 != nil:
-    section.add "X-Amz-Target", valid_603107
-  var valid_603108 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603108 = validateParameter(valid_603108, JString, required = false,
+  if valid_601111 != nil:
+    section.add "X-Amz-Target", valid_601111
+  var valid_601112 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601112 = validateParameter(valid_601112, JString, required = false,
                                  default = nil)
-  if valid_603108 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603108
-  var valid_603109 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603109 = validateParameter(valid_603109, JString, required = false,
+  if valid_601112 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601112
+  var valid_601113 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601113 = validateParameter(valid_601113, JString, required = false,
                                  default = nil)
-  if valid_603109 != nil:
-    section.add "X-Amz-Algorithm", valid_603109
-  var valid_603110 = header.getOrDefault("X-Amz-Signature")
-  valid_603110 = validateParameter(valid_603110, JString, required = false,
+  if valid_601113 != nil:
+    section.add "X-Amz-Algorithm", valid_601113
+  var valid_601114 = header.getOrDefault("X-Amz-Signature")
+  valid_601114 = validateParameter(valid_601114, JString, required = false,
                                  default = nil)
-  if valid_603110 != nil:
-    section.add "X-Amz-Signature", valid_603110
-  var valid_603111 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603111 = validateParameter(valid_603111, JString, required = false,
+  if valid_601114 != nil:
+    section.add "X-Amz-Signature", valid_601114
+  var valid_601115 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601115 = validateParameter(valid_601115, JString, required = false,
                                  default = nil)
-  if valid_603111 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603111
-  var valid_603112 = header.getOrDefault("X-Amz-Credential")
-  valid_603112 = validateParameter(valid_603112, JString, required = false,
+  if valid_601115 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601115
+  var valid_601116 = header.getOrDefault("X-Amz-Credential")
+  valid_601116 = validateParameter(valid_601116, JString, required = false,
                                  default = nil)
-  if valid_603112 != nil:
-    section.add "X-Amz-Credential", valid_603112
+  if valid_601116 != nil:
+    section.add "X-Amz-Credential", valid_601116
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -746,39 +777,43 @@ proc validate_DescribeTable_603103(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603114: Call_DescribeTable_603102; path: JsonNode; query: JsonNode;
+proc call*(call_601118: Call_DescribeTable_601106; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves information about the table, including the current status of the table, the primary key schema and when the table was created.</p> <p>If the table does not exist, Amazon DynamoDB returns a <code>ResourceNotFoundException</code>.</p>
   ## 
-  let valid = call_603114.validator(path, query, header, formData, body)
-  let scheme = call_603114.pickScheme
+  let valid = call_601118.validator(path, query, header, formData, body)
+  let scheme = call_601118.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603114.url(scheme.get, call_603114.host, call_603114.base,
-                         call_603114.route, valid.getOrDefault("path"))
-  result = hook(call_603114, url, valid)
+  let url = call_601118.url(scheme.get, call_601118.host, call_601118.base,
+                         call_601118.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601118, url, valid)
 
-proc call*(call_603115: Call_DescribeTable_603102; body: JsonNode): Recallable =
+proc call*(call_601119: Call_DescribeTable_601106; body: JsonNode): Recallable =
   ## describeTable
   ## <p>Retrieves information about the table, including the current status of the table, the primary key schema and when the table was created.</p> <p>If the table does not exist, Amazon DynamoDB returns a <code>ResourceNotFoundException</code>.</p>
   ##   body: JObject (required)
-  var body_603116 = newJObject()
+  var body_601120 = newJObject()
   if body != nil:
-    body_603116 = body
-  result = call_603115.call(nil, nil, nil, nil, body_603116)
+    body_601120 = body
+  result = call_601119.call(nil, nil, nil, nil, body_601120)
 
-var describeTable* = Call_DescribeTable_603102(name: "describeTable",
+var describeTable* = Call_DescribeTable_601106(name: "describeTable",
     meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20111205.DescribeTable",
-    validator: validate_DescribeTable_603103, base: "/", url: url_DescribeTable_603104,
+    validator: validate_DescribeTable_601107, base: "/", url: url_DescribeTable_601108,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetItem_603117 = ref object of OpenApiRestCall_602433
-proc url_GetItem_603119(protocol: Scheme; host: string; base: string; route: string;
-                       path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetItem_601121 = ref object of OpenApiRestCall_600437
+proc url_GetItem_601123(protocol: Scheme; host: string; base: string; route: string;
+                       path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetItem_603118(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetItem_601122(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves a set of Attributes for an item that matches the primary key.</p> <p>The <code>GetItem</code> operation provides an eventually-consistent read by default. If eventually-consistent reads are not acceptable for your application, use <code>ConsistentRead</code>. Although this operation might take longer than a standard read, it always returns the last updated value.</p>
   ## 
@@ -798,48 +833,48 @@ proc validate_GetItem_603118(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603120 = header.getOrDefault("X-Amz-Date")
-  valid_603120 = validateParameter(valid_603120, JString, required = false,
+  var valid_601124 = header.getOrDefault("X-Amz-Date")
+  valid_601124 = validateParameter(valid_601124, JString, required = false,
                                  default = nil)
-  if valid_603120 != nil:
-    section.add "X-Amz-Date", valid_603120
-  var valid_603121 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603121 = validateParameter(valid_603121, JString, required = false,
+  if valid_601124 != nil:
+    section.add "X-Amz-Date", valid_601124
+  var valid_601125 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601125 = validateParameter(valid_601125, JString, required = false,
                                  default = nil)
-  if valid_603121 != nil:
-    section.add "X-Amz-Security-Token", valid_603121
+  if valid_601125 != nil:
+    section.add "X-Amz-Security-Token", valid_601125
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603122 = header.getOrDefault("X-Amz-Target")
-  valid_603122 = validateParameter(valid_603122, JString, required = true, default = newJString(
+  var valid_601126 = header.getOrDefault("X-Amz-Target")
+  valid_601126 = validateParameter(valid_601126, JString, required = true, default = newJString(
       "DynamoDB_20111205.GetItem"))
-  if valid_603122 != nil:
-    section.add "X-Amz-Target", valid_603122
-  var valid_603123 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603123 = validateParameter(valid_603123, JString, required = false,
+  if valid_601126 != nil:
+    section.add "X-Amz-Target", valid_601126
+  var valid_601127 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601127 = validateParameter(valid_601127, JString, required = false,
                                  default = nil)
-  if valid_603123 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603123
-  var valid_603124 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603124 = validateParameter(valid_603124, JString, required = false,
+  if valid_601127 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601127
+  var valid_601128 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601128 = validateParameter(valid_601128, JString, required = false,
                                  default = nil)
-  if valid_603124 != nil:
-    section.add "X-Amz-Algorithm", valid_603124
-  var valid_603125 = header.getOrDefault("X-Amz-Signature")
-  valid_603125 = validateParameter(valid_603125, JString, required = false,
+  if valid_601128 != nil:
+    section.add "X-Amz-Algorithm", valid_601128
+  var valid_601129 = header.getOrDefault("X-Amz-Signature")
+  valid_601129 = validateParameter(valid_601129, JString, required = false,
                                  default = nil)
-  if valid_603125 != nil:
-    section.add "X-Amz-Signature", valid_603125
-  var valid_603126 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603126 = validateParameter(valid_603126, JString, required = false,
+  if valid_601129 != nil:
+    section.add "X-Amz-Signature", valid_601129
+  var valid_601130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601130 = validateParameter(valid_601130, JString, required = false,
                                  default = nil)
-  if valid_603126 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603126
-  var valid_603127 = header.getOrDefault("X-Amz-Credential")
-  valid_603127 = validateParameter(valid_603127, JString, required = false,
+  if valid_601130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601130
+  var valid_601131 = header.getOrDefault("X-Amz-Credential")
+  valid_601131 = validateParameter(valid_601131, JString, required = false,
                                  default = nil)
-  if valid_603127 != nil:
-    section.add "X-Amz-Credential", valid_603127
+  if valid_601131 != nil:
+    section.add "X-Amz-Credential", valid_601131
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -850,39 +885,43 @@ proc validate_GetItem_603118(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603129: Call_GetItem_603117; path: JsonNode; query: JsonNode;
+proc call*(call_601133: Call_GetItem_601121; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves a set of Attributes for an item that matches the primary key.</p> <p>The <code>GetItem</code> operation provides an eventually-consistent read by default. If eventually-consistent reads are not acceptable for your application, use <code>ConsistentRead</code>. Although this operation might take longer than a standard read, it always returns the last updated value.</p>
   ## 
-  let valid = call_603129.validator(path, query, header, formData, body)
-  let scheme = call_603129.pickScheme
+  let valid = call_601133.validator(path, query, header, formData, body)
+  let scheme = call_601133.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603129.url(scheme.get, call_603129.host, call_603129.base,
-                         call_603129.route, valid.getOrDefault("path"))
-  result = hook(call_603129, url, valid)
+  let url = call_601133.url(scheme.get, call_601133.host, call_601133.base,
+                         call_601133.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601133, url, valid)
 
-proc call*(call_603130: Call_GetItem_603117; body: JsonNode): Recallable =
+proc call*(call_601134: Call_GetItem_601121; body: JsonNode): Recallable =
   ## getItem
   ## <p>Retrieves a set of Attributes for an item that matches the primary key.</p> <p>The <code>GetItem</code> operation provides an eventually-consistent read by default. If eventually-consistent reads are not acceptable for your application, use <code>ConsistentRead</code>. Although this operation might take longer than a standard read, it always returns the last updated value.</p>
   ##   body: JObject (required)
-  var body_603131 = newJObject()
+  var body_601135 = newJObject()
   if body != nil:
-    body_603131 = body
-  result = call_603130.call(nil, nil, nil, nil, body_603131)
+    body_601135 = body
+  result = call_601134.call(nil, nil, nil, nil, body_601135)
 
-var getItem* = Call_GetItem_603117(name: "getItem", meth: HttpMethod.HttpPost,
+var getItem* = Call_GetItem_601121(name: "getItem", meth: HttpMethod.HttpPost,
                                 host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20111205.GetItem",
-                                validator: validate_GetItem_603118, base: "/",
-                                url: url_GetItem_603119,
+                                validator: validate_GetItem_601122, base: "/",
+                                url: url_GetItem_601123,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTables_603132 = ref object of OpenApiRestCall_602433
-proc url_ListTables_603134(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_ListTables_601136 = ref object of OpenApiRestCall_600437
+proc url_ListTables_601138(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_ListTables_603133(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTables_601137(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves a paginated list of table names created by the AWS Account of the caller in the AWS Region (e.g. <code>us-east-1</code>).
   ## 
@@ -896,16 +935,16 @@ proc validate_ListTables_603133(path: JsonNode; query: JsonNode; header: JsonNod
   ##   ExclusiveStartTableName: JString
   ##                          : Pagination token
   section = newJObject()
-  var valid_603135 = query.getOrDefault("Limit")
-  valid_603135 = validateParameter(valid_603135, JString, required = false,
+  var valid_601139 = query.getOrDefault("Limit")
+  valid_601139 = validateParameter(valid_601139, JString, required = false,
                                  default = nil)
-  if valid_603135 != nil:
-    section.add "Limit", valid_603135
-  var valid_603136 = query.getOrDefault("ExclusiveStartTableName")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
+  if valid_601139 != nil:
+    section.add "Limit", valid_601139
+  var valid_601140 = query.getOrDefault("ExclusiveStartTableName")
+  valid_601140 = validateParameter(valid_601140, JString, required = false,
                                  default = nil)
-  if valid_603136 != nil:
-    section.add "ExclusiveStartTableName", valid_603136
+  if valid_601140 != nil:
+    section.add "ExclusiveStartTableName", valid_601140
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -917,48 +956,48 @@ proc validate_ListTables_603133(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603137 = header.getOrDefault("X-Amz-Date")
-  valid_603137 = validateParameter(valid_603137, JString, required = false,
+  var valid_601141 = header.getOrDefault("X-Amz-Date")
+  valid_601141 = validateParameter(valid_601141, JString, required = false,
                                  default = nil)
-  if valid_603137 != nil:
-    section.add "X-Amz-Date", valid_603137
-  var valid_603138 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603138 = validateParameter(valid_603138, JString, required = false,
+  if valid_601141 != nil:
+    section.add "X-Amz-Date", valid_601141
+  var valid_601142 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601142 = validateParameter(valid_601142, JString, required = false,
                                  default = nil)
-  if valid_603138 != nil:
-    section.add "X-Amz-Security-Token", valid_603138
+  if valid_601142 != nil:
+    section.add "X-Amz-Security-Token", valid_601142
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603139 = header.getOrDefault("X-Amz-Target")
-  valid_603139 = validateParameter(valid_603139, JString, required = true, default = newJString(
+  var valid_601143 = header.getOrDefault("X-Amz-Target")
+  valid_601143 = validateParameter(valid_601143, JString, required = true, default = newJString(
       "DynamoDB_20111205.ListTables"))
-  if valid_603139 != nil:
-    section.add "X-Amz-Target", valid_603139
-  var valid_603140 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603140 = validateParameter(valid_603140, JString, required = false,
+  if valid_601143 != nil:
+    section.add "X-Amz-Target", valid_601143
+  var valid_601144 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601144 = validateParameter(valid_601144, JString, required = false,
                                  default = nil)
-  if valid_603140 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603140
-  var valid_603141 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603141 = validateParameter(valid_603141, JString, required = false,
+  if valid_601144 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601144
+  var valid_601145 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601145 = validateParameter(valid_601145, JString, required = false,
                                  default = nil)
-  if valid_603141 != nil:
-    section.add "X-Amz-Algorithm", valid_603141
-  var valid_603142 = header.getOrDefault("X-Amz-Signature")
-  valid_603142 = validateParameter(valid_603142, JString, required = false,
+  if valid_601145 != nil:
+    section.add "X-Amz-Algorithm", valid_601145
+  var valid_601146 = header.getOrDefault("X-Amz-Signature")
+  valid_601146 = validateParameter(valid_601146, JString, required = false,
                                  default = nil)
-  if valid_603142 != nil:
-    section.add "X-Amz-Signature", valid_603142
-  var valid_603143 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603143 = validateParameter(valid_603143, JString, required = false,
+  if valid_601146 != nil:
+    section.add "X-Amz-Signature", valid_601146
+  var valid_601147 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601147 = validateParameter(valid_601147, JString, required = false,
                                  default = nil)
-  if valid_603143 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603143
-  var valid_603144 = header.getOrDefault("X-Amz-Credential")
-  valid_603144 = validateParameter(valid_603144, JString, required = false,
+  if valid_601147 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601147
+  var valid_601148 = header.getOrDefault("X-Amz-Credential")
+  valid_601148 = validateParameter(valid_601148, JString, required = false,
                                  default = nil)
-  if valid_603144 != nil:
-    section.add "X-Amz-Credential", valid_603144
+  if valid_601148 != nil:
+    section.add "X-Amz-Credential", valid_601148
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -969,19 +1008,20 @@ proc validate_ListTables_603133(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603146: Call_ListTables_603132; path: JsonNode; query: JsonNode;
+proc call*(call_601150: Call_ListTables_601136; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a paginated list of table names created by the AWS Account of the caller in the AWS Region (e.g. <code>us-east-1</code>).
   ## 
-  let valid = call_603146.validator(path, query, header, formData, body)
-  let scheme = call_603146.pickScheme
+  let valid = call_601150.validator(path, query, header, formData, body)
+  let scheme = call_601150.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603146.url(scheme.get, call_603146.host, call_603146.base,
-                         call_603146.route, valid.getOrDefault("path"))
-  result = hook(call_603146, url, valid)
+  let url = call_601150.url(scheme.get, call_601150.host, call_601150.base,
+                         call_601150.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601150, url, valid)
 
-proc call*(call_603147: Call_ListTables_603132; body: JsonNode; Limit: string = "";
+proc call*(call_601151: Call_ListTables_601136; body: JsonNode; Limit: string = "";
           ExclusiveStartTableName: string = ""): Recallable =
   ## listTables
   ## Retrieves a paginated list of table names created by the AWS Account of the caller in the AWS Region (e.g. <code>us-east-1</code>).
@@ -990,27 +1030,30 @@ proc call*(call_603147: Call_ListTables_603132; body: JsonNode; Limit: string = 
   ##   body: JObject (required)
   ##   ExclusiveStartTableName: string
   ##                          : Pagination token
-  var query_603148 = newJObject()
-  var body_603149 = newJObject()
-  add(query_603148, "Limit", newJString(Limit))
+  var query_601152 = newJObject()
+  var body_601153 = newJObject()
+  add(query_601152, "Limit", newJString(Limit))
   if body != nil:
-    body_603149 = body
-  add(query_603148, "ExclusiveStartTableName", newJString(ExclusiveStartTableName))
-  result = call_603147.call(nil, query_603148, nil, nil, body_603149)
+    body_601153 = body
+  add(query_601152, "ExclusiveStartTableName", newJString(ExclusiveStartTableName))
+  result = call_601151.call(nil, query_601152, nil, nil, body_601153)
 
-var listTables* = Call_ListTables_603132(name: "listTables",
+var listTables* = Call_ListTables_601136(name: "listTables",
                                       meth: HttpMethod.HttpPost,
                                       host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20111205.ListTables",
-                                      validator: validate_ListTables_603133,
-                                      base: "/", url: url_ListTables_603134,
+                                      validator: validate_ListTables_601137,
+                                      base: "/", url: url_ListTables_601138,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutItem_603150 = ref object of OpenApiRestCall_602433
-proc url_PutItem_603152(protocol: Scheme; host: string; base: string; route: string;
-                       path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_PutItem_601154 = ref object of OpenApiRestCall_600437
+proc url_PutItem_601156(protocol: Scheme; host: string; base: string; route: string;
+                       path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_PutItem_603151(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutItem_601155(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new item, or replaces an old item with a new item (including all the attributes).</p> <p>If an item already exists in the specified table with the same primary key, the new item completely replaces the existing item. You can perform a conditional put (insert a new item if one with the specified primary key doesn't exist), or replace an existing item if it has certain attribute values.</p>
   ## 
@@ -1030,48 +1073,48 @@ proc validate_PutItem_603151(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603153 = header.getOrDefault("X-Amz-Date")
-  valid_603153 = validateParameter(valid_603153, JString, required = false,
+  var valid_601157 = header.getOrDefault("X-Amz-Date")
+  valid_601157 = validateParameter(valid_601157, JString, required = false,
                                  default = nil)
-  if valid_603153 != nil:
-    section.add "X-Amz-Date", valid_603153
-  var valid_603154 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603154 = validateParameter(valid_603154, JString, required = false,
+  if valid_601157 != nil:
+    section.add "X-Amz-Date", valid_601157
+  var valid_601158 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601158 = validateParameter(valid_601158, JString, required = false,
                                  default = nil)
-  if valid_603154 != nil:
-    section.add "X-Amz-Security-Token", valid_603154
+  if valid_601158 != nil:
+    section.add "X-Amz-Security-Token", valid_601158
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603155 = header.getOrDefault("X-Amz-Target")
-  valid_603155 = validateParameter(valid_603155, JString, required = true, default = newJString(
+  var valid_601159 = header.getOrDefault("X-Amz-Target")
+  valid_601159 = validateParameter(valid_601159, JString, required = true, default = newJString(
       "DynamoDB_20111205.PutItem"))
-  if valid_603155 != nil:
-    section.add "X-Amz-Target", valid_603155
-  var valid_603156 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603156 = validateParameter(valid_603156, JString, required = false,
+  if valid_601159 != nil:
+    section.add "X-Amz-Target", valid_601159
+  var valid_601160 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601160 = validateParameter(valid_601160, JString, required = false,
                                  default = nil)
-  if valid_603156 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603156
-  var valid_603157 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603157 = validateParameter(valid_603157, JString, required = false,
+  if valid_601160 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601160
+  var valid_601161 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601161 = validateParameter(valid_601161, JString, required = false,
                                  default = nil)
-  if valid_603157 != nil:
-    section.add "X-Amz-Algorithm", valid_603157
-  var valid_603158 = header.getOrDefault("X-Amz-Signature")
-  valid_603158 = validateParameter(valid_603158, JString, required = false,
+  if valid_601161 != nil:
+    section.add "X-Amz-Algorithm", valid_601161
+  var valid_601162 = header.getOrDefault("X-Amz-Signature")
+  valid_601162 = validateParameter(valid_601162, JString, required = false,
                                  default = nil)
-  if valid_603158 != nil:
-    section.add "X-Amz-Signature", valid_603158
-  var valid_603159 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603159 = validateParameter(valid_603159, JString, required = false,
+  if valid_601162 != nil:
+    section.add "X-Amz-Signature", valid_601162
+  var valid_601163 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601163 = validateParameter(valid_601163, JString, required = false,
                                  default = nil)
-  if valid_603159 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603159
-  var valid_603160 = header.getOrDefault("X-Amz-Credential")
-  valid_603160 = validateParameter(valid_603160, JString, required = false,
+  if valid_601163 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601163
+  var valid_601164 = header.getOrDefault("X-Amz-Credential")
+  valid_601164 = validateParameter(valid_601164, JString, required = false,
                                  default = nil)
-  if valid_603160 != nil:
-    section.add "X-Amz-Credential", valid_603160
+  if valid_601164 != nil:
+    section.add "X-Amz-Credential", valid_601164
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1082,39 +1125,43 @@ proc validate_PutItem_603151(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603162: Call_PutItem_603150; path: JsonNode; query: JsonNode;
+proc call*(call_601166: Call_PutItem_601154; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new item, or replaces an old item with a new item (including all the attributes).</p> <p>If an item already exists in the specified table with the same primary key, the new item completely replaces the existing item. You can perform a conditional put (insert a new item if one with the specified primary key doesn't exist), or replace an existing item if it has certain attribute values.</p>
   ## 
-  let valid = call_603162.validator(path, query, header, formData, body)
-  let scheme = call_603162.pickScheme
+  let valid = call_601166.validator(path, query, header, formData, body)
+  let scheme = call_601166.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603162.url(scheme.get, call_603162.host, call_603162.base,
-                         call_603162.route, valid.getOrDefault("path"))
-  result = hook(call_603162, url, valid)
+  let url = call_601166.url(scheme.get, call_601166.host, call_601166.base,
+                         call_601166.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601166, url, valid)
 
-proc call*(call_603163: Call_PutItem_603150; body: JsonNode): Recallable =
+proc call*(call_601167: Call_PutItem_601154; body: JsonNode): Recallable =
   ## putItem
   ## <p>Creates a new item, or replaces an old item with a new item (including all the attributes).</p> <p>If an item already exists in the specified table with the same primary key, the new item completely replaces the existing item. You can perform a conditional put (insert a new item if one with the specified primary key doesn't exist), or replace an existing item if it has certain attribute values.</p>
   ##   body: JObject (required)
-  var body_603164 = newJObject()
+  var body_601168 = newJObject()
   if body != nil:
-    body_603164 = body
-  result = call_603163.call(nil, nil, nil, nil, body_603164)
+    body_601168 = body
+  result = call_601167.call(nil, nil, nil, nil, body_601168)
 
-var putItem* = Call_PutItem_603150(name: "putItem", meth: HttpMethod.HttpPost,
+var putItem* = Call_PutItem_601154(name: "putItem", meth: HttpMethod.HttpPost,
                                 host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20111205.PutItem",
-                                validator: validate_PutItem_603151, base: "/",
-                                url: url_PutItem_603152,
+                                validator: validate_PutItem_601155, base: "/",
+                                url: url_PutItem_601156,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_Query_603165 = ref object of OpenApiRestCall_602433
-proc url_Query_603167(protocol: Scheme; host: string; base: string; route: string;
-                     path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_Query_601169 = ref object of OpenApiRestCall_600437
+proc url_Query_601171(protocol: Scheme; host: string; base: string; route: string;
+                     path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_Query_603166(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_Query_601170(path: JsonNode; query: JsonNode; header: JsonNode;
                           formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets the values of one or more items and its attributes by primary key (composite primary key, only).</p> <p>Narrow the scope of the query using comparison operators on the <code>RangeKeyValue</code> of the composite key. Use the <code>ScanIndexForward</code> parameter to get results in forward or reverse order by range key.</p>
   ## 
@@ -1128,16 +1175,16 @@ proc validate_Query_603166(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   ExclusiveStartKey: JString
   ##                    : Pagination token
   section = newJObject()
-  var valid_603168 = query.getOrDefault("Limit")
-  valid_603168 = validateParameter(valid_603168, JString, required = false,
+  var valid_601172 = query.getOrDefault("Limit")
+  valid_601172 = validateParameter(valid_601172, JString, required = false,
                                  default = nil)
-  if valid_603168 != nil:
-    section.add "Limit", valid_603168
-  var valid_603169 = query.getOrDefault("ExclusiveStartKey")
-  valid_603169 = validateParameter(valid_603169, JString, required = false,
+  if valid_601172 != nil:
+    section.add "Limit", valid_601172
+  var valid_601173 = query.getOrDefault("ExclusiveStartKey")
+  valid_601173 = validateParameter(valid_601173, JString, required = false,
                                  default = nil)
-  if valid_603169 != nil:
-    section.add "ExclusiveStartKey", valid_603169
+  if valid_601173 != nil:
+    section.add "ExclusiveStartKey", valid_601173
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1149,48 +1196,48 @@ proc validate_Query_603166(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603170 = header.getOrDefault("X-Amz-Date")
-  valid_603170 = validateParameter(valid_603170, JString, required = false,
+  var valid_601174 = header.getOrDefault("X-Amz-Date")
+  valid_601174 = validateParameter(valid_601174, JString, required = false,
                                  default = nil)
-  if valid_603170 != nil:
-    section.add "X-Amz-Date", valid_603170
-  var valid_603171 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603171 = validateParameter(valid_603171, JString, required = false,
+  if valid_601174 != nil:
+    section.add "X-Amz-Date", valid_601174
+  var valid_601175 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601175 = validateParameter(valid_601175, JString, required = false,
                                  default = nil)
-  if valid_603171 != nil:
-    section.add "X-Amz-Security-Token", valid_603171
+  if valid_601175 != nil:
+    section.add "X-Amz-Security-Token", valid_601175
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603172 = header.getOrDefault("X-Amz-Target")
-  valid_603172 = validateParameter(valid_603172, JString, required = true, default = newJString(
+  var valid_601176 = header.getOrDefault("X-Amz-Target")
+  valid_601176 = validateParameter(valid_601176, JString, required = true, default = newJString(
       "DynamoDB_20111205.Query"))
-  if valid_603172 != nil:
-    section.add "X-Amz-Target", valid_603172
-  var valid_603173 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603173 = validateParameter(valid_603173, JString, required = false,
+  if valid_601176 != nil:
+    section.add "X-Amz-Target", valid_601176
+  var valid_601177 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601177 = validateParameter(valid_601177, JString, required = false,
                                  default = nil)
-  if valid_603173 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603173
-  var valid_603174 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603174 = validateParameter(valid_603174, JString, required = false,
+  if valid_601177 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601177
+  var valid_601178 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601178 = validateParameter(valid_601178, JString, required = false,
                                  default = nil)
-  if valid_603174 != nil:
-    section.add "X-Amz-Algorithm", valid_603174
-  var valid_603175 = header.getOrDefault("X-Amz-Signature")
-  valid_603175 = validateParameter(valid_603175, JString, required = false,
+  if valid_601178 != nil:
+    section.add "X-Amz-Algorithm", valid_601178
+  var valid_601179 = header.getOrDefault("X-Amz-Signature")
+  valid_601179 = validateParameter(valid_601179, JString, required = false,
                                  default = nil)
-  if valid_603175 != nil:
-    section.add "X-Amz-Signature", valid_603175
-  var valid_603176 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603176 = validateParameter(valid_603176, JString, required = false,
+  if valid_601179 != nil:
+    section.add "X-Amz-Signature", valid_601179
+  var valid_601180 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601180 = validateParameter(valid_601180, JString, required = false,
                                  default = nil)
-  if valid_603176 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603176
-  var valid_603177 = header.getOrDefault("X-Amz-Credential")
-  valid_603177 = validateParameter(valid_603177, JString, required = false,
+  if valid_601180 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601180
+  var valid_601181 = header.getOrDefault("X-Amz-Credential")
+  valid_601181 = validateParameter(valid_601181, JString, required = false,
                                  default = nil)
-  if valid_603177 != nil:
-    section.add "X-Amz-Credential", valid_603177
+  if valid_601181 != nil:
+    section.add "X-Amz-Credential", valid_601181
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1201,19 +1248,20 @@ proc validate_Query_603166(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603179: Call_Query_603165; path: JsonNode; query: JsonNode;
+proc call*(call_601183: Call_Query_601169; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the values of one or more items and its attributes by primary key (composite primary key, only).</p> <p>Narrow the scope of the query using comparison operators on the <code>RangeKeyValue</code> of the composite key. Use the <code>ScanIndexForward</code> parameter to get results in forward or reverse order by range key.</p>
   ## 
-  let valid = call_603179.validator(path, query, header, formData, body)
-  let scheme = call_603179.pickScheme
+  let valid = call_601183.validator(path, query, header, formData, body)
+  let scheme = call_601183.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603179.url(scheme.get, call_603179.host, call_603179.base,
-                         call_603179.route, valid.getOrDefault("path"))
-  result = hook(call_603179, url, valid)
+  let url = call_601183.url(scheme.get, call_601183.host, call_601183.base,
+                         call_601183.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601183, url, valid)
 
-proc call*(call_603180: Call_Query_603165; body: JsonNode; Limit: string = "";
+proc call*(call_601184: Call_Query_601169; body: JsonNode; Limit: string = "";
           ExclusiveStartKey: string = ""): Recallable =
   ## query
   ## <p>Gets the values of one or more items and its attributes by primary key (composite primary key, only).</p> <p>Narrow the scope of the query using comparison operators on the <code>RangeKeyValue</code> of the composite key. Use the <code>ScanIndexForward</code> parameter to get results in forward or reverse order by range key.</p>
@@ -1222,27 +1270,30 @@ proc call*(call_603180: Call_Query_603165; body: JsonNode; Limit: string = "";
   ##   body: JObject (required)
   ##   ExclusiveStartKey: string
   ##                    : Pagination token
-  var query_603181 = newJObject()
-  var body_603182 = newJObject()
-  add(query_603181, "Limit", newJString(Limit))
+  var query_601185 = newJObject()
+  var body_601186 = newJObject()
+  add(query_601185, "Limit", newJString(Limit))
   if body != nil:
-    body_603182 = body
-  add(query_603181, "ExclusiveStartKey", newJString(ExclusiveStartKey))
-  result = call_603180.call(nil, query_603181, nil, nil, body_603182)
+    body_601186 = body
+  add(query_601185, "ExclusiveStartKey", newJString(ExclusiveStartKey))
+  result = call_601184.call(nil, query_601185, nil, nil, body_601186)
 
-var query* = Call_Query_603165(name: "query", meth: HttpMethod.HttpPost,
+var query* = Call_Query_601169(name: "query", meth: HttpMethod.HttpPost,
                             host: "dynamodb.amazonaws.com",
                             route: "/#X-Amz-Target=DynamoDB_20111205.Query",
-                            validator: validate_Query_603166, base: "/",
-                            url: url_Query_603167,
+                            validator: validate_Query_601170, base: "/",
+                            url: url_Query_601171,
                             schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_Scan_603183 = ref object of OpenApiRestCall_602433
-proc url_Scan_603185(protocol: Scheme; host: string; base: string; route: string;
-                    path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_Scan_601187 = ref object of OpenApiRestCall_600437
+proc url_Scan_601189(protocol: Scheme; host: string; base: string; route: string;
+                    path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_Scan_603184(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_Scan_601188(path: JsonNode; query: JsonNode; header: JsonNode;
                          formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves one or more items and its attributes by performing a full scan of a table.</p> <p>Provide a <code>ScanFilter</code> to get more specific results.</p>
   ## 
@@ -1256,16 +1307,16 @@ proc validate_Scan_603184(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   ExclusiveStartKey: JString
   ##                    : Pagination token
   section = newJObject()
-  var valid_603186 = query.getOrDefault("Limit")
-  valid_603186 = validateParameter(valid_603186, JString, required = false,
+  var valid_601190 = query.getOrDefault("Limit")
+  valid_601190 = validateParameter(valid_601190, JString, required = false,
                                  default = nil)
-  if valid_603186 != nil:
-    section.add "Limit", valid_603186
-  var valid_603187 = query.getOrDefault("ExclusiveStartKey")
-  valid_603187 = validateParameter(valid_603187, JString, required = false,
+  if valid_601190 != nil:
+    section.add "Limit", valid_601190
+  var valid_601191 = query.getOrDefault("ExclusiveStartKey")
+  valid_601191 = validateParameter(valid_601191, JString, required = false,
                                  default = nil)
-  if valid_603187 != nil:
-    section.add "ExclusiveStartKey", valid_603187
+  if valid_601191 != nil:
+    section.add "ExclusiveStartKey", valid_601191
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1277,48 +1328,48 @@ proc validate_Scan_603184(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603188 = header.getOrDefault("X-Amz-Date")
-  valid_603188 = validateParameter(valid_603188, JString, required = false,
+  var valid_601192 = header.getOrDefault("X-Amz-Date")
+  valid_601192 = validateParameter(valid_601192, JString, required = false,
                                  default = nil)
-  if valid_603188 != nil:
-    section.add "X-Amz-Date", valid_603188
-  var valid_603189 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603189 = validateParameter(valid_603189, JString, required = false,
+  if valid_601192 != nil:
+    section.add "X-Amz-Date", valid_601192
+  var valid_601193 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601193 = validateParameter(valid_601193, JString, required = false,
                                  default = nil)
-  if valid_603189 != nil:
-    section.add "X-Amz-Security-Token", valid_603189
+  if valid_601193 != nil:
+    section.add "X-Amz-Security-Token", valid_601193
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603190 = header.getOrDefault("X-Amz-Target")
-  valid_603190 = validateParameter(valid_603190, JString, required = true,
+  var valid_601194 = header.getOrDefault("X-Amz-Target")
+  valid_601194 = validateParameter(valid_601194, JString, required = true,
                                  default = newJString("DynamoDB_20111205.Scan"))
-  if valid_603190 != nil:
-    section.add "X-Amz-Target", valid_603190
-  var valid_603191 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603191 = validateParameter(valid_603191, JString, required = false,
+  if valid_601194 != nil:
+    section.add "X-Amz-Target", valid_601194
+  var valid_601195 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601195 = validateParameter(valid_601195, JString, required = false,
                                  default = nil)
-  if valid_603191 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603191
-  var valid_603192 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603192 = validateParameter(valid_603192, JString, required = false,
+  if valid_601195 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601195
+  var valid_601196 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601196 = validateParameter(valid_601196, JString, required = false,
                                  default = nil)
-  if valid_603192 != nil:
-    section.add "X-Amz-Algorithm", valid_603192
-  var valid_603193 = header.getOrDefault("X-Amz-Signature")
-  valid_603193 = validateParameter(valid_603193, JString, required = false,
+  if valid_601196 != nil:
+    section.add "X-Amz-Algorithm", valid_601196
+  var valid_601197 = header.getOrDefault("X-Amz-Signature")
+  valid_601197 = validateParameter(valid_601197, JString, required = false,
                                  default = nil)
-  if valid_603193 != nil:
-    section.add "X-Amz-Signature", valid_603193
-  var valid_603194 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603194 = validateParameter(valid_603194, JString, required = false,
+  if valid_601197 != nil:
+    section.add "X-Amz-Signature", valid_601197
+  var valid_601198 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601198 = validateParameter(valid_601198, JString, required = false,
                                  default = nil)
-  if valid_603194 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603194
-  var valid_603195 = header.getOrDefault("X-Amz-Credential")
-  valid_603195 = validateParameter(valid_603195, JString, required = false,
+  if valid_601198 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601198
+  var valid_601199 = header.getOrDefault("X-Amz-Credential")
+  valid_601199 = validateParameter(valid_601199, JString, required = false,
                                  default = nil)
-  if valid_603195 != nil:
-    section.add "X-Amz-Credential", valid_603195
+  if valid_601199 != nil:
+    section.add "X-Amz-Credential", valid_601199
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1329,19 +1380,20 @@ proc validate_Scan_603184(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603197: Call_Scan_603183; path: JsonNode; query: JsonNode;
+proc call*(call_601201: Call_Scan_601187; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves one or more items and its attributes by performing a full scan of a table.</p> <p>Provide a <code>ScanFilter</code> to get more specific results.</p>
   ## 
-  let valid = call_603197.validator(path, query, header, formData, body)
-  let scheme = call_603197.pickScheme
+  let valid = call_601201.validator(path, query, header, formData, body)
+  let scheme = call_601201.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603197.url(scheme.get, call_603197.host, call_603197.base,
-                         call_603197.route, valid.getOrDefault("path"))
-  result = hook(call_603197, url, valid)
+  let url = call_601201.url(scheme.get, call_601201.host, call_601201.base,
+                         call_601201.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601201, url, valid)
 
-proc call*(call_603198: Call_Scan_603183; body: JsonNode; Limit: string = "";
+proc call*(call_601202: Call_Scan_601187; body: JsonNode; Limit: string = "";
           ExclusiveStartKey: string = ""): Recallable =
   ## scan
   ## <p>Retrieves one or more items and its attributes by performing a full scan of a table.</p> <p>Provide a <code>ScanFilter</code> to get more specific results.</p>
@@ -1350,26 +1402,29 @@ proc call*(call_603198: Call_Scan_603183; body: JsonNode; Limit: string = "";
   ##   body: JObject (required)
   ##   ExclusiveStartKey: string
   ##                    : Pagination token
-  var query_603199 = newJObject()
-  var body_603200 = newJObject()
-  add(query_603199, "Limit", newJString(Limit))
+  var query_601203 = newJObject()
+  var body_601204 = newJObject()
+  add(query_601203, "Limit", newJString(Limit))
   if body != nil:
-    body_603200 = body
-  add(query_603199, "ExclusiveStartKey", newJString(ExclusiveStartKey))
-  result = call_603198.call(nil, query_603199, nil, nil, body_603200)
+    body_601204 = body
+  add(query_601203, "ExclusiveStartKey", newJString(ExclusiveStartKey))
+  result = call_601202.call(nil, query_601203, nil, nil, body_601204)
 
-var scan* = Call_Scan_603183(name: "scan", meth: HttpMethod.HttpPost,
+var scan* = Call_Scan_601187(name: "scan", meth: HttpMethod.HttpPost,
                           host: "dynamodb.amazonaws.com",
                           route: "/#X-Amz-Target=DynamoDB_20111205.Scan",
-                          validator: validate_Scan_603184, base: "/", url: url_Scan_603185,
+                          validator: validate_Scan_601188, base: "/", url: url_Scan_601189,
                           schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateItem_603201 = ref object of OpenApiRestCall_602433
-proc url_UpdateItem_603203(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_UpdateItem_601205 = ref object of OpenApiRestCall_600437
+proc url_UpdateItem_601207(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_UpdateItem_603202(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateItem_601206(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Edits an existing item's attributes.</p> <p>You can perform a conditional update (insert a new attribute name-value pair if it doesn't exist, or replace an existing name-value pair if it has certain expected attribute values).</p>
   ## 
@@ -1389,48 +1444,48 @@ proc validate_UpdateItem_603202(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603204 = header.getOrDefault("X-Amz-Date")
-  valid_603204 = validateParameter(valid_603204, JString, required = false,
+  var valid_601208 = header.getOrDefault("X-Amz-Date")
+  valid_601208 = validateParameter(valid_601208, JString, required = false,
                                  default = nil)
-  if valid_603204 != nil:
-    section.add "X-Amz-Date", valid_603204
-  var valid_603205 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603205 = validateParameter(valid_603205, JString, required = false,
+  if valid_601208 != nil:
+    section.add "X-Amz-Date", valid_601208
+  var valid_601209 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601209 = validateParameter(valid_601209, JString, required = false,
                                  default = nil)
-  if valid_603205 != nil:
-    section.add "X-Amz-Security-Token", valid_603205
+  if valid_601209 != nil:
+    section.add "X-Amz-Security-Token", valid_601209
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603206 = header.getOrDefault("X-Amz-Target")
-  valid_603206 = validateParameter(valid_603206, JString, required = true, default = newJString(
+  var valid_601210 = header.getOrDefault("X-Amz-Target")
+  valid_601210 = validateParameter(valid_601210, JString, required = true, default = newJString(
       "DynamoDB_20111205.UpdateItem"))
-  if valid_603206 != nil:
-    section.add "X-Amz-Target", valid_603206
-  var valid_603207 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603207 = validateParameter(valid_603207, JString, required = false,
+  if valid_601210 != nil:
+    section.add "X-Amz-Target", valid_601210
+  var valid_601211 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601211 = validateParameter(valid_601211, JString, required = false,
                                  default = nil)
-  if valid_603207 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603207
-  var valid_603208 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603208 = validateParameter(valid_603208, JString, required = false,
+  if valid_601211 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601211
+  var valid_601212 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601212 = validateParameter(valid_601212, JString, required = false,
                                  default = nil)
-  if valid_603208 != nil:
-    section.add "X-Amz-Algorithm", valid_603208
-  var valid_603209 = header.getOrDefault("X-Amz-Signature")
-  valid_603209 = validateParameter(valid_603209, JString, required = false,
+  if valid_601212 != nil:
+    section.add "X-Amz-Algorithm", valid_601212
+  var valid_601213 = header.getOrDefault("X-Amz-Signature")
+  valid_601213 = validateParameter(valid_601213, JString, required = false,
                                  default = nil)
-  if valid_603209 != nil:
-    section.add "X-Amz-Signature", valid_603209
-  var valid_603210 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603210 = validateParameter(valid_603210, JString, required = false,
+  if valid_601213 != nil:
+    section.add "X-Amz-Signature", valid_601213
+  var valid_601214 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601214 = validateParameter(valid_601214, JString, required = false,
                                  default = nil)
-  if valid_603210 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603210
-  var valid_603211 = header.getOrDefault("X-Amz-Credential")
-  valid_603211 = validateParameter(valid_603211, JString, required = false,
+  if valid_601214 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601214
+  var valid_601215 = header.getOrDefault("X-Amz-Credential")
+  valid_601215 = validateParameter(valid_601215, JString, required = false,
                                  default = nil)
-  if valid_603211 != nil:
-    section.add "X-Amz-Credential", valid_603211
+  if valid_601215 != nil:
+    section.add "X-Amz-Credential", valid_601215
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1441,40 +1496,44 @@ proc validate_UpdateItem_603202(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603213: Call_UpdateItem_603201; path: JsonNode; query: JsonNode;
+proc call*(call_601217: Call_UpdateItem_601205; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Edits an existing item's attributes.</p> <p>You can perform a conditional update (insert a new attribute name-value pair if it doesn't exist, or replace an existing name-value pair if it has certain expected attribute values).</p>
   ## 
-  let valid = call_603213.validator(path, query, header, formData, body)
-  let scheme = call_603213.pickScheme
+  let valid = call_601217.validator(path, query, header, formData, body)
+  let scheme = call_601217.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603213.url(scheme.get, call_603213.host, call_603213.base,
-                         call_603213.route, valid.getOrDefault("path"))
-  result = hook(call_603213, url, valid)
+  let url = call_601217.url(scheme.get, call_601217.host, call_601217.base,
+                         call_601217.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601217, url, valid)
 
-proc call*(call_603214: Call_UpdateItem_603201; body: JsonNode): Recallable =
+proc call*(call_601218: Call_UpdateItem_601205; body: JsonNode): Recallable =
   ## updateItem
   ## <p>Edits an existing item's attributes.</p> <p>You can perform a conditional update (insert a new attribute name-value pair if it doesn't exist, or replace an existing name-value pair if it has certain expected attribute values).</p>
   ##   body: JObject (required)
-  var body_603215 = newJObject()
+  var body_601219 = newJObject()
   if body != nil:
-    body_603215 = body
-  result = call_603214.call(nil, nil, nil, nil, body_603215)
+    body_601219 = body
+  result = call_601218.call(nil, nil, nil, nil, body_601219)
 
-var updateItem* = Call_UpdateItem_603201(name: "updateItem",
+var updateItem* = Call_UpdateItem_601205(name: "updateItem",
                                       meth: HttpMethod.HttpPost,
                                       host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20111205.UpdateItem",
-                                      validator: validate_UpdateItem_603202,
-                                      base: "/", url: url_UpdateItem_603203,
+                                      validator: validate_UpdateItem_601206,
+                                      base: "/", url: url_UpdateItem_601207,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTable_603216 = ref object of OpenApiRestCall_602433
-proc url_UpdateTable_603218(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_UpdateTable_601220 = ref object of OpenApiRestCall_600437
+proc url_UpdateTable_601222(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_UpdateTable_603217(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateTable_601221(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the provisioned throughput for the given table.</p> <p>Setting the throughput for a table helps you manage performance and is part of the Provisioned Throughput feature of Amazon DynamoDB.</p>
   ## 
@@ -1494,48 +1553,48 @@ proc validate_UpdateTable_603217(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603219 = header.getOrDefault("X-Amz-Date")
-  valid_603219 = validateParameter(valid_603219, JString, required = false,
+  var valid_601223 = header.getOrDefault("X-Amz-Date")
+  valid_601223 = validateParameter(valid_601223, JString, required = false,
                                  default = nil)
-  if valid_603219 != nil:
-    section.add "X-Amz-Date", valid_603219
-  var valid_603220 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603220 = validateParameter(valid_603220, JString, required = false,
+  if valid_601223 != nil:
+    section.add "X-Amz-Date", valid_601223
+  var valid_601224 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601224 = validateParameter(valid_601224, JString, required = false,
                                  default = nil)
-  if valid_603220 != nil:
-    section.add "X-Amz-Security-Token", valid_603220
+  if valid_601224 != nil:
+    section.add "X-Amz-Security-Token", valid_601224
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603221 = header.getOrDefault("X-Amz-Target")
-  valid_603221 = validateParameter(valid_603221, JString, required = true, default = newJString(
+  var valid_601225 = header.getOrDefault("X-Amz-Target")
+  valid_601225 = validateParameter(valid_601225, JString, required = true, default = newJString(
       "DynamoDB_20111205.UpdateTable"))
-  if valid_603221 != nil:
-    section.add "X-Amz-Target", valid_603221
-  var valid_603222 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603222 = validateParameter(valid_603222, JString, required = false,
+  if valid_601225 != nil:
+    section.add "X-Amz-Target", valid_601225
+  var valid_601226 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601226 = validateParameter(valid_601226, JString, required = false,
                                  default = nil)
-  if valid_603222 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603222
-  var valid_603223 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603223 = validateParameter(valid_603223, JString, required = false,
+  if valid_601226 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601226
+  var valid_601227 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601227 = validateParameter(valid_601227, JString, required = false,
                                  default = nil)
-  if valid_603223 != nil:
-    section.add "X-Amz-Algorithm", valid_603223
-  var valid_603224 = header.getOrDefault("X-Amz-Signature")
-  valid_603224 = validateParameter(valid_603224, JString, required = false,
+  if valid_601227 != nil:
+    section.add "X-Amz-Algorithm", valid_601227
+  var valid_601228 = header.getOrDefault("X-Amz-Signature")
+  valid_601228 = validateParameter(valid_601228, JString, required = false,
                                  default = nil)
-  if valid_603224 != nil:
-    section.add "X-Amz-Signature", valid_603224
-  var valid_603225 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603225 = validateParameter(valid_603225, JString, required = false,
+  if valid_601228 != nil:
+    section.add "X-Amz-Signature", valid_601228
+  var valid_601229 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601229 = validateParameter(valid_601229, JString, required = false,
                                  default = nil)
-  if valid_603225 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603225
-  var valid_603226 = header.getOrDefault("X-Amz-Credential")
-  valid_603226 = validateParameter(valid_603226, JString, required = false,
+  if valid_601229 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601229
+  var valid_601230 = header.getOrDefault("X-Amz-Credential")
+  valid_601230 = validateParameter(valid_601230, JString, required = false,
                                  default = nil)
-  if valid_603226 != nil:
-    section.add "X-Amz-Credential", valid_603226
+  if valid_601230 != nil:
+    section.add "X-Amz-Credential", valid_601230
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1546,32 +1605,33 @@ proc validate_UpdateTable_603217(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603228: Call_UpdateTable_603216; path: JsonNode; query: JsonNode;
+proc call*(call_601232: Call_UpdateTable_601220; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the provisioned throughput for the given table.</p> <p>Setting the throughput for a table helps you manage performance and is part of the Provisioned Throughput feature of Amazon DynamoDB.</p>
   ## 
-  let valid = call_603228.validator(path, query, header, formData, body)
-  let scheme = call_603228.pickScheme
+  let valid = call_601232.validator(path, query, header, formData, body)
+  let scheme = call_601232.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603228.url(scheme.get, call_603228.host, call_603228.base,
-                         call_603228.route, valid.getOrDefault("path"))
-  result = hook(call_603228, url, valid)
+  let url = call_601232.url(scheme.get, call_601232.host, call_601232.base,
+                         call_601232.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601232, url, valid)
 
-proc call*(call_603229: Call_UpdateTable_603216; body: JsonNode): Recallable =
+proc call*(call_601233: Call_UpdateTable_601220; body: JsonNode): Recallable =
   ## updateTable
   ## <p>Updates the provisioned throughput for the given table.</p> <p>Setting the throughput for a table helps you manage performance and is part of the Provisioned Throughput feature of Amazon DynamoDB.</p>
   ##   body: JObject (required)
-  var body_603230 = newJObject()
+  var body_601234 = newJObject()
   if body != nil:
-    body_603230 = body
-  result = call_603229.call(nil, nil, nil, nil, body_603230)
+    body_601234 = body
+  result = call_601233.call(nil, nil, nil, nil, body_601234)
 
-var updateTable* = Call_UpdateTable_603216(name: "updateTable",
+var updateTable* = Call_UpdateTable_601220(name: "updateTable",
                                         meth: HttpMethod.HttpPost,
                                         host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20111205.UpdateTable",
-                                        validator: validate_UpdateTable_603217,
-                                        base: "/", url: url_UpdateTable_603218,
+                                        validator: validate_UpdateTable_601221,
+                                        base: "/", url: url_UpdateTable_601222,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -1615,7 +1675,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.} =
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, "")
+  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
   result.sign(input.getOrDefault("query"), SHA256)

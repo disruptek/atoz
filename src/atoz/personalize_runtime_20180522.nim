@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Personalize Runtime
@@ -27,17 +27,17 @@ type
     host*: string
     schemes*: set[Scheme]
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
-              path: JsonNode): string
+              path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602420 = ref object of OpenApiRestCall
+  OpenApiRestCall_600424 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602420](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_600424](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602420): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_600424): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,6 +74,14 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
+proc queryString(query: JsonNode): string =
+  var qs: seq[KeyVal]
+  if query == nil:
+    return ""
+  for k, v in query.pairs:
+    qs.add (key: k, val: v.getStr)
+  result = encodeQuery(qs)
+
 proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
@@ -120,14 +128,17 @@ const
       "ca-central-1": "personalize-runtime.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "personalize-runtime"
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.}
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GetPersonalizedRanking_602757 = ref object of OpenApiRestCall_602420
-proc url_GetPersonalizedRanking_602759(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetPersonalizedRanking_600761 = ref object of OpenApiRestCall_600424
+proc url_GetPersonalizedRanking_600763(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetPersonalizedRanking_602758(path: JsonNode; query: JsonNode;
+proc validate_GetPersonalizedRanking_600762(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Re-ranks a list of recommended items for the given user. The first item in the list is deemed the most likely item to be of interest to the user.</p> <note> <p>The solution backing the campaign must have been created using a recipe of type PERSONALIZED_RANKING.</p> </note>
   ## 
@@ -146,41 +157,41 @@ proc validate_GetPersonalizedRanking_602758(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_602871 = header.getOrDefault("X-Amz-Date")
-  valid_602871 = validateParameter(valid_602871, JString, required = false,
+  var valid_600875 = header.getOrDefault("X-Amz-Date")
+  valid_600875 = validateParameter(valid_600875, JString, required = false,
                                  default = nil)
-  if valid_602871 != nil:
-    section.add "X-Amz-Date", valid_602871
-  var valid_602872 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602872 = validateParameter(valid_602872, JString, required = false,
+  if valid_600875 != nil:
+    section.add "X-Amz-Date", valid_600875
+  var valid_600876 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600876 = validateParameter(valid_600876, JString, required = false,
                                  default = nil)
-  if valid_602872 != nil:
-    section.add "X-Amz-Security-Token", valid_602872
-  var valid_602873 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602873 = validateParameter(valid_602873, JString, required = false,
+  if valid_600876 != nil:
+    section.add "X-Amz-Security-Token", valid_600876
+  var valid_600877 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600877 = validateParameter(valid_600877, JString, required = false,
                                  default = nil)
-  if valid_602873 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602873
-  var valid_602874 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602874 = validateParameter(valid_602874, JString, required = false,
+  if valid_600877 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600877
+  var valid_600878 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600878 = validateParameter(valid_600878, JString, required = false,
                                  default = nil)
-  if valid_602874 != nil:
-    section.add "X-Amz-Algorithm", valid_602874
-  var valid_602875 = header.getOrDefault("X-Amz-Signature")
-  valid_602875 = validateParameter(valid_602875, JString, required = false,
+  if valid_600878 != nil:
+    section.add "X-Amz-Algorithm", valid_600878
+  var valid_600879 = header.getOrDefault("X-Amz-Signature")
+  valid_600879 = validateParameter(valid_600879, JString, required = false,
                                  default = nil)
-  if valid_602875 != nil:
-    section.add "X-Amz-Signature", valid_602875
-  var valid_602876 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602876 = validateParameter(valid_602876, JString, required = false,
+  if valid_600879 != nil:
+    section.add "X-Amz-Signature", valid_600879
+  var valid_600880 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600880 = validateParameter(valid_600880, JString, required = false,
                                  default = nil)
-  if valid_602876 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602876
-  var valid_602877 = header.getOrDefault("X-Amz-Credential")
-  valid_602877 = validateParameter(valid_602877, JString, required = false,
+  if valid_600880 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600880
+  var valid_600881 = header.getOrDefault("X-Amz-Credential")
+  valid_600881 = validateParameter(valid_600881, JString, required = false,
                                  default = nil)
-  if valid_602877 != nil:
-    section.add "X-Amz-Credential", valid_602877
+  if valid_600881 != nil:
+    section.add "X-Amz-Credential", valid_600881
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -191,39 +202,43 @@ proc validate_GetPersonalizedRanking_602758(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602901: Call_GetPersonalizedRanking_602757; path: JsonNode;
+proc call*(call_600905: Call_GetPersonalizedRanking_600761; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Re-ranks a list of recommended items for the given user. The first item in the list is deemed the most likely item to be of interest to the user.</p> <note> <p>The solution backing the campaign must have been created using a recipe of type PERSONALIZED_RANKING.</p> </note>
   ## 
-  let valid = call_602901.validator(path, query, header, formData, body)
-  let scheme = call_602901.pickScheme
+  let valid = call_600905.validator(path, query, header, formData, body)
+  let scheme = call_600905.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602901.url(scheme.get, call_602901.host, call_602901.base,
-                         call_602901.route, valid.getOrDefault("path"))
-  result = hook(call_602901, url, valid)
+  let url = call_600905.url(scheme.get, call_600905.host, call_600905.base,
+                         call_600905.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_600905, url, valid)
 
-proc call*(call_602972: Call_GetPersonalizedRanking_602757; body: JsonNode): Recallable =
+proc call*(call_600976: Call_GetPersonalizedRanking_600761; body: JsonNode): Recallable =
   ## getPersonalizedRanking
   ## <p>Re-ranks a list of recommended items for the given user. The first item in the list is deemed the most likely item to be of interest to the user.</p> <note> <p>The solution backing the campaign must have been created using a recipe of type PERSONALIZED_RANKING.</p> </note>
   ##   body: JObject (required)
-  var body_602973 = newJObject()
+  var body_600977 = newJObject()
   if body != nil:
-    body_602973 = body
-  result = call_602972.call(nil, nil, nil, nil, body_602973)
+    body_600977 = body
+  result = call_600976.call(nil, nil, nil, nil, body_600977)
 
-var getPersonalizedRanking* = Call_GetPersonalizedRanking_602757(
+var getPersonalizedRanking* = Call_GetPersonalizedRanking_600761(
     name: "getPersonalizedRanking", meth: HttpMethod.HttpPost,
     host: "personalize-runtime.amazonaws.com", route: "/personalize-ranking",
-    validator: validate_GetPersonalizedRanking_602758, base: "/",
-    url: url_GetPersonalizedRanking_602759, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetPersonalizedRanking_600762, base: "/",
+    url: url_GetPersonalizedRanking_600763, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRecommendations_603012 = ref object of OpenApiRestCall_602420
-proc url_GetRecommendations_603014(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode): string =
-  result = $protocol & "://" & host & base & route
+  Call_GetRecommendations_601016 = ref object of OpenApiRestCall_600424
+proc url_GetRecommendations_601018(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  result.path = base & route
 
-proc validate_GetRecommendations_603013(path: JsonNode; query: JsonNode;
+proc validate_GetRecommendations_601017(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Returns a list of recommended items. The required input depends on the recipe type used to create the solution backing the campaign, as follows:</p> <ul> <li> <p>RELATED_ITEMS - <code>itemId</code> required, <code>userId</code> not used</p> </li> <li> <p>USER_PERSONALIZATION - <code>itemId</code> optional, <code>userId</code> required</p> </li> </ul> <note> <p>Campaigns that are backed by a solution created using a recipe of type PERSONALIZED_RANKING use the API.</p> </note>
@@ -243,41 +258,41 @@ proc validate_GetRecommendations_603013(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_603015 = header.getOrDefault("X-Amz-Date")
-  valid_603015 = validateParameter(valid_603015, JString, required = false,
+  var valid_601019 = header.getOrDefault("X-Amz-Date")
+  valid_601019 = validateParameter(valid_601019, JString, required = false,
                                  default = nil)
-  if valid_603015 != nil:
-    section.add "X-Amz-Date", valid_603015
-  var valid_603016 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603016 = validateParameter(valid_603016, JString, required = false,
+  if valid_601019 != nil:
+    section.add "X-Amz-Date", valid_601019
+  var valid_601020 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601020 = validateParameter(valid_601020, JString, required = false,
                                  default = nil)
-  if valid_603016 != nil:
-    section.add "X-Amz-Security-Token", valid_603016
-  var valid_603017 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603017 = validateParameter(valid_603017, JString, required = false,
+  if valid_601020 != nil:
+    section.add "X-Amz-Security-Token", valid_601020
+  var valid_601021 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601021 = validateParameter(valid_601021, JString, required = false,
                                  default = nil)
-  if valid_603017 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603017
-  var valid_603018 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603018 = validateParameter(valid_603018, JString, required = false,
+  if valid_601021 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601021
+  var valid_601022 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601022 = validateParameter(valid_601022, JString, required = false,
                                  default = nil)
-  if valid_603018 != nil:
-    section.add "X-Amz-Algorithm", valid_603018
-  var valid_603019 = header.getOrDefault("X-Amz-Signature")
-  valid_603019 = validateParameter(valid_603019, JString, required = false,
+  if valid_601022 != nil:
+    section.add "X-Amz-Algorithm", valid_601022
+  var valid_601023 = header.getOrDefault("X-Amz-Signature")
+  valid_601023 = validateParameter(valid_601023, JString, required = false,
                                  default = nil)
-  if valid_603019 != nil:
-    section.add "X-Amz-Signature", valid_603019
-  var valid_603020 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603020 = validateParameter(valid_603020, JString, required = false,
+  if valid_601023 != nil:
+    section.add "X-Amz-Signature", valid_601023
+  var valid_601024 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601024 = validateParameter(valid_601024, JString, required = false,
                                  default = nil)
-  if valid_603020 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603020
-  var valid_603021 = header.getOrDefault("X-Amz-Credential")
-  valid_603021 = validateParameter(valid_603021, JString, required = false,
+  if valid_601024 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601024
+  var valid_601025 = header.getOrDefault("X-Amz-Credential")
+  valid_601025 = validateParameter(valid_601025, JString, required = false,
                                  default = nil)
-  if valid_603021 != nil:
-    section.add "X-Amz-Credential", valid_603021
+  if valid_601025 != nil:
+    section.add "X-Amz-Credential", valid_601025
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -288,32 +303,33 @@ proc validate_GetRecommendations_603013(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603023: Call_GetRecommendations_603012; path: JsonNode;
+proc call*(call_601027: Call_GetRecommendations_601016; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of recommended items. The required input depends on the recipe type used to create the solution backing the campaign, as follows:</p> <ul> <li> <p>RELATED_ITEMS - <code>itemId</code> required, <code>userId</code> not used</p> </li> <li> <p>USER_PERSONALIZATION - <code>itemId</code> optional, <code>userId</code> required</p> </li> </ul> <note> <p>Campaigns that are backed by a solution created using a recipe of type PERSONALIZED_RANKING use the API.</p> </note>
   ## 
-  let valid = call_603023.validator(path, query, header, formData, body)
-  let scheme = call_603023.pickScheme
+  let valid = call_601027.validator(path, query, header, formData, body)
+  let scheme = call_601027.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603023.url(scheme.get, call_603023.host, call_603023.base,
-                         call_603023.route, valid.getOrDefault("path"))
-  result = hook(call_603023, url, valid)
+  let url = call_601027.url(scheme.get, call_601027.host, call_601027.base,
+                         call_601027.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = hook(call_601027, url, valid)
 
-proc call*(call_603024: Call_GetRecommendations_603012; body: JsonNode): Recallable =
+proc call*(call_601028: Call_GetRecommendations_601016; body: JsonNode): Recallable =
   ## getRecommendations
   ## <p>Returns a list of recommended items. The required input depends on the recipe type used to create the solution backing the campaign, as follows:</p> <ul> <li> <p>RELATED_ITEMS - <code>itemId</code> required, <code>userId</code> not used</p> </li> <li> <p>USER_PERSONALIZATION - <code>itemId</code> optional, <code>userId</code> required</p> </li> </ul> <note> <p>Campaigns that are backed by a solution created using a recipe of type PERSONALIZED_RANKING use the API.</p> </note>
   ##   body: JObject (required)
-  var body_603025 = newJObject()
+  var body_601029 = newJObject()
   if body != nil:
-    body_603025 = body
-  result = call_603024.call(nil, nil, nil, nil, body_603025)
+    body_601029 = body
+  result = call_601028.call(nil, nil, nil, nil, body_601029)
 
-var getRecommendations* = Call_GetRecommendations_603012(
+var getRecommendations* = Call_GetRecommendations_601016(
     name: "getRecommendations", meth: HttpMethod.HttpPost,
     host: "personalize-runtime.amazonaws.com", route: "/recommendations",
-    validator: validate_GetRecommendations_603013, base: "/",
-    url: url_GetRecommendations_603014, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRecommendations_601017, base: "/",
+    url: url_GetRecommendations_601018, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -356,7 +372,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: string; input: JsonNode): Recallable {.base.} =
+method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, "")
+  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
   result.sign(input.getOrDefault("query"), SHA256)
