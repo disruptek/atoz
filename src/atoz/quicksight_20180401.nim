@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon QuickSight
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600437 = ref object of OpenApiRestCall
+  OpenApiRestCall_593437 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600437](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593437](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600437): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593437): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -140,8 +140,8 @@ const
   awsServiceName = "quicksight"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateGroup_601048 = ref object of OpenApiRestCall_600437
-proc url_CreateGroup_601050(protocol: Scheme; host: string; base: string;
+  Call_CreateGroup_594048 = ref object of OpenApiRestCall_593437
+proc url_CreateGroup_594050(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -160,7 +160,7 @@ proc url_CreateGroup_601050(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_CreateGroup_601049(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateGroup_594049(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group --aws-account-id=111122223333 --namespace=default --group-name="Sales-Management" --description="Sales Management - Forecasting" </code> </p>
   ## 
@@ -174,16 +174,16 @@ proc validate_CreateGroup_601049(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601051 = path.getOrDefault("AwsAccountId")
-  valid_601051 = validateParameter(valid_601051, JString, required = true,
+  var valid_594051 = path.getOrDefault("AwsAccountId")
+  valid_594051 = validateParameter(valid_594051, JString, required = true,
                                  default = nil)
-  if valid_601051 != nil:
-    section.add "AwsAccountId", valid_601051
-  var valid_601052 = path.getOrDefault("Namespace")
-  valid_601052 = validateParameter(valid_601052, JString, required = true,
+  if valid_594051 != nil:
+    section.add "AwsAccountId", valid_594051
+  var valid_594052 = path.getOrDefault("Namespace")
+  valid_594052 = validateParameter(valid_594052, JString, required = true,
                                  default = nil)
-  if valid_601052 != nil:
-    section.add "Namespace", valid_601052
+  if valid_594052 != nil:
+    section.add "Namespace", valid_594052
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -196,41 +196,41 @@ proc validate_CreateGroup_601049(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601053 = header.getOrDefault("X-Amz-Date")
-  valid_601053 = validateParameter(valid_601053, JString, required = false,
+  var valid_594053 = header.getOrDefault("X-Amz-Date")
+  valid_594053 = validateParameter(valid_594053, JString, required = false,
                                  default = nil)
-  if valid_601053 != nil:
-    section.add "X-Amz-Date", valid_601053
-  var valid_601054 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601054 = validateParameter(valid_601054, JString, required = false,
+  if valid_594053 != nil:
+    section.add "X-Amz-Date", valid_594053
+  var valid_594054 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594054 = validateParameter(valid_594054, JString, required = false,
                                  default = nil)
-  if valid_601054 != nil:
-    section.add "X-Amz-Security-Token", valid_601054
-  var valid_601055 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601055 = validateParameter(valid_601055, JString, required = false,
+  if valid_594054 != nil:
+    section.add "X-Amz-Security-Token", valid_594054
+  var valid_594055 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594055 = validateParameter(valid_594055, JString, required = false,
                                  default = nil)
-  if valid_601055 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601055
-  var valid_601056 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601056 = validateParameter(valid_601056, JString, required = false,
+  if valid_594055 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594055
+  var valid_594056 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594056 = validateParameter(valid_594056, JString, required = false,
                                  default = nil)
-  if valid_601056 != nil:
-    section.add "X-Amz-Algorithm", valid_601056
-  var valid_601057 = header.getOrDefault("X-Amz-Signature")
-  valid_601057 = validateParameter(valid_601057, JString, required = false,
+  if valid_594056 != nil:
+    section.add "X-Amz-Algorithm", valid_594056
+  var valid_594057 = header.getOrDefault("X-Amz-Signature")
+  valid_594057 = validateParameter(valid_594057, JString, required = false,
                                  default = nil)
-  if valid_601057 != nil:
-    section.add "X-Amz-Signature", valid_601057
-  var valid_601058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601058 = validateParameter(valid_601058, JString, required = false,
+  if valid_594057 != nil:
+    section.add "X-Amz-Signature", valid_594057
+  var valid_594058 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594058 = validateParameter(valid_594058, JString, required = false,
                                  default = nil)
-  if valid_601058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601058
-  var valid_601059 = header.getOrDefault("X-Amz-Credential")
-  valid_601059 = validateParameter(valid_601059, JString, required = false,
+  if valid_594058 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594058
+  var valid_594059 = header.getOrDefault("X-Amz-Credential")
+  valid_594059 = validateParameter(valid_594059, JString, required = false,
                                  default = nil)
-  if valid_601059 != nil:
-    section.add "X-Amz-Credential", valid_601059
+  if valid_594059 != nil:
+    section.add "X-Amz-Credential", valid_594059
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -241,20 +241,20 @@ proc validate_CreateGroup_601049(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601061: Call_CreateGroup_601048; path: JsonNode; query: JsonNode;
+proc call*(call_594061: Call_CreateGroup_594048; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group --aws-account-id=111122223333 --namespace=default --group-name="Sales-Management" --description="Sales Management - Forecasting" </code> </p>
   ## 
-  let valid = call_601061.validator(path, query, header, formData, body)
-  let scheme = call_601061.pickScheme
+  let valid = call_594061.validator(path, query, header, formData, body)
+  let scheme = call_594061.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601061.url(scheme.get, call_601061.host, call_601061.base,
-                         call_601061.route, valid.getOrDefault("path"),
+  let url = call_594061.url(scheme.get, call_594061.host, call_594061.base,
+                         call_594061.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601061, url, valid)
+  result = hook(call_594061, url, valid)
 
-proc call*(call_601062: Call_CreateGroup_601048; AwsAccountId: string;
+proc call*(call_594062: Call_CreateGroup_594048; AwsAccountId: string;
           body: JsonNode; Namespace: string): Recallable =
   ## createGroup
   ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group --aws-account-id=111122223333 --namespace=default --group-name="Sales-Management" --description="Sales Management - Forecasting" </code> </p>
@@ -263,23 +263,23 @@ proc call*(call_601062: Call_CreateGroup_601048; AwsAccountId: string;
   ##   body: JObject (required)
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601063 = newJObject()
-  var body_601064 = newJObject()
-  add(path_601063, "AwsAccountId", newJString(AwsAccountId))
+  var path_594063 = newJObject()
+  var body_594064 = newJObject()
+  add(path_594063, "AwsAccountId", newJString(AwsAccountId))
   if body != nil:
-    body_601064 = body
-  add(path_601063, "Namespace", newJString(Namespace))
-  result = call_601062.call(path_601063, nil, nil, nil, body_601064)
+    body_594064 = body
+  add(path_594063, "Namespace", newJString(Namespace))
+  result = call_594062.call(path_594063, nil, nil, nil, body_594064)
 
-var createGroup* = Call_CreateGroup_601048(name: "createGroup",
+var createGroup* = Call_CreateGroup_594048(name: "createGroup",
                                         meth: HttpMethod.HttpPost,
                                         host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups",
-                                        validator: validate_CreateGroup_601049,
-                                        base: "/", url: url_CreateGroup_601050,
+                                        validator: validate_CreateGroup_594049,
+                                        base: "/", url: url_CreateGroup_594050,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListGroups_600774 = ref object of OpenApiRestCall_600437
-proc url_ListGroups_600776(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListGroups_593774 = ref object of OpenApiRestCall_593437
+proc url_ListGroups_593776(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -298,7 +298,7 @@ proc url_ListGroups_600776(protocol: Scheme; host: string; base: string; route: 
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_ListGroups_600775(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListGroups_593775(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists all user groups in Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/*</code>.</p> <p>The response is a list of group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-groups -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
   ## 
@@ -312,16 +312,16 @@ proc validate_ListGroups_600775(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_600902 = path.getOrDefault("AwsAccountId")
-  valid_600902 = validateParameter(valid_600902, JString, required = true,
+  var valid_593902 = path.getOrDefault("AwsAccountId")
+  valid_593902 = validateParameter(valid_593902, JString, required = true,
                                  default = nil)
-  if valid_600902 != nil:
-    section.add "AwsAccountId", valid_600902
-  var valid_600903 = path.getOrDefault("Namespace")
-  valid_600903 = validateParameter(valid_600903, JString, required = true,
+  if valid_593902 != nil:
+    section.add "AwsAccountId", valid_593902
+  var valid_593903 = path.getOrDefault("Namespace")
+  valid_593903 = validateParameter(valid_593903, JString, required = true,
                                  default = nil)
-  if valid_600903 != nil:
-    section.add "Namespace", valid_600903
+  if valid_593903 != nil:
+    section.add "Namespace", valid_593903
   result.add "path", section
   ## parameters in `query` object:
   ##   max-results: JInt
@@ -329,15 +329,15 @@ proc validate_ListGroups_600775(path: JsonNode; query: JsonNode; header: JsonNod
   ##   next-token: JString
   ##             : A pagination token that can be used in a subsequent request.
   section = newJObject()
-  var valid_600904 = query.getOrDefault("max-results")
-  valid_600904 = validateParameter(valid_600904, JInt, required = false, default = nil)
-  if valid_600904 != nil:
-    section.add "max-results", valid_600904
-  var valid_600905 = query.getOrDefault("next-token")
-  valid_600905 = validateParameter(valid_600905, JString, required = false,
+  var valid_593904 = query.getOrDefault("max-results")
+  valid_593904 = validateParameter(valid_593904, JInt, required = false, default = nil)
+  if valid_593904 != nil:
+    section.add "max-results", valid_593904
+  var valid_593905 = query.getOrDefault("next-token")
+  valid_593905 = validateParameter(valid_593905, JString, required = false,
                                  default = nil)
-  if valid_600905 != nil:
-    section.add "next-token", valid_600905
+  if valid_593905 != nil:
+    section.add "next-token", valid_593905
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -348,61 +348,61 @@ proc validate_ListGroups_600775(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600906 = header.getOrDefault("X-Amz-Date")
-  valid_600906 = validateParameter(valid_600906, JString, required = false,
+  var valid_593906 = header.getOrDefault("X-Amz-Date")
+  valid_593906 = validateParameter(valid_593906, JString, required = false,
                                  default = nil)
-  if valid_600906 != nil:
-    section.add "X-Amz-Date", valid_600906
-  var valid_600907 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600907 = validateParameter(valid_600907, JString, required = false,
+  if valid_593906 != nil:
+    section.add "X-Amz-Date", valid_593906
+  var valid_593907 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593907 = validateParameter(valid_593907, JString, required = false,
                                  default = nil)
-  if valid_600907 != nil:
-    section.add "X-Amz-Security-Token", valid_600907
-  var valid_600908 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600908 = validateParameter(valid_600908, JString, required = false,
+  if valid_593907 != nil:
+    section.add "X-Amz-Security-Token", valid_593907
+  var valid_593908 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593908 = validateParameter(valid_593908, JString, required = false,
                                  default = nil)
-  if valid_600908 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600908
-  var valid_600909 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600909 = validateParameter(valid_600909, JString, required = false,
+  if valid_593908 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593908
+  var valid_593909 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593909 = validateParameter(valid_593909, JString, required = false,
                                  default = nil)
-  if valid_600909 != nil:
-    section.add "X-Amz-Algorithm", valid_600909
-  var valid_600910 = header.getOrDefault("X-Amz-Signature")
-  valid_600910 = validateParameter(valid_600910, JString, required = false,
+  if valid_593909 != nil:
+    section.add "X-Amz-Algorithm", valid_593909
+  var valid_593910 = header.getOrDefault("X-Amz-Signature")
+  valid_593910 = validateParameter(valid_593910, JString, required = false,
                                  default = nil)
-  if valid_600910 != nil:
-    section.add "X-Amz-Signature", valid_600910
-  var valid_600911 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600911 = validateParameter(valid_600911, JString, required = false,
+  if valid_593910 != nil:
+    section.add "X-Amz-Signature", valid_593910
+  var valid_593911 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593911 = validateParameter(valid_593911, JString, required = false,
                                  default = nil)
-  if valid_600911 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600911
-  var valid_600912 = header.getOrDefault("X-Amz-Credential")
-  valid_600912 = validateParameter(valid_600912, JString, required = false,
+  if valid_593911 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593911
+  var valid_593912 = header.getOrDefault("X-Amz-Credential")
+  valid_593912 = validateParameter(valid_593912, JString, required = false,
                                  default = nil)
-  if valid_600912 != nil:
-    section.add "X-Amz-Credential", valid_600912
+  if valid_593912 != nil:
+    section.add "X-Amz-Credential", valid_593912
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600935: Call_ListGroups_600774; path: JsonNode; query: JsonNode;
+proc call*(call_593935: Call_ListGroups_593774; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all user groups in Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/*</code>.</p> <p>The response is a list of group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-groups -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
   ## 
-  let valid = call_600935.validator(path, query, header, formData, body)
-  let scheme = call_600935.pickScheme
+  let valid = call_593935.validator(path, query, header, formData, body)
+  let scheme = call_593935.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600935.url(scheme.get, call_600935.host, call_600935.base,
-                         call_600935.route, valid.getOrDefault("path"),
+  let url = call_593935.url(scheme.get, call_593935.host, call_593935.base,
+                         call_593935.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600935, url, valid)
+  result = hook(call_593935, url, valid)
 
-proc call*(call_601006: Call_ListGroups_600774; AwsAccountId: string;
+proc call*(call_594006: Call_ListGroups_593774; AwsAccountId: string;
           Namespace: string; maxResults: int = 0; nextToken: string = ""): Recallable =
   ## listGroups
   ## <p>Lists all user groups in Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/*</code>.</p> <p>The response is a list of group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-groups -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
@@ -414,23 +414,23 @@ proc call*(call_601006: Call_ListGroups_600774; AwsAccountId: string;
   ##            : A pagination token that can be used in a subsequent request.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601007 = newJObject()
-  var query_601009 = newJObject()
-  add(path_601007, "AwsAccountId", newJString(AwsAccountId))
-  add(query_601009, "max-results", newJInt(maxResults))
-  add(query_601009, "next-token", newJString(nextToken))
-  add(path_601007, "Namespace", newJString(Namespace))
-  result = call_601006.call(path_601007, query_601009, nil, nil, nil)
+  var path_594007 = newJObject()
+  var query_594009 = newJObject()
+  add(path_594007, "AwsAccountId", newJString(AwsAccountId))
+  add(query_594009, "max-results", newJInt(maxResults))
+  add(query_594009, "next-token", newJString(nextToken))
+  add(path_594007, "Namespace", newJString(Namespace))
+  result = call_594006.call(path_594007, query_594009, nil, nil, nil)
 
-var listGroups* = Call_ListGroups_600774(name: "listGroups",
+var listGroups* = Call_ListGroups_593774(name: "listGroups",
                                       meth: HttpMethod.HttpGet,
                                       host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups",
-                                      validator: validate_ListGroups_600775,
-                                      base: "/", url: url_ListGroups_600776,
+                                      validator: validate_ListGroups_593775,
+                                      base: "/", url: url_ListGroups_593776,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateGroupMembership_601065 = ref object of OpenApiRestCall_600437
-proc url_CreateGroupMembership_601067(protocol: Scheme; host: string; base: string;
+  Call_CreateGroupMembership_594065 = ref object of OpenApiRestCall_593437
+proc url_CreateGroupMembership_594067(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -454,7 +454,7 @@ proc url_CreateGroupMembership_601067(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_CreateGroupMembership_601066(path: JsonNode; query: JsonNode;
+proc validate_CreateGroupMembership_594066(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds an Amazon QuickSight user to an Amazon QuickSight group. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p>The response is the group member object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales --member-name=Pat </code> </p>
   ## 
@@ -471,26 +471,26 @@ proc validate_CreateGroupMembership_601066(path: JsonNode; query: JsonNode;
   ##            : The namespace. Currently, you should set this to <code>default</code>.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `GroupName` field"
-  var valid_601068 = path.getOrDefault("GroupName")
-  valid_601068 = validateParameter(valid_601068, JString, required = true,
+  var valid_594068 = path.getOrDefault("GroupName")
+  valid_594068 = validateParameter(valid_594068, JString, required = true,
                                  default = nil)
-  if valid_601068 != nil:
-    section.add "GroupName", valid_601068
-  var valid_601069 = path.getOrDefault("AwsAccountId")
-  valid_601069 = validateParameter(valid_601069, JString, required = true,
+  if valid_594068 != nil:
+    section.add "GroupName", valid_594068
+  var valid_594069 = path.getOrDefault("AwsAccountId")
+  valid_594069 = validateParameter(valid_594069, JString, required = true,
                                  default = nil)
-  if valid_601069 != nil:
-    section.add "AwsAccountId", valid_601069
-  var valid_601070 = path.getOrDefault("MemberName")
-  valid_601070 = validateParameter(valid_601070, JString, required = true,
+  if valid_594069 != nil:
+    section.add "AwsAccountId", valid_594069
+  var valid_594070 = path.getOrDefault("MemberName")
+  valid_594070 = validateParameter(valid_594070, JString, required = true,
                                  default = nil)
-  if valid_601070 != nil:
-    section.add "MemberName", valid_601070
-  var valid_601071 = path.getOrDefault("Namespace")
-  valid_601071 = validateParameter(valid_601071, JString, required = true,
+  if valid_594070 != nil:
+    section.add "MemberName", valid_594070
+  var valid_594071 = path.getOrDefault("Namespace")
+  valid_594071 = validateParameter(valid_594071, JString, required = true,
                                  default = nil)
-  if valid_601071 != nil:
-    section.add "Namespace", valid_601071
+  if valid_594071 != nil:
+    section.add "Namespace", valid_594071
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -503,61 +503,61 @@ proc validate_CreateGroupMembership_601066(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601072 = header.getOrDefault("X-Amz-Date")
-  valid_601072 = validateParameter(valid_601072, JString, required = false,
+  var valid_594072 = header.getOrDefault("X-Amz-Date")
+  valid_594072 = validateParameter(valid_594072, JString, required = false,
                                  default = nil)
-  if valid_601072 != nil:
-    section.add "X-Amz-Date", valid_601072
-  var valid_601073 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601073 = validateParameter(valid_601073, JString, required = false,
+  if valid_594072 != nil:
+    section.add "X-Amz-Date", valid_594072
+  var valid_594073 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594073 = validateParameter(valid_594073, JString, required = false,
                                  default = nil)
-  if valid_601073 != nil:
-    section.add "X-Amz-Security-Token", valid_601073
-  var valid_601074 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601074 = validateParameter(valid_601074, JString, required = false,
+  if valid_594073 != nil:
+    section.add "X-Amz-Security-Token", valid_594073
+  var valid_594074 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594074 = validateParameter(valid_594074, JString, required = false,
                                  default = nil)
-  if valid_601074 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601074
-  var valid_601075 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601075 = validateParameter(valid_601075, JString, required = false,
+  if valid_594074 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594074
+  var valid_594075 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594075 = validateParameter(valid_594075, JString, required = false,
                                  default = nil)
-  if valid_601075 != nil:
-    section.add "X-Amz-Algorithm", valid_601075
-  var valid_601076 = header.getOrDefault("X-Amz-Signature")
-  valid_601076 = validateParameter(valid_601076, JString, required = false,
+  if valid_594075 != nil:
+    section.add "X-Amz-Algorithm", valid_594075
+  var valid_594076 = header.getOrDefault("X-Amz-Signature")
+  valid_594076 = validateParameter(valid_594076, JString, required = false,
                                  default = nil)
-  if valid_601076 != nil:
-    section.add "X-Amz-Signature", valid_601076
-  var valid_601077 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601077 = validateParameter(valid_601077, JString, required = false,
+  if valid_594076 != nil:
+    section.add "X-Amz-Signature", valid_594076
+  var valid_594077 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594077 = validateParameter(valid_594077, JString, required = false,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601077
-  var valid_601078 = header.getOrDefault("X-Amz-Credential")
-  valid_601078 = validateParameter(valid_601078, JString, required = false,
+  if valid_594077 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594077
+  var valid_594078 = header.getOrDefault("X-Amz-Credential")
+  valid_594078 = validateParameter(valid_594078, JString, required = false,
                                  default = nil)
-  if valid_601078 != nil:
-    section.add "X-Amz-Credential", valid_601078
+  if valid_594078 != nil:
+    section.add "X-Amz-Credential", valid_594078
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601079: Call_CreateGroupMembership_601065; path: JsonNode;
+proc call*(call_594079: Call_CreateGroupMembership_594065; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds an Amazon QuickSight user to an Amazon QuickSight group. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p>The response is the group member object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales --member-name=Pat </code> </p>
   ## 
-  let valid = call_601079.validator(path, query, header, formData, body)
-  let scheme = call_601079.pickScheme
+  let valid = call_594079.validator(path, query, header, formData, body)
+  let scheme = call_594079.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601079.url(scheme.get, call_601079.host, call_601079.base,
-                         call_601079.route, valid.getOrDefault("path"),
+  let url = call_594079.url(scheme.get, call_594079.host, call_594079.base,
+                         call_594079.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601079, url, valid)
+  result = hook(call_594079, url, valid)
 
-proc call*(call_601080: Call_CreateGroupMembership_601065; GroupName: string;
+proc call*(call_594080: Call_CreateGroupMembership_594065; GroupName: string;
           AwsAccountId: string; MemberName: string; Namespace: string): Recallable =
   ## createGroupMembership
   ## <p>Adds an Amazon QuickSight user to an Amazon QuickSight group. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p>The response is the group member object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales --member-name=Pat </code> </p>
@@ -569,21 +569,21 @@ proc call*(call_601080: Call_CreateGroupMembership_601065; GroupName: string;
   ##             : The name of the user that you want to add to the group membership.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601081 = newJObject()
-  add(path_601081, "GroupName", newJString(GroupName))
-  add(path_601081, "AwsAccountId", newJString(AwsAccountId))
-  add(path_601081, "MemberName", newJString(MemberName))
-  add(path_601081, "Namespace", newJString(Namespace))
-  result = call_601080.call(path_601081, nil, nil, nil, nil)
+  var path_594081 = newJObject()
+  add(path_594081, "GroupName", newJString(GroupName))
+  add(path_594081, "AwsAccountId", newJString(AwsAccountId))
+  add(path_594081, "MemberName", newJString(MemberName))
+  add(path_594081, "Namespace", newJString(Namespace))
+  result = call_594080.call(path_594081, nil, nil, nil, nil)
 
-var createGroupMembership* = Call_CreateGroupMembership_601065(
+var createGroupMembership* = Call_CreateGroupMembership_594065(
     name: "createGroupMembership", meth: HttpMethod.HttpPut,
     host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members/{MemberName}",
-    validator: validate_CreateGroupMembership_601066, base: "/",
-    url: url_CreateGroupMembership_601067, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateGroupMembership_594066, base: "/",
+    url: url_CreateGroupMembership_594067, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteGroupMembership_601082 = ref object of OpenApiRestCall_600437
-proc url_DeleteGroupMembership_601084(protocol: Scheme; host: string; base: string;
+  Call_DeleteGroupMembership_594082 = ref object of OpenApiRestCall_593437
+proc url_DeleteGroupMembership_594084(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -607,7 +607,7 @@ proc url_DeleteGroupMembership_601084(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DeleteGroupMembership_601083(path: JsonNode; query: JsonNode;
+proc validate_DeleteGroupMembership_594083(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes a user from a group so that the user is no longer a member of the group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales-Management --member-name=Charlie </code> </p>
   ## 
@@ -624,26 +624,26 @@ proc validate_DeleteGroupMembership_601083(path: JsonNode; query: JsonNode;
   ##            : The namespace. Currently, you should set this to <code>default</code>.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `GroupName` field"
-  var valid_601085 = path.getOrDefault("GroupName")
-  valid_601085 = validateParameter(valid_601085, JString, required = true,
+  var valid_594085 = path.getOrDefault("GroupName")
+  valid_594085 = validateParameter(valid_594085, JString, required = true,
                                  default = nil)
-  if valid_601085 != nil:
-    section.add "GroupName", valid_601085
-  var valid_601086 = path.getOrDefault("AwsAccountId")
-  valid_601086 = validateParameter(valid_601086, JString, required = true,
+  if valid_594085 != nil:
+    section.add "GroupName", valid_594085
+  var valid_594086 = path.getOrDefault("AwsAccountId")
+  valid_594086 = validateParameter(valid_594086, JString, required = true,
                                  default = nil)
-  if valid_601086 != nil:
-    section.add "AwsAccountId", valid_601086
-  var valid_601087 = path.getOrDefault("MemberName")
-  valid_601087 = validateParameter(valid_601087, JString, required = true,
+  if valid_594086 != nil:
+    section.add "AwsAccountId", valid_594086
+  var valid_594087 = path.getOrDefault("MemberName")
+  valid_594087 = validateParameter(valid_594087, JString, required = true,
                                  default = nil)
-  if valid_601087 != nil:
-    section.add "MemberName", valid_601087
-  var valid_601088 = path.getOrDefault("Namespace")
-  valid_601088 = validateParameter(valid_601088, JString, required = true,
+  if valid_594087 != nil:
+    section.add "MemberName", valid_594087
+  var valid_594088 = path.getOrDefault("Namespace")
+  valid_594088 = validateParameter(valid_594088, JString, required = true,
                                  default = nil)
-  if valid_601088 != nil:
-    section.add "Namespace", valid_601088
+  if valid_594088 != nil:
+    section.add "Namespace", valid_594088
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -656,61 +656,61 @@ proc validate_DeleteGroupMembership_601083(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601089 = header.getOrDefault("X-Amz-Date")
-  valid_601089 = validateParameter(valid_601089, JString, required = false,
+  var valid_594089 = header.getOrDefault("X-Amz-Date")
+  valid_594089 = validateParameter(valid_594089, JString, required = false,
                                  default = nil)
-  if valid_601089 != nil:
-    section.add "X-Amz-Date", valid_601089
-  var valid_601090 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601090 = validateParameter(valid_601090, JString, required = false,
+  if valid_594089 != nil:
+    section.add "X-Amz-Date", valid_594089
+  var valid_594090 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594090 = validateParameter(valid_594090, JString, required = false,
                                  default = nil)
-  if valid_601090 != nil:
-    section.add "X-Amz-Security-Token", valid_601090
-  var valid_601091 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601091 = validateParameter(valid_601091, JString, required = false,
+  if valid_594090 != nil:
+    section.add "X-Amz-Security-Token", valid_594090
+  var valid_594091 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594091 = validateParameter(valid_594091, JString, required = false,
                                  default = nil)
-  if valid_601091 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601091
-  var valid_601092 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  if valid_594091 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594091
+  var valid_594092 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594092 = validateParameter(valid_594092, JString, required = false,
                                  default = nil)
-  if valid_601092 != nil:
-    section.add "X-Amz-Algorithm", valid_601092
-  var valid_601093 = header.getOrDefault("X-Amz-Signature")
-  valid_601093 = validateParameter(valid_601093, JString, required = false,
+  if valid_594092 != nil:
+    section.add "X-Amz-Algorithm", valid_594092
+  var valid_594093 = header.getOrDefault("X-Amz-Signature")
+  valid_594093 = validateParameter(valid_594093, JString, required = false,
                                  default = nil)
-  if valid_601093 != nil:
-    section.add "X-Amz-Signature", valid_601093
-  var valid_601094 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601094 = validateParameter(valid_601094, JString, required = false,
+  if valid_594093 != nil:
+    section.add "X-Amz-Signature", valid_594093
+  var valid_594094 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594094 = validateParameter(valid_594094, JString, required = false,
                                  default = nil)
-  if valid_601094 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601094
-  var valid_601095 = header.getOrDefault("X-Amz-Credential")
-  valid_601095 = validateParameter(valid_601095, JString, required = false,
+  if valid_594094 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594094
+  var valid_594095 = header.getOrDefault("X-Amz-Credential")
+  valid_594095 = validateParameter(valid_594095, JString, required = false,
                                  default = nil)
-  if valid_601095 != nil:
-    section.add "X-Amz-Credential", valid_601095
+  if valid_594095 != nil:
+    section.add "X-Amz-Credential", valid_594095
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601096: Call_DeleteGroupMembership_601082; path: JsonNode;
+proc call*(call_594096: Call_DeleteGroupMembership_594082; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes a user from a group so that the user is no longer a member of the group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales-Management --member-name=Charlie </code> </p>
   ## 
-  let valid = call_601096.validator(path, query, header, formData, body)
-  let scheme = call_601096.pickScheme
+  let valid = call_594096.validator(path, query, header, formData, body)
+  let scheme = call_594096.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601096.url(scheme.get, call_601096.host, call_601096.base,
-                         call_601096.route, valid.getOrDefault("path"),
+  let url = call_594096.url(scheme.get, call_594096.host, call_594096.base,
+                         call_594096.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601096, url, valid)
+  result = hook(call_594096, url, valid)
 
-proc call*(call_601097: Call_DeleteGroupMembership_601082; GroupName: string;
+proc call*(call_594097: Call_DeleteGroupMembership_594082; GroupName: string;
           AwsAccountId: string; MemberName: string; Namespace: string): Recallable =
   ## deleteGroupMembership
   ## <p>Removes a user from a group so that the user is no longer a member of the group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales-Management --member-name=Charlie </code> </p>
@@ -722,21 +722,21 @@ proc call*(call_601097: Call_DeleteGroupMembership_601082; GroupName: string;
   ##             : The name of the user that you want to delete from the group membership.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601098 = newJObject()
-  add(path_601098, "GroupName", newJString(GroupName))
-  add(path_601098, "AwsAccountId", newJString(AwsAccountId))
-  add(path_601098, "MemberName", newJString(MemberName))
-  add(path_601098, "Namespace", newJString(Namespace))
-  result = call_601097.call(path_601098, nil, nil, nil, nil)
+  var path_594098 = newJObject()
+  add(path_594098, "GroupName", newJString(GroupName))
+  add(path_594098, "AwsAccountId", newJString(AwsAccountId))
+  add(path_594098, "MemberName", newJString(MemberName))
+  add(path_594098, "Namespace", newJString(Namespace))
+  result = call_594097.call(path_594098, nil, nil, nil, nil)
 
-var deleteGroupMembership* = Call_DeleteGroupMembership_601082(
+var deleteGroupMembership* = Call_DeleteGroupMembership_594082(
     name: "deleteGroupMembership", meth: HttpMethod.HttpDelete,
     host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members/{MemberName}",
-    validator: validate_DeleteGroupMembership_601083, base: "/",
-    url: url_DeleteGroupMembership_601084, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteGroupMembership_594083, base: "/",
+    url: url_DeleteGroupMembership_594084, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateGroup_601115 = ref object of OpenApiRestCall_600437
-proc url_UpdateGroup_601117(protocol: Scheme; host: string; base: string;
+  Call_UpdateGroup_594115 = ref object of OpenApiRestCall_593437
+proc url_UpdateGroup_594117(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -757,7 +757,7 @@ proc url_UpdateGroup_601117(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_UpdateGroup_601116(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateGroup_594116(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Changes a group description. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-group --aws-account-id=111122223333 --namespace=default --group-name=Sales --description="Sales BI Dashboards" </code> </p>
   ## 
@@ -772,21 +772,21 @@ proc validate_UpdateGroup_601116(path: JsonNode; query: JsonNode; header: JsonNo
   ##            : The namespace. Currently, you should set this to <code>default</code>.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `GroupName` field"
-  var valid_601118 = path.getOrDefault("GroupName")
-  valid_601118 = validateParameter(valid_601118, JString, required = true,
+  var valid_594118 = path.getOrDefault("GroupName")
+  valid_594118 = validateParameter(valid_594118, JString, required = true,
                                  default = nil)
-  if valid_601118 != nil:
-    section.add "GroupName", valid_601118
-  var valid_601119 = path.getOrDefault("AwsAccountId")
-  valid_601119 = validateParameter(valid_601119, JString, required = true,
+  if valid_594118 != nil:
+    section.add "GroupName", valid_594118
+  var valid_594119 = path.getOrDefault("AwsAccountId")
+  valid_594119 = validateParameter(valid_594119, JString, required = true,
                                  default = nil)
-  if valid_601119 != nil:
-    section.add "AwsAccountId", valid_601119
-  var valid_601120 = path.getOrDefault("Namespace")
-  valid_601120 = validateParameter(valid_601120, JString, required = true,
+  if valid_594119 != nil:
+    section.add "AwsAccountId", valid_594119
+  var valid_594120 = path.getOrDefault("Namespace")
+  valid_594120 = validateParameter(valid_594120, JString, required = true,
                                  default = nil)
-  if valid_601120 != nil:
-    section.add "Namespace", valid_601120
+  if valid_594120 != nil:
+    section.add "Namespace", valid_594120
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -799,41 +799,41 @@ proc validate_UpdateGroup_601116(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601121 = header.getOrDefault("X-Amz-Date")
-  valid_601121 = validateParameter(valid_601121, JString, required = false,
+  var valid_594121 = header.getOrDefault("X-Amz-Date")
+  valid_594121 = validateParameter(valid_594121, JString, required = false,
                                  default = nil)
-  if valid_601121 != nil:
-    section.add "X-Amz-Date", valid_601121
-  var valid_601122 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601122 = validateParameter(valid_601122, JString, required = false,
+  if valid_594121 != nil:
+    section.add "X-Amz-Date", valid_594121
+  var valid_594122 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594122 = validateParameter(valid_594122, JString, required = false,
                                  default = nil)
-  if valid_601122 != nil:
-    section.add "X-Amz-Security-Token", valid_601122
-  var valid_601123 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601123 = validateParameter(valid_601123, JString, required = false,
+  if valid_594122 != nil:
+    section.add "X-Amz-Security-Token", valid_594122
+  var valid_594123 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594123 = validateParameter(valid_594123, JString, required = false,
                                  default = nil)
-  if valid_601123 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601123
-  var valid_601124 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601124 = validateParameter(valid_601124, JString, required = false,
+  if valid_594123 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594123
+  var valid_594124 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594124 = validateParameter(valid_594124, JString, required = false,
                                  default = nil)
-  if valid_601124 != nil:
-    section.add "X-Amz-Algorithm", valid_601124
-  var valid_601125 = header.getOrDefault("X-Amz-Signature")
-  valid_601125 = validateParameter(valid_601125, JString, required = false,
+  if valid_594124 != nil:
+    section.add "X-Amz-Algorithm", valid_594124
+  var valid_594125 = header.getOrDefault("X-Amz-Signature")
+  valid_594125 = validateParameter(valid_594125, JString, required = false,
                                  default = nil)
-  if valid_601125 != nil:
-    section.add "X-Amz-Signature", valid_601125
-  var valid_601126 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601126 = validateParameter(valid_601126, JString, required = false,
+  if valid_594125 != nil:
+    section.add "X-Amz-Signature", valid_594125
+  var valid_594126 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594126 = validateParameter(valid_594126, JString, required = false,
                                  default = nil)
-  if valid_601126 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601126
-  var valid_601127 = header.getOrDefault("X-Amz-Credential")
-  valid_601127 = validateParameter(valid_601127, JString, required = false,
+  if valid_594126 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594126
+  var valid_594127 = header.getOrDefault("X-Amz-Credential")
+  valid_594127 = validateParameter(valid_594127, JString, required = false,
                                  default = nil)
-  if valid_601127 != nil:
-    section.add "X-Amz-Credential", valid_601127
+  if valid_594127 != nil:
+    section.add "X-Amz-Credential", valid_594127
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -844,20 +844,20 @@ proc validate_UpdateGroup_601116(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601129: Call_UpdateGroup_601115; path: JsonNode; query: JsonNode;
+proc call*(call_594129: Call_UpdateGroup_594115; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Changes a group description. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-group --aws-account-id=111122223333 --namespace=default --group-name=Sales --description="Sales BI Dashboards" </code> </p>
   ## 
-  let valid = call_601129.validator(path, query, header, formData, body)
-  let scheme = call_601129.pickScheme
+  let valid = call_594129.validator(path, query, header, formData, body)
+  let scheme = call_594129.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601129.url(scheme.get, call_601129.host, call_601129.base,
-                         call_601129.route, valid.getOrDefault("path"),
+  let url = call_594129.url(scheme.get, call_594129.host, call_594129.base,
+                         call_594129.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601129, url, valid)
+  result = hook(call_594129, url, valid)
 
-proc call*(call_601130: Call_UpdateGroup_601115; GroupName: string;
+proc call*(call_594130: Call_UpdateGroup_594115; GroupName: string;
           AwsAccountId: string; body: JsonNode; Namespace: string): Recallable =
   ## updateGroup
   ## <p>Changes a group description. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-group --aws-account-id=111122223333 --namespace=default --group-name=Sales --description="Sales BI Dashboards" </code> </p>
@@ -868,24 +868,24 @@ proc call*(call_601130: Call_UpdateGroup_601115; GroupName: string;
   ##   body: JObject (required)
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601131 = newJObject()
-  var body_601132 = newJObject()
-  add(path_601131, "GroupName", newJString(GroupName))
-  add(path_601131, "AwsAccountId", newJString(AwsAccountId))
+  var path_594131 = newJObject()
+  var body_594132 = newJObject()
+  add(path_594131, "GroupName", newJString(GroupName))
+  add(path_594131, "AwsAccountId", newJString(AwsAccountId))
   if body != nil:
-    body_601132 = body
-  add(path_601131, "Namespace", newJString(Namespace))
-  result = call_601130.call(path_601131, nil, nil, nil, body_601132)
+    body_594132 = body
+  add(path_594131, "Namespace", newJString(Namespace))
+  result = call_594130.call(path_594131, nil, nil, nil, body_594132)
 
-var updateGroup* = Call_UpdateGroup_601115(name: "updateGroup",
+var updateGroup* = Call_UpdateGroup_594115(name: "updateGroup",
                                         meth: HttpMethod.HttpPut,
                                         host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}",
-                                        validator: validate_UpdateGroup_601116,
-                                        base: "/", url: url_UpdateGroup_601117,
+                                        validator: validate_UpdateGroup_594116,
+                                        base: "/", url: url_UpdateGroup_594117,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeGroup_601099 = ref object of OpenApiRestCall_600437
-proc url_DescribeGroup_601101(protocol: Scheme; host: string; base: string;
+  Call_DescribeGroup_594099 = ref object of OpenApiRestCall_593437
+proc url_DescribeGroup_594101(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -906,7 +906,7 @@ proc url_DescribeGroup_601101(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DescribeGroup_601100(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeGroup_594100(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is the group object. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-group -\-aws-account-id=11112222333 -\-namespace=default -\-group-name=Sales </code> </p>
   ## 
@@ -921,21 +921,21 @@ proc validate_DescribeGroup_601100(path: JsonNode; query: JsonNode; header: Json
   ##            : The namespace. Currently, you should set this to <code>default</code>.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `GroupName` field"
-  var valid_601102 = path.getOrDefault("GroupName")
-  valid_601102 = validateParameter(valid_601102, JString, required = true,
+  var valid_594102 = path.getOrDefault("GroupName")
+  valid_594102 = validateParameter(valid_594102, JString, required = true,
                                  default = nil)
-  if valid_601102 != nil:
-    section.add "GroupName", valid_601102
-  var valid_601103 = path.getOrDefault("AwsAccountId")
-  valid_601103 = validateParameter(valid_601103, JString, required = true,
+  if valid_594102 != nil:
+    section.add "GroupName", valid_594102
+  var valid_594103 = path.getOrDefault("AwsAccountId")
+  valid_594103 = validateParameter(valid_594103, JString, required = true,
                                  default = nil)
-  if valid_601103 != nil:
-    section.add "AwsAccountId", valid_601103
-  var valid_601104 = path.getOrDefault("Namespace")
-  valid_601104 = validateParameter(valid_601104, JString, required = true,
+  if valid_594103 != nil:
+    section.add "AwsAccountId", valid_594103
+  var valid_594104 = path.getOrDefault("Namespace")
+  valid_594104 = validateParameter(valid_594104, JString, required = true,
                                  default = nil)
-  if valid_601104 != nil:
-    section.add "Namespace", valid_601104
+  if valid_594104 != nil:
+    section.add "Namespace", valid_594104
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -948,61 +948,61 @@ proc validate_DescribeGroup_601100(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601105 = header.getOrDefault("X-Amz-Date")
-  valid_601105 = validateParameter(valid_601105, JString, required = false,
+  var valid_594105 = header.getOrDefault("X-Amz-Date")
+  valid_594105 = validateParameter(valid_594105, JString, required = false,
                                  default = nil)
-  if valid_601105 != nil:
-    section.add "X-Amz-Date", valid_601105
-  var valid_601106 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601106 = validateParameter(valid_601106, JString, required = false,
+  if valid_594105 != nil:
+    section.add "X-Amz-Date", valid_594105
+  var valid_594106 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594106 = validateParameter(valid_594106, JString, required = false,
                                  default = nil)
-  if valid_601106 != nil:
-    section.add "X-Amz-Security-Token", valid_601106
-  var valid_601107 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601107 = validateParameter(valid_601107, JString, required = false,
+  if valid_594106 != nil:
+    section.add "X-Amz-Security-Token", valid_594106
+  var valid_594107 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594107 = validateParameter(valid_594107, JString, required = false,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601107
-  var valid_601108 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601108 = validateParameter(valid_601108, JString, required = false,
+  if valid_594107 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594107
+  var valid_594108 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594108 = validateParameter(valid_594108, JString, required = false,
                                  default = nil)
-  if valid_601108 != nil:
-    section.add "X-Amz-Algorithm", valid_601108
-  var valid_601109 = header.getOrDefault("X-Amz-Signature")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  if valid_594108 != nil:
+    section.add "X-Amz-Algorithm", valid_594108
+  var valid_594109 = header.getOrDefault("X-Amz-Signature")
+  valid_594109 = validateParameter(valid_594109, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "X-Amz-Signature", valid_601109
-  var valid_601110 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_594109 != nil:
+    section.add "X-Amz-Signature", valid_594109
+  var valid_594110 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594110 = validateParameter(valid_594110, JString, required = false,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601110
-  var valid_601111 = header.getOrDefault("X-Amz-Credential")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_594110 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594110
+  var valid_594111 = header.getOrDefault("X-Amz-Credential")
+  valid_594111 = validateParameter(valid_594111, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "X-Amz-Credential", valid_601111
+  if valid_594111 != nil:
+    section.add "X-Amz-Credential", valid_594111
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601112: Call_DescribeGroup_601099; path: JsonNode; query: JsonNode;
+proc call*(call_594112: Call_DescribeGroup_594099; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is the group object. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-group -\-aws-account-id=11112222333 -\-namespace=default -\-group-name=Sales </code> </p>
   ## 
-  let valid = call_601112.validator(path, query, header, formData, body)
-  let scheme = call_601112.pickScheme
+  let valid = call_594112.validator(path, query, header, formData, body)
+  let scheme = call_594112.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601112.url(scheme.get, call_601112.host, call_601112.base,
-                         call_601112.route, valid.getOrDefault("path"),
+  let url = call_594112.url(scheme.get, call_594112.host, call_594112.base,
+                         call_594112.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601112, url, valid)
+  result = hook(call_594112, url, valid)
 
-proc call*(call_601113: Call_DescribeGroup_601099; GroupName: string;
+proc call*(call_594113: Call_DescribeGroup_594099; GroupName: string;
           AwsAccountId: string; Namespace: string): Recallable =
   ## describeGroup
   ## <p>Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is the group object. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-group -\-aws-account-id=11112222333 -\-namespace=default -\-group-name=Sales </code> </p>
@@ -1012,19 +1012,19 @@ proc call*(call_601113: Call_DescribeGroup_601099; GroupName: string;
   ##               : The ID for the AWS account that the group is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601114 = newJObject()
-  add(path_601114, "GroupName", newJString(GroupName))
-  add(path_601114, "AwsAccountId", newJString(AwsAccountId))
-  add(path_601114, "Namespace", newJString(Namespace))
-  result = call_601113.call(path_601114, nil, nil, nil, nil)
+  var path_594114 = newJObject()
+  add(path_594114, "GroupName", newJString(GroupName))
+  add(path_594114, "AwsAccountId", newJString(AwsAccountId))
+  add(path_594114, "Namespace", newJString(Namespace))
+  result = call_594113.call(path_594114, nil, nil, nil, nil)
 
-var describeGroup* = Call_DescribeGroup_601099(name: "describeGroup",
+var describeGroup* = Call_DescribeGroup_594099(name: "describeGroup",
     meth: HttpMethod.HttpGet, host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}",
-    validator: validate_DescribeGroup_601100, base: "/", url: url_DescribeGroup_601101,
+    validator: validate_DescribeGroup_594100, base: "/", url: url_DescribeGroup_594101,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteGroup_601133 = ref object of OpenApiRestCall_600437
-proc url_DeleteGroup_601135(protocol: Scheme; host: string; base: string;
+  Call_DeleteGroup_594133 = ref object of OpenApiRestCall_593437
+proc url_DeleteGroup_594135(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1045,7 +1045,7 @@ proc url_DeleteGroup_601135(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DeleteGroup_601134(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteGroup_594134(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes a user group from Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group -\-aws-account-id=111122223333 -\-namespace=default -\-group-name=Sales-Management </code> </p>
   ## 
@@ -1060,21 +1060,21 @@ proc validate_DeleteGroup_601134(path: JsonNode; query: JsonNode; header: JsonNo
   ##            : The namespace. Currently, you should set this to <code>default</code>.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `GroupName` field"
-  var valid_601136 = path.getOrDefault("GroupName")
-  valid_601136 = validateParameter(valid_601136, JString, required = true,
+  var valid_594136 = path.getOrDefault("GroupName")
+  valid_594136 = validateParameter(valid_594136, JString, required = true,
                                  default = nil)
-  if valid_601136 != nil:
-    section.add "GroupName", valid_601136
-  var valid_601137 = path.getOrDefault("AwsAccountId")
-  valid_601137 = validateParameter(valid_601137, JString, required = true,
+  if valid_594136 != nil:
+    section.add "GroupName", valid_594136
+  var valid_594137 = path.getOrDefault("AwsAccountId")
+  valid_594137 = validateParameter(valid_594137, JString, required = true,
                                  default = nil)
-  if valid_601137 != nil:
-    section.add "AwsAccountId", valid_601137
-  var valid_601138 = path.getOrDefault("Namespace")
-  valid_601138 = validateParameter(valid_601138, JString, required = true,
+  if valid_594137 != nil:
+    section.add "AwsAccountId", valid_594137
+  var valid_594138 = path.getOrDefault("Namespace")
+  valid_594138 = validateParameter(valid_594138, JString, required = true,
                                  default = nil)
-  if valid_601138 != nil:
-    section.add "Namespace", valid_601138
+  if valid_594138 != nil:
+    section.add "Namespace", valid_594138
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1087,61 +1087,61 @@ proc validate_DeleteGroup_601134(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601139 = header.getOrDefault("X-Amz-Date")
-  valid_601139 = validateParameter(valid_601139, JString, required = false,
+  var valid_594139 = header.getOrDefault("X-Amz-Date")
+  valid_594139 = validateParameter(valid_594139, JString, required = false,
                                  default = nil)
-  if valid_601139 != nil:
-    section.add "X-Amz-Date", valid_601139
-  var valid_601140 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601140 = validateParameter(valid_601140, JString, required = false,
+  if valid_594139 != nil:
+    section.add "X-Amz-Date", valid_594139
+  var valid_594140 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594140 = validateParameter(valid_594140, JString, required = false,
                                  default = nil)
-  if valid_601140 != nil:
-    section.add "X-Amz-Security-Token", valid_601140
-  var valid_601141 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601141 = validateParameter(valid_601141, JString, required = false,
+  if valid_594140 != nil:
+    section.add "X-Amz-Security-Token", valid_594140
+  var valid_594141 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594141 = validateParameter(valid_594141, JString, required = false,
                                  default = nil)
-  if valid_601141 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601141
-  var valid_601142 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601142 = validateParameter(valid_601142, JString, required = false,
+  if valid_594141 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594141
+  var valid_594142 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594142 = validateParameter(valid_594142, JString, required = false,
                                  default = nil)
-  if valid_601142 != nil:
-    section.add "X-Amz-Algorithm", valid_601142
-  var valid_601143 = header.getOrDefault("X-Amz-Signature")
-  valid_601143 = validateParameter(valid_601143, JString, required = false,
+  if valid_594142 != nil:
+    section.add "X-Amz-Algorithm", valid_594142
+  var valid_594143 = header.getOrDefault("X-Amz-Signature")
+  valid_594143 = validateParameter(valid_594143, JString, required = false,
                                  default = nil)
-  if valid_601143 != nil:
-    section.add "X-Amz-Signature", valid_601143
-  var valid_601144 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601144 = validateParameter(valid_601144, JString, required = false,
+  if valid_594143 != nil:
+    section.add "X-Amz-Signature", valid_594143
+  var valid_594144 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594144 = validateParameter(valid_594144, JString, required = false,
                                  default = nil)
-  if valid_601144 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601144
-  var valid_601145 = header.getOrDefault("X-Amz-Credential")
-  valid_601145 = validateParameter(valid_601145, JString, required = false,
+  if valid_594144 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594144
+  var valid_594145 = header.getOrDefault("X-Amz-Credential")
+  valid_594145 = validateParameter(valid_594145, JString, required = false,
                                  default = nil)
-  if valid_601145 != nil:
-    section.add "X-Amz-Credential", valid_601145
+  if valid_594145 != nil:
+    section.add "X-Amz-Credential", valid_594145
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601146: Call_DeleteGroup_601133; path: JsonNode; query: JsonNode;
+proc call*(call_594146: Call_DeleteGroup_594133; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes a user group from Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group -\-aws-account-id=111122223333 -\-namespace=default -\-group-name=Sales-Management </code> </p>
   ## 
-  let valid = call_601146.validator(path, query, header, formData, body)
-  let scheme = call_601146.pickScheme
+  let valid = call_594146.validator(path, query, header, formData, body)
+  let scheme = call_594146.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601146.url(scheme.get, call_601146.host, call_601146.base,
-                         call_601146.route, valid.getOrDefault("path"),
+  let url = call_594146.url(scheme.get, call_594146.host, call_594146.base,
+                         call_594146.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601146, url, valid)
+  result = hook(call_594146, url, valid)
 
-proc call*(call_601147: Call_DeleteGroup_601133; GroupName: string;
+proc call*(call_594147: Call_DeleteGroup_594133; GroupName: string;
           AwsAccountId: string; Namespace: string): Recallable =
   ## deleteGroup
   ## <p>Removes a user group from Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group -\-aws-account-id=111122223333 -\-namespace=default -\-group-name=Sales-Management </code> </p>
@@ -1151,21 +1151,21 @@ proc call*(call_601147: Call_DeleteGroup_601133; GroupName: string;
   ##               : The ID for the AWS account that the group is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601148 = newJObject()
-  add(path_601148, "GroupName", newJString(GroupName))
-  add(path_601148, "AwsAccountId", newJString(AwsAccountId))
-  add(path_601148, "Namespace", newJString(Namespace))
-  result = call_601147.call(path_601148, nil, nil, nil, nil)
+  var path_594148 = newJObject()
+  add(path_594148, "GroupName", newJString(GroupName))
+  add(path_594148, "AwsAccountId", newJString(AwsAccountId))
+  add(path_594148, "Namespace", newJString(Namespace))
+  result = call_594147.call(path_594148, nil, nil, nil, nil)
 
-var deleteGroup* = Call_DeleteGroup_601133(name: "deleteGroup",
+var deleteGroup* = Call_DeleteGroup_594133(name: "deleteGroup",
                                         meth: HttpMethod.HttpDelete,
                                         host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}",
-                                        validator: validate_DeleteGroup_601134,
-                                        base: "/", url: url_DeleteGroup_601135,
+                                        validator: validate_DeleteGroup_594134,
+                                        base: "/", url: url_DeleteGroup_594135,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateUser_601165 = ref object of OpenApiRestCall_600437
-proc url_UpdateUser_601167(protocol: Scheme; host: string; base: string; route: string;
+  Call_UpdateUser_594165 = ref object of OpenApiRestCall_593437
+proc url_UpdateUser_594167(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1186,7 +1186,7 @@ proc url_UpdateUser_601167(protocol: Scheme; host: string; base: string; route: 
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_UpdateUser_601166(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateUser_594166(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates an Amazon QuickSight user.</p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>. </p> <p>The response is a user object that contains the user's Amazon QuickSight user name, email address, active or inactive status in Amazon QuickSight, Amazon QuickSight role, and Amazon Resource Name (ARN). </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-user --user-name=Pat --role=ADMIN --email=new_address@amazon.com --aws-account-id=111122223333 --namespace=default --region=us-east-1 </code> </p>
   ## 
@@ -1202,21 +1202,21 @@ proc validate_UpdateUser_601166(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601168 = path.getOrDefault("AwsAccountId")
-  valid_601168 = validateParameter(valid_601168, JString, required = true,
+  var valid_594168 = path.getOrDefault("AwsAccountId")
+  valid_594168 = validateParameter(valid_594168, JString, required = true,
                                  default = nil)
-  if valid_601168 != nil:
-    section.add "AwsAccountId", valid_601168
-  var valid_601169 = path.getOrDefault("UserName")
-  valid_601169 = validateParameter(valid_601169, JString, required = true,
+  if valid_594168 != nil:
+    section.add "AwsAccountId", valid_594168
+  var valid_594169 = path.getOrDefault("UserName")
+  valid_594169 = validateParameter(valid_594169, JString, required = true,
                                  default = nil)
-  if valid_601169 != nil:
-    section.add "UserName", valid_601169
-  var valid_601170 = path.getOrDefault("Namespace")
-  valid_601170 = validateParameter(valid_601170, JString, required = true,
+  if valid_594169 != nil:
+    section.add "UserName", valid_594169
+  var valid_594170 = path.getOrDefault("Namespace")
+  valid_594170 = validateParameter(valid_594170, JString, required = true,
                                  default = nil)
-  if valid_601170 != nil:
-    section.add "Namespace", valid_601170
+  if valid_594170 != nil:
+    section.add "Namespace", valid_594170
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1229,41 +1229,41 @@ proc validate_UpdateUser_601166(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601171 = header.getOrDefault("X-Amz-Date")
-  valid_601171 = validateParameter(valid_601171, JString, required = false,
+  var valid_594171 = header.getOrDefault("X-Amz-Date")
+  valid_594171 = validateParameter(valid_594171, JString, required = false,
                                  default = nil)
-  if valid_601171 != nil:
-    section.add "X-Amz-Date", valid_601171
-  var valid_601172 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601172 = validateParameter(valid_601172, JString, required = false,
+  if valid_594171 != nil:
+    section.add "X-Amz-Date", valid_594171
+  var valid_594172 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594172 = validateParameter(valid_594172, JString, required = false,
                                  default = nil)
-  if valid_601172 != nil:
-    section.add "X-Amz-Security-Token", valid_601172
-  var valid_601173 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601173 = validateParameter(valid_601173, JString, required = false,
+  if valid_594172 != nil:
+    section.add "X-Amz-Security-Token", valid_594172
+  var valid_594173 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594173 = validateParameter(valid_594173, JString, required = false,
                                  default = nil)
-  if valid_601173 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601173
-  var valid_601174 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601174 = validateParameter(valid_601174, JString, required = false,
+  if valid_594173 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594173
+  var valid_594174 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594174 = validateParameter(valid_594174, JString, required = false,
                                  default = nil)
-  if valid_601174 != nil:
-    section.add "X-Amz-Algorithm", valid_601174
-  var valid_601175 = header.getOrDefault("X-Amz-Signature")
-  valid_601175 = validateParameter(valid_601175, JString, required = false,
+  if valid_594174 != nil:
+    section.add "X-Amz-Algorithm", valid_594174
+  var valid_594175 = header.getOrDefault("X-Amz-Signature")
+  valid_594175 = validateParameter(valid_594175, JString, required = false,
                                  default = nil)
-  if valid_601175 != nil:
-    section.add "X-Amz-Signature", valid_601175
-  var valid_601176 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601176 = validateParameter(valid_601176, JString, required = false,
+  if valid_594175 != nil:
+    section.add "X-Amz-Signature", valid_594175
+  var valid_594176 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594176 = validateParameter(valid_594176, JString, required = false,
                                  default = nil)
-  if valid_601176 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601176
-  var valid_601177 = header.getOrDefault("X-Amz-Credential")
-  valid_601177 = validateParameter(valid_601177, JString, required = false,
+  if valid_594176 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594176
+  var valid_594177 = header.getOrDefault("X-Amz-Credential")
+  valid_594177 = validateParameter(valid_594177, JString, required = false,
                                  default = nil)
-  if valid_601177 != nil:
-    section.add "X-Amz-Credential", valid_601177
+  if valid_594177 != nil:
+    section.add "X-Amz-Credential", valid_594177
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1274,20 +1274,20 @@ proc validate_UpdateUser_601166(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_601179: Call_UpdateUser_601165; path: JsonNode; query: JsonNode;
+proc call*(call_594179: Call_UpdateUser_594165; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates an Amazon QuickSight user.</p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>. </p> <p>The response is a user object that contains the user's Amazon QuickSight user name, email address, active or inactive status in Amazon QuickSight, Amazon QuickSight role, and Amazon Resource Name (ARN). </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-user --user-name=Pat --role=ADMIN --email=new_address@amazon.com --aws-account-id=111122223333 --namespace=default --region=us-east-1 </code> </p>
   ## 
-  let valid = call_601179.validator(path, query, header, formData, body)
-  let scheme = call_601179.pickScheme
+  let valid = call_594179.validator(path, query, header, formData, body)
+  let scheme = call_594179.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601179.url(scheme.get, call_601179.host, call_601179.base,
-                         call_601179.route, valid.getOrDefault("path"),
+  let url = call_594179.url(scheme.get, call_594179.host, call_594179.base,
+                         call_594179.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601179, url, valid)
+  result = hook(call_594179, url, valid)
 
-proc call*(call_601180: Call_UpdateUser_601165; AwsAccountId: string; body: JsonNode;
+proc call*(call_594180: Call_UpdateUser_594165; AwsAccountId: string; body: JsonNode;
           UserName: string; Namespace: string): Recallable =
   ## updateUser
   ## <p>Updates an Amazon QuickSight user.</p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>. </p> <p>The response is a user object that contains the user's Amazon QuickSight user name, email address, active or inactive status in Amazon QuickSight, Amazon QuickSight role, and Amazon Resource Name (ARN). </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-user --user-name=Pat --role=ADMIN --email=new_address@amazon.com --aws-account-id=111122223333 --namespace=default --region=us-east-1 </code> </p>
@@ -1298,24 +1298,24 @@ proc call*(call_601180: Call_UpdateUser_601165; AwsAccountId: string; body: Json
   ##           : The Amazon QuickSight user name that you want to update.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601181 = newJObject()
-  var body_601182 = newJObject()
-  add(path_601181, "AwsAccountId", newJString(AwsAccountId))
+  var path_594181 = newJObject()
+  var body_594182 = newJObject()
+  add(path_594181, "AwsAccountId", newJString(AwsAccountId))
   if body != nil:
-    body_601182 = body
-  add(path_601181, "UserName", newJString(UserName))
-  add(path_601181, "Namespace", newJString(Namespace))
-  result = call_601180.call(path_601181, nil, nil, nil, body_601182)
+    body_594182 = body
+  add(path_594181, "UserName", newJString(UserName))
+  add(path_594181, "Namespace", newJString(Namespace))
+  result = call_594180.call(path_594181, nil, nil, nil, body_594182)
 
-var updateUser* = Call_UpdateUser_601165(name: "updateUser",
+var updateUser* = Call_UpdateUser_594165(name: "updateUser",
                                       meth: HttpMethod.HttpPut,
                                       host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}",
-                                      validator: validate_UpdateUser_601166,
-                                      base: "/", url: url_UpdateUser_601167,
+                                      validator: validate_UpdateUser_594166,
+                                      base: "/", url: url_UpdateUser_594167,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeUser_601149 = ref object of OpenApiRestCall_600437
-proc url_DescribeUser_601151(protocol: Scheme; host: string; base: string;
+  Call_DescribeUser_594149 = ref object of OpenApiRestCall_593437
+proc url_DescribeUser_594151(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1336,7 +1336,7 @@ proc url_DescribeUser_601151(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DescribeUser_601150(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeUser_594150(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about a user, given the user name. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>. </p> <p>The response is a user object that contains the user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
   ## 
@@ -1352,21 +1352,21 @@ proc validate_DescribeUser_601150(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601152 = path.getOrDefault("AwsAccountId")
-  valid_601152 = validateParameter(valid_601152, JString, required = true,
+  var valid_594152 = path.getOrDefault("AwsAccountId")
+  valid_594152 = validateParameter(valid_594152, JString, required = true,
                                  default = nil)
-  if valid_601152 != nil:
-    section.add "AwsAccountId", valid_601152
-  var valid_601153 = path.getOrDefault("UserName")
-  valid_601153 = validateParameter(valid_601153, JString, required = true,
+  if valid_594152 != nil:
+    section.add "AwsAccountId", valid_594152
+  var valid_594153 = path.getOrDefault("UserName")
+  valid_594153 = validateParameter(valid_594153, JString, required = true,
                                  default = nil)
-  if valid_601153 != nil:
-    section.add "UserName", valid_601153
-  var valid_601154 = path.getOrDefault("Namespace")
-  valid_601154 = validateParameter(valid_601154, JString, required = true,
+  if valid_594153 != nil:
+    section.add "UserName", valid_594153
+  var valid_594154 = path.getOrDefault("Namespace")
+  valid_594154 = validateParameter(valid_594154, JString, required = true,
                                  default = nil)
-  if valid_601154 != nil:
-    section.add "Namespace", valid_601154
+  if valid_594154 != nil:
+    section.add "Namespace", valid_594154
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1379,61 +1379,61 @@ proc validate_DescribeUser_601150(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601155 = header.getOrDefault("X-Amz-Date")
-  valid_601155 = validateParameter(valid_601155, JString, required = false,
+  var valid_594155 = header.getOrDefault("X-Amz-Date")
+  valid_594155 = validateParameter(valid_594155, JString, required = false,
                                  default = nil)
-  if valid_601155 != nil:
-    section.add "X-Amz-Date", valid_601155
-  var valid_601156 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601156 = validateParameter(valid_601156, JString, required = false,
+  if valid_594155 != nil:
+    section.add "X-Amz-Date", valid_594155
+  var valid_594156 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594156 = validateParameter(valid_594156, JString, required = false,
                                  default = nil)
-  if valid_601156 != nil:
-    section.add "X-Amz-Security-Token", valid_601156
-  var valid_601157 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601157 = validateParameter(valid_601157, JString, required = false,
+  if valid_594156 != nil:
+    section.add "X-Amz-Security-Token", valid_594156
+  var valid_594157 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594157 = validateParameter(valid_594157, JString, required = false,
                                  default = nil)
-  if valid_601157 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601157
-  var valid_601158 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601158 = validateParameter(valid_601158, JString, required = false,
+  if valid_594157 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594157
+  var valid_594158 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594158 = validateParameter(valid_594158, JString, required = false,
                                  default = nil)
-  if valid_601158 != nil:
-    section.add "X-Amz-Algorithm", valid_601158
-  var valid_601159 = header.getOrDefault("X-Amz-Signature")
-  valid_601159 = validateParameter(valid_601159, JString, required = false,
+  if valid_594158 != nil:
+    section.add "X-Amz-Algorithm", valid_594158
+  var valid_594159 = header.getOrDefault("X-Amz-Signature")
+  valid_594159 = validateParameter(valid_594159, JString, required = false,
                                  default = nil)
-  if valid_601159 != nil:
-    section.add "X-Amz-Signature", valid_601159
-  var valid_601160 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601160 = validateParameter(valid_601160, JString, required = false,
+  if valid_594159 != nil:
+    section.add "X-Amz-Signature", valid_594159
+  var valid_594160 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594160 = validateParameter(valid_594160, JString, required = false,
                                  default = nil)
-  if valid_601160 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601160
-  var valid_601161 = header.getOrDefault("X-Amz-Credential")
-  valid_601161 = validateParameter(valid_601161, JString, required = false,
+  if valid_594160 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594160
+  var valid_594161 = header.getOrDefault("X-Amz-Credential")
+  valid_594161 = validateParameter(valid_594161, JString, required = false,
                                  default = nil)
-  if valid_601161 != nil:
-    section.add "X-Amz-Credential", valid_601161
+  if valid_594161 != nil:
+    section.add "X-Amz-Credential", valid_594161
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601162: Call_DescribeUser_601149; path: JsonNode; query: JsonNode;
+proc call*(call_594162: Call_DescribeUser_594149; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about a user, given the user name. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>. </p> <p>The response is a user object that contains the user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
   ## 
-  let valid = call_601162.validator(path, query, header, formData, body)
-  let scheme = call_601162.pickScheme
+  let valid = call_594162.validator(path, query, header, formData, body)
+  let scheme = call_594162.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601162.url(scheme.get, call_601162.host, call_601162.base,
-                         call_601162.route, valid.getOrDefault("path"),
+  let url = call_594162.url(scheme.get, call_594162.host, call_594162.base,
+                         call_594162.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601162, url, valid)
+  result = hook(call_594162, url, valid)
 
-proc call*(call_601163: Call_DescribeUser_601149; AwsAccountId: string;
+proc call*(call_594163: Call_DescribeUser_594149; AwsAccountId: string;
           UserName: string; Namespace: string): Recallable =
   ## describeUser
   ## <p>Returns information about a user, given the user name. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>. </p> <p>The response is a user object that contains the user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
@@ -1443,20 +1443,20 @@ proc call*(call_601163: Call_DescribeUser_601149; AwsAccountId: string;
   ##           : The name of the user that you want to describe.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601164 = newJObject()
-  add(path_601164, "AwsAccountId", newJString(AwsAccountId))
-  add(path_601164, "UserName", newJString(UserName))
-  add(path_601164, "Namespace", newJString(Namespace))
-  result = call_601163.call(path_601164, nil, nil, nil, nil)
+  var path_594164 = newJObject()
+  add(path_594164, "AwsAccountId", newJString(AwsAccountId))
+  add(path_594164, "UserName", newJString(UserName))
+  add(path_594164, "Namespace", newJString(Namespace))
+  result = call_594163.call(path_594164, nil, nil, nil, nil)
 
-var describeUser* = Call_DescribeUser_601149(name: "describeUser",
+var describeUser* = Call_DescribeUser_594149(name: "describeUser",
     meth: HttpMethod.HttpGet, host: "quicksight.amazonaws.com",
     route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}",
-    validator: validate_DescribeUser_601150, base: "/", url: url_DescribeUser_601151,
+    validator: validate_DescribeUser_594150, base: "/", url: url_DescribeUser_594151,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteUser_601183 = ref object of OpenApiRestCall_600437
-proc url_DeleteUser_601185(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteUser_594183 = ref object of OpenApiRestCall_593437
+proc url_DeleteUser_594185(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1477,7 +1477,7 @@ proc url_DeleteUser_601185(protocol: Scheme; host: string; base: string; route: 
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DeleteUser_601184(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteUser_594184(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt; </i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
   ## 
@@ -1493,21 +1493,21 @@ proc validate_DeleteUser_601184(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601186 = path.getOrDefault("AwsAccountId")
-  valid_601186 = validateParameter(valid_601186, JString, required = true,
+  var valid_594186 = path.getOrDefault("AwsAccountId")
+  valid_594186 = validateParameter(valid_594186, JString, required = true,
                                  default = nil)
-  if valid_601186 != nil:
-    section.add "AwsAccountId", valid_601186
-  var valid_601187 = path.getOrDefault("UserName")
-  valid_601187 = validateParameter(valid_601187, JString, required = true,
+  if valid_594186 != nil:
+    section.add "AwsAccountId", valid_594186
+  var valid_594187 = path.getOrDefault("UserName")
+  valid_594187 = validateParameter(valid_594187, JString, required = true,
                                  default = nil)
-  if valid_601187 != nil:
-    section.add "UserName", valid_601187
-  var valid_601188 = path.getOrDefault("Namespace")
-  valid_601188 = validateParameter(valid_601188, JString, required = true,
+  if valid_594187 != nil:
+    section.add "UserName", valid_594187
+  var valid_594188 = path.getOrDefault("Namespace")
+  valid_594188 = validateParameter(valid_594188, JString, required = true,
                                  default = nil)
-  if valid_601188 != nil:
-    section.add "Namespace", valid_601188
+  if valid_594188 != nil:
+    section.add "Namespace", valid_594188
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1520,61 +1520,61 @@ proc validate_DeleteUser_601184(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601189 = header.getOrDefault("X-Amz-Date")
-  valid_601189 = validateParameter(valid_601189, JString, required = false,
+  var valid_594189 = header.getOrDefault("X-Amz-Date")
+  valid_594189 = validateParameter(valid_594189, JString, required = false,
                                  default = nil)
-  if valid_601189 != nil:
-    section.add "X-Amz-Date", valid_601189
-  var valid_601190 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601190 = validateParameter(valid_601190, JString, required = false,
+  if valid_594189 != nil:
+    section.add "X-Amz-Date", valid_594189
+  var valid_594190 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594190 = validateParameter(valid_594190, JString, required = false,
                                  default = nil)
-  if valid_601190 != nil:
-    section.add "X-Amz-Security-Token", valid_601190
-  var valid_601191 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601191 = validateParameter(valid_601191, JString, required = false,
+  if valid_594190 != nil:
+    section.add "X-Amz-Security-Token", valid_594190
+  var valid_594191 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594191 = validateParameter(valid_594191, JString, required = false,
                                  default = nil)
-  if valid_601191 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601191
-  var valid_601192 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601192 = validateParameter(valid_601192, JString, required = false,
+  if valid_594191 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594191
+  var valid_594192 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594192 = validateParameter(valid_594192, JString, required = false,
                                  default = nil)
-  if valid_601192 != nil:
-    section.add "X-Amz-Algorithm", valid_601192
-  var valid_601193 = header.getOrDefault("X-Amz-Signature")
-  valid_601193 = validateParameter(valid_601193, JString, required = false,
+  if valid_594192 != nil:
+    section.add "X-Amz-Algorithm", valid_594192
+  var valid_594193 = header.getOrDefault("X-Amz-Signature")
+  valid_594193 = validateParameter(valid_594193, JString, required = false,
                                  default = nil)
-  if valid_601193 != nil:
-    section.add "X-Amz-Signature", valid_601193
-  var valid_601194 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601194 = validateParameter(valid_601194, JString, required = false,
+  if valid_594193 != nil:
+    section.add "X-Amz-Signature", valid_594193
+  var valid_594194 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594194 = validateParameter(valid_594194, JString, required = false,
                                  default = nil)
-  if valid_601194 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601194
-  var valid_601195 = header.getOrDefault("X-Amz-Credential")
-  valid_601195 = validateParameter(valid_601195, JString, required = false,
+  if valid_594194 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594194
+  var valid_594195 = header.getOrDefault("X-Amz-Credential")
+  valid_594195 = validateParameter(valid_594195, JString, required = false,
                                  default = nil)
-  if valid_601195 != nil:
-    section.add "X-Amz-Credential", valid_601195
+  if valid_594195 != nil:
+    section.add "X-Amz-Credential", valid_594195
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601196: Call_DeleteUser_601183; path: JsonNode; query: JsonNode;
+proc call*(call_594196: Call_DeleteUser_594183; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt; </i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
   ## 
-  let valid = call_601196.validator(path, query, header, formData, body)
-  let scheme = call_601196.pickScheme
+  let valid = call_594196.validator(path, query, header, formData, body)
+  let scheme = call_594196.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601196.url(scheme.get, call_601196.host, call_601196.base,
-                         call_601196.route, valid.getOrDefault("path"),
+  let url = call_594196.url(scheme.get, call_594196.host, call_594196.base,
+                         call_594196.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601196, url, valid)
+  result = hook(call_594196, url, valid)
 
-proc call*(call_601197: Call_DeleteUser_601183; AwsAccountId: string;
+proc call*(call_594197: Call_DeleteUser_594183; AwsAccountId: string;
           UserName: string; Namespace: string): Recallable =
   ## deleteUser
   ## <p>Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt; </i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
@@ -1584,21 +1584,21 @@ proc call*(call_601197: Call_DeleteUser_601183; AwsAccountId: string;
   ##           : The name of the user that you want to delete.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601198 = newJObject()
-  add(path_601198, "AwsAccountId", newJString(AwsAccountId))
-  add(path_601198, "UserName", newJString(UserName))
-  add(path_601198, "Namespace", newJString(Namespace))
-  result = call_601197.call(path_601198, nil, nil, nil, nil)
+  var path_594198 = newJObject()
+  add(path_594198, "AwsAccountId", newJString(AwsAccountId))
+  add(path_594198, "UserName", newJString(UserName))
+  add(path_594198, "Namespace", newJString(Namespace))
+  result = call_594197.call(path_594198, nil, nil, nil, nil)
 
-var deleteUser* = Call_DeleteUser_601183(name: "deleteUser",
+var deleteUser* = Call_DeleteUser_594183(name: "deleteUser",
                                       meth: HttpMethod.HttpDelete,
                                       host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}",
-                                      validator: validate_DeleteUser_601184,
-                                      base: "/", url: url_DeleteUser_601185,
+                                      validator: validate_DeleteUser_594184,
+                                      base: "/", url: url_DeleteUser_594185,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteUserByPrincipalId_601199 = ref object of OpenApiRestCall_600437
-proc url_DeleteUserByPrincipalId_601201(protocol: Scheme; host: string; base: string;
+  Call_DeleteUserByPrincipalId_594199 = ref object of OpenApiRestCall_593437
+proc url_DeleteUserByPrincipalId_594201(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1620,7 +1620,7 @@ proc url_DeleteUserByPrincipalId_601201(protocol: Scheme; host: string; base: st
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DeleteUserByPrincipalId_601200(path: JsonNode; query: JsonNode;
+proc validate_DeleteUserByPrincipalId_594200(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a user identified by its principal ID. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt; </i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user-by-principal-id --aws-account-id=111122223333 --namespace=default --principal-id=ABCDEFJA26JLI7EUUOEHS </code> </p>
   ## 
@@ -1636,21 +1636,21 @@ proc validate_DeleteUserByPrincipalId_601200(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601202 = path.getOrDefault("AwsAccountId")
-  valid_601202 = validateParameter(valid_601202, JString, required = true,
+  var valid_594202 = path.getOrDefault("AwsAccountId")
+  valid_594202 = validateParameter(valid_594202, JString, required = true,
                                  default = nil)
-  if valid_601202 != nil:
-    section.add "AwsAccountId", valid_601202
-  var valid_601203 = path.getOrDefault("PrincipalId")
-  valid_601203 = validateParameter(valid_601203, JString, required = true,
+  if valid_594202 != nil:
+    section.add "AwsAccountId", valid_594202
+  var valid_594203 = path.getOrDefault("PrincipalId")
+  valid_594203 = validateParameter(valid_594203, JString, required = true,
                                  default = nil)
-  if valid_601203 != nil:
-    section.add "PrincipalId", valid_601203
-  var valid_601204 = path.getOrDefault("Namespace")
-  valid_601204 = validateParameter(valid_601204, JString, required = true,
+  if valid_594203 != nil:
+    section.add "PrincipalId", valid_594203
+  var valid_594204 = path.getOrDefault("Namespace")
+  valid_594204 = validateParameter(valid_594204, JString, required = true,
                                  default = nil)
-  if valid_601204 != nil:
-    section.add "Namespace", valid_601204
+  if valid_594204 != nil:
+    section.add "Namespace", valid_594204
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1663,61 +1663,61 @@ proc validate_DeleteUserByPrincipalId_601200(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601205 = header.getOrDefault("X-Amz-Date")
-  valid_601205 = validateParameter(valid_601205, JString, required = false,
+  var valid_594205 = header.getOrDefault("X-Amz-Date")
+  valid_594205 = validateParameter(valid_594205, JString, required = false,
                                  default = nil)
-  if valid_601205 != nil:
-    section.add "X-Amz-Date", valid_601205
-  var valid_601206 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601206 = validateParameter(valid_601206, JString, required = false,
+  if valid_594205 != nil:
+    section.add "X-Amz-Date", valid_594205
+  var valid_594206 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594206 = validateParameter(valid_594206, JString, required = false,
                                  default = nil)
-  if valid_601206 != nil:
-    section.add "X-Amz-Security-Token", valid_601206
-  var valid_601207 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601207 = validateParameter(valid_601207, JString, required = false,
+  if valid_594206 != nil:
+    section.add "X-Amz-Security-Token", valid_594206
+  var valid_594207 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594207 = validateParameter(valid_594207, JString, required = false,
                                  default = nil)
-  if valid_601207 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601207
-  var valid_601208 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601208 = validateParameter(valid_601208, JString, required = false,
+  if valid_594207 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594207
+  var valid_594208 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594208 = validateParameter(valid_594208, JString, required = false,
                                  default = nil)
-  if valid_601208 != nil:
-    section.add "X-Amz-Algorithm", valid_601208
-  var valid_601209 = header.getOrDefault("X-Amz-Signature")
-  valid_601209 = validateParameter(valid_601209, JString, required = false,
+  if valid_594208 != nil:
+    section.add "X-Amz-Algorithm", valid_594208
+  var valid_594209 = header.getOrDefault("X-Amz-Signature")
+  valid_594209 = validateParameter(valid_594209, JString, required = false,
                                  default = nil)
-  if valid_601209 != nil:
-    section.add "X-Amz-Signature", valid_601209
-  var valid_601210 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601210 = validateParameter(valid_601210, JString, required = false,
+  if valid_594209 != nil:
+    section.add "X-Amz-Signature", valid_594209
+  var valid_594210 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594210 = validateParameter(valid_594210, JString, required = false,
                                  default = nil)
-  if valid_601210 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601210
-  var valid_601211 = header.getOrDefault("X-Amz-Credential")
-  valid_601211 = validateParameter(valid_601211, JString, required = false,
+  if valid_594210 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594210
+  var valid_594211 = header.getOrDefault("X-Amz-Credential")
+  valid_594211 = validateParameter(valid_594211, JString, required = false,
                                  default = nil)
-  if valid_601211 != nil:
-    section.add "X-Amz-Credential", valid_601211
+  if valid_594211 != nil:
+    section.add "X-Amz-Credential", valid_594211
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601212: Call_DeleteUserByPrincipalId_601199; path: JsonNode;
+proc call*(call_594212: Call_DeleteUserByPrincipalId_594199; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a user identified by its principal ID. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt; </i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user-by-principal-id --aws-account-id=111122223333 --namespace=default --principal-id=ABCDEFJA26JLI7EUUOEHS </code> </p>
   ## 
-  let valid = call_601212.validator(path, query, header, formData, body)
-  let scheme = call_601212.pickScheme
+  let valid = call_594212.validator(path, query, header, formData, body)
+  let scheme = call_594212.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601212.url(scheme.get, call_601212.host, call_601212.base,
-                         call_601212.route, valid.getOrDefault("path"),
+  let url = call_594212.url(scheme.get, call_594212.host, call_594212.base,
+                         call_594212.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601212, url, valid)
+  result = hook(call_594212, url, valid)
 
-proc call*(call_601213: Call_DeleteUserByPrincipalId_601199; AwsAccountId: string;
+proc call*(call_594213: Call_DeleteUserByPrincipalId_594199; AwsAccountId: string;
           PrincipalId: string; Namespace: string): Recallable =
   ## deleteUserByPrincipalId
   ## <p>Deletes a user identified by its principal ID. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt; </i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user-by-principal-id --aws-account-id=111122223333 --namespace=default --principal-id=ABCDEFJA26JLI7EUUOEHS </code> </p>
@@ -1727,20 +1727,20 @@ proc call*(call_601213: Call_DeleteUserByPrincipalId_601199; AwsAccountId: strin
   ##              : The principal ID of the user.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601214 = newJObject()
-  add(path_601214, "AwsAccountId", newJString(AwsAccountId))
-  add(path_601214, "PrincipalId", newJString(PrincipalId))
-  add(path_601214, "Namespace", newJString(Namespace))
-  result = call_601213.call(path_601214, nil, nil, nil, nil)
+  var path_594214 = newJObject()
+  add(path_594214, "AwsAccountId", newJString(AwsAccountId))
+  add(path_594214, "PrincipalId", newJString(PrincipalId))
+  add(path_594214, "Namespace", newJString(Namespace))
+  result = call_594213.call(path_594214, nil, nil, nil, nil)
 
-var deleteUserByPrincipalId* = Call_DeleteUserByPrincipalId_601199(
+var deleteUserByPrincipalId* = Call_DeleteUserByPrincipalId_594199(
     name: "deleteUserByPrincipalId", meth: HttpMethod.HttpDelete,
     host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/user-principals/{PrincipalId}",
-    validator: validate_DeleteUserByPrincipalId_601200, base: "/",
-    url: url_DeleteUserByPrincipalId_601201, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteUserByPrincipalId_594200, base: "/",
+    url: url_DeleteUserByPrincipalId_594201, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDashboardEmbedUrl_601215 = ref object of OpenApiRestCall_600437
-proc url_GetDashboardEmbedUrl_601217(protocol: Scheme; host: string; base: string;
+  Call_GetDashboardEmbedUrl_594215 = ref object of OpenApiRestCall_593437
+proc url_GetDashboardEmbedUrl_594217(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1759,7 +1759,7 @@ proc url_GetDashboardEmbedUrl_601217(protocol: Scheme; host: string; base: strin
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetDashboardEmbedUrl_601216(path: JsonNode; query: JsonNode;
+proc validate_GetDashboardEmbedUrl_594216(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Generates a server-side embeddable URL and authorization code. Before this can work properly, first you need to configure the dashboards and user permissions. For more information, see <a href="https://docs.aws.amazon.com/en_us/quicksight/latest/user/embedding.html"> Embedding Amazon QuickSight Dashboards</a>.</p> <p>Currently, you can use <code>GetDashboardEmbedURL</code> only from the server, not from the user’s browser.</p> <p> <b>CLI Sample:</b> </p> <p>Assume the role with permissions enabled for actions: <code>quickSight:RegisterUser</code> and <code>quicksight:GetDashboardEmbedURL</code>. You can use assume-role, assume-role-with-web-identity, or assume-role-with-saml. </p> <p> <code>aws sts assume-role --role-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --role-session-name embeddingsession</code> </p> <p>If the user does not exist in QuickSight, register the user:</p> <p> <code>aws quicksight register-user --aws-account-id 111122223333 --namespace default --identity-type IAM --iam-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --user-role READER --session-name "embeddingsession" --email user123@example.com --region us-east-1</code> </p> <p>Get the URL for the embedded dashboard</p> <p> <code>aws quicksight get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id 1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type IAM</code> </p>
   ## 
@@ -1773,16 +1773,16 @@ proc validate_GetDashboardEmbedUrl_601216(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601218 = path.getOrDefault("AwsAccountId")
-  valid_601218 = validateParameter(valid_601218, JString, required = true,
+  var valid_594218 = path.getOrDefault("AwsAccountId")
+  valid_594218 = validateParameter(valid_594218, JString, required = true,
                                  default = nil)
-  if valid_601218 != nil:
-    section.add "AwsAccountId", valid_601218
-  var valid_601219 = path.getOrDefault("DashboardId")
-  valid_601219 = validateParameter(valid_601219, JString, required = true,
+  if valid_594218 != nil:
+    section.add "AwsAccountId", valid_594218
+  var valid_594219 = path.getOrDefault("DashboardId")
+  valid_594219 = validateParameter(valid_594219, JString, required = true,
                                  default = nil)
-  if valid_601219 != nil:
-    section.add "DashboardId", valid_601219
+  if valid_594219 != nil:
+    section.add "DashboardId", valid_594219
   result.add "path", section
   ## parameters in `query` object:
   ##   session-lifetime: JInt
@@ -1796,30 +1796,30 @@ proc validate_GetDashboardEmbedUrl_601216(path: JsonNode; query: JsonNode;
   ##   creds-type: JString (required)
   ##             : The authentication method the user uses to sign in (IAM only).
   section = newJObject()
-  var valid_601220 = query.getOrDefault("session-lifetime")
-  valid_601220 = validateParameter(valid_601220, JInt, required = false, default = nil)
-  if valid_601220 != nil:
-    section.add "session-lifetime", valid_601220
-  var valid_601221 = query.getOrDefault("reset-disabled")
-  valid_601221 = validateParameter(valid_601221, JBool, required = false, default = nil)
-  if valid_601221 != nil:
-    section.add "reset-disabled", valid_601221
-  var valid_601222 = query.getOrDefault("user-arn")
-  valid_601222 = validateParameter(valid_601222, JString, required = false,
+  var valid_594220 = query.getOrDefault("session-lifetime")
+  valid_594220 = validateParameter(valid_594220, JInt, required = false, default = nil)
+  if valid_594220 != nil:
+    section.add "session-lifetime", valid_594220
+  var valid_594221 = query.getOrDefault("reset-disabled")
+  valid_594221 = validateParameter(valid_594221, JBool, required = false, default = nil)
+  if valid_594221 != nil:
+    section.add "reset-disabled", valid_594221
+  var valid_594222 = query.getOrDefault("user-arn")
+  valid_594222 = validateParameter(valid_594222, JString, required = false,
                                  default = nil)
-  if valid_601222 != nil:
-    section.add "user-arn", valid_601222
-  var valid_601223 = query.getOrDefault("undo-redo-disabled")
-  valid_601223 = validateParameter(valid_601223, JBool, required = false, default = nil)
-  if valid_601223 != nil:
-    section.add "undo-redo-disabled", valid_601223
+  if valid_594222 != nil:
+    section.add "user-arn", valid_594222
+  var valid_594223 = query.getOrDefault("undo-redo-disabled")
+  valid_594223 = validateParameter(valid_594223, JBool, required = false, default = nil)
+  if valid_594223 != nil:
+    section.add "undo-redo-disabled", valid_594223
   assert query != nil,
         "query argument is necessary due to required `creds-type` field"
-  var valid_601237 = query.getOrDefault("creds-type")
-  valid_601237 = validateParameter(valid_601237, JString, required = true,
+  var valid_594237 = query.getOrDefault("creds-type")
+  valid_594237 = validateParameter(valid_594237, JString, required = true,
                                  default = newJString("IAM"))
-  if valid_601237 != nil:
-    section.add "creds-type", valid_601237
+  if valid_594237 != nil:
+    section.add "creds-type", valid_594237
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1830,61 +1830,61 @@ proc validate_GetDashboardEmbedUrl_601216(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601238 = header.getOrDefault("X-Amz-Date")
-  valid_601238 = validateParameter(valid_601238, JString, required = false,
+  var valid_594238 = header.getOrDefault("X-Amz-Date")
+  valid_594238 = validateParameter(valid_594238, JString, required = false,
                                  default = nil)
-  if valid_601238 != nil:
-    section.add "X-Amz-Date", valid_601238
-  var valid_601239 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601239 = validateParameter(valid_601239, JString, required = false,
+  if valid_594238 != nil:
+    section.add "X-Amz-Date", valid_594238
+  var valid_594239 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594239 = validateParameter(valid_594239, JString, required = false,
                                  default = nil)
-  if valid_601239 != nil:
-    section.add "X-Amz-Security-Token", valid_601239
-  var valid_601240 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601240 = validateParameter(valid_601240, JString, required = false,
+  if valid_594239 != nil:
+    section.add "X-Amz-Security-Token", valid_594239
+  var valid_594240 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594240 = validateParameter(valid_594240, JString, required = false,
                                  default = nil)
-  if valid_601240 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601240
-  var valid_601241 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601241 = validateParameter(valid_601241, JString, required = false,
+  if valid_594240 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594240
+  var valid_594241 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594241 = validateParameter(valid_594241, JString, required = false,
                                  default = nil)
-  if valid_601241 != nil:
-    section.add "X-Amz-Algorithm", valid_601241
-  var valid_601242 = header.getOrDefault("X-Amz-Signature")
-  valid_601242 = validateParameter(valid_601242, JString, required = false,
+  if valid_594241 != nil:
+    section.add "X-Amz-Algorithm", valid_594241
+  var valid_594242 = header.getOrDefault("X-Amz-Signature")
+  valid_594242 = validateParameter(valid_594242, JString, required = false,
                                  default = nil)
-  if valid_601242 != nil:
-    section.add "X-Amz-Signature", valid_601242
-  var valid_601243 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601243 = validateParameter(valid_601243, JString, required = false,
+  if valid_594242 != nil:
+    section.add "X-Amz-Signature", valid_594242
+  var valid_594243 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594243 = validateParameter(valid_594243, JString, required = false,
                                  default = nil)
-  if valid_601243 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601243
-  var valid_601244 = header.getOrDefault("X-Amz-Credential")
-  valid_601244 = validateParameter(valid_601244, JString, required = false,
+  if valid_594243 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594243
+  var valid_594244 = header.getOrDefault("X-Amz-Credential")
+  valid_594244 = validateParameter(valid_594244, JString, required = false,
                                  default = nil)
-  if valid_601244 != nil:
-    section.add "X-Amz-Credential", valid_601244
+  if valid_594244 != nil:
+    section.add "X-Amz-Credential", valid_594244
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601245: Call_GetDashboardEmbedUrl_601215; path: JsonNode;
+proc call*(call_594245: Call_GetDashboardEmbedUrl_594215; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Generates a server-side embeddable URL and authorization code. Before this can work properly, first you need to configure the dashboards and user permissions. For more information, see <a href="https://docs.aws.amazon.com/en_us/quicksight/latest/user/embedding.html"> Embedding Amazon QuickSight Dashboards</a>.</p> <p>Currently, you can use <code>GetDashboardEmbedURL</code> only from the server, not from the user’s browser.</p> <p> <b>CLI Sample:</b> </p> <p>Assume the role with permissions enabled for actions: <code>quickSight:RegisterUser</code> and <code>quicksight:GetDashboardEmbedURL</code>. You can use assume-role, assume-role-with-web-identity, or assume-role-with-saml. </p> <p> <code>aws sts assume-role --role-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --role-session-name embeddingsession</code> </p> <p>If the user does not exist in QuickSight, register the user:</p> <p> <code>aws quicksight register-user --aws-account-id 111122223333 --namespace default --identity-type IAM --iam-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --user-role READER --session-name "embeddingsession" --email user123@example.com --region us-east-1</code> </p> <p>Get the URL for the embedded dashboard</p> <p> <code>aws quicksight get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id 1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type IAM</code> </p>
   ## 
-  let valid = call_601245.validator(path, query, header, formData, body)
-  let scheme = call_601245.pickScheme
+  let valid = call_594245.validator(path, query, header, formData, body)
+  let scheme = call_594245.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601245.url(scheme.get, call_601245.host, call_601245.base,
-                         call_601245.route, valid.getOrDefault("path"),
+  let url = call_594245.url(scheme.get, call_594245.host, call_594245.base,
+                         call_594245.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601245, url, valid)
+  result = hook(call_594245, url, valid)
 
-proc call*(call_601246: Call_GetDashboardEmbedUrl_601215; AwsAccountId: string;
+proc call*(call_594246: Call_GetDashboardEmbedUrl_594215; AwsAccountId: string;
           DashboardId: string; sessionLifetime: int = 0; resetDisabled: bool = false;
           userArn: string = ""; undoRedoDisabled: bool = false;
           credsType: string = "IAM"): Recallable =
@@ -1904,25 +1904,25 @@ proc call*(call_601246: Call_GetDashboardEmbedUrl_601215; AwsAccountId: string;
   ##                   : Remove the undo/redo button on embedded dashboard. The default is FALSE, which enables the undo/redo button.
   ##   credsType: string (required)
   ##            : The authentication method the user uses to sign in (IAM only).
-  var path_601247 = newJObject()
-  var query_601248 = newJObject()
-  add(path_601247, "AwsAccountId", newJString(AwsAccountId))
-  add(query_601248, "session-lifetime", newJInt(sessionLifetime))
-  add(query_601248, "reset-disabled", newJBool(resetDisabled))
-  add(query_601248, "user-arn", newJString(userArn))
-  add(path_601247, "DashboardId", newJString(DashboardId))
-  add(query_601248, "undo-redo-disabled", newJBool(undoRedoDisabled))
-  add(query_601248, "creds-type", newJString(credsType))
-  result = call_601246.call(path_601247, query_601248, nil, nil, nil)
+  var path_594247 = newJObject()
+  var query_594248 = newJObject()
+  add(path_594247, "AwsAccountId", newJString(AwsAccountId))
+  add(query_594248, "session-lifetime", newJInt(sessionLifetime))
+  add(query_594248, "reset-disabled", newJBool(resetDisabled))
+  add(query_594248, "user-arn", newJString(userArn))
+  add(path_594247, "DashboardId", newJString(DashboardId))
+  add(query_594248, "undo-redo-disabled", newJBool(undoRedoDisabled))
+  add(query_594248, "creds-type", newJString(credsType))
+  result = call_594246.call(path_594247, query_594248, nil, nil, nil)
 
-var getDashboardEmbedUrl* = Call_GetDashboardEmbedUrl_601215(
+var getDashboardEmbedUrl* = Call_GetDashboardEmbedUrl_594215(
     name: "getDashboardEmbedUrl", meth: HttpMethod.HttpGet,
     host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/dashboards/{DashboardId}/embed-url#creds-type",
-    validator: validate_GetDashboardEmbedUrl_601216, base: "/",
-    url: url_GetDashboardEmbedUrl_601217, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDashboardEmbedUrl_594216, base: "/",
+    url: url_GetDashboardEmbedUrl_594217, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListGroupMemberships_601249 = ref object of OpenApiRestCall_600437
-proc url_ListGroupMemberships_601251(protocol: Scheme; host: string; base: string;
+  Call_ListGroupMemberships_594249 = ref object of OpenApiRestCall_593437
+proc url_ListGroupMemberships_594251(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1944,7 +1944,7 @@ proc url_ListGroupMemberships_601251(protocol: Scheme; host: string; base: strin
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_ListGroupMemberships_601250(path: JsonNode; query: JsonNode;
+proc validate_ListGroupMemberships_594250(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists member users in a group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a list of group member objects.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-group-memberships -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
   ## 
@@ -1959,21 +1959,21 @@ proc validate_ListGroupMemberships_601250(path: JsonNode; query: JsonNode;
   ##            : The namespace. Currently, you should set this to <code>default</code>.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `GroupName` field"
-  var valid_601252 = path.getOrDefault("GroupName")
-  valid_601252 = validateParameter(valid_601252, JString, required = true,
+  var valid_594252 = path.getOrDefault("GroupName")
+  valid_594252 = validateParameter(valid_594252, JString, required = true,
                                  default = nil)
-  if valid_601252 != nil:
-    section.add "GroupName", valid_601252
-  var valid_601253 = path.getOrDefault("AwsAccountId")
-  valid_601253 = validateParameter(valid_601253, JString, required = true,
+  if valid_594252 != nil:
+    section.add "GroupName", valid_594252
+  var valid_594253 = path.getOrDefault("AwsAccountId")
+  valid_594253 = validateParameter(valid_594253, JString, required = true,
                                  default = nil)
-  if valid_601253 != nil:
-    section.add "AwsAccountId", valid_601253
-  var valid_601254 = path.getOrDefault("Namespace")
-  valid_601254 = validateParameter(valid_601254, JString, required = true,
+  if valid_594253 != nil:
+    section.add "AwsAccountId", valid_594253
+  var valid_594254 = path.getOrDefault("Namespace")
+  valid_594254 = validateParameter(valid_594254, JString, required = true,
                                  default = nil)
-  if valid_601254 != nil:
-    section.add "Namespace", valid_601254
+  if valid_594254 != nil:
+    section.add "Namespace", valid_594254
   result.add "path", section
   ## parameters in `query` object:
   ##   max-results: JInt
@@ -1981,15 +1981,15 @@ proc validate_ListGroupMemberships_601250(path: JsonNode; query: JsonNode;
   ##   next-token: JString
   ##             : A pagination token that can be used in a subsequent request.
   section = newJObject()
-  var valid_601255 = query.getOrDefault("max-results")
-  valid_601255 = validateParameter(valid_601255, JInt, required = false, default = nil)
-  if valid_601255 != nil:
-    section.add "max-results", valid_601255
-  var valid_601256 = query.getOrDefault("next-token")
-  valid_601256 = validateParameter(valid_601256, JString, required = false,
+  var valid_594255 = query.getOrDefault("max-results")
+  valid_594255 = validateParameter(valid_594255, JInt, required = false, default = nil)
+  if valid_594255 != nil:
+    section.add "max-results", valid_594255
+  var valid_594256 = query.getOrDefault("next-token")
+  valid_594256 = validateParameter(valid_594256, JString, required = false,
                                  default = nil)
-  if valid_601256 != nil:
-    section.add "next-token", valid_601256
+  if valid_594256 != nil:
+    section.add "next-token", valid_594256
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2000,61 +2000,61 @@ proc validate_ListGroupMemberships_601250(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601257 = header.getOrDefault("X-Amz-Date")
-  valid_601257 = validateParameter(valid_601257, JString, required = false,
+  var valid_594257 = header.getOrDefault("X-Amz-Date")
+  valid_594257 = validateParameter(valid_594257, JString, required = false,
                                  default = nil)
-  if valid_601257 != nil:
-    section.add "X-Amz-Date", valid_601257
-  var valid_601258 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601258 = validateParameter(valid_601258, JString, required = false,
+  if valid_594257 != nil:
+    section.add "X-Amz-Date", valid_594257
+  var valid_594258 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594258 = validateParameter(valid_594258, JString, required = false,
                                  default = nil)
-  if valid_601258 != nil:
-    section.add "X-Amz-Security-Token", valid_601258
-  var valid_601259 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601259 = validateParameter(valid_601259, JString, required = false,
+  if valid_594258 != nil:
+    section.add "X-Amz-Security-Token", valid_594258
+  var valid_594259 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594259 = validateParameter(valid_594259, JString, required = false,
                                  default = nil)
-  if valid_601259 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601259
-  var valid_601260 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601260 = validateParameter(valid_601260, JString, required = false,
+  if valid_594259 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594259
+  var valid_594260 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594260 = validateParameter(valid_594260, JString, required = false,
                                  default = nil)
-  if valid_601260 != nil:
-    section.add "X-Amz-Algorithm", valid_601260
-  var valid_601261 = header.getOrDefault("X-Amz-Signature")
-  valid_601261 = validateParameter(valid_601261, JString, required = false,
+  if valid_594260 != nil:
+    section.add "X-Amz-Algorithm", valid_594260
+  var valid_594261 = header.getOrDefault("X-Amz-Signature")
+  valid_594261 = validateParameter(valid_594261, JString, required = false,
                                  default = nil)
-  if valid_601261 != nil:
-    section.add "X-Amz-Signature", valid_601261
-  var valid_601262 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601262 = validateParameter(valid_601262, JString, required = false,
+  if valid_594261 != nil:
+    section.add "X-Amz-Signature", valid_594261
+  var valid_594262 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594262 = validateParameter(valid_594262, JString, required = false,
                                  default = nil)
-  if valid_601262 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601262
-  var valid_601263 = header.getOrDefault("X-Amz-Credential")
-  valid_601263 = validateParameter(valid_601263, JString, required = false,
+  if valid_594262 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594262
+  var valid_594263 = header.getOrDefault("X-Amz-Credential")
+  valid_594263 = validateParameter(valid_594263, JString, required = false,
                                  default = nil)
-  if valid_601263 != nil:
-    section.add "X-Amz-Credential", valid_601263
+  if valid_594263 != nil:
+    section.add "X-Amz-Credential", valid_594263
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601264: Call_ListGroupMemberships_601249; path: JsonNode;
+proc call*(call_594264: Call_ListGroupMemberships_594249; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists member users in a group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a list of group member objects.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-group-memberships -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
   ## 
-  let valid = call_601264.validator(path, query, header, formData, body)
-  let scheme = call_601264.pickScheme
+  let valid = call_594264.validator(path, query, header, formData, body)
+  let scheme = call_594264.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601264.url(scheme.get, call_601264.host, call_601264.base,
-                         call_601264.route, valid.getOrDefault("path"),
+  let url = call_594264.url(scheme.get, call_594264.host, call_594264.base,
+                         call_594264.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601264, url, valid)
+  result = hook(call_594264, url, valid)
 
-proc call*(call_601265: Call_ListGroupMemberships_601249; GroupName: string;
+proc call*(call_594265: Call_ListGroupMemberships_594249; GroupName: string;
           AwsAccountId: string; Namespace: string; maxResults: int = 0;
           nextToken: string = ""): Recallable =
   ## listGroupMemberships
@@ -2069,23 +2069,23 @@ proc call*(call_601265: Call_ListGroupMemberships_601249; GroupName: string;
   ##            : A pagination token that can be used in a subsequent request.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601266 = newJObject()
-  var query_601267 = newJObject()
-  add(path_601266, "GroupName", newJString(GroupName))
-  add(path_601266, "AwsAccountId", newJString(AwsAccountId))
-  add(query_601267, "max-results", newJInt(maxResults))
-  add(query_601267, "next-token", newJString(nextToken))
-  add(path_601266, "Namespace", newJString(Namespace))
-  result = call_601265.call(path_601266, query_601267, nil, nil, nil)
+  var path_594266 = newJObject()
+  var query_594267 = newJObject()
+  add(path_594266, "GroupName", newJString(GroupName))
+  add(path_594266, "AwsAccountId", newJString(AwsAccountId))
+  add(query_594267, "max-results", newJInt(maxResults))
+  add(query_594267, "next-token", newJString(nextToken))
+  add(path_594266, "Namespace", newJString(Namespace))
+  result = call_594265.call(path_594266, query_594267, nil, nil, nil)
 
-var listGroupMemberships* = Call_ListGroupMemberships_601249(
+var listGroupMemberships* = Call_ListGroupMemberships_594249(
     name: "listGroupMemberships", meth: HttpMethod.HttpGet,
     host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members",
-    validator: validate_ListGroupMemberships_601250, base: "/",
-    url: url_ListGroupMemberships_601251, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListGroupMemberships_594250, base: "/",
+    url: url_ListGroupMemberships_594251, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListUserGroups_601268 = ref object of OpenApiRestCall_600437
-proc url_ListUserGroups_601270(protocol: Scheme; host: string; base: string;
+  Call_ListUserGroups_594268 = ref object of OpenApiRestCall_593437
+proc url_ListUserGroups_594270(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2107,7 +2107,7 @@ proc url_ListUserGroups_601270(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_ListUserGroups_601269(path: JsonNode; query: JsonNode;
+proc validate_ListUserGroups_594269(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Lists the Amazon QuickSight groups that an Amazon QuickSight user is a member of.</p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>. </p> <p>The response is a one or more group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-user-groups -\-user-name=Pat -\-aws-account-id=111122223333 -\-namespace=default -\-region=us-east-1 </code> </p>
@@ -2124,21 +2124,21 @@ proc validate_ListUserGroups_601269(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601271 = path.getOrDefault("AwsAccountId")
-  valid_601271 = validateParameter(valid_601271, JString, required = true,
+  var valid_594271 = path.getOrDefault("AwsAccountId")
+  valid_594271 = validateParameter(valid_594271, JString, required = true,
                                  default = nil)
-  if valid_601271 != nil:
-    section.add "AwsAccountId", valid_601271
-  var valid_601272 = path.getOrDefault("UserName")
-  valid_601272 = validateParameter(valid_601272, JString, required = true,
+  if valid_594271 != nil:
+    section.add "AwsAccountId", valid_594271
+  var valid_594272 = path.getOrDefault("UserName")
+  valid_594272 = validateParameter(valid_594272, JString, required = true,
                                  default = nil)
-  if valid_601272 != nil:
-    section.add "UserName", valid_601272
-  var valid_601273 = path.getOrDefault("Namespace")
-  valid_601273 = validateParameter(valid_601273, JString, required = true,
+  if valid_594272 != nil:
+    section.add "UserName", valid_594272
+  var valid_594273 = path.getOrDefault("Namespace")
+  valid_594273 = validateParameter(valid_594273, JString, required = true,
                                  default = nil)
-  if valid_601273 != nil:
-    section.add "Namespace", valid_601273
+  if valid_594273 != nil:
+    section.add "Namespace", valid_594273
   result.add "path", section
   ## parameters in `query` object:
   ##   max-results: JInt
@@ -2146,15 +2146,15 @@ proc validate_ListUserGroups_601269(path: JsonNode; query: JsonNode;
   ##   next-token: JString
   ##             : A pagination token that can be used in a subsequent request.
   section = newJObject()
-  var valid_601274 = query.getOrDefault("max-results")
-  valid_601274 = validateParameter(valid_601274, JInt, required = false, default = nil)
-  if valid_601274 != nil:
-    section.add "max-results", valid_601274
-  var valid_601275 = query.getOrDefault("next-token")
-  valid_601275 = validateParameter(valid_601275, JString, required = false,
+  var valid_594274 = query.getOrDefault("max-results")
+  valid_594274 = validateParameter(valid_594274, JInt, required = false, default = nil)
+  if valid_594274 != nil:
+    section.add "max-results", valid_594274
+  var valid_594275 = query.getOrDefault("next-token")
+  valid_594275 = validateParameter(valid_594275, JString, required = false,
                                  default = nil)
-  if valid_601275 != nil:
-    section.add "next-token", valid_601275
+  if valid_594275 != nil:
+    section.add "next-token", valid_594275
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2165,61 +2165,61 @@ proc validate_ListUserGroups_601269(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601276 = header.getOrDefault("X-Amz-Date")
-  valid_601276 = validateParameter(valid_601276, JString, required = false,
+  var valid_594276 = header.getOrDefault("X-Amz-Date")
+  valid_594276 = validateParameter(valid_594276, JString, required = false,
                                  default = nil)
-  if valid_601276 != nil:
-    section.add "X-Amz-Date", valid_601276
-  var valid_601277 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601277 = validateParameter(valid_601277, JString, required = false,
+  if valid_594276 != nil:
+    section.add "X-Amz-Date", valid_594276
+  var valid_594277 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594277 = validateParameter(valid_594277, JString, required = false,
                                  default = nil)
-  if valid_601277 != nil:
-    section.add "X-Amz-Security-Token", valid_601277
-  var valid_601278 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601278 = validateParameter(valid_601278, JString, required = false,
+  if valid_594277 != nil:
+    section.add "X-Amz-Security-Token", valid_594277
+  var valid_594278 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594278 = validateParameter(valid_594278, JString, required = false,
                                  default = nil)
-  if valid_601278 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601278
-  var valid_601279 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601279 = validateParameter(valid_601279, JString, required = false,
+  if valid_594278 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594278
+  var valid_594279 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594279 = validateParameter(valid_594279, JString, required = false,
                                  default = nil)
-  if valid_601279 != nil:
-    section.add "X-Amz-Algorithm", valid_601279
-  var valid_601280 = header.getOrDefault("X-Amz-Signature")
-  valid_601280 = validateParameter(valid_601280, JString, required = false,
+  if valid_594279 != nil:
+    section.add "X-Amz-Algorithm", valid_594279
+  var valid_594280 = header.getOrDefault("X-Amz-Signature")
+  valid_594280 = validateParameter(valid_594280, JString, required = false,
                                  default = nil)
-  if valid_601280 != nil:
-    section.add "X-Amz-Signature", valid_601280
-  var valid_601281 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601281 = validateParameter(valid_601281, JString, required = false,
+  if valid_594280 != nil:
+    section.add "X-Amz-Signature", valid_594280
+  var valid_594281 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594281 = validateParameter(valid_594281, JString, required = false,
                                  default = nil)
-  if valid_601281 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601281
-  var valid_601282 = header.getOrDefault("X-Amz-Credential")
-  valid_601282 = validateParameter(valid_601282, JString, required = false,
+  if valid_594281 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594281
+  var valid_594282 = header.getOrDefault("X-Amz-Credential")
+  valid_594282 = validateParameter(valid_594282, JString, required = false,
                                  default = nil)
-  if valid_601282 != nil:
-    section.add "X-Amz-Credential", valid_601282
+  if valid_594282 != nil:
+    section.add "X-Amz-Credential", valid_594282
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601283: Call_ListUserGroups_601268; path: JsonNode; query: JsonNode;
+proc call*(call_594283: Call_ListUserGroups_594268; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the Amazon QuickSight groups that an Amazon QuickSight user is a member of.</p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>. </p> <p>The response is a one or more group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-user-groups -\-user-name=Pat -\-aws-account-id=111122223333 -\-namespace=default -\-region=us-east-1 </code> </p>
   ## 
-  let valid = call_601283.validator(path, query, header, formData, body)
-  let scheme = call_601283.pickScheme
+  let valid = call_594283.validator(path, query, header, formData, body)
+  let scheme = call_594283.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601283.url(scheme.get, call_601283.host, call_601283.base,
-                         call_601283.route, valid.getOrDefault("path"),
+  let url = call_594283.url(scheme.get, call_594283.host, call_594283.base,
+                         call_594283.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601283, url, valid)
+  result = hook(call_594283, url, valid)
 
-proc call*(call_601284: Call_ListUserGroups_601268; AwsAccountId: string;
+proc call*(call_594284: Call_ListUserGroups_594268; AwsAccountId: string;
           UserName: string; Namespace: string; maxResults: int = 0;
           nextToken: string = ""): Recallable =
   ## listUserGroups
@@ -2234,22 +2234,22 @@ proc call*(call_601284: Call_ListUserGroups_601268; AwsAccountId: string;
   ##           : The Amazon QuickSight user name that you want to list group memberships for.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601285 = newJObject()
-  var query_601286 = newJObject()
-  add(path_601285, "AwsAccountId", newJString(AwsAccountId))
-  add(query_601286, "max-results", newJInt(maxResults))
-  add(query_601286, "next-token", newJString(nextToken))
-  add(path_601285, "UserName", newJString(UserName))
-  add(path_601285, "Namespace", newJString(Namespace))
-  result = call_601284.call(path_601285, query_601286, nil, nil, nil)
+  var path_594285 = newJObject()
+  var query_594286 = newJObject()
+  add(path_594285, "AwsAccountId", newJString(AwsAccountId))
+  add(query_594286, "max-results", newJInt(maxResults))
+  add(query_594286, "next-token", newJString(nextToken))
+  add(path_594285, "UserName", newJString(UserName))
+  add(path_594285, "Namespace", newJString(Namespace))
+  result = call_594284.call(path_594285, query_594286, nil, nil, nil)
 
-var listUserGroups* = Call_ListUserGroups_601268(name: "listUserGroups",
+var listUserGroups* = Call_ListUserGroups_594268(name: "listUserGroups",
     meth: HttpMethod.HttpGet, host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}/groups",
-    validator: validate_ListUserGroups_601269, base: "/", url: url_ListUserGroups_601270,
+    validator: validate_ListUserGroups_594269, base: "/", url: url_ListUserGroups_594270,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterUser_601305 = ref object of OpenApiRestCall_600437
-proc url_RegisterUser_601307(protocol: Scheme; host: string; base: string;
+  Call_RegisterUser_594305 = ref object of OpenApiRestCall_593437
+proc url_RegisterUser_594307(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2268,7 +2268,7 @@ proc url_RegisterUser_601307(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_RegisterUser_601306(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RegisterUser_594306(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>.</p> <p>The condition resource is the Amazon Resource Name (ARN) for the IAM user or role, and the session name. </p> <p>The condition keys are <code>quicksight:IamArn</code> and <code>quicksight:SessionName</code>. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight register-user -\-aws-account-id=111122223333 -\-namespace=default -\-email=pat@example.com -\-identity-type=IAM -\-user-role=AUTHOR -\-iam-arn=arn:aws:iam::111122223333:user/Pat </code> </p>
   ## 
@@ -2282,16 +2282,16 @@ proc validate_RegisterUser_601306(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601308 = path.getOrDefault("AwsAccountId")
-  valid_601308 = validateParameter(valid_601308, JString, required = true,
+  var valid_594308 = path.getOrDefault("AwsAccountId")
+  valid_594308 = validateParameter(valid_594308, JString, required = true,
                                  default = nil)
-  if valid_601308 != nil:
-    section.add "AwsAccountId", valid_601308
-  var valid_601309 = path.getOrDefault("Namespace")
-  valid_601309 = validateParameter(valid_601309, JString, required = true,
+  if valid_594308 != nil:
+    section.add "AwsAccountId", valid_594308
+  var valid_594309 = path.getOrDefault("Namespace")
+  valid_594309 = validateParameter(valid_594309, JString, required = true,
                                  default = nil)
-  if valid_601309 != nil:
-    section.add "Namespace", valid_601309
+  if valid_594309 != nil:
+    section.add "Namespace", valid_594309
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2304,41 +2304,41 @@ proc validate_RegisterUser_601306(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601310 = header.getOrDefault("X-Amz-Date")
-  valid_601310 = validateParameter(valid_601310, JString, required = false,
+  var valid_594310 = header.getOrDefault("X-Amz-Date")
+  valid_594310 = validateParameter(valid_594310, JString, required = false,
                                  default = nil)
-  if valid_601310 != nil:
-    section.add "X-Amz-Date", valid_601310
-  var valid_601311 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601311 = validateParameter(valid_601311, JString, required = false,
+  if valid_594310 != nil:
+    section.add "X-Amz-Date", valid_594310
+  var valid_594311 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594311 = validateParameter(valid_594311, JString, required = false,
                                  default = nil)
-  if valid_601311 != nil:
-    section.add "X-Amz-Security-Token", valid_601311
-  var valid_601312 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601312 = validateParameter(valid_601312, JString, required = false,
+  if valid_594311 != nil:
+    section.add "X-Amz-Security-Token", valid_594311
+  var valid_594312 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594312 = validateParameter(valid_594312, JString, required = false,
                                  default = nil)
-  if valid_601312 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601312
-  var valid_601313 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601313 = validateParameter(valid_601313, JString, required = false,
+  if valid_594312 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594312
+  var valid_594313 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594313 = validateParameter(valid_594313, JString, required = false,
                                  default = nil)
-  if valid_601313 != nil:
-    section.add "X-Amz-Algorithm", valid_601313
-  var valid_601314 = header.getOrDefault("X-Amz-Signature")
-  valid_601314 = validateParameter(valid_601314, JString, required = false,
+  if valid_594313 != nil:
+    section.add "X-Amz-Algorithm", valid_594313
+  var valid_594314 = header.getOrDefault("X-Amz-Signature")
+  valid_594314 = validateParameter(valid_594314, JString, required = false,
                                  default = nil)
-  if valid_601314 != nil:
-    section.add "X-Amz-Signature", valid_601314
-  var valid_601315 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601315 = validateParameter(valid_601315, JString, required = false,
+  if valid_594314 != nil:
+    section.add "X-Amz-Signature", valid_594314
+  var valid_594315 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594315 = validateParameter(valid_594315, JString, required = false,
                                  default = nil)
-  if valid_601315 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601315
-  var valid_601316 = header.getOrDefault("X-Amz-Credential")
-  valid_601316 = validateParameter(valid_601316, JString, required = false,
+  if valid_594315 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594315
+  var valid_594316 = header.getOrDefault("X-Amz-Credential")
+  valid_594316 = validateParameter(valid_594316, JString, required = false,
                                  default = nil)
-  if valid_601316 != nil:
-    section.add "X-Amz-Credential", valid_601316
+  if valid_594316 != nil:
+    section.add "X-Amz-Credential", valid_594316
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2349,20 +2349,20 @@ proc validate_RegisterUser_601306(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601318: Call_RegisterUser_601305; path: JsonNode; query: JsonNode;
+proc call*(call_594318: Call_RegisterUser_594305; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>.</p> <p>The condition resource is the Amazon Resource Name (ARN) for the IAM user or role, and the session name. </p> <p>The condition keys are <code>quicksight:IamArn</code> and <code>quicksight:SessionName</code>. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight register-user -\-aws-account-id=111122223333 -\-namespace=default -\-email=pat@example.com -\-identity-type=IAM -\-user-role=AUTHOR -\-iam-arn=arn:aws:iam::111122223333:user/Pat </code> </p>
   ## 
-  let valid = call_601318.validator(path, query, header, formData, body)
-  let scheme = call_601318.pickScheme
+  let valid = call_594318.validator(path, query, header, formData, body)
+  let scheme = call_594318.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601318.url(scheme.get, call_601318.host, call_601318.base,
-                         call_601318.route, valid.getOrDefault("path"),
+  let url = call_594318.url(scheme.get, call_594318.host, call_594318.base,
+                         call_594318.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601318, url, valid)
+  result = hook(call_594318, url, valid)
 
-proc call*(call_601319: Call_RegisterUser_601305; AwsAccountId: string;
+proc call*(call_594319: Call_RegisterUser_594305; AwsAccountId: string;
           body: JsonNode; Namespace: string): Recallable =
   ## registerUser
   ## <p>Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>&lt;user-name&gt;</i> </code>.</p> <p>The condition resource is the Amazon Resource Name (ARN) for the IAM user or role, and the session name. </p> <p>The condition keys are <code>quicksight:IamArn</code> and <code>quicksight:SessionName</code>. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight register-user -\-aws-account-id=111122223333 -\-namespace=default -\-email=pat@example.com -\-identity-type=IAM -\-user-role=AUTHOR -\-iam-arn=arn:aws:iam::111122223333:user/Pat </code> </p>
@@ -2371,22 +2371,22 @@ proc call*(call_601319: Call_RegisterUser_601305; AwsAccountId: string;
   ##   body: JObject (required)
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601320 = newJObject()
-  var body_601321 = newJObject()
-  add(path_601320, "AwsAccountId", newJString(AwsAccountId))
+  var path_594320 = newJObject()
+  var body_594321 = newJObject()
+  add(path_594320, "AwsAccountId", newJString(AwsAccountId))
   if body != nil:
-    body_601321 = body
-  add(path_601320, "Namespace", newJString(Namespace))
-  result = call_601319.call(path_601320, nil, nil, nil, body_601321)
+    body_594321 = body
+  add(path_594320, "Namespace", newJString(Namespace))
+  result = call_594319.call(path_594320, nil, nil, nil, body_594321)
 
-var registerUser* = Call_RegisterUser_601305(name: "registerUser",
+var registerUser* = Call_RegisterUser_594305(name: "registerUser",
     meth: HttpMethod.HttpPost, host: "quicksight.amazonaws.com",
     route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/users",
-    validator: validate_RegisterUser_601306, base: "/", url: url_RegisterUser_601307,
+    validator: validate_RegisterUser_594306, base: "/", url: url_RegisterUser_594307,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListUsers_601287 = ref object of OpenApiRestCall_600437
-proc url_ListUsers_601289(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListUsers_594287 = ref object of OpenApiRestCall_593437
+proc url_ListUsers_594289(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2405,7 +2405,7 @@ proc url_ListUsers_601289(protocol: Scheme; host: string; base: string; route: s
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_ListUsers_601288(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListUsers_594288(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of all of the Amazon QuickSight users belonging to this account. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>*</i> </code>.</p> <p>The response is a list of user objects, containing each user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-users --aws-account-id=111122223333 --namespace=default </code> </p>
   ## 
@@ -2419,16 +2419,16 @@ proc validate_ListUsers_601288(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
-  var valid_601290 = path.getOrDefault("AwsAccountId")
-  valid_601290 = validateParameter(valid_601290, JString, required = true,
+  var valid_594290 = path.getOrDefault("AwsAccountId")
+  valid_594290 = validateParameter(valid_594290, JString, required = true,
                                  default = nil)
-  if valid_601290 != nil:
-    section.add "AwsAccountId", valid_601290
-  var valid_601291 = path.getOrDefault("Namespace")
-  valid_601291 = validateParameter(valid_601291, JString, required = true,
+  if valid_594290 != nil:
+    section.add "AwsAccountId", valid_594290
+  var valid_594291 = path.getOrDefault("Namespace")
+  valid_594291 = validateParameter(valid_594291, JString, required = true,
                                  default = nil)
-  if valid_601291 != nil:
-    section.add "Namespace", valid_601291
+  if valid_594291 != nil:
+    section.add "Namespace", valid_594291
   result.add "path", section
   ## parameters in `query` object:
   ##   max-results: JInt
@@ -2436,15 +2436,15 @@ proc validate_ListUsers_601288(path: JsonNode; query: JsonNode; header: JsonNode
   ##   next-token: JString
   ##             : A pagination token that can be used in a subsequent request.
   section = newJObject()
-  var valid_601292 = query.getOrDefault("max-results")
-  valid_601292 = validateParameter(valid_601292, JInt, required = false, default = nil)
-  if valid_601292 != nil:
-    section.add "max-results", valid_601292
-  var valid_601293 = query.getOrDefault("next-token")
-  valid_601293 = validateParameter(valid_601293, JString, required = false,
+  var valid_594292 = query.getOrDefault("max-results")
+  valid_594292 = validateParameter(valid_594292, JInt, required = false, default = nil)
+  if valid_594292 != nil:
+    section.add "max-results", valid_594292
+  var valid_594293 = query.getOrDefault("next-token")
+  valid_594293 = validateParameter(valid_594293, JString, required = false,
                                  default = nil)
-  if valid_601293 != nil:
-    section.add "next-token", valid_601293
+  if valid_594293 != nil:
+    section.add "next-token", valid_594293
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2455,61 +2455,61 @@ proc validate_ListUsers_601288(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601294 = header.getOrDefault("X-Amz-Date")
-  valid_601294 = validateParameter(valid_601294, JString, required = false,
+  var valid_594294 = header.getOrDefault("X-Amz-Date")
+  valid_594294 = validateParameter(valid_594294, JString, required = false,
                                  default = nil)
-  if valid_601294 != nil:
-    section.add "X-Amz-Date", valid_601294
-  var valid_601295 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601295 = validateParameter(valid_601295, JString, required = false,
+  if valid_594294 != nil:
+    section.add "X-Amz-Date", valid_594294
+  var valid_594295 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594295 = validateParameter(valid_594295, JString, required = false,
                                  default = nil)
-  if valid_601295 != nil:
-    section.add "X-Amz-Security-Token", valid_601295
-  var valid_601296 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601296 = validateParameter(valid_601296, JString, required = false,
+  if valid_594295 != nil:
+    section.add "X-Amz-Security-Token", valid_594295
+  var valid_594296 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594296 = validateParameter(valid_594296, JString, required = false,
                                  default = nil)
-  if valid_601296 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601296
-  var valid_601297 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601297 = validateParameter(valid_601297, JString, required = false,
+  if valid_594296 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594296
+  var valid_594297 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594297 = validateParameter(valid_594297, JString, required = false,
                                  default = nil)
-  if valid_601297 != nil:
-    section.add "X-Amz-Algorithm", valid_601297
-  var valid_601298 = header.getOrDefault("X-Amz-Signature")
-  valid_601298 = validateParameter(valid_601298, JString, required = false,
+  if valid_594297 != nil:
+    section.add "X-Amz-Algorithm", valid_594297
+  var valid_594298 = header.getOrDefault("X-Amz-Signature")
+  valid_594298 = validateParameter(valid_594298, JString, required = false,
                                  default = nil)
-  if valid_601298 != nil:
-    section.add "X-Amz-Signature", valid_601298
-  var valid_601299 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601299 = validateParameter(valid_601299, JString, required = false,
+  if valid_594298 != nil:
+    section.add "X-Amz-Signature", valid_594298
+  var valid_594299 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594299 = validateParameter(valid_594299, JString, required = false,
                                  default = nil)
-  if valid_601299 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601299
-  var valid_601300 = header.getOrDefault("X-Amz-Credential")
-  valid_601300 = validateParameter(valid_601300, JString, required = false,
+  if valid_594299 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594299
+  var valid_594300 = header.getOrDefault("X-Amz-Credential")
+  valid_594300 = validateParameter(valid_594300, JString, required = false,
                                  default = nil)
-  if valid_601300 != nil:
-    section.add "X-Amz-Credential", valid_601300
+  if valid_594300 != nil:
+    section.add "X-Amz-Credential", valid_594300
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601301: Call_ListUsers_601287; path: JsonNode; query: JsonNode;
+proc call*(call_594301: Call_ListUsers_594287; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of all of the Amazon QuickSight users belonging to this account. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>*</i> </code>.</p> <p>The response is a list of user objects, containing each user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-users --aws-account-id=111122223333 --namespace=default </code> </p>
   ## 
-  let valid = call_601301.validator(path, query, header, formData, body)
-  let scheme = call_601301.pickScheme
+  let valid = call_594301.validator(path, query, header, formData, body)
+  let scheme = call_594301.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601301.url(scheme.get, call_601301.host, call_601301.base,
-                         call_601301.route, valid.getOrDefault("path"),
+  let url = call_594301.url(scheme.get, call_594301.host, call_594301.base,
+                         call_594301.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601301, url, valid)
+  result = hook(call_594301, url, valid)
 
-proc call*(call_601302: Call_ListUsers_601287; AwsAccountId: string;
+proc call*(call_594302: Call_ListUsers_594287; AwsAccountId: string;
           Namespace: string; maxResults: int = 0; nextToken: string = ""): Recallable =
   ## listUsers
   ## <p>Returns a list of all of the Amazon QuickSight users belonging to this account. </p> <p>The permission resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:user/default/<i>*</i> </code>.</p> <p>The response is a list of user objects, containing each user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-users --aws-account-id=111122223333 --namespace=default </code> </p>
@@ -2521,18 +2521,18 @@ proc call*(call_601302: Call_ListUsers_601287; AwsAccountId: string;
   ##            : A pagination token that can be used in a subsequent request.
   ##   Namespace: string (required)
   ##            : The namespace. Currently, you should set this to <code>default</code>.
-  var path_601303 = newJObject()
-  var query_601304 = newJObject()
-  add(path_601303, "AwsAccountId", newJString(AwsAccountId))
-  add(query_601304, "max-results", newJInt(maxResults))
-  add(query_601304, "next-token", newJString(nextToken))
-  add(path_601303, "Namespace", newJString(Namespace))
-  result = call_601302.call(path_601303, query_601304, nil, nil, nil)
+  var path_594303 = newJObject()
+  var query_594304 = newJObject()
+  add(path_594303, "AwsAccountId", newJString(AwsAccountId))
+  add(query_594304, "max-results", newJInt(maxResults))
+  add(query_594304, "next-token", newJString(nextToken))
+  add(path_594303, "Namespace", newJString(Namespace))
+  result = call_594302.call(path_594303, query_594304, nil, nil, nil)
 
-var listUsers* = Call_ListUsers_601287(name: "listUsers", meth: HttpMethod.HttpGet,
+var listUsers* = Call_ListUsers_594287(name: "listUsers", meth: HttpMethod.HttpGet,
                                     host: "quicksight.amazonaws.com", route: "/accounts/{AwsAccountId}/namespaces/{Namespace}/users",
-                                    validator: validate_ListUsers_601288,
-                                    base: "/", url: url_ListUsers_601289,
+                                    validator: validate_ListUsers_594288,
+                                    base: "/", url: url_ListUsers_594289,
                                     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

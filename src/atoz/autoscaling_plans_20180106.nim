@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS Auto Scaling Plans
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600437 = ref object of OpenApiRestCall
+  OpenApiRestCall_593437 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600437](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593437](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600437): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593437): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -138,15 +138,15 @@ const
   awsServiceName = "autoscaling-plans"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateScalingPlan_600774 = ref object of OpenApiRestCall_600437
-proc url_CreateScalingPlan_600776(protocol: Scheme; host: string; base: string;
+  Call_CreateScalingPlan_593774 = ref object of OpenApiRestCall_593437
+proc url_CreateScalingPlan_593776(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateScalingPlan_600775(path: JsonNode; query: JsonNode;
+proc validate_CreateScalingPlan_593775(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Creates a scaling plan.
@@ -167,48 +167,48 @@ proc validate_CreateScalingPlan_600775(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600888 = header.getOrDefault("X-Amz-Date")
-  valid_600888 = validateParameter(valid_600888, JString, required = false,
+  var valid_593888 = header.getOrDefault("X-Amz-Date")
+  valid_593888 = validateParameter(valid_593888, JString, required = false,
                                  default = nil)
-  if valid_600888 != nil:
-    section.add "X-Amz-Date", valid_600888
-  var valid_600889 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600889 = validateParameter(valid_600889, JString, required = false,
+  if valid_593888 != nil:
+    section.add "X-Amz-Date", valid_593888
+  var valid_593889 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593889 = validateParameter(valid_593889, JString, required = false,
                                  default = nil)
-  if valid_600889 != nil:
-    section.add "X-Amz-Security-Token", valid_600889
+  if valid_593889 != nil:
+    section.add "X-Amz-Security-Token", valid_593889
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600903 = header.getOrDefault("X-Amz-Target")
-  valid_600903 = validateParameter(valid_600903, JString, required = true, default = newJString(
+  var valid_593903 = header.getOrDefault("X-Amz-Target")
+  valid_593903 = validateParameter(valid_593903, JString, required = true, default = newJString(
       "AnyScaleScalingPlannerFrontendService.CreateScalingPlan"))
-  if valid_600903 != nil:
-    section.add "X-Amz-Target", valid_600903
-  var valid_600904 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600904 = validateParameter(valid_600904, JString, required = false,
+  if valid_593903 != nil:
+    section.add "X-Amz-Target", valid_593903
+  var valid_593904 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593904 = validateParameter(valid_593904, JString, required = false,
                                  default = nil)
-  if valid_600904 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600904
-  var valid_600905 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600905 = validateParameter(valid_600905, JString, required = false,
+  if valid_593904 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593904
+  var valid_593905 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593905 = validateParameter(valid_593905, JString, required = false,
                                  default = nil)
-  if valid_600905 != nil:
-    section.add "X-Amz-Algorithm", valid_600905
-  var valid_600906 = header.getOrDefault("X-Amz-Signature")
-  valid_600906 = validateParameter(valid_600906, JString, required = false,
+  if valid_593905 != nil:
+    section.add "X-Amz-Algorithm", valid_593905
+  var valid_593906 = header.getOrDefault("X-Amz-Signature")
+  valid_593906 = validateParameter(valid_593906, JString, required = false,
                                  default = nil)
-  if valid_600906 != nil:
-    section.add "X-Amz-Signature", valid_600906
-  var valid_600907 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600907 = validateParameter(valid_600907, JString, required = false,
+  if valid_593906 != nil:
+    section.add "X-Amz-Signature", valid_593906
+  var valid_593907 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593907 = validateParameter(valid_593907, JString, required = false,
                                  default = nil)
-  if valid_600907 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600907
-  var valid_600908 = header.getOrDefault("X-Amz-Credential")
-  valid_600908 = validateParameter(valid_600908, JString, required = false,
+  if valid_593907 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593907
+  var valid_593908 = header.getOrDefault("X-Amz-Credential")
+  valid_593908 = validateParameter(valid_593908, JString, required = false,
                                  default = nil)
-  if valid_600908 != nil:
-    section.add "X-Amz-Credential", valid_600908
+  if valid_593908 != nil:
+    section.add "X-Amz-Credential", valid_593908
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -219,42 +219,42 @@ proc validate_CreateScalingPlan_600775(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600932: Call_CreateScalingPlan_600774; path: JsonNode;
+proc call*(call_593932: Call_CreateScalingPlan_593774; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a scaling plan.
   ## 
-  let valid = call_600932.validator(path, query, header, formData, body)
-  let scheme = call_600932.pickScheme
+  let valid = call_593932.validator(path, query, header, formData, body)
+  let scheme = call_593932.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600932.url(scheme.get, call_600932.host, call_600932.base,
-                         call_600932.route, valid.getOrDefault("path"),
+  let url = call_593932.url(scheme.get, call_593932.host, call_593932.base,
+                         call_593932.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600932, url, valid)
+  result = hook(call_593932, url, valid)
 
-proc call*(call_601003: Call_CreateScalingPlan_600774; body: JsonNode): Recallable =
+proc call*(call_594003: Call_CreateScalingPlan_593774; body: JsonNode): Recallable =
   ## createScalingPlan
   ## Creates a scaling plan.
   ##   body: JObject (required)
-  var body_601004 = newJObject()
+  var body_594004 = newJObject()
   if body != nil:
-    body_601004 = body
-  result = call_601003.call(nil, nil, nil, nil, body_601004)
+    body_594004 = body
+  result = call_594003.call(nil, nil, nil, nil, body_594004)
 
-var createScalingPlan* = Call_CreateScalingPlan_600774(name: "createScalingPlan",
+var createScalingPlan* = Call_CreateScalingPlan_593774(name: "createScalingPlan",
     meth: HttpMethod.HttpPost, host: "autoscaling.amazonaws.com", route: "/#X-Amz-Target=AnyScaleScalingPlannerFrontendService.CreateScalingPlan",
-    validator: validate_CreateScalingPlan_600775, base: "/",
-    url: url_CreateScalingPlan_600776, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateScalingPlan_593775, base: "/",
+    url: url_CreateScalingPlan_593776, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteScalingPlan_601043 = ref object of OpenApiRestCall_600437
-proc url_DeleteScalingPlan_601045(protocol: Scheme; host: string; base: string;
+  Call_DeleteScalingPlan_594043 = ref object of OpenApiRestCall_593437
+proc url_DeleteScalingPlan_594045(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteScalingPlan_601044(path: JsonNode; query: JsonNode;
+proc validate_DeleteScalingPlan_594044(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes the specified scaling plan.</p> <p>Deleting a scaling plan deletes the underlying <a>ScalingInstruction</a> for all of the scalable resources that are covered by the plan.</p> <p>If the plan has launched resources or has scaling activities in progress, you must delete those resources separately.</p>
@@ -275,48 +275,48 @@ proc validate_DeleteScalingPlan_601044(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601046 = header.getOrDefault("X-Amz-Date")
-  valid_601046 = validateParameter(valid_601046, JString, required = false,
+  var valid_594046 = header.getOrDefault("X-Amz-Date")
+  valid_594046 = validateParameter(valid_594046, JString, required = false,
                                  default = nil)
-  if valid_601046 != nil:
-    section.add "X-Amz-Date", valid_601046
-  var valid_601047 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601047 = validateParameter(valid_601047, JString, required = false,
+  if valid_594046 != nil:
+    section.add "X-Amz-Date", valid_594046
+  var valid_594047 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594047 = validateParameter(valid_594047, JString, required = false,
                                  default = nil)
-  if valid_601047 != nil:
-    section.add "X-Amz-Security-Token", valid_601047
+  if valid_594047 != nil:
+    section.add "X-Amz-Security-Token", valid_594047
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601048 = header.getOrDefault("X-Amz-Target")
-  valid_601048 = validateParameter(valid_601048, JString, required = true, default = newJString(
+  var valid_594048 = header.getOrDefault("X-Amz-Target")
+  valid_594048 = validateParameter(valid_594048, JString, required = true, default = newJString(
       "AnyScaleScalingPlannerFrontendService.DeleteScalingPlan"))
-  if valid_601048 != nil:
-    section.add "X-Amz-Target", valid_601048
-  var valid_601049 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601049 = validateParameter(valid_601049, JString, required = false,
+  if valid_594048 != nil:
+    section.add "X-Amz-Target", valid_594048
+  var valid_594049 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594049 = validateParameter(valid_594049, JString, required = false,
                                  default = nil)
-  if valid_601049 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601049
-  var valid_601050 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601050 = validateParameter(valid_601050, JString, required = false,
+  if valid_594049 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594049
+  var valid_594050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594050 = validateParameter(valid_594050, JString, required = false,
                                  default = nil)
-  if valid_601050 != nil:
-    section.add "X-Amz-Algorithm", valid_601050
-  var valid_601051 = header.getOrDefault("X-Amz-Signature")
-  valid_601051 = validateParameter(valid_601051, JString, required = false,
+  if valid_594050 != nil:
+    section.add "X-Amz-Algorithm", valid_594050
+  var valid_594051 = header.getOrDefault("X-Amz-Signature")
+  valid_594051 = validateParameter(valid_594051, JString, required = false,
                                  default = nil)
-  if valid_601051 != nil:
-    section.add "X-Amz-Signature", valid_601051
-  var valid_601052 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601052 = validateParameter(valid_601052, JString, required = false,
+  if valid_594051 != nil:
+    section.add "X-Amz-Signature", valid_594051
+  var valid_594052 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594052 = validateParameter(valid_594052, JString, required = false,
                                  default = nil)
-  if valid_601052 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601052
-  var valid_601053 = header.getOrDefault("X-Amz-Credential")
-  valid_601053 = validateParameter(valid_601053, JString, required = false,
+  if valid_594052 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594052
+  var valid_594053 = header.getOrDefault("X-Amz-Credential")
+  valid_594053 = validateParameter(valid_594053, JString, required = false,
                                  default = nil)
-  if valid_601053 != nil:
-    section.add "X-Amz-Credential", valid_601053
+  if valid_594053 != nil:
+    section.add "X-Amz-Credential", valid_594053
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -327,42 +327,42 @@ proc validate_DeleteScalingPlan_601044(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601055: Call_DeleteScalingPlan_601043; path: JsonNode;
+proc call*(call_594055: Call_DeleteScalingPlan_594043; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified scaling plan.</p> <p>Deleting a scaling plan deletes the underlying <a>ScalingInstruction</a> for all of the scalable resources that are covered by the plan.</p> <p>If the plan has launched resources or has scaling activities in progress, you must delete those resources separately.</p>
   ## 
-  let valid = call_601055.validator(path, query, header, formData, body)
-  let scheme = call_601055.pickScheme
+  let valid = call_594055.validator(path, query, header, formData, body)
+  let scheme = call_594055.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601055.url(scheme.get, call_601055.host, call_601055.base,
-                         call_601055.route, valid.getOrDefault("path"),
+  let url = call_594055.url(scheme.get, call_594055.host, call_594055.base,
+                         call_594055.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601055, url, valid)
+  result = hook(call_594055, url, valid)
 
-proc call*(call_601056: Call_DeleteScalingPlan_601043; body: JsonNode): Recallable =
+proc call*(call_594056: Call_DeleteScalingPlan_594043; body: JsonNode): Recallable =
   ## deleteScalingPlan
   ## <p>Deletes the specified scaling plan.</p> <p>Deleting a scaling plan deletes the underlying <a>ScalingInstruction</a> for all of the scalable resources that are covered by the plan.</p> <p>If the plan has launched resources or has scaling activities in progress, you must delete those resources separately.</p>
   ##   body: JObject (required)
-  var body_601057 = newJObject()
+  var body_594057 = newJObject()
   if body != nil:
-    body_601057 = body
-  result = call_601056.call(nil, nil, nil, nil, body_601057)
+    body_594057 = body
+  result = call_594056.call(nil, nil, nil, nil, body_594057)
 
-var deleteScalingPlan* = Call_DeleteScalingPlan_601043(name: "deleteScalingPlan",
+var deleteScalingPlan* = Call_DeleteScalingPlan_594043(name: "deleteScalingPlan",
     meth: HttpMethod.HttpPost, host: "autoscaling.amazonaws.com", route: "/#X-Amz-Target=AnyScaleScalingPlannerFrontendService.DeleteScalingPlan",
-    validator: validate_DeleteScalingPlan_601044, base: "/",
-    url: url_DeleteScalingPlan_601045, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteScalingPlan_594044, base: "/",
+    url: url_DeleteScalingPlan_594045, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeScalingPlanResources_601058 = ref object of OpenApiRestCall_600437
-proc url_DescribeScalingPlanResources_601060(protocol: Scheme; host: string;
+  Call_DescribeScalingPlanResources_594058 = ref object of OpenApiRestCall_593437
+proc url_DescribeScalingPlanResources_594060(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeScalingPlanResources_601059(path: JsonNode; query: JsonNode;
+proc validate_DescribeScalingPlanResources_594059(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the scalable resources in the specified scaling plan.
   ## 
@@ -382,48 +382,48 @@ proc validate_DescribeScalingPlanResources_601059(path: JsonNode; query: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601061 = header.getOrDefault("X-Amz-Date")
-  valid_601061 = validateParameter(valid_601061, JString, required = false,
+  var valid_594061 = header.getOrDefault("X-Amz-Date")
+  valid_594061 = validateParameter(valid_594061, JString, required = false,
                                  default = nil)
-  if valid_601061 != nil:
-    section.add "X-Amz-Date", valid_601061
-  var valid_601062 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601062 = validateParameter(valid_601062, JString, required = false,
+  if valid_594061 != nil:
+    section.add "X-Amz-Date", valid_594061
+  var valid_594062 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594062 = validateParameter(valid_594062, JString, required = false,
                                  default = nil)
-  if valid_601062 != nil:
-    section.add "X-Amz-Security-Token", valid_601062
+  if valid_594062 != nil:
+    section.add "X-Amz-Security-Token", valid_594062
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601063 = header.getOrDefault("X-Amz-Target")
-  valid_601063 = validateParameter(valid_601063, JString, required = true, default = newJString(
+  var valid_594063 = header.getOrDefault("X-Amz-Target")
+  valid_594063 = validateParameter(valid_594063, JString, required = true, default = newJString(
       "AnyScaleScalingPlannerFrontendService.DescribeScalingPlanResources"))
-  if valid_601063 != nil:
-    section.add "X-Amz-Target", valid_601063
-  var valid_601064 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601064 = validateParameter(valid_601064, JString, required = false,
+  if valid_594063 != nil:
+    section.add "X-Amz-Target", valid_594063
+  var valid_594064 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594064 = validateParameter(valid_594064, JString, required = false,
                                  default = nil)
-  if valid_601064 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601064
-  var valid_601065 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601065 = validateParameter(valid_601065, JString, required = false,
+  if valid_594064 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594064
+  var valid_594065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594065 = validateParameter(valid_594065, JString, required = false,
                                  default = nil)
-  if valid_601065 != nil:
-    section.add "X-Amz-Algorithm", valid_601065
-  var valid_601066 = header.getOrDefault("X-Amz-Signature")
-  valid_601066 = validateParameter(valid_601066, JString, required = false,
+  if valid_594065 != nil:
+    section.add "X-Amz-Algorithm", valid_594065
+  var valid_594066 = header.getOrDefault("X-Amz-Signature")
+  valid_594066 = validateParameter(valid_594066, JString, required = false,
                                  default = nil)
-  if valid_601066 != nil:
-    section.add "X-Amz-Signature", valid_601066
-  var valid_601067 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601067 = validateParameter(valid_601067, JString, required = false,
+  if valid_594066 != nil:
+    section.add "X-Amz-Signature", valid_594066
+  var valid_594067 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594067 = validateParameter(valid_594067, JString, required = false,
                                  default = nil)
-  if valid_601067 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601067
-  var valid_601068 = header.getOrDefault("X-Amz-Credential")
-  valid_601068 = validateParameter(valid_601068, JString, required = false,
+  if valid_594067 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594067
+  var valid_594068 = header.getOrDefault("X-Amz-Credential")
+  valid_594068 = validateParameter(valid_594068, JString, required = false,
                                  default = nil)
-  if valid_601068 != nil:
-    section.add "X-Amz-Credential", valid_601068
+  if valid_594068 != nil:
+    section.add "X-Amz-Credential", valid_594068
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -434,44 +434,44 @@ proc validate_DescribeScalingPlanResources_601059(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_601070: Call_DescribeScalingPlanResources_601058; path: JsonNode;
+proc call*(call_594070: Call_DescribeScalingPlanResources_594058; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the scalable resources in the specified scaling plan.
   ## 
-  let valid = call_601070.validator(path, query, header, formData, body)
-  let scheme = call_601070.pickScheme
+  let valid = call_594070.validator(path, query, header, formData, body)
+  let scheme = call_594070.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601070.url(scheme.get, call_601070.host, call_601070.base,
-                         call_601070.route, valid.getOrDefault("path"),
+  let url = call_594070.url(scheme.get, call_594070.host, call_594070.base,
+                         call_594070.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601070, url, valid)
+  result = hook(call_594070, url, valid)
 
-proc call*(call_601071: Call_DescribeScalingPlanResources_601058; body: JsonNode): Recallable =
+proc call*(call_594071: Call_DescribeScalingPlanResources_594058; body: JsonNode): Recallable =
   ## describeScalingPlanResources
   ## Describes the scalable resources in the specified scaling plan.
   ##   body: JObject (required)
-  var body_601072 = newJObject()
+  var body_594072 = newJObject()
   if body != nil:
-    body_601072 = body
-  result = call_601071.call(nil, nil, nil, nil, body_601072)
+    body_594072 = body
+  result = call_594071.call(nil, nil, nil, nil, body_594072)
 
-var describeScalingPlanResources* = Call_DescribeScalingPlanResources_601058(
+var describeScalingPlanResources* = Call_DescribeScalingPlanResources_594058(
     name: "describeScalingPlanResources", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#X-Amz-Target=AnyScaleScalingPlannerFrontendService.DescribeScalingPlanResources",
-    validator: validate_DescribeScalingPlanResources_601059, base: "/",
-    url: url_DescribeScalingPlanResources_601060,
+    validator: validate_DescribeScalingPlanResources_594059, base: "/",
+    url: url_DescribeScalingPlanResources_594060,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeScalingPlans_601073 = ref object of OpenApiRestCall_600437
-proc url_DescribeScalingPlans_601075(protocol: Scheme; host: string; base: string;
+  Call_DescribeScalingPlans_594073 = ref object of OpenApiRestCall_593437
+proc url_DescribeScalingPlans_594075(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeScalingPlans_601074(path: JsonNode; query: JsonNode;
+proc validate_DescribeScalingPlans_594074(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes one or more of your scaling plans.
   ## 
@@ -491,48 +491,48 @@ proc validate_DescribeScalingPlans_601074(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601076 = header.getOrDefault("X-Amz-Date")
-  valid_601076 = validateParameter(valid_601076, JString, required = false,
+  var valid_594076 = header.getOrDefault("X-Amz-Date")
+  valid_594076 = validateParameter(valid_594076, JString, required = false,
                                  default = nil)
-  if valid_601076 != nil:
-    section.add "X-Amz-Date", valid_601076
-  var valid_601077 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601077 = validateParameter(valid_601077, JString, required = false,
+  if valid_594076 != nil:
+    section.add "X-Amz-Date", valid_594076
+  var valid_594077 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594077 = validateParameter(valid_594077, JString, required = false,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "X-Amz-Security-Token", valid_601077
+  if valid_594077 != nil:
+    section.add "X-Amz-Security-Token", valid_594077
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601078 = header.getOrDefault("X-Amz-Target")
-  valid_601078 = validateParameter(valid_601078, JString, required = true, default = newJString(
+  var valid_594078 = header.getOrDefault("X-Amz-Target")
+  valid_594078 = validateParameter(valid_594078, JString, required = true, default = newJString(
       "AnyScaleScalingPlannerFrontendService.DescribeScalingPlans"))
-  if valid_601078 != nil:
-    section.add "X-Amz-Target", valid_601078
-  var valid_601079 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601079 = validateParameter(valid_601079, JString, required = false,
+  if valid_594078 != nil:
+    section.add "X-Amz-Target", valid_594078
+  var valid_594079 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594079 = validateParameter(valid_594079, JString, required = false,
                                  default = nil)
-  if valid_601079 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601079
-  var valid_601080 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601080 = validateParameter(valid_601080, JString, required = false,
+  if valid_594079 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594079
+  var valid_594080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594080 = validateParameter(valid_594080, JString, required = false,
                                  default = nil)
-  if valid_601080 != nil:
-    section.add "X-Amz-Algorithm", valid_601080
-  var valid_601081 = header.getOrDefault("X-Amz-Signature")
-  valid_601081 = validateParameter(valid_601081, JString, required = false,
+  if valid_594080 != nil:
+    section.add "X-Amz-Algorithm", valid_594080
+  var valid_594081 = header.getOrDefault("X-Amz-Signature")
+  valid_594081 = validateParameter(valid_594081, JString, required = false,
                                  default = nil)
-  if valid_601081 != nil:
-    section.add "X-Amz-Signature", valid_601081
-  var valid_601082 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601082 = validateParameter(valid_601082, JString, required = false,
+  if valid_594081 != nil:
+    section.add "X-Amz-Signature", valid_594081
+  var valid_594082 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594082 = validateParameter(valid_594082, JString, required = false,
                                  default = nil)
-  if valid_601082 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601082
-  var valid_601083 = header.getOrDefault("X-Amz-Credential")
-  valid_601083 = validateParameter(valid_601083, JString, required = false,
+  if valid_594082 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594082
+  var valid_594083 = header.getOrDefault("X-Amz-Credential")
+  valid_594083 = validateParameter(valid_594083, JString, required = false,
                                  default = nil)
-  if valid_601083 != nil:
-    section.add "X-Amz-Credential", valid_601083
+  if valid_594083 != nil:
+    section.add "X-Amz-Credential", valid_594083
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -543,43 +543,43 @@ proc validate_DescribeScalingPlans_601074(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601085: Call_DescribeScalingPlans_601073; path: JsonNode;
+proc call*(call_594085: Call_DescribeScalingPlans_594073; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes one or more of your scaling plans.
   ## 
-  let valid = call_601085.validator(path, query, header, formData, body)
-  let scheme = call_601085.pickScheme
+  let valid = call_594085.validator(path, query, header, formData, body)
+  let scheme = call_594085.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601085.url(scheme.get, call_601085.host, call_601085.base,
-                         call_601085.route, valid.getOrDefault("path"),
+  let url = call_594085.url(scheme.get, call_594085.host, call_594085.base,
+                         call_594085.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601085, url, valid)
+  result = hook(call_594085, url, valid)
 
-proc call*(call_601086: Call_DescribeScalingPlans_601073; body: JsonNode): Recallable =
+proc call*(call_594086: Call_DescribeScalingPlans_594073; body: JsonNode): Recallable =
   ## describeScalingPlans
   ## Describes one or more of your scaling plans.
   ##   body: JObject (required)
-  var body_601087 = newJObject()
+  var body_594087 = newJObject()
   if body != nil:
-    body_601087 = body
-  result = call_601086.call(nil, nil, nil, nil, body_601087)
+    body_594087 = body
+  result = call_594086.call(nil, nil, nil, nil, body_594087)
 
-var describeScalingPlans* = Call_DescribeScalingPlans_601073(
+var describeScalingPlans* = Call_DescribeScalingPlans_594073(
     name: "describeScalingPlans", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#X-Amz-Target=AnyScaleScalingPlannerFrontendService.DescribeScalingPlans",
-    validator: validate_DescribeScalingPlans_601074, base: "/",
-    url: url_DescribeScalingPlans_601075, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeScalingPlans_594074, base: "/",
+    url: url_DescribeScalingPlans_594075, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetScalingPlanResourceForecastData_601088 = ref object of OpenApiRestCall_600437
-proc url_GetScalingPlanResourceForecastData_601090(protocol: Scheme; host: string;
+  Call_GetScalingPlanResourceForecastData_594088 = ref object of OpenApiRestCall_593437
+proc url_GetScalingPlanResourceForecastData_594090(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetScalingPlanResourceForecastData_601089(path: JsonNode;
+proc validate_GetScalingPlanResourceForecastData_594089(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves the forecast data for a scalable resource.</p> <p>Capacity forecasts are represented as predicted values, or data points, that are calculated using historical data points from a specified CloudWatch load metric. Data points are available for up to 56 days. </p>
   ## 
@@ -599,47 +599,47 @@ proc validate_GetScalingPlanResourceForecastData_601089(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601091 = header.getOrDefault("X-Amz-Date")
-  valid_601091 = validateParameter(valid_601091, JString, required = false,
+  var valid_594091 = header.getOrDefault("X-Amz-Date")
+  valid_594091 = validateParameter(valid_594091, JString, required = false,
                                  default = nil)
-  if valid_601091 != nil:
-    section.add "X-Amz-Date", valid_601091
-  var valid_601092 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  if valid_594091 != nil:
+    section.add "X-Amz-Date", valid_594091
+  var valid_594092 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594092 = validateParameter(valid_594092, JString, required = false,
                                  default = nil)
-  if valid_601092 != nil:
-    section.add "X-Amz-Security-Token", valid_601092
+  if valid_594092 != nil:
+    section.add "X-Amz-Security-Token", valid_594092
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601093 = header.getOrDefault("X-Amz-Target")
-  valid_601093 = validateParameter(valid_601093, JString, required = true, default = newJString("AnyScaleScalingPlannerFrontendService.GetScalingPlanResourceForecastData"))
-  if valid_601093 != nil:
-    section.add "X-Amz-Target", valid_601093
-  var valid_601094 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601094 = validateParameter(valid_601094, JString, required = false,
+  var valid_594093 = header.getOrDefault("X-Amz-Target")
+  valid_594093 = validateParameter(valid_594093, JString, required = true, default = newJString("AnyScaleScalingPlannerFrontendService.GetScalingPlanResourceForecastData"))
+  if valid_594093 != nil:
+    section.add "X-Amz-Target", valid_594093
+  var valid_594094 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594094 = validateParameter(valid_594094, JString, required = false,
                                  default = nil)
-  if valid_601094 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601094
-  var valid_601095 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601095 = validateParameter(valid_601095, JString, required = false,
+  if valid_594094 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594094
+  var valid_594095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594095 = validateParameter(valid_594095, JString, required = false,
                                  default = nil)
-  if valid_601095 != nil:
-    section.add "X-Amz-Algorithm", valid_601095
-  var valid_601096 = header.getOrDefault("X-Amz-Signature")
-  valid_601096 = validateParameter(valid_601096, JString, required = false,
+  if valid_594095 != nil:
+    section.add "X-Amz-Algorithm", valid_594095
+  var valid_594096 = header.getOrDefault("X-Amz-Signature")
+  valid_594096 = validateParameter(valid_594096, JString, required = false,
                                  default = nil)
-  if valid_601096 != nil:
-    section.add "X-Amz-Signature", valid_601096
-  var valid_601097 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601097 = validateParameter(valid_601097, JString, required = false,
+  if valid_594096 != nil:
+    section.add "X-Amz-Signature", valid_594096
+  var valid_594097 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594097 = validateParameter(valid_594097, JString, required = false,
                                  default = nil)
-  if valid_601097 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601097
-  var valid_601098 = header.getOrDefault("X-Amz-Credential")
-  valid_601098 = validateParameter(valid_601098, JString, required = false,
+  if valid_594097 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594097
+  var valid_594098 = header.getOrDefault("X-Amz-Credential")
+  valid_594098 = validateParameter(valid_594098, JString, required = false,
                                  default = nil)
-  if valid_601098 != nil:
-    section.add "X-Amz-Credential", valid_601098
+  if valid_594098 != nil:
+    section.add "X-Amz-Credential", valid_594098
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -650,46 +650,46 @@ proc validate_GetScalingPlanResourceForecastData_601089(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601100: Call_GetScalingPlanResourceForecastData_601088;
+proc call*(call_594100: Call_GetScalingPlanResourceForecastData_594088;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Retrieves the forecast data for a scalable resource.</p> <p>Capacity forecasts are represented as predicted values, or data points, that are calculated using historical data points from a specified CloudWatch load metric. Data points are available for up to 56 days. </p>
   ## 
-  let valid = call_601100.validator(path, query, header, formData, body)
-  let scheme = call_601100.pickScheme
+  let valid = call_594100.validator(path, query, header, formData, body)
+  let scheme = call_594100.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601100.url(scheme.get, call_601100.host, call_601100.base,
-                         call_601100.route, valid.getOrDefault("path"),
+  let url = call_594100.url(scheme.get, call_594100.host, call_594100.base,
+                         call_594100.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601100, url, valid)
+  result = hook(call_594100, url, valid)
 
-proc call*(call_601101: Call_GetScalingPlanResourceForecastData_601088;
+proc call*(call_594101: Call_GetScalingPlanResourceForecastData_594088;
           body: JsonNode): Recallable =
   ## getScalingPlanResourceForecastData
   ## <p>Retrieves the forecast data for a scalable resource.</p> <p>Capacity forecasts are represented as predicted values, or data points, that are calculated using historical data points from a specified CloudWatch load metric. Data points are available for up to 56 days. </p>
   ##   body: JObject (required)
-  var body_601102 = newJObject()
+  var body_594102 = newJObject()
   if body != nil:
-    body_601102 = body
-  result = call_601101.call(nil, nil, nil, nil, body_601102)
+    body_594102 = body
+  result = call_594101.call(nil, nil, nil, nil, body_594102)
 
-var getScalingPlanResourceForecastData* = Call_GetScalingPlanResourceForecastData_601088(
+var getScalingPlanResourceForecastData* = Call_GetScalingPlanResourceForecastData_594088(
     name: "getScalingPlanResourceForecastData", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#X-Amz-Target=AnyScaleScalingPlannerFrontendService.GetScalingPlanResourceForecastData",
-    validator: validate_GetScalingPlanResourceForecastData_601089, base: "/",
-    url: url_GetScalingPlanResourceForecastData_601090,
+    validator: validate_GetScalingPlanResourceForecastData_594089, base: "/",
+    url: url_GetScalingPlanResourceForecastData_594090,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateScalingPlan_601103 = ref object of OpenApiRestCall_600437
-proc url_UpdateScalingPlan_601105(protocol: Scheme; host: string; base: string;
+  Call_UpdateScalingPlan_594103 = ref object of OpenApiRestCall_593437
+proc url_UpdateScalingPlan_594105(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateScalingPlan_601104(path: JsonNode; query: JsonNode;
+proc validate_UpdateScalingPlan_594104(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Updates the specified scaling plan.</p> <p>You cannot update a scaling plan if it is in the process of being created, updated, or deleted.</p>
@@ -710,48 +710,48 @@ proc validate_UpdateScalingPlan_601104(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601106 = header.getOrDefault("X-Amz-Date")
-  valid_601106 = validateParameter(valid_601106, JString, required = false,
+  var valid_594106 = header.getOrDefault("X-Amz-Date")
+  valid_594106 = validateParameter(valid_594106, JString, required = false,
                                  default = nil)
-  if valid_601106 != nil:
-    section.add "X-Amz-Date", valid_601106
-  var valid_601107 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601107 = validateParameter(valid_601107, JString, required = false,
+  if valid_594106 != nil:
+    section.add "X-Amz-Date", valid_594106
+  var valid_594107 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594107 = validateParameter(valid_594107, JString, required = false,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "X-Amz-Security-Token", valid_601107
+  if valid_594107 != nil:
+    section.add "X-Amz-Security-Token", valid_594107
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601108 = header.getOrDefault("X-Amz-Target")
-  valid_601108 = validateParameter(valid_601108, JString, required = true, default = newJString(
+  var valid_594108 = header.getOrDefault("X-Amz-Target")
+  valid_594108 = validateParameter(valid_594108, JString, required = true, default = newJString(
       "AnyScaleScalingPlannerFrontendService.UpdateScalingPlan"))
-  if valid_601108 != nil:
-    section.add "X-Amz-Target", valid_601108
-  var valid_601109 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  if valid_594108 != nil:
+    section.add "X-Amz-Target", valid_594108
+  var valid_594109 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594109 = validateParameter(valid_594109, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601109
-  var valid_601110 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_594109 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594109
+  var valid_594110 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594110 = validateParameter(valid_594110, JString, required = false,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "X-Amz-Algorithm", valid_601110
-  var valid_601111 = header.getOrDefault("X-Amz-Signature")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_594110 != nil:
+    section.add "X-Amz-Algorithm", valid_594110
+  var valid_594111 = header.getOrDefault("X-Amz-Signature")
+  valid_594111 = validateParameter(valid_594111, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "X-Amz-Signature", valid_601111
-  var valid_601112 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601112 = validateParameter(valid_601112, JString, required = false,
+  if valid_594111 != nil:
+    section.add "X-Amz-Signature", valid_594111
+  var valid_594112 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594112 = validateParameter(valid_594112, JString, required = false,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601112
-  var valid_601113 = header.getOrDefault("X-Amz-Credential")
-  valid_601113 = validateParameter(valid_601113, JString, required = false,
+  if valid_594112 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594112
+  var valid_594113 = header.getOrDefault("X-Amz-Credential")
+  valid_594113 = validateParameter(valid_594113, JString, required = false,
                                  default = nil)
-  if valid_601113 != nil:
-    section.add "X-Amz-Credential", valid_601113
+  if valid_594113 != nil:
+    section.add "X-Amz-Credential", valid_594113
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -762,32 +762,32 @@ proc validate_UpdateScalingPlan_601104(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601115: Call_UpdateScalingPlan_601103; path: JsonNode;
+proc call*(call_594115: Call_UpdateScalingPlan_594103; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the specified scaling plan.</p> <p>You cannot update a scaling plan if it is in the process of being created, updated, or deleted.</p>
   ## 
-  let valid = call_601115.validator(path, query, header, formData, body)
-  let scheme = call_601115.pickScheme
+  let valid = call_594115.validator(path, query, header, formData, body)
+  let scheme = call_594115.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601115.url(scheme.get, call_601115.host, call_601115.base,
-                         call_601115.route, valid.getOrDefault("path"),
+  let url = call_594115.url(scheme.get, call_594115.host, call_594115.base,
+                         call_594115.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601115, url, valid)
+  result = hook(call_594115, url, valid)
 
-proc call*(call_601116: Call_UpdateScalingPlan_601103; body: JsonNode): Recallable =
+proc call*(call_594116: Call_UpdateScalingPlan_594103; body: JsonNode): Recallable =
   ## updateScalingPlan
   ## <p>Updates the specified scaling plan.</p> <p>You cannot update a scaling plan if it is in the process of being created, updated, or deleted.</p>
   ##   body: JObject (required)
-  var body_601117 = newJObject()
+  var body_594117 = newJObject()
   if body != nil:
-    body_601117 = body
-  result = call_601116.call(nil, nil, nil, nil, body_601117)
+    body_594117 = body
+  result = call_594116.call(nil, nil, nil, nil, body_594117)
 
-var updateScalingPlan* = Call_UpdateScalingPlan_601103(name: "updateScalingPlan",
+var updateScalingPlan* = Call_UpdateScalingPlan_594103(name: "updateScalingPlan",
     meth: HttpMethod.HttpPost, host: "autoscaling.amazonaws.com", route: "/#X-Amz-Target=AnyScaleScalingPlannerFrontendService.UpdateScalingPlan",
-    validator: validate_UpdateScalingPlan_601104, base: "/",
-    url: url_UpdateScalingPlan_601105, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateScalingPlan_594104, base: "/",
+    url: url_UpdateScalingPlan_594105, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

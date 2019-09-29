@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS MediaTailor
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600424 = ref object of OpenApiRestCall
+  OpenApiRestCall_593424 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600424](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593424](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600424): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593424): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -130,8 +130,8 @@ const
   awsServiceName = "mediatailor"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GetPlaybackConfiguration_600761 = ref object of OpenApiRestCall_600424
-proc url_GetPlaybackConfiguration_600763(protocol: Scheme; host: string;
+  Call_GetPlaybackConfiguration_593761 = ref object of OpenApiRestCall_593424
+proc url_GetPlaybackConfiguration_593763(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -147,7 +147,7 @@ proc url_GetPlaybackConfiguration_600763(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetPlaybackConfiguration_600762(path: JsonNode; query: JsonNode;
+proc validate_GetPlaybackConfiguration_593762(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the playback configuration for the specified name. 
   ## 
@@ -158,11 +158,11 @@ proc validate_GetPlaybackConfiguration_600762(path: JsonNode; query: JsonNode;
   ##       : The identifier for the playback configuration.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Name` field"
-  var valid_600889 = path.getOrDefault("Name")
-  valid_600889 = validateParameter(valid_600889, JString, required = true,
+  var valid_593889 = path.getOrDefault("Name")
+  valid_593889 = validateParameter(valid_593889, JString, required = true,
                                  default = nil)
-  if valid_600889 != nil:
-    section.add "Name", valid_600889
+  if valid_593889 != nil:
+    section.add "Name", valid_593889
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -175,77 +175,77 @@ proc validate_GetPlaybackConfiguration_600762(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600890 = header.getOrDefault("X-Amz-Date")
-  valid_600890 = validateParameter(valid_600890, JString, required = false,
+  var valid_593890 = header.getOrDefault("X-Amz-Date")
+  valid_593890 = validateParameter(valid_593890, JString, required = false,
                                  default = nil)
-  if valid_600890 != nil:
-    section.add "X-Amz-Date", valid_600890
-  var valid_600891 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600891 = validateParameter(valid_600891, JString, required = false,
+  if valid_593890 != nil:
+    section.add "X-Amz-Date", valid_593890
+  var valid_593891 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593891 = validateParameter(valid_593891, JString, required = false,
                                  default = nil)
-  if valid_600891 != nil:
-    section.add "X-Amz-Security-Token", valid_600891
-  var valid_600892 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600892 = validateParameter(valid_600892, JString, required = false,
+  if valid_593891 != nil:
+    section.add "X-Amz-Security-Token", valid_593891
+  var valid_593892 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593892 = validateParameter(valid_593892, JString, required = false,
                                  default = nil)
-  if valid_600892 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600892
-  var valid_600893 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600893 = validateParameter(valid_600893, JString, required = false,
+  if valid_593892 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593892
+  var valid_593893 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593893 = validateParameter(valid_593893, JString, required = false,
                                  default = nil)
-  if valid_600893 != nil:
-    section.add "X-Amz-Algorithm", valid_600893
-  var valid_600894 = header.getOrDefault("X-Amz-Signature")
-  valid_600894 = validateParameter(valid_600894, JString, required = false,
+  if valid_593893 != nil:
+    section.add "X-Amz-Algorithm", valid_593893
+  var valid_593894 = header.getOrDefault("X-Amz-Signature")
+  valid_593894 = validateParameter(valid_593894, JString, required = false,
                                  default = nil)
-  if valid_600894 != nil:
-    section.add "X-Amz-Signature", valid_600894
-  var valid_600895 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600895 = validateParameter(valid_600895, JString, required = false,
+  if valid_593894 != nil:
+    section.add "X-Amz-Signature", valid_593894
+  var valid_593895 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593895 = validateParameter(valid_593895, JString, required = false,
                                  default = nil)
-  if valid_600895 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600895
-  var valid_600896 = header.getOrDefault("X-Amz-Credential")
-  valid_600896 = validateParameter(valid_600896, JString, required = false,
+  if valid_593895 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593895
+  var valid_593896 = header.getOrDefault("X-Amz-Credential")
+  valid_593896 = validateParameter(valid_593896, JString, required = false,
                                  default = nil)
-  if valid_600896 != nil:
-    section.add "X-Amz-Credential", valid_600896
+  if valid_593896 != nil:
+    section.add "X-Amz-Credential", valid_593896
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600919: Call_GetPlaybackConfiguration_600761; path: JsonNode;
+proc call*(call_593919: Call_GetPlaybackConfiguration_593761; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the playback configuration for the specified name. 
   ## 
-  let valid = call_600919.validator(path, query, header, formData, body)
-  let scheme = call_600919.pickScheme
+  let valid = call_593919.validator(path, query, header, formData, body)
+  let scheme = call_593919.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600919.url(scheme.get, call_600919.host, call_600919.base,
-                         call_600919.route, valid.getOrDefault("path"),
+  let url = call_593919.url(scheme.get, call_593919.host, call_593919.base,
+                         call_593919.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600919, url, valid)
+  result = hook(call_593919, url, valid)
 
-proc call*(call_600990: Call_GetPlaybackConfiguration_600761; Name: string): Recallable =
+proc call*(call_593990: Call_GetPlaybackConfiguration_593761; Name: string): Recallable =
   ## getPlaybackConfiguration
   ## Returns the playback configuration for the specified name. 
   ##   Name: string (required)
   ##       : The identifier for the playback configuration.
-  var path_600991 = newJObject()
-  add(path_600991, "Name", newJString(Name))
-  result = call_600990.call(path_600991, nil, nil, nil, nil)
+  var path_593991 = newJObject()
+  add(path_593991, "Name", newJString(Name))
+  result = call_593990.call(path_593991, nil, nil, nil, nil)
 
-var getPlaybackConfiguration* = Call_GetPlaybackConfiguration_600761(
+var getPlaybackConfiguration* = Call_GetPlaybackConfiguration_593761(
     name: "getPlaybackConfiguration", meth: HttpMethod.HttpGet,
     host: "api.mediatailor.amazonaws.com", route: "/playbackConfiguration/{Name}",
-    validator: validate_GetPlaybackConfiguration_600762, base: "/",
-    url: url_GetPlaybackConfiguration_600763, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetPlaybackConfiguration_593762, base: "/",
+    url: url_GetPlaybackConfiguration_593763, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeletePlaybackConfiguration_601031 = ref object of OpenApiRestCall_600424
-proc url_DeletePlaybackConfiguration_601033(protocol: Scheme; host: string;
+  Call_DeletePlaybackConfiguration_594031 = ref object of OpenApiRestCall_593424
+proc url_DeletePlaybackConfiguration_594033(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -260,7 +260,7 @@ proc url_DeletePlaybackConfiguration_601033(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DeletePlaybackConfiguration_601032(path: JsonNode; query: JsonNode;
+proc validate_DeletePlaybackConfiguration_594032(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the playback configuration for the specified name. 
   ## 
@@ -271,11 +271,11 @@ proc validate_DeletePlaybackConfiguration_601032(path: JsonNode; query: JsonNode
   ##       : The identifier for the playback configuration.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Name` field"
-  var valid_601034 = path.getOrDefault("Name")
-  valid_601034 = validateParameter(valid_601034, JString, required = true,
+  var valid_594034 = path.getOrDefault("Name")
+  valid_594034 = validateParameter(valid_594034, JString, required = true,
                                  default = nil)
-  if valid_601034 != nil:
-    section.add "Name", valid_601034
+  if valid_594034 != nil:
+    section.add "Name", valid_594034
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -288,85 +288,85 @@ proc validate_DeletePlaybackConfiguration_601032(path: JsonNode; query: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601035 = header.getOrDefault("X-Amz-Date")
-  valid_601035 = validateParameter(valid_601035, JString, required = false,
+  var valid_594035 = header.getOrDefault("X-Amz-Date")
+  valid_594035 = validateParameter(valid_594035, JString, required = false,
                                  default = nil)
-  if valid_601035 != nil:
-    section.add "X-Amz-Date", valid_601035
-  var valid_601036 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601036 = validateParameter(valid_601036, JString, required = false,
+  if valid_594035 != nil:
+    section.add "X-Amz-Date", valid_594035
+  var valid_594036 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594036 = validateParameter(valid_594036, JString, required = false,
                                  default = nil)
-  if valid_601036 != nil:
-    section.add "X-Amz-Security-Token", valid_601036
-  var valid_601037 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601037 = validateParameter(valid_601037, JString, required = false,
+  if valid_594036 != nil:
+    section.add "X-Amz-Security-Token", valid_594036
+  var valid_594037 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594037 = validateParameter(valid_594037, JString, required = false,
                                  default = nil)
-  if valid_601037 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601037
-  var valid_601038 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601038 = validateParameter(valid_601038, JString, required = false,
+  if valid_594037 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594037
+  var valid_594038 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594038 = validateParameter(valid_594038, JString, required = false,
                                  default = nil)
-  if valid_601038 != nil:
-    section.add "X-Amz-Algorithm", valid_601038
-  var valid_601039 = header.getOrDefault("X-Amz-Signature")
-  valid_601039 = validateParameter(valid_601039, JString, required = false,
+  if valid_594038 != nil:
+    section.add "X-Amz-Algorithm", valid_594038
+  var valid_594039 = header.getOrDefault("X-Amz-Signature")
+  valid_594039 = validateParameter(valid_594039, JString, required = false,
                                  default = nil)
-  if valid_601039 != nil:
-    section.add "X-Amz-Signature", valid_601039
-  var valid_601040 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601040 = validateParameter(valid_601040, JString, required = false,
+  if valid_594039 != nil:
+    section.add "X-Amz-Signature", valid_594039
+  var valid_594040 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594040 = validateParameter(valid_594040, JString, required = false,
                                  default = nil)
-  if valid_601040 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601040
-  var valid_601041 = header.getOrDefault("X-Amz-Credential")
-  valid_601041 = validateParameter(valid_601041, JString, required = false,
+  if valid_594040 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594040
+  var valid_594041 = header.getOrDefault("X-Amz-Credential")
+  valid_594041 = validateParameter(valid_594041, JString, required = false,
                                  default = nil)
-  if valid_601041 != nil:
-    section.add "X-Amz-Credential", valid_601041
+  if valid_594041 != nil:
+    section.add "X-Amz-Credential", valid_594041
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601042: Call_DeletePlaybackConfiguration_601031; path: JsonNode;
+proc call*(call_594042: Call_DeletePlaybackConfiguration_594031; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the playback configuration for the specified name. 
   ## 
-  let valid = call_601042.validator(path, query, header, formData, body)
-  let scheme = call_601042.pickScheme
+  let valid = call_594042.validator(path, query, header, formData, body)
+  let scheme = call_594042.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601042.url(scheme.get, call_601042.host, call_601042.base,
-                         call_601042.route, valid.getOrDefault("path"),
+  let url = call_594042.url(scheme.get, call_594042.host, call_594042.base,
+                         call_594042.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601042, url, valid)
+  result = hook(call_594042, url, valid)
 
-proc call*(call_601043: Call_DeletePlaybackConfiguration_601031; Name: string): Recallable =
+proc call*(call_594043: Call_DeletePlaybackConfiguration_594031; Name: string): Recallable =
   ## deletePlaybackConfiguration
   ## Deletes the playback configuration for the specified name. 
   ##   Name: string (required)
   ##       : The identifier for the playback configuration.
-  var path_601044 = newJObject()
-  add(path_601044, "Name", newJString(Name))
-  result = call_601043.call(path_601044, nil, nil, nil, nil)
+  var path_594044 = newJObject()
+  add(path_594044, "Name", newJString(Name))
+  result = call_594043.call(path_594044, nil, nil, nil, nil)
 
-var deletePlaybackConfiguration* = Call_DeletePlaybackConfiguration_601031(
+var deletePlaybackConfiguration* = Call_DeletePlaybackConfiguration_594031(
     name: "deletePlaybackConfiguration", meth: HttpMethod.HttpDelete,
     host: "api.mediatailor.amazonaws.com", route: "/playbackConfiguration/{Name}",
-    validator: validate_DeletePlaybackConfiguration_601032, base: "/",
-    url: url_DeletePlaybackConfiguration_601033,
+    validator: validate_DeletePlaybackConfiguration_594032, base: "/",
+    url: url_DeletePlaybackConfiguration_594033,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPlaybackConfigurations_601045 = ref object of OpenApiRestCall_600424
-proc url_ListPlaybackConfigurations_601047(protocol: Scheme; host: string;
+  Call_ListPlaybackConfigurations_594045 = ref object of OpenApiRestCall_593424
+proc url_ListPlaybackConfigurations_594047(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListPlaybackConfigurations_601046(path: JsonNode; query: JsonNode;
+proc validate_ListPlaybackConfigurations_594046(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of the playback configurations defined in AWS Elemental MediaTailor. You can specify a maximum number of configurations to return at a time. The default maximum is 50. Results are returned in pagefuls. If MediaTailor has more configurations than the specified maximum, it provides parameters in the response that you can use to retrieve the next pageful. 
   ## 
@@ -380,15 +380,15 @@ proc validate_ListPlaybackConfigurations_601046(path: JsonNode; query: JsonNode;
   ##   MaxResults: JInt
   ##             : Maximum number of records to return. 
   section = newJObject()
-  var valid_601048 = query.getOrDefault("NextToken")
-  valid_601048 = validateParameter(valid_601048, JString, required = false,
+  var valid_594048 = query.getOrDefault("NextToken")
+  valid_594048 = validateParameter(valid_594048, JString, required = false,
                                  default = nil)
-  if valid_601048 != nil:
-    section.add "NextToken", valid_601048
-  var valid_601049 = query.getOrDefault("MaxResults")
-  valid_601049 = validateParameter(valid_601049, JInt, required = false, default = nil)
-  if valid_601049 != nil:
-    section.add "MaxResults", valid_601049
+  if valid_594048 != nil:
+    section.add "NextToken", valid_594048
+  var valid_594049 = query.getOrDefault("MaxResults")
+  valid_594049 = validateParameter(valid_594049, JInt, required = false, default = nil)
+  if valid_594049 != nil:
+    section.add "MaxResults", valid_594049
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -399,61 +399,61 @@ proc validate_ListPlaybackConfigurations_601046(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601050 = header.getOrDefault("X-Amz-Date")
-  valid_601050 = validateParameter(valid_601050, JString, required = false,
+  var valid_594050 = header.getOrDefault("X-Amz-Date")
+  valid_594050 = validateParameter(valid_594050, JString, required = false,
                                  default = nil)
-  if valid_601050 != nil:
-    section.add "X-Amz-Date", valid_601050
-  var valid_601051 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601051 = validateParameter(valid_601051, JString, required = false,
+  if valid_594050 != nil:
+    section.add "X-Amz-Date", valid_594050
+  var valid_594051 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594051 = validateParameter(valid_594051, JString, required = false,
                                  default = nil)
-  if valid_601051 != nil:
-    section.add "X-Amz-Security-Token", valid_601051
-  var valid_601052 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601052 = validateParameter(valid_601052, JString, required = false,
+  if valid_594051 != nil:
+    section.add "X-Amz-Security-Token", valid_594051
+  var valid_594052 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594052 = validateParameter(valid_594052, JString, required = false,
                                  default = nil)
-  if valid_601052 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601052
-  var valid_601053 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601053 = validateParameter(valid_601053, JString, required = false,
+  if valid_594052 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594052
+  var valid_594053 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594053 = validateParameter(valid_594053, JString, required = false,
                                  default = nil)
-  if valid_601053 != nil:
-    section.add "X-Amz-Algorithm", valid_601053
-  var valid_601054 = header.getOrDefault("X-Amz-Signature")
-  valid_601054 = validateParameter(valid_601054, JString, required = false,
+  if valid_594053 != nil:
+    section.add "X-Amz-Algorithm", valid_594053
+  var valid_594054 = header.getOrDefault("X-Amz-Signature")
+  valid_594054 = validateParameter(valid_594054, JString, required = false,
                                  default = nil)
-  if valid_601054 != nil:
-    section.add "X-Amz-Signature", valid_601054
-  var valid_601055 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601055 = validateParameter(valid_601055, JString, required = false,
+  if valid_594054 != nil:
+    section.add "X-Amz-Signature", valid_594054
+  var valid_594055 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594055 = validateParameter(valid_594055, JString, required = false,
                                  default = nil)
-  if valid_601055 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601055
-  var valid_601056 = header.getOrDefault("X-Amz-Credential")
-  valid_601056 = validateParameter(valid_601056, JString, required = false,
+  if valid_594055 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594055
+  var valid_594056 = header.getOrDefault("X-Amz-Credential")
+  valid_594056 = validateParameter(valid_594056, JString, required = false,
                                  default = nil)
-  if valid_601056 != nil:
-    section.add "X-Amz-Credential", valid_601056
+  if valid_594056 != nil:
+    section.add "X-Amz-Credential", valid_594056
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601057: Call_ListPlaybackConfigurations_601045; path: JsonNode;
+proc call*(call_594057: Call_ListPlaybackConfigurations_594045; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of the playback configurations defined in AWS Elemental MediaTailor. You can specify a maximum number of configurations to return at a time. The default maximum is 50. Results are returned in pagefuls. If MediaTailor has more configurations than the specified maximum, it provides parameters in the response that you can use to retrieve the next pageful. 
   ## 
-  let valid = call_601057.validator(path, query, header, formData, body)
-  let scheme = call_601057.pickScheme
+  let valid = call_594057.validator(path, query, header, formData, body)
+  let scheme = call_594057.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601057.url(scheme.get, call_601057.host, call_601057.base,
-                         call_601057.route, valid.getOrDefault("path"),
+  let url = call_594057.url(scheme.get, call_594057.host, call_594057.base,
+                         call_594057.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601057, url, valid)
+  result = hook(call_594057, url, valid)
 
-proc call*(call_601058: Call_ListPlaybackConfigurations_601045;
+proc call*(call_594058: Call_ListPlaybackConfigurations_594045;
           NextToken: string = ""; MaxResults: int = 0): Recallable =
   ## listPlaybackConfigurations
   ## Returns a list of the playback configurations defined in AWS Elemental MediaTailor. You can specify a maximum number of configurations to return at a time. The default maximum is 50. Results are returned in pagefuls. If MediaTailor has more configurations than the specified maximum, it provides parameters in the response that you can use to retrieve the next pageful. 
@@ -461,20 +461,20 @@ proc call*(call_601058: Call_ListPlaybackConfigurations_601045;
   ##            : Pagination token returned by the GET list request when results exceed the maximum allowed. Use the token to fetch the next page of results.
   ##   MaxResults: int
   ##             : Maximum number of records to return. 
-  var query_601059 = newJObject()
-  add(query_601059, "NextToken", newJString(NextToken))
-  add(query_601059, "MaxResults", newJInt(MaxResults))
-  result = call_601058.call(nil, query_601059, nil, nil, nil)
+  var query_594059 = newJObject()
+  add(query_594059, "NextToken", newJString(NextToken))
+  add(query_594059, "MaxResults", newJInt(MaxResults))
+  result = call_594058.call(nil, query_594059, nil, nil, nil)
 
-var listPlaybackConfigurations* = Call_ListPlaybackConfigurations_601045(
+var listPlaybackConfigurations* = Call_ListPlaybackConfigurations_594045(
     name: "listPlaybackConfigurations", meth: HttpMethod.HttpGet,
     host: "api.mediatailor.amazonaws.com", route: "/playbackConfigurations",
-    validator: validate_ListPlaybackConfigurations_601046, base: "/",
-    url: url_ListPlaybackConfigurations_601047,
+    validator: validate_ListPlaybackConfigurations_594046, base: "/",
+    url: url_ListPlaybackConfigurations_594047,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_601074 = ref object of OpenApiRestCall_600424
-proc url_TagResource_601076(protocol: Scheme; host: string; base: string;
+  Call_TagResource_594074 = ref object of OpenApiRestCall_593424
+proc url_TagResource_594076(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -489,7 +489,7 @@ proc url_TagResource_601076(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_TagResource_601075(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_594075(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds tags to the specified playback configuration resource. You can specify one or more tags to add. 
   ## 
@@ -501,11 +501,11 @@ proc validate_TagResource_601075(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceArn` field"
-  var valid_601077 = path.getOrDefault("ResourceArn")
-  valid_601077 = validateParameter(valid_601077, JString, required = true,
+  var valid_594077 = path.getOrDefault("ResourceArn")
+  valid_594077 = validateParameter(valid_594077, JString, required = true,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "ResourceArn", valid_601077
+  if valid_594077 != nil:
+    section.add "ResourceArn", valid_594077
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -518,41 +518,41 @@ proc validate_TagResource_601075(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601078 = header.getOrDefault("X-Amz-Date")
-  valid_601078 = validateParameter(valid_601078, JString, required = false,
+  var valid_594078 = header.getOrDefault("X-Amz-Date")
+  valid_594078 = validateParameter(valid_594078, JString, required = false,
                                  default = nil)
-  if valid_601078 != nil:
-    section.add "X-Amz-Date", valid_601078
-  var valid_601079 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601079 = validateParameter(valid_601079, JString, required = false,
+  if valid_594078 != nil:
+    section.add "X-Amz-Date", valid_594078
+  var valid_594079 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594079 = validateParameter(valid_594079, JString, required = false,
                                  default = nil)
-  if valid_601079 != nil:
-    section.add "X-Amz-Security-Token", valid_601079
-  var valid_601080 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601080 = validateParameter(valid_601080, JString, required = false,
+  if valid_594079 != nil:
+    section.add "X-Amz-Security-Token", valid_594079
+  var valid_594080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594080 = validateParameter(valid_594080, JString, required = false,
                                  default = nil)
-  if valid_601080 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601080
-  var valid_601081 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601081 = validateParameter(valid_601081, JString, required = false,
+  if valid_594080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594080
+  var valid_594081 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594081 = validateParameter(valid_594081, JString, required = false,
                                  default = nil)
-  if valid_601081 != nil:
-    section.add "X-Amz-Algorithm", valid_601081
-  var valid_601082 = header.getOrDefault("X-Amz-Signature")
-  valid_601082 = validateParameter(valid_601082, JString, required = false,
+  if valid_594081 != nil:
+    section.add "X-Amz-Algorithm", valid_594081
+  var valid_594082 = header.getOrDefault("X-Amz-Signature")
+  valid_594082 = validateParameter(valid_594082, JString, required = false,
                                  default = nil)
-  if valid_601082 != nil:
-    section.add "X-Amz-Signature", valid_601082
-  var valid_601083 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601083 = validateParameter(valid_601083, JString, required = false,
+  if valid_594082 != nil:
+    section.add "X-Amz-Signature", valid_594082
+  var valid_594083 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594083 = validateParameter(valid_594083, JString, required = false,
                                  default = nil)
-  if valid_601083 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601083
-  var valid_601084 = header.getOrDefault("X-Amz-Credential")
-  valid_601084 = validateParameter(valid_601084, JString, required = false,
+  if valid_594083 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594083
+  var valid_594084 = header.getOrDefault("X-Amz-Credential")
+  valid_594084 = validateParameter(valid_594084, JString, required = false,
                                  default = nil)
-  if valid_601084 != nil:
-    section.add "X-Amz-Credential", valid_601084
+  if valid_594084 != nil:
+    section.add "X-Amz-Credential", valid_594084
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -563,42 +563,42 @@ proc validate_TagResource_601075(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601086: Call_TagResource_601074; path: JsonNode; query: JsonNode;
+proc call*(call_594086: Call_TagResource_594074; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds tags to the specified playback configuration resource. You can specify one or more tags to add. 
   ## 
-  let valid = call_601086.validator(path, query, header, formData, body)
-  let scheme = call_601086.pickScheme
+  let valid = call_594086.validator(path, query, header, formData, body)
+  let scheme = call_594086.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601086.url(scheme.get, call_601086.host, call_601086.base,
-                         call_601086.route, valid.getOrDefault("path"),
+  let url = call_594086.url(scheme.get, call_594086.host, call_594086.base,
+                         call_594086.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601086, url, valid)
+  result = hook(call_594086, url, valid)
 
-proc call*(call_601087: Call_TagResource_601074; ResourceArn: string; body: JsonNode): Recallable =
+proc call*(call_594087: Call_TagResource_594074; ResourceArn: string; body: JsonNode): Recallable =
   ## tagResource
   ## Adds tags to the specified playback configuration resource. You can specify one or more tags to add. 
   ##   ResourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) for the playback configuration. You can get this from the response to any playback configuration request. 
   ##   body: JObject (required)
-  var path_601088 = newJObject()
-  var body_601089 = newJObject()
-  add(path_601088, "ResourceArn", newJString(ResourceArn))
+  var path_594088 = newJObject()
+  var body_594089 = newJObject()
+  add(path_594088, "ResourceArn", newJString(ResourceArn))
   if body != nil:
-    body_601089 = body
-  result = call_601087.call(path_601088, nil, nil, nil, body_601089)
+    body_594089 = body
+  result = call_594087.call(path_594088, nil, nil, nil, body_594089)
 
-var tagResource* = Call_TagResource_601074(name: "tagResource",
+var tagResource* = Call_TagResource_594074(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "api.mediatailor.amazonaws.com",
                                         route: "/tags/{ResourceArn}",
-                                        validator: validate_TagResource_601075,
-                                        base: "/", url: url_TagResource_601076,
+                                        validator: validate_TagResource_594075,
+                                        base: "/", url: url_TagResource_594076,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_601060 = ref object of OpenApiRestCall_600424
-proc url_ListTagsForResource_601062(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_594060 = ref object of OpenApiRestCall_593424
+proc url_ListTagsForResource_594062(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -613,7 +613,7 @@ proc url_ListTagsForResource_601062(protocol: Scheme; host: string; base: string
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_ListTagsForResource_601061(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_594061(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns a list of the tags assigned to the specified playback configuration resource. 
@@ -626,11 +626,11 @@ proc validate_ListTagsForResource_601061(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceArn` field"
-  var valid_601063 = path.getOrDefault("ResourceArn")
-  valid_601063 = validateParameter(valid_601063, JString, required = true,
+  var valid_594063 = path.getOrDefault("ResourceArn")
+  valid_594063 = validateParameter(valid_594063, JString, required = true,
                                  default = nil)
-  if valid_601063 != nil:
-    section.add "ResourceArn", valid_601063
+  if valid_594063 != nil:
+    section.add "ResourceArn", valid_594063
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -643,77 +643,77 @@ proc validate_ListTagsForResource_601061(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601064 = header.getOrDefault("X-Amz-Date")
-  valid_601064 = validateParameter(valid_601064, JString, required = false,
+  var valid_594064 = header.getOrDefault("X-Amz-Date")
+  valid_594064 = validateParameter(valid_594064, JString, required = false,
                                  default = nil)
-  if valid_601064 != nil:
-    section.add "X-Amz-Date", valid_601064
-  var valid_601065 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601065 = validateParameter(valid_601065, JString, required = false,
+  if valid_594064 != nil:
+    section.add "X-Amz-Date", valid_594064
+  var valid_594065 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594065 = validateParameter(valid_594065, JString, required = false,
                                  default = nil)
-  if valid_601065 != nil:
-    section.add "X-Amz-Security-Token", valid_601065
-  var valid_601066 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601066 = validateParameter(valid_601066, JString, required = false,
+  if valid_594065 != nil:
+    section.add "X-Amz-Security-Token", valid_594065
+  var valid_594066 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594066 = validateParameter(valid_594066, JString, required = false,
                                  default = nil)
-  if valid_601066 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601066
-  var valid_601067 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601067 = validateParameter(valid_601067, JString, required = false,
+  if valid_594066 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594066
+  var valid_594067 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594067 = validateParameter(valid_594067, JString, required = false,
                                  default = nil)
-  if valid_601067 != nil:
-    section.add "X-Amz-Algorithm", valid_601067
-  var valid_601068 = header.getOrDefault("X-Amz-Signature")
-  valid_601068 = validateParameter(valid_601068, JString, required = false,
+  if valid_594067 != nil:
+    section.add "X-Amz-Algorithm", valid_594067
+  var valid_594068 = header.getOrDefault("X-Amz-Signature")
+  valid_594068 = validateParameter(valid_594068, JString, required = false,
                                  default = nil)
-  if valid_601068 != nil:
-    section.add "X-Amz-Signature", valid_601068
-  var valid_601069 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601069 = validateParameter(valid_601069, JString, required = false,
+  if valid_594068 != nil:
+    section.add "X-Amz-Signature", valid_594068
+  var valid_594069 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594069 = validateParameter(valid_594069, JString, required = false,
                                  default = nil)
-  if valid_601069 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601069
-  var valid_601070 = header.getOrDefault("X-Amz-Credential")
-  valid_601070 = validateParameter(valid_601070, JString, required = false,
+  if valid_594069 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594069
+  var valid_594070 = header.getOrDefault("X-Amz-Credential")
+  valid_594070 = validateParameter(valid_594070, JString, required = false,
                                  default = nil)
-  if valid_601070 != nil:
-    section.add "X-Amz-Credential", valid_601070
+  if valid_594070 != nil:
+    section.add "X-Amz-Credential", valid_594070
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601071: Call_ListTagsForResource_601060; path: JsonNode;
+proc call*(call_594071: Call_ListTagsForResource_594060; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of the tags assigned to the specified playback configuration resource. 
   ## 
-  let valid = call_601071.validator(path, query, header, formData, body)
-  let scheme = call_601071.pickScheme
+  let valid = call_594071.validator(path, query, header, formData, body)
+  let scheme = call_594071.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601071.url(scheme.get, call_601071.host, call_601071.base,
-                         call_601071.route, valid.getOrDefault("path"),
+  let url = call_594071.url(scheme.get, call_594071.host, call_594071.base,
+                         call_594071.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601071, url, valid)
+  result = hook(call_594071, url, valid)
 
-proc call*(call_601072: Call_ListTagsForResource_601060; ResourceArn: string): Recallable =
+proc call*(call_594072: Call_ListTagsForResource_594060; ResourceArn: string): Recallable =
   ## listTagsForResource
   ## Returns a list of the tags assigned to the specified playback configuration resource. 
   ##   ResourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) for the playback configuration. You can get this from the response to any playback configuration request. 
-  var path_601073 = newJObject()
-  add(path_601073, "ResourceArn", newJString(ResourceArn))
-  result = call_601072.call(path_601073, nil, nil, nil, nil)
+  var path_594073 = newJObject()
+  add(path_594073, "ResourceArn", newJString(ResourceArn))
+  result = call_594072.call(path_594073, nil, nil, nil, nil)
 
-var listTagsForResource* = Call_ListTagsForResource_601060(
+var listTagsForResource* = Call_ListTagsForResource_594060(
     name: "listTagsForResource", meth: HttpMethod.HttpGet,
     host: "api.mediatailor.amazonaws.com", route: "/tags/{ResourceArn}",
-    validator: validate_ListTagsForResource_601061, base: "/",
-    url: url_ListTagsForResource_601062, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_594061, base: "/",
+    url: url_ListTagsForResource_594062, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutPlaybackConfiguration_601090 = ref object of OpenApiRestCall_600424
-proc url_PutPlaybackConfiguration_601092(protocol: Scheme; host: string;
+  Call_PutPlaybackConfiguration_594090 = ref object of OpenApiRestCall_593424
+proc url_PutPlaybackConfiguration_594092(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -721,7 +721,7 @@ proc url_PutPlaybackConfiguration_601092(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutPlaybackConfiguration_601091(path: JsonNode; query: JsonNode;
+proc validate_PutPlaybackConfiguration_594091(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds a new playback configuration to AWS Elemental MediaTailor. 
   ## 
@@ -740,41 +740,41 @@ proc validate_PutPlaybackConfiguration_601091(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601093 = header.getOrDefault("X-Amz-Date")
-  valid_601093 = validateParameter(valid_601093, JString, required = false,
+  var valid_594093 = header.getOrDefault("X-Amz-Date")
+  valid_594093 = validateParameter(valid_594093, JString, required = false,
                                  default = nil)
-  if valid_601093 != nil:
-    section.add "X-Amz-Date", valid_601093
-  var valid_601094 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601094 = validateParameter(valid_601094, JString, required = false,
+  if valid_594093 != nil:
+    section.add "X-Amz-Date", valid_594093
+  var valid_594094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594094 = validateParameter(valid_594094, JString, required = false,
                                  default = nil)
-  if valid_601094 != nil:
-    section.add "X-Amz-Security-Token", valid_601094
-  var valid_601095 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601095 = validateParameter(valid_601095, JString, required = false,
+  if valid_594094 != nil:
+    section.add "X-Amz-Security-Token", valid_594094
+  var valid_594095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594095 = validateParameter(valid_594095, JString, required = false,
                                  default = nil)
-  if valid_601095 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601095
-  var valid_601096 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601096 = validateParameter(valid_601096, JString, required = false,
+  if valid_594095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594095
+  var valid_594096 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594096 = validateParameter(valid_594096, JString, required = false,
                                  default = nil)
-  if valid_601096 != nil:
-    section.add "X-Amz-Algorithm", valid_601096
-  var valid_601097 = header.getOrDefault("X-Amz-Signature")
-  valid_601097 = validateParameter(valid_601097, JString, required = false,
+  if valid_594096 != nil:
+    section.add "X-Amz-Algorithm", valid_594096
+  var valid_594097 = header.getOrDefault("X-Amz-Signature")
+  valid_594097 = validateParameter(valid_594097, JString, required = false,
                                  default = nil)
-  if valid_601097 != nil:
-    section.add "X-Amz-Signature", valid_601097
-  var valid_601098 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601098 = validateParameter(valid_601098, JString, required = false,
+  if valid_594097 != nil:
+    section.add "X-Amz-Signature", valid_594097
+  var valid_594098 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594098 = validateParameter(valid_594098, JString, required = false,
                                  default = nil)
-  if valid_601098 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601098
-  var valid_601099 = header.getOrDefault("X-Amz-Credential")
-  valid_601099 = validateParameter(valid_601099, JString, required = false,
+  if valid_594098 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594098
+  var valid_594099 = header.getOrDefault("X-Amz-Credential")
+  valid_594099 = validateParameter(valid_594099, JString, required = false,
                                  default = nil)
-  if valid_601099 != nil:
-    section.add "X-Amz-Credential", valid_601099
+  if valid_594099 != nil:
+    section.add "X-Amz-Credential", valid_594099
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -785,36 +785,36 @@ proc validate_PutPlaybackConfiguration_601091(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601101: Call_PutPlaybackConfiguration_601090; path: JsonNode;
+proc call*(call_594101: Call_PutPlaybackConfiguration_594090; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds a new playback configuration to AWS Elemental MediaTailor. 
   ## 
-  let valid = call_601101.validator(path, query, header, formData, body)
-  let scheme = call_601101.pickScheme
+  let valid = call_594101.validator(path, query, header, formData, body)
+  let scheme = call_594101.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601101.url(scheme.get, call_601101.host, call_601101.base,
-                         call_601101.route, valid.getOrDefault("path"),
+  let url = call_594101.url(scheme.get, call_594101.host, call_594101.base,
+                         call_594101.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601101, url, valid)
+  result = hook(call_594101, url, valid)
 
-proc call*(call_601102: Call_PutPlaybackConfiguration_601090; body: JsonNode): Recallable =
+proc call*(call_594102: Call_PutPlaybackConfiguration_594090; body: JsonNode): Recallable =
   ## putPlaybackConfiguration
   ## Adds a new playback configuration to AWS Elemental MediaTailor. 
   ##   body: JObject (required)
-  var body_601103 = newJObject()
+  var body_594103 = newJObject()
   if body != nil:
-    body_601103 = body
-  result = call_601102.call(nil, nil, nil, nil, body_601103)
+    body_594103 = body
+  result = call_594102.call(nil, nil, nil, nil, body_594103)
 
-var putPlaybackConfiguration* = Call_PutPlaybackConfiguration_601090(
+var putPlaybackConfiguration* = Call_PutPlaybackConfiguration_594090(
     name: "putPlaybackConfiguration", meth: HttpMethod.HttpPut,
     host: "api.mediatailor.amazonaws.com", route: "/playbackConfiguration",
-    validator: validate_PutPlaybackConfiguration_601091, base: "/",
-    url: url_PutPlaybackConfiguration_601092, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutPlaybackConfiguration_594091, base: "/",
+    url: url_PutPlaybackConfiguration_594092, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_601104 = ref object of OpenApiRestCall_600424
-proc url_UntagResource_601106(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_594104 = ref object of OpenApiRestCall_593424
+proc url_UntagResource_594106(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -830,7 +830,7 @@ proc url_UntagResource_601106(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_UntagResource_601105(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_594105(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes tags from the specified playback configuration resource. You can specify one or more tags to remove. 
   ## 
@@ -842,21 +842,21 @@ proc validate_UntagResource_601105(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceArn` field"
-  var valid_601107 = path.getOrDefault("ResourceArn")
-  valid_601107 = validateParameter(valid_601107, JString, required = true,
+  var valid_594107 = path.getOrDefault("ResourceArn")
+  valid_594107 = validateParameter(valid_594107, JString, required = true,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "ResourceArn", valid_601107
+  if valid_594107 != nil:
+    section.add "ResourceArn", valid_594107
   result.add "path", section
   ## parameters in `query` object:
   ##   tagKeys: JArray (required)
   ##          : A comma-separated list of the tag keys to remove from the playback configuration. 
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `tagKeys` field"
-  var valid_601108 = query.getOrDefault("tagKeys")
-  valid_601108 = validateParameter(valid_601108, JArray, required = true, default = nil)
-  if valid_601108 != nil:
-    section.add "tagKeys", valid_601108
+  var valid_594108 = query.getOrDefault("tagKeys")
+  valid_594108 = validateParameter(valid_594108, JArray, required = true, default = nil)
+  if valid_594108 != nil:
+    section.add "tagKeys", valid_594108
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -867,61 +867,61 @@ proc validate_UntagResource_601105(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601109 = header.getOrDefault("X-Amz-Date")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  var valid_594109 = header.getOrDefault("X-Amz-Date")
+  valid_594109 = validateParameter(valid_594109, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "X-Amz-Date", valid_601109
-  var valid_601110 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_594109 != nil:
+    section.add "X-Amz-Date", valid_594109
+  var valid_594110 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594110 = validateParameter(valid_594110, JString, required = false,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "X-Amz-Security-Token", valid_601110
-  var valid_601111 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_594110 != nil:
+    section.add "X-Amz-Security-Token", valid_594110
+  var valid_594111 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594111 = validateParameter(valid_594111, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601111
-  var valid_601112 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601112 = validateParameter(valid_601112, JString, required = false,
+  if valid_594111 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594111
+  var valid_594112 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594112 = validateParameter(valid_594112, JString, required = false,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "X-Amz-Algorithm", valid_601112
-  var valid_601113 = header.getOrDefault("X-Amz-Signature")
-  valid_601113 = validateParameter(valid_601113, JString, required = false,
+  if valid_594112 != nil:
+    section.add "X-Amz-Algorithm", valid_594112
+  var valid_594113 = header.getOrDefault("X-Amz-Signature")
+  valid_594113 = validateParameter(valid_594113, JString, required = false,
                                  default = nil)
-  if valid_601113 != nil:
-    section.add "X-Amz-Signature", valid_601113
-  var valid_601114 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601114 = validateParameter(valid_601114, JString, required = false,
+  if valid_594113 != nil:
+    section.add "X-Amz-Signature", valid_594113
+  var valid_594114 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594114 = validateParameter(valid_594114, JString, required = false,
                                  default = nil)
-  if valid_601114 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601114
-  var valid_601115 = header.getOrDefault("X-Amz-Credential")
-  valid_601115 = validateParameter(valid_601115, JString, required = false,
+  if valid_594114 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594114
+  var valid_594115 = header.getOrDefault("X-Amz-Credential")
+  valid_594115 = validateParameter(valid_594115, JString, required = false,
                                  default = nil)
-  if valid_601115 != nil:
-    section.add "X-Amz-Credential", valid_601115
+  if valid_594115 != nil:
+    section.add "X-Amz-Credential", valid_594115
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601116: Call_UntagResource_601104; path: JsonNode; query: JsonNode;
+proc call*(call_594116: Call_UntagResource_594104; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes tags from the specified playback configuration resource. You can specify one or more tags to remove. 
   ## 
-  let valid = call_601116.validator(path, query, header, formData, body)
-  let scheme = call_601116.pickScheme
+  let valid = call_594116.validator(path, query, header, formData, body)
+  let scheme = call_594116.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601116.url(scheme.get, call_601116.host, call_601116.base,
-                         call_601116.route, valid.getOrDefault("path"),
+  let url = call_594116.url(scheme.get, call_594116.host, call_594116.base,
+                         call_594116.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601116, url, valid)
+  result = hook(call_594116, url, valid)
 
-proc call*(call_601117: Call_UntagResource_601104; tagKeys: JsonNode;
+proc call*(call_594117: Call_UntagResource_594104; tagKeys: JsonNode;
           ResourceArn: string): Recallable =
   ## untagResource
   ## Removes tags from the specified playback configuration resource. You can specify one or more tags to remove. 
@@ -929,17 +929,17 @@ proc call*(call_601117: Call_UntagResource_601104; tagKeys: JsonNode;
   ##          : A comma-separated list of the tag keys to remove from the playback configuration. 
   ##   ResourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) for the playback configuration. You can get this from the response to any playback configuration request. 
-  var path_601118 = newJObject()
-  var query_601119 = newJObject()
+  var path_594118 = newJObject()
+  var query_594119 = newJObject()
   if tagKeys != nil:
-    query_601119.add "tagKeys", tagKeys
-  add(path_601118, "ResourceArn", newJString(ResourceArn))
-  result = call_601117.call(path_601118, query_601119, nil, nil, nil)
+    query_594119.add "tagKeys", tagKeys
+  add(path_594118, "ResourceArn", newJString(ResourceArn))
+  result = call_594117.call(path_594118, query_594119, nil, nil, nil)
 
-var untagResource* = Call_UntagResource_601104(name: "untagResource",
+var untagResource* = Call_UntagResource_594104(name: "untagResource",
     meth: HttpMethod.HttpDelete, host: "api.mediatailor.amazonaws.com",
-    route: "/tags/{ResourceArn}#tagKeys", validator: validate_UntagResource_601105,
-    base: "/", url: url_UntagResource_601106, schemes: {Scheme.Https, Scheme.Http})
+    route: "/tags/{ResourceArn}#tagKeys", validator: validate_UntagResource_594105,
+    base: "/", url: url_UntagResource_594106, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

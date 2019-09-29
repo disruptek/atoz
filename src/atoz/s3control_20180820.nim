@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS S3 Control
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600437 = ref object of OpenApiRestCall
+  OpenApiRestCall_593437 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600437](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593437](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600437): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593437): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -140,15 +140,15 @@ const
   awsServiceName = "s3control"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateJob_601035 = ref object of OpenApiRestCall_600437
-proc url_CreateJob_601037(protocol: Scheme; host: string; base: string; route: string;
+  Call_CreateJob_594035 = ref object of OpenApiRestCall_593437
+proc url_CreateJob_594037(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateJob_601036(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateJob_594036(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates an Amazon S3 batch operations job.
   ## 
@@ -169,48 +169,48 @@ proc validate_CreateJob_601036(path: JsonNode; query: JsonNode; header: JsonNode
   ##   x-amz-account-id: JString (required)
   ##                   : <p/>
   section = newJObject()
-  var valid_601038 = header.getOrDefault("X-Amz-Date")
-  valid_601038 = validateParameter(valid_601038, JString, required = false,
+  var valid_594038 = header.getOrDefault("X-Amz-Date")
+  valid_594038 = validateParameter(valid_594038, JString, required = false,
                                  default = nil)
-  if valid_601038 != nil:
-    section.add "X-Amz-Date", valid_601038
-  var valid_601039 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601039 = validateParameter(valid_601039, JString, required = false,
+  if valid_594038 != nil:
+    section.add "X-Amz-Date", valid_594038
+  var valid_594039 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594039 = validateParameter(valid_594039, JString, required = false,
                                  default = nil)
-  if valid_601039 != nil:
-    section.add "X-Amz-Security-Token", valid_601039
-  var valid_601040 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601040 = validateParameter(valid_601040, JString, required = false,
+  if valid_594039 != nil:
+    section.add "X-Amz-Security-Token", valid_594039
+  var valid_594040 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594040 = validateParameter(valid_594040, JString, required = false,
                                  default = nil)
-  if valid_601040 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601040
-  var valid_601041 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601041 = validateParameter(valid_601041, JString, required = false,
+  if valid_594040 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594040
+  var valid_594041 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594041 = validateParameter(valid_594041, JString, required = false,
                                  default = nil)
-  if valid_601041 != nil:
-    section.add "X-Amz-Algorithm", valid_601041
-  var valid_601042 = header.getOrDefault("X-Amz-Signature")
-  valid_601042 = validateParameter(valid_601042, JString, required = false,
+  if valid_594041 != nil:
+    section.add "X-Amz-Algorithm", valid_594041
+  var valid_594042 = header.getOrDefault("X-Amz-Signature")
+  valid_594042 = validateParameter(valid_594042, JString, required = false,
                                  default = nil)
-  if valid_601042 != nil:
-    section.add "X-Amz-Signature", valid_601042
-  var valid_601043 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601043 = validateParameter(valid_601043, JString, required = false,
+  if valid_594042 != nil:
+    section.add "X-Amz-Signature", valid_594042
+  var valid_594043 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594043 = validateParameter(valid_594043, JString, required = false,
                                  default = nil)
-  if valid_601043 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601043
-  var valid_601044 = header.getOrDefault("X-Amz-Credential")
-  valid_601044 = validateParameter(valid_601044, JString, required = false,
+  if valid_594043 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594043
+  var valid_594044 = header.getOrDefault("X-Amz-Credential")
+  valid_594044 = validateParameter(valid_594044, JString, required = false,
                                  default = nil)
-  if valid_601044 != nil:
-    section.add "X-Amz-Credential", valid_601044
+  if valid_594044 != nil:
+    section.add "X-Amz-Credential", valid_594044
   assert header != nil,
         "header argument is necessary due to required `x-amz-account-id` field"
-  var valid_601045 = header.getOrDefault("x-amz-account-id")
-  valid_601045 = validateParameter(valid_601045, JString, required = true,
+  var valid_594045 = header.getOrDefault("x-amz-account-id")
+  valid_594045 = validateParameter(valid_594045, JString, required = true,
                                  default = nil)
-  if valid_601045 != nil:
-    section.add "x-amz-account-id", valid_601045
+  if valid_594045 != nil:
+    section.add "x-amz-account-id", valid_594045
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -221,44 +221,44 @@ proc validate_CreateJob_601036(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_601047: Call_CreateJob_601035; path: JsonNode; query: JsonNode;
+proc call*(call_594047: Call_CreateJob_594035; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates an Amazon S3 batch operations job.
   ## 
-  let valid = call_601047.validator(path, query, header, formData, body)
-  let scheme = call_601047.pickScheme
+  let valid = call_594047.validator(path, query, header, formData, body)
+  let scheme = call_594047.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601047.url(scheme.get, call_601047.host, call_601047.base,
-                         call_601047.route, valid.getOrDefault("path"),
+  let url = call_594047.url(scheme.get, call_594047.host, call_594047.base,
+                         call_594047.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601047, url, valid)
+  result = hook(call_594047, url, valid)
 
-proc call*(call_601048: Call_CreateJob_601035; body: JsonNode): Recallable =
+proc call*(call_594048: Call_CreateJob_594035; body: JsonNode): Recallable =
   ## createJob
   ## Creates an Amazon S3 batch operations job.
   ##   body: JObject (required)
-  var body_601049 = newJObject()
+  var body_594049 = newJObject()
   if body != nil:
-    body_601049 = body
-  result = call_601048.call(nil, nil, nil, nil, body_601049)
+    body_594049 = body
+  result = call_594048.call(nil, nil, nil, nil, body_594049)
 
-var createJob* = Call_CreateJob_601035(name: "createJob", meth: HttpMethod.HttpPost,
+var createJob* = Call_CreateJob_594035(name: "createJob", meth: HttpMethod.HttpPost,
                                     host: "s3-control.amazonaws.com",
                                     route: "/v20180820/jobs#x-amz-account-id",
-                                    validator: validate_CreateJob_601036,
-                                    base: "/", url: url_CreateJob_601037,
+                                    validator: validate_CreateJob_594036,
+                                    base: "/", url: url_CreateJob_594037,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListJobs_600774 = ref object of OpenApiRestCall_600437
-proc url_ListJobs_600776(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListJobs_593774 = ref object of OpenApiRestCall_593437
+proc url_ListJobs_593776(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListJobs_600775(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListJobs_593775(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists current jobs and jobs that have ended within the last 30 days for the AWS account making the request.
   ## 
@@ -278,30 +278,30 @@ proc validate_ListJobs_600775(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600888 = query.getOrDefault("jobStatuses")
-  valid_600888 = validateParameter(valid_600888, JArray, required = false,
+  var valid_593888 = query.getOrDefault("jobStatuses")
+  valid_593888 = validateParameter(valid_593888, JArray, required = false,
                                  default = nil)
-  if valid_600888 != nil:
-    section.add "jobStatuses", valid_600888
-  var valid_600889 = query.getOrDefault("NextToken")
-  valid_600889 = validateParameter(valid_600889, JString, required = false,
+  if valid_593888 != nil:
+    section.add "jobStatuses", valid_593888
+  var valid_593889 = query.getOrDefault("NextToken")
+  valid_593889 = validateParameter(valid_593889, JString, required = false,
                                  default = nil)
-  if valid_600889 != nil:
-    section.add "NextToken", valid_600889
-  var valid_600890 = query.getOrDefault("maxResults")
-  valid_600890 = validateParameter(valid_600890, JInt, required = false, default = nil)
-  if valid_600890 != nil:
-    section.add "maxResults", valid_600890
-  var valid_600891 = query.getOrDefault("nextToken")
-  valid_600891 = validateParameter(valid_600891, JString, required = false,
+  if valid_593889 != nil:
+    section.add "NextToken", valid_593889
+  var valid_593890 = query.getOrDefault("maxResults")
+  valid_593890 = validateParameter(valid_593890, JInt, required = false, default = nil)
+  if valid_593890 != nil:
+    section.add "maxResults", valid_593890
+  var valid_593891 = query.getOrDefault("nextToken")
+  valid_593891 = validateParameter(valid_593891, JString, required = false,
                                  default = nil)
-  if valid_600891 != nil:
-    section.add "nextToken", valid_600891
-  var valid_600892 = query.getOrDefault("MaxResults")
-  valid_600892 = validateParameter(valid_600892, JString, required = false,
+  if valid_593891 != nil:
+    section.add "nextToken", valid_593891
+  var valid_593892 = query.getOrDefault("MaxResults")
+  valid_593892 = validateParameter(valid_593892, JString, required = false,
                                  default = nil)
-  if valid_600892 != nil:
-    section.add "MaxResults", valid_600892
+  if valid_593892 != nil:
+    section.add "MaxResults", valid_593892
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -314,68 +314,68 @@ proc validate_ListJobs_600775(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   x-amz-account-id: JString (required)
   ##                   : <p/>
   section = newJObject()
-  var valid_600893 = header.getOrDefault("X-Amz-Date")
-  valid_600893 = validateParameter(valid_600893, JString, required = false,
+  var valid_593893 = header.getOrDefault("X-Amz-Date")
+  valid_593893 = validateParameter(valid_593893, JString, required = false,
                                  default = nil)
-  if valid_600893 != nil:
-    section.add "X-Amz-Date", valid_600893
-  var valid_600894 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600894 = validateParameter(valid_600894, JString, required = false,
+  if valid_593893 != nil:
+    section.add "X-Amz-Date", valid_593893
+  var valid_593894 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593894 = validateParameter(valid_593894, JString, required = false,
                                  default = nil)
-  if valid_600894 != nil:
-    section.add "X-Amz-Security-Token", valid_600894
-  var valid_600895 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600895 = validateParameter(valid_600895, JString, required = false,
+  if valid_593894 != nil:
+    section.add "X-Amz-Security-Token", valid_593894
+  var valid_593895 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593895 = validateParameter(valid_593895, JString, required = false,
                                  default = nil)
-  if valid_600895 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600895
-  var valid_600896 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600896 = validateParameter(valid_600896, JString, required = false,
+  if valid_593895 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593895
+  var valid_593896 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593896 = validateParameter(valid_593896, JString, required = false,
                                  default = nil)
-  if valid_600896 != nil:
-    section.add "X-Amz-Algorithm", valid_600896
-  var valid_600897 = header.getOrDefault("X-Amz-Signature")
-  valid_600897 = validateParameter(valid_600897, JString, required = false,
+  if valid_593896 != nil:
+    section.add "X-Amz-Algorithm", valid_593896
+  var valid_593897 = header.getOrDefault("X-Amz-Signature")
+  valid_593897 = validateParameter(valid_593897, JString, required = false,
                                  default = nil)
-  if valid_600897 != nil:
-    section.add "X-Amz-Signature", valid_600897
-  var valid_600898 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600898 = validateParameter(valid_600898, JString, required = false,
+  if valid_593897 != nil:
+    section.add "X-Amz-Signature", valid_593897
+  var valid_593898 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593898 = validateParameter(valid_593898, JString, required = false,
                                  default = nil)
-  if valid_600898 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600898
-  var valid_600899 = header.getOrDefault("X-Amz-Credential")
-  valid_600899 = validateParameter(valid_600899, JString, required = false,
+  if valid_593898 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593898
+  var valid_593899 = header.getOrDefault("X-Amz-Credential")
+  valid_593899 = validateParameter(valid_593899, JString, required = false,
                                  default = nil)
-  if valid_600899 != nil:
-    section.add "X-Amz-Credential", valid_600899
+  if valid_593899 != nil:
+    section.add "X-Amz-Credential", valid_593899
   assert header != nil,
         "header argument is necessary due to required `x-amz-account-id` field"
-  var valid_600900 = header.getOrDefault("x-amz-account-id")
-  valid_600900 = validateParameter(valid_600900, JString, required = true,
+  var valid_593900 = header.getOrDefault("x-amz-account-id")
+  valid_593900 = validateParameter(valid_593900, JString, required = true,
                                  default = nil)
-  if valid_600900 != nil:
-    section.add "x-amz-account-id", valid_600900
+  if valid_593900 != nil:
+    section.add "x-amz-account-id", valid_593900
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600923: Call_ListJobs_600774; path: JsonNode; query: JsonNode;
+proc call*(call_593923: Call_ListJobs_593774; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists current jobs and jobs that have ended within the last 30 days for the AWS account making the request.
   ## 
-  let valid = call_600923.validator(path, query, header, formData, body)
-  let scheme = call_600923.pickScheme
+  let valid = call_593923.validator(path, query, header, formData, body)
+  let scheme = call_593923.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600923.url(scheme.get, call_600923.host, call_600923.base,
-                         call_600923.route, valid.getOrDefault("path"),
+  let url = call_593923.url(scheme.get, call_593923.host, call_593923.base,
+                         call_593923.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600923, url, valid)
+  result = hook(call_593923, url, valid)
 
-proc call*(call_600994: Call_ListJobs_600774; jobStatuses: JsonNode = nil;
+proc call*(call_593994: Call_ListJobs_593774; jobStatuses: JsonNode = nil;
           NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
           MaxResults: string = ""): Recallable =
   ## listJobs
@@ -390,31 +390,31 @@ proc call*(call_600994: Call_ListJobs_600774; jobStatuses: JsonNode = nil;
   ##            : A pagination token to request the next page of results. Use the token that Amazon S3 returned in the <code>NextToken</code> element of the <code>ListJobsResult</code> from the previous <code>List Jobs</code> request.
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600995 = newJObject()
+  var query_593995 = newJObject()
   if jobStatuses != nil:
-    query_600995.add "jobStatuses", jobStatuses
-  add(query_600995, "NextToken", newJString(NextToken))
-  add(query_600995, "maxResults", newJInt(maxResults))
-  add(query_600995, "nextToken", newJString(nextToken))
-  add(query_600995, "MaxResults", newJString(MaxResults))
-  result = call_600994.call(nil, query_600995, nil, nil, nil)
+    query_593995.add "jobStatuses", jobStatuses
+  add(query_593995, "NextToken", newJString(NextToken))
+  add(query_593995, "maxResults", newJInt(maxResults))
+  add(query_593995, "nextToken", newJString(nextToken))
+  add(query_593995, "MaxResults", newJString(MaxResults))
+  result = call_593994.call(nil, query_593995, nil, nil, nil)
 
-var listJobs* = Call_ListJobs_600774(name: "listJobs", meth: HttpMethod.HttpGet,
+var listJobs* = Call_ListJobs_593774(name: "listJobs", meth: HttpMethod.HttpGet,
                                   host: "s3-control.amazonaws.com",
                                   route: "/v20180820/jobs#x-amz-account-id",
-                                  validator: validate_ListJobs_600775, base: "/",
-                                  url: url_ListJobs_600776,
+                                  validator: validate_ListJobs_593775, base: "/",
+                                  url: url_ListJobs_593776,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutPublicAccessBlock_601063 = ref object of OpenApiRestCall_600437
-proc url_PutPublicAccessBlock_601065(protocol: Scheme; host: string; base: string;
+  Call_PutPublicAccessBlock_594063 = ref object of OpenApiRestCall_593437
+proc url_PutPublicAccessBlock_594065(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutPublicAccessBlock_601064(path: JsonNode; query: JsonNode;
+proc validate_PutPublicAccessBlock_594064(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p/>
   ## 
@@ -435,48 +435,48 @@ proc validate_PutPublicAccessBlock_601064(path: JsonNode; query: JsonNode;
   ##   x-amz-account-id: JString (required)
   ##                   : <p/>
   section = newJObject()
-  var valid_601066 = header.getOrDefault("X-Amz-Date")
-  valid_601066 = validateParameter(valid_601066, JString, required = false,
+  var valid_594066 = header.getOrDefault("X-Amz-Date")
+  valid_594066 = validateParameter(valid_594066, JString, required = false,
                                  default = nil)
-  if valid_601066 != nil:
-    section.add "X-Amz-Date", valid_601066
-  var valid_601067 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601067 = validateParameter(valid_601067, JString, required = false,
+  if valid_594066 != nil:
+    section.add "X-Amz-Date", valid_594066
+  var valid_594067 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594067 = validateParameter(valid_594067, JString, required = false,
                                  default = nil)
-  if valid_601067 != nil:
-    section.add "X-Amz-Security-Token", valid_601067
-  var valid_601068 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601068 = validateParameter(valid_601068, JString, required = false,
+  if valid_594067 != nil:
+    section.add "X-Amz-Security-Token", valid_594067
+  var valid_594068 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594068 = validateParameter(valid_594068, JString, required = false,
                                  default = nil)
-  if valid_601068 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601068
-  var valid_601069 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601069 = validateParameter(valid_601069, JString, required = false,
+  if valid_594068 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594068
+  var valid_594069 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594069 = validateParameter(valid_594069, JString, required = false,
                                  default = nil)
-  if valid_601069 != nil:
-    section.add "X-Amz-Algorithm", valid_601069
-  var valid_601070 = header.getOrDefault("X-Amz-Signature")
-  valid_601070 = validateParameter(valid_601070, JString, required = false,
+  if valid_594069 != nil:
+    section.add "X-Amz-Algorithm", valid_594069
+  var valid_594070 = header.getOrDefault("X-Amz-Signature")
+  valid_594070 = validateParameter(valid_594070, JString, required = false,
                                  default = nil)
-  if valid_601070 != nil:
-    section.add "X-Amz-Signature", valid_601070
-  var valid_601071 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601071 = validateParameter(valid_601071, JString, required = false,
+  if valid_594070 != nil:
+    section.add "X-Amz-Signature", valid_594070
+  var valid_594071 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594071 = validateParameter(valid_594071, JString, required = false,
                                  default = nil)
-  if valid_601071 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601071
-  var valid_601072 = header.getOrDefault("X-Amz-Credential")
-  valid_601072 = validateParameter(valid_601072, JString, required = false,
+  if valid_594071 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594071
+  var valid_594072 = header.getOrDefault("X-Amz-Credential")
+  valid_594072 = validateParameter(valid_594072, JString, required = false,
                                  default = nil)
-  if valid_601072 != nil:
-    section.add "X-Amz-Credential", valid_601072
+  if valid_594072 != nil:
+    section.add "X-Amz-Credential", valid_594072
   assert header != nil,
         "header argument is necessary due to required `x-amz-account-id` field"
-  var valid_601073 = header.getOrDefault("x-amz-account-id")
-  valid_601073 = validateParameter(valid_601073, JString, required = true,
+  var valid_594073 = header.getOrDefault("x-amz-account-id")
+  valid_594073 = validateParameter(valid_594073, JString, required = true,
                                  default = nil)
-  if valid_601073 != nil:
-    section.add "x-amz-account-id", valid_601073
+  if valid_594073 != nil:
+    section.add "x-amz-account-id", valid_594073
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -487,44 +487,44 @@ proc validate_PutPublicAccessBlock_601064(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601075: Call_PutPublicAccessBlock_601063; path: JsonNode;
+proc call*(call_594075: Call_PutPublicAccessBlock_594063; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p/>
   ## 
-  let valid = call_601075.validator(path, query, header, formData, body)
-  let scheme = call_601075.pickScheme
+  let valid = call_594075.validator(path, query, header, formData, body)
+  let scheme = call_594075.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601075.url(scheme.get, call_601075.host, call_601075.base,
-                         call_601075.route, valid.getOrDefault("path"),
+  let url = call_594075.url(scheme.get, call_594075.host, call_594075.base,
+                         call_594075.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601075, url, valid)
+  result = hook(call_594075, url, valid)
 
-proc call*(call_601076: Call_PutPublicAccessBlock_601063; body: JsonNode): Recallable =
+proc call*(call_594076: Call_PutPublicAccessBlock_594063; body: JsonNode): Recallable =
   ## putPublicAccessBlock
   ## <p/>
   ##   body: JObject (required)
-  var body_601077 = newJObject()
+  var body_594077 = newJObject()
   if body != nil:
-    body_601077 = body
-  result = call_601076.call(nil, nil, nil, nil, body_601077)
+    body_594077 = body
+  result = call_594076.call(nil, nil, nil, nil, body_594077)
 
-var putPublicAccessBlock* = Call_PutPublicAccessBlock_601063(
+var putPublicAccessBlock* = Call_PutPublicAccessBlock_594063(
     name: "putPublicAccessBlock", meth: HttpMethod.HttpPut,
     host: "s3-control.amazonaws.com",
     route: "/v20180820/configuration/publicAccessBlock#x-amz-account-id",
-    validator: validate_PutPublicAccessBlock_601064, base: "/",
-    url: url_PutPublicAccessBlock_601065, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutPublicAccessBlock_594064, base: "/",
+    url: url_PutPublicAccessBlock_594065, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetPublicAccessBlock_601050 = ref object of OpenApiRestCall_600437
-proc url_GetPublicAccessBlock_601052(protocol: Scheme; host: string; base: string;
+  Call_GetPublicAccessBlock_594050 = ref object of OpenApiRestCall_593437
+proc url_GetPublicAccessBlock_594052(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetPublicAccessBlock_601051(path: JsonNode; query: JsonNode;
+proc validate_GetPublicAccessBlock_594051(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p/>
   ## 
@@ -545,81 +545,81 @@ proc validate_GetPublicAccessBlock_601051(path: JsonNode; query: JsonNode;
   ##   x-amz-account-id: JString (required)
   ##                   : <p/>
   section = newJObject()
-  var valid_601053 = header.getOrDefault("X-Amz-Date")
-  valid_601053 = validateParameter(valid_601053, JString, required = false,
+  var valid_594053 = header.getOrDefault("X-Amz-Date")
+  valid_594053 = validateParameter(valid_594053, JString, required = false,
                                  default = nil)
-  if valid_601053 != nil:
-    section.add "X-Amz-Date", valid_601053
-  var valid_601054 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601054 = validateParameter(valid_601054, JString, required = false,
+  if valid_594053 != nil:
+    section.add "X-Amz-Date", valid_594053
+  var valid_594054 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594054 = validateParameter(valid_594054, JString, required = false,
                                  default = nil)
-  if valid_601054 != nil:
-    section.add "X-Amz-Security-Token", valid_601054
-  var valid_601055 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601055 = validateParameter(valid_601055, JString, required = false,
+  if valid_594054 != nil:
+    section.add "X-Amz-Security-Token", valid_594054
+  var valid_594055 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594055 = validateParameter(valid_594055, JString, required = false,
                                  default = nil)
-  if valid_601055 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601055
-  var valid_601056 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601056 = validateParameter(valid_601056, JString, required = false,
+  if valid_594055 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594055
+  var valid_594056 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594056 = validateParameter(valid_594056, JString, required = false,
                                  default = nil)
-  if valid_601056 != nil:
-    section.add "X-Amz-Algorithm", valid_601056
-  var valid_601057 = header.getOrDefault("X-Amz-Signature")
-  valid_601057 = validateParameter(valid_601057, JString, required = false,
+  if valid_594056 != nil:
+    section.add "X-Amz-Algorithm", valid_594056
+  var valid_594057 = header.getOrDefault("X-Amz-Signature")
+  valid_594057 = validateParameter(valid_594057, JString, required = false,
                                  default = nil)
-  if valid_601057 != nil:
-    section.add "X-Amz-Signature", valid_601057
-  var valid_601058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601058 = validateParameter(valid_601058, JString, required = false,
+  if valid_594057 != nil:
+    section.add "X-Amz-Signature", valid_594057
+  var valid_594058 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594058 = validateParameter(valid_594058, JString, required = false,
                                  default = nil)
-  if valid_601058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601058
-  var valid_601059 = header.getOrDefault("X-Amz-Credential")
-  valid_601059 = validateParameter(valid_601059, JString, required = false,
+  if valid_594058 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594058
+  var valid_594059 = header.getOrDefault("X-Amz-Credential")
+  valid_594059 = validateParameter(valid_594059, JString, required = false,
                                  default = nil)
-  if valid_601059 != nil:
-    section.add "X-Amz-Credential", valid_601059
+  if valid_594059 != nil:
+    section.add "X-Amz-Credential", valid_594059
   assert header != nil,
         "header argument is necessary due to required `x-amz-account-id` field"
-  var valid_601060 = header.getOrDefault("x-amz-account-id")
-  valid_601060 = validateParameter(valid_601060, JString, required = true,
+  var valid_594060 = header.getOrDefault("x-amz-account-id")
+  valid_594060 = validateParameter(valid_594060, JString, required = true,
                                  default = nil)
-  if valid_601060 != nil:
-    section.add "x-amz-account-id", valid_601060
+  if valid_594060 != nil:
+    section.add "x-amz-account-id", valid_594060
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601061: Call_GetPublicAccessBlock_601050; path: JsonNode;
+proc call*(call_594061: Call_GetPublicAccessBlock_594050; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p/>
   ## 
-  let valid = call_601061.validator(path, query, header, formData, body)
-  let scheme = call_601061.pickScheme
+  let valid = call_594061.validator(path, query, header, formData, body)
+  let scheme = call_594061.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601061.url(scheme.get, call_601061.host, call_601061.base,
-                         call_601061.route, valid.getOrDefault("path"),
+  let url = call_594061.url(scheme.get, call_594061.host, call_594061.base,
+                         call_594061.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601061, url, valid)
+  result = hook(call_594061, url, valid)
 
-proc call*(call_601062: Call_GetPublicAccessBlock_601050): Recallable =
+proc call*(call_594062: Call_GetPublicAccessBlock_594050): Recallable =
   ## getPublicAccessBlock
   ## <p/>
-  result = call_601062.call(nil, nil, nil, nil, nil)
+  result = call_594062.call(nil, nil, nil, nil, nil)
 
-var getPublicAccessBlock* = Call_GetPublicAccessBlock_601050(
+var getPublicAccessBlock* = Call_GetPublicAccessBlock_594050(
     name: "getPublicAccessBlock", meth: HttpMethod.HttpGet,
     host: "s3-control.amazonaws.com",
     route: "/v20180820/configuration/publicAccessBlock#x-amz-account-id",
-    validator: validate_GetPublicAccessBlock_601051, base: "/",
-    url: url_GetPublicAccessBlock_601052, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetPublicAccessBlock_594051, base: "/",
+    url: url_GetPublicAccessBlock_594052, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeletePublicAccessBlock_601078 = ref object of OpenApiRestCall_600437
-proc url_DeletePublicAccessBlock_601080(protocol: Scheme; host: string; base: string;
+  Call_DeletePublicAccessBlock_594078 = ref object of OpenApiRestCall_593437
+proc url_DeletePublicAccessBlock_594080(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -627,7 +627,7 @@ proc url_DeletePublicAccessBlock_601080(protocol: Scheme; host: string; base: st
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeletePublicAccessBlock_601079(path: JsonNode; query: JsonNode;
+proc validate_DeletePublicAccessBlock_594079(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the block public access configuration for the specified account.
   ## 
@@ -648,81 +648,81 @@ proc validate_DeletePublicAccessBlock_601079(path: JsonNode; query: JsonNode;
   ##   x-amz-account-id: JString (required)
   ##                   : The account ID for the AWS account whose block public access configuration you want to delete.
   section = newJObject()
-  var valid_601081 = header.getOrDefault("X-Amz-Date")
-  valid_601081 = validateParameter(valid_601081, JString, required = false,
+  var valid_594081 = header.getOrDefault("X-Amz-Date")
+  valid_594081 = validateParameter(valid_594081, JString, required = false,
                                  default = nil)
-  if valid_601081 != nil:
-    section.add "X-Amz-Date", valid_601081
-  var valid_601082 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601082 = validateParameter(valid_601082, JString, required = false,
+  if valid_594081 != nil:
+    section.add "X-Amz-Date", valid_594081
+  var valid_594082 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594082 = validateParameter(valid_594082, JString, required = false,
                                  default = nil)
-  if valid_601082 != nil:
-    section.add "X-Amz-Security-Token", valid_601082
-  var valid_601083 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601083 = validateParameter(valid_601083, JString, required = false,
+  if valid_594082 != nil:
+    section.add "X-Amz-Security-Token", valid_594082
+  var valid_594083 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594083 = validateParameter(valid_594083, JString, required = false,
                                  default = nil)
-  if valid_601083 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601083
-  var valid_601084 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601084 = validateParameter(valid_601084, JString, required = false,
+  if valid_594083 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594083
+  var valid_594084 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594084 = validateParameter(valid_594084, JString, required = false,
                                  default = nil)
-  if valid_601084 != nil:
-    section.add "X-Amz-Algorithm", valid_601084
-  var valid_601085 = header.getOrDefault("X-Amz-Signature")
-  valid_601085 = validateParameter(valid_601085, JString, required = false,
+  if valid_594084 != nil:
+    section.add "X-Amz-Algorithm", valid_594084
+  var valid_594085 = header.getOrDefault("X-Amz-Signature")
+  valid_594085 = validateParameter(valid_594085, JString, required = false,
                                  default = nil)
-  if valid_601085 != nil:
-    section.add "X-Amz-Signature", valid_601085
-  var valid_601086 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601086 = validateParameter(valid_601086, JString, required = false,
+  if valid_594085 != nil:
+    section.add "X-Amz-Signature", valid_594085
+  var valid_594086 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594086 = validateParameter(valid_594086, JString, required = false,
                                  default = nil)
-  if valid_601086 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601086
-  var valid_601087 = header.getOrDefault("X-Amz-Credential")
-  valid_601087 = validateParameter(valid_601087, JString, required = false,
+  if valid_594086 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594086
+  var valid_594087 = header.getOrDefault("X-Amz-Credential")
+  valid_594087 = validateParameter(valid_594087, JString, required = false,
                                  default = nil)
-  if valid_601087 != nil:
-    section.add "X-Amz-Credential", valid_601087
+  if valid_594087 != nil:
+    section.add "X-Amz-Credential", valid_594087
   assert header != nil,
         "header argument is necessary due to required `x-amz-account-id` field"
-  var valid_601088 = header.getOrDefault("x-amz-account-id")
-  valid_601088 = validateParameter(valid_601088, JString, required = true,
+  var valid_594088 = header.getOrDefault("x-amz-account-id")
+  valid_594088 = validateParameter(valid_594088, JString, required = true,
                                  default = nil)
-  if valid_601088 != nil:
-    section.add "x-amz-account-id", valid_601088
+  if valid_594088 != nil:
+    section.add "x-amz-account-id", valid_594088
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601089: Call_DeletePublicAccessBlock_601078; path: JsonNode;
+proc call*(call_594089: Call_DeletePublicAccessBlock_594078; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the block public access configuration for the specified account.
   ## 
-  let valid = call_601089.validator(path, query, header, formData, body)
-  let scheme = call_601089.pickScheme
+  let valid = call_594089.validator(path, query, header, formData, body)
+  let scheme = call_594089.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601089.url(scheme.get, call_601089.host, call_601089.base,
-                         call_601089.route, valid.getOrDefault("path"),
+  let url = call_594089.url(scheme.get, call_594089.host, call_594089.base,
+                         call_594089.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601089, url, valid)
+  result = hook(call_594089, url, valid)
 
-proc call*(call_601090: Call_DeletePublicAccessBlock_601078): Recallable =
+proc call*(call_594090: Call_DeletePublicAccessBlock_594078): Recallable =
   ## deletePublicAccessBlock
   ## Deletes the block public access configuration for the specified account.
-  result = call_601090.call(nil, nil, nil, nil, nil)
+  result = call_594090.call(nil, nil, nil, nil, nil)
 
-var deletePublicAccessBlock* = Call_DeletePublicAccessBlock_601078(
+var deletePublicAccessBlock* = Call_DeletePublicAccessBlock_594078(
     name: "deletePublicAccessBlock", meth: HttpMethod.HttpDelete,
     host: "s3-control.amazonaws.com",
     route: "/v20180820/configuration/publicAccessBlock#x-amz-account-id",
-    validator: validate_DeletePublicAccessBlock_601079, base: "/",
-    url: url_DeletePublicAccessBlock_601080, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeletePublicAccessBlock_594079, base: "/",
+    url: url_DeletePublicAccessBlock_594080, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeJob_601091 = ref object of OpenApiRestCall_600437
-proc url_DescribeJob_601093(protocol: Scheme; host: string; base: string;
+  Call_DescribeJob_594091 = ref object of OpenApiRestCall_593437
+proc url_DescribeJob_594093(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -738,7 +738,7 @@ proc url_DescribeJob_601093(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DescribeJob_601092(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeJob_594092(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the configuration parameters and status for a batch operations job.
   ## 
@@ -749,11 +749,11 @@ proc validate_DescribeJob_601092(path: JsonNode; query: JsonNode; header: JsonNo
   ##     : The ID for the job whose information you want to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `id` field"
-  var valid_601108 = path.getOrDefault("id")
-  valid_601108 = validateParameter(valid_601108, JString, required = true,
+  var valid_594108 = path.getOrDefault("id")
+  valid_594108 = validateParameter(valid_594108, JString, required = true,
                                  default = nil)
-  if valid_601108 != nil:
-    section.add "id", valid_601108
+  if valid_594108 != nil:
+    section.add "id", valid_594108
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -768,85 +768,85 @@ proc validate_DescribeJob_601092(path: JsonNode; query: JsonNode; header: JsonNo
   ##   x-amz-account-id: JString (required)
   ##                   : <p/>
   section = newJObject()
-  var valid_601109 = header.getOrDefault("X-Amz-Date")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  var valid_594109 = header.getOrDefault("X-Amz-Date")
+  valid_594109 = validateParameter(valid_594109, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "X-Amz-Date", valid_601109
-  var valid_601110 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_594109 != nil:
+    section.add "X-Amz-Date", valid_594109
+  var valid_594110 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594110 = validateParameter(valid_594110, JString, required = false,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "X-Amz-Security-Token", valid_601110
-  var valid_601111 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_594110 != nil:
+    section.add "X-Amz-Security-Token", valid_594110
+  var valid_594111 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594111 = validateParameter(valid_594111, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601111
-  var valid_601112 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601112 = validateParameter(valid_601112, JString, required = false,
+  if valid_594111 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594111
+  var valid_594112 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594112 = validateParameter(valid_594112, JString, required = false,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "X-Amz-Algorithm", valid_601112
-  var valid_601113 = header.getOrDefault("X-Amz-Signature")
-  valid_601113 = validateParameter(valid_601113, JString, required = false,
+  if valid_594112 != nil:
+    section.add "X-Amz-Algorithm", valid_594112
+  var valid_594113 = header.getOrDefault("X-Amz-Signature")
+  valid_594113 = validateParameter(valid_594113, JString, required = false,
                                  default = nil)
-  if valid_601113 != nil:
-    section.add "X-Amz-Signature", valid_601113
-  var valid_601114 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601114 = validateParameter(valid_601114, JString, required = false,
+  if valid_594113 != nil:
+    section.add "X-Amz-Signature", valid_594113
+  var valid_594114 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594114 = validateParameter(valid_594114, JString, required = false,
                                  default = nil)
-  if valid_601114 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601114
-  var valid_601115 = header.getOrDefault("X-Amz-Credential")
-  valid_601115 = validateParameter(valid_601115, JString, required = false,
+  if valid_594114 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594114
+  var valid_594115 = header.getOrDefault("X-Amz-Credential")
+  valid_594115 = validateParameter(valid_594115, JString, required = false,
                                  default = nil)
-  if valid_601115 != nil:
-    section.add "X-Amz-Credential", valid_601115
+  if valid_594115 != nil:
+    section.add "X-Amz-Credential", valid_594115
   assert header != nil,
         "header argument is necessary due to required `x-amz-account-id` field"
-  var valid_601116 = header.getOrDefault("x-amz-account-id")
-  valid_601116 = validateParameter(valid_601116, JString, required = true,
+  var valid_594116 = header.getOrDefault("x-amz-account-id")
+  valid_594116 = validateParameter(valid_594116, JString, required = true,
                                  default = nil)
-  if valid_601116 != nil:
-    section.add "x-amz-account-id", valid_601116
+  if valid_594116 != nil:
+    section.add "x-amz-account-id", valid_594116
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601117: Call_DescribeJob_601091; path: JsonNode; query: JsonNode;
+proc call*(call_594117: Call_DescribeJob_594091; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the configuration parameters and status for a batch operations job.
   ## 
-  let valid = call_601117.validator(path, query, header, formData, body)
-  let scheme = call_601117.pickScheme
+  let valid = call_594117.validator(path, query, header, formData, body)
+  let scheme = call_594117.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601117.url(scheme.get, call_601117.host, call_601117.base,
-                         call_601117.route, valid.getOrDefault("path"),
+  let url = call_594117.url(scheme.get, call_594117.host, call_594117.base,
+                         call_594117.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601117, url, valid)
+  result = hook(call_594117, url, valid)
 
-proc call*(call_601118: Call_DescribeJob_601091; id: string): Recallable =
+proc call*(call_594118: Call_DescribeJob_594091; id: string): Recallable =
   ## describeJob
   ## Retrieves the configuration parameters and status for a batch operations job.
   ##   id: string (required)
   ##     : The ID for the job whose information you want to retrieve.
-  var path_601119 = newJObject()
-  add(path_601119, "id", newJString(id))
-  result = call_601118.call(path_601119, nil, nil, nil, nil)
+  var path_594119 = newJObject()
+  add(path_594119, "id", newJString(id))
+  result = call_594118.call(path_594119, nil, nil, nil, nil)
 
-var describeJob* = Call_DescribeJob_601091(name: "describeJob",
+var describeJob* = Call_DescribeJob_594091(name: "describeJob",
                                         meth: HttpMethod.HttpGet,
                                         host: "s3-control.amazonaws.com", route: "/v20180820/jobs/{id}#x-amz-account-id",
-                                        validator: validate_DescribeJob_601092,
-                                        base: "/", url: url_DescribeJob_601093,
+                                        validator: validate_DescribeJob_594092,
+                                        base: "/", url: url_DescribeJob_594093,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateJobPriority_601120 = ref object of OpenApiRestCall_600437
-proc url_UpdateJobPriority_601122(protocol: Scheme; host: string; base: string;
+  Call_UpdateJobPriority_594120 = ref object of OpenApiRestCall_593437
+proc url_UpdateJobPriority_594122(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -862,7 +862,7 @@ proc url_UpdateJobPriority_601122(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_UpdateJobPriority_601121(path: JsonNode; query: JsonNode;
+proc validate_UpdateJobPriority_594121(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Updates an existing job's priority.
@@ -874,11 +874,11 @@ proc validate_UpdateJobPriority_601121(path: JsonNode; query: JsonNode;
   ##     : The ID for the job whose priority you want to update.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `id` field"
-  var valid_601123 = path.getOrDefault("id")
-  valid_601123 = validateParameter(valid_601123, JString, required = true,
+  var valid_594123 = path.getOrDefault("id")
+  valid_594123 = validateParameter(valid_594123, JString, required = true,
                                  default = nil)
-  if valid_601123 != nil:
-    section.add "id", valid_601123
+  if valid_594123 != nil:
+    section.add "id", valid_594123
   result.add "path", section
   ## parameters in `query` object:
   ##   priority: JInt (required)
@@ -886,10 +886,10 @@ proc validate_UpdateJobPriority_601121(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `priority` field"
-  var valid_601124 = query.getOrDefault("priority")
-  valid_601124 = validateParameter(valid_601124, JInt, required = true, default = nil)
-  if valid_601124 != nil:
-    section.add "priority", valid_601124
+  var valid_594124 = query.getOrDefault("priority")
+  valid_594124 = validateParameter(valid_594124, JInt, required = true, default = nil)
+  if valid_594124 != nil:
+    section.add "priority", valid_594124
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -902,88 +902,88 @@ proc validate_UpdateJobPriority_601121(path: JsonNode; query: JsonNode;
   ##   x-amz-account-id: JString (required)
   ##                   : <p/>
   section = newJObject()
-  var valid_601125 = header.getOrDefault("X-Amz-Date")
-  valid_601125 = validateParameter(valid_601125, JString, required = false,
+  var valid_594125 = header.getOrDefault("X-Amz-Date")
+  valid_594125 = validateParameter(valid_594125, JString, required = false,
                                  default = nil)
-  if valid_601125 != nil:
-    section.add "X-Amz-Date", valid_601125
-  var valid_601126 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601126 = validateParameter(valid_601126, JString, required = false,
+  if valid_594125 != nil:
+    section.add "X-Amz-Date", valid_594125
+  var valid_594126 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594126 = validateParameter(valid_594126, JString, required = false,
                                  default = nil)
-  if valid_601126 != nil:
-    section.add "X-Amz-Security-Token", valid_601126
-  var valid_601127 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601127 = validateParameter(valid_601127, JString, required = false,
+  if valid_594126 != nil:
+    section.add "X-Amz-Security-Token", valid_594126
+  var valid_594127 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594127 = validateParameter(valid_594127, JString, required = false,
                                  default = nil)
-  if valid_601127 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601127
-  var valid_601128 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601128 = validateParameter(valid_601128, JString, required = false,
+  if valid_594127 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594127
+  var valid_594128 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594128 = validateParameter(valid_594128, JString, required = false,
                                  default = nil)
-  if valid_601128 != nil:
-    section.add "X-Amz-Algorithm", valid_601128
-  var valid_601129 = header.getOrDefault("X-Amz-Signature")
-  valid_601129 = validateParameter(valid_601129, JString, required = false,
+  if valid_594128 != nil:
+    section.add "X-Amz-Algorithm", valid_594128
+  var valid_594129 = header.getOrDefault("X-Amz-Signature")
+  valid_594129 = validateParameter(valid_594129, JString, required = false,
                                  default = nil)
-  if valid_601129 != nil:
-    section.add "X-Amz-Signature", valid_601129
-  var valid_601130 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601130 = validateParameter(valid_601130, JString, required = false,
+  if valid_594129 != nil:
+    section.add "X-Amz-Signature", valid_594129
+  var valid_594130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594130 = validateParameter(valid_594130, JString, required = false,
                                  default = nil)
-  if valid_601130 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601130
-  var valid_601131 = header.getOrDefault("X-Amz-Credential")
-  valid_601131 = validateParameter(valid_601131, JString, required = false,
+  if valid_594130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594130
+  var valid_594131 = header.getOrDefault("X-Amz-Credential")
+  valid_594131 = validateParameter(valid_594131, JString, required = false,
                                  default = nil)
-  if valid_601131 != nil:
-    section.add "X-Amz-Credential", valid_601131
+  if valid_594131 != nil:
+    section.add "X-Amz-Credential", valid_594131
   assert header != nil,
         "header argument is necessary due to required `x-amz-account-id` field"
-  var valid_601132 = header.getOrDefault("x-amz-account-id")
-  valid_601132 = validateParameter(valid_601132, JString, required = true,
+  var valid_594132 = header.getOrDefault("x-amz-account-id")
+  valid_594132 = validateParameter(valid_594132, JString, required = true,
                                  default = nil)
-  if valid_601132 != nil:
-    section.add "x-amz-account-id", valid_601132
+  if valid_594132 != nil:
+    section.add "x-amz-account-id", valid_594132
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601133: Call_UpdateJobPriority_601120; path: JsonNode;
+proc call*(call_594133: Call_UpdateJobPriority_594120; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates an existing job's priority.
   ## 
-  let valid = call_601133.validator(path, query, header, formData, body)
-  let scheme = call_601133.pickScheme
+  let valid = call_594133.validator(path, query, header, formData, body)
+  let scheme = call_594133.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601133.url(scheme.get, call_601133.host, call_601133.base,
-                         call_601133.route, valid.getOrDefault("path"),
+  let url = call_594133.url(scheme.get, call_594133.host, call_594133.base,
+                         call_594133.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601133, url, valid)
+  result = hook(call_594133, url, valid)
 
-proc call*(call_601134: Call_UpdateJobPriority_601120; id: string; priority: int): Recallable =
+proc call*(call_594134: Call_UpdateJobPriority_594120; id: string; priority: int): Recallable =
   ## updateJobPriority
   ## Updates an existing job's priority.
   ##   id: string (required)
   ##     : The ID for the job whose priority you want to update.
   ##   priority: int (required)
   ##           : The priority you want to assign to this job.
-  var path_601135 = newJObject()
-  var query_601136 = newJObject()
-  add(path_601135, "id", newJString(id))
-  add(query_601136, "priority", newJInt(priority))
-  result = call_601134.call(path_601135, query_601136, nil, nil, nil)
+  var path_594135 = newJObject()
+  var query_594136 = newJObject()
+  add(path_594135, "id", newJString(id))
+  add(query_594136, "priority", newJInt(priority))
+  result = call_594134.call(path_594135, query_594136, nil, nil, nil)
 
-var updateJobPriority* = Call_UpdateJobPriority_601120(name: "updateJobPriority",
+var updateJobPriority* = Call_UpdateJobPriority_594120(name: "updateJobPriority",
     meth: HttpMethod.HttpPost, host: "s3-control.amazonaws.com",
     route: "/v20180820/jobs/{id}/priority#x-amz-account-id&priority",
-    validator: validate_UpdateJobPriority_601121, base: "/",
-    url: url_UpdateJobPriority_601122, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateJobPriority_594121, base: "/",
+    url: url_UpdateJobPriority_594122, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateJobStatus_601137 = ref object of OpenApiRestCall_600437
-proc url_UpdateJobStatus_601139(protocol: Scheme; host: string; base: string;
+  Call_UpdateJobStatus_594137 = ref object of OpenApiRestCall_593437
+proc url_UpdateJobStatus_594139(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -999,7 +999,7 @@ proc url_UpdateJobStatus_601139(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_UpdateJobStatus_601138(path: JsonNode; query: JsonNode;
+proc validate_UpdateJobStatus_594138(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Updates the status for the specified job. Use this operation to confirm that you want to run a job or to cancel an existing job.
@@ -1011,11 +1011,11 @@ proc validate_UpdateJobStatus_601138(path: JsonNode; query: JsonNode;
   ##     : The ID of the job whose status you want to update.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `id` field"
-  var valid_601140 = path.getOrDefault("id")
-  valid_601140 = validateParameter(valid_601140, JString, required = true,
+  var valid_594140 = path.getOrDefault("id")
+  valid_594140 = validateParameter(valid_594140, JString, required = true,
                                  default = nil)
-  if valid_601140 != nil:
-    section.add "id", valid_601140
+  if valid_594140 != nil:
+    section.add "id", valid_594140
   result.add "path", section
   ## parameters in `query` object:
   ##   requestedJobStatus: JString (required)
@@ -1024,16 +1024,16 @@ proc validate_UpdateJobStatus_601138(path: JsonNode; query: JsonNode;
   ##                     : A description of the reason why you want to change the specified job's status. This field can be any string up to the maximum length.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `requestedJobStatus` field"
-  var valid_601154 = query.getOrDefault("requestedJobStatus")
-  valid_601154 = validateParameter(valid_601154, JString, required = true,
+  var valid_594154 = query.getOrDefault("requestedJobStatus")
+  valid_594154 = validateParameter(valid_594154, JString, required = true,
                                  default = newJString("Cancelled"))
-  if valid_601154 != nil:
-    section.add "requestedJobStatus", valid_601154
-  var valid_601155 = query.getOrDefault("statusUpdateReason")
-  valid_601155 = validateParameter(valid_601155, JString, required = false,
+  if valid_594154 != nil:
+    section.add "requestedJobStatus", valid_594154
+  var valid_594155 = query.getOrDefault("statusUpdateReason")
+  valid_594155 = validateParameter(valid_594155, JString, required = false,
                                  default = nil)
-  if valid_601155 != nil:
-    section.add "statusUpdateReason", valid_601155
+  if valid_594155 != nil:
+    section.add "statusUpdateReason", valid_594155
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1046,68 +1046,68 @@ proc validate_UpdateJobStatus_601138(path: JsonNode; query: JsonNode;
   ##   x-amz-account-id: JString (required)
   ##                   : <p/>
   section = newJObject()
-  var valid_601156 = header.getOrDefault("X-Amz-Date")
-  valid_601156 = validateParameter(valid_601156, JString, required = false,
+  var valid_594156 = header.getOrDefault("X-Amz-Date")
+  valid_594156 = validateParameter(valid_594156, JString, required = false,
                                  default = nil)
-  if valid_601156 != nil:
-    section.add "X-Amz-Date", valid_601156
-  var valid_601157 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601157 = validateParameter(valid_601157, JString, required = false,
+  if valid_594156 != nil:
+    section.add "X-Amz-Date", valid_594156
+  var valid_594157 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594157 = validateParameter(valid_594157, JString, required = false,
                                  default = nil)
-  if valid_601157 != nil:
-    section.add "X-Amz-Security-Token", valid_601157
-  var valid_601158 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601158 = validateParameter(valid_601158, JString, required = false,
+  if valid_594157 != nil:
+    section.add "X-Amz-Security-Token", valid_594157
+  var valid_594158 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594158 = validateParameter(valid_594158, JString, required = false,
                                  default = nil)
-  if valid_601158 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601158
-  var valid_601159 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601159 = validateParameter(valid_601159, JString, required = false,
+  if valid_594158 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594158
+  var valid_594159 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594159 = validateParameter(valid_594159, JString, required = false,
                                  default = nil)
-  if valid_601159 != nil:
-    section.add "X-Amz-Algorithm", valid_601159
-  var valid_601160 = header.getOrDefault("X-Amz-Signature")
-  valid_601160 = validateParameter(valid_601160, JString, required = false,
+  if valid_594159 != nil:
+    section.add "X-Amz-Algorithm", valid_594159
+  var valid_594160 = header.getOrDefault("X-Amz-Signature")
+  valid_594160 = validateParameter(valid_594160, JString, required = false,
                                  default = nil)
-  if valid_601160 != nil:
-    section.add "X-Amz-Signature", valid_601160
-  var valid_601161 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601161 = validateParameter(valid_601161, JString, required = false,
+  if valid_594160 != nil:
+    section.add "X-Amz-Signature", valid_594160
+  var valid_594161 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594161 = validateParameter(valid_594161, JString, required = false,
                                  default = nil)
-  if valid_601161 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601161
-  var valid_601162 = header.getOrDefault("X-Amz-Credential")
-  valid_601162 = validateParameter(valid_601162, JString, required = false,
+  if valid_594161 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594161
+  var valid_594162 = header.getOrDefault("X-Amz-Credential")
+  valid_594162 = validateParameter(valid_594162, JString, required = false,
                                  default = nil)
-  if valid_601162 != nil:
-    section.add "X-Amz-Credential", valid_601162
+  if valid_594162 != nil:
+    section.add "X-Amz-Credential", valid_594162
   assert header != nil,
         "header argument is necessary due to required `x-amz-account-id` field"
-  var valid_601163 = header.getOrDefault("x-amz-account-id")
-  valid_601163 = validateParameter(valid_601163, JString, required = true,
+  var valid_594163 = header.getOrDefault("x-amz-account-id")
+  valid_594163 = validateParameter(valid_594163, JString, required = true,
                                  default = nil)
-  if valid_601163 != nil:
-    section.add "x-amz-account-id", valid_601163
+  if valid_594163 != nil:
+    section.add "x-amz-account-id", valid_594163
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601164: Call_UpdateJobStatus_601137; path: JsonNode; query: JsonNode;
+proc call*(call_594164: Call_UpdateJobStatus_594137; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the status for the specified job. Use this operation to confirm that you want to run a job or to cancel an existing job.
   ## 
-  let valid = call_601164.validator(path, query, header, formData, body)
-  let scheme = call_601164.pickScheme
+  let valid = call_594164.validator(path, query, header, formData, body)
+  let scheme = call_594164.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601164.url(scheme.get, call_601164.host, call_601164.base,
-                         call_601164.route, valid.getOrDefault("path"),
+  let url = call_594164.url(scheme.get, call_594164.host, call_594164.base,
+                         call_594164.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601164, url, valid)
+  result = hook(call_594164, url, valid)
 
-proc call*(call_601165: Call_UpdateJobStatus_601137; id: string;
+proc call*(call_594165: Call_UpdateJobStatus_594137; id: string;
           requestedJobStatus: string = "Cancelled"; statusUpdateReason: string = ""): Recallable =
   ## updateJobStatus
   ## Updates the status for the specified job. Use this operation to confirm that you want to run a job or to cancel an existing job.
@@ -1117,17 +1117,17 @@ proc call*(call_601165: Call_UpdateJobStatus_601137; id: string;
   ##     : The ID of the job whose status you want to update.
   ##   statusUpdateReason: string
   ##                     : A description of the reason why you want to change the specified job's status. This field can be any string up to the maximum length.
-  var path_601166 = newJObject()
-  var query_601167 = newJObject()
-  add(query_601167, "requestedJobStatus", newJString(requestedJobStatus))
-  add(path_601166, "id", newJString(id))
-  add(query_601167, "statusUpdateReason", newJString(statusUpdateReason))
-  result = call_601165.call(path_601166, query_601167, nil, nil, nil)
+  var path_594166 = newJObject()
+  var query_594167 = newJObject()
+  add(query_594167, "requestedJobStatus", newJString(requestedJobStatus))
+  add(path_594166, "id", newJString(id))
+  add(query_594167, "statusUpdateReason", newJString(statusUpdateReason))
+  result = call_594165.call(path_594166, query_594167, nil, nil, nil)
 
-var updateJobStatus* = Call_UpdateJobStatus_601137(name: "updateJobStatus",
+var updateJobStatus* = Call_UpdateJobStatus_594137(name: "updateJobStatus",
     meth: HttpMethod.HttpPost, host: "s3-control.amazonaws.com",
     route: "/v20180820/jobs/{id}/status#x-amz-account-id&requestedJobStatus",
-    validator: validate_UpdateJobStatus_601138, base: "/", url: url_UpdateJobStatus_601139,
+    validator: validate_UpdateJobStatus_594138, base: "/", url: url_UpdateJobStatus_594139,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

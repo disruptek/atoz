@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Athena
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600437 = ref object of OpenApiRestCall
+  OpenApiRestCall_593437 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600437](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593437](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600437): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593437): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -143,15 +143,15 @@ const
   awsServiceName = "athena"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_BatchGetNamedQuery_600774 = ref object of OpenApiRestCall_600437
-proc url_BatchGetNamedQuery_600776(protocol: Scheme; host: string; base: string;
+  Call_BatchGetNamedQuery_593774 = ref object of OpenApiRestCall_593437
+proc url_BatchGetNamedQuery_593776(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_BatchGetNamedQuery_600775(path: JsonNode; query: JsonNode;
+proc validate_BatchGetNamedQuery_593775(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns the details of a single named query or a list of up to 50 queries, which you provide as an array of query ID strings. Requires you to have access to the workgroup in which the queries were saved. Use <a>ListNamedQueriesInput</a> to get the list of named query IDs in the specified workgroup. If information could not be retrieved for a submitted query ID, information about the query ID submitted is listed under <a>UnprocessedNamedQueryId</a>. Named queries differ from executed queries. Use <a>BatchGetQueryExecutionInput</a> to get details about each unique query execution, and <a>ListQueryExecutionsInput</a> to get a list of query execution IDs.
@@ -172,48 +172,48 @@ proc validate_BatchGetNamedQuery_600775(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600888 = header.getOrDefault("X-Amz-Date")
-  valid_600888 = validateParameter(valid_600888, JString, required = false,
+  var valid_593888 = header.getOrDefault("X-Amz-Date")
+  valid_593888 = validateParameter(valid_593888, JString, required = false,
                                  default = nil)
-  if valid_600888 != nil:
-    section.add "X-Amz-Date", valid_600888
-  var valid_600889 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600889 = validateParameter(valid_600889, JString, required = false,
+  if valid_593888 != nil:
+    section.add "X-Amz-Date", valid_593888
+  var valid_593889 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593889 = validateParameter(valid_593889, JString, required = false,
                                  default = nil)
-  if valid_600889 != nil:
-    section.add "X-Amz-Security-Token", valid_600889
+  if valid_593889 != nil:
+    section.add "X-Amz-Security-Token", valid_593889
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600903 = header.getOrDefault("X-Amz-Target")
-  valid_600903 = validateParameter(valid_600903, JString, required = true, default = newJString(
+  var valid_593903 = header.getOrDefault("X-Amz-Target")
+  valid_593903 = validateParameter(valid_593903, JString, required = true, default = newJString(
       "AmazonAthena.BatchGetNamedQuery"))
-  if valid_600903 != nil:
-    section.add "X-Amz-Target", valid_600903
-  var valid_600904 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600904 = validateParameter(valid_600904, JString, required = false,
+  if valid_593903 != nil:
+    section.add "X-Amz-Target", valid_593903
+  var valid_593904 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593904 = validateParameter(valid_593904, JString, required = false,
                                  default = nil)
-  if valid_600904 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600904
-  var valid_600905 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600905 = validateParameter(valid_600905, JString, required = false,
+  if valid_593904 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593904
+  var valid_593905 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593905 = validateParameter(valid_593905, JString, required = false,
                                  default = nil)
-  if valid_600905 != nil:
-    section.add "X-Amz-Algorithm", valid_600905
-  var valid_600906 = header.getOrDefault("X-Amz-Signature")
-  valid_600906 = validateParameter(valid_600906, JString, required = false,
+  if valid_593905 != nil:
+    section.add "X-Amz-Algorithm", valid_593905
+  var valid_593906 = header.getOrDefault("X-Amz-Signature")
+  valid_593906 = validateParameter(valid_593906, JString, required = false,
                                  default = nil)
-  if valid_600906 != nil:
-    section.add "X-Amz-Signature", valid_600906
-  var valid_600907 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600907 = validateParameter(valid_600907, JString, required = false,
+  if valid_593906 != nil:
+    section.add "X-Amz-Signature", valid_593906
+  var valid_593907 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593907 = validateParameter(valid_593907, JString, required = false,
                                  default = nil)
-  if valid_600907 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600907
-  var valid_600908 = header.getOrDefault("X-Amz-Credential")
-  valid_600908 = validateParameter(valid_600908, JString, required = false,
+  if valid_593907 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593907
+  var valid_593908 = header.getOrDefault("X-Amz-Credential")
+  valid_593908 = validateParameter(valid_593908, JString, required = false,
                                  default = nil)
-  if valid_600908 != nil:
-    section.add "X-Amz-Credential", valid_600908
+  if valid_593908 != nil:
+    section.add "X-Amz-Credential", valid_593908
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -224,44 +224,44 @@ proc validate_BatchGetNamedQuery_600775(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600932: Call_BatchGetNamedQuery_600774; path: JsonNode;
+proc call*(call_593932: Call_BatchGetNamedQuery_593774; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the details of a single named query or a list of up to 50 queries, which you provide as an array of query ID strings. Requires you to have access to the workgroup in which the queries were saved. Use <a>ListNamedQueriesInput</a> to get the list of named query IDs in the specified workgroup. If information could not be retrieved for a submitted query ID, information about the query ID submitted is listed under <a>UnprocessedNamedQueryId</a>. Named queries differ from executed queries. Use <a>BatchGetQueryExecutionInput</a> to get details about each unique query execution, and <a>ListQueryExecutionsInput</a> to get a list of query execution IDs.
   ## 
-  let valid = call_600932.validator(path, query, header, formData, body)
-  let scheme = call_600932.pickScheme
+  let valid = call_593932.validator(path, query, header, formData, body)
+  let scheme = call_593932.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600932.url(scheme.get, call_600932.host, call_600932.base,
-                         call_600932.route, valid.getOrDefault("path"),
+  let url = call_593932.url(scheme.get, call_593932.host, call_593932.base,
+                         call_593932.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600932, url, valid)
+  result = hook(call_593932, url, valid)
 
-proc call*(call_601003: Call_BatchGetNamedQuery_600774; body: JsonNode): Recallable =
+proc call*(call_594003: Call_BatchGetNamedQuery_593774; body: JsonNode): Recallable =
   ## batchGetNamedQuery
   ## Returns the details of a single named query or a list of up to 50 queries, which you provide as an array of query ID strings. Requires you to have access to the workgroup in which the queries were saved. Use <a>ListNamedQueriesInput</a> to get the list of named query IDs in the specified workgroup. If information could not be retrieved for a submitted query ID, information about the query ID submitted is listed under <a>UnprocessedNamedQueryId</a>. Named queries differ from executed queries. Use <a>BatchGetQueryExecutionInput</a> to get details about each unique query execution, and <a>ListQueryExecutionsInput</a> to get a list of query execution IDs.
   ##   body: JObject (required)
-  var body_601004 = newJObject()
+  var body_594004 = newJObject()
   if body != nil:
-    body_601004 = body
-  result = call_601003.call(nil, nil, nil, nil, body_601004)
+    body_594004 = body
+  result = call_594003.call(nil, nil, nil, nil, body_594004)
 
-var batchGetNamedQuery* = Call_BatchGetNamedQuery_600774(
+var batchGetNamedQuery* = Call_BatchGetNamedQuery_593774(
     name: "batchGetNamedQuery", meth: HttpMethod.HttpPost,
     host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.BatchGetNamedQuery",
-    validator: validate_BatchGetNamedQuery_600775, base: "/",
-    url: url_BatchGetNamedQuery_600776, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_BatchGetNamedQuery_593775, base: "/",
+    url: url_BatchGetNamedQuery_593776, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_BatchGetQueryExecution_601043 = ref object of OpenApiRestCall_600437
-proc url_BatchGetQueryExecution_601045(protocol: Scheme; host: string; base: string;
+  Call_BatchGetQueryExecution_594043 = ref object of OpenApiRestCall_593437
+proc url_BatchGetQueryExecution_594045(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_BatchGetQueryExecution_601044(path: JsonNode; query: JsonNode;
+proc validate_BatchGetQueryExecution_594044(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the details of a single query execution or a list of up to 50 query executions, which you provide as an array of query execution ID strings. Requires you to have access to the workgroup in which the queries ran. To get a list of query execution IDs, use <a>ListQueryExecutionsInput$WorkGroup</a>. Query executions differ from named (saved) queries. Use <a>BatchGetNamedQueryInput</a> to get details about named queries.
   ## 
@@ -281,48 +281,48 @@ proc validate_BatchGetQueryExecution_601044(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601046 = header.getOrDefault("X-Amz-Date")
-  valid_601046 = validateParameter(valid_601046, JString, required = false,
+  var valid_594046 = header.getOrDefault("X-Amz-Date")
+  valid_594046 = validateParameter(valid_594046, JString, required = false,
                                  default = nil)
-  if valid_601046 != nil:
-    section.add "X-Amz-Date", valid_601046
-  var valid_601047 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601047 = validateParameter(valid_601047, JString, required = false,
+  if valid_594046 != nil:
+    section.add "X-Amz-Date", valid_594046
+  var valid_594047 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594047 = validateParameter(valid_594047, JString, required = false,
                                  default = nil)
-  if valid_601047 != nil:
-    section.add "X-Amz-Security-Token", valid_601047
+  if valid_594047 != nil:
+    section.add "X-Amz-Security-Token", valid_594047
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601048 = header.getOrDefault("X-Amz-Target")
-  valid_601048 = validateParameter(valid_601048, JString, required = true, default = newJString(
+  var valid_594048 = header.getOrDefault("X-Amz-Target")
+  valid_594048 = validateParameter(valid_594048, JString, required = true, default = newJString(
       "AmazonAthena.BatchGetQueryExecution"))
-  if valid_601048 != nil:
-    section.add "X-Amz-Target", valid_601048
-  var valid_601049 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601049 = validateParameter(valid_601049, JString, required = false,
+  if valid_594048 != nil:
+    section.add "X-Amz-Target", valid_594048
+  var valid_594049 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594049 = validateParameter(valid_594049, JString, required = false,
                                  default = nil)
-  if valid_601049 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601049
-  var valid_601050 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601050 = validateParameter(valid_601050, JString, required = false,
+  if valid_594049 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594049
+  var valid_594050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594050 = validateParameter(valid_594050, JString, required = false,
                                  default = nil)
-  if valid_601050 != nil:
-    section.add "X-Amz-Algorithm", valid_601050
-  var valid_601051 = header.getOrDefault("X-Amz-Signature")
-  valid_601051 = validateParameter(valid_601051, JString, required = false,
+  if valid_594050 != nil:
+    section.add "X-Amz-Algorithm", valid_594050
+  var valid_594051 = header.getOrDefault("X-Amz-Signature")
+  valid_594051 = validateParameter(valid_594051, JString, required = false,
                                  default = nil)
-  if valid_601051 != nil:
-    section.add "X-Amz-Signature", valid_601051
-  var valid_601052 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601052 = validateParameter(valid_601052, JString, required = false,
+  if valid_594051 != nil:
+    section.add "X-Amz-Signature", valid_594051
+  var valid_594052 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594052 = validateParameter(valid_594052, JString, required = false,
                                  default = nil)
-  if valid_601052 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601052
-  var valid_601053 = header.getOrDefault("X-Amz-Credential")
-  valid_601053 = validateParameter(valid_601053, JString, required = false,
+  if valid_594052 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594052
+  var valid_594053 = header.getOrDefault("X-Amz-Credential")
+  valid_594053 = validateParameter(valid_594053, JString, required = false,
                                  default = nil)
-  if valid_601053 != nil:
-    section.add "X-Amz-Credential", valid_601053
+  if valid_594053 != nil:
+    section.add "X-Amz-Credential", valid_594053
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -333,44 +333,44 @@ proc validate_BatchGetQueryExecution_601044(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601055: Call_BatchGetQueryExecution_601043; path: JsonNode;
+proc call*(call_594055: Call_BatchGetQueryExecution_594043; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the details of a single query execution or a list of up to 50 query executions, which you provide as an array of query execution ID strings. Requires you to have access to the workgroup in which the queries ran. To get a list of query execution IDs, use <a>ListQueryExecutionsInput$WorkGroup</a>. Query executions differ from named (saved) queries. Use <a>BatchGetNamedQueryInput</a> to get details about named queries.
   ## 
-  let valid = call_601055.validator(path, query, header, formData, body)
-  let scheme = call_601055.pickScheme
+  let valid = call_594055.validator(path, query, header, formData, body)
+  let scheme = call_594055.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601055.url(scheme.get, call_601055.host, call_601055.base,
-                         call_601055.route, valid.getOrDefault("path"),
+  let url = call_594055.url(scheme.get, call_594055.host, call_594055.base,
+                         call_594055.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601055, url, valid)
+  result = hook(call_594055, url, valid)
 
-proc call*(call_601056: Call_BatchGetQueryExecution_601043; body: JsonNode): Recallable =
+proc call*(call_594056: Call_BatchGetQueryExecution_594043; body: JsonNode): Recallable =
   ## batchGetQueryExecution
   ## Returns the details of a single query execution or a list of up to 50 query executions, which you provide as an array of query execution ID strings. Requires you to have access to the workgroup in which the queries ran. To get a list of query execution IDs, use <a>ListQueryExecutionsInput$WorkGroup</a>. Query executions differ from named (saved) queries. Use <a>BatchGetNamedQueryInput</a> to get details about named queries.
   ##   body: JObject (required)
-  var body_601057 = newJObject()
+  var body_594057 = newJObject()
   if body != nil:
-    body_601057 = body
-  result = call_601056.call(nil, nil, nil, nil, body_601057)
+    body_594057 = body
+  result = call_594056.call(nil, nil, nil, nil, body_594057)
 
-var batchGetQueryExecution* = Call_BatchGetQueryExecution_601043(
+var batchGetQueryExecution* = Call_BatchGetQueryExecution_594043(
     name: "batchGetQueryExecution", meth: HttpMethod.HttpPost,
     host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.BatchGetQueryExecution",
-    validator: validate_BatchGetQueryExecution_601044, base: "/",
-    url: url_BatchGetQueryExecution_601045, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_BatchGetQueryExecution_594044, base: "/",
+    url: url_BatchGetQueryExecution_594045, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateNamedQuery_601058 = ref object of OpenApiRestCall_600437
-proc url_CreateNamedQuery_601060(protocol: Scheme; host: string; base: string;
+  Call_CreateNamedQuery_594058 = ref object of OpenApiRestCall_593437
+proc url_CreateNamedQuery_594060(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateNamedQuery_601059(path: JsonNode; query: JsonNode;
+proc validate_CreateNamedQuery_594059(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates a named query in the specified workgroup. Requires that you have access to the workgroup.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
@@ -391,48 +391,48 @@ proc validate_CreateNamedQuery_601059(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601061 = header.getOrDefault("X-Amz-Date")
-  valid_601061 = validateParameter(valid_601061, JString, required = false,
+  var valid_594061 = header.getOrDefault("X-Amz-Date")
+  valid_594061 = validateParameter(valid_594061, JString, required = false,
                                  default = nil)
-  if valid_601061 != nil:
-    section.add "X-Amz-Date", valid_601061
-  var valid_601062 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601062 = validateParameter(valid_601062, JString, required = false,
+  if valid_594061 != nil:
+    section.add "X-Amz-Date", valid_594061
+  var valid_594062 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594062 = validateParameter(valid_594062, JString, required = false,
                                  default = nil)
-  if valid_601062 != nil:
-    section.add "X-Amz-Security-Token", valid_601062
+  if valid_594062 != nil:
+    section.add "X-Amz-Security-Token", valid_594062
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601063 = header.getOrDefault("X-Amz-Target")
-  valid_601063 = validateParameter(valid_601063, JString, required = true, default = newJString(
+  var valid_594063 = header.getOrDefault("X-Amz-Target")
+  valid_594063 = validateParameter(valid_594063, JString, required = true, default = newJString(
       "AmazonAthena.CreateNamedQuery"))
-  if valid_601063 != nil:
-    section.add "X-Amz-Target", valid_601063
-  var valid_601064 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601064 = validateParameter(valid_601064, JString, required = false,
+  if valid_594063 != nil:
+    section.add "X-Amz-Target", valid_594063
+  var valid_594064 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594064 = validateParameter(valid_594064, JString, required = false,
                                  default = nil)
-  if valid_601064 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601064
-  var valid_601065 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601065 = validateParameter(valid_601065, JString, required = false,
+  if valid_594064 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594064
+  var valid_594065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594065 = validateParameter(valid_594065, JString, required = false,
                                  default = nil)
-  if valid_601065 != nil:
-    section.add "X-Amz-Algorithm", valid_601065
-  var valid_601066 = header.getOrDefault("X-Amz-Signature")
-  valid_601066 = validateParameter(valid_601066, JString, required = false,
+  if valid_594065 != nil:
+    section.add "X-Amz-Algorithm", valid_594065
+  var valid_594066 = header.getOrDefault("X-Amz-Signature")
+  valid_594066 = validateParameter(valid_594066, JString, required = false,
                                  default = nil)
-  if valid_601066 != nil:
-    section.add "X-Amz-Signature", valid_601066
-  var valid_601067 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601067 = validateParameter(valid_601067, JString, required = false,
+  if valid_594066 != nil:
+    section.add "X-Amz-Signature", valid_594066
+  var valid_594067 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594067 = validateParameter(valid_594067, JString, required = false,
                                  default = nil)
-  if valid_601067 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601067
-  var valid_601068 = header.getOrDefault("X-Amz-Credential")
-  valid_601068 = validateParameter(valid_601068, JString, required = false,
+  if valid_594067 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594067
+  var valid_594068 = header.getOrDefault("X-Amz-Credential")
+  valid_594068 = validateParameter(valid_594068, JString, required = false,
                                  default = nil)
-  if valid_601068 != nil:
-    section.add "X-Amz-Credential", valid_601068
+  if valid_594068 != nil:
+    section.add "X-Amz-Credential", valid_594068
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -443,43 +443,43 @@ proc validate_CreateNamedQuery_601059(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601070: Call_CreateNamedQuery_601058; path: JsonNode;
+proc call*(call_594070: Call_CreateNamedQuery_594058; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a named query in the specified workgroup. Requires that you have access to the workgroup.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ## 
-  let valid = call_601070.validator(path, query, header, formData, body)
-  let scheme = call_601070.pickScheme
+  let valid = call_594070.validator(path, query, header, formData, body)
+  let scheme = call_594070.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601070.url(scheme.get, call_601070.host, call_601070.base,
-                         call_601070.route, valid.getOrDefault("path"),
+  let url = call_594070.url(scheme.get, call_594070.host, call_594070.base,
+                         call_594070.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601070, url, valid)
+  result = hook(call_594070, url, valid)
 
-proc call*(call_601071: Call_CreateNamedQuery_601058; body: JsonNode): Recallable =
+proc call*(call_594071: Call_CreateNamedQuery_594058; body: JsonNode): Recallable =
   ## createNamedQuery
   ## <p>Creates a named query in the specified workgroup. Requires that you have access to the workgroup.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_601072 = newJObject()
+  var body_594072 = newJObject()
   if body != nil:
-    body_601072 = body
-  result = call_601071.call(nil, nil, nil, nil, body_601072)
+    body_594072 = body
+  result = call_594071.call(nil, nil, nil, nil, body_594072)
 
-var createNamedQuery* = Call_CreateNamedQuery_601058(name: "createNamedQuery",
+var createNamedQuery* = Call_CreateNamedQuery_594058(name: "createNamedQuery",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.CreateNamedQuery",
-    validator: validate_CreateNamedQuery_601059, base: "/",
-    url: url_CreateNamedQuery_601060, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateNamedQuery_594059, base: "/",
+    url: url_CreateNamedQuery_594060, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateWorkGroup_601073 = ref object of OpenApiRestCall_600437
-proc url_CreateWorkGroup_601075(protocol: Scheme; host: string; base: string;
+  Call_CreateWorkGroup_594073 = ref object of OpenApiRestCall_593437
+proc url_CreateWorkGroup_594075(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateWorkGroup_601074(path: JsonNode; query: JsonNode;
+proc validate_CreateWorkGroup_594074(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Creates a workgroup with the specified name.
@@ -500,48 +500,48 @@ proc validate_CreateWorkGroup_601074(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601076 = header.getOrDefault("X-Amz-Date")
-  valid_601076 = validateParameter(valid_601076, JString, required = false,
+  var valid_594076 = header.getOrDefault("X-Amz-Date")
+  valid_594076 = validateParameter(valid_594076, JString, required = false,
                                  default = nil)
-  if valid_601076 != nil:
-    section.add "X-Amz-Date", valid_601076
-  var valid_601077 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601077 = validateParameter(valid_601077, JString, required = false,
+  if valid_594076 != nil:
+    section.add "X-Amz-Date", valid_594076
+  var valid_594077 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594077 = validateParameter(valid_594077, JString, required = false,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "X-Amz-Security-Token", valid_601077
+  if valid_594077 != nil:
+    section.add "X-Amz-Security-Token", valid_594077
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601078 = header.getOrDefault("X-Amz-Target")
-  valid_601078 = validateParameter(valid_601078, JString, required = true, default = newJString(
+  var valid_594078 = header.getOrDefault("X-Amz-Target")
+  valid_594078 = validateParameter(valid_594078, JString, required = true, default = newJString(
       "AmazonAthena.CreateWorkGroup"))
-  if valid_601078 != nil:
-    section.add "X-Amz-Target", valid_601078
-  var valid_601079 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601079 = validateParameter(valid_601079, JString, required = false,
+  if valid_594078 != nil:
+    section.add "X-Amz-Target", valid_594078
+  var valid_594079 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594079 = validateParameter(valid_594079, JString, required = false,
                                  default = nil)
-  if valid_601079 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601079
-  var valid_601080 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601080 = validateParameter(valid_601080, JString, required = false,
+  if valid_594079 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594079
+  var valid_594080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594080 = validateParameter(valid_594080, JString, required = false,
                                  default = nil)
-  if valid_601080 != nil:
-    section.add "X-Amz-Algorithm", valid_601080
-  var valid_601081 = header.getOrDefault("X-Amz-Signature")
-  valid_601081 = validateParameter(valid_601081, JString, required = false,
+  if valid_594080 != nil:
+    section.add "X-Amz-Algorithm", valid_594080
+  var valid_594081 = header.getOrDefault("X-Amz-Signature")
+  valid_594081 = validateParameter(valid_594081, JString, required = false,
                                  default = nil)
-  if valid_601081 != nil:
-    section.add "X-Amz-Signature", valid_601081
-  var valid_601082 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601082 = validateParameter(valid_601082, JString, required = false,
+  if valid_594081 != nil:
+    section.add "X-Amz-Signature", valid_594081
+  var valid_594082 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594082 = validateParameter(valid_594082, JString, required = false,
                                  default = nil)
-  if valid_601082 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601082
-  var valid_601083 = header.getOrDefault("X-Amz-Credential")
-  valid_601083 = validateParameter(valid_601083, JString, required = false,
+  if valid_594082 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594082
+  var valid_594083 = header.getOrDefault("X-Amz-Credential")
+  valid_594083 = validateParameter(valid_594083, JString, required = false,
                                  default = nil)
-  if valid_601083 != nil:
-    section.add "X-Amz-Credential", valid_601083
+  if valid_594083 != nil:
+    section.add "X-Amz-Credential", valid_594083
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -552,43 +552,43 @@ proc validate_CreateWorkGroup_601074(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601085: Call_CreateWorkGroup_601073; path: JsonNode; query: JsonNode;
+proc call*(call_594085: Call_CreateWorkGroup_594073; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a workgroup with the specified name.
   ## 
-  let valid = call_601085.validator(path, query, header, formData, body)
-  let scheme = call_601085.pickScheme
+  let valid = call_594085.validator(path, query, header, formData, body)
+  let scheme = call_594085.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601085.url(scheme.get, call_601085.host, call_601085.base,
-                         call_601085.route, valid.getOrDefault("path"),
+  let url = call_594085.url(scheme.get, call_594085.host, call_594085.base,
+                         call_594085.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601085, url, valid)
+  result = hook(call_594085, url, valid)
 
-proc call*(call_601086: Call_CreateWorkGroup_601073; body: JsonNode): Recallable =
+proc call*(call_594086: Call_CreateWorkGroup_594073; body: JsonNode): Recallable =
   ## createWorkGroup
   ## Creates a workgroup with the specified name.
   ##   body: JObject (required)
-  var body_601087 = newJObject()
+  var body_594087 = newJObject()
   if body != nil:
-    body_601087 = body
-  result = call_601086.call(nil, nil, nil, nil, body_601087)
+    body_594087 = body
+  result = call_594086.call(nil, nil, nil, nil, body_594087)
 
-var createWorkGroup* = Call_CreateWorkGroup_601073(name: "createWorkGroup",
+var createWorkGroup* = Call_CreateWorkGroup_594073(name: "createWorkGroup",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.CreateWorkGroup",
-    validator: validate_CreateWorkGroup_601074, base: "/", url: url_CreateWorkGroup_601075,
+    validator: validate_CreateWorkGroup_594074, base: "/", url: url_CreateWorkGroup_594075,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteNamedQuery_601088 = ref object of OpenApiRestCall_600437
-proc url_DeleteNamedQuery_601090(protocol: Scheme; host: string; base: string;
+  Call_DeleteNamedQuery_594088 = ref object of OpenApiRestCall_593437
+proc url_DeleteNamedQuery_594090(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteNamedQuery_601089(path: JsonNode; query: JsonNode;
+proc validate_DeleteNamedQuery_594089(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes the named query if you have access to the workgroup in which the query was saved.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
@@ -609,48 +609,48 @@ proc validate_DeleteNamedQuery_601089(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601091 = header.getOrDefault("X-Amz-Date")
-  valid_601091 = validateParameter(valid_601091, JString, required = false,
+  var valid_594091 = header.getOrDefault("X-Amz-Date")
+  valid_594091 = validateParameter(valid_594091, JString, required = false,
                                  default = nil)
-  if valid_601091 != nil:
-    section.add "X-Amz-Date", valid_601091
-  var valid_601092 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  if valid_594091 != nil:
+    section.add "X-Amz-Date", valid_594091
+  var valid_594092 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594092 = validateParameter(valid_594092, JString, required = false,
                                  default = nil)
-  if valid_601092 != nil:
-    section.add "X-Amz-Security-Token", valid_601092
+  if valid_594092 != nil:
+    section.add "X-Amz-Security-Token", valid_594092
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601093 = header.getOrDefault("X-Amz-Target")
-  valid_601093 = validateParameter(valid_601093, JString, required = true, default = newJString(
+  var valid_594093 = header.getOrDefault("X-Amz-Target")
+  valid_594093 = validateParameter(valid_594093, JString, required = true, default = newJString(
       "AmazonAthena.DeleteNamedQuery"))
-  if valid_601093 != nil:
-    section.add "X-Amz-Target", valid_601093
-  var valid_601094 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601094 = validateParameter(valid_601094, JString, required = false,
+  if valid_594093 != nil:
+    section.add "X-Amz-Target", valid_594093
+  var valid_594094 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594094 = validateParameter(valid_594094, JString, required = false,
                                  default = nil)
-  if valid_601094 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601094
-  var valid_601095 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601095 = validateParameter(valid_601095, JString, required = false,
+  if valid_594094 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594094
+  var valid_594095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594095 = validateParameter(valid_594095, JString, required = false,
                                  default = nil)
-  if valid_601095 != nil:
-    section.add "X-Amz-Algorithm", valid_601095
-  var valid_601096 = header.getOrDefault("X-Amz-Signature")
-  valid_601096 = validateParameter(valid_601096, JString, required = false,
+  if valid_594095 != nil:
+    section.add "X-Amz-Algorithm", valid_594095
+  var valid_594096 = header.getOrDefault("X-Amz-Signature")
+  valid_594096 = validateParameter(valid_594096, JString, required = false,
                                  default = nil)
-  if valid_601096 != nil:
-    section.add "X-Amz-Signature", valid_601096
-  var valid_601097 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601097 = validateParameter(valid_601097, JString, required = false,
+  if valid_594096 != nil:
+    section.add "X-Amz-Signature", valid_594096
+  var valid_594097 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594097 = validateParameter(valid_594097, JString, required = false,
                                  default = nil)
-  if valid_601097 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601097
-  var valid_601098 = header.getOrDefault("X-Amz-Credential")
-  valid_601098 = validateParameter(valid_601098, JString, required = false,
+  if valid_594097 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594097
+  var valid_594098 = header.getOrDefault("X-Amz-Credential")
+  valid_594098 = validateParameter(valid_594098, JString, required = false,
                                  default = nil)
-  if valid_601098 != nil:
-    section.add "X-Amz-Credential", valid_601098
+  if valid_594098 != nil:
+    section.add "X-Amz-Credential", valid_594098
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -661,43 +661,43 @@ proc validate_DeleteNamedQuery_601089(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601100: Call_DeleteNamedQuery_601088; path: JsonNode;
+proc call*(call_594100: Call_DeleteNamedQuery_594088; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the named query if you have access to the workgroup in which the query was saved.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ## 
-  let valid = call_601100.validator(path, query, header, formData, body)
-  let scheme = call_601100.pickScheme
+  let valid = call_594100.validator(path, query, header, formData, body)
+  let scheme = call_594100.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601100.url(scheme.get, call_601100.host, call_601100.base,
-                         call_601100.route, valid.getOrDefault("path"),
+  let url = call_594100.url(scheme.get, call_594100.host, call_594100.base,
+                         call_594100.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601100, url, valid)
+  result = hook(call_594100, url, valid)
 
-proc call*(call_601101: Call_DeleteNamedQuery_601088; body: JsonNode): Recallable =
+proc call*(call_594101: Call_DeleteNamedQuery_594088; body: JsonNode): Recallable =
   ## deleteNamedQuery
   ## <p>Deletes the named query if you have access to the workgroup in which the query was saved.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_601102 = newJObject()
+  var body_594102 = newJObject()
   if body != nil:
-    body_601102 = body
-  result = call_601101.call(nil, nil, nil, nil, body_601102)
+    body_594102 = body
+  result = call_594101.call(nil, nil, nil, nil, body_594102)
 
-var deleteNamedQuery* = Call_DeleteNamedQuery_601088(name: "deleteNamedQuery",
+var deleteNamedQuery* = Call_DeleteNamedQuery_594088(name: "deleteNamedQuery",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.DeleteNamedQuery",
-    validator: validate_DeleteNamedQuery_601089, base: "/",
-    url: url_DeleteNamedQuery_601090, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteNamedQuery_594089, base: "/",
+    url: url_DeleteNamedQuery_594090, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteWorkGroup_601103 = ref object of OpenApiRestCall_600437
-proc url_DeleteWorkGroup_601105(protocol: Scheme; host: string; base: string;
+  Call_DeleteWorkGroup_594103 = ref object of OpenApiRestCall_593437
+proc url_DeleteWorkGroup_594105(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteWorkGroup_601104(path: JsonNode; query: JsonNode;
+proc validate_DeleteWorkGroup_594104(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Deletes the workgroup with the specified name. The primary workgroup cannot be deleted.
@@ -718,48 +718,48 @@ proc validate_DeleteWorkGroup_601104(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601106 = header.getOrDefault("X-Amz-Date")
-  valid_601106 = validateParameter(valid_601106, JString, required = false,
+  var valid_594106 = header.getOrDefault("X-Amz-Date")
+  valid_594106 = validateParameter(valid_594106, JString, required = false,
                                  default = nil)
-  if valid_601106 != nil:
-    section.add "X-Amz-Date", valid_601106
-  var valid_601107 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601107 = validateParameter(valid_601107, JString, required = false,
+  if valid_594106 != nil:
+    section.add "X-Amz-Date", valid_594106
+  var valid_594107 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594107 = validateParameter(valid_594107, JString, required = false,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "X-Amz-Security-Token", valid_601107
+  if valid_594107 != nil:
+    section.add "X-Amz-Security-Token", valid_594107
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601108 = header.getOrDefault("X-Amz-Target")
-  valid_601108 = validateParameter(valid_601108, JString, required = true, default = newJString(
+  var valid_594108 = header.getOrDefault("X-Amz-Target")
+  valid_594108 = validateParameter(valid_594108, JString, required = true, default = newJString(
       "AmazonAthena.DeleteWorkGroup"))
-  if valid_601108 != nil:
-    section.add "X-Amz-Target", valid_601108
-  var valid_601109 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  if valid_594108 != nil:
+    section.add "X-Amz-Target", valid_594108
+  var valid_594109 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594109 = validateParameter(valid_594109, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601109
-  var valid_601110 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_594109 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594109
+  var valid_594110 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594110 = validateParameter(valid_594110, JString, required = false,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "X-Amz-Algorithm", valid_601110
-  var valid_601111 = header.getOrDefault("X-Amz-Signature")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_594110 != nil:
+    section.add "X-Amz-Algorithm", valid_594110
+  var valid_594111 = header.getOrDefault("X-Amz-Signature")
+  valid_594111 = validateParameter(valid_594111, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "X-Amz-Signature", valid_601111
-  var valid_601112 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601112 = validateParameter(valid_601112, JString, required = false,
+  if valid_594111 != nil:
+    section.add "X-Amz-Signature", valid_594111
+  var valid_594112 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594112 = validateParameter(valid_594112, JString, required = false,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601112
-  var valid_601113 = header.getOrDefault("X-Amz-Credential")
-  valid_601113 = validateParameter(valid_601113, JString, required = false,
+  if valid_594112 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594112
+  var valid_594113 = header.getOrDefault("X-Amz-Credential")
+  valid_594113 = validateParameter(valid_594113, JString, required = false,
                                  default = nil)
-  if valid_601113 != nil:
-    section.add "X-Amz-Credential", valid_601113
+  if valid_594113 != nil:
+    section.add "X-Amz-Credential", valid_594113
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -770,43 +770,43 @@ proc validate_DeleteWorkGroup_601104(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601115: Call_DeleteWorkGroup_601103; path: JsonNode; query: JsonNode;
+proc call*(call_594115: Call_DeleteWorkGroup_594103; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the workgroup with the specified name. The primary workgroup cannot be deleted.
   ## 
-  let valid = call_601115.validator(path, query, header, formData, body)
-  let scheme = call_601115.pickScheme
+  let valid = call_594115.validator(path, query, header, formData, body)
+  let scheme = call_594115.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601115.url(scheme.get, call_601115.host, call_601115.base,
-                         call_601115.route, valid.getOrDefault("path"),
+  let url = call_594115.url(scheme.get, call_594115.host, call_594115.base,
+                         call_594115.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601115, url, valid)
+  result = hook(call_594115, url, valid)
 
-proc call*(call_601116: Call_DeleteWorkGroup_601103; body: JsonNode): Recallable =
+proc call*(call_594116: Call_DeleteWorkGroup_594103; body: JsonNode): Recallable =
   ## deleteWorkGroup
   ## Deletes the workgroup with the specified name. The primary workgroup cannot be deleted.
   ##   body: JObject (required)
-  var body_601117 = newJObject()
+  var body_594117 = newJObject()
   if body != nil:
-    body_601117 = body
-  result = call_601116.call(nil, nil, nil, nil, body_601117)
+    body_594117 = body
+  result = call_594116.call(nil, nil, nil, nil, body_594117)
 
-var deleteWorkGroup* = Call_DeleteWorkGroup_601103(name: "deleteWorkGroup",
+var deleteWorkGroup* = Call_DeleteWorkGroup_594103(name: "deleteWorkGroup",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.DeleteWorkGroup",
-    validator: validate_DeleteWorkGroup_601104, base: "/", url: url_DeleteWorkGroup_601105,
+    validator: validate_DeleteWorkGroup_594104, base: "/", url: url_DeleteWorkGroup_594105,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetNamedQuery_601118 = ref object of OpenApiRestCall_600437
-proc url_GetNamedQuery_601120(protocol: Scheme; host: string; base: string;
+  Call_GetNamedQuery_594118 = ref object of OpenApiRestCall_593437
+proc url_GetNamedQuery_594120(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetNamedQuery_601119(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetNamedQuery_594119(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a single query. Requires that you have access to the workgroup in which the query was saved.
   ## 
@@ -826,48 +826,48 @@ proc validate_GetNamedQuery_601119(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601121 = header.getOrDefault("X-Amz-Date")
-  valid_601121 = validateParameter(valid_601121, JString, required = false,
+  var valid_594121 = header.getOrDefault("X-Amz-Date")
+  valid_594121 = validateParameter(valid_594121, JString, required = false,
                                  default = nil)
-  if valid_601121 != nil:
-    section.add "X-Amz-Date", valid_601121
-  var valid_601122 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601122 = validateParameter(valid_601122, JString, required = false,
+  if valid_594121 != nil:
+    section.add "X-Amz-Date", valid_594121
+  var valid_594122 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594122 = validateParameter(valid_594122, JString, required = false,
                                  default = nil)
-  if valid_601122 != nil:
-    section.add "X-Amz-Security-Token", valid_601122
+  if valid_594122 != nil:
+    section.add "X-Amz-Security-Token", valid_594122
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601123 = header.getOrDefault("X-Amz-Target")
-  valid_601123 = validateParameter(valid_601123, JString, required = true, default = newJString(
+  var valid_594123 = header.getOrDefault("X-Amz-Target")
+  valid_594123 = validateParameter(valid_594123, JString, required = true, default = newJString(
       "AmazonAthena.GetNamedQuery"))
-  if valid_601123 != nil:
-    section.add "X-Amz-Target", valid_601123
-  var valid_601124 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601124 = validateParameter(valid_601124, JString, required = false,
+  if valid_594123 != nil:
+    section.add "X-Amz-Target", valid_594123
+  var valid_594124 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594124 = validateParameter(valid_594124, JString, required = false,
                                  default = nil)
-  if valid_601124 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601124
-  var valid_601125 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601125 = validateParameter(valid_601125, JString, required = false,
+  if valid_594124 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594124
+  var valid_594125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594125 = validateParameter(valid_594125, JString, required = false,
                                  default = nil)
-  if valid_601125 != nil:
-    section.add "X-Amz-Algorithm", valid_601125
-  var valid_601126 = header.getOrDefault("X-Amz-Signature")
-  valid_601126 = validateParameter(valid_601126, JString, required = false,
+  if valid_594125 != nil:
+    section.add "X-Amz-Algorithm", valid_594125
+  var valid_594126 = header.getOrDefault("X-Amz-Signature")
+  valid_594126 = validateParameter(valid_594126, JString, required = false,
                                  default = nil)
-  if valid_601126 != nil:
-    section.add "X-Amz-Signature", valid_601126
-  var valid_601127 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601127 = validateParameter(valid_601127, JString, required = false,
+  if valid_594126 != nil:
+    section.add "X-Amz-Signature", valid_594126
+  var valid_594127 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594127 = validateParameter(valid_594127, JString, required = false,
                                  default = nil)
-  if valid_601127 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601127
-  var valid_601128 = header.getOrDefault("X-Amz-Credential")
-  valid_601128 = validateParameter(valid_601128, JString, required = false,
+  if valid_594127 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594127
+  var valid_594128 = header.getOrDefault("X-Amz-Credential")
+  valid_594128 = validateParameter(valid_594128, JString, required = false,
                                  default = nil)
-  if valid_601128 != nil:
-    section.add "X-Amz-Credential", valid_601128
+  if valid_594128 != nil:
+    section.add "X-Amz-Credential", valid_594128
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -878,43 +878,43 @@ proc validate_GetNamedQuery_601119(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601130: Call_GetNamedQuery_601118; path: JsonNode; query: JsonNode;
+proc call*(call_594130: Call_GetNamedQuery_594118; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a single query. Requires that you have access to the workgroup in which the query was saved.
   ## 
-  let valid = call_601130.validator(path, query, header, formData, body)
-  let scheme = call_601130.pickScheme
+  let valid = call_594130.validator(path, query, header, formData, body)
+  let scheme = call_594130.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601130.url(scheme.get, call_601130.host, call_601130.base,
-                         call_601130.route, valid.getOrDefault("path"),
+  let url = call_594130.url(scheme.get, call_594130.host, call_594130.base,
+                         call_594130.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601130, url, valid)
+  result = hook(call_594130, url, valid)
 
-proc call*(call_601131: Call_GetNamedQuery_601118; body: JsonNode): Recallable =
+proc call*(call_594131: Call_GetNamedQuery_594118; body: JsonNode): Recallable =
   ## getNamedQuery
   ## Returns information about a single query. Requires that you have access to the workgroup in which the query was saved.
   ##   body: JObject (required)
-  var body_601132 = newJObject()
+  var body_594132 = newJObject()
   if body != nil:
-    body_601132 = body
-  result = call_601131.call(nil, nil, nil, nil, body_601132)
+    body_594132 = body
+  result = call_594131.call(nil, nil, nil, nil, body_594132)
 
-var getNamedQuery* = Call_GetNamedQuery_601118(name: "getNamedQuery",
+var getNamedQuery* = Call_GetNamedQuery_594118(name: "getNamedQuery",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.GetNamedQuery",
-    validator: validate_GetNamedQuery_601119, base: "/", url: url_GetNamedQuery_601120,
+    validator: validate_GetNamedQuery_594119, base: "/", url: url_GetNamedQuery_594120,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetQueryExecution_601133 = ref object of OpenApiRestCall_600437
-proc url_GetQueryExecution_601135(protocol: Scheme; host: string; base: string;
+  Call_GetQueryExecution_594133 = ref object of OpenApiRestCall_593437
+proc url_GetQueryExecution_594135(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetQueryExecution_601134(path: JsonNode; query: JsonNode;
+proc validate_GetQueryExecution_594134(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Returns information about a single execution of a query if you have access to the workgroup in which the query ran. Each time a query executes, information about the query execution is saved with a unique ID.
@@ -935,48 +935,48 @@ proc validate_GetQueryExecution_601134(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601136 = header.getOrDefault("X-Amz-Date")
-  valid_601136 = validateParameter(valid_601136, JString, required = false,
+  var valid_594136 = header.getOrDefault("X-Amz-Date")
+  valid_594136 = validateParameter(valid_594136, JString, required = false,
                                  default = nil)
-  if valid_601136 != nil:
-    section.add "X-Amz-Date", valid_601136
-  var valid_601137 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601137 = validateParameter(valid_601137, JString, required = false,
+  if valid_594136 != nil:
+    section.add "X-Amz-Date", valid_594136
+  var valid_594137 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594137 = validateParameter(valid_594137, JString, required = false,
                                  default = nil)
-  if valid_601137 != nil:
-    section.add "X-Amz-Security-Token", valid_601137
+  if valid_594137 != nil:
+    section.add "X-Amz-Security-Token", valid_594137
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601138 = header.getOrDefault("X-Amz-Target")
-  valid_601138 = validateParameter(valid_601138, JString, required = true, default = newJString(
+  var valid_594138 = header.getOrDefault("X-Amz-Target")
+  valid_594138 = validateParameter(valid_594138, JString, required = true, default = newJString(
       "AmazonAthena.GetQueryExecution"))
-  if valid_601138 != nil:
-    section.add "X-Amz-Target", valid_601138
-  var valid_601139 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601139 = validateParameter(valid_601139, JString, required = false,
+  if valid_594138 != nil:
+    section.add "X-Amz-Target", valid_594138
+  var valid_594139 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594139 = validateParameter(valid_594139, JString, required = false,
                                  default = nil)
-  if valid_601139 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601139
-  var valid_601140 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601140 = validateParameter(valid_601140, JString, required = false,
+  if valid_594139 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594139
+  var valid_594140 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594140 = validateParameter(valid_594140, JString, required = false,
                                  default = nil)
-  if valid_601140 != nil:
-    section.add "X-Amz-Algorithm", valid_601140
-  var valid_601141 = header.getOrDefault("X-Amz-Signature")
-  valid_601141 = validateParameter(valid_601141, JString, required = false,
+  if valid_594140 != nil:
+    section.add "X-Amz-Algorithm", valid_594140
+  var valid_594141 = header.getOrDefault("X-Amz-Signature")
+  valid_594141 = validateParameter(valid_594141, JString, required = false,
                                  default = nil)
-  if valid_601141 != nil:
-    section.add "X-Amz-Signature", valid_601141
-  var valid_601142 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601142 = validateParameter(valid_601142, JString, required = false,
+  if valid_594141 != nil:
+    section.add "X-Amz-Signature", valid_594141
+  var valid_594142 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594142 = validateParameter(valid_594142, JString, required = false,
                                  default = nil)
-  if valid_601142 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601142
-  var valid_601143 = header.getOrDefault("X-Amz-Credential")
-  valid_601143 = validateParameter(valid_601143, JString, required = false,
+  if valid_594142 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594142
+  var valid_594143 = header.getOrDefault("X-Amz-Credential")
+  valid_594143 = validateParameter(valid_594143, JString, required = false,
                                  default = nil)
-  if valid_601143 != nil:
-    section.add "X-Amz-Credential", valid_601143
+  if valid_594143 != nil:
+    section.add "X-Amz-Credential", valid_594143
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -987,43 +987,43 @@ proc validate_GetQueryExecution_601134(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601145: Call_GetQueryExecution_601133; path: JsonNode;
+proc call*(call_594145: Call_GetQueryExecution_594133; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a single execution of a query if you have access to the workgroup in which the query ran. Each time a query executes, information about the query execution is saved with a unique ID.
   ## 
-  let valid = call_601145.validator(path, query, header, formData, body)
-  let scheme = call_601145.pickScheme
+  let valid = call_594145.validator(path, query, header, formData, body)
+  let scheme = call_594145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601145.url(scheme.get, call_601145.host, call_601145.base,
-                         call_601145.route, valid.getOrDefault("path"),
+  let url = call_594145.url(scheme.get, call_594145.host, call_594145.base,
+                         call_594145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601145, url, valid)
+  result = hook(call_594145, url, valid)
 
-proc call*(call_601146: Call_GetQueryExecution_601133; body: JsonNode): Recallable =
+proc call*(call_594146: Call_GetQueryExecution_594133; body: JsonNode): Recallable =
   ## getQueryExecution
   ## Returns information about a single execution of a query if you have access to the workgroup in which the query ran. Each time a query executes, information about the query execution is saved with a unique ID.
   ##   body: JObject (required)
-  var body_601147 = newJObject()
+  var body_594147 = newJObject()
   if body != nil:
-    body_601147 = body
-  result = call_601146.call(nil, nil, nil, nil, body_601147)
+    body_594147 = body
+  result = call_594146.call(nil, nil, nil, nil, body_594147)
 
-var getQueryExecution* = Call_GetQueryExecution_601133(name: "getQueryExecution",
+var getQueryExecution* = Call_GetQueryExecution_594133(name: "getQueryExecution",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.GetQueryExecution",
-    validator: validate_GetQueryExecution_601134, base: "/",
-    url: url_GetQueryExecution_601135, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetQueryExecution_594134, base: "/",
+    url: url_GetQueryExecution_594135, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetQueryResults_601148 = ref object of OpenApiRestCall_600437
-proc url_GetQueryResults_601150(protocol: Scheme; host: string; base: string;
+  Call_GetQueryResults_594148 = ref object of OpenApiRestCall_593437
+proc url_GetQueryResults_594150(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetQueryResults_601149(path: JsonNode; query: JsonNode;
+proc validate_GetQueryResults_594149(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Streams the results of a single query execution specified by <code>QueryExecutionId</code> from the Athena query results location in Amazon S3. For more information, see <a href="https://docs.aws.amazon.com/athena/latest/ug/querying.html">Query Results</a> in the <i>Amazon Athena User Guide</i>. This request does not execute the query but returns results. Use <a>StartQueryExecution</a> to run a query.</p> <p>To stream query results successfully, the IAM principal with permission to call <code>GetQueryResults</code> also must have permissions to the Amazon S3 <code>GetObject</code> action for the Athena query results location.</p> <important> <p>IAM principals with permission to the Amazon S3 <code>GetObject</code> action for the query results location are able to retrieve query results from Amazon S3 even if permission to the <code>GetQueryResults</code> action is denied. To restrict user or role access, ensure that Amazon S3 permissions to the Athena query location are denied.</p> </important>
@@ -1038,16 +1038,16 @@ proc validate_GetQueryResults_601149(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601151 = query.getOrDefault("NextToken")
-  valid_601151 = validateParameter(valid_601151, JString, required = false,
+  var valid_594151 = query.getOrDefault("NextToken")
+  valid_594151 = validateParameter(valid_594151, JString, required = false,
                                  default = nil)
-  if valid_601151 != nil:
-    section.add "NextToken", valid_601151
-  var valid_601152 = query.getOrDefault("MaxResults")
-  valid_601152 = validateParameter(valid_601152, JString, required = false,
+  if valid_594151 != nil:
+    section.add "NextToken", valid_594151
+  var valid_594152 = query.getOrDefault("MaxResults")
+  valid_594152 = validateParameter(valid_594152, JString, required = false,
                                  default = nil)
-  if valid_601152 != nil:
-    section.add "MaxResults", valid_601152
+  if valid_594152 != nil:
+    section.add "MaxResults", valid_594152
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1059,48 +1059,48 @@ proc validate_GetQueryResults_601149(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601153 = header.getOrDefault("X-Amz-Date")
-  valid_601153 = validateParameter(valid_601153, JString, required = false,
+  var valid_594153 = header.getOrDefault("X-Amz-Date")
+  valid_594153 = validateParameter(valid_594153, JString, required = false,
                                  default = nil)
-  if valid_601153 != nil:
-    section.add "X-Amz-Date", valid_601153
-  var valid_601154 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601154 = validateParameter(valid_601154, JString, required = false,
+  if valid_594153 != nil:
+    section.add "X-Amz-Date", valid_594153
+  var valid_594154 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594154 = validateParameter(valid_594154, JString, required = false,
                                  default = nil)
-  if valid_601154 != nil:
-    section.add "X-Amz-Security-Token", valid_601154
+  if valid_594154 != nil:
+    section.add "X-Amz-Security-Token", valid_594154
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601155 = header.getOrDefault("X-Amz-Target")
-  valid_601155 = validateParameter(valid_601155, JString, required = true, default = newJString(
+  var valid_594155 = header.getOrDefault("X-Amz-Target")
+  valid_594155 = validateParameter(valid_594155, JString, required = true, default = newJString(
       "AmazonAthena.GetQueryResults"))
-  if valid_601155 != nil:
-    section.add "X-Amz-Target", valid_601155
-  var valid_601156 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601156 = validateParameter(valid_601156, JString, required = false,
+  if valid_594155 != nil:
+    section.add "X-Amz-Target", valid_594155
+  var valid_594156 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594156 = validateParameter(valid_594156, JString, required = false,
                                  default = nil)
-  if valid_601156 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601156
-  var valid_601157 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601157 = validateParameter(valid_601157, JString, required = false,
+  if valid_594156 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594156
+  var valid_594157 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594157 = validateParameter(valid_594157, JString, required = false,
                                  default = nil)
-  if valid_601157 != nil:
-    section.add "X-Amz-Algorithm", valid_601157
-  var valid_601158 = header.getOrDefault("X-Amz-Signature")
-  valid_601158 = validateParameter(valid_601158, JString, required = false,
+  if valid_594157 != nil:
+    section.add "X-Amz-Algorithm", valid_594157
+  var valid_594158 = header.getOrDefault("X-Amz-Signature")
+  valid_594158 = validateParameter(valid_594158, JString, required = false,
                                  default = nil)
-  if valid_601158 != nil:
-    section.add "X-Amz-Signature", valid_601158
-  var valid_601159 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601159 = validateParameter(valid_601159, JString, required = false,
+  if valid_594158 != nil:
+    section.add "X-Amz-Signature", valid_594158
+  var valid_594159 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594159 = validateParameter(valid_594159, JString, required = false,
                                  default = nil)
-  if valid_601159 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601159
-  var valid_601160 = header.getOrDefault("X-Amz-Credential")
-  valid_601160 = validateParameter(valid_601160, JString, required = false,
+  if valid_594159 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594159
+  var valid_594160 = header.getOrDefault("X-Amz-Credential")
+  valid_594160 = validateParameter(valid_594160, JString, required = false,
                                  default = nil)
-  if valid_601160 != nil:
-    section.add "X-Amz-Credential", valid_601160
+  if valid_594160 != nil:
+    section.add "X-Amz-Credential", valid_594160
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1111,20 +1111,20 @@ proc validate_GetQueryResults_601149(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601162: Call_GetQueryResults_601148; path: JsonNode; query: JsonNode;
+proc call*(call_594162: Call_GetQueryResults_594148; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Streams the results of a single query execution specified by <code>QueryExecutionId</code> from the Athena query results location in Amazon S3. For more information, see <a href="https://docs.aws.amazon.com/athena/latest/ug/querying.html">Query Results</a> in the <i>Amazon Athena User Guide</i>. This request does not execute the query but returns results. Use <a>StartQueryExecution</a> to run a query.</p> <p>To stream query results successfully, the IAM principal with permission to call <code>GetQueryResults</code> also must have permissions to the Amazon S3 <code>GetObject</code> action for the Athena query results location.</p> <important> <p>IAM principals with permission to the Amazon S3 <code>GetObject</code> action for the query results location are able to retrieve query results from Amazon S3 even if permission to the <code>GetQueryResults</code> action is denied. To restrict user or role access, ensure that Amazon S3 permissions to the Athena query location are denied.</p> </important>
   ## 
-  let valid = call_601162.validator(path, query, header, formData, body)
-  let scheme = call_601162.pickScheme
+  let valid = call_594162.validator(path, query, header, formData, body)
+  let scheme = call_594162.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601162.url(scheme.get, call_601162.host, call_601162.base,
-                         call_601162.route, valid.getOrDefault("path"),
+  let url = call_594162.url(scheme.get, call_594162.host, call_594162.base,
+                         call_594162.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601162, url, valid)
+  result = hook(call_594162, url, valid)
 
-proc call*(call_601163: Call_GetQueryResults_601148; body: JsonNode;
+proc call*(call_594163: Call_GetQueryResults_594148; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## getQueryResults
   ## <p>Streams the results of a single query execution specified by <code>QueryExecutionId</code> from the Athena query results location in Amazon S3. For more information, see <a href="https://docs.aws.amazon.com/athena/latest/ug/querying.html">Query Results</a> in the <i>Amazon Athena User Guide</i>. This request does not execute the query but returns results. Use <a>StartQueryExecution</a> to run a query.</p> <p>To stream query results successfully, the IAM principal with permission to call <code>GetQueryResults</code> also must have permissions to the Amazon S3 <code>GetObject</code> action for the Athena query results location.</p> <important> <p>IAM principals with permission to the Amazon S3 <code>GetObject</code> action for the query results location are able to retrieve query results from Amazon S3 even if permission to the <code>GetQueryResults</code> action is denied. To restrict user or role access, ensure that Amazon S3 permissions to the Athena query location are denied.</p> </important>
@@ -1133,29 +1133,29 @@ proc call*(call_601163: Call_GetQueryResults_601148; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601164 = newJObject()
-  var body_601165 = newJObject()
-  add(query_601164, "NextToken", newJString(NextToken))
+  var query_594164 = newJObject()
+  var body_594165 = newJObject()
+  add(query_594164, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601165 = body
-  add(query_601164, "MaxResults", newJString(MaxResults))
-  result = call_601163.call(nil, query_601164, nil, nil, body_601165)
+    body_594165 = body
+  add(query_594164, "MaxResults", newJString(MaxResults))
+  result = call_594163.call(nil, query_594164, nil, nil, body_594165)
 
-var getQueryResults* = Call_GetQueryResults_601148(name: "getQueryResults",
+var getQueryResults* = Call_GetQueryResults_594148(name: "getQueryResults",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.GetQueryResults",
-    validator: validate_GetQueryResults_601149, base: "/", url: url_GetQueryResults_601150,
+    validator: validate_GetQueryResults_594149, base: "/", url: url_GetQueryResults_594150,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetWorkGroup_601167 = ref object of OpenApiRestCall_600437
-proc url_GetWorkGroup_601169(protocol: Scheme; host: string; base: string;
+  Call_GetWorkGroup_594167 = ref object of OpenApiRestCall_593437
+proc url_GetWorkGroup_594169(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetWorkGroup_601168(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetWorkGroup_594168(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about the workgroup with the specified name.
   ## 
@@ -1175,48 +1175,48 @@ proc validate_GetWorkGroup_601168(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601170 = header.getOrDefault("X-Amz-Date")
-  valid_601170 = validateParameter(valid_601170, JString, required = false,
+  var valid_594170 = header.getOrDefault("X-Amz-Date")
+  valid_594170 = validateParameter(valid_594170, JString, required = false,
                                  default = nil)
-  if valid_601170 != nil:
-    section.add "X-Amz-Date", valid_601170
-  var valid_601171 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601171 = validateParameter(valid_601171, JString, required = false,
+  if valid_594170 != nil:
+    section.add "X-Amz-Date", valid_594170
+  var valid_594171 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594171 = validateParameter(valid_594171, JString, required = false,
                                  default = nil)
-  if valid_601171 != nil:
-    section.add "X-Amz-Security-Token", valid_601171
+  if valid_594171 != nil:
+    section.add "X-Amz-Security-Token", valid_594171
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601172 = header.getOrDefault("X-Amz-Target")
-  valid_601172 = validateParameter(valid_601172, JString, required = true, default = newJString(
+  var valid_594172 = header.getOrDefault("X-Amz-Target")
+  valid_594172 = validateParameter(valid_594172, JString, required = true, default = newJString(
       "AmazonAthena.GetWorkGroup"))
-  if valid_601172 != nil:
-    section.add "X-Amz-Target", valid_601172
-  var valid_601173 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601173 = validateParameter(valid_601173, JString, required = false,
+  if valid_594172 != nil:
+    section.add "X-Amz-Target", valid_594172
+  var valid_594173 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594173 = validateParameter(valid_594173, JString, required = false,
                                  default = nil)
-  if valid_601173 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601173
-  var valid_601174 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601174 = validateParameter(valid_601174, JString, required = false,
+  if valid_594173 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594173
+  var valid_594174 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594174 = validateParameter(valid_594174, JString, required = false,
                                  default = nil)
-  if valid_601174 != nil:
-    section.add "X-Amz-Algorithm", valid_601174
-  var valid_601175 = header.getOrDefault("X-Amz-Signature")
-  valid_601175 = validateParameter(valid_601175, JString, required = false,
+  if valid_594174 != nil:
+    section.add "X-Amz-Algorithm", valid_594174
+  var valid_594175 = header.getOrDefault("X-Amz-Signature")
+  valid_594175 = validateParameter(valid_594175, JString, required = false,
                                  default = nil)
-  if valid_601175 != nil:
-    section.add "X-Amz-Signature", valid_601175
-  var valid_601176 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601176 = validateParameter(valid_601176, JString, required = false,
+  if valid_594175 != nil:
+    section.add "X-Amz-Signature", valid_594175
+  var valid_594176 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594176 = validateParameter(valid_594176, JString, required = false,
                                  default = nil)
-  if valid_601176 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601176
-  var valid_601177 = header.getOrDefault("X-Amz-Credential")
-  valid_601177 = validateParameter(valid_601177, JString, required = false,
+  if valid_594176 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594176
+  var valid_594177 = header.getOrDefault("X-Amz-Credential")
+  valid_594177 = validateParameter(valid_594177, JString, required = false,
                                  default = nil)
-  if valid_601177 != nil:
-    section.add "X-Amz-Credential", valid_601177
+  if valid_594177 != nil:
+    section.add "X-Amz-Credential", valid_594177
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1227,43 +1227,43 @@ proc validate_GetWorkGroup_601168(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601179: Call_GetWorkGroup_601167; path: JsonNode; query: JsonNode;
+proc call*(call_594179: Call_GetWorkGroup_594167; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about the workgroup with the specified name.
   ## 
-  let valid = call_601179.validator(path, query, header, formData, body)
-  let scheme = call_601179.pickScheme
+  let valid = call_594179.validator(path, query, header, formData, body)
+  let scheme = call_594179.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601179.url(scheme.get, call_601179.host, call_601179.base,
-                         call_601179.route, valid.getOrDefault("path"),
+  let url = call_594179.url(scheme.get, call_594179.host, call_594179.base,
+                         call_594179.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601179, url, valid)
+  result = hook(call_594179, url, valid)
 
-proc call*(call_601180: Call_GetWorkGroup_601167; body: JsonNode): Recallable =
+proc call*(call_594180: Call_GetWorkGroup_594167; body: JsonNode): Recallable =
   ## getWorkGroup
   ## Returns information about the workgroup with the specified name.
   ##   body: JObject (required)
-  var body_601181 = newJObject()
+  var body_594181 = newJObject()
   if body != nil:
-    body_601181 = body
-  result = call_601180.call(nil, nil, nil, nil, body_601181)
+    body_594181 = body
+  result = call_594180.call(nil, nil, nil, nil, body_594181)
 
-var getWorkGroup* = Call_GetWorkGroup_601167(name: "getWorkGroup",
+var getWorkGroup* = Call_GetWorkGroup_594167(name: "getWorkGroup",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.GetWorkGroup",
-    validator: validate_GetWorkGroup_601168, base: "/", url: url_GetWorkGroup_601169,
+    validator: validate_GetWorkGroup_594168, base: "/", url: url_GetWorkGroup_594169,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListNamedQueries_601182 = ref object of OpenApiRestCall_600437
-proc url_ListNamedQueries_601184(protocol: Scheme; host: string; base: string;
+  Call_ListNamedQueries_594182 = ref object of OpenApiRestCall_593437
+proc url_ListNamedQueries_594184(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListNamedQueries_601183(path: JsonNode; query: JsonNode;
+proc validate_ListNamedQueries_594183(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Provides a list of available query IDs only for queries saved in the specified workgroup. Requires that you have access to the workgroup.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
@@ -1278,16 +1278,16 @@ proc validate_ListNamedQueries_601183(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601185 = query.getOrDefault("NextToken")
-  valid_601185 = validateParameter(valid_601185, JString, required = false,
+  var valid_594185 = query.getOrDefault("NextToken")
+  valid_594185 = validateParameter(valid_594185, JString, required = false,
                                  default = nil)
-  if valid_601185 != nil:
-    section.add "NextToken", valid_601185
-  var valid_601186 = query.getOrDefault("MaxResults")
-  valid_601186 = validateParameter(valid_601186, JString, required = false,
+  if valid_594185 != nil:
+    section.add "NextToken", valid_594185
+  var valid_594186 = query.getOrDefault("MaxResults")
+  valid_594186 = validateParameter(valid_594186, JString, required = false,
                                  default = nil)
-  if valid_601186 != nil:
-    section.add "MaxResults", valid_601186
+  if valid_594186 != nil:
+    section.add "MaxResults", valid_594186
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1299,48 +1299,48 @@ proc validate_ListNamedQueries_601183(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601187 = header.getOrDefault("X-Amz-Date")
-  valid_601187 = validateParameter(valid_601187, JString, required = false,
+  var valid_594187 = header.getOrDefault("X-Amz-Date")
+  valid_594187 = validateParameter(valid_594187, JString, required = false,
                                  default = nil)
-  if valid_601187 != nil:
-    section.add "X-Amz-Date", valid_601187
-  var valid_601188 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601188 = validateParameter(valid_601188, JString, required = false,
+  if valid_594187 != nil:
+    section.add "X-Amz-Date", valid_594187
+  var valid_594188 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594188 = validateParameter(valid_594188, JString, required = false,
                                  default = nil)
-  if valid_601188 != nil:
-    section.add "X-Amz-Security-Token", valid_601188
+  if valid_594188 != nil:
+    section.add "X-Amz-Security-Token", valid_594188
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601189 = header.getOrDefault("X-Amz-Target")
-  valid_601189 = validateParameter(valid_601189, JString, required = true, default = newJString(
+  var valid_594189 = header.getOrDefault("X-Amz-Target")
+  valid_594189 = validateParameter(valid_594189, JString, required = true, default = newJString(
       "AmazonAthena.ListNamedQueries"))
-  if valid_601189 != nil:
-    section.add "X-Amz-Target", valid_601189
-  var valid_601190 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601190 = validateParameter(valid_601190, JString, required = false,
+  if valid_594189 != nil:
+    section.add "X-Amz-Target", valid_594189
+  var valid_594190 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594190 = validateParameter(valid_594190, JString, required = false,
                                  default = nil)
-  if valid_601190 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601190
-  var valid_601191 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601191 = validateParameter(valid_601191, JString, required = false,
+  if valid_594190 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594190
+  var valid_594191 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594191 = validateParameter(valid_594191, JString, required = false,
                                  default = nil)
-  if valid_601191 != nil:
-    section.add "X-Amz-Algorithm", valid_601191
-  var valid_601192 = header.getOrDefault("X-Amz-Signature")
-  valid_601192 = validateParameter(valid_601192, JString, required = false,
+  if valid_594191 != nil:
+    section.add "X-Amz-Algorithm", valid_594191
+  var valid_594192 = header.getOrDefault("X-Amz-Signature")
+  valid_594192 = validateParameter(valid_594192, JString, required = false,
                                  default = nil)
-  if valid_601192 != nil:
-    section.add "X-Amz-Signature", valid_601192
-  var valid_601193 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601193 = validateParameter(valid_601193, JString, required = false,
+  if valid_594192 != nil:
+    section.add "X-Amz-Signature", valid_594192
+  var valid_594193 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594193 = validateParameter(valid_594193, JString, required = false,
                                  default = nil)
-  if valid_601193 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601193
-  var valid_601194 = header.getOrDefault("X-Amz-Credential")
-  valid_601194 = validateParameter(valid_601194, JString, required = false,
+  if valid_594193 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594193
+  var valid_594194 = header.getOrDefault("X-Amz-Credential")
+  valid_594194 = validateParameter(valid_594194, JString, required = false,
                                  default = nil)
-  if valid_601194 != nil:
-    section.add "X-Amz-Credential", valid_601194
+  if valid_594194 != nil:
+    section.add "X-Amz-Credential", valid_594194
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1351,20 +1351,20 @@ proc validate_ListNamedQueries_601183(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601196: Call_ListNamedQueries_601182; path: JsonNode;
+proc call*(call_594196: Call_ListNamedQueries_594182; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Provides a list of available query IDs only for queries saved in the specified workgroup. Requires that you have access to the workgroup.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ## 
-  let valid = call_601196.validator(path, query, header, formData, body)
-  let scheme = call_601196.pickScheme
+  let valid = call_594196.validator(path, query, header, formData, body)
+  let scheme = call_594196.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601196.url(scheme.get, call_601196.host, call_601196.base,
-                         call_601196.route, valid.getOrDefault("path"),
+  let url = call_594196.url(scheme.get, call_594196.host, call_594196.base,
+                         call_594196.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601196, url, valid)
+  result = hook(call_594196, url, valid)
 
-proc call*(call_601197: Call_ListNamedQueries_601182; body: JsonNode;
+proc call*(call_594197: Call_ListNamedQueries_594182; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listNamedQueries
   ## <p>Provides a list of available query IDs only for queries saved in the specified workgroup. Requires that you have access to the workgroup.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
@@ -1373,29 +1373,29 @@ proc call*(call_601197: Call_ListNamedQueries_601182; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601198 = newJObject()
-  var body_601199 = newJObject()
-  add(query_601198, "NextToken", newJString(NextToken))
+  var query_594198 = newJObject()
+  var body_594199 = newJObject()
+  add(query_594198, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601199 = body
-  add(query_601198, "MaxResults", newJString(MaxResults))
-  result = call_601197.call(nil, query_601198, nil, nil, body_601199)
+    body_594199 = body
+  add(query_594198, "MaxResults", newJString(MaxResults))
+  result = call_594197.call(nil, query_594198, nil, nil, body_594199)
 
-var listNamedQueries* = Call_ListNamedQueries_601182(name: "listNamedQueries",
+var listNamedQueries* = Call_ListNamedQueries_594182(name: "listNamedQueries",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.ListNamedQueries",
-    validator: validate_ListNamedQueries_601183, base: "/",
-    url: url_ListNamedQueries_601184, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListNamedQueries_594183, base: "/",
+    url: url_ListNamedQueries_594184, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListQueryExecutions_601200 = ref object of OpenApiRestCall_600437
-proc url_ListQueryExecutions_601202(protocol: Scheme; host: string; base: string;
+  Call_ListQueryExecutions_594200 = ref object of OpenApiRestCall_593437
+proc url_ListQueryExecutions_594202(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListQueryExecutions_601201(path: JsonNode; query: JsonNode;
+proc validate_ListQueryExecutions_594201(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Provides a list of available query execution IDs for the queries in the specified workgroup. Requires you to have access to the workgroup in which the queries ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
@@ -1410,16 +1410,16 @@ proc validate_ListQueryExecutions_601201(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601203 = query.getOrDefault("NextToken")
-  valid_601203 = validateParameter(valid_601203, JString, required = false,
+  var valid_594203 = query.getOrDefault("NextToken")
+  valid_594203 = validateParameter(valid_594203, JString, required = false,
                                  default = nil)
-  if valid_601203 != nil:
-    section.add "NextToken", valid_601203
-  var valid_601204 = query.getOrDefault("MaxResults")
-  valid_601204 = validateParameter(valid_601204, JString, required = false,
+  if valid_594203 != nil:
+    section.add "NextToken", valid_594203
+  var valid_594204 = query.getOrDefault("MaxResults")
+  valid_594204 = validateParameter(valid_594204, JString, required = false,
                                  default = nil)
-  if valid_601204 != nil:
-    section.add "MaxResults", valid_601204
+  if valid_594204 != nil:
+    section.add "MaxResults", valid_594204
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1431,48 +1431,48 @@ proc validate_ListQueryExecutions_601201(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601205 = header.getOrDefault("X-Amz-Date")
-  valid_601205 = validateParameter(valid_601205, JString, required = false,
+  var valid_594205 = header.getOrDefault("X-Amz-Date")
+  valid_594205 = validateParameter(valid_594205, JString, required = false,
                                  default = nil)
-  if valid_601205 != nil:
-    section.add "X-Amz-Date", valid_601205
-  var valid_601206 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601206 = validateParameter(valid_601206, JString, required = false,
+  if valid_594205 != nil:
+    section.add "X-Amz-Date", valid_594205
+  var valid_594206 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594206 = validateParameter(valid_594206, JString, required = false,
                                  default = nil)
-  if valid_601206 != nil:
-    section.add "X-Amz-Security-Token", valid_601206
+  if valid_594206 != nil:
+    section.add "X-Amz-Security-Token", valid_594206
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601207 = header.getOrDefault("X-Amz-Target")
-  valid_601207 = validateParameter(valid_601207, JString, required = true, default = newJString(
+  var valid_594207 = header.getOrDefault("X-Amz-Target")
+  valid_594207 = validateParameter(valid_594207, JString, required = true, default = newJString(
       "AmazonAthena.ListQueryExecutions"))
-  if valid_601207 != nil:
-    section.add "X-Amz-Target", valid_601207
-  var valid_601208 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601208 = validateParameter(valid_601208, JString, required = false,
+  if valid_594207 != nil:
+    section.add "X-Amz-Target", valid_594207
+  var valid_594208 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594208 = validateParameter(valid_594208, JString, required = false,
                                  default = nil)
-  if valid_601208 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601208
-  var valid_601209 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601209 = validateParameter(valid_601209, JString, required = false,
+  if valid_594208 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594208
+  var valid_594209 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594209 = validateParameter(valid_594209, JString, required = false,
                                  default = nil)
-  if valid_601209 != nil:
-    section.add "X-Amz-Algorithm", valid_601209
-  var valid_601210 = header.getOrDefault("X-Amz-Signature")
-  valid_601210 = validateParameter(valid_601210, JString, required = false,
+  if valid_594209 != nil:
+    section.add "X-Amz-Algorithm", valid_594209
+  var valid_594210 = header.getOrDefault("X-Amz-Signature")
+  valid_594210 = validateParameter(valid_594210, JString, required = false,
                                  default = nil)
-  if valid_601210 != nil:
-    section.add "X-Amz-Signature", valid_601210
-  var valid_601211 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601211 = validateParameter(valid_601211, JString, required = false,
+  if valid_594210 != nil:
+    section.add "X-Amz-Signature", valid_594210
+  var valid_594211 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594211 = validateParameter(valid_594211, JString, required = false,
                                  default = nil)
-  if valid_601211 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601211
-  var valid_601212 = header.getOrDefault("X-Amz-Credential")
-  valid_601212 = validateParameter(valid_601212, JString, required = false,
+  if valid_594211 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594211
+  var valid_594212 = header.getOrDefault("X-Amz-Credential")
+  valid_594212 = validateParameter(valid_594212, JString, required = false,
                                  default = nil)
-  if valid_601212 != nil:
-    section.add "X-Amz-Credential", valid_601212
+  if valid_594212 != nil:
+    section.add "X-Amz-Credential", valid_594212
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1483,20 +1483,20 @@ proc validate_ListQueryExecutions_601201(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601214: Call_ListQueryExecutions_601200; path: JsonNode;
+proc call*(call_594214: Call_ListQueryExecutions_594200; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Provides a list of available query execution IDs for the queries in the specified workgroup. Requires you to have access to the workgroup in which the queries ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ## 
-  let valid = call_601214.validator(path, query, header, formData, body)
-  let scheme = call_601214.pickScheme
+  let valid = call_594214.validator(path, query, header, formData, body)
+  let scheme = call_594214.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601214.url(scheme.get, call_601214.host, call_601214.base,
-                         call_601214.route, valid.getOrDefault("path"),
+  let url = call_594214.url(scheme.get, call_594214.host, call_594214.base,
+                         call_594214.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601214, url, valid)
+  result = hook(call_594214, url, valid)
 
-proc call*(call_601215: Call_ListQueryExecutions_601200; body: JsonNode;
+proc call*(call_594215: Call_ListQueryExecutions_594200; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listQueryExecutions
   ## <p>Provides a list of available query execution IDs for the queries in the specified workgroup. Requires you to have access to the workgroup in which the queries ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
@@ -1505,30 +1505,30 @@ proc call*(call_601215: Call_ListQueryExecutions_601200; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601216 = newJObject()
-  var body_601217 = newJObject()
-  add(query_601216, "NextToken", newJString(NextToken))
+  var query_594216 = newJObject()
+  var body_594217 = newJObject()
+  add(query_594216, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601217 = body
-  add(query_601216, "MaxResults", newJString(MaxResults))
-  result = call_601215.call(nil, query_601216, nil, nil, body_601217)
+    body_594217 = body
+  add(query_594216, "MaxResults", newJString(MaxResults))
+  result = call_594215.call(nil, query_594216, nil, nil, body_594217)
 
-var listQueryExecutions* = Call_ListQueryExecutions_601200(
+var listQueryExecutions* = Call_ListQueryExecutions_594200(
     name: "listQueryExecutions", meth: HttpMethod.HttpPost,
     host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.ListQueryExecutions",
-    validator: validate_ListQueryExecutions_601201, base: "/",
-    url: url_ListQueryExecutions_601202, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListQueryExecutions_594201, base: "/",
+    url: url_ListQueryExecutions_594202, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_601218 = ref object of OpenApiRestCall_600437
-proc url_ListTagsForResource_601220(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_594218 = ref object of OpenApiRestCall_593437
+proc url_ListTagsForResource_594220(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListTagsForResource_601219(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_594219(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lists the tags associated with this workgroup.
@@ -1549,48 +1549,48 @@ proc validate_ListTagsForResource_601219(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601221 = header.getOrDefault("X-Amz-Date")
-  valid_601221 = validateParameter(valid_601221, JString, required = false,
+  var valid_594221 = header.getOrDefault("X-Amz-Date")
+  valid_594221 = validateParameter(valid_594221, JString, required = false,
                                  default = nil)
-  if valid_601221 != nil:
-    section.add "X-Amz-Date", valid_601221
-  var valid_601222 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601222 = validateParameter(valid_601222, JString, required = false,
+  if valid_594221 != nil:
+    section.add "X-Amz-Date", valid_594221
+  var valid_594222 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594222 = validateParameter(valid_594222, JString, required = false,
                                  default = nil)
-  if valid_601222 != nil:
-    section.add "X-Amz-Security-Token", valid_601222
+  if valid_594222 != nil:
+    section.add "X-Amz-Security-Token", valid_594222
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601223 = header.getOrDefault("X-Amz-Target")
-  valid_601223 = validateParameter(valid_601223, JString, required = true, default = newJString(
+  var valid_594223 = header.getOrDefault("X-Amz-Target")
+  valid_594223 = validateParameter(valid_594223, JString, required = true, default = newJString(
       "AmazonAthena.ListTagsForResource"))
-  if valid_601223 != nil:
-    section.add "X-Amz-Target", valid_601223
-  var valid_601224 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601224 = validateParameter(valid_601224, JString, required = false,
+  if valid_594223 != nil:
+    section.add "X-Amz-Target", valid_594223
+  var valid_594224 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594224 = validateParameter(valid_594224, JString, required = false,
                                  default = nil)
-  if valid_601224 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601224
-  var valid_601225 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601225 = validateParameter(valid_601225, JString, required = false,
+  if valid_594224 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594224
+  var valid_594225 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594225 = validateParameter(valid_594225, JString, required = false,
                                  default = nil)
-  if valid_601225 != nil:
-    section.add "X-Amz-Algorithm", valid_601225
-  var valid_601226 = header.getOrDefault("X-Amz-Signature")
-  valid_601226 = validateParameter(valid_601226, JString, required = false,
+  if valid_594225 != nil:
+    section.add "X-Amz-Algorithm", valid_594225
+  var valid_594226 = header.getOrDefault("X-Amz-Signature")
+  valid_594226 = validateParameter(valid_594226, JString, required = false,
                                  default = nil)
-  if valid_601226 != nil:
-    section.add "X-Amz-Signature", valid_601226
-  var valid_601227 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601227 = validateParameter(valid_601227, JString, required = false,
+  if valid_594226 != nil:
+    section.add "X-Amz-Signature", valid_594226
+  var valid_594227 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594227 = validateParameter(valid_594227, JString, required = false,
                                  default = nil)
-  if valid_601227 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601227
-  var valid_601228 = header.getOrDefault("X-Amz-Credential")
-  valid_601228 = validateParameter(valid_601228, JString, required = false,
+  if valid_594227 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594227
+  var valid_594228 = header.getOrDefault("X-Amz-Credential")
+  valid_594228 = validateParameter(valid_594228, JString, required = false,
                                  default = nil)
-  if valid_601228 != nil:
-    section.add "X-Amz-Credential", valid_601228
+  if valid_594228 != nil:
+    section.add "X-Amz-Credential", valid_594228
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1601,44 +1601,44 @@ proc validate_ListTagsForResource_601219(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601230: Call_ListTagsForResource_601218; path: JsonNode;
+proc call*(call_594230: Call_ListTagsForResource_594218; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the tags associated with this workgroup.
   ## 
-  let valid = call_601230.validator(path, query, header, formData, body)
-  let scheme = call_601230.pickScheme
+  let valid = call_594230.validator(path, query, header, formData, body)
+  let scheme = call_594230.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601230.url(scheme.get, call_601230.host, call_601230.base,
-                         call_601230.route, valid.getOrDefault("path"),
+  let url = call_594230.url(scheme.get, call_594230.host, call_594230.base,
+                         call_594230.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601230, url, valid)
+  result = hook(call_594230, url, valid)
 
-proc call*(call_601231: Call_ListTagsForResource_601218; body: JsonNode): Recallable =
+proc call*(call_594231: Call_ListTagsForResource_594218; body: JsonNode): Recallable =
   ## listTagsForResource
   ## Lists the tags associated with this workgroup.
   ##   body: JObject (required)
-  var body_601232 = newJObject()
+  var body_594232 = newJObject()
   if body != nil:
-    body_601232 = body
-  result = call_601231.call(nil, nil, nil, nil, body_601232)
+    body_594232 = body
+  result = call_594231.call(nil, nil, nil, nil, body_594232)
 
-var listTagsForResource* = Call_ListTagsForResource_601218(
+var listTagsForResource* = Call_ListTagsForResource_594218(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.ListTagsForResource",
-    validator: validate_ListTagsForResource_601219, base: "/",
-    url: url_ListTagsForResource_601220, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_594219, base: "/",
+    url: url_ListTagsForResource_594220, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListWorkGroups_601233 = ref object of OpenApiRestCall_600437
-proc url_ListWorkGroups_601235(protocol: Scheme; host: string; base: string;
+  Call_ListWorkGroups_594233 = ref object of OpenApiRestCall_593437
+proc url_ListWorkGroups_594235(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListWorkGroups_601234(path: JsonNode; query: JsonNode;
+proc validate_ListWorkGroups_594234(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Lists available workgroups for the account.
@@ -1653,16 +1653,16 @@ proc validate_ListWorkGroups_601234(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601236 = query.getOrDefault("NextToken")
-  valid_601236 = validateParameter(valid_601236, JString, required = false,
+  var valid_594236 = query.getOrDefault("NextToken")
+  valid_594236 = validateParameter(valid_594236, JString, required = false,
                                  default = nil)
-  if valid_601236 != nil:
-    section.add "NextToken", valid_601236
-  var valid_601237 = query.getOrDefault("MaxResults")
-  valid_601237 = validateParameter(valid_601237, JString, required = false,
+  if valid_594236 != nil:
+    section.add "NextToken", valid_594236
+  var valid_594237 = query.getOrDefault("MaxResults")
+  valid_594237 = validateParameter(valid_594237, JString, required = false,
                                  default = nil)
-  if valid_601237 != nil:
-    section.add "MaxResults", valid_601237
+  if valid_594237 != nil:
+    section.add "MaxResults", valid_594237
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1674,48 +1674,48 @@ proc validate_ListWorkGroups_601234(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601238 = header.getOrDefault("X-Amz-Date")
-  valid_601238 = validateParameter(valid_601238, JString, required = false,
+  var valid_594238 = header.getOrDefault("X-Amz-Date")
+  valid_594238 = validateParameter(valid_594238, JString, required = false,
                                  default = nil)
-  if valid_601238 != nil:
-    section.add "X-Amz-Date", valid_601238
-  var valid_601239 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601239 = validateParameter(valid_601239, JString, required = false,
+  if valid_594238 != nil:
+    section.add "X-Amz-Date", valid_594238
+  var valid_594239 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594239 = validateParameter(valid_594239, JString, required = false,
                                  default = nil)
-  if valid_601239 != nil:
-    section.add "X-Amz-Security-Token", valid_601239
+  if valid_594239 != nil:
+    section.add "X-Amz-Security-Token", valid_594239
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601240 = header.getOrDefault("X-Amz-Target")
-  valid_601240 = validateParameter(valid_601240, JString, required = true, default = newJString(
+  var valid_594240 = header.getOrDefault("X-Amz-Target")
+  valid_594240 = validateParameter(valid_594240, JString, required = true, default = newJString(
       "AmazonAthena.ListWorkGroups"))
-  if valid_601240 != nil:
-    section.add "X-Amz-Target", valid_601240
-  var valid_601241 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601241 = validateParameter(valid_601241, JString, required = false,
+  if valid_594240 != nil:
+    section.add "X-Amz-Target", valid_594240
+  var valid_594241 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594241 = validateParameter(valid_594241, JString, required = false,
                                  default = nil)
-  if valid_601241 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601241
-  var valid_601242 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601242 = validateParameter(valid_601242, JString, required = false,
+  if valid_594241 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594241
+  var valid_594242 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594242 = validateParameter(valid_594242, JString, required = false,
                                  default = nil)
-  if valid_601242 != nil:
-    section.add "X-Amz-Algorithm", valid_601242
-  var valid_601243 = header.getOrDefault("X-Amz-Signature")
-  valid_601243 = validateParameter(valid_601243, JString, required = false,
+  if valid_594242 != nil:
+    section.add "X-Amz-Algorithm", valid_594242
+  var valid_594243 = header.getOrDefault("X-Amz-Signature")
+  valid_594243 = validateParameter(valid_594243, JString, required = false,
                                  default = nil)
-  if valid_601243 != nil:
-    section.add "X-Amz-Signature", valid_601243
-  var valid_601244 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601244 = validateParameter(valid_601244, JString, required = false,
+  if valid_594243 != nil:
+    section.add "X-Amz-Signature", valid_594243
+  var valid_594244 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594244 = validateParameter(valid_594244, JString, required = false,
                                  default = nil)
-  if valid_601244 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601244
-  var valid_601245 = header.getOrDefault("X-Amz-Credential")
-  valid_601245 = validateParameter(valid_601245, JString, required = false,
+  if valid_594244 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594244
+  var valid_594245 = header.getOrDefault("X-Amz-Credential")
+  valid_594245 = validateParameter(valid_594245, JString, required = false,
                                  default = nil)
-  if valid_601245 != nil:
-    section.add "X-Amz-Credential", valid_601245
+  if valid_594245 != nil:
+    section.add "X-Amz-Credential", valid_594245
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1726,20 +1726,20 @@ proc validate_ListWorkGroups_601234(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601247: Call_ListWorkGroups_601233; path: JsonNode; query: JsonNode;
+proc call*(call_594247: Call_ListWorkGroups_594233; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists available workgroups for the account.
   ## 
-  let valid = call_601247.validator(path, query, header, formData, body)
-  let scheme = call_601247.pickScheme
+  let valid = call_594247.validator(path, query, header, formData, body)
+  let scheme = call_594247.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601247.url(scheme.get, call_601247.host, call_601247.base,
-                         call_601247.route, valid.getOrDefault("path"),
+  let url = call_594247.url(scheme.get, call_594247.host, call_594247.base,
+                         call_594247.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601247, url, valid)
+  result = hook(call_594247, url, valid)
 
-proc call*(call_601248: Call_ListWorkGroups_601233; body: JsonNode;
+proc call*(call_594248: Call_ListWorkGroups_594233; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listWorkGroups
   ## Lists available workgroups for the account.
@@ -1748,29 +1748,29 @@ proc call*(call_601248: Call_ListWorkGroups_601233; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601249 = newJObject()
-  var body_601250 = newJObject()
-  add(query_601249, "NextToken", newJString(NextToken))
+  var query_594249 = newJObject()
+  var body_594250 = newJObject()
+  add(query_594249, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601250 = body
-  add(query_601249, "MaxResults", newJString(MaxResults))
-  result = call_601248.call(nil, query_601249, nil, nil, body_601250)
+    body_594250 = body
+  add(query_594249, "MaxResults", newJString(MaxResults))
+  result = call_594248.call(nil, query_594249, nil, nil, body_594250)
 
-var listWorkGroups* = Call_ListWorkGroups_601233(name: "listWorkGroups",
+var listWorkGroups* = Call_ListWorkGroups_594233(name: "listWorkGroups",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.ListWorkGroups",
-    validator: validate_ListWorkGroups_601234, base: "/", url: url_ListWorkGroups_601235,
+    validator: validate_ListWorkGroups_594234, base: "/", url: url_ListWorkGroups_594235,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartQueryExecution_601251 = ref object of OpenApiRestCall_600437
-proc url_StartQueryExecution_601253(protocol: Scheme; host: string; base: string;
+  Call_StartQueryExecution_594251 = ref object of OpenApiRestCall_593437
+proc url_StartQueryExecution_594253(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_StartQueryExecution_601252(path: JsonNode; query: JsonNode;
+proc validate_StartQueryExecution_594252(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Runs the SQL query statements contained in the <code>Query</code>. Requires you to have access to the workgroup in which the query ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
@@ -1791,48 +1791,48 @@ proc validate_StartQueryExecution_601252(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601254 = header.getOrDefault("X-Amz-Date")
-  valid_601254 = validateParameter(valid_601254, JString, required = false,
+  var valid_594254 = header.getOrDefault("X-Amz-Date")
+  valid_594254 = validateParameter(valid_594254, JString, required = false,
                                  default = nil)
-  if valid_601254 != nil:
-    section.add "X-Amz-Date", valid_601254
-  var valid_601255 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601255 = validateParameter(valid_601255, JString, required = false,
+  if valid_594254 != nil:
+    section.add "X-Amz-Date", valid_594254
+  var valid_594255 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594255 = validateParameter(valid_594255, JString, required = false,
                                  default = nil)
-  if valid_601255 != nil:
-    section.add "X-Amz-Security-Token", valid_601255
+  if valid_594255 != nil:
+    section.add "X-Amz-Security-Token", valid_594255
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601256 = header.getOrDefault("X-Amz-Target")
-  valid_601256 = validateParameter(valid_601256, JString, required = true, default = newJString(
+  var valid_594256 = header.getOrDefault("X-Amz-Target")
+  valid_594256 = validateParameter(valid_594256, JString, required = true, default = newJString(
       "AmazonAthena.StartQueryExecution"))
-  if valid_601256 != nil:
-    section.add "X-Amz-Target", valid_601256
-  var valid_601257 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601257 = validateParameter(valid_601257, JString, required = false,
+  if valid_594256 != nil:
+    section.add "X-Amz-Target", valid_594256
+  var valid_594257 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594257 = validateParameter(valid_594257, JString, required = false,
                                  default = nil)
-  if valid_601257 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601257
-  var valid_601258 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601258 = validateParameter(valid_601258, JString, required = false,
+  if valid_594257 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594257
+  var valid_594258 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594258 = validateParameter(valid_594258, JString, required = false,
                                  default = nil)
-  if valid_601258 != nil:
-    section.add "X-Amz-Algorithm", valid_601258
-  var valid_601259 = header.getOrDefault("X-Amz-Signature")
-  valid_601259 = validateParameter(valid_601259, JString, required = false,
+  if valid_594258 != nil:
+    section.add "X-Amz-Algorithm", valid_594258
+  var valid_594259 = header.getOrDefault("X-Amz-Signature")
+  valid_594259 = validateParameter(valid_594259, JString, required = false,
                                  default = nil)
-  if valid_601259 != nil:
-    section.add "X-Amz-Signature", valid_601259
-  var valid_601260 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601260 = validateParameter(valid_601260, JString, required = false,
+  if valid_594259 != nil:
+    section.add "X-Amz-Signature", valid_594259
+  var valid_594260 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594260 = validateParameter(valid_594260, JString, required = false,
                                  default = nil)
-  if valid_601260 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601260
-  var valid_601261 = header.getOrDefault("X-Amz-Credential")
-  valid_601261 = validateParameter(valid_601261, JString, required = false,
+  if valid_594260 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594260
+  var valid_594261 = header.getOrDefault("X-Amz-Credential")
+  valid_594261 = validateParameter(valid_594261, JString, required = false,
                                  default = nil)
-  if valid_601261 != nil:
-    section.add "X-Amz-Credential", valid_601261
+  if valid_594261 != nil:
+    section.add "X-Amz-Credential", valid_594261
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1843,44 +1843,44 @@ proc validate_StartQueryExecution_601252(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601263: Call_StartQueryExecution_601251; path: JsonNode;
+proc call*(call_594263: Call_StartQueryExecution_594251; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Runs the SQL query statements contained in the <code>Query</code>. Requires you to have access to the workgroup in which the query ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ## 
-  let valid = call_601263.validator(path, query, header, formData, body)
-  let scheme = call_601263.pickScheme
+  let valid = call_594263.validator(path, query, header, formData, body)
+  let scheme = call_594263.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601263.url(scheme.get, call_601263.host, call_601263.base,
-                         call_601263.route, valid.getOrDefault("path"),
+  let url = call_594263.url(scheme.get, call_594263.host, call_594263.base,
+                         call_594263.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601263, url, valid)
+  result = hook(call_594263, url, valid)
 
-proc call*(call_601264: Call_StartQueryExecution_601251; body: JsonNode): Recallable =
+proc call*(call_594264: Call_StartQueryExecution_594251; body: JsonNode): Recallable =
   ## startQueryExecution
   ## <p>Runs the SQL query statements contained in the <code>Query</code>. Requires you to have access to the workgroup in which the query ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_601265 = newJObject()
+  var body_594265 = newJObject()
   if body != nil:
-    body_601265 = body
-  result = call_601264.call(nil, nil, nil, nil, body_601265)
+    body_594265 = body
+  result = call_594264.call(nil, nil, nil, nil, body_594265)
 
-var startQueryExecution* = Call_StartQueryExecution_601251(
+var startQueryExecution* = Call_StartQueryExecution_594251(
     name: "startQueryExecution", meth: HttpMethod.HttpPost,
     host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.StartQueryExecution",
-    validator: validate_StartQueryExecution_601252, base: "/",
-    url: url_StartQueryExecution_601253, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartQueryExecution_594252, base: "/",
+    url: url_StartQueryExecution_594253, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopQueryExecution_601266 = ref object of OpenApiRestCall_600437
-proc url_StopQueryExecution_601268(protocol: Scheme; host: string; base: string;
+  Call_StopQueryExecution_594266 = ref object of OpenApiRestCall_593437
+proc url_StopQueryExecution_594268(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_StopQueryExecution_601267(path: JsonNode; query: JsonNode;
+proc validate_StopQueryExecution_594267(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Stops a query execution. Requires you to have access to the workgroup in which the query ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
@@ -1901,48 +1901,48 @@ proc validate_StopQueryExecution_601267(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601269 = header.getOrDefault("X-Amz-Date")
-  valid_601269 = validateParameter(valid_601269, JString, required = false,
+  var valid_594269 = header.getOrDefault("X-Amz-Date")
+  valid_594269 = validateParameter(valid_594269, JString, required = false,
                                  default = nil)
-  if valid_601269 != nil:
-    section.add "X-Amz-Date", valid_601269
-  var valid_601270 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601270 = validateParameter(valid_601270, JString, required = false,
+  if valid_594269 != nil:
+    section.add "X-Amz-Date", valid_594269
+  var valid_594270 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594270 = validateParameter(valid_594270, JString, required = false,
                                  default = nil)
-  if valid_601270 != nil:
-    section.add "X-Amz-Security-Token", valid_601270
+  if valid_594270 != nil:
+    section.add "X-Amz-Security-Token", valid_594270
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601271 = header.getOrDefault("X-Amz-Target")
-  valid_601271 = validateParameter(valid_601271, JString, required = true, default = newJString(
+  var valid_594271 = header.getOrDefault("X-Amz-Target")
+  valid_594271 = validateParameter(valid_594271, JString, required = true, default = newJString(
       "AmazonAthena.StopQueryExecution"))
-  if valid_601271 != nil:
-    section.add "X-Amz-Target", valid_601271
-  var valid_601272 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601272 = validateParameter(valid_601272, JString, required = false,
+  if valid_594271 != nil:
+    section.add "X-Amz-Target", valid_594271
+  var valid_594272 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594272 = validateParameter(valid_594272, JString, required = false,
                                  default = nil)
-  if valid_601272 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601272
-  var valid_601273 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601273 = validateParameter(valid_601273, JString, required = false,
+  if valid_594272 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594272
+  var valid_594273 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594273 = validateParameter(valid_594273, JString, required = false,
                                  default = nil)
-  if valid_601273 != nil:
-    section.add "X-Amz-Algorithm", valid_601273
-  var valid_601274 = header.getOrDefault("X-Amz-Signature")
-  valid_601274 = validateParameter(valid_601274, JString, required = false,
+  if valid_594273 != nil:
+    section.add "X-Amz-Algorithm", valid_594273
+  var valid_594274 = header.getOrDefault("X-Amz-Signature")
+  valid_594274 = validateParameter(valid_594274, JString, required = false,
                                  default = nil)
-  if valid_601274 != nil:
-    section.add "X-Amz-Signature", valid_601274
-  var valid_601275 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601275 = validateParameter(valid_601275, JString, required = false,
+  if valid_594274 != nil:
+    section.add "X-Amz-Signature", valid_594274
+  var valid_594275 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594275 = validateParameter(valid_594275, JString, required = false,
                                  default = nil)
-  if valid_601275 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601275
-  var valid_601276 = header.getOrDefault("X-Amz-Credential")
-  valid_601276 = validateParameter(valid_601276, JString, required = false,
+  if valid_594275 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594275
+  var valid_594276 = header.getOrDefault("X-Amz-Credential")
+  valid_594276 = validateParameter(valid_594276, JString, required = false,
                                  default = nil)
-  if valid_601276 != nil:
-    section.add "X-Amz-Credential", valid_601276
+  if valid_594276 != nil:
+    section.add "X-Amz-Credential", valid_594276
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1953,44 +1953,44 @@ proc validate_StopQueryExecution_601267(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601278: Call_StopQueryExecution_601266; path: JsonNode;
+proc call*(call_594278: Call_StopQueryExecution_594266; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stops a query execution. Requires you to have access to the workgroup in which the query ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ## 
-  let valid = call_601278.validator(path, query, header, formData, body)
-  let scheme = call_601278.pickScheme
+  let valid = call_594278.validator(path, query, header, formData, body)
+  let scheme = call_594278.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601278.url(scheme.get, call_601278.host, call_601278.base,
-                         call_601278.route, valid.getOrDefault("path"),
+  let url = call_594278.url(scheme.get, call_594278.host, call_594278.base,
+                         call_594278.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601278, url, valid)
+  result = hook(call_594278, url, valid)
 
-proc call*(call_601279: Call_StopQueryExecution_601266; body: JsonNode): Recallable =
+proc call*(call_594279: Call_StopQueryExecution_594266; body: JsonNode): Recallable =
   ## stopQueryExecution
   ## <p>Stops a query execution. Requires you to have access to the workgroup in which the query ran.</p> <p>For code samples using the AWS SDK for Java, see <a href="http://docs.aws.amazon.com/athena/latest/ug/code-samples.html">Examples and Code Samples</a> in the <i>Amazon Athena User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_601280 = newJObject()
+  var body_594280 = newJObject()
   if body != nil:
-    body_601280 = body
-  result = call_601279.call(nil, nil, nil, nil, body_601280)
+    body_594280 = body
+  result = call_594279.call(nil, nil, nil, nil, body_594280)
 
-var stopQueryExecution* = Call_StopQueryExecution_601266(
+var stopQueryExecution* = Call_StopQueryExecution_594266(
     name: "stopQueryExecution", meth: HttpMethod.HttpPost,
     host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.StopQueryExecution",
-    validator: validate_StopQueryExecution_601267, base: "/",
-    url: url_StopQueryExecution_601268, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StopQueryExecution_594267, base: "/",
+    url: url_StopQueryExecution_594268, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_601281 = ref object of OpenApiRestCall_600437
-proc url_TagResource_601283(protocol: Scheme; host: string; base: string;
+  Call_TagResource_594281 = ref object of OpenApiRestCall_593437
+proc url_TagResource_594283(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_TagResource_601282(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_594282(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds one or more tags to the resource, such as a workgroup. A tag is a label that you assign to an AWS Athena resource (a workgroup). Each tag consists of a key and an optional value, both of which you define. Tags enable you to categorize resources (workgroups) in Athena, for example, by purpose, owner, or environment. Use a consistent set of tag keys to make it easier to search and filter workgroups in your account. For best practices, see <a href="https://aws.amazon.com/answers/account-management/aws-tagging-strategies/">AWS Tagging Strategies</a>. The key length is from 1 (minimum) to 128 (maximum) Unicode characters in UTF-8. The tag value length is from 0 (minimum) to 256 (maximum) Unicode characters in UTF-8. You can use letters and numbers representable in UTF-8, and the following characters: + - = . _ : / @. Tag keys and values are case-sensitive. Tag keys must be unique per resource. If you specify more than one, separate them by commas.
   ## 
@@ -2010,48 +2010,48 @@ proc validate_TagResource_601282(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601284 = header.getOrDefault("X-Amz-Date")
-  valid_601284 = validateParameter(valid_601284, JString, required = false,
+  var valid_594284 = header.getOrDefault("X-Amz-Date")
+  valid_594284 = validateParameter(valid_594284, JString, required = false,
                                  default = nil)
-  if valid_601284 != nil:
-    section.add "X-Amz-Date", valid_601284
-  var valid_601285 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601285 = validateParameter(valid_601285, JString, required = false,
+  if valid_594284 != nil:
+    section.add "X-Amz-Date", valid_594284
+  var valid_594285 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594285 = validateParameter(valid_594285, JString, required = false,
                                  default = nil)
-  if valid_601285 != nil:
-    section.add "X-Amz-Security-Token", valid_601285
+  if valid_594285 != nil:
+    section.add "X-Amz-Security-Token", valid_594285
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601286 = header.getOrDefault("X-Amz-Target")
-  valid_601286 = validateParameter(valid_601286, JString, required = true, default = newJString(
+  var valid_594286 = header.getOrDefault("X-Amz-Target")
+  valid_594286 = validateParameter(valid_594286, JString, required = true, default = newJString(
       "AmazonAthena.TagResource"))
-  if valid_601286 != nil:
-    section.add "X-Amz-Target", valid_601286
-  var valid_601287 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601287 = validateParameter(valid_601287, JString, required = false,
+  if valid_594286 != nil:
+    section.add "X-Amz-Target", valid_594286
+  var valid_594287 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594287 = validateParameter(valid_594287, JString, required = false,
                                  default = nil)
-  if valid_601287 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601287
-  var valid_601288 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601288 = validateParameter(valid_601288, JString, required = false,
+  if valid_594287 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594287
+  var valid_594288 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594288 = validateParameter(valid_594288, JString, required = false,
                                  default = nil)
-  if valid_601288 != nil:
-    section.add "X-Amz-Algorithm", valid_601288
-  var valid_601289 = header.getOrDefault("X-Amz-Signature")
-  valid_601289 = validateParameter(valid_601289, JString, required = false,
+  if valid_594288 != nil:
+    section.add "X-Amz-Algorithm", valid_594288
+  var valid_594289 = header.getOrDefault("X-Amz-Signature")
+  valid_594289 = validateParameter(valid_594289, JString, required = false,
                                  default = nil)
-  if valid_601289 != nil:
-    section.add "X-Amz-Signature", valid_601289
-  var valid_601290 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601290 = validateParameter(valid_601290, JString, required = false,
+  if valid_594289 != nil:
+    section.add "X-Amz-Signature", valid_594289
+  var valid_594290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594290 = validateParameter(valid_594290, JString, required = false,
                                  default = nil)
-  if valid_601290 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601290
-  var valid_601291 = header.getOrDefault("X-Amz-Credential")
-  valid_601291 = validateParameter(valid_601291, JString, required = false,
+  if valid_594290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594290
+  var valid_594291 = header.getOrDefault("X-Amz-Credential")
+  valid_594291 = validateParameter(valid_594291, JString, required = false,
                                  default = nil)
-  if valid_601291 != nil:
-    section.add "X-Amz-Credential", valid_601291
+  if valid_594291 != nil:
+    section.add "X-Amz-Credential", valid_594291
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2062,44 +2062,44 @@ proc validate_TagResource_601282(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601293: Call_TagResource_601281; path: JsonNode; query: JsonNode;
+proc call*(call_594293: Call_TagResource_594281; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds one or more tags to the resource, such as a workgroup. A tag is a label that you assign to an AWS Athena resource (a workgroup). Each tag consists of a key and an optional value, both of which you define. Tags enable you to categorize resources (workgroups) in Athena, for example, by purpose, owner, or environment. Use a consistent set of tag keys to make it easier to search and filter workgroups in your account. For best practices, see <a href="https://aws.amazon.com/answers/account-management/aws-tagging-strategies/">AWS Tagging Strategies</a>. The key length is from 1 (minimum) to 128 (maximum) Unicode characters in UTF-8. The tag value length is from 0 (minimum) to 256 (maximum) Unicode characters in UTF-8. You can use letters and numbers representable in UTF-8, and the following characters: + - = . _ : / @. Tag keys and values are case-sensitive. Tag keys must be unique per resource. If you specify more than one, separate them by commas.
   ## 
-  let valid = call_601293.validator(path, query, header, formData, body)
-  let scheme = call_601293.pickScheme
+  let valid = call_594293.validator(path, query, header, formData, body)
+  let scheme = call_594293.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601293.url(scheme.get, call_601293.host, call_601293.base,
-                         call_601293.route, valid.getOrDefault("path"),
+  let url = call_594293.url(scheme.get, call_594293.host, call_594293.base,
+                         call_594293.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601293, url, valid)
+  result = hook(call_594293, url, valid)
 
-proc call*(call_601294: Call_TagResource_601281; body: JsonNode): Recallable =
+proc call*(call_594294: Call_TagResource_594281; body: JsonNode): Recallable =
   ## tagResource
   ## Adds one or more tags to the resource, such as a workgroup. A tag is a label that you assign to an AWS Athena resource (a workgroup). Each tag consists of a key and an optional value, both of which you define. Tags enable you to categorize resources (workgroups) in Athena, for example, by purpose, owner, or environment. Use a consistent set of tag keys to make it easier to search and filter workgroups in your account. For best practices, see <a href="https://aws.amazon.com/answers/account-management/aws-tagging-strategies/">AWS Tagging Strategies</a>. The key length is from 1 (minimum) to 128 (maximum) Unicode characters in UTF-8. The tag value length is from 0 (minimum) to 256 (maximum) Unicode characters in UTF-8. You can use letters and numbers representable in UTF-8, and the following characters: + - = . _ : / @. Tag keys and values are case-sensitive. Tag keys must be unique per resource. If you specify more than one, separate them by commas.
   ##   body: JObject (required)
-  var body_601295 = newJObject()
+  var body_594295 = newJObject()
   if body != nil:
-    body_601295 = body
-  result = call_601294.call(nil, nil, nil, nil, body_601295)
+    body_594295 = body
+  result = call_594294.call(nil, nil, nil, nil, body_594295)
 
-var tagResource* = Call_TagResource_601281(name: "tagResource",
+var tagResource* = Call_TagResource_594281(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "athena.amazonaws.com", route: "/#X-Amz-Target=AmazonAthena.TagResource",
-                                        validator: validate_TagResource_601282,
-                                        base: "/", url: url_TagResource_601283,
+                                        validator: validate_TagResource_594282,
+                                        base: "/", url: url_TagResource_594283,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_601296 = ref object of OpenApiRestCall_600437
-proc url_UntagResource_601298(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_594296 = ref object of OpenApiRestCall_593437
+proc url_UntagResource_594298(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UntagResource_601297(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_594297(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes one or more tags from the workgroup resource. Takes as an input a list of TagKey Strings separated by commas, and removes their tags at the same time.
   ## 
@@ -2119,48 +2119,48 @@ proc validate_UntagResource_601297(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601299 = header.getOrDefault("X-Amz-Date")
-  valid_601299 = validateParameter(valid_601299, JString, required = false,
+  var valid_594299 = header.getOrDefault("X-Amz-Date")
+  valid_594299 = validateParameter(valid_594299, JString, required = false,
                                  default = nil)
-  if valid_601299 != nil:
-    section.add "X-Amz-Date", valid_601299
-  var valid_601300 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601300 = validateParameter(valid_601300, JString, required = false,
+  if valid_594299 != nil:
+    section.add "X-Amz-Date", valid_594299
+  var valid_594300 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594300 = validateParameter(valid_594300, JString, required = false,
                                  default = nil)
-  if valid_601300 != nil:
-    section.add "X-Amz-Security-Token", valid_601300
+  if valid_594300 != nil:
+    section.add "X-Amz-Security-Token", valid_594300
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601301 = header.getOrDefault("X-Amz-Target")
-  valid_601301 = validateParameter(valid_601301, JString, required = true, default = newJString(
+  var valid_594301 = header.getOrDefault("X-Amz-Target")
+  valid_594301 = validateParameter(valid_594301, JString, required = true, default = newJString(
       "AmazonAthena.UntagResource"))
-  if valid_601301 != nil:
-    section.add "X-Amz-Target", valid_601301
-  var valid_601302 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601302 = validateParameter(valid_601302, JString, required = false,
+  if valid_594301 != nil:
+    section.add "X-Amz-Target", valid_594301
+  var valid_594302 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594302 = validateParameter(valid_594302, JString, required = false,
                                  default = nil)
-  if valid_601302 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601302
-  var valid_601303 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601303 = validateParameter(valid_601303, JString, required = false,
+  if valid_594302 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594302
+  var valid_594303 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594303 = validateParameter(valid_594303, JString, required = false,
                                  default = nil)
-  if valid_601303 != nil:
-    section.add "X-Amz-Algorithm", valid_601303
-  var valid_601304 = header.getOrDefault("X-Amz-Signature")
-  valid_601304 = validateParameter(valid_601304, JString, required = false,
+  if valid_594303 != nil:
+    section.add "X-Amz-Algorithm", valid_594303
+  var valid_594304 = header.getOrDefault("X-Amz-Signature")
+  valid_594304 = validateParameter(valid_594304, JString, required = false,
                                  default = nil)
-  if valid_601304 != nil:
-    section.add "X-Amz-Signature", valid_601304
-  var valid_601305 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601305 = validateParameter(valid_601305, JString, required = false,
+  if valid_594304 != nil:
+    section.add "X-Amz-Signature", valid_594304
+  var valid_594305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594305 = validateParameter(valid_594305, JString, required = false,
                                  default = nil)
-  if valid_601305 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601305
-  var valid_601306 = header.getOrDefault("X-Amz-Credential")
-  valid_601306 = validateParameter(valid_601306, JString, required = false,
+  if valid_594305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594305
+  var valid_594306 = header.getOrDefault("X-Amz-Credential")
+  valid_594306 = validateParameter(valid_594306, JString, required = false,
                                  default = nil)
-  if valid_601306 != nil:
-    section.add "X-Amz-Credential", valid_601306
+  if valid_594306 != nil:
+    section.add "X-Amz-Credential", valid_594306
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2171,43 +2171,43 @@ proc validate_UntagResource_601297(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601308: Call_UntagResource_601296; path: JsonNode; query: JsonNode;
+proc call*(call_594308: Call_UntagResource_594296; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes one or more tags from the workgroup resource. Takes as an input a list of TagKey Strings separated by commas, and removes their tags at the same time.
   ## 
-  let valid = call_601308.validator(path, query, header, formData, body)
-  let scheme = call_601308.pickScheme
+  let valid = call_594308.validator(path, query, header, formData, body)
+  let scheme = call_594308.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601308.url(scheme.get, call_601308.host, call_601308.base,
-                         call_601308.route, valid.getOrDefault("path"),
+  let url = call_594308.url(scheme.get, call_594308.host, call_594308.base,
+                         call_594308.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601308, url, valid)
+  result = hook(call_594308, url, valid)
 
-proc call*(call_601309: Call_UntagResource_601296; body: JsonNode): Recallable =
+proc call*(call_594309: Call_UntagResource_594296; body: JsonNode): Recallable =
   ## untagResource
   ## Removes one or more tags from the workgroup resource. Takes as an input a list of TagKey Strings separated by commas, and removes their tags at the same time.
   ##   body: JObject (required)
-  var body_601310 = newJObject()
+  var body_594310 = newJObject()
   if body != nil:
-    body_601310 = body
-  result = call_601309.call(nil, nil, nil, nil, body_601310)
+    body_594310 = body
+  result = call_594309.call(nil, nil, nil, nil, body_594310)
 
-var untagResource* = Call_UntagResource_601296(name: "untagResource",
+var untagResource* = Call_UntagResource_594296(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.UntagResource",
-    validator: validate_UntagResource_601297, base: "/", url: url_UntagResource_601298,
+    validator: validate_UntagResource_594297, base: "/", url: url_UntagResource_594298,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateWorkGroup_601311 = ref object of OpenApiRestCall_600437
-proc url_UpdateWorkGroup_601313(protocol: Scheme; host: string; base: string;
+  Call_UpdateWorkGroup_594311 = ref object of OpenApiRestCall_593437
+proc url_UpdateWorkGroup_594313(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateWorkGroup_601312(path: JsonNode; query: JsonNode;
+proc validate_UpdateWorkGroup_594312(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Updates the workgroup with the specified name. The workgroup's name cannot be changed.
@@ -2228,48 +2228,48 @@ proc validate_UpdateWorkGroup_601312(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601314 = header.getOrDefault("X-Amz-Date")
-  valid_601314 = validateParameter(valid_601314, JString, required = false,
+  var valid_594314 = header.getOrDefault("X-Amz-Date")
+  valid_594314 = validateParameter(valid_594314, JString, required = false,
                                  default = nil)
-  if valid_601314 != nil:
-    section.add "X-Amz-Date", valid_601314
-  var valid_601315 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601315 = validateParameter(valid_601315, JString, required = false,
+  if valid_594314 != nil:
+    section.add "X-Amz-Date", valid_594314
+  var valid_594315 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594315 = validateParameter(valid_594315, JString, required = false,
                                  default = nil)
-  if valid_601315 != nil:
-    section.add "X-Amz-Security-Token", valid_601315
+  if valid_594315 != nil:
+    section.add "X-Amz-Security-Token", valid_594315
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601316 = header.getOrDefault("X-Amz-Target")
-  valid_601316 = validateParameter(valid_601316, JString, required = true, default = newJString(
+  var valid_594316 = header.getOrDefault("X-Amz-Target")
+  valid_594316 = validateParameter(valid_594316, JString, required = true, default = newJString(
       "AmazonAthena.UpdateWorkGroup"))
-  if valid_601316 != nil:
-    section.add "X-Amz-Target", valid_601316
-  var valid_601317 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601317 = validateParameter(valid_601317, JString, required = false,
+  if valid_594316 != nil:
+    section.add "X-Amz-Target", valid_594316
+  var valid_594317 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594317 = validateParameter(valid_594317, JString, required = false,
                                  default = nil)
-  if valid_601317 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601317
-  var valid_601318 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601318 = validateParameter(valid_601318, JString, required = false,
+  if valid_594317 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594317
+  var valid_594318 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594318 = validateParameter(valid_594318, JString, required = false,
                                  default = nil)
-  if valid_601318 != nil:
-    section.add "X-Amz-Algorithm", valid_601318
-  var valid_601319 = header.getOrDefault("X-Amz-Signature")
-  valid_601319 = validateParameter(valid_601319, JString, required = false,
+  if valid_594318 != nil:
+    section.add "X-Amz-Algorithm", valid_594318
+  var valid_594319 = header.getOrDefault("X-Amz-Signature")
+  valid_594319 = validateParameter(valid_594319, JString, required = false,
                                  default = nil)
-  if valid_601319 != nil:
-    section.add "X-Amz-Signature", valid_601319
-  var valid_601320 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601320 = validateParameter(valid_601320, JString, required = false,
+  if valid_594319 != nil:
+    section.add "X-Amz-Signature", valid_594319
+  var valid_594320 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594320 = validateParameter(valid_594320, JString, required = false,
                                  default = nil)
-  if valid_601320 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601320
-  var valid_601321 = header.getOrDefault("X-Amz-Credential")
-  valid_601321 = validateParameter(valid_601321, JString, required = false,
+  if valid_594320 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594320
+  var valid_594321 = header.getOrDefault("X-Amz-Credential")
+  valid_594321 = validateParameter(valid_594321, JString, required = false,
                                  default = nil)
-  if valid_601321 != nil:
-    section.add "X-Amz-Credential", valid_601321
+  if valid_594321 != nil:
+    section.add "X-Amz-Credential", valid_594321
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2280,32 +2280,32 @@ proc validate_UpdateWorkGroup_601312(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601323: Call_UpdateWorkGroup_601311; path: JsonNode; query: JsonNode;
+proc call*(call_594323: Call_UpdateWorkGroup_594311; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the workgroup with the specified name. The workgroup's name cannot be changed.
   ## 
-  let valid = call_601323.validator(path, query, header, formData, body)
-  let scheme = call_601323.pickScheme
+  let valid = call_594323.validator(path, query, header, formData, body)
+  let scheme = call_594323.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601323.url(scheme.get, call_601323.host, call_601323.base,
-                         call_601323.route, valid.getOrDefault("path"),
+  let url = call_594323.url(scheme.get, call_594323.host, call_594323.base,
+                         call_594323.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601323, url, valid)
+  result = hook(call_594323, url, valid)
 
-proc call*(call_601324: Call_UpdateWorkGroup_601311; body: JsonNode): Recallable =
+proc call*(call_594324: Call_UpdateWorkGroup_594311; body: JsonNode): Recallable =
   ## updateWorkGroup
   ## Updates the workgroup with the specified name. The workgroup's name cannot be changed.
   ##   body: JObject (required)
-  var body_601325 = newJObject()
+  var body_594325 = newJObject()
   if body != nil:
-    body_601325 = body
-  result = call_601324.call(nil, nil, nil, nil, body_601325)
+    body_594325 = body
+  result = call_594324.call(nil, nil, nil, nil, body_594325)
 
-var updateWorkGroup* = Call_UpdateWorkGroup_601311(name: "updateWorkGroup",
+var updateWorkGroup* = Call_UpdateWorkGroup_594311(name: "updateWorkGroup",
     meth: HttpMethod.HttpPost, host: "athena.amazonaws.com",
     route: "/#X-Amz-Target=AmazonAthena.UpdateWorkGroup",
-    validator: validate_UpdateWorkGroup_601312, base: "/", url: url_UpdateWorkGroup_601313,
+    validator: validate_UpdateWorkGroup_594312, base: "/", url: url_UpdateWorkGroup_594313,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

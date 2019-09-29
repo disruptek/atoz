@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Polly
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600438 = ref object of OpenApiRestCall
+  OpenApiRestCall_593438 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600438](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593438](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600438): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593438): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -143,8 +143,8 @@ const
   awsServiceName = "polly"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_PutLexicon_601045 = ref object of OpenApiRestCall_600438
-proc url_PutLexicon_601047(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutLexicon_594045 = ref object of OpenApiRestCall_593438
+proc url_PutLexicon_594047(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -159,7 +159,7 @@ proc url_PutLexicon_601047(protocol: Scheme; host: string; base: string; route: 
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_PutLexicon_601046(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutLexicon_594046(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Stores a pronunciation lexicon in an AWS Region. If a lexicon with the same name already exists in the region, it is overwritten by the new lexicon. Lexicon operations have eventual consistency, therefore, it might take some time before the lexicon is available to the SynthesizeSpeech operation.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.</p>
   ## 
@@ -171,11 +171,11 @@ proc validate_PutLexicon_601046(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `LexiconName` field"
-  var valid_601048 = path.getOrDefault("LexiconName")
-  valid_601048 = validateParameter(valid_601048, JString, required = true,
+  var valid_594048 = path.getOrDefault("LexiconName")
+  valid_594048 = validateParameter(valid_594048, JString, required = true,
                                  default = nil)
-  if valid_601048 != nil:
-    section.add "LexiconName", valid_601048
+  if valid_594048 != nil:
+    section.add "LexiconName", valid_594048
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -188,41 +188,41 @@ proc validate_PutLexicon_601046(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601049 = header.getOrDefault("X-Amz-Date")
-  valid_601049 = validateParameter(valid_601049, JString, required = false,
+  var valid_594049 = header.getOrDefault("X-Amz-Date")
+  valid_594049 = validateParameter(valid_594049, JString, required = false,
                                  default = nil)
-  if valid_601049 != nil:
-    section.add "X-Amz-Date", valid_601049
-  var valid_601050 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601050 = validateParameter(valid_601050, JString, required = false,
+  if valid_594049 != nil:
+    section.add "X-Amz-Date", valid_594049
+  var valid_594050 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594050 = validateParameter(valid_594050, JString, required = false,
                                  default = nil)
-  if valid_601050 != nil:
-    section.add "X-Amz-Security-Token", valid_601050
-  var valid_601051 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601051 = validateParameter(valid_601051, JString, required = false,
+  if valid_594050 != nil:
+    section.add "X-Amz-Security-Token", valid_594050
+  var valid_594051 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594051 = validateParameter(valid_594051, JString, required = false,
                                  default = nil)
-  if valid_601051 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601051
-  var valid_601052 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601052 = validateParameter(valid_601052, JString, required = false,
+  if valid_594051 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594051
+  var valid_594052 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594052 = validateParameter(valid_594052, JString, required = false,
                                  default = nil)
-  if valid_601052 != nil:
-    section.add "X-Amz-Algorithm", valid_601052
-  var valid_601053 = header.getOrDefault("X-Amz-Signature")
-  valid_601053 = validateParameter(valid_601053, JString, required = false,
+  if valid_594052 != nil:
+    section.add "X-Amz-Algorithm", valid_594052
+  var valid_594053 = header.getOrDefault("X-Amz-Signature")
+  valid_594053 = validateParameter(valid_594053, JString, required = false,
                                  default = nil)
-  if valid_601053 != nil:
-    section.add "X-Amz-Signature", valid_601053
-  var valid_601054 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601054 = validateParameter(valid_601054, JString, required = false,
+  if valid_594053 != nil:
+    section.add "X-Amz-Signature", valid_594053
+  var valid_594054 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594054 = validateParameter(valid_594054, JString, required = false,
                                  default = nil)
-  if valid_601054 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601054
-  var valid_601055 = header.getOrDefault("X-Amz-Credential")
-  valid_601055 = validateParameter(valid_601055, JString, required = false,
+  if valid_594054 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594054
+  var valid_594055 = header.getOrDefault("X-Amz-Credential")
+  valid_594055 = validateParameter(valid_594055, JString, required = false,
                                  default = nil)
-  if valid_601055 != nil:
-    section.add "X-Amz-Credential", valid_601055
+  if valid_594055 != nil:
+    section.add "X-Amz-Credential", valid_594055
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -233,42 +233,42 @@ proc validate_PutLexicon_601046(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_601057: Call_PutLexicon_601045; path: JsonNode; query: JsonNode;
+proc call*(call_594057: Call_PutLexicon_594045; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stores a pronunciation lexicon in an AWS Region. If a lexicon with the same name already exists in the region, it is overwritten by the new lexicon. Lexicon operations have eventual consistency, therefore, it might take some time before the lexicon is available to the SynthesizeSpeech operation.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.</p>
   ## 
-  let valid = call_601057.validator(path, query, header, formData, body)
-  let scheme = call_601057.pickScheme
+  let valid = call_594057.validator(path, query, header, formData, body)
+  let scheme = call_594057.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601057.url(scheme.get, call_601057.host, call_601057.base,
-                         call_601057.route, valid.getOrDefault("path"),
+  let url = call_594057.url(scheme.get, call_594057.host, call_594057.base,
+                         call_594057.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601057, url, valid)
+  result = hook(call_594057, url, valid)
 
-proc call*(call_601058: Call_PutLexicon_601045; LexiconName: string; body: JsonNode): Recallable =
+proc call*(call_594058: Call_PutLexicon_594045; LexiconName: string; body: JsonNode): Recallable =
   ## putLexicon
   ## <p>Stores a pronunciation lexicon in an AWS Region. If a lexicon with the same name already exists in the region, it is overwritten by the new lexicon. Lexicon operations have eventual consistency, therefore, it might take some time before the lexicon is available to the SynthesizeSpeech operation.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.</p>
   ##   LexiconName: string (required)
   ##              : Name of the lexicon. The name must follow the regular express format [0-9A-Za-z]{1,20}. That is, the name is a case-sensitive alphanumeric string up to 20 characters long. 
   ##   body: JObject (required)
-  var path_601059 = newJObject()
-  var body_601060 = newJObject()
-  add(path_601059, "LexiconName", newJString(LexiconName))
+  var path_594059 = newJObject()
+  var body_594060 = newJObject()
+  add(path_594059, "LexiconName", newJString(LexiconName))
   if body != nil:
-    body_601060 = body
-  result = call_601058.call(path_601059, nil, nil, nil, body_601060)
+    body_594060 = body
+  result = call_594058.call(path_594059, nil, nil, nil, body_594060)
 
-var putLexicon* = Call_PutLexicon_601045(name: "putLexicon",
+var putLexicon* = Call_PutLexicon_594045(name: "putLexicon",
                                       meth: HttpMethod.HttpPut,
                                       host: "polly.amazonaws.com",
                                       route: "/v1/lexicons/{LexiconName}",
-                                      validator: validate_PutLexicon_601046,
-                                      base: "/", url: url_PutLexicon_601047,
+                                      validator: validate_PutLexicon_594046,
+                                      base: "/", url: url_PutLexicon_594047,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLexicon_600775 = ref object of OpenApiRestCall_600438
-proc url_GetLexicon_600777(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetLexicon_593775 = ref object of OpenApiRestCall_593438
+proc url_GetLexicon_593777(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -283,7 +283,7 @@ proc url_GetLexicon_600777(protocol: Scheme; host: string; base: string; route: 
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetLexicon_600776(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetLexicon_593776(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the content of the specified pronunciation lexicon stored in an AWS Region. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.
   ## 
@@ -295,11 +295,11 @@ proc validate_GetLexicon_600776(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `LexiconName` field"
-  var valid_600903 = path.getOrDefault("LexiconName")
-  valid_600903 = validateParameter(valid_600903, JString, required = true,
+  var valid_593903 = path.getOrDefault("LexiconName")
+  valid_593903 = validateParameter(valid_593903, JString, required = true,
                                  default = nil)
-  if valid_600903 != nil:
-    section.add "LexiconName", valid_600903
+  if valid_593903 != nil:
+    section.add "LexiconName", valid_593903
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -312,79 +312,79 @@ proc validate_GetLexicon_600776(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600904 = header.getOrDefault("X-Amz-Date")
-  valid_600904 = validateParameter(valid_600904, JString, required = false,
+  var valid_593904 = header.getOrDefault("X-Amz-Date")
+  valid_593904 = validateParameter(valid_593904, JString, required = false,
                                  default = nil)
-  if valid_600904 != nil:
-    section.add "X-Amz-Date", valid_600904
-  var valid_600905 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600905 = validateParameter(valid_600905, JString, required = false,
+  if valid_593904 != nil:
+    section.add "X-Amz-Date", valid_593904
+  var valid_593905 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593905 = validateParameter(valid_593905, JString, required = false,
                                  default = nil)
-  if valid_600905 != nil:
-    section.add "X-Amz-Security-Token", valid_600905
-  var valid_600906 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600906 = validateParameter(valid_600906, JString, required = false,
+  if valid_593905 != nil:
+    section.add "X-Amz-Security-Token", valid_593905
+  var valid_593906 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593906 = validateParameter(valid_593906, JString, required = false,
                                  default = nil)
-  if valid_600906 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600906
-  var valid_600907 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600907 = validateParameter(valid_600907, JString, required = false,
+  if valid_593906 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593906
+  var valid_593907 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593907 = validateParameter(valid_593907, JString, required = false,
                                  default = nil)
-  if valid_600907 != nil:
-    section.add "X-Amz-Algorithm", valid_600907
-  var valid_600908 = header.getOrDefault("X-Amz-Signature")
-  valid_600908 = validateParameter(valid_600908, JString, required = false,
+  if valid_593907 != nil:
+    section.add "X-Amz-Algorithm", valid_593907
+  var valid_593908 = header.getOrDefault("X-Amz-Signature")
+  valid_593908 = validateParameter(valid_593908, JString, required = false,
                                  default = nil)
-  if valid_600908 != nil:
-    section.add "X-Amz-Signature", valid_600908
-  var valid_600909 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600909 = validateParameter(valid_600909, JString, required = false,
+  if valid_593908 != nil:
+    section.add "X-Amz-Signature", valid_593908
+  var valid_593909 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593909 = validateParameter(valid_593909, JString, required = false,
                                  default = nil)
-  if valid_600909 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600909
-  var valid_600910 = header.getOrDefault("X-Amz-Credential")
-  valid_600910 = validateParameter(valid_600910, JString, required = false,
+  if valid_593909 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593909
+  var valid_593910 = header.getOrDefault("X-Amz-Credential")
+  valid_593910 = validateParameter(valid_593910, JString, required = false,
                                  default = nil)
-  if valid_600910 != nil:
-    section.add "X-Amz-Credential", valid_600910
+  if valid_593910 != nil:
+    section.add "X-Amz-Credential", valid_593910
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600933: Call_GetLexicon_600775; path: JsonNode; query: JsonNode;
+proc call*(call_593933: Call_GetLexicon_593775; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the content of the specified pronunciation lexicon stored in an AWS Region. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.
   ## 
-  let valid = call_600933.validator(path, query, header, formData, body)
-  let scheme = call_600933.pickScheme
+  let valid = call_593933.validator(path, query, header, formData, body)
+  let scheme = call_593933.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600933.url(scheme.get, call_600933.host, call_600933.base,
-                         call_600933.route, valid.getOrDefault("path"),
+  let url = call_593933.url(scheme.get, call_593933.host, call_593933.base,
+                         call_593933.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600933, url, valid)
+  result = hook(call_593933, url, valid)
 
-proc call*(call_601004: Call_GetLexicon_600775; LexiconName: string): Recallable =
+proc call*(call_594004: Call_GetLexicon_593775; LexiconName: string): Recallable =
   ## getLexicon
   ## Returns the content of the specified pronunciation lexicon stored in an AWS Region. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.
   ##   LexiconName: string (required)
   ##              : Name of the lexicon.
-  var path_601005 = newJObject()
-  add(path_601005, "LexiconName", newJString(LexiconName))
-  result = call_601004.call(path_601005, nil, nil, nil, nil)
+  var path_594005 = newJObject()
+  add(path_594005, "LexiconName", newJString(LexiconName))
+  result = call_594004.call(path_594005, nil, nil, nil, nil)
 
-var getLexicon* = Call_GetLexicon_600775(name: "getLexicon",
+var getLexicon* = Call_GetLexicon_593775(name: "getLexicon",
                                       meth: HttpMethod.HttpGet,
                                       host: "polly.amazonaws.com",
                                       route: "/v1/lexicons/{LexiconName}",
-                                      validator: validate_GetLexicon_600776,
-                                      base: "/", url: url_GetLexicon_600777,
+                                      validator: validate_GetLexicon_593776,
+                                      base: "/", url: url_GetLexicon_593777,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteLexicon_601061 = ref object of OpenApiRestCall_600438
-proc url_DeleteLexicon_601063(protocol: Scheme; host: string; base: string;
+  Call_DeleteLexicon_594061 = ref object of OpenApiRestCall_593438
+proc url_DeleteLexicon_594063(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -399,7 +399,7 @@ proc url_DeleteLexicon_601063(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DeleteLexicon_601062(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteLexicon_594062(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified pronunciation lexicon stored in an AWS Region. A lexicon which has been deleted is not available for speech synthesis, nor is it possible to retrieve it using either the <code>GetLexicon</code> or <code>ListLexicon</code> APIs.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.</p>
   ## 
@@ -411,11 +411,11 @@ proc validate_DeleteLexicon_601062(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `LexiconName` field"
-  var valid_601064 = path.getOrDefault("LexiconName")
-  valid_601064 = validateParameter(valid_601064, JString, required = true,
+  var valid_594064 = path.getOrDefault("LexiconName")
+  valid_594064 = validateParameter(valid_594064, JString, required = true,
                                  default = nil)
-  if valid_601064 != nil:
-    section.add "LexiconName", valid_601064
+  if valid_594064 != nil:
+    section.add "LexiconName", valid_594064
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -428,83 +428,83 @@ proc validate_DeleteLexicon_601062(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601065 = header.getOrDefault("X-Amz-Date")
-  valid_601065 = validateParameter(valid_601065, JString, required = false,
+  var valid_594065 = header.getOrDefault("X-Amz-Date")
+  valid_594065 = validateParameter(valid_594065, JString, required = false,
                                  default = nil)
-  if valid_601065 != nil:
-    section.add "X-Amz-Date", valid_601065
-  var valid_601066 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601066 = validateParameter(valid_601066, JString, required = false,
+  if valid_594065 != nil:
+    section.add "X-Amz-Date", valid_594065
+  var valid_594066 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594066 = validateParameter(valid_594066, JString, required = false,
                                  default = nil)
-  if valid_601066 != nil:
-    section.add "X-Amz-Security-Token", valid_601066
-  var valid_601067 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601067 = validateParameter(valid_601067, JString, required = false,
+  if valid_594066 != nil:
+    section.add "X-Amz-Security-Token", valid_594066
+  var valid_594067 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594067 = validateParameter(valid_594067, JString, required = false,
                                  default = nil)
-  if valid_601067 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601067
-  var valid_601068 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601068 = validateParameter(valid_601068, JString, required = false,
+  if valid_594067 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594067
+  var valid_594068 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594068 = validateParameter(valid_594068, JString, required = false,
                                  default = nil)
-  if valid_601068 != nil:
-    section.add "X-Amz-Algorithm", valid_601068
-  var valid_601069 = header.getOrDefault("X-Amz-Signature")
-  valid_601069 = validateParameter(valid_601069, JString, required = false,
+  if valid_594068 != nil:
+    section.add "X-Amz-Algorithm", valid_594068
+  var valid_594069 = header.getOrDefault("X-Amz-Signature")
+  valid_594069 = validateParameter(valid_594069, JString, required = false,
                                  default = nil)
-  if valid_601069 != nil:
-    section.add "X-Amz-Signature", valid_601069
-  var valid_601070 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601070 = validateParameter(valid_601070, JString, required = false,
+  if valid_594069 != nil:
+    section.add "X-Amz-Signature", valid_594069
+  var valid_594070 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594070 = validateParameter(valid_594070, JString, required = false,
                                  default = nil)
-  if valid_601070 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601070
-  var valid_601071 = header.getOrDefault("X-Amz-Credential")
-  valid_601071 = validateParameter(valid_601071, JString, required = false,
+  if valid_594070 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594070
+  var valid_594071 = header.getOrDefault("X-Amz-Credential")
+  valid_594071 = validateParameter(valid_594071, JString, required = false,
                                  default = nil)
-  if valid_601071 != nil:
-    section.add "X-Amz-Credential", valid_601071
+  if valid_594071 != nil:
+    section.add "X-Amz-Credential", valid_594071
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601072: Call_DeleteLexicon_601061; path: JsonNode; query: JsonNode;
+proc call*(call_594072: Call_DeleteLexicon_594061; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified pronunciation lexicon stored in an AWS Region. A lexicon which has been deleted is not available for speech synthesis, nor is it possible to retrieve it using either the <code>GetLexicon</code> or <code>ListLexicon</code> APIs.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.</p>
   ## 
-  let valid = call_601072.validator(path, query, header, formData, body)
-  let scheme = call_601072.pickScheme
+  let valid = call_594072.validator(path, query, header, formData, body)
+  let scheme = call_594072.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601072.url(scheme.get, call_601072.host, call_601072.base,
-                         call_601072.route, valid.getOrDefault("path"),
+  let url = call_594072.url(scheme.get, call_594072.host, call_594072.base,
+                         call_594072.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601072, url, valid)
+  result = hook(call_594072, url, valid)
 
-proc call*(call_601073: Call_DeleteLexicon_601061; LexiconName: string): Recallable =
+proc call*(call_594073: Call_DeleteLexicon_594061; LexiconName: string): Recallable =
   ## deleteLexicon
   ## <p>Deletes the specified pronunciation lexicon stored in an AWS Region. A lexicon which has been deleted is not available for speech synthesis, nor is it possible to retrieve it using either the <code>GetLexicon</code> or <code>ListLexicon</code> APIs.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.</p>
   ##   LexiconName: string (required)
   ##              : The name of the lexicon to delete. Must be an existing lexicon in the region.
-  var path_601074 = newJObject()
-  add(path_601074, "LexiconName", newJString(LexiconName))
-  result = call_601073.call(path_601074, nil, nil, nil, nil)
+  var path_594074 = newJObject()
+  add(path_594074, "LexiconName", newJString(LexiconName))
+  result = call_594073.call(path_594074, nil, nil, nil, nil)
 
-var deleteLexicon* = Call_DeleteLexicon_601061(name: "deleteLexicon",
+var deleteLexicon* = Call_DeleteLexicon_594061(name: "deleteLexicon",
     meth: HttpMethod.HttpDelete, host: "polly.amazonaws.com",
-    route: "/v1/lexicons/{LexiconName}", validator: validate_DeleteLexicon_601062,
-    base: "/", url: url_DeleteLexicon_601063, schemes: {Scheme.Https, Scheme.Http})
+    route: "/v1/lexicons/{LexiconName}", validator: validate_DeleteLexicon_594062,
+    base: "/", url: url_DeleteLexicon_594063, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeVoices_601075 = ref object of OpenApiRestCall_600438
-proc url_DescribeVoices_601077(protocol: Scheme; host: string; base: string;
+  Call_DescribeVoices_594075 = ref object of OpenApiRestCall_593438
+proc url_DescribeVoices_594077(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeVoices_601076(path: JsonNode; query: JsonNode;
+proc validate_DescribeVoices_594076(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns the list of voices that are available for use when requesting speech synthesis. Each voice speaks a specified language, is either male or female, and is identified by an ID, which is the ASCII version of the voice name. </p> <p>When synthesizing speech ( <code>SynthesizeSpeech</code> ), you provide the voice ID for the voice you want from the list of voices returned by <code>DescribeVoices</code>.</p> <p>For example, you want your news reader application to read news in a specific language, but giving a user the option to choose the voice. Using the <code>DescribeVoices</code> operation you can provide the user with a list of available voices to select from.</p> <p> You can optionally specify a language code to filter the available voices. For example, if you specify <code>en-US</code>, the operation returns a list of all available US English voices. </p> <p>This operation requires permissions to perform the <code>polly:DescribeVoices</code> action.</p>
@@ -523,25 +523,25 @@ proc validate_DescribeVoices_601076(path: JsonNode; query: JsonNode;
   ##   IncludeAdditionalLanguageCodes: JBool
   ##                                 : Boolean value indicating whether to return any bilingual voices that use the specified language as an additional language. For instance, if you request all languages that use US English (es-US), and there is an Italian voice that speaks both Italian (it-IT) and US English, that voice will be included if you specify <code>yes</code> but not if you specify <code>no</code>.
   section = newJObject()
-  var valid_601091 = query.getOrDefault("Engine")
-  valid_601091 = validateParameter(valid_601091, JString, required = false,
+  var valid_594091 = query.getOrDefault("Engine")
+  valid_594091 = validateParameter(valid_594091, JString, required = false,
                                  default = newJString("standard"))
-  if valid_601091 != nil:
-    section.add "Engine", valid_601091
-  var valid_601092 = query.getOrDefault("LanguageCode")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  if valid_594091 != nil:
+    section.add "Engine", valid_594091
+  var valid_594092 = query.getOrDefault("LanguageCode")
+  valid_594092 = validateParameter(valid_594092, JString, required = false,
                                  default = newJString("arb"))
-  if valid_601092 != nil:
-    section.add "LanguageCode", valid_601092
-  var valid_601093 = query.getOrDefault("NextToken")
-  valid_601093 = validateParameter(valid_601093, JString, required = false,
+  if valid_594092 != nil:
+    section.add "LanguageCode", valid_594092
+  var valid_594093 = query.getOrDefault("NextToken")
+  valid_594093 = validateParameter(valid_594093, JString, required = false,
                                  default = nil)
-  if valid_601093 != nil:
-    section.add "NextToken", valid_601093
-  var valid_601094 = query.getOrDefault("IncludeAdditionalLanguageCodes")
-  valid_601094 = validateParameter(valid_601094, JBool, required = false, default = nil)
-  if valid_601094 != nil:
-    section.add "IncludeAdditionalLanguageCodes", valid_601094
+  if valid_594093 != nil:
+    section.add "NextToken", valid_594093
+  var valid_594094 = query.getOrDefault("IncludeAdditionalLanguageCodes")
+  valid_594094 = validateParameter(valid_594094, JBool, required = false, default = nil)
+  if valid_594094 != nil:
+    section.add "IncludeAdditionalLanguageCodes", valid_594094
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -552,61 +552,61 @@ proc validate_DescribeVoices_601076(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601095 = header.getOrDefault("X-Amz-Date")
-  valid_601095 = validateParameter(valid_601095, JString, required = false,
+  var valid_594095 = header.getOrDefault("X-Amz-Date")
+  valid_594095 = validateParameter(valid_594095, JString, required = false,
                                  default = nil)
-  if valid_601095 != nil:
-    section.add "X-Amz-Date", valid_601095
-  var valid_601096 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601096 = validateParameter(valid_601096, JString, required = false,
+  if valid_594095 != nil:
+    section.add "X-Amz-Date", valid_594095
+  var valid_594096 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594096 = validateParameter(valid_594096, JString, required = false,
                                  default = nil)
-  if valid_601096 != nil:
-    section.add "X-Amz-Security-Token", valid_601096
-  var valid_601097 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601097 = validateParameter(valid_601097, JString, required = false,
+  if valid_594096 != nil:
+    section.add "X-Amz-Security-Token", valid_594096
+  var valid_594097 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594097 = validateParameter(valid_594097, JString, required = false,
                                  default = nil)
-  if valid_601097 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601097
-  var valid_601098 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601098 = validateParameter(valid_601098, JString, required = false,
+  if valid_594097 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594097
+  var valid_594098 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594098 = validateParameter(valid_594098, JString, required = false,
                                  default = nil)
-  if valid_601098 != nil:
-    section.add "X-Amz-Algorithm", valid_601098
-  var valid_601099 = header.getOrDefault("X-Amz-Signature")
-  valid_601099 = validateParameter(valid_601099, JString, required = false,
+  if valid_594098 != nil:
+    section.add "X-Amz-Algorithm", valid_594098
+  var valid_594099 = header.getOrDefault("X-Amz-Signature")
+  valid_594099 = validateParameter(valid_594099, JString, required = false,
                                  default = nil)
-  if valid_601099 != nil:
-    section.add "X-Amz-Signature", valid_601099
-  var valid_601100 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601100 = validateParameter(valid_601100, JString, required = false,
+  if valid_594099 != nil:
+    section.add "X-Amz-Signature", valid_594099
+  var valid_594100 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594100 = validateParameter(valid_594100, JString, required = false,
                                  default = nil)
-  if valid_601100 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601100
-  var valid_601101 = header.getOrDefault("X-Amz-Credential")
-  valid_601101 = validateParameter(valid_601101, JString, required = false,
+  if valid_594100 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594100
+  var valid_594101 = header.getOrDefault("X-Amz-Credential")
+  valid_594101 = validateParameter(valid_594101, JString, required = false,
                                  default = nil)
-  if valid_601101 != nil:
-    section.add "X-Amz-Credential", valid_601101
+  if valid_594101 != nil:
+    section.add "X-Amz-Credential", valid_594101
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601102: Call_DescribeVoices_601075; path: JsonNode; query: JsonNode;
+proc call*(call_594102: Call_DescribeVoices_594075; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the list of voices that are available for use when requesting speech synthesis. Each voice speaks a specified language, is either male or female, and is identified by an ID, which is the ASCII version of the voice name. </p> <p>When synthesizing speech ( <code>SynthesizeSpeech</code> ), you provide the voice ID for the voice you want from the list of voices returned by <code>DescribeVoices</code>.</p> <p>For example, you want your news reader application to read news in a specific language, but giving a user the option to choose the voice. Using the <code>DescribeVoices</code> operation you can provide the user with a list of available voices to select from.</p> <p> You can optionally specify a language code to filter the available voices. For example, if you specify <code>en-US</code>, the operation returns a list of all available US English voices. </p> <p>This operation requires permissions to perform the <code>polly:DescribeVoices</code> action.</p>
   ## 
-  let valid = call_601102.validator(path, query, header, formData, body)
-  let scheme = call_601102.pickScheme
+  let valid = call_594102.validator(path, query, header, formData, body)
+  let scheme = call_594102.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601102.url(scheme.get, call_601102.host, call_601102.base,
-                         call_601102.route, valid.getOrDefault("path"),
+  let url = call_594102.url(scheme.get, call_594102.host, call_594102.base,
+                         call_594102.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601102, url, valid)
+  result = hook(call_594102, url, valid)
 
-proc call*(call_601103: Call_DescribeVoices_601075; Engine: string = "standard";
+proc call*(call_594103: Call_DescribeVoices_594075; Engine: string = "standard";
           LanguageCode: string = "arb"; NextToken: string = "";
           IncludeAdditionalLanguageCodes: bool = false): Recallable =
   ## describeVoices
@@ -619,21 +619,21 @@ proc call*(call_601103: Call_DescribeVoices_601075; Engine: string = "standard";
   ##            : An opaque pagination token returned from the previous <code>DescribeVoices</code> operation. If present, this indicates where to continue the listing.
   ##   IncludeAdditionalLanguageCodes: bool
   ##                                 : Boolean value indicating whether to return any bilingual voices that use the specified language as an additional language. For instance, if you request all languages that use US English (es-US), and there is an Italian voice that speaks both Italian (it-IT) and US English, that voice will be included if you specify <code>yes</code> but not if you specify <code>no</code>.
-  var query_601104 = newJObject()
-  add(query_601104, "Engine", newJString(Engine))
-  add(query_601104, "LanguageCode", newJString(LanguageCode))
-  add(query_601104, "NextToken", newJString(NextToken))
-  add(query_601104, "IncludeAdditionalLanguageCodes",
+  var query_594104 = newJObject()
+  add(query_594104, "Engine", newJString(Engine))
+  add(query_594104, "LanguageCode", newJString(LanguageCode))
+  add(query_594104, "NextToken", newJString(NextToken))
+  add(query_594104, "IncludeAdditionalLanguageCodes",
       newJBool(IncludeAdditionalLanguageCodes))
-  result = call_601103.call(nil, query_601104, nil, nil, nil)
+  result = call_594103.call(nil, query_594104, nil, nil, nil)
 
-var describeVoices* = Call_DescribeVoices_601075(name: "describeVoices",
+var describeVoices* = Call_DescribeVoices_594075(name: "describeVoices",
     meth: HttpMethod.HttpGet, host: "polly.amazonaws.com", route: "/v1/voices",
-    validator: validate_DescribeVoices_601076, base: "/", url: url_DescribeVoices_601077,
+    validator: validate_DescribeVoices_594076, base: "/", url: url_DescribeVoices_594077,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSpeechSynthesisTask_601105 = ref object of OpenApiRestCall_600438
-proc url_GetSpeechSynthesisTask_601107(protocol: Scheme; host: string; base: string;
+  Call_GetSpeechSynthesisTask_594105 = ref object of OpenApiRestCall_593438
+proc url_GetSpeechSynthesisTask_594107(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -648,7 +648,7 @@ proc url_GetSpeechSynthesisTask_601107(protocol: Scheme; host: string; base: str
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetSpeechSynthesisTask_601106(path: JsonNode; query: JsonNode;
+proc validate_GetSpeechSynthesisTask_594106(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves a specific SpeechSynthesisTask object based on its TaskID. This object contains information about the given speech synthesis task, including the status of the task, and a link to the S3 bucket containing the output of the task.
   ## 
@@ -659,11 +659,11 @@ proc validate_GetSpeechSynthesisTask_601106(path: JsonNode; query: JsonNode;
   ##         : The Amazon Polly generated identifier for a speech synthesis task.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `TaskId` field"
-  var valid_601108 = path.getOrDefault("TaskId")
-  valid_601108 = validateParameter(valid_601108, JString, required = true,
+  var valid_594108 = path.getOrDefault("TaskId")
+  valid_594108 = validateParameter(valid_594108, JString, required = true,
                                  default = nil)
-  if valid_601108 != nil:
-    section.add "TaskId", valid_601108
+  if valid_594108 != nil:
+    section.add "TaskId", valid_594108
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -676,84 +676,84 @@ proc validate_GetSpeechSynthesisTask_601106(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601109 = header.getOrDefault("X-Amz-Date")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  var valid_594109 = header.getOrDefault("X-Amz-Date")
+  valid_594109 = validateParameter(valid_594109, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "X-Amz-Date", valid_601109
-  var valid_601110 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_594109 != nil:
+    section.add "X-Amz-Date", valid_594109
+  var valid_594110 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594110 = validateParameter(valid_594110, JString, required = false,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "X-Amz-Security-Token", valid_601110
-  var valid_601111 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_594110 != nil:
+    section.add "X-Amz-Security-Token", valid_594110
+  var valid_594111 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594111 = validateParameter(valid_594111, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601111
-  var valid_601112 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601112 = validateParameter(valid_601112, JString, required = false,
+  if valid_594111 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594111
+  var valid_594112 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594112 = validateParameter(valid_594112, JString, required = false,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "X-Amz-Algorithm", valid_601112
-  var valid_601113 = header.getOrDefault("X-Amz-Signature")
-  valid_601113 = validateParameter(valid_601113, JString, required = false,
+  if valid_594112 != nil:
+    section.add "X-Amz-Algorithm", valid_594112
+  var valid_594113 = header.getOrDefault("X-Amz-Signature")
+  valid_594113 = validateParameter(valid_594113, JString, required = false,
                                  default = nil)
-  if valid_601113 != nil:
-    section.add "X-Amz-Signature", valid_601113
-  var valid_601114 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601114 = validateParameter(valid_601114, JString, required = false,
+  if valid_594113 != nil:
+    section.add "X-Amz-Signature", valid_594113
+  var valid_594114 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594114 = validateParameter(valid_594114, JString, required = false,
                                  default = nil)
-  if valid_601114 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601114
-  var valid_601115 = header.getOrDefault("X-Amz-Credential")
-  valid_601115 = validateParameter(valid_601115, JString, required = false,
+  if valid_594114 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594114
+  var valid_594115 = header.getOrDefault("X-Amz-Credential")
+  valid_594115 = validateParameter(valid_594115, JString, required = false,
                                  default = nil)
-  if valid_601115 != nil:
-    section.add "X-Amz-Credential", valid_601115
+  if valid_594115 != nil:
+    section.add "X-Amz-Credential", valid_594115
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601116: Call_GetSpeechSynthesisTask_601105; path: JsonNode;
+proc call*(call_594116: Call_GetSpeechSynthesisTask_594105; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a specific SpeechSynthesisTask object based on its TaskID. This object contains information about the given speech synthesis task, including the status of the task, and a link to the S3 bucket containing the output of the task.
   ## 
-  let valid = call_601116.validator(path, query, header, formData, body)
-  let scheme = call_601116.pickScheme
+  let valid = call_594116.validator(path, query, header, formData, body)
+  let scheme = call_594116.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601116.url(scheme.get, call_601116.host, call_601116.base,
-                         call_601116.route, valid.getOrDefault("path"),
+  let url = call_594116.url(scheme.get, call_594116.host, call_594116.base,
+                         call_594116.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601116, url, valid)
+  result = hook(call_594116, url, valid)
 
-proc call*(call_601117: Call_GetSpeechSynthesisTask_601105; TaskId: string): Recallable =
+proc call*(call_594117: Call_GetSpeechSynthesisTask_594105; TaskId: string): Recallable =
   ## getSpeechSynthesisTask
   ## Retrieves a specific SpeechSynthesisTask object based on its TaskID. This object contains information about the given speech synthesis task, including the status of the task, and a link to the S3 bucket containing the output of the task.
   ##   TaskId: string (required)
   ##         : The Amazon Polly generated identifier for a speech synthesis task.
-  var path_601118 = newJObject()
-  add(path_601118, "TaskId", newJString(TaskId))
-  result = call_601117.call(path_601118, nil, nil, nil, nil)
+  var path_594118 = newJObject()
+  add(path_594118, "TaskId", newJString(TaskId))
+  result = call_594117.call(path_594118, nil, nil, nil, nil)
 
-var getSpeechSynthesisTask* = Call_GetSpeechSynthesisTask_601105(
+var getSpeechSynthesisTask* = Call_GetSpeechSynthesisTask_594105(
     name: "getSpeechSynthesisTask", meth: HttpMethod.HttpGet,
     host: "polly.amazonaws.com", route: "/v1/synthesisTasks/{TaskId}",
-    validator: validate_GetSpeechSynthesisTask_601106, base: "/",
-    url: url_GetSpeechSynthesisTask_601107, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSpeechSynthesisTask_594106, base: "/",
+    url: url_GetSpeechSynthesisTask_594107, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListLexicons_601119 = ref object of OpenApiRestCall_600438
-proc url_ListLexicons_601121(protocol: Scheme; host: string; base: string;
+  Call_ListLexicons_594119 = ref object of OpenApiRestCall_593438
+proc url_ListLexicons_594121(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListLexicons_601120(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListLexicons_594120(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of pronunciation lexicons stored in an AWS Region. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.
   ## 
@@ -765,11 +765,11 @@ proc validate_ListLexicons_601120(path: JsonNode; query: JsonNode; header: JsonN
   ##   NextToken: JString
   ##            : An opaque pagination token returned from previous <code>ListLexicons</code> operation. If present, indicates where to continue the list of lexicons.
   section = newJObject()
-  var valid_601122 = query.getOrDefault("NextToken")
-  valid_601122 = validateParameter(valid_601122, JString, required = false,
+  var valid_594122 = query.getOrDefault("NextToken")
+  valid_594122 = validateParameter(valid_594122, JString, required = false,
                                  default = nil)
-  if valid_601122 != nil:
-    section.add "NextToken", valid_601122
+  if valid_594122 != nil:
+    section.add "NextToken", valid_594122
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -780,76 +780,76 @@ proc validate_ListLexicons_601120(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601123 = header.getOrDefault("X-Amz-Date")
-  valid_601123 = validateParameter(valid_601123, JString, required = false,
+  var valid_594123 = header.getOrDefault("X-Amz-Date")
+  valid_594123 = validateParameter(valid_594123, JString, required = false,
                                  default = nil)
-  if valid_601123 != nil:
-    section.add "X-Amz-Date", valid_601123
-  var valid_601124 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601124 = validateParameter(valid_601124, JString, required = false,
+  if valid_594123 != nil:
+    section.add "X-Amz-Date", valid_594123
+  var valid_594124 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594124 = validateParameter(valid_594124, JString, required = false,
                                  default = nil)
-  if valid_601124 != nil:
-    section.add "X-Amz-Security-Token", valid_601124
-  var valid_601125 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601125 = validateParameter(valid_601125, JString, required = false,
+  if valid_594124 != nil:
+    section.add "X-Amz-Security-Token", valid_594124
+  var valid_594125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594125 = validateParameter(valid_594125, JString, required = false,
                                  default = nil)
-  if valid_601125 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601125
-  var valid_601126 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601126 = validateParameter(valid_601126, JString, required = false,
+  if valid_594125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594125
+  var valid_594126 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594126 = validateParameter(valid_594126, JString, required = false,
                                  default = nil)
-  if valid_601126 != nil:
-    section.add "X-Amz-Algorithm", valid_601126
-  var valid_601127 = header.getOrDefault("X-Amz-Signature")
-  valid_601127 = validateParameter(valid_601127, JString, required = false,
+  if valid_594126 != nil:
+    section.add "X-Amz-Algorithm", valid_594126
+  var valid_594127 = header.getOrDefault("X-Amz-Signature")
+  valid_594127 = validateParameter(valid_594127, JString, required = false,
                                  default = nil)
-  if valid_601127 != nil:
-    section.add "X-Amz-Signature", valid_601127
-  var valid_601128 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601128 = validateParameter(valid_601128, JString, required = false,
+  if valid_594127 != nil:
+    section.add "X-Amz-Signature", valid_594127
+  var valid_594128 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594128 = validateParameter(valid_594128, JString, required = false,
                                  default = nil)
-  if valid_601128 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601128
-  var valid_601129 = header.getOrDefault("X-Amz-Credential")
-  valid_601129 = validateParameter(valid_601129, JString, required = false,
+  if valid_594128 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594128
+  var valid_594129 = header.getOrDefault("X-Amz-Credential")
+  valid_594129 = validateParameter(valid_594129, JString, required = false,
                                  default = nil)
-  if valid_601129 != nil:
-    section.add "X-Amz-Credential", valid_601129
+  if valid_594129 != nil:
+    section.add "X-Amz-Credential", valid_594129
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601130: Call_ListLexicons_601119; path: JsonNode; query: JsonNode;
+proc call*(call_594130: Call_ListLexicons_594119; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of pronunciation lexicons stored in an AWS Region. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.
   ## 
-  let valid = call_601130.validator(path, query, header, formData, body)
-  let scheme = call_601130.pickScheme
+  let valid = call_594130.validator(path, query, header, formData, body)
+  let scheme = call_594130.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601130.url(scheme.get, call_601130.host, call_601130.base,
-                         call_601130.route, valid.getOrDefault("path"),
+  let url = call_594130.url(scheme.get, call_594130.host, call_594130.base,
+                         call_594130.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601130, url, valid)
+  result = hook(call_594130, url, valid)
 
-proc call*(call_601131: Call_ListLexicons_601119; NextToken: string = ""): Recallable =
+proc call*(call_594131: Call_ListLexicons_594119; NextToken: string = ""): Recallable =
   ## listLexicons
   ## Returns a list of pronunciation lexicons stored in an AWS Region. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html">Managing Lexicons</a>.
   ##   NextToken: string
   ##            : An opaque pagination token returned from previous <code>ListLexicons</code> operation. If present, indicates where to continue the list of lexicons.
-  var query_601132 = newJObject()
-  add(query_601132, "NextToken", newJString(NextToken))
-  result = call_601131.call(nil, query_601132, nil, nil, nil)
+  var query_594132 = newJObject()
+  add(query_594132, "NextToken", newJString(NextToken))
+  result = call_594131.call(nil, query_594132, nil, nil, nil)
 
-var listLexicons* = Call_ListLexicons_601119(name: "listLexicons",
+var listLexicons* = Call_ListLexicons_594119(name: "listLexicons",
     meth: HttpMethod.HttpGet, host: "polly.amazonaws.com", route: "/v1/lexicons",
-    validator: validate_ListLexicons_601120, base: "/", url: url_ListLexicons_601121,
+    validator: validate_ListLexicons_594120, base: "/", url: url_ListLexicons_594121,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartSpeechSynthesisTask_601149 = ref object of OpenApiRestCall_600438
-proc url_StartSpeechSynthesisTask_601151(protocol: Scheme; host: string;
+  Call_StartSpeechSynthesisTask_594149 = ref object of OpenApiRestCall_593438
+proc url_StartSpeechSynthesisTask_594151(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -857,7 +857,7 @@ proc url_StartSpeechSynthesisTask_601151(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_StartSpeechSynthesisTask_601150(path: JsonNode; query: JsonNode;
+proc validate_StartSpeechSynthesisTask_594150(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Allows the creation of an asynchronous synthesis task, by starting a new <code>SpeechSynthesisTask</code>. This operation requires all the standard information needed for speech synthesis, plus the name of an Amazon S3 bucket for the service to store the output of the synthesis task and two optional parameters (OutputS3KeyPrefix and SnsTopicArn). Once the synthesis task is created, this operation will return a SpeechSynthesisTask object, which will include an identifier of this task as well as the current status.
   ## 
@@ -876,41 +876,41 @@ proc validate_StartSpeechSynthesisTask_601150(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601152 = header.getOrDefault("X-Amz-Date")
-  valid_601152 = validateParameter(valid_601152, JString, required = false,
+  var valid_594152 = header.getOrDefault("X-Amz-Date")
+  valid_594152 = validateParameter(valid_594152, JString, required = false,
                                  default = nil)
-  if valid_601152 != nil:
-    section.add "X-Amz-Date", valid_601152
-  var valid_601153 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601153 = validateParameter(valid_601153, JString, required = false,
+  if valid_594152 != nil:
+    section.add "X-Amz-Date", valid_594152
+  var valid_594153 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594153 = validateParameter(valid_594153, JString, required = false,
                                  default = nil)
-  if valid_601153 != nil:
-    section.add "X-Amz-Security-Token", valid_601153
-  var valid_601154 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601154 = validateParameter(valid_601154, JString, required = false,
+  if valid_594153 != nil:
+    section.add "X-Amz-Security-Token", valid_594153
+  var valid_594154 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594154 = validateParameter(valid_594154, JString, required = false,
                                  default = nil)
-  if valid_601154 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601154
-  var valid_601155 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601155 = validateParameter(valid_601155, JString, required = false,
+  if valid_594154 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594154
+  var valid_594155 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594155 = validateParameter(valid_594155, JString, required = false,
                                  default = nil)
-  if valid_601155 != nil:
-    section.add "X-Amz-Algorithm", valid_601155
-  var valid_601156 = header.getOrDefault("X-Amz-Signature")
-  valid_601156 = validateParameter(valid_601156, JString, required = false,
+  if valid_594155 != nil:
+    section.add "X-Amz-Algorithm", valid_594155
+  var valid_594156 = header.getOrDefault("X-Amz-Signature")
+  valid_594156 = validateParameter(valid_594156, JString, required = false,
                                  default = nil)
-  if valid_601156 != nil:
-    section.add "X-Amz-Signature", valid_601156
-  var valid_601157 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601157 = validateParameter(valid_601157, JString, required = false,
+  if valid_594156 != nil:
+    section.add "X-Amz-Signature", valid_594156
+  var valid_594157 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594157 = validateParameter(valid_594157, JString, required = false,
                                  default = nil)
-  if valid_601157 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601157
-  var valid_601158 = header.getOrDefault("X-Amz-Credential")
-  valid_601158 = validateParameter(valid_601158, JString, required = false,
+  if valid_594157 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594157
+  var valid_594158 = header.getOrDefault("X-Amz-Credential")
+  valid_594158 = validateParameter(valid_594158, JString, required = false,
                                  default = nil)
-  if valid_601158 != nil:
-    section.add "X-Amz-Credential", valid_601158
+  if valid_594158 != nil:
+    section.add "X-Amz-Credential", valid_594158
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -921,36 +921,36 @@ proc validate_StartSpeechSynthesisTask_601150(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601160: Call_StartSpeechSynthesisTask_601149; path: JsonNode;
+proc call*(call_594160: Call_StartSpeechSynthesisTask_594149; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Allows the creation of an asynchronous synthesis task, by starting a new <code>SpeechSynthesisTask</code>. This operation requires all the standard information needed for speech synthesis, plus the name of an Amazon S3 bucket for the service to store the output of the synthesis task and two optional parameters (OutputS3KeyPrefix and SnsTopicArn). Once the synthesis task is created, this operation will return a SpeechSynthesisTask object, which will include an identifier of this task as well as the current status.
   ## 
-  let valid = call_601160.validator(path, query, header, formData, body)
-  let scheme = call_601160.pickScheme
+  let valid = call_594160.validator(path, query, header, formData, body)
+  let scheme = call_594160.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601160.url(scheme.get, call_601160.host, call_601160.base,
-                         call_601160.route, valid.getOrDefault("path"),
+  let url = call_594160.url(scheme.get, call_594160.host, call_594160.base,
+                         call_594160.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601160, url, valid)
+  result = hook(call_594160, url, valid)
 
-proc call*(call_601161: Call_StartSpeechSynthesisTask_601149; body: JsonNode): Recallable =
+proc call*(call_594161: Call_StartSpeechSynthesisTask_594149; body: JsonNode): Recallable =
   ## startSpeechSynthesisTask
   ## Allows the creation of an asynchronous synthesis task, by starting a new <code>SpeechSynthesisTask</code>. This operation requires all the standard information needed for speech synthesis, plus the name of an Amazon S3 bucket for the service to store the output of the synthesis task and two optional parameters (OutputS3KeyPrefix and SnsTopicArn). Once the synthesis task is created, this operation will return a SpeechSynthesisTask object, which will include an identifier of this task as well as the current status.
   ##   body: JObject (required)
-  var body_601162 = newJObject()
+  var body_594162 = newJObject()
   if body != nil:
-    body_601162 = body
-  result = call_601161.call(nil, nil, nil, nil, body_601162)
+    body_594162 = body
+  result = call_594161.call(nil, nil, nil, nil, body_594162)
 
-var startSpeechSynthesisTask* = Call_StartSpeechSynthesisTask_601149(
+var startSpeechSynthesisTask* = Call_StartSpeechSynthesisTask_594149(
     name: "startSpeechSynthesisTask", meth: HttpMethod.HttpPost,
     host: "polly.amazonaws.com", route: "/v1/synthesisTasks",
-    validator: validate_StartSpeechSynthesisTask_601150, base: "/",
-    url: url_StartSpeechSynthesisTask_601151, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartSpeechSynthesisTask_594150, base: "/",
+    url: url_StartSpeechSynthesisTask_594151, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSpeechSynthesisTasks_601133 = ref object of OpenApiRestCall_600438
-proc url_ListSpeechSynthesisTasks_601135(protocol: Scheme; host: string;
+  Call_ListSpeechSynthesisTasks_594133 = ref object of OpenApiRestCall_593438
+proc url_ListSpeechSynthesisTasks_594135(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -958,7 +958,7 @@ proc url_ListSpeechSynthesisTasks_601135(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListSpeechSynthesisTasks_601134(path: JsonNode; query: JsonNode;
+proc validate_ListSpeechSynthesisTasks_594134(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of SpeechSynthesisTask objects ordered by their creation date. This operation can filter the tasks by their status, for example, allowing users to list only tasks that are completed.
   ## 
@@ -974,20 +974,20 @@ proc validate_ListSpeechSynthesisTasks_601134(path: JsonNode; query: JsonNode;
   ##   MaxResults: JInt
   ##             : Maximum number of speech synthesis tasks returned in a List operation.
   section = newJObject()
-  var valid_601136 = query.getOrDefault("Status")
-  valid_601136 = validateParameter(valid_601136, JString, required = false,
+  var valid_594136 = query.getOrDefault("Status")
+  valid_594136 = validateParameter(valid_594136, JString, required = false,
                                  default = newJString("scheduled"))
-  if valid_601136 != nil:
-    section.add "Status", valid_601136
-  var valid_601137 = query.getOrDefault("NextToken")
-  valid_601137 = validateParameter(valid_601137, JString, required = false,
+  if valid_594136 != nil:
+    section.add "Status", valid_594136
+  var valid_594137 = query.getOrDefault("NextToken")
+  valid_594137 = validateParameter(valid_594137, JString, required = false,
                                  default = nil)
-  if valid_601137 != nil:
-    section.add "NextToken", valid_601137
-  var valid_601138 = query.getOrDefault("MaxResults")
-  valid_601138 = validateParameter(valid_601138, JInt, required = false, default = nil)
-  if valid_601138 != nil:
-    section.add "MaxResults", valid_601138
+  if valid_594137 != nil:
+    section.add "NextToken", valid_594137
+  var valid_594138 = query.getOrDefault("MaxResults")
+  valid_594138 = validateParameter(valid_594138, JInt, required = false, default = nil)
+  if valid_594138 != nil:
+    section.add "MaxResults", valid_594138
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -998,61 +998,61 @@ proc validate_ListSpeechSynthesisTasks_601134(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601139 = header.getOrDefault("X-Amz-Date")
-  valid_601139 = validateParameter(valid_601139, JString, required = false,
+  var valid_594139 = header.getOrDefault("X-Amz-Date")
+  valid_594139 = validateParameter(valid_594139, JString, required = false,
                                  default = nil)
-  if valid_601139 != nil:
-    section.add "X-Amz-Date", valid_601139
-  var valid_601140 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601140 = validateParameter(valid_601140, JString, required = false,
+  if valid_594139 != nil:
+    section.add "X-Amz-Date", valid_594139
+  var valid_594140 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594140 = validateParameter(valid_594140, JString, required = false,
                                  default = nil)
-  if valid_601140 != nil:
-    section.add "X-Amz-Security-Token", valid_601140
-  var valid_601141 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601141 = validateParameter(valid_601141, JString, required = false,
+  if valid_594140 != nil:
+    section.add "X-Amz-Security-Token", valid_594140
+  var valid_594141 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594141 = validateParameter(valid_594141, JString, required = false,
                                  default = nil)
-  if valid_601141 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601141
-  var valid_601142 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601142 = validateParameter(valid_601142, JString, required = false,
+  if valid_594141 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594141
+  var valid_594142 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594142 = validateParameter(valid_594142, JString, required = false,
                                  default = nil)
-  if valid_601142 != nil:
-    section.add "X-Amz-Algorithm", valid_601142
-  var valid_601143 = header.getOrDefault("X-Amz-Signature")
-  valid_601143 = validateParameter(valid_601143, JString, required = false,
+  if valid_594142 != nil:
+    section.add "X-Amz-Algorithm", valid_594142
+  var valid_594143 = header.getOrDefault("X-Amz-Signature")
+  valid_594143 = validateParameter(valid_594143, JString, required = false,
                                  default = nil)
-  if valid_601143 != nil:
-    section.add "X-Amz-Signature", valid_601143
-  var valid_601144 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601144 = validateParameter(valid_601144, JString, required = false,
+  if valid_594143 != nil:
+    section.add "X-Amz-Signature", valid_594143
+  var valid_594144 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594144 = validateParameter(valid_594144, JString, required = false,
                                  default = nil)
-  if valid_601144 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601144
-  var valid_601145 = header.getOrDefault("X-Amz-Credential")
-  valid_601145 = validateParameter(valid_601145, JString, required = false,
+  if valid_594144 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594144
+  var valid_594145 = header.getOrDefault("X-Amz-Credential")
+  valid_594145 = validateParameter(valid_594145, JString, required = false,
                                  default = nil)
-  if valid_601145 != nil:
-    section.add "X-Amz-Credential", valid_601145
+  if valid_594145 != nil:
+    section.add "X-Amz-Credential", valid_594145
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601146: Call_ListSpeechSynthesisTasks_601133; path: JsonNode;
+proc call*(call_594146: Call_ListSpeechSynthesisTasks_594133; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of SpeechSynthesisTask objects ordered by their creation date. This operation can filter the tasks by their status, for example, allowing users to list only tasks that are completed.
   ## 
-  let valid = call_601146.validator(path, query, header, formData, body)
-  let scheme = call_601146.pickScheme
+  let valid = call_594146.validator(path, query, header, formData, body)
+  let scheme = call_594146.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601146.url(scheme.get, call_601146.host, call_601146.base,
-                         call_601146.route, valid.getOrDefault("path"),
+  let url = call_594146.url(scheme.get, call_594146.host, call_594146.base,
+                         call_594146.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601146, url, valid)
+  result = hook(call_594146, url, valid)
 
-proc call*(call_601147: Call_ListSpeechSynthesisTasks_601133;
+proc call*(call_594147: Call_ListSpeechSynthesisTasks_594133;
           Status: string = "scheduled"; NextToken: string = ""; MaxResults: int = 0): Recallable =
   ## listSpeechSynthesisTasks
   ## Returns a list of SpeechSynthesisTask objects ordered by their creation date. This operation can filter the tasks by their status, for example, allowing users to list only tasks that are completed.
@@ -1062,27 +1062,27 @@ proc call*(call_601147: Call_ListSpeechSynthesisTasks_601133;
   ##            : The pagination token to use in the next request to continue the listing of speech synthesis tasks. 
   ##   MaxResults: int
   ##             : Maximum number of speech synthesis tasks returned in a List operation.
-  var query_601148 = newJObject()
-  add(query_601148, "Status", newJString(Status))
-  add(query_601148, "NextToken", newJString(NextToken))
-  add(query_601148, "MaxResults", newJInt(MaxResults))
-  result = call_601147.call(nil, query_601148, nil, nil, nil)
+  var query_594148 = newJObject()
+  add(query_594148, "Status", newJString(Status))
+  add(query_594148, "NextToken", newJString(NextToken))
+  add(query_594148, "MaxResults", newJInt(MaxResults))
+  result = call_594147.call(nil, query_594148, nil, nil, nil)
 
-var listSpeechSynthesisTasks* = Call_ListSpeechSynthesisTasks_601133(
+var listSpeechSynthesisTasks* = Call_ListSpeechSynthesisTasks_594133(
     name: "listSpeechSynthesisTasks", meth: HttpMethod.HttpGet,
     host: "polly.amazonaws.com", route: "/v1/synthesisTasks",
-    validator: validate_ListSpeechSynthesisTasks_601134, base: "/",
-    url: url_ListSpeechSynthesisTasks_601135, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSpeechSynthesisTasks_594134, base: "/",
+    url: url_ListSpeechSynthesisTasks_594135, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SynthesizeSpeech_601163 = ref object of OpenApiRestCall_600438
-proc url_SynthesizeSpeech_601165(protocol: Scheme; host: string; base: string;
+  Call_SynthesizeSpeech_594163 = ref object of OpenApiRestCall_593438
+proc url_SynthesizeSpeech_594165(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_SynthesizeSpeech_601164(path: JsonNode; query: JsonNode;
+proc validate_SynthesizeSpeech_594164(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Synthesizes UTF-8 input, plain text or SSML, to a stream of bytes. SSML input must be valid, well-formed SSML. Some alphabets might not be available with all the voices (for example, Cyrillic might not be read at all by English voices) unless phoneme mapping is used. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/how-text-to-speech-works.html">How it Works</a>.
@@ -1102,41 +1102,41 @@ proc validate_SynthesizeSpeech_601164(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601166 = header.getOrDefault("X-Amz-Date")
-  valid_601166 = validateParameter(valid_601166, JString, required = false,
+  var valid_594166 = header.getOrDefault("X-Amz-Date")
+  valid_594166 = validateParameter(valid_594166, JString, required = false,
                                  default = nil)
-  if valid_601166 != nil:
-    section.add "X-Amz-Date", valid_601166
-  var valid_601167 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601167 = validateParameter(valid_601167, JString, required = false,
+  if valid_594166 != nil:
+    section.add "X-Amz-Date", valid_594166
+  var valid_594167 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594167 = validateParameter(valid_594167, JString, required = false,
                                  default = nil)
-  if valid_601167 != nil:
-    section.add "X-Amz-Security-Token", valid_601167
-  var valid_601168 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601168 = validateParameter(valid_601168, JString, required = false,
+  if valid_594167 != nil:
+    section.add "X-Amz-Security-Token", valid_594167
+  var valid_594168 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594168 = validateParameter(valid_594168, JString, required = false,
                                  default = nil)
-  if valid_601168 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601168
-  var valid_601169 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601169 = validateParameter(valid_601169, JString, required = false,
+  if valid_594168 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594168
+  var valid_594169 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594169 = validateParameter(valid_594169, JString, required = false,
                                  default = nil)
-  if valid_601169 != nil:
-    section.add "X-Amz-Algorithm", valid_601169
-  var valid_601170 = header.getOrDefault("X-Amz-Signature")
-  valid_601170 = validateParameter(valid_601170, JString, required = false,
+  if valid_594169 != nil:
+    section.add "X-Amz-Algorithm", valid_594169
+  var valid_594170 = header.getOrDefault("X-Amz-Signature")
+  valid_594170 = validateParameter(valid_594170, JString, required = false,
                                  default = nil)
-  if valid_601170 != nil:
-    section.add "X-Amz-Signature", valid_601170
-  var valid_601171 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601171 = validateParameter(valid_601171, JString, required = false,
+  if valid_594170 != nil:
+    section.add "X-Amz-Signature", valid_594170
+  var valid_594171 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594171 = validateParameter(valid_594171, JString, required = false,
                                  default = nil)
-  if valid_601171 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601171
-  var valid_601172 = header.getOrDefault("X-Amz-Credential")
-  valid_601172 = validateParameter(valid_601172, JString, required = false,
+  if valid_594171 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594171
+  var valid_594172 = header.getOrDefault("X-Amz-Credential")
+  valid_594172 = validateParameter(valid_594172, JString, required = false,
                                  default = nil)
-  if valid_601172 != nil:
-    section.add "X-Amz-Credential", valid_601172
+  if valid_594172 != nil:
+    section.add "X-Amz-Credential", valid_594172
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1147,32 +1147,32 @@ proc validate_SynthesizeSpeech_601164(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601174: Call_SynthesizeSpeech_601163; path: JsonNode;
+proc call*(call_594174: Call_SynthesizeSpeech_594163; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Synthesizes UTF-8 input, plain text or SSML, to a stream of bytes. SSML input must be valid, well-formed SSML. Some alphabets might not be available with all the voices (for example, Cyrillic might not be read at all by English voices) unless phoneme mapping is used. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/how-text-to-speech-works.html">How it Works</a>.
   ## 
-  let valid = call_601174.validator(path, query, header, formData, body)
-  let scheme = call_601174.pickScheme
+  let valid = call_594174.validator(path, query, header, formData, body)
+  let scheme = call_594174.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601174.url(scheme.get, call_601174.host, call_601174.base,
-                         call_601174.route, valid.getOrDefault("path"),
+  let url = call_594174.url(scheme.get, call_594174.host, call_594174.base,
+                         call_594174.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601174, url, valid)
+  result = hook(call_594174, url, valid)
 
-proc call*(call_601175: Call_SynthesizeSpeech_601163; body: JsonNode): Recallable =
+proc call*(call_594175: Call_SynthesizeSpeech_594163; body: JsonNode): Recallable =
   ## synthesizeSpeech
   ## Synthesizes UTF-8 input, plain text or SSML, to a stream of bytes. SSML input must be valid, well-formed SSML. Some alphabets might not be available with all the voices (for example, Cyrillic might not be read at all by English voices) unless phoneme mapping is used. For more information, see <a href="https://docs.aws.amazon.com/polly/latest/dg/how-text-to-speech-works.html">How it Works</a>.
   ##   body: JObject (required)
-  var body_601176 = newJObject()
+  var body_594176 = newJObject()
   if body != nil:
-    body_601176 = body
-  result = call_601175.call(nil, nil, nil, nil, body_601176)
+    body_594176 = body
+  result = call_594175.call(nil, nil, nil, nil, body_594176)
 
-var synthesizeSpeech* = Call_SynthesizeSpeech_601163(name: "synthesizeSpeech",
+var synthesizeSpeech* = Call_SynthesizeSpeech_594163(name: "synthesizeSpeech",
     meth: HttpMethod.HttpPost, host: "polly.amazonaws.com", route: "/v1/speech",
-    validator: validate_SynthesizeSpeech_601164, base: "/",
-    url: url_SynthesizeSpeech_601165, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SynthesizeSpeech_594164, base: "/",
+    url: url_SynthesizeSpeech_594165, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

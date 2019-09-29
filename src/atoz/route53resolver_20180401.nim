@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Route 53 Resolver
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600437 = ref object of OpenApiRestCall
+  OpenApiRestCall_593437 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600437](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593437](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600437): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593437): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -130,15 +130,15 @@ const
   awsServiceName = "route53resolver"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AssociateResolverEndpointIpAddress_600774 = ref object of OpenApiRestCall_600437
-proc url_AssociateResolverEndpointIpAddress_600776(protocol: Scheme; host: string;
+  Call_AssociateResolverEndpointIpAddress_593774 = ref object of OpenApiRestCall_593437
+proc url_AssociateResolverEndpointIpAddress_593776(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AssociateResolverEndpointIpAddress_600775(path: JsonNode;
+proc validate_AssociateResolverEndpointIpAddress_593775(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds IP addresses to an inbound or an outbound resolver endpoint. If you want to adding more than one IP address, submit one <code>AssociateResolverEndpointIpAddress</code> request for each IP address.</p> <p>To remove an IP address from an endpoint, see <a>DisassociateResolverEndpointIpAddress</a>.</p>
   ## 
@@ -158,48 +158,48 @@ proc validate_AssociateResolverEndpointIpAddress_600775(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600888 = header.getOrDefault("X-Amz-Date")
-  valid_600888 = validateParameter(valid_600888, JString, required = false,
+  var valid_593888 = header.getOrDefault("X-Amz-Date")
+  valid_593888 = validateParameter(valid_593888, JString, required = false,
                                  default = nil)
-  if valid_600888 != nil:
-    section.add "X-Amz-Date", valid_600888
-  var valid_600889 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600889 = validateParameter(valid_600889, JString, required = false,
+  if valid_593888 != nil:
+    section.add "X-Amz-Date", valid_593888
+  var valid_593889 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593889 = validateParameter(valid_593889, JString, required = false,
                                  default = nil)
-  if valid_600889 != nil:
-    section.add "X-Amz-Security-Token", valid_600889
+  if valid_593889 != nil:
+    section.add "X-Amz-Security-Token", valid_593889
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600903 = header.getOrDefault("X-Amz-Target")
-  valid_600903 = validateParameter(valid_600903, JString, required = true, default = newJString(
+  var valid_593903 = header.getOrDefault("X-Amz-Target")
+  valid_593903 = validateParameter(valid_593903, JString, required = true, default = newJString(
       "Route53Resolver.AssociateResolverEndpointIpAddress"))
-  if valid_600903 != nil:
-    section.add "X-Amz-Target", valid_600903
-  var valid_600904 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600904 = validateParameter(valid_600904, JString, required = false,
+  if valid_593903 != nil:
+    section.add "X-Amz-Target", valid_593903
+  var valid_593904 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593904 = validateParameter(valid_593904, JString, required = false,
                                  default = nil)
-  if valid_600904 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600904
-  var valid_600905 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600905 = validateParameter(valid_600905, JString, required = false,
+  if valid_593904 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593904
+  var valid_593905 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593905 = validateParameter(valid_593905, JString, required = false,
                                  default = nil)
-  if valid_600905 != nil:
-    section.add "X-Amz-Algorithm", valid_600905
-  var valid_600906 = header.getOrDefault("X-Amz-Signature")
-  valid_600906 = validateParameter(valid_600906, JString, required = false,
+  if valid_593905 != nil:
+    section.add "X-Amz-Algorithm", valid_593905
+  var valid_593906 = header.getOrDefault("X-Amz-Signature")
+  valid_593906 = validateParameter(valid_593906, JString, required = false,
                                  default = nil)
-  if valid_600906 != nil:
-    section.add "X-Amz-Signature", valid_600906
-  var valid_600907 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600907 = validateParameter(valid_600907, JString, required = false,
+  if valid_593906 != nil:
+    section.add "X-Amz-Signature", valid_593906
+  var valid_593907 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593907 = validateParameter(valid_593907, JString, required = false,
                                  default = nil)
-  if valid_600907 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600907
-  var valid_600908 = header.getOrDefault("X-Amz-Credential")
-  valid_600908 = validateParameter(valid_600908, JString, required = false,
+  if valid_593907 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593907
+  var valid_593908 = header.getOrDefault("X-Amz-Credential")
+  valid_593908 = validateParameter(valid_593908, JString, required = false,
                                  default = nil)
-  if valid_600908 != nil:
-    section.add "X-Amz-Credential", valid_600908
+  if valid_593908 != nil:
+    section.add "X-Amz-Credential", valid_593908
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -210,47 +210,47 @@ proc validate_AssociateResolverEndpointIpAddress_600775(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600932: Call_AssociateResolverEndpointIpAddress_600774;
+proc call*(call_593932: Call_AssociateResolverEndpointIpAddress_593774;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Adds IP addresses to an inbound or an outbound resolver endpoint. If you want to adding more than one IP address, submit one <code>AssociateResolverEndpointIpAddress</code> request for each IP address.</p> <p>To remove an IP address from an endpoint, see <a>DisassociateResolverEndpointIpAddress</a>.</p>
   ## 
-  let valid = call_600932.validator(path, query, header, formData, body)
-  let scheme = call_600932.pickScheme
+  let valid = call_593932.validator(path, query, header, formData, body)
+  let scheme = call_593932.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600932.url(scheme.get, call_600932.host, call_600932.base,
-                         call_600932.route, valid.getOrDefault("path"),
+  let url = call_593932.url(scheme.get, call_593932.host, call_593932.base,
+                         call_593932.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600932, url, valid)
+  result = hook(call_593932, url, valid)
 
-proc call*(call_601003: Call_AssociateResolverEndpointIpAddress_600774;
+proc call*(call_594003: Call_AssociateResolverEndpointIpAddress_593774;
           body: JsonNode): Recallable =
   ## associateResolverEndpointIpAddress
   ## <p>Adds IP addresses to an inbound or an outbound resolver endpoint. If you want to adding more than one IP address, submit one <code>AssociateResolverEndpointIpAddress</code> request for each IP address.</p> <p>To remove an IP address from an endpoint, see <a>DisassociateResolverEndpointIpAddress</a>.</p>
   ##   body: JObject (required)
-  var body_601004 = newJObject()
+  var body_594004 = newJObject()
   if body != nil:
-    body_601004 = body
-  result = call_601003.call(nil, nil, nil, nil, body_601004)
+    body_594004 = body
+  result = call_594003.call(nil, nil, nil, nil, body_594004)
 
-var associateResolverEndpointIpAddress* = Call_AssociateResolverEndpointIpAddress_600774(
+var associateResolverEndpointIpAddress* = Call_AssociateResolverEndpointIpAddress_593774(
     name: "associateResolverEndpointIpAddress", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.AssociateResolverEndpointIpAddress",
-    validator: validate_AssociateResolverEndpointIpAddress_600775, base: "/",
-    url: url_AssociateResolverEndpointIpAddress_600776,
+    validator: validate_AssociateResolverEndpointIpAddress_593775, base: "/",
+    url: url_AssociateResolverEndpointIpAddress_593776,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AssociateResolverRule_601043 = ref object of OpenApiRestCall_600437
-proc url_AssociateResolverRule_601045(protocol: Scheme; host: string; base: string;
+  Call_AssociateResolverRule_594043 = ref object of OpenApiRestCall_593437
+proc url_AssociateResolverRule_594045(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AssociateResolverRule_601044(path: JsonNode; query: JsonNode;
+proc validate_AssociateResolverRule_594044(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Associates a resolver rule with a VPC. When you associate a rule with a VPC, Resolver forwards all DNS queries for the domain name that is specified in the rule and that originate in the VPC. The queries are forwarded to the IP addresses for the DNS resolvers that are specified in the rule. For more information about rules, see <a>CreateResolverRule</a>. 
   ## 
@@ -270,48 +270,48 @@ proc validate_AssociateResolverRule_601044(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601046 = header.getOrDefault("X-Amz-Date")
-  valid_601046 = validateParameter(valid_601046, JString, required = false,
+  var valid_594046 = header.getOrDefault("X-Amz-Date")
+  valid_594046 = validateParameter(valid_594046, JString, required = false,
                                  default = nil)
-  if valid_601046 != nil:
-    section.add "X-Amz-Date", valid_601046
-  var valid_601047 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601047 = validateParameter(valid_601047, JString, required = false,
+  if valid_594046 != nil:
+    section.add "X-Amz-Date", valid_594046
+  var valid_594047 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594047 = validateParameter(valid_594047, JString, required = false,
                                  default = nil)
-  if valid_601047 != nil:
-    section.add "X-Amz-Security-Token", valid_601047
+  if valid_594047 != nil:
+    section.add "X-Amz-Security-Token", valid_594047
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601048 = header.getOrDefault("X-Amz-Target")
-  valid_601048 = validateParameter(valid_601048, JString, required = true, default = newJString(
+  var valid_594048 = header.getOrDefault("X-Amz-Target")
+  valid_594048 = validateParameter(valid_594048, JString, required = true, default = newJString(
       "Route53Resolver.AssociateResolverRule"))
-  if valid_601048 != nil:
-    section.add "X-Amz-Target", valid_601048
-  var valid_601049 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601049 = validateParameter(valid_601049, JString, required = false,
+  if valid_594048 != nil:
+    section.add "X-Amz-Target", valid_594048
+  var valid_594049 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594049 = validateParameter(valid_594049, JString, required = false,
                                  default = nil)
-  if valid_601049 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601049
-  var valid_601050 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601050 = validateParameter(valid_601050, JString, required = false,
+  if valid_594049 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594049
+  var valid_594050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594050 = validateParameter(valid_594050, JString, required = false,
                                  default = nil)
-  if valid_601050 != nil:
-    section.add "X-Amz-Algorithm", valid_601050
-  var valid_601051 = header.getOrDefault("X-Amz-Signature")
-  valid_601051 = validateParameter(valid_601051, JString, required = false,
+  if valid_594050 != nil:
+    section.add "X-Amz-Algorithm", valid_594050
+  var valid_594051 = header.getOrDefault("X-Amz-Signature")
+  valid_594051 = validateParameter(valid_594051, JString, required = false,
                                  default = nil)
-  if valid_601051 != nil:
-    section.add "X-Amz-Signature", valid_601051
-  var valid_601052 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601052 = validateParameter(valid_601052, JString, required = false,
+  if valid_594051 != nil:
+    section.add "X-Amz-Signature", valid_594051
+  var valid_594052 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594052 = validateParameter(valid_594052, JString, required = false,
                                  default = nil)
-  if valid_601052 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601052
-  var valid_601053 = header.getOrDefault("X-Amz-Credential")
-  valid_601053 = validateParameter(valid_601053, JString, required = false,
+  if valid_594052 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594052
+  var valid_594053 = header.getOrDefault("X-Amz-Credential")
+  valid_594053 = validateParameter(valid_594053, JString, required = false,
                                  default = nil)
-  if valid_601053 != nil:
-    section.add "X-Amz-Credential", valid_601053
+  if valid_594053 != nil:
+    section.add "X-Amz-Credential", valid_594053
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -322,44 +322,44 @@ proc validate_AssociateResolverRule_601044(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601055: Call_AssociateResolverRule_601043; path: JsonNode;
+proc call*(call_594055: Call_AssociateResolverRule_594043; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Associates a resolver rule with a VPC. When you associate a rule with a VPC, Resolver forwards all DNS queries for the domain name that is specified in the rule and that originate in the VPC. The queries are forwarded to the IP addresses for the DNS resolvers that are specified in the rule. For more information about rules, see <a>CreateResolverRule</a>. 
   ## 
-  let valid = call_601055.validator(path, query, header, formData, body)
-  let scheme = call_601055.pickScheme
+  let valid = call_594055.validator(path, query, header, formData, body)
+  let scheme = call_594055.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601055.url(scheme.get, call_601055.host, call_601055.base,
-                         call_601055.route, valid.getOrDefault("path"),
+  let url = call_594055.url(scheme.get, call_594055.host, call_594055.base,
+                         call_594055.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601055, url, valid)
+  result = hook(call_594055, url, valid)
 
-proc call*(call_601056: Call_AssociateResolverRule_601043; body: JsonNode): Recallable =
+proc call*(call_594056: Call_AssociateResolverRule_594043; body: JsonNode): Recallable =
   ## associateResolverRule
   ## Associates a resolver rule with a VPC. When you associate a rule with a VPC, Resolver forwards all DNS queries for the domain name that is specified in the rule and that originate in the VPC. The queries are forwarded to the IP addresses for the DNS resolvers that are specified in the rule. For more information about rules, see <a>CreateResolverRule</a>. 
   ##   body: JObject (required)
-  var body_601057 = newJObject()
+  var body_594057 = newJObject()
   if body != nil:
-    body_601057 = body
-  result = call_601056.call(nil, nil, nil, nil, body_601057)
+    body_594057 = body
+  result = call_594056.call(nil, nil, nil, nil, body_594057)
 
-var associateResolverRule* = Call_AssociateResolverRule_601043(
+var associateResolverRule* = Call_AssociateResolverRule_594043(
     name: "associateResolverRule", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.AssociateResolverRule",
-    validator: validate_AssociateResolverRule_601044, base: "/",
-    url: url_AssociateResolverRule_601045, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AssociateResolverRule_594044, base: "/",
+    url: url_AssociateResolverRule_594045, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateResolverEndpoint_601058 = ref object of OpenApiRestCall_600437
-proc url_CreateResolverEndpoint_601060(protocol: Scheme; host: string; base: string;
+  Call_CreateResolverEndpoint_594058 = ref object of OpenApiRestCall_593437
+proc url_CreateResolverEndpoint_594060(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateResolverEndpoint_601059(path: JsonNode; query: JsonNode;
+proc validate_CreateResolverEndpoint_594059(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a resolver endpoint. There are two types of resolver endpoints, inbound and outbound:</p> <ul> <li> <p>An <i>inbound resolver endpoint</i> forwards DNS queries to the DNS service for a VPC from your network or another VPC.</p> </li> <li> <p>An <i>outbound resolver endpoint</i> forwards DNS queries from the DNS service for a VPC to your network or another VPC.</p> </li> </ul>
   ## 
@@ -379,48 +379,48 @@ proc validate_CreateResolverEndpoint_601059(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601061 = header.getOrDefault("X-Amz-Date")
-  valid_601061 = validateParameter(valid_601061, JString, required = false,
+  var valid_594061 = header.getOrDefault("X-Amz-Date")
+  valid_594061 = validateParameter(valid_594061, JString, required = false,
                                  default = nil)
-  if valid_601061 != nil:
-    section.add "X-Amz-Date", valid_601061
-  var valid_601062 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601062 = validateParameter(valid_601062, JString, required = false,
+  if valid_594061 != nil:
+    section.add "X-Amz-Date", valid_594061
+  var valid_594062 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594062 = validateParameter(valid_594062, JString, required = false,
                                  default = nil)
-  if valid_601062 != nil:
-    section.add "X-Amz-Security-Token", valid_601062
+  if valid_594062 != nil:
+    section.add "X-Amz-Security-Token", valid_594062
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601063 = header.getOrDefault("X-Amz-Target")
-  valid_601063 = validateParameter(valid_601063, JString, required = true, default = newJString(
+  var valid_594063 = header.getOrDefault("X-Amz-Target")
+  valid_594063 = validateParameter(valid_594063, JString, required = true, default = newJString(
       "Route53Resolver.CreateResolverEndpoint"))
-  if valid_601063 != nil:
-    section.add "X-Amz-Target", valid_601063
-  var valid_601064 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601064 = validateParameter(valid_601064, JString, required = false,
+  if valid_594063 != nil:
+    section.add "X-Amz-Target", valid_594063
+  var valid_594064 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594064 = validateParameter(valid_594064, JString, required = false,
                                  default = nil)
-  if valid_601064 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601064
-  var valid_601065 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601065 = validateParameter(valid_601065, JString, required = false,
+  if valid_594064 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594064
+  var valid_594065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594065 = validateParameter(valid_594065, JString, required = false,
                                  default = nil)
-  if valid_601065 != nil:
-    section.add "X-Amz-Algorithm", valid_601065
-  var valid_601066 = header.getOrDefault("X-Amz-Signature")
-  valid_601066 = validateParameter(valid_601066, JString, required = false,
+  if valid_594065 != nil:
+    section.add "X-Amz-Algorithm", valid_594065
+  var valid_594066 = header.getOrDefault("X-Amz-Signature")
+  valid_594066 = validateParameter(valid_594066, JString, required = false,
                                  default = nil)
-  if valid_601066 != nil:
-    section.add "X-Amz-Signature", valid_601066
-  var valid_601067 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601067 = validateParameter(valid_601067, JString, required = false,
+  if valid_594066 != nil:
+    section.add "X-Amz-Signature", valid_594066
+  var valid_594067 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594067 = validateParameter(valid_594067, JString, required = false,
                                  default = nil)
-  if valid_601067 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601067
-  var valid_601068 = header.getOrDefault("X-Amz-Credential")
-  valid_601068 = validateParameter(valid_601068, JString, required = false,
+  if valid_594067 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594067
+  var valid_594068 = header.getOrDefault("X-Amz-Credential")
+  valid_594068 = validateParameter(valid_594068, JString, required = false,
                                  default = nil)
-  if valid_601068 != nil:
-    section.add "X-Amz-Credential", valid_601068
+  if valid_594068 != nil:
+    section.add "X-Amz-Credential", valid_594068
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -431,44 +431,44 @@ proc validate_CreateResolverEndpoint_601059(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601070: Call_CreateResolverEndpoint_601058; path: JsonNode;
+proc call*(call_594070: Call_CreateResolverEndpoint_594058; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a resolver endpoint. There are two types of resolver endpoints, inbound and outbound:</p> <ul> <li> <p>An <i>inbound resolver endpoint</i> forwards DNS queries to the DNS service for a VPC from your network or another VPC.</p> </li> <li> <p>An <i>outbound resolver endpoint</i> forwards DNS queries from the DNS service for a VPC to your network or another VPC.</p> </li> </ul>
   ## 
-  let valid = call_601070.validator(path, query, header, formData, body)
-  let scheme = call_601070.pickScheme
+  let valid = call_594070.validator(path, query, header, formData, body)
+  let scheme = call_594070.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601070.url(scheme.get, call_601070.host, call_601070.base,
-                         call_601070.route, valid.getOrDefault("path"),
+  let url = call_594070.url(scheme.get, call_594070.host, call_594070.base,
+                         call_594070.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601070, url, valid)
+  result = hook(call_594070, url, valid)
 
-proc call*(call_601071: Call_CreateResolverEndpoint_601058; body: JsonNode): Recallable =
+proc call*(call_594071: Call_CreateResolverEndpoint_594058; body: JsonNode): Recallable =
   ## createResolverEndpoint
   ## <p>Creates a resolver endpoint. There are two types of resolver endpoints, inbound and outbound:</p> <ul> <li> <p>An <i>inbound resolver endpoint</i> forwards DNS queries to the DNS service for a VPC from your network or another VPC.</p> </li> <li> <p>An <i>outbound resolver endpoint</i> forwards DNS queries from the DNS service for a VPC to your network or another VPC.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601072 = newJObject()
+  var body_594072 = newJObject()
   if body != nil:
-    body_601072 = body
-  result = call_601071.call(nil, nil, nil, nil, body_601072)
+    body_594072 = body
+  result = call_594071.call(nil, nil, nil, nil, body_594072)
 
-var createResolverEndpoint* = Call_CreateResolverEndpoint_601058(
+var createResolverEndpoint* = Call_CreateResolverEndpoint_594058(
     name: "createResolverEndpoint", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.CreateResolverEndpoint",
-    validator: validate_CreateResolverEndpoint_601059, base: "/",
-    url: url_CreateResolverEndpoint_601060, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateResolverEndpoint_594059, base: "/",
+    url: url_CreateResolverEndpoint_594060, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateResolverRule_601073 = ref object of OpenApiRestCall_600437
-proc url_CreateResolverRule_601075(protocol: Scheme; host: string; base: string;
+  Call_CreateResolverRule_594073 = ref object of OpenApiRestCall_593437
+proc url_CreateResolverRule_594075(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateResolverRule_601074(path: JsonNode; query: JsonNode;
+proc validate_CreateResolverRule_594074(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## For DNS queries that originate in your VPCs, specifies which resolver endpoint the queries pass through, one domain name that you want to forward to your network, and the IP addresses of the DNS resolvers in your network.
@@ -489,48 +489,48 @@ proc validate_CreateResolverRule_601074(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601076 = header.getOrDefault("X-Amz-Date")
-  valid_601076 = validateParameter(valid_601076, JString, required = false,
+  var valid_594076 = header.getOrDefault("X-Amz-Date")
+  valid_594076 = validateParameter(valid_594076, JString, required = false,
                                  default = nil)
-  if valid_601076 != nil:
-    section.add "X-Amz-Date", valid_601076
-  var valid_601077 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601077 = validateParameter(valid_601077, JString, required = false,
+  if valid_594076 != nil:
+    section.add "X-Amz-Date", valid_594076
+  var valid_594077 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594077 = validateParameter(valid_594077, JString, required = false,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "X-Amz-Security-Token", valid_601077
+  if valid_594077 != nil:
+    section.add "X-Amz-Security-Token", valid_594077
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601078 = header.getOrDefault("X-Amz-Target")
-  valid_601078 = validateParameter(valid_601078, JString, required = true, default = newJString(
+  var valid_594078 = header.getOrDefault("X-Amz-Target")
+  valid_594078 = validateParameter(valid_594078, JString, required = true, default = newJString(
       "Route53Resolver.CreateResolverRule"))
-  if valid_601078 != nil:
-    section.add "X-Amz-Target", valid_601078
-  var valid_601079 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601079 = validateParameter(valid_601079, JString, required = false,
+  if valid_594078 != nil:
+    section.add "X-Amz-Target", valid_594078
+  var valid_594079 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594079 = validateParameter(valid_594079, JString, required = false,
                                  default = nil)
-  if valid_601079 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601079
-  var valid_601080 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601080 = validateParameter(valid_601080, JString, required = false,
+  if valid_594079 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594079
+  var valid_594080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594080 = validateParameter(valid_594080, JString, required = false,
                                  default = nil)
-  if valid_601080 != nil:
-    section.add "X-Amz-Algorithm", valid_601080
-  var valid_601081 = header.getOrDefault("X-Amz-Signature")
-  valid_601081 = validateParameter(valid_601081, JString, required = false,
+  if valid_594080 != nil:
+    section.add "X-Amz-Algorithm", valid_594080
+  var valid_594081 = header.getOrDefault("X-Amz-Signature")
+  valid_594081 = validateParameter(valid_594081, JString, required = false,
                                  default = nil)
-  if valid_601081 != nil:
-    section.add "X-Amz-Signature", valid_601081
-  var valid_601082 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601082 = validateParameter(valid_601082, JString, required = false,
+  if valid_594081 != nil:
+    section.add "X-Amz-Signature", valid_594081
+  var valid_594082 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594082 = validateParameter(valid_594082, JString, required = false,
                                  default = nil)
-  if valid_601082 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601082
-  var valid_601083 = header.getOrDefault("X-Amz-Credential")
-  valid_601083 = validateParameter(valid_601083, JString, required = false,
+  if valid_594082 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594082
+  var valid_594083 = header.getOrDefault("X-Amz-Credential")
+  valid_594083 = validateParameter(valid_594083, JString, required = false,
                                  default = nil)
-  if valid_601083 != nil:
-    section.add "X-Amz-Credential", valid_601083
+  if valid_594083 != nil:
+    section.add "X-Amz-Credential", valid_594083
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -541,44 +541,44 @@ proc validate_CreateResolverRule_601074(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601085: Call_CreateResolverRule_601073; path: JsonNode;
+proc call*(call_594085: Call_CreateResolverRule_594073; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## For DNS queries that originate in your VPCs, specifies which resolver endpoint the queries pass through, one domain name that you want to forward to your network, and the IP addresses of the DNS resolvers in your network.
   ## 
-  let valid = call_601085.validator(path, query, header, formData, body)
-  let scheme = call_601085.pickScheme
+  let valid = call_594085.validator(path, query, header, formData, body)
+  let scheme = call_594085.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601085.url(scheme.get, call_601085.host, call_601085.base,
-                         call_601085.route, valid.getOrDefault("path"),
+  let url = call_594085.url(scheme.get, call_594085.host, call_594085.base,
+                         call_594085.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601085, url, valid)
+  result = hook(call_594085, url, valid)
 
-proc call*(call_601086: Call_CreateResolverRule_601073; body: JsonNode): Recallable =
+proc call*(call_594086: Call_CreateResolverRule_594073; body: JsonNode): Recallable =
   ## createResolverRule
   ## For DNS queries that originate in your VPCs, specifies which resolver endpoint the queries pass through, one domain name that you want to forward to your network, and the IP addresses of the DNS resolvers in your network.
   ##   body: JObject (required)
-  var body_601087 = newJObject()
+  var body_594087 = newJObject()
   if body != nil:
-    body_601087 = body
-  result = call_601086.call(nil, nil, nil, nil, body_601087)
+    body_594087 = body
+  result = call_594086.call(nil, nil, nil, nil, body_594087)
 
-var createResolverRule* = Call_CreateResolverRule_601073(
+var createResolverRule* = Call_CreateResolverRule_594073(
     name: "createResolverRule", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.CreateResolverRule",
-    validator: validate_CreateResolverRule_601074, base: "/",
-    url: url_CreateResolverRule_601075, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateResolverRule_594074, base: "/",
+    url: url_CreateResolverRule_594075, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteResolverEndpoint_601088 = ref object of OpenApiRestCall_600437
-proc url_DeleteResolverEndpoint_601090(protocol: Scheme; host: string; base: string;
+  Call_DeleteResolverEndpoint_594088 = ref object of OpenApiRestCall_593437
+proc url_DeleteResolverEndpoint_594090(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteResolverEndpoint_601089(path: JsonNode; query: JsonNode;
+proc validate_DeleteResolverEndpoint_594089(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a resolver endpoint. The effect of deleting a resolver endpoint depends on whether it's an inbound or an outbound resolver endpoint:</p> <ul> <li> <p> <b>Inbound</b>: DNS queries from your network or another VPC are no longer routed to the DNS service for the specified VPC.</p> </li> <li> <p> <b>Outbound</b>: DNS queries from a VPC are no longer routed to your network or to another VPC.</p> </li> </ul>
   ## 
@@ -598,48 +598,48 @@ proc validate_DeleteResolverEndpoint_601089(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601091 = header.getOrDefault("X-Amz-Date")
-  valid_601091 = validateParameter(valid_601091, JString, required = false,
+  var valid_594091 = header.getOrDefault("X-Amz-Date")
+  valid_594091 = validateParameter(valid_594091, JString, required = false,
                                  default = nil)
-  if valid_601091 != nil:
-    section.add "X-Amz-Date", valid_601091
-  var valid_601092 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  if valid_594091 != nil:
+    section.add "X-Amz-Date", valid_594091
+  var valid_594092 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594092 = validateParameter(valid_594092, JString, required = false,
                                  default = nil)
-  if valid_601092 != nil:
-    section.add "X-Amz-Security-Token", valid_601092
+  if valid_594092 != nil:
+    section.add "X-Amz-Security-Token", valid_594092
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601093 = header.getOrDefault("X-Amz-Target")
-  valid_601093 = validateParameter(valid_601093, JString, required = true, default = newJString(
+  var valid_594093 = header.getOrDefault("X-Amz-Target")
+  valid_594093 = validateParameter(valid_594093, JString, required = true, default = newJString(
       "Route53Resolver.DeleteResolverEndpoint"))
-  if valid_601093 != nil:
-    section.add "X-Amz-Target", valid_601093
-  var valid_601094 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601094 = validateParameter(valid_601094, JString, required = false,
+  if valid_594093 != nil:
+    section.add "X-Amz-Target", valid_594093
+  var valid_594094 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594094 = validateParameter(valid_594094, JString, required = false,
                                  default = nil)
-  if valid_601094 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601094
-  var valid_601095 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601095 = validateParameter(valid_601095, JString, required = false,
+  if valid_594094 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594094
+  var valid_594095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594095 = validateParameter(valid_594095, JString, required = false,
                                  default = nil)
-  if valid_601095 != nil:
-    section.add "X-Amz-Algorithm", valid_601095
-  var valid_601096 = header.getOrDefault("X-Amz-Signature")
-  valid_601096 = validateParameter(valid_601096, JString, required = false,
+  if valid_594095 != nil:
+    section.add "X-Amz-Algorithm", valid_594095
+  var valid_594096 = header.getOrDefault("X-Amz-Signature")
+  valid_594096 = validateParameter(valid_594096, JString, required = false,
                                  default = nil)
-  if valid_601096 != nil:
-    section.add "X-Amz-Signature", valid_601096
-  var valid_601097 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601097 = validateParameter(valid_601097, JString, required = false,
+  if valid_594096 != nil:
+    section.add "X-Amz-Signature", valid_594096
+  var valid_594097 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594097 = validateParameter(valid_594097, JString, required = false,
                                  default = nil)
-  if valid_601097 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601097
-  var valid_601098 = header.getOrDefault("X-Amz-Credential")
-  valid_601098 = validateParameter(valid_601098, JString, required = false,
+  if valid_594097 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594097
+  var valid_594098 = header.getOrDefault("X-Amz-Credential")
+  valid_594098 = validateParameter(valid_594098, JString, required = false,
                                  default = nil)
-  if valid_601098 != nil:
-    section.add "X-Amz-Credential", valid_601098
+  if valid_594098 != nil:
+    section.add "X-Amz-Credential", valid_594098
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -650,44 +650,44 @@ proc validate_DeleteResolverEndpoint_601089(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601100: Call_DeleteResolverEndpoint_601088; path: JsonNode;
+proc call*(call_594100: Call_DeleteResolverEndpoint_594088; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a resolver endpoint. The effect of deleting a resolver endpoint depends on whether it's an inbound or an outbound resolver endpoint:</p> <ul> <li> <p> <b>Inbound</b>: DNS queries from your network or another VPC are no longer routed to the DNS service for the specified VPC.</p> </li> <li> <p> <b>Outbound</b>: DNS queries from a VPC are no longer routed to your network or to another VPC.</p> </li> </ul>
   ## 
-  let valid = call_601100.validator(path, query, header, formData, body)
-  let scheme = call_601100.pickScheme
+  let valid = call_594100.validator(path, query, header, formData, body)
+  let scheme = call_594100.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601100.url(scheme.get, call_601100.host, call_601100.base,
-                         call_601100.route, valid.getOrDefault("path"),
+  let url = call_594100.url(scheme.get, call_594100.host, call_594100.base,
+                         call_594100.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601100, url, valid)
+  result = hook(call_594100, url, valid)
 
-proc call*(call_601101: Call_DeleteResolverEndpoint_601088; body: JsonNode): Recallable =
+proc call*(call_594101: Call_DeleteResolverEndpoint_594088; body: JsonNode): Recallable =
   ## deleteResolverEndpoint
   ## <p>Deletes a resolver endpoint. The effect of deleting a resolver endpoint depends on whether it's an inbound or an outbound resolver endpoint:</p> <ul> <li> <p> <b>Inbound</b>: DNS queries from your network or another VPC are no longer routed to the DNS service for the specified VPC.</p> </li> <li> <p> <b>Outbound</b>: DNS queries from a VPC are no longer routed to your network or to another VPC.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601102 = newJObject()
+  var body_594102 = newJObject()
   if body != nil:
-    body_601102 = body
-  result = call_601101.call(nil, nil, nil, nil, body_601102)
+    body_594102 = body
+  result = call_594101.call(nil, nil, nil, nil, body_594102)
 
-var deleteResolverEndpoint* = Call_DeleteResolverEndpoint_601088(
+var deleteResolverEndpoint* = Call_DeleteResolverEndpoint_594088(
     name: "deleteResolverEndpoint", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.DeleteResolverEndpoint",
-    validator: validate_DeleteResolverEndpoint_601089, base: "/",
-    url: url_DeleteResolverEndpoint_601090, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteResolverEndpoint_594089, base: "/",
+    url: url_DeleteResolverEndpoint_594090, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteResolverRule_601103 = ref object of OpenApiRestCall_600437
-proc url_DeleteResolverRule_601105(protocol: Scheme; host: string; base: string;
+  Call_DeleteResolverRule_594103 = ref object of OpenApiRestCall_593437
+proc url_DeleteResolverRule_594105(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteResolverRule_601104(path: JsonNode; query: JsonNode;
+proc validate_DeleteResolverRule_594104(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Deletes a resolver rule. Before you can delete a resolver rule, you must disassociate it from all the VPCs that you associated the resolver rule with. For more infomation, see <a>DisassociateResolverRule</a>.
@@ -708,48 +708,48 @@ proc validate_DeleteResolverRule_601104(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601106 = header.getOrDefault("X-Amz-Date")
-  valid_601106 = validateParameter(valid_601106, JString, required = false,
+  var valid_594106 = header.getOrDefault("X-Amz-Date")
+  valid_594106 = validateParameter(valid_594106, JString, required = false,
                                  default = nil)
-  if valid_601106 != nil:
-    section.add "X-Amz-Date", valid_601106
-  var valid_601107 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601107 = validateParameter(valid_601107, JString, required = false,
+  if valid_594106 != nil:
+    section.add "X-Amz-Date", valid_594106
+  var valid_594107 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594107 = validateParameter(valid_594107, JString, required = false,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "X-Amz-Security-Token", valid_601107
+  if valid_594107 != nil:
+    section.add "X-Amz-Security-Token", valid_594107
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601108 = header.getOrDefault("X-Amz-Target")
-  valid_601108 = validateParameter(valid_601108, JString, required = true, default = newJString(
+  var valid_594108 = header.getOrDefault("X-Amz-Target")
+  valid_594108 = validateParameter(valid_594108, JString, required = true, default = newJString(
       "Route53Resolver.DeleteResolverRule"))
-  if valid_601108 != nil:
-    section.add "X-Amz-Target", valid_601108
-  var valid_601109 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  if valid_594108 != nil:
+    section.add "X-Amz-Target", valid_594108
+  var valid_594109 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594109 = validateParameter(valid_594109, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601109
-  var valid_601110 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_594109 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594109
+  var valid_594110 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594110 = validateParameter(valid_594110, JString, required = false,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "X-Amz-Algorithm", valid_601110
-  var valid_601111 = header.getOrDefault("X-Amz-Signature")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_594110 != nil:
+    section.add "X-Amz-Algorithm", valid_594110
+  var valid_594111 = header.getOrDefault("X-Amz-Signature")
+  valid_594111 = validateParameter(valid_594111, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "X-Amz-Signature", valid_601111
-  var valid_601112 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601112 = validateParameter(valid_601112, JString, required = false,
+  if valid_594111 != nil:
+    section.add "X-Amz-Signature", valid_594111
+  var valid_594112 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594112 = validateParameter(valid_594112, JString, required = false,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601112
-  var valid_601113 = header.getOrDefault("X-Amz-Credential")
-  valid_601113 = validateParameter(valid_601113, JString, required = false,
+  if valid_594112 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594112
+  var valid_594113 = header.getOrDefault("X-Amz-Credential")
+  valid_594113 = validateParameter(valid_594113, JString, required = false,
                                  default = nil)
-  if valid_601113 != nil:
-    section.add "X-Amz-Credential", valid_601113
+  if valid_594113 != nil:
+    section.add "X-Amz-Credential", valid_594113
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -760,44 +760,44 @@ proc validate_DeleteResolverRule_601104(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601115: Call_DeleteResolverRule_601103; path: JsonNode;
+proc call*(call_594115: Call_DeleteResolverRule_594103; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a resolver rule. Before you can delete a resolver rule, you must disassociate it from all the VPCs that you associated the resolver rule with. For more infomation, see <a>DisassociateResolverRule</a>.
   ## 
-  let valid = call_601115.validator(path, query, header, formData, body)
-  let scheme = call_601115.pickScheme
+  let valid = call_594115.validator(path, query, header, formData, body)
+  let scheme = call_594115.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601115.url(scheme.get, call_601115.host, call_601115.base,
-                         call_601115.route, valid.getOrDefault("path"),
+  let url = call_594115.url(scheme.get, call_594115.host, call_594115.base,
+                         call_594115.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601115, url, valid)
+  result = hook(call_594115, url, valid)
 
-proc call*(call_601116: Call_DeleteResolverRule_601103; body: JsonNode): Recallable =
+proc call*(call_594116: Call_DeleteResolverRule_594103; body: JsonNode): Recallable =
   ## deleteResolverRule
   ## Deletes a resolver rule. Before you can delete a resolver rule, you must disassociate it from all the VPCs that you associated the resolver rule with. For more infomation, see <a>DisassociateResolverRule</a>.
   ##   body: JObject (required)
-  var body_601117 = newJObject()
+  var body_594117 = newJObject()
   if body != nil:
-    body_601117 = body
-  result = call_601116.call(nil, nil, nil, nil, body_601117)
+    body_594117 = body
+  result = call_594116.call(nil, nil, nil, nil, body_594117)
 
-var deleteResolverRule* = Call_DeleteResolverRule_601103(
+var deleteResolverRule* = Call_DeleteResolverRule_594103(
     name: "deleteResolverRule", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.DeleteResolverRule",
-    validator: validate_DeleteResolverRule_601104, base: "/",
-    url: url_DeleteResolverRule_601105, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteResolverRule_594104, base: "/",
+    url: url_DeleteResolverRule_594105, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateResolverEndpointIpAddress_601118 = ref object of OpenApiRestCall_600437
-proc url_DisassociateResolverEndpointIpAddress_601120(protocol: Scheme;
+  Call_DisassociateResolverEndpointIpAddress_594118 = ref object of OpenApiRestCall_593437
+proc url_DisassociateResolverEndpointIpAddress_594120(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisassociateResolverEndpointIpAddress_601119(path: JsonNode;
+proc validate_DisassociateResolverEndpointIpAddress_594119(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes IP addresses from an inbound or an outbound resolver endpoint. If you want to remove more than one IP address, submit one <code>DisassociateResolverEndpointIpAddress</code> request for each IP address.</p> <p>To add an IP address to an endpoint, see <a>AssociateResolverEndpointIpAddress</a>.</p>
   ## 
@@ -817,48 +817,48 @@ proc validate_DisassociateResolverEndpointIpAddress_601119(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601121 = header.getOrDefault("X-Amz-Date")
-  valid_601121 = validateParameter(valid_601121, JString, required = false,
+  var valid_594121 = header.getOrDefault("X-Amz-Date")
+  valid_594121 = validateParameter(valid_594121, JString, required = false,
                                  default = nil)
-  if valid_601121 != nil:
-    section.add "X-Amz-Date", valid_601121
-  var valid_601122 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601122 = validateParameter(valid_601122, JString, required = false,
+  if valid_594121 != nil:
+    section.add "X-Amz-Date", valid_594121
+  var valid_594122 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594122 = validateParameter(valid_594122, JString, required = false,
                                  default = nil)
-  if valid_601122 != nil:
-    section.add "X-Amz-Security-Token", valid_601122
+  if valid_594122 != nil:
+    section.add "X-Amz-Security-Token", valid_594122
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601123 = header.getOrDefault("X-Amz-Target")
-  valid_601123 = validateParameter(valid_601123, JString, required = true, default = newJString(
+  var valid_594123 = header.getOrDefault("X-Amz-Target")
+  valid_594123 = validateParameter(valid_594123, JString, required = true, default = newJString(
       "Route53Resolver.DisassociateResolverEndpointIpAddress"))
-  if valid_601123 != nil:
-    section.add "X-Amz-Target", valid_601123
-  var valid_601124 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601124 = validateParameter(valid_601124, JString, required = false,
+  if valid_594123 != nil:
+    section.add "X-Amz-Target", valid_594123
+  var valid_594124 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594124 = validateParameter(valid_594124, JString, required = false,
                                  default = nil)
-  if valid_601124 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601124
-  var valid_601125 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601125 = validateParameter(valid_601125, JString, required = false,
+  if valid_594124 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594124
+  var valid_594125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594125 = validateParameter(valid_594125, JString, required = false,
                                  default = nil)
-  if valid_601125 != nil:
-    section.add "X-Amz-Algorithm", valid_601125
-  var valid_601126 = header.getOrDefault("X-Amz-Signature")
-  valid_601126 = validateParameter(valid_601126, JString, required = false,
+  if valid_594125 != nil:
+    section.add "X-Amz-Algorithm", valid_594125
+  var valid_594126 = header.getOrDefault("X-Amz-Signature")
+  valid_594126 = validateParameter(valid_594126, JString, required = false,
                                  default = nil)
-  if valid_601126 != nil:
-    section.add "X-Amz-Signature", valid_601126
-  var valid_601127 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601127 = validateParameter(valid_601127, JString, required = false,
+  if valid_594126 != nil:
+    section.add "X-Amz-Signature", valid_594126
+  var valid_594127 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594127 = validateParameter(valid_594127, JString, required = false,
                                  default = nil)
-  if valid_601127 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601127
-  var valid_601128 = header.getOrDefault("X-Amz-Credential")
-  valid_601128 = validateParameter(valid_601128, JString, required = false,
+  if valid_594127 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594127
+  var valid_594128 = header.getOrDefault("X-Amz-Credential")
+  valid_594128 = validateParameter(valid_594128, JString, required = false,
                                  default = nil)
-  if valid_601128 != nil:
-    section.add "X-Amz-Credential", valid_601128
+  if valid_594128 != nil:
+    section.add "X-Amz-Credential", valid_594128
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -869,39 +869,39 @@ proc validate_DisassociateResolverEndpointIpAddress_601119(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601130: Call_DisassociateResolverEndpointIpAddress_601118;
+proc call*(call_594130: Call_DisassociateResolverEndpointIpAddress_594118;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Removes IP addresses from an inbound or an outbound resolver endpoint. If you want to remove more than one IP address, submit one <code>DisassociateResolverEndpointIpAddress</code> request for each IP address.</p> <p>To add an IP address to an endpoint, see <a>AssociateResolverEndpointIpAddress</a>.</p>
   ## 
-  let valid = call_601130.validator(path, query, header, formData, body)
-  let scheme = call_601130.pickScheme
+  let valid = call_594130.validator(path, query, header, formData, body)
+  let scheme = call_594130.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601130.url(scheme.get, call_601130.host, call_601130.base,
-                         call_601130.route, valid.getOrDefault("path"),
+  let url = call_594130.url(scheme.get, call_594130.host, call_594130.base,
+                         call_594130.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601130, url, valid)
+  result = hook(call_594130, url, valid)
 
-proc call*(call_601131: Call_DisassociateResolverEndpointIpAddress_601118;
+proc call*(call_594131: Call_DisassociateResolverEndpointIpAddress_594118;
           body: JsonNode): Recallable =
   ## disassociateResolverEndpointIpAddress
   ## <p>Removes IP addresses from an inbound or an outbound resolver endpoint. If you want to remove more than one IP address, submit one <code>DisassociateResolverEndpointIpAddress</code> request for each IP address.</p> <p>To add an IP address to an endpoint, see <a>AssociateResolverEndpointIpAddress</a>.</p>
   ##   body: JObject (required)
-  var body_601132 = newJObject()
+  var body_594132 = newJObject()
   if body != nil:
-    body_601132 = body
-  result = call_601131.call(nil, nil, nil, nil, body_601132)
+    body_594132 = body
+  result = call_594131.call(nil, nil, nil, nil, body_594132)
 
-var disassociateResolverEndpointIpAddress* = Call_DisassociateResolverEndpointIpAddress_601118(
+var disassociateResolverEndpointIpAddress* = Call_DisassociateResolverEndpointIpAddress_594118(
     name: "disassociateResolverEndpointIpAddress", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com", route: "/#X-Amz-Target=Route53Resolver.DisassociateResolverEndpointIpAddress",
-    validator: validate_DisassociateResolverEndpointIpAddress_601119, base: "/",
-    url: url_DisassociateResolverEndpointIpAddress_601120,
+    validator: validate_DisassociateResolverEndpointIpAddress_594119, base: "/",
+    url: url_DisassociateResolverEndpointIpAddress_594120,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateResolverRule_601133 = ref object of OpenApiRestCall_600437
-proc url_DisassociateResolverRule_601135(protocol: Scheme; host: string;
+  Call_DisassociateResolverRule_594133 = ref object of OpenApiRestCall_593437
+proc url_DisassociateResolverRule_594135(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -909,7 +909,7 @@ proc url_DisassociateResolverRule_601135(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisassociateResolverRule_601134(path: JsonNode; query: JsonNode;
+proc validate_DisassociateResolverRule_594134(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes the association between a specified resolver rule and a specified VPC.</p> <important> <p>If you disassociate a resolver rule from a VPC, Resolver stops forwarding DNS queries for the domain name that you specified in the resolver rule. </p> </important>
   ## 
@@ -929,48 +929,48 @@ proc validate_DisassociateResolverRule_601134(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601136 = header.getOrDefault("X-Amz-Date")
-  valid_601136 = validateParameter(valid_601136, JString, required = false,
+  var valid_594136 = header.getOrDefault("X-Amz-Date")
+  valid_594136 = validateParameter(valid_594136, JString, required = false,
                                  default = nil)
-  if valid_601136 != nil:
-    section.add "X-Amz-Date", valid_601136
-  var valid_601137 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601137 = validateParameter(valid_601137, JString, required = false,
+  if valid_594136 != nil:
+    section.add "X-Amz-Date", valid_594136
+  var valid_594137 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594137 = validateParameter(valid_594137, JString, required = false,
                                  default = nil)
-  if valid_601137 != nil:
-    section.add "X-Amz-Security-Token", valid_601137
+  if valid_594137 != nil:
+    section.add "X-Amz-Security-Token", valid_594137
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601138 = header.getOrDefault("X-Amz-Target")
-  valid_601138 = validateParameter(valid_601138, JString, required = true, default = newJString(
+  var valid_594138 = header.getOrDefault("X-Amz-Target")
+  valid_594138 = validateParameter(valid_594138, JString, required = true, default = newJString(
       "Route53Resolver.DisassociateResolverRule"))
-  if valid_601138 != nil:
-    section.add "X-Amz-Target", valid_601138
-  var valid_601139 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601139 = validateParameter(valid_601139, JString, required = false,
+  if valid_594138 != nil:
+    section.add "X-Amz-Target", valid_594138
+  var valid_594139 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594139 = validateParameter(valid_594139, JString, required = false,
                                  default = nil)
-  if valid_601139 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601139
-  var valid_601140 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601140 = validateParameter(valid_601140, JString, required = false,
+  if valid_594139 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594139
+  var valid_594140 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594140 = validateParameter(valid_594140, JString, required = false,
                                  default = nil)
-  if valid_601140 != nil:
-    section.add "X-Amz-Algorithm", valid_601140
-  var valid_601141 = header.getOrDefault("X-Amz-Signature")
-  valid_601141 = validateParameter(valid_601141, JString, required = false,
+  if valid_594140 != nil:
+    section.add "X-Amz-Algorithm", valid_594140
+  var valid_594141 = header.getOrDefault("X-Amz-Signature")
+  valid_594141 = validateParameter(valid_594141, JString, required = false,
                                  default = nil)
-  if valid_601141 != nil:
-    section.add "X-Amz-Signature", valid_601141
-  var valid_601142 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601142 = validateParameter(valid_601142, JString, required = false,
+  if valid_594141 != nil:
+    section.add "X-Amz-Signature", valid_594141
+  var valid_594142 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594142 = validateParameter(valid_594142, JString, required = false,
                                  default = nil)
-  if valid_601142 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601142
-  var valid_601143 = header.getOrDefault("X-Amz-Credential")
-  valid_601143 = validateParameter(valid_601143, JString, required = false,
+  if valid_594142 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594142
+  var valid_594143 = header.getOrDefault("X-Amz-Credential")
+  valid_594143 = validateParameter(valid_594143, JString, required = false,
                                  default = nil)
-  if valid_601143 != nil:
-    section.add "X-Amz-Credential", valid_601143
+  if valid_594143 != nil:
+    section.add "X-Amz-Credential", valid_594143
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -981,44 +981,44 @@ proc validate_DisassociateResolverRule_601134(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601145: Call_DisassociateResolverRule_601133; path: JsonNode;
+proc call*(call_594145: Call_DisassociateResolverRule_594133; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes the association between a specified resolver rule and a specified VPC.</p> <important> <p>If you disassociate a resolver rule from a VPC, Resolver stops forwarding DNS queries for the domain name that you specified in the resolver rule. </p> </important>
   ## 
-  let valid = call_601145.validator(path, query, header, formData, body)
-  let scheme = call_601145.pickScheme
+  let valid = call_594145.validator(path, query, header, formData, body)
+  let scheme = call_594145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601145.url(scheme.get, call_601145.host, call_601145.base,
-                         call_601145.route, valid.getOrDefault("path"),
+  let url = call_594145.url(scheme.get, call_594145.host, call_594145.base,
+                         call_594145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601145, url, valid)
+  result = hook(call_594145, url, valid)
 
-proc call*(call_601146: Call_DisassociateResolverRule_601133; body: JsonNode): Recallable =
+proc call*(call_594146: Call_DisassociateResolverRule_594133; body: JsonNode): Recallable =
   ## disassociateResolverRule
   ## <p>Removes the association between a specified resolver rule and a specified VPC.</p> <important> <p>If you disassociate a resolver rule from a VPC, Resolver stops forwarding DNS queries for the domain name that you specified in the resolver rule. </p> </important>
   ##   body: JObject (required)
-  var body_601147 = newJObject()
+  var body_594147 = newJObject()
   if body != nil:
-    body_601147 = body
-  result = call_601146.call(nil, nil, nil, nil, body_601147)
+    body_594147 = body
+  result = call_594146.call(nil, nil, nil, nil, body_594147)
 
-var disassociateResolverRule* = Call_DisassociateResolverRule_601133(
+var disassociateResolverRule* = Call_DisassociateResolverRule_594133(
     name: "disassociateResolverRule", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.DisassociateResolverRule",
-    validator: validate_DisassociateResolverRule_601134, base: "/",
-    url: url_DisassociateResolverRule_601135, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisassociateResolverRule_594134, base: "/",
+    url: url_DisassociateResolverRule_594135, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetResolverEndpoint_601148 = ref object of OpenApiRestCall_600437
-proc url_GetResolverEndpoint_601150(protocol: Scheme; host: string; base: string;
+  Call_GetResolverEndpoint_594148 = ref object of OpenApiRestCall_593437
+proc url_GetResolverEndpoint_594150(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetResolverEndpoint_601149(path: JsonNode; query: JsonNode;
+proc validate_GetResolverEndpoint_594149(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Gets information about a specified resolver endpoint, such as whether it's an inbound or an outbound resolver endpoint, and the current status of the endpoint.
@@ -1039,48 +1039,48 @@ proc validate_GetResolverEndpoint_601149(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601151 = header.getOrDefault("X-Amz-Date")
-  valid_601151 = validateParameter(valid_601151, JString, required = false,
+  var valid_594151 = header.getOrDefault("X-Amz-Date")
+  valid_594151 = validateParameter(valid_594151, JString, required = false,
                                  default = nil)
-  if valid_601151 != nil:
-    section.add "X-Amz-Date", valid_601151
-  var valid_601152 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601152 = validateParameter(valid_601152, JString, required = false,
+  if valid_594151 != nil:
+    section.add "X-Amz-Date", valid_594151
+  var valid_594152 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594152 = validateParameter(valid_594152, JString, required = false,
                                  default = nil)
-  if valid_601152 != nil:
-    section.add "X-Amz-Security-Token", valid_601152
+  if valid_594152 != nil:
+    section.add "X-Amz-Security-Token", valid_594152
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601153 = header.getOrDefault("X-Amz-Target")
-  valid_601153 = validateParameter(valid_601153, JString, required = true, default = newJString(
+  var valid_594153 = header.getOrDefault("X-Amz-Target")
+  valid_594153 = validateParameter(valid_594153, JString, required = true, default = newJString(
       "Route53Resolver.GetResolverEndpoint"))
-  if valid_601153 != nil:
-    section.add "X-Amz-Target", valid_601153
-  var valid_601154 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601154 = validateParameter(valid_601154, JString, required = false,
+  if valid_594153 != nil:
+    section.add "X-Amz-Target", valid_594153
+  var valid_594154 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594154 = validateParameter(valid_594154, JString, required = false,
                                  default = nil)
-  if valid_601154 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601154
-  var valid_601155 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601155 = validateParameter(valid_601155, JString, required = false,
+  if valid_594154 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594154
+  var valid_594155 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594155 = validateParameter(valid_594155, JString, required = false,
                                  default = nil)
-  if valid_601155 != nil:
-    section.add "X-Amz-Algorithm", valid_601155
-  var valid_601156 = header.getOrDefault("X-Amz-Signature")
-  valid_601156 = validateParameter(valid_601156, JString, required = false,
+  if valid_594155 != nil:
+    section.add "X-Amz-Algorithm", valid_594155
+  var valid_594156 = header.getOrDefault("X-Amz-Signature")
+  valid_594156 = validateParameter(valid_594156, JString, required = false,
                                  default = nil)
-  if valid_601156 != nil:
-    section.add "X-Amz-Signature", valid_601156
-  var valid_601157 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601157 = validateParameter(valid_601157, JString, required = false,
+  if valid_594156 != nil:
+    section.add "X-Amz-Signature", valid_594156
+  var valid_594157 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594157 = validateParameter(valid_594157, JString, required = false,
                                  default = nil)
-  if valid_601157 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601157
-  var valid_601158 = header.getOrDefault("X-Amz-Credential")
-  valid_601158 = validateParameter(valid_601158, JString, required = false,
+  if valid_594157 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594157
+  var valid_594158 = header.getOrDefault("X-Amz-Credential")
+  valid_594158 = validateParameter(valid_594158, JString, required = false,
                                  default = nil)
-  if valid_601158 != nil:
-    section.add "X-Amz-Credential", valid_601158
+  if valid_594158 != nil:
+    section.add "X-Amz-Credential", valid_594158
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1091,44 +1091,44 @@ proc validate_GetResolverEndpoint_601149(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601160: Call_GetResolverEndpoint_601148; path: JsonNode;
+proc call*(call_594160: Call_GetResolverEndpoint_594148; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about a specified resolver endpoint, such as whether it's an inbound or an outbound resolver endpoint, and the current status of the endpoint.
   ## 
-  let valid = call_601160.validator(path, query, header, formData, body)
-  let scheme = call_601160.pickScheme
+  let valid = call_594160.validator(path, query, header, formData, body)
+  let scheme = call_594160.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601160.url(scheme.get, call_601160.host, call_601160.base,
-                         call_601160.route, valid.getOrDefault("path"),
+  let url = call_594160.url(scheme.get, call_594160.host, call_594160.base,
+                         call_594160.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601160, url, valid)
+  result = hook(call_594160, url, valid)
 
-proc call*(call_601161: Call_GetResolverEndpoint_601148; body: JsonNode): Recallable =
+proc call*(call_594161: Call_GetResolverEndpoint_594148; body: JsonNode): Recallable =
   ## getResolverEndpoint
   ## Gets information about a specified resolver endpoint, such as whether it's an inbound or an outbound resolver endpoint, and the current status of the endpoint.
   ##   body: JObject (required)
-  var body_601162 = newJObject()
+  var body_594162 = newJObject()
   if body != nil:
-    body_601162 = body
-  result = call_601161.call(nil, nil, nil, nil, body_601162)
+    body_594162 = body
+  result = call_594161.call(nil, nil, nil, nil, body_594162)
 
-var getResolverEndpoint* = Call_GetResolverEndpoint_601148(
+var getResolverEndpoint* = Call_GetResolverEndpoint_594148(
     name: "getResolverEndpoint", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.GetResolverEndpoint",
-    validator: validate_GetResolverEndpoint_601149, base: "/",
-    url: url_GetResolverEndpoint_601150, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetResolverEndpoint_594149, base: "/",
+    url: url_GetResolverEndpoint_594150, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetResolverRule_601163 = ref object of OpenApiRestCall_600437
-proc url_GetResolverRule_601165(protocol: Scheme; host: string; base: string;
+  Call_GetResolverRule_594163 = ref object of OpenApiRestCall_593437
+proc url_GetResolverRule_594165(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetResolverRule_601164(path: JsonNode; query: JsonNode;
+proc validate_GetResolverRule_594164(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Gets information about a specified resolver rule, such as the domain name that the rule forwards DNS queries for and the ID of the outbound resolver endpoint that the rule is associated with.
@@ -1149,48 +1149,48 @@ proc validate_GetResolverRule_601164(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601166 = header.getOrDefault("X-Amz-Date")
-  valid_601166 = validateParameter(valid_601166, JString, required = false,
+  var valid_594166 = header.getOrDefault("X-Amz-Date")
+  valid_594166 = validateParameter(valid_594166, JString, required = false,
                                  default = nil)
-  if valid_601166 != nil:
-    section.add "X-Amz-Date", valid_601166
-  var valid_601167 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601167 = validateParameter(valid_601167, JString, required = false,
+  if valid_594166 != nil:
+    section.add "X-Amz-Date", valid_594166
+  var valid_594167 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594167 = validateParameter(valid_594167, JString, required = false,
                                  default = nil)
-  if valid_601167 != nil:
-    section.add "X-Amz-Security-Token", valid_601167
+  if valid_594167 != nil:
+    section.add "X-Amz-Security-Token", valid_594167
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601168 = header.getOrDefault("X-Amz-Target")
-  valid_601168 = validateParameter(valid_601168, JString, required = true, default = newJString(
+  var valid_594168 = header.getOrDefault("X-Amz-Target")
+  valid_594168 = validateParameter(valid_594168, JString, required = true, default = newJString(
       "Route53Resolver.GetResolverRule"))
-  if valid_601168 != nil:
-    section.add "X-Amz-Target", valid_601168
-  var valid_601169 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601169 = validateParameter(valid_601169, JString, required = false,
+  if valid_594168 != nil:
+    section.add "X-Amz-Target", valid_594168
+  var valid_594169 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594169 = validateParameter(valid_594169, JString, required = false,
                                  default = nil)
-  if valid_601169 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601169
-  var valid_601170 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601170 = validateParameter(valid_601170, JString, required = false,
+  if valid_594169 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594169
+  var valid_594170 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594170 = validateParameter(valid_594170, JString, required = false,
                                  default = nil)
-  if valid_601170 != nil:
-    section.add "X-Amz-Algorithm", valid_601170
-  var valid_601171 = header.getOrDefault("X-Amz-Signature")
-  valid_601171 = validateParameter(valid_601171, JString, required = false,
+  if valid_594170 != nil:
+    section.add "X-Amz-Algorithm", valid_594170
+  var valid_594171 = header.getOrDefault("X-Amz-Signature")
+  valid_594171 = validateParameter(valid_594171, JString, required = false,
                                  default = nil)
-  if valid_601171 != nil:
-    section.add "X-Amz-Signature", valid_601171
-  var valid_601172 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601172 = validateParameter(valid_601172, JString, required = false,
+  if valid_594171 != nil:
+    section.add "X-Amz-Signature", valid_594171
+  var valid_594172 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594172 = validateParameter(valid_594172, JString, required = false,
                                  default = nil)
-  if valid_601172 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601172
-  var valid_601173 = header.getOrDefault("X-Amz-Credential")
-  valid_601173 = validateParameter(valid_601173, JString, required = false,
+  if valid_594172 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594172
+  var valid_594173 = header.getOrDefault("X-Amz-Credential")
+  valid_594173 = validateParameter(valid_594173, JString, required = false,
                                  default = nil)
-  if valid_601173 != nil:
-    section.add "X-Amz-Credential", valid_601173
+  if valid_594173 != nil:
+    section.add "X-Amz-Credential", valid_594173
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1201,43 +1201,43 @@ proc validate_GetResolverRule_601164(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601175: Call_GetResolverRule_601163; path: JsonNode; query: JsonNode;
+proc call*(call_594175: Call_GetResolverRule_594163; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about a specified resolver rule, such as the domain name that the rule forwards DNS queries for and the ID of the outbound resolver endpoint that the rule is associated with.
   ## 
-  let valid = call_601175.validator(path, query, header, formData, body)
-  let scheme = call_601175.pickScheme
+  let valid = call_594175.validator(path, query, header, formData, body)
+  let scheme = call_594175.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601175.url(scheme.get, call_601175.host, call_601175.base,
-                         call_601175.route, valid.getOrDefault("path"),
+  let url = call_594175.url(scheme.get, call_594175.host, call_594175.base,
+                         call_594175.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601175, url, valid)
+  result = hook(call_594175, url, valid)
 
-proc call*(call_601176: Call_GetResolverRule_601163; body: JsonNode): Recallable =
+proc call*(call_594176: Call_GetResolverRule_594163; body: JsonNode): Recallable =
   ## getResolverRule
   ## Gets information about a specified resolver rule, such as the domain name that the rule forwards DNS queries for and the ID of the outbound resolver endpoint that the rule is associated with.
   ##   body: JObject (required)
-  var body_601177 = newJObject()
+  var body_594177 = newJObject()
   if body != nil:
-    body_601177 = body
-  result = call_601176.call(nil, nil, nil, nil, body_601177)
+    body_594177 = body
+  result = call_594176.call(nil, nil, nil, nil, body_594177)
 
-var getResolverRule* = Call_GetResolverRule_601163(name: "getResolverRule",
+var getResolverRule* = Call_GetResolverRule_594163(name: "getResolverRule",
     meth: HttpMethod.HttpPost, host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.GetResolverRule",
-    validator: validate_GetResolverRule_601164, base: "/", url: url_GetResolverRule_601165,
+    validator: validate_GetResolverRule_594164, base: "/", url: url_GetResolverRule_594165,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetResolverRuleAssociation_601178 = ref object of OpenApiRestCall_600437
-proc url_GetResolverRuleAssociation_601180(protocol: Scheme; host: string;
+  Call_GetResolverRuleAssociation_594178 = ref object of OpenApiRestCall_593437
+proc url_GetResolverRuleAssociation_594180(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetResolverRuleAssociation_601179(path: JsonNode; query: JsonNode;
+proc validate_GetResolverRuleAssociation_594179(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets information about an association between a specified resolver rule and a VPC. You associate a resolver rule and a VPC using <a>AssociateResolverRule</a>. 
   ## 
@@ -1257,48 +1257,48 @@ proc validate_GetResolverRuleAssociation_601179(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601181 = header.getOrDefault("X-Amz-Date")
-  valid_601181 = validateParameter(valid_601181, JString, required = false,
+  var valid_594181 = header.getOrDefault("X-Amz-Date")
+  valid_594181 = validateParameter(valid_594181, JString, required = false,
                                  default = nil)
-  if valid_601181 != nil:
-    section.add "X-Amz-Date", valid_601181
-  var valid_601182 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601182 = validateParameter(valid_601182, JString, required = false,
+  if valid_594181 != nil:
+    section.add "X-Amz-Date", valid_594181
+  var valid_594182 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594182 = validateParameter(valid_594182, JString, required = false,
                                  default = nil)
-  if valid_601182 != nil:
-    section.add "X-Amz-Security-Token", valid_601182
+  if valid_594182 != nil:
+    section.add "X-Amz-Security-Token", valid_594182
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601183 = header.getOrDefault("X-Amz-Target")
-  valid_601183 = validateParameter(valid_601183, JString, required = true, default = newJString(
+  var valid_594183 = header.getOrDefault("X-Amz-Target")
+  valid_594183 = validateParameter(valid_594183, JString, required = true, default = newJString(
       "Route53Resolver.GetResolverRuleAssociation"))
-  if valid_601183 != nil:
-    section.add "X-Amz-Target", valid_601183
-  var valid_601184 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601184 = validateParameter(valid_601184, JString, required = false,
+  if valid_594183 != nil:
+    section.add "X-Amz-Target", valid_594183
+  var valid_594184 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594184 = validateParameter(valid_594184, JString, required = false,
                                  default = nil)
-  if valid_601184 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601184
-  var valid_601185 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601185 = validateParameter(valid_601185, JString, required = false,
+  if valid_594184 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594184
+  var valid_594185 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594185 = validateParameter(valid_594185, JString, required = false,
                                  default = nil)
-  if valid_601185 != nil:
-    section.add "X-Amz-Algorithm", valid_601185
-  var valid_601186 = header.getOrDefault("X-Amz-Signature")
-  valid_601186 = validateParameter(valid_601186, JString, required = false,
+  if valid_594185 != nil:
+    section.add "X-Amz-Algorithm", valid_594185
+  var valid_594186 = header.getOrDefault("X-Amz-Signature")
+  valid_594186 = validateParameter(valid_594186, JString, required = false,
                                  default = nil)
-  if valid_601186 != nil:
-    section.add "X-Amz-Signature", valid_601186
-  var valid_601187 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601187 = validateParameter(valid_601187, JString, required = false,
+  if valid_594186 != nil:
+    section.add "X-Amz-Signature", valid_594186
+  var valid_594187 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594187 = validateParameter(valid_594187, JString, required = false,
                                  default = nil)
-  if valid_601187 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601187
-  var valid_601188 = header.getOrDefault("X-Amz-Credential")
-  valid_601188 = validateParameter(valid_601188, JString, required = false,
+  if valid_594187 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594187
+  var valid_594188 = header.getOrDefault("X-Amz-Credential")
+  valid_594188 = validateParameter(valid_594188, JString, required = false,
                                  default = nil)
-  if valid_601188 != nil:
-    section.add "X-Amz-Credential", valid_601188
+  if valid_594188 != nil:
+    section.add "X-Amz-Credential", valid_594188
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1309,45 +1309,45 @@ proc validate_GetResolverRuleAssociation_601179(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601190: Call_GetResolverRuleAssociation_601178; path: JsonNode;
+proc call*(call_594190: Call_GetResolverRuleAssociation_594178; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about an association between a specified resolver rule and a VPC. You associate a resolver rule and a VPC using <a>AssociateResolverRule</a>. 
   ## 
-  let valid = call_601190.validator(path, query, header, formData, body)
-  let scheme = call_601190.pickScheme
+  let valid = call_594190.validator(path, query, header, formData, body)
+  let scheme = call_594190.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601190.url(scheme.get, call_601190.host, call_601190.base,
-                         call_601190.route, valid.getOrDefault("path"),
+  let url = call_594190.url(scheme.get, call_594190.host, call_594190.base,
+                         call_594190.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601190, url, valid)
+  result = hook(call_594190, url, valid)
 
-proc call*(call_601191: Call_GetResolverRuleAssociation_601178; body: JsonNode): Recallable =
+proc call*(call_594191: Call_GetResolverRuleAssociation_594178; body: JsonNode): Recallable =
   ## getResolverRuleAssociation
   ## Gets information about an association between a specified resolver rule and a VPC. You associate a resolver rule and a VPC using <a>AssociateResolverRule</a>. 
   ##   body: JObject (required)
-  var body_601192 = newJObject()
+  var body_594192 = newJObject()
   if body != nil:
-    body_601192 = body
-  result = call_601191.call(nil, nil, nil, nil, body_601192)
+    body_594192 = body
+  result = call_594191.call(nil, nil, nil, nil, body_594192)
 
-var getResolverRuleAssociation* = Call_GetResolverRuleAssociation_601178(
+var getResolverRuleAssociation* = Call_GetResolverRuleAssociation_594178(
     name: "getResolverRuleAssociation", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.GetResolverRuleAssociation",
-    validator: validate_GetResolverRuleAssociation_601179, base: "/",
-    url: url_GetResolverRuleAssociation_601180,
+    validator: validate_GetResolverRuleAssociation_594179, base: "/",
+    url: url_GetResolverRuleAssociation_594180,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetResolverRulePolicy_601193 = ref object of OpenApiRestCall_600437
-proc url_GetResolverRulePolicy_601195(protocol: Scheme; host: string; base: string;
+  Call_GetResolverRulePolicy_594193 = ref object of OpenApiRestCall_593437
+proc url_GetResolverRulePolicy_594195(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetResolverRulePolicy_601194(path: JsonNode; query: JsonNode;
+proc validate_GetResolverRulePolicy_594194(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets information about a resolver rule policy. A resolver rule policy specifies the Resolver operations and resources that you want to allow another AWS account to be able to use. 
   ## 
@@ -1367,48 +1367,48 @@ proc validate_GetResolverRulePolicy_601194(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601196 = header.getOrDefault("X-Amz-Date")
-  valid_601196 = validateParameter(valid_601196, JString, required = false,
+  var valid_594196 = header.getOrDefault("X-Amz-Date")
+  valid_594196 = validateParameter(valid_594196, JString, required = false,
                                  default = nil)
-  if valid_601196 != nil:
-    section.add "X-Amz-Date", valid_601196
-  var valid_601197 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601197 = validateParameter(valid_601197, JString, required = false,
+  if valid_594196 != nil:
+    section.add "X-Amz-Date", valid_594196
+  var valid_594197 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594197 = validateParameter(valid_594197, JString, required = false,
                                  default = nil)
-  if valid_601197 != nil:
-    section.add "X-Amz-Security-Token", valid_601197
+  if valid_594197 != nil:
+    section.add "X-Amz-Security-Token", valid_594197
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601198 = header.getOrDefault("X-Amz-Target")
-  valid_601198 = validateParameter(valid_601198, JString, required = true, default = newJString(
+  var valid_594198 = header.getOrDefault("X-Amz-Target")
+  valid_594198 = validateParameter(valid_594198, JString, required = true, default = newJString(
       "Route53Resolver.GetResolverRulePolicy"))
-  if valid_601198 != nil:
-    section.add "X-Amz-Target", valid_601198
-  var valid_601199 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601199 = validateParameter(valid_601199, JString, required = false,
+  if valid_594198 != nil:
+    section.add "X-Amz-Target", valid_594198
+  var valid_594199 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594199 = validateParameter(valid_594199, JString, required = false,
                                  default = nil)
-  if valid_601199 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601199
-  var valid_601200 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601200 = validateParameter(valid_601200, JString, required = false,
+  if valid_594199 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594199
+  var valid_594200 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594200 = validateParameter(valid_594200, JString, required = false,
                                  default = nil)
-  if valid_601200 != nil:
-    section.add "X-Amz-Algorithm", valid_601200
-  var valid_601201 = header.getOrDefault("X-Amz-Signature")
-  valid_601201 = validateParameter(valid_601201, JString, required = false,
+  if valid_594200 != nil:
+    section.add "X-Amz-Algorithm", valid_594200
+  var valid_594201 = header.getOrDefault("X-Amz-Signature")
+  valid_594201 = validateParameter(valid_594201, JString, required = false,
                                  default = nil)
-  if valid_601201 != nil:
-    section.add "X-Amz-Signature", valid_601201
-  var valid_601202 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601202 = validateParameter(valid_601202, JString, required = false,
+  if valid_594201 != nil:
+    section.add "X-Amz-Signature", valid_594201
+  var valid_594202 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594202 = validateParameter(valid_594202, JString, required = false,
                                  default = nil)
-  if valid_601202 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601202
-  var valid_601203 = header.getOrDefault("X-Amz-Credential")
-  valid_601203 = validateParameter(valid_601203, JString, required = false,
+  if valid_594202 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594202
+  var valid_594203 = header.getOrDefault("X-Amz-Credential")
+  valid_594203 = validateParameter(valid_594203, JString, required = false,
                                  default = nil)
-  if valid_601203 != nil:
-    section.add "X-Amz-Credential", valid_601203
+  if valid_594203 != nil:
+    section.add "X-Amz-Credential", valid_594203
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1419,44 +1419,44 @@ proc validate_GetResolverRulePolicy_601194(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601205: Call_GetResolverRulePolicy_601193; path: JsonNode;
+proc call*(call_594205: Call_GetResolverRulePolicy_594193; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about a resolver rule policy. A resolver rule policy specifies the Resolver operations and resources that you want to allow another AWS account to be able to use. 
   ## 
-  let valid = call_601205.validator(path, query, header, formData, body)
-  let scheme = call_601205.pickScheme
+  let valid = call_594205.validator(path, query, header, formData, body)
+  let scheme = call_594205.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601205.url(scheme.get, call_601205.host, call_601205.base,
-                         call_601205.route, valid.getOrDefault("path"),
+  let url = call_594205.url(scheme.get, call_594205.host, call_594205.base,
+                         call_594205.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601205, url, valid)
+  result = hook(call_594205, url, valid)
 
-proc call*(call_601206: Call_GetResolverRulePolicy_601193; body: JsonNode): Recallable =
+proc call*(call_594206: Call_GetResolverRulePolicy_594193; body: JsonNode): Recallable =
   ## getResolverRulePolicy
   ## Gets information about a resolver rule policy. A resolver rule policy specifies the Resolver operations and resources that you want to allow another AWS account to be able to use. 
   ##   body: JObject (required)
-  var body_601207 = newJObject()
+  var body_594207 = newJObject()
   if body != nil:
-    body_601207 = body
-  result = call_601206.call(nil, nil, nil, nil, body_601207)
+    body_594207 = body
+  result = call_594206.call(nil, nil, nil, nil, body_594207)
 
-var getResolverRulePolicy* = Call_GetResolverRulePolicy_601193(
+var getResolverRulePolicy* = Call_GetResolverRulePolicy_594193(
     name: "getResolverRulePolicy", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.GetResolverRulePolicy",
-    validator: validate_GetResolverRulePolicy_601194, base: "/",
-    url: url_GetResolverRulePolicy_601195, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetResolverRulePolicy_594194, base: "/",
+    url: url_GetResolverRulePolicy_594195, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListResolverEndpointIpAddresses_601208 = ref object of OpenApiRestCall_600437
-proc url_ListResolverEndpointIpAddresses_601210(protocol: Scheme; host: string;
+  Call_ListResolverEndpointIpAddresses_594208 = ref object of OpenApiRestCall_593437
+proc url_ListResolverEndpointIpAddresses_594210(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListResolverEndpointIpAddresses_601209(path: JsonNode;
+proc validate_ListResolverEndpointIpAddresses_594209(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets the IP addresses for a specified resolver endpoint.
   ## 
@@ -1470,16 +1470,16 @@ proc validate_ListResolverEndpointIpAddresses_601209(path: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601211 = query.getOrDefault("NextToken")
-  valid_601211 = validateParameter(valid_601211, JString, required = false,
+  var valid_594211 = query.getOrDefault("NextToken")
+  valid_594211 = validateParameter(valid_594211, JString, required = false,
                                  default = nil)
-  if valid_601211 != nil:
-    section.add "NextToken", valid_601211
-  var valid_601212 = query.getOrDefault("MaxResults")
-  valid_601212 = validateParameter(valid_601212, JString, required = false,
+  if valid_594211 != nil:
+    section.add "NextToken", valid_594211
+  var valid_594212 = query.getOrDefault("MaxResults")
+  valid_594212 = validateParameter(valid_594212, JString, required = false,
                                  default = nil)
-  if valid_601212 != nil:
-    section.add "MaxResults", valid_601212
+  if valid_594212 != nil:
+    section.add "MaxResults", valid_594212
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1491,48 +1491,48 @@ proc validate_ListResolverEndpointIpAddresses_601209(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601213 = header.getOrDefault("X-Amz-Date")
-  valid_601213 = validateParameter(valid_601213, JString, required = false,
+  var valid_594213 = header.getOrDefault("X-Amz-Date")
+  valid_594213 = validateParameter(valid_594213, JString, required = false,
                                  default = nil)
-  if valid_601213 != nil:
-    section.add "X-Amz-Date", valid_601213
-  var valid_601214 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601214 = validateParameter(valid_601214, JString, required = false,
+  if valid_594213 != nil:
+    section.add "X-Amz-Date", valid_594213
+  var valid_594214 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594214 = validateParameter(valid_594214, JString, required = false,
                                  default = nil)
-  if valid_601214 != nil:
-    section.add "X-Amz-Security-Token", valid_601214
+  if valid_594214 != nil:
+    section.add "X-Amz-Security-Token", valid_594214
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601215 = header.getOrDefault("X-Amz-Target")
-  valid_601215 = validateParameter(valid_601215, JString, required = true, default = newJString(
+  var valid_594215 = header.getOrDefault("X-Amz-Target")
+  valid_594215 = validateParameter(valid_594215, JString, required = true, default = newJString(
       "Route53Resolver.ListResolverEndpointIpAddresses"))
-  if valid_601215 != nil:
-    section.add "X-Amz-Target", valid_601215
-  var valid_601216 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601216 = validateParameter(valid_601216, JString, required = false,
+  if valid_594215 != nil:
+    section.add "X-Amz-Target", valid_594215
+  var valid_594216 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594216 = validateParameter(valid_594216, JString, required = false,
                                  default = nil)
-  if valid_601216 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601216
-  var valid_601217 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601217 = validateParameter(valid_601217, JString, required = false,
+  if valid_594216 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594216
+  var valid_594217 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594217 = validateParameter(valid_594217, JString, required = false,
                                  default = nil)
-  if valid_601217 != nil:
-    section.add "X-Amz-Algorithm", valid_601217
-  var valid_601218 = header.getOrDefault("X-Amz-Signature")
-  valid_601218 = validateParameter(valid_601218, JString, required = false,
+  if valid_594217 != nil:
+    section.add "X-Amz-Algorithm", valid_594217
+  var valid_594218 = header.getOrDefault("X-Amz-Signature")
+  valid_594218 = validateParameter(valid_594218, JString, required = false,
                                  default = nil)
-  if valid_601218 != nil:
-    section.add "X-Amz-Signature", valid_601218
-  var valid_601219 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601219 = validateParameter(valid_601219, JString, required = false,
+  if valid_594218 != nil:
+    section.add "X-Amz-Signature", valid_594218
+  var valid_594219 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594219 = validateParameter(valid_594219, JString, required = false,
                                  default = nil)
-  if valid_601219 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601219
-  var valid_601220 = header.getOrDefault("X-Amz-Credential")
-  valid_601220 = validateParameter(valid_601220, JString, required = false,
+  if valid_594219 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594219
+  var valid_594220 = header.getOrDefault("X-Amz-Credential")
+  valid_594220 = validateParameter(valid_594220, JString, required = false,
                                  default = nil)
-  if valid_601220 != nil:
-    section.add "X-Amz-Credential", valid_601220
+  if valid_594220 != nil:
+    section.add "X-Amz-Credential", valid_594220
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1543,21 +1543,21 @@ proc validate_ListResolverEndpointIpAddresses_601209(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601222: Call_ListResolverEndpointIpAddresses_601208;
+proc call*(call_594222: Call_ListResolverEndpointIpAddresses_594208;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Gets the IP addresses for a specified resolver endpoint.
   ## 
-  let valid = call_601222.validator(path, query, header, formData, body)
-  let scheme = call_601222.pickScheme
+  let valid = call_594222.validator(path, query, header, formData, body)
+  let scheme = call_594222.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601222.url(scheme.get, call_601222.host, call_601222.base,
-                         call_601222.route, valid.getOrDefault("path"),
+  let url = call_594222.url(scheme.get, call_594222.host, call_594222.base,
+                         call_594222.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601222, url, valid)
+  result = hook(call_594222, url, valid)
 
-proc call*(call_601223: Call_ListResolverEndpointIpAddresses_601208;
+proc call*(call_594223: Call_ListResolverEndpointIpAddresses_594208;
           body: JsonNode; NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listResolverEndpointIpAddresses
   ## Gets the IP addresses for a specified resolver endpoint.
@@ -1566,31 +1566,31 @@ proc call*(call_601223: Call_ListResolverEndpointIpAddresses_601208;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601224 = newJObject()
-  var body_601225 = newJObject()
-  add(query_601224, "NextToken", newJString(NextToken))
+  var query_594224 = newJObject()
+  var body_594225 = newJObject()
+  add(query_594224, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601225 = body
-  add(query_601224, "MaxResults", newJString(MaxResults))
-  result = call_601223.call(nil, query_601224, nil, nil, body_601225)
+    body_594225 = body
+  add(query_594224, "MaxResults", newJString(MaxResults))
+  result = call_594223.call(nil, query_594224, nil, nil, body_594225)
 
-var listResolverEndpointIpAddresses* = Call_ListResolverEndpointIpAddresses_601208(
+var listResolverEndpointIpAddresses* = Call_ListResolverEndpointIpAddresses_594208(
     name: "listResolverEndpointIpAddresses", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.ListResolverEndpointIpAddresses",
-    validator: validate_ListResolverEndpointIpAddresses_601209, base: "/",
-    url: url_ListResolverEndpointIpAddresses_601210,
+    validator: validate_ListResolverEndpointIpAddresses_594209, base: "/",
+    url: url_ListResolverEndpointIpAddresses_594210,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListResolverEndpoints_601227 = ref object of OpenApiRestCall_600437
-proc url_ListResolverEndpoints_601229(protocol: Scheme; host: string; base: string;
+  Call_ListResolverEndpoints_594227 = ref object of OpenApiRestCall_593437
+proc url_ListResolverEndpoints_594229(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListResolverEndpoints_601228(path: JsonNode; query: JsonNode;
+proc validate_ListResolverEndpoints_594228(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists all the resolver endpoints that were created using the current AWS account.
   ## 
@@ -1604,16 +1604,16 @@ proc validate_ListResolverEndpoints_601228(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601230 = query.getOrDefault("NextToken")
-  valid_601230 = validateParameter(valid_601230, JString, required = false,
+  var valid_594230 = query.getOrDefault("NextToken")
+  valid_594230 = validateParameter(valid_594230, JString, required = false,
                                  default = nil)
-  if valid_601230 != nil:
-    section.add "NextToken", valid_601230
-  var valid_601231 = query.getOrDefault("MaxResults")
-  valid_601231 = validateParameter(valid_601231, JString, required = false,
+  if valid_594230 != nil:
+    section.add "NextToken", valid_594230
+  var valid_594231 = query.getOrDefault("MaxResults")
+  valid_594231 = validateParameter(valid_594231, JString, required = false,
                                  default = nil)
-  if valid_601231 != nil:
-    section.add "MaxResults", valid_601231
+  if valid_594231 != nil:
+    section.add "MaxResults", valid_594231
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1625,48 +1625,48 @@ proc validate_ListResolverEndpoints_601228(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601232 = header.getOrDefault("X-Amz-Date")
-  valid_601232 = validateParameter(valid_601232, JString, required = false,
+  var valid_594232 = header.getOrDefault("X-Amz-Date")
+  valid_594232 = validateParameter(valid_594232, JString, required = false,
                                  default = nil)
-  if valid_601232 != nil:
-    section.add "X-Amz-Date", valid_601232
-  var valid_601233 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601233 = validateParameter(valid_601233, JString, required = false,
+  if valid_594232 != nil:
+    section.add "X-Amz-Date", valid_594232
+  var valid_594233 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594233 = validateParameter(valid_594233, JString, required = false,
                                  default = nil)
-  if valid_601233 != nil:
-    section.add "X-Amz-Security-Token", valid_601233
+  if valid_594233 != nil:
+    section.add "X-Amz-Security-Token", valid_594233
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601234 = header.getOrDefault("X-Amz-Target")
-  valid_601234 = validateParameter(valid_601234, JString, required = true, default = newJString(
+  var valid_594234 = header.getOrDefault("X-Amz-Target")
+  valid_594234 = validateParameter(valid_594234, JString, required = true, default = newJString(
       "Route53Resolver.ListResolverEndpoints"))
-  if valid_601234 != nil:
-    section.add "X-Amz-Target", valid_601234
-  var valid_601235 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601235 = validateParameter(valid_601235, JString, required = false,
+  if valid_594234 != nil:
+    section.add "X-Amz-Target", valid_594234
+  var valid_594235 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594235 = validateParameter(valid_594235, JString, required = false,
                                  default = nil)
-  if valid_601235 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601235
-  var valid_601236 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601236 = validateParameter(valid_601236, JString, required = false,
+  if valid_594235 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594235
+  var valid_594236 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594236 = validateParameter(valid_594236, JString, required = false,
                                  default = nil)
-  if valid_601236 != nil:
-    section.add "X-Amz-Algorithm", valid_601236
-  var valid_601237 = header.getOrDefault("X-Amz-Signature")
-  valid_601237 = validateParameter(valid_601237, JString, required = false,
+  if valid_594236 != nil:
+    section.add "X-Amz-Algorithm", valid_594236
+  var valid_594237 = header.getOrDefault("X-Amz-Signature")
+  valid_594237 = validateParameter(valid_594237, JString, required = false,
                                  default = nil)
-  if valid_601237 != nil:
-    section.add "X-Amz-Signature", valid_601237
-  var valid_601238 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601238 = validateParameter(valid_601238, JString, required = false,
+  if valid_594237 != nil:
+    section.add "X-Amz-Signature", valid_594237
+  var valid_594238 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594238 = validateParameter(valid_594238, JString, required = false,
                                  default = nil)
-  if valid_601238 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601238
-  var valid_601239 = header.getOrDefault("X-Amz-Credential")
-  valid_601239 = validateParameter(valid_601239, JString, required = false,
+  if valid_594238 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594238
+  var valid_594239 = header.getOrDefault("X-Amz-Credential")
+  valid_594239 = validateParameter(valid_594239, JString, required = false,
                                  default = nil)
-  if valid_601239 != nil:
-    section.add "X-Amz-Credential", valid_601239
+  if valid_594239 != nil:
+    section.add "X-Amz-Credential", valid_594239
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1677,20 +1677,20 @@ proc validate_ListResolverEndpoints_601228(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601241: Call_ListResolverEndpoints_601227; path: JsonNode;
+proc call*(call_594241: Call_ListResolverEndpoints_594227; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all the resolver endpoints that were created using the current AWS account.
   ## 
-  let valid = call_601241.validator(path, query, header, formData, body)
-  let scheme = call_601241.pickScheme
+  let valid = call_594241.validator(path, query, header, formData, body)
+  let scheme = call_594241.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601241.url(scheme.get, call_601241.host, call_601241.base,
-                         call_601241.route, valid.getOrDefault("path"),
+  let url = call_594241.url(scheme.get, call_594241.host, call_594241.base,
+                         call_594241.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601241, url, valid)
+  result = hook(call_594241, url, valid)
 
-proc call*(call_601242: Call_ListResolverEndpoints_601227; body: JsonNode;
+proc call*(call_594242: Call_ListResolverEndpoints_594227; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listResolverEndpoints
   ## Lists all the resolver endpoints that were created using the current AWS account.
@@ -1699,30 +1699,30 @@ proc call*(call_601242: Call_ListResolverEndpoints_601227; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601243 = newJObject()
-  var body_601244 = newJObject()
-  add(query_601243, "NextToken", newJString(NextToken))
+  var query_594243 = newJObject()
+  var body_594244 = newJObject()
+  add(query_594243, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601244 = body
-  add(query_601243, "MaxResults", newJString(MaxResults))
-  result = call_601242.call(nil, query_601243, nil, nil, body_601244)
+    body_594244 = body
+  add(query_594243, "MaxResults", newJString(MaxResults))
+  result = call_594242.call(nil, query_594243, nil, nil, body_594244)
 
-var listResolverEndpoints* = Call_ListResolverEndpoints_601227(
+var listResolverEndpoints* = Call_ListResolverEndpoints_594227(
     name: "listResolverEndpoints", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.ListResolverEndpoints",
-    validator: validate_ListResolverEndpoints_601228, base: "/",
-    url: url_ListResolverEndpoints_601229, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListResolverEndpoints_594228, base: "/",
+    url: url_ListResolverEndpoints_594229, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListResolverRuleAssociations_601245 = ref object of OpenApiRestCall_600437
-proc url_ListResolverRuleAssociations_601247(protocol: Scheme; host: string;
+  Call_ListResolverRuleAssociations_594245 = ref object of OpenApiRestCall_593437
+proc url_ListResolverRuleAssociations_594247(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListResolverRuleAssociations_601246(path: JsonNode; query: JsonNode;
+proc validate_ListResolverRuleAssociations_594246(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the associations that were created between resolver rules and VPCs using the current AWS account.
   ## 
@@ -1736,16 +1736,16 @@ proc validate_ListResolverRuleAssociations_601246(path: JsonNode; query: JsonNod
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601248 = query.getOrDefault("NextToken")
-  valid_601248 = validateParameter(valid_601248, JString, required = false,
+  var valid_594248 = query.getOrDefault("NextToken")
+  valid_594248 = validateParameter(valid_594248, JString, required = false,
                                  default = nil)
-  if valid_601248 != nil:
-    section.add "NextToken", valid_601248
-  var valid_601249 = query.getOrDefault("MaxResults")
-  valid_601249 = validateParameter(valid_601249, JString, required = false,
+  if valid_594248 != nil:
+    section.add "NextToken", valid_594248
+  var valid_594249 = query.getOrDefault("MaxResults")
+  valid_594249 = validateParameter(valid_594249, JString, required = false,
                                  default = nil)
-  if valid_601249 != nil:
-    section.add "MaxResults", valid_601249
+  if valid_594249 != nil:
+    section.add "MaxResults", valid_594249
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1757,48 +1757,48 @@ proc validate_ListResolverRuleAssociations_601246(path: JsonNode; query: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601250 = header.getOrDefault("X-Amz-Date")
-  valid_601250 = validateParameter(valid_601250, JString, required = false,
+  var valid_594250 = header.getOrDefault("X-Amz-Date")
+  valid_594250 = validateParameter(valid_594250, JString, required = false,
                                  default = nil)
-  if valid_601250 != nil:
-    section.add "X-Amz-Date", valid_601250
-  var valid_601251 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601251 = validateParameter(valid_601251, JString, required = false,
+  if valid_594250 != nil:
+    section.add "X-Amz-Date", valid_594250
+  var valid_594251 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594251 = validateParameter(valid_594251, JString, required = false,
                                  default = nil)
-  if valid_601251 != nil:
-    section.add "X-Amz-Security-Token", valid_601251
+  if valid_594251 != nil:
+    section.add "X-Amz-Security-Token", valid_594251
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601252 = header.getOrDefault("X-Amz-Target")
-  valid_601252 = validateParameter(valid_601252, JString, required = true, default = newJString(
+  var valid_594252 = header.getOrDefault("X-Amz-Target")
+  valid_594252 = validateParameter(valid_594252, JString, required = true, default = newJString(
       "Route53Resolver.ListResolverRuleAssociations"))
-  if valid_601252 != nil:
-    section.add "X-Amz-Target", valid_601252
-  var valid_601253 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601253 = validateParameter(valid_601253, JString, required = false,
+  if valid_594252 != nil:
+    section.add "X-Amz-Target", valid_594252
+  var valid_594253 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594253 = validateParameter(valid_594253, JString, required = false,
                                  default = nil)
-  if valid_601253 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601253
-  var valid_601254 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601254 = validateParameter(valid_601254, JString, required = false,
+  if valid_594253 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594253
+  var valid_594254 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594254 = validateParameter(valid_594254, JString, required = false,
                                  default = nil)
-  if valid_601254 != nil:
-    section.add "X-Amz-Algorithm", valid_601254
-  var valid_601255 = header.getOrDefault("X-Amz-Signature")
-  valid_601255 = validateParameter(valid_601255, JString, required = false,
+  if valid_594254 != nil:
+    section.add "X-Amz-Algorithm", valid_594254
+  var valid_594255 = header.getOrDefault("X-Amz-Signature")
+  valid_594255 = validateParameter(valid_594255, JString, required = false,
                                  default = nil)
-  if valid_601255 != nil:
-    section.add "X-Amz-Signature", valid_601255
-  var valid_601256 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601256 = validateParameter(valid_601256, JString, required = false,
+  if valid_594255 != nil:
+    section.add "X-Amz-Signature", valid_594255
+  var valid_594256 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594256 = validateParameter(valid_594256, JString, required = false,
                                  default = nil)
-  if valid_601256 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601256
-  var valid_601257 = header.getOrDefault("X-Amz-Credential")
-  valid_601257 = validateParameter(valid_601257, JString, required = false,
+  if valid_594256 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594256
+  var valid_594257 = header.getOrDefault("X-Amz-Credential")
+  valid_594257 = validateParameter(valid_594257, JString, required = false,
                                  default = nil)
-  if valid_601257 != nil:
-    section.add "X-Amz-Credential", valid_601257
+  if valid_594257 != nil:
+    section.add "X-Amz-Credential", valid_594257
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1809,20 +1809,20 @@ proc validate_ListResolverRuleAssociations_601246(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_601259: Call_ListResolverRuleAssociations_601245; path: JsonNode;
+proc call*(call_594259: Call_ListResolverRuleAssociations_594245; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the associations that were created between resolver rules and VPCs using the current AWS account.
   ## 
-  let valid = call_601259.validator(path, query, header, formData, body)
-  let scheme = call_601259.pickScheme
+  let valid = call_594259.validator(path, query, header, formData, body)
+  let scheme = call_594259.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601259.url(scheme.get, call_601259.host, call_601259.base,
-                         call_601259.route, valid.getOrDefault("path"),
+  let url = call_594259.url(scheme.get, call_594259.host, call_594259.base,
+                         call_594259.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601259, url, valid)
+  result = hook(call_594259, url, valid)
 
-proc call*(call_601260: Call_ListResolverRuleAssociations_601245; body: JsonNode;
+proc call*(call_594260: Call_ListResolverRuleAssociations_594245; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listResolverRuleAssociations
   ## Lists the associations that were created between resolver rules and VPCs using the current AWS account.
@@ -1831,31 +1831,31 @@ proc call*(call_601260: Call_ListResolverRuleAssociations_601245; body: JsonNode
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601261 = newJObject()
-  var body_601262 = newJObject()
-  add(query_601261, "NextToken", newJString(NextToken))
+  var query_594261 = newJObject()
+  var body_594262 = newJObject()
+  add(query_594261, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601262 = body
-  add(query_601261, "MaxResults", newJString(MaxResults))
-  result = call_601260.call(nil, query_601261, nil, nil, body_601262)
+    body_594262 = body
+  add(query_594261, "MaxResults", newJString(MaxResults))
+  result = call_594260.call(nil, query_594261, nil, nil, body_594262)
 
-var listResolverRuleAssociations* = Call_ListResolverRuleAssociations_601245(
+var listResolverRuleAssociations* = Call_ListResolverRuleAssociations_594245(
     name: "listResolverRuleAssociations", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.ListResolverRuleAssociations",
-    validator: validate_ListResolverRuleAssociations_601246, base: "/",
-    url: url_ListResolverRuleAssociations_601247,
+    validator: validate_ListResolverRuleAssociations_594246, base: "/",
+    url: url_ListResolverRuleAssociations_594247,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListResolverRules_601263 = ref object of OpenApiRestCall_600437
-proc url_ListResolverRules_601265(protocol: Scheme; host: string; base: string;
+  Call_ListResolverRules_594263 = ref object of OpenApiRestCall_593437
+proc url_ListResolverRules_594265(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListResolverRules_601264(path: JsonNode; query: JsonNode;
+proc validate_ListResolverRules_594264(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Lists the resolver rules that were created using the current AWS account.
@@ -1870,16 +1870,16 @@ proc validate_ListResolverRules_601264(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601266 = query.getOrDefault("NextToken")
-  valid_601266 = validateParameter(valid_601266, JString, required = false,
+  var valid_594266 = query.getOrDefault("NextToken")
+  valid_594266 = validateParameter(valid_594266, JString, required = false,
                                  default = nil)
-  if valid_601266 != nil:
-    section.add "NextToken", valid_601266
-  var valid_601267 = query.getOrDefault("MaxResults")
-  valid_601267 = validateParameter(valid_601267, JString, required = false,
+  if valid_594266 != nil:
+    section.add "NextToken", valid_594266
+  var valid_594267 = query.getOrDefault("MaxResults")
+  valid_594267 = validateParameter(valid_594267, JString, required = false,
                                  default = nil)
-  if valid_601267 != nil:
-    section.add "MaxResults", valid_601267
+  if valid_594267 != nil:
+    section.add "MaxResults", valid_594267
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1891,48 +1891,48 @@ proc validate_ListResolverRules_601264(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601268 = header.getOrDefault("X-Amz-Date")
-  valid_601268 = validateParameter(valid_601268, JString, required = false,
+  var valid_594268 = header.getOrDefault("X-Amz-Date")
+  valid_594268 = validateParameter(valid_594268, JString, required = false,
                                  default = nil)
-  if valid_601268 != nil:
-    section.add "X-Amz-Date", valid_601268
-  var valid_601269 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601269 = validateParameter(valid_601269, JString, required = false,
+  if valid_594268 != nil:
+    section.add "X-Amz-Date", valid_594268
+  var valid_594269 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594269 = validateParameter(valid_594269, JString, required = false,
                                  default = nil)
-  if valid_601269 != nil:
-    section.add "X-Amz-Security-Token", valid_601269
+  if valid_594269 != nil:
+    section.add "X-Amz-Security-Token", valid_594269
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601270 = header.getOrDefault("X-Amz-Target")
-  valid_601270 = validateParameter(valid_601270, JString, required = true, default = newJString(
+  var valid_594270 = header.getOrDefault("X-Amz-Target")
+  valid_594270 = validateParameter(valid_594270, JString, required = true, default = newJString(
       "Route53Resolver.ListResolverRules"))
-  if valid_601270 != nil:
-    section.add "X-Amz-Target", valid_601270
-  var valid_601271 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601271 = validateParameter(valid_601271, JString, required = false,
+  if valid_594270 != nil:
+    section.add "X-Amz-Target", valid_594270
+  var valid_594271 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594271 = validateParameter(valid_594271, JString, required = false,
                                  default = nil)
-  if valid_601271 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601271
-  var valid_601272 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601272 = validateParameter(valid_601272, JString, required = false,
+  if valid_594271 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594271
+  var valid_594272 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594272 = validateParameter(valid_594272, JString, required = false,
                                  default = nil)
-  if valid_601272 != nil:
-    section.add "X-Amz-Algorithm", valid_601272
-  var valid_601273 = header.getOrDefault("X-Amz-Signature")
-  valid_601273 = validateParameter(valid_601273, JString, required = false,
+  if valid_594272 != nil:
+    section.add "X-Amz-Algorithm", valid_594272
+  var valid_594273 = header.getOrDefault("X-Amz-Signature")
+  valid_594273 = validateParameter(valid_594273, JString, required = false,
                                  default = nil)
-  if valid_601273 != nil:
-    section.add "X-Amz-Signature", valid_601273
-  var valid_601274 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601274 = validateParameter(valid_601274, JString, required = false,
+  if valid_594273 != nil:
+    section.add "X-Amz-Signature", valid_594273
+  var valid_594274 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594274 = validateParameter(valid_594274, JString, required = false,
                                  default = nil)
-  if valid_601274 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601274
-  var valid_601275 = header.getOrDefault("X-Amz-Credential")
-  valid_601275 = validateParameter(valid_601275, JString, required = false,
+  if valid_594274 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594274
+  var valid_594275 = header.getOrDefault("X-Amz-Credential")
+  valid_594275 = validateParameter(valid_594275, JString, required = false,
                                  default = nil)
-  if valid_601275 != nil:
-    section.add "X-Amz-Credential", valid_601275
+  if valid_594275 != nil:
+    section.add "X-Amz-Credential", valid_594275
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1943,20 +1943,20 @@ proc validate_ListResolverRules_601264(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601277: Call_ListResolverRules_601263; path: JsonNode;
+proc call*(call_594277: Call_ListResolverRules_594263; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the resolver rules that were created using the current AWS account.
   ## 
-  let valid = call_601277.validator(path, query, header, formData, body)
-  let scheme = call_601277.pickScheme
+  let valid = call_594277.validator(path, query, header, formData, body)
+  let scheme = call_594277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601277.url(scheme.get, call_601277.host, call_601277.base,
-                         call_601277.route, valid.getOrDefault("path"),
+  let url = call_594277.url(scheme.get, call_594277.host, call_594277.base,
+                         call_594277.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601277, url, valid)
+  result = hook(call_594277, url, valid)
 
-proc call*(call_601278: Call_ListResolverRules_601263; body: JsonNode;
+proc call*(call_594278: Call_ListResolverRules_594263; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listResolverRules
   ## Lists the resolver rules that were created using the current AWS account.
@@ -1965,29 +1965,29 @@ proc call*(call_601278: Call_ListResolverRules_601263; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601279 = newJObject()
-  var body_601280 = newJObject()
-  add(query_601279, "NextToken", newJString(NextToken))
+  var query_594279 = newJObject()
+  var body_594280 = newJObject()
+  add(query_594279, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601280 = body
-  add(query_601279, "MaxResults", newJString(MaxResults))
-  result = call_601278.call(nil, query_601279, nil, nil, body_601280)
+    body_594280 = body
+  add(query_594279, "MaxResults", newJString(MaxResults))
+  result = call_594278.call(nil, query_594279, nil, nil, body_594280)
 
-var listResolverRules* = Call_ListResolverRules_601263(name: "listResolverRules",
+var listResolverRules* = Call_ListResolverRules_594263(name: "listResolverRules",
     meth: HttpMethod.HttpPost, host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.ListResolverRules",
-    validator: validate_ListResolverRules_601264, base: "/",
-    url: url_ListResolverRules_601265, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListResolverRules_594264, base: "/",
+    url: url_ListResolverRules_594265, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_601281 = ref object of OpenApiRestCall_600437
-proc url_ListTagsForResource_601283(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_594281 = ref object of OpenApiRestCall_593437
+proc url_ListTagsForResource_594283(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListTagsForResource_601282(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_594282(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lists the tags that you associated with the specified resource.
@@ -2008,48 +2008,48 @@ proc validate_ListTagsForResource_601282(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601284 = header.getOrDefault("X-Amz-Date")
-  valid_601284 = validateParameter(valid_601284, JString, required = false,
+  var valid_594284 = header.getOrDefault("X-Amz-Date")
+  valid_594284 = validateParameter(valid_594284, JString, required = false,
                                  default = nil)
-  if valid_601284 != nil:
-    section.add "X-Amz-Date", valid_601284
-  var valid_601285 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601285 = validateParameter(valid_601285, JString, required = false,
+  if valid_594284 != nil:
+    section.add "X-Amz-Date", valid_594284
+  var valid_594285 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594285 = validateParameter(valid_594285, JString, required = false,
                                  default = nil)
-  if valid_601285 != nil:
-    section.add "X-Amz-Security-Token", valid_601285
+  if valid_594285 != nil:
+    section.add "X-Amz-Security-Token", valid_594285
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601286 = header.getOrDefault("X-Amz-Target")
-  valid_601286 = validateParameter(valid_601286, JString, required = true, default = newJString(
+  var valid_594286 = header.getOrDefault("X-Amz-Target")
+  valid_594286 = validateParameter(valid_594286, JString, required = true, default = newJString(
       "Route53Resolver.ListTagsForResource"))
-  if valid_601286 != nil:
-    section.add "X-Amz-Target", valid_601286
-  var valid_601287 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601287 = validateParameter(valid_601287, JString, required = false,
+  if valid_594286 != nil:
+    section.add "X-Amz-Target", valid_594286
+  var valid_594287 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594287 = validateParameter(valid_594287, JString, required = false,
                                  default = nil)
-  if valid_601287 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601287
-  var valid_601288 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601288 = validateParameter(valid_601288, JString, required = false,
+  if valid_594287 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594287
+  var valid_594288 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594288 = validateParameter(valid_594288, JString, required = false,
                                  default = nil)
-  if valid_601288 != nil:
-    section.add "X-Amz-Algorithm", valid_601288
-  var valid_601289 = header.getOrDefault("X-Amz-Signature")
-  valid_601289 = validateParameter(valid_601289, JString, required = false,
+  if valid_594288 != nil:
+    section.add "X-Amz-Algorithm", valid_594288
+  var valid_594289 = header.getOrDefault("X-Amz-Signature")
+  valid_594289 = validateParameter(valid_594289, JString, required = false,
                                  default = nil)
-  if valid_601289 != nil:
-    section.add "X-Amz-Signature", valid_601289
-  var valid_601290 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601290 = validateParameter(valid_601290, JString, required = false,
+  if valid_594289 != nil:
+    section.add "X-Amz-Signature", valid_594289
+  var valid_594290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594290 = validateParameter(valid_594290, JString, required = false,
                                  default = nil)
-  if valid_601290 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601290
-  var valid_601291 = header.getOrDefault("X-Amz-Credential")
-  valid_601291 = validateParameter(valid_601291, JString, required = false,
+  if valid_594290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594290
+  var valid_594291 = header.getOrDefault("X-Amz-Credential")
+  valid_594291 = validateParameter(valid_594291, JString, required = false,
                                  default = nil)
-  if valid_601291 != nil:
-    section.add "X-Amz-Credential", valid_601291
+  if valid_594291 != nil:
+    section.add "X-Amz-Credential", valid_594291
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2060,44 +2060,44 @@ proc validate_ListTagsForResource_601282(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601293: Call_ListTagsForResource_601281; path: JsonNode;
+proc call*(call_594293: Call_ListTagsForResource_594281; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the tags that you associated with the specified resource.
   ## 
-  let valid = call_601293.validator(path, query, header, formData, body)
-  let scheme = call_601293.pickScheme
+  let valid = call_594293.validator(path, query, header, formData, body)
+  let scheme = call_594293.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601293.url(scheme.get, call_601293.host, call_601293.base,
-                         call_601293.route, valid.getOrDefault("path"),
+  let url = call_594293.url(scheme.get, call_594293.host, call_594293.base,
+                         call_594293.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601293, url, valid)
+  result = hook(call_594293, url, valid)
 
-proc call*(call_601294: Call_ListTagsForResource_601281; body: JsonNode): Recallable =
+proc call*(call_594294: Call_ListTagsForResource_594281; body: JsonNode): Recallable =
   ## listTagsForResource
   ## Lists the tags that you associated with the specified resource.
   ##   body: JObject (required)
-  var body_601295 = newJObject()
+  var body_594295 = newJObject()
   if body != nil:
-    body_601295 = body
-  result = call_601294.call(nil, nil, nil, nil, body_601295)
+    body_594295 = body
+  result = call_594294.call(nil, nil, nil, nil, body_594295)
 
-var listTagsForResource* = Call_ListTagsForResource_601281(
+var listTagsForResource* = Call_ListTagsForResource_594281(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.ListTagsForResource",
-    validator: validate_ListTagsForResource_601282, base: "/",
-    url: url_ListTagsForResource_601283, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_594282, base: "/",
+    url: url_ListTagsForResource_594283, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutResolverRulePolicy_601296 = ref object of OpenApiRestCall_600437
-proc url_PutResolverRulePolicy_601298(protocol: Scheme; host: string; base: string;
+  Call_PutResolverRulePolicy_594296 = ref object of OpenApiRestCall_593437
+proc url_PutResolverRulePolicy_594298(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutResolverRulePolicy_601297(path: JsonNode; query: JsonNode;
+proc validate_PutResolverRulePolicy_594297(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Specifies the Resolver operations and resources that you want to allow another AWS account to be able to use.
   ## 
@@ -2117,48 +2117,48 @@ proc validate_PutResolverRulePolicy_601297(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601299 = header.getOrDefault("X-Amz-Date")
-  valid_601299 = validateParameter(valid_601299, JString, required = false,
+  var valid_594299 = header.getOrDefault("X-Amz-Date")
+  valid_594299 = validateParameter(valid_594299, JString, required = false,
                                  default = nil)
-  if valid_601299 != nil:
-    section.add "X-Amz-Date", valid_601299
-  var valid_601300 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601300 = validateParameter(valid_601300, JString, required = false,
+  if valid_594299 != nil:
+    section.add "X-Amz-Date", valid_594299
+  var valid_594300 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594300 = validateParameter(valid_594300, JString, required = false,
                                  default = nil)
-  if valid_601300 != nil:
-    section.add "X-Amz-Security-Token", valid_601300
+  if valid_594300 != nil:
+    section.add "X-Amz-Security-Token", valid_594300
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601301 = header.getOrDefault("X-Amz-Target")
-  valid_601301 = validateParameter(valid_601301, JString, required = true, default = newJString(
+  var valid_594301 = header.getOrDefault("X-Amz-Target")
+  valid_594301 = validateParameter(valid_594301, JString, required = true, default = newJString(
       "Route53Resolver.PutResolverRulePolicy"))
-  if valid_601301 != nil:
-    section.add "X-Amz-Target", valid_601301
-  var valid_601302 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601302 = validateParameter(valid_601302, JString, required = false,
+  if valid_594301 != nil:
+    section.add "X-Amz-Target", valid_594301
+  var valid_594302 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594302 = validateParameter(valid_594302, JString, required = false,
                                  default = nil)
-  if valid_601302 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601302
-  var valid_601303 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601303 = validateParameter(valid_601303, JString, required = false,
+  if valid_594302 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594302
+  var valid_594303 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594303 = validateParameter(valid_594303, JString, required = false,
                                  default = nil)
-  if valid_601303 != nil:
-    section.add "X-Amz-Algorithm", valid_601303
-  var valid_601304 = header.getOrDefault("X-Amz-Signature")
-  valid_601304 = validateParameter(valid_601304, JString, required = false,
+  if valid_594303 != nil:
+    section.add "X-Amz-Algorithm", valid_594303
+  var valid_594304 = header.getOrDefault("X-Amz-Signature")
+  valid_594304 = validateParameter(valid_594304, JString, required = false,
                                  default = nil)
-  if valid_601304 != nil:
-    section.add "X-Amz-Signature", valid_601304
-  var valid_601305 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601305 = validateParameter(valid_601305, JString, required = false,
+  if valid_594304 != nil:
+    section.add "X-Amz-Signature", valid_594304
+  var valid_594305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594305 = validateParameter(valid_594305, JString, required = false,
                                  default = nil)
-  if valid_601305 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601305
-  var valid_601306 = header.getOrDefault("X-Amz-Credential")
-  valid_601306 = validateParameter(valid_601306, JString, required = false,
+  if valid_594305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594305
+  var valid_594306 = header.getOrDefault("X-Amz-Credential")
+  valid_594306 = validateParameter(valid_594306, JString, required = false,
                                  default = nil)
-  if valid_601306 != nil:
-    section.add "X-Amz-Credential", valid_601306
+  if valid_594306 != nil:
+    section.add "X-Amz-Credential", valid_594306
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2169,44 +2169,44 @@ proc validate_PutResolverRulePolicy_601297(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601308: Call_PutResolverRulePolicy_601296; path: JsonNode;
+proc call*(call_594308: Call_PutResolverRulePolicy_594296; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Specifies the Resolver operations and resources that you want to allow another AWS account to be able to use.
   ## 
-  let valid = call_601308.validator(path, query, header, formData, body)
-  let scheme = call_601308.pickScheme
+  let valid = call_594308.validator(path, query, header, formData, body)
+  let scheme = call_594308.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601308.url(scheme.get, call_601308.host, call_601308.base,
-                         call_601308.route, valid.getOrDefault("path"),
+  let url = call_594308.url(scheme.get, call_594308.host, call_594308.base,
+                         call_594308.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601308, url, valid)
+  result = hook(call_594308, url, valid)
 
-proc call*(call_601309: Call_PutResolverRulePolicy_601296; body: JsonNode): Recallable =
+proc call*(call_594309: Call_PutResolverRulePolicy_594296; body: JsonNode): Recallable =
   ## putResolverRulePolicy
   ## Specifies the Resolver operations and resources that you want to allow another AWS account to be able to use.
   ##   body: JObject (required)
-  var body_601310 = newJObject()
+  var body_594310 = newJObject()
   if body != nil:
-    body_601310 = body
-  result = call_601309.call(nil, nil, nil, nil, body_601310)
+    body_594310 = body
+  result = call_594309.call(nil, nil, nil, nil, body_594310)
 
-var putResolverRulePolicy* = Call_PutResolverRulePolicy_601296(
+var putResolverRulePolicy* = Call_PutResolverRulePolicy_594296(
     name: "putResolverRulePolicy", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.PutResolverRulePolicy",
-    validator: validate_PutResolverRulePolicy_601297, base: "/",
-    url: url_PutResolverRulePolicy_601298, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutResolverRulePolicy_594297, base: "/",
+    url: url_PutResolverRulePolicy_594298, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_601311 = ref object of OpenApiRestCall_600437
-proc url_TagResource_601313(protocol: Scheme; host: string; base: string;
+  Call_TagResource_594311 = ref object of OpenApiRestCall_593437
+proc url_TagResource_594313(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_TagResource_601312(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_594312(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds one or more tags to a specified resource.
   ## 
@@ -2226,48 +2226,48 @@ proc validate_TagResource_601312(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601314 = header.getOrDefault("X-Amz-Date")
-  valid_601314 = validateParameter(valid_601314, JString, required = false,
+  var valid_594314 = header.getOrDefault("X-Amz-Date")
+  valid_594314 = validateParameter(valid_594314, JString, required = false,
                                  default = nil)
-  if valid_601314 != nil:
-    section.add "X-Amz-Date", valid_601314
-  var valid_601315 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601315 = validateParameter(valid_601315, JString, required = false,
+  if valid_594314 != nil:
+    section.add "X-Amz-Date", valid_594314
+  var valid_594315 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594315 = validateParameter(valid_594315, JString, required = false,
                                  default = nil)
-  if valid_601315 != nil:
-    section.add "X-Amz-Security-Token", valid_601315
+  if valid_594315 != nil:
+    section.add "X-Amz-Security-Token", valid_594315
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601316 = header.getOrDefault("X-Amz-Target")
-  valid_601316 = validateParameter(valid_601316, JString, required = true, default = newJString(
+  var valid_594316 = header.getOrDefault("X-Amz-Target")
+  valid_594316 = validateParameter(valid_594316, JString, required = true, default = newJString(
       "Route53Resolver.TagResource"))
-  if valid_601316 != nil:
-    section.add "X-Amz-Target", valid_601316
-  var valid_601317 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601317 = validateParameter(valid_601317, JString, required = false,
+  if valid_594316 != nil:
+    section.add "X-Amz-Target", valid_594316
+  var valid_594317 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594317 = validateParameter(valid_594317, JString, required = false,
                                  default = nil)
-  if valid_601317 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601317
-  var valid_601318 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601318 = validateParameter(valid_601318, JString, required = false,
+  if valid_594317 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594317
+  var valid_594318 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594318 = validateParameter(valid_594318, JString, required = false,
                                  default = nil)
-  if valid_601318 != nil:
-    section.add "X-Amz-Algorithm", valid_601318
-  var valid_601319 = header.getOrDefault("X-Amz-Signature")
-  valid_601319 = validateParameter(valid_601319, JString, required = false,
+  if valid_594318 != nil:
+    section.add "X-Amz-Algorithm", valid_594318
+  var valid_594319 = header.getOrDefault("X-Amz-Signature")
+  valid_594319 = validateParameter(valid_594319, JString, required = false,
                                  default = nil)
-  if valid_601319 != nil:
-    section.add "X-Amz-Signature", valid_601319
-  var valid_601320 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601320 = validateParameter(valid_601320, JString, required = false,
+  if valid_594319 != nil:
+    section.add "X-Amz-Signature", valid_594319
+  var valid_594320 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594320 = validateParameter(valid_594320, JString, required = false,
                                  default = nil)
-  if valid_601320 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601320
-  var valid_601321 = header.getOrDefault("X-Amz-Credential")
-  valid_601321 = validateParameter(valid_601321, JString, required = false,
+  if valid_594320 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594320
+  var valid_594321 = header.getOrDefault("X-Amz-Credential")
+  valid_594321 = validateParameter(valid_594321, JString, required = false,
                                  default = nil)
-  if valid_601321 != nil:
-    section.add "X-Amz-Credential", valid_601321
+  if valid_594321 != nil:
+    section.add "X-Amz-Credential", valid_594321
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2278,44 +2278,44 @@ proc validate_TagResource_601312(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601323: Call_TagResource_601311; path: JsonNode; query: JsonNode;
+proc call*(call_594323: Call_TagResource_594311; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds one or more tags to a specified resource.
   ## 
-  let valid = call_601323.validator(path, query, header, formData, body)
-  let scheme = call_601323.pickScheme
+  let valid = call_594323.validator(path, query, header, formData, body)
+  let scheme = call_594323.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601323.url(scheme.get, call_601323.host, call_601323.base,
-                         call_601323.route, valid.getOrDefault("path"),
+  let url = call_594323.url(scheme.get, call_594323.host, call_594323.base,
+                         call_594323.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601323, url, valid)
+  result = hook(call_594323, url, valid)
 
-proc call*(call_601324: Call_TagResource_601311; body: JsonNode): Recallable =
+proc call*(call_594324: Call_TagResource_594311; body: JsonNode): Recallable =
   ## tagResource
   ## Adds one or more tags to a specified resource.
   ##   body: JObject (required)
-  var body_601325 = newJObject()
+  var body_594325 = newJObject()
   if body != nil:
-    body_601325 = body
-  result = call_601324.call(nil, nil, nil, nil, body_601325)
+    body_594325 = body
+  result = call_594324.call(nil, nil, nil, nil, body_594325)
 
-var tagResource* = Call_TagResource_601311(name: "tagResource",
+var tagResource* = Call_TagResource_594311(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "route53resolver.amazonaws.com", route: "/#X-Amz-Target=Route53Resolver.TagResource",
-                                        validator: validate_TagResource_601312,
-                                        base: "/", url: url_TagResource_601313,
+                                        validator: validate_TagResource_594312,
+                                        base: "/", url: url_TagResource_594313,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_601326 = ref object of OpenApiRestCall_600437
-proc url_UntagResource_601328(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_594326 = ref object of OpenApiRestCall_593437
+proc url_UntagResource_594328(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UntagResource_601327(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_594327(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes one or more tags from a specified resource.
   ## 
@@ -2335,48 +2335,48 @@ proc validate_UntagResource_601327(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601329 = header.getOrDefault("X-Amz-Date")
-  valid_601329 = validateParameter(valid_601329, JString, required = false,
+  var valid_594329 = header.getOrDefault("X-Amz-Date")
+  valid_594329 = validateParameter(valid_594329, JString, required = false,
                                  default = nil)
-  if valid_601329 != nil:
-    section.add "X-Amz-Date", valid_601329
-  var valid_601330 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601330 = validateParameter(valid_601330, JString, required = false,
+  if valid_594329 != nil:
+    section.add "X-Amz-Date", valid_594329
+  var valid_594330 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594330 = validateParameter(valid_594330, JString, required = false,
                                  default = nil)
-  if valid_601330 != nil:
-    section.add "X-Amz-Security-Token", valid_601330
+  if valid_594330 != nil:
+    section.add "X-Amz-Security-Token", valid_594330
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601331 = header.getOrDefault("X-Amz-Target")
-  valid_601331 = validateParameter(valid_601331, JString, required = true, default = newJString(
+  var valid_594331 = header.getOrDefault("X-Amz-Target")
+  valid_594331 = validateParameter(valid_594331, JString, required = true, default = newJString(
       "Route53Resolver.UntagResource"))
-  if valid_601331 != nil:
-    section.add "X-Amz-Target", valid_601331
-  var valid_601332 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601332 = validateParameter(valid_601332, JString, required = false,
+  if valid_594331 != nil:
+    section.add "X-Amz-Target", valid_594331
+  var valid_594332 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594332 = validateParameter(valid_594332, JString, required = false,
                                  default = nil)
-  if valid_601332 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601332
-  var valid_601333 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601333 = validateParameter(valid_601333, JString, required = false,
+  if valid_594332 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594332
+  var valid_594333 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594333 = validateParameter(valid_594333, JString, required = false,
                                  default = nil)
-  if valid_601333 != nil:
-    section.add "X-Amz-Algorithm", valid_601333
-  var valid_601334 = header.getOrDefault("X-Amz-Signature")
-  valid_601334 = validateParameter(valid_601334, JString, required = false,
+  if valid_594333 != nil:
+    section.add "X-Amz-Algorithm", valid_594333
+  var valid_594334 = header.getOrDefault("X-Amz-Signature")
+  valid_594334 = validateParameter(valid_594334, JString, required = false,
                                  default = nil)
-  if valid_601334 != nil:
-    section.add "X-Amz-Signature", valid_601334
-  var valid_601335 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601335 = validateParameter(valid_601335, JString, required = false,
+  if valid_594334 != nil:
+    section.add "X-Amz-Signature", valid_594334
+  var valid_594335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594335 = validateParameter(valid_594335, JString, required = false,
                                  default = nil)
-  if valid_601335 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601335
-  var valid_601336 = header.getOrDefault("X-Amz-Credential")
-  valid_601336 = validateParameter(valid_601336, JString, required = false,
+  if valid_594335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594335
+  var valid_594336 = header.getOrDefault("X-Amz-Credential")
+  valid_594336 = validateParameter(valid_594336, JString, required = false,
                                  default = nil)
-  if valid_601336 != nil:
-    section.add "X-Amz-Credential", valid_601336
+  if valid_594336 != nil:
+    section.add "X-Amz-Credential", valid_594336
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2387,43 +2387,43 @@ proc validate_UntagResource_601327(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601338: Call_UntagResource_601326; path: JsonNode; query: JsonNode;
+proc call*(call_594338: Call_UntagResource_594326; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes one or more tags from a specified resource.
   ## 
-  let valid = call_601338.validator(path, query, header, formData, body)
-  let scheme = call_601338.pickScheme
+  let valid = call_594338.validator(path, query, header, formData, body)
+  let scheme = call_594338.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601338.url(scheme.get, call_601338.host, call_601338.base,
-                         call_601338.route, valid.getOrDefault("path"),
+  let url = call_594338.url(scheme.get, call_594338.host, call_594338.base,
+                         call_594338.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601338, url, valid)
+  result = hook(call_594338, url, valid)
 
-proc call*(call_601339: Call_UntagResource_601326; body: JsonNode): Recallable =
+proc call*(call_594339: Call_UntagResource_594326; body: JsonNode): Recallable =
   ## untagResource
   ## Removes one or more tags from a specified resource.
   ##   body: JObject (required)
-  var body_601340 = newJObject()
+  var body_594340 = newJObject()
   if body != nil:
-    body_601340 = body
-  result = call_601339.call(nil, nil, nil, nil, body_601340)
+    body_594340 = body
+  result = call_594339.call(nil, nil, nil, nil, body_594340)
 
-var untagResource* = Call_UntagResource_601326(name: "untagResource",
+var untagResource* = Call_UntagResource_594326(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.UntagResource",
-    validator: validate_UntagResource_601327, base: "/", url: url_UntagResource_601328,
+    validator: validate_UntagResource_594327, base: "/", url: url_UntagResource_594328,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateResolverEndpoint_601341 = ref object of OpenApiRestCall_600437
-proc url_UpdateResolverEndpoint_601343(protocol: Scheme; host: string; base: string;
+  Call_UpdateResolverEndpoint_594341 = ref object of OpenApiRestCall_593437
+proc url_UpdateResolverEndpoint_594343(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateResolverEndpoint_601342(path: JsonNode; query: JsonNode;
+proc validate_UpdateResolverEndpoint_594342(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates the name of an inbound or an outbound resolver endpoint. 
   ## 
@@ -2443,48 +2443,48 @@ proc validate_UpdateResolverEndpoint_601342(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601344 = header.getOrDefault("X-Amz-Date")
-  valid_601344 = validateParameter(valid_601344, JString, required = false,
+  var valid_594344 = header.getOrDefault("X-Amz-Date")
+  valid_594344 = validateParameter(valid_594344, JString, required = false,
                                  default = nil)
-  if valid_601344 != nil:
-    section.add "X-Amz-Date", valid_601344
-  var valid_601345 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601345 = validateParameter(valid_601345, JString, required = false,
+  if valid_594344 != nil:
+    section.add "X-Amz-Date", valid_594344
+  var valid_594345 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594345 = validateParameter(valid_594345, JString, required = false,
                                  default = nil)
-  if valid_601345 != nil:
-    section.add "X-Amz-Security-Token", valid_601345
+  if valid_594345 != nil:
+    section.add "X-Amz-Security-Token", valid_594345
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601346 = header.getOrDefault("X-Amz-Target")
-  valid_601346 = validateParameter(valid_601346, JString, required = true, default = newJString(
+  var valid_594346 = header.getOrDefault("X-Amz-Target")
+  valid_594346 = validateParameter(valid_594346, JString, required = true, default = newJString(
       "Route53Resolver.UpdateResolverEndpoint"))
-  if valid_601346 != nil:
-    section.add "X-Amz-Target", valid_601346
-  var valid_601347 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601347 = validateParameter(valid_601347, JString, required = false,
+  if valid_594346 != nil:
+    section.add "X-Amz-Target", valid_594346
+  var valid_594347 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594347 = validateParameter(valid_594347, JString, required = false,
                                  default = nil)
-  if valid_601347 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601347
-  var valid_601348 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601348 = validateParameter(valid_601348, JString, required = false,
+  if valid_594347 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594347
+  var valid_594348 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594348 = validateParameter(valid_594348, JString, required = false,
                                  default = nil)
-  if valid_601348 != nil:
-    section.add "X-Amz-Algorithm", valid_601348
-  var valid_601349 = header.getOrDefault("X-Amz-Signature")
-  valid_601349 = validateParameter(valid_601349, JString, required = false,
+  if valid_594348 != nil:
+    section.add "X-Amz-Algorithm", valid_594348
+  var valid_594349 = header.getOrDefault("X-Amz-Signature")
+  valid_594349 = validateParameter(valid_594349, JString, required = false,
                                  default = nil)
-  if valid_601349 != nil:
-    section.add "X-Amz-Signature", valid_601349
-  var valid_601350 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601350 = validateParameter(valid_601350, JString, required = false,
+  if valid_594349 != nil:
+    section.add "X-Amz-Signature", valid_594349
+  var valid_594350 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594350 = validateParameter(valid_594350, JString, required = false,
                                  default = nil)
-  if valid_601350 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601350
-  var valid_601351 = header.getOrDefault("X-Amz-Credential")
-  valid_601351 = validateParameter(valid_601351, JString, required = false,
+  if valid_594350 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594350
+  var valid_594351 = header.getOrDefault("X-Amz-Credential")
+  valid_594351 = validateParameter(valid_594351, JString, required = false,
                                  default = nil)
-  if valid_601351 != nil:
-    section.add "X-Amz-Credential", valid_601351
+  if valid_594351 != nil:
+    section.add "X-Amz-Credential", valid_594351
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2495,44 +2495,44 @@ proc validate_UpdateResolverEndpoint_601342(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601353: Call_UpdateResolverEndpoint_601341; path: JsonNode;
+proc call*(call_594353: Call_UpdateResolverEndpoint_594341; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the name of an inbound or an outbound resolver endpoint. 
   ## 
-  let valid = call_601353.validator(path, query, header, formData, body)
-  let scheme = call_601353.pickScheme
+  let valid = call_594353.validator(path, query, header, formData, body)
+  let scheme = call_594353.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601353.url(scheme.get, call_601353.host, call_601353.base,
-                         call_601353.route, valid.getOrDefault("path"),
+  let url = call_594353.url(scheme.get, call_594353.host, call_594353.base,
+                         call_594353.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601353, url, valid)
+  result = hook(call_594353, url, valid)
 
-proc call*(call_601354: Call_UpdateResolverEndpoint_601341; body: JsonNode): Recallable =
+proc call*(call_594354: Call_UpdateResolverEndpoint_594341; body: JsonNode): Recallable =
   ## updateResolverEndpoint
   ## Updates the name of an inbound or an outbound resolver endpoint. 
   ##   body: JObject (required)
-  var body_601355 = newJObject()
+  var body_594355 = newJObject()
   if body != nil:
-    body_601355 = body
-  result = call_601354.call(nil, nil, nil, nil, body_601355)
+    body_594355 = body
+  result = call_594354.call(nil, nil, nil, nil, body_594355)
 
-var updateResolverEndpoint* = Call_UpdateResolverEndpoint_601341(
+var updateResolverEndpoint* = Call_UpdateResolverEndpoint_594341(
     name: "updateResolverEndpoint", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.UpdateResolverEndpoint",
-    validator: validate_UpdateResolverEndpoint_601342, base: "/",
-    url: url_UpdateResolverEndpoint_601343, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateResolverEndpoint_594342, base: "/",
+    url: url_UpdateResolverEndpoint_594343, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateResolverRule_601356 = ref object of OpenApiRestCall_600437
-proc url_UpdateResolverRule_601358(protocol: Scheme; host: string; base: string;
+  Call_UpdateResolverRule_594356 = ref object of OpenApiRestCall_593437
+proc url_UpdateResolverRule_594358(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateResolverRule_601357(path: JsonNode; query: JsonNode;
+proc validate_UpdateResolverRule_594357(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Updates settings for a specified resolver rule. <code>ResolverRuleId</code> is required, and all other parameters are optional. If you don't specify a parameter, it retains its current value.
@@ -2553,48 +2553,48 @@ proc validate_UpdateResolverRule_601357(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601359 = header.getOrDefault("X-Amz-Date")
-  valid_601359 = validateParameter(valid_601359, JString, required = false,
+  var valid_594359 = header.getOrDefault("X-Amz-Date")
+  valid_594359 = validateParameter(valid_594359, JString, required = false,
                                  default = nil)
-  if valid_601359 != nil:
-    section.add "X-Amz-Date", valid_601359
-  var valid_601360 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601360 = validateParameter(valid_601360, JString, required = false,
+  if valid_594359 != nil:
+    section.add "X-Amz-Date", valid_594359
+  var valid_594360 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594360 = validateParameter(valid_594360, JString, required = false,
                                  default = nil)
-  if valid_601360 != nil:
-    section.add "X-Amz-Security-Token", valid_601360
+  if valid_594360 != nil:
+    section.add "X-Amz-Security-Token", valid_594360
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601361 = header.getOrDefault("X-Amz-Target")
-  valid_601361 = validateParameter(valid_601361, JString, required = true, default = newJString(
+  var valid_594361 = header.getOrDefault("X-Amz-Target")
+  valid_594361 = validateParameter(valid_594361, JString, required = true, default = newJString(
       "Route53Resolver.UpdateResolverRule"))
-  if valid_601361 != nil:
-    section.add "X-Amz-Target", valid_601361
-  var valid_601362 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601362 = validateParameter(valid_601362, JString, required = false,
+  if valid_594361 != nil:
+    section.add "X-Amz-Target", valid_594361
+  var valid_594362 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594362 = validateParameter(valid_594362, JString, required = false,
                                  default = nil)
-  if valid_601362 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601362
-  var valid_601363 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601363 = validateParameter(valid_601363, JString, required = false,
+  if valid_594362 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594362
+  var valid_594363 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594363 = validateParameter(valid_594363, JString, required = false,
                                  default = nil)
-  if valid_601363 != nil:
-    section.add "X-Amz-Algorithm", valid_601363
-  var valid_601364 = header.getOrDefault("X-Amz-Signature")
-  valid_601364 = validateParameter(valid_601364, JString, required = false,
+  if valid_594363 != nil:
+    section.add "X-Amz-Algorithm", valid_594363
+  var valid_594364 = header.getOrDefault("X-Amz-Signature")
+  valid_594364 = validateParameter(valid_594364, JString, required = false,
                                  default = nil)
-  if valid_601364 != nil:
-    section.add "X-Amz-Signature", valid_601364
-  var valid_601365 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601365 = validateParameter(valid_601365, JString, required = false,
+  if valid_594364 != nil:
+    section.add "X-Amz-Signature", valid_594364
+  var valid_594365 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594365 = validateParameter(valid_594365, JString, required = false,
                                  default = nil)
-  if valid_601365 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601365
-  var valid_601366 = header.getOrDefault("X-Amz-Credential")
-  valid_601366 = validateParameter(valid_601366, JString, required = false,
+  if valid_594365 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594365
+  var valid_594366 = header.getOrDefault("X-Amz-Credential")
+  valid_594366 = validateParameter(valid_594366, JString, required = false,
                                  default = nil)
-  if valid_601366 != nil:
-    section.add "X-Amz-Credential", valid_601366
+  if valid_594366 != nil:
+    section.add "X-Amz-Credential", valid_594366
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2605,34 +2605,34 @@ proc validate_UpdateResolverRule_601357(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601368: Call_UpdateResolverRule_601356; path: JsonNode;
+proc call*(call_594368: Call_UpdateResolverRule_594356; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates settings for a specified resolver rule. <code>ResolverRuleId</code> is required, and all other parameters are optional. If you don't specify a parameter, it retains its current value.
   ## 
-  let valid = call_601368.validator(path, query, header, formData, body)
-  let scheme = call_601368.pickScheme
+  let valid = call_594368.validator(path, query, header, formData, body)
+  let scheme = call_594368.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601368.url(scheme.get, call_601368.host, call_601368.base,
-                         call_601368.route, valid.getOrDefault("path"),
+  let url = call_594368.url(scheme.get, call_594368.host, call_594368.base,
+                         call_594368.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601368, url, valid)
+  result = hook(call_594368, url, valid)
 
-proc call*(call_601369: Call_UpdateResolverRule_601356; body: JsonNode): Recallable =
+proc call*(call_594369: Call_UpdateResolverRule_594356; body: JsonNode): Recallable =
   ## updateResolverRule
   ## Updates settings for a specified resolver rule. <code>ResolverRuleId</code> is required, and all other parameters are optional. If you don't specify a parameter, it retains its current value.
   ##   body: JObject (required)
-  var body_601370 = newJObject()
+  var body_594370 = newJObject()
   if body != nil:
-    body_601370 = body
-  result = call_601369.call(nil, nil, nil, nil, body_601370)
+    body_594370 = body
+  result = call_594369.call(nil, nil, nil, nil, body_594370)
 
-var updateResolverRule* = Call_UpdateResolverRule_601356(
+var updateResolverRule* = Call_UpdateResolverRule_594356(
     name: "updateResolverRule", meth: HttpMethod.HttpPost,
     host: "route53resolver.amazonaws.com",
     route: "/#X-Amz-Target=Route53Resolver.UpdateResolverRule",
-    validator: validate_UpdateResolverRule_601357, base: "/",
-    url: url_UpdateResolverRule_601358, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateResolverRule_594357, base: "/",
+    url: url_UpdateResolverRule_594358, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

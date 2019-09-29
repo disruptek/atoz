@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Personalize Events
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600424 = ref object of OpenApiRestCall
+  OpenApiRestCall_593424 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600424](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593424](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600424): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593424): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -130,15 +130,15 @@ const
   awsServiceName = "personalize-events"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_PutEvents_600761 = ref object of OpenApiRestCall_600424
-proc url_PutEvents_600763(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutEvents_593761 = ref object of OpenApiRestCall_593424
+proc url_PutEvents_593763(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutEvents_600762(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutEvents_593762(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Records user interaction event data.
   ## 
@@ -157,41 +157,41 @@ proc validate_PutEvents_600762(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600875 = header.getOrDefault("X-Amz-Date")
-  valid_600875 = validateParameter(valid_600875, JString, required = false,
+  var valid_593875 = header.getOrDefault("X-Amz-Date")
+  valid_593875 = validateParameter(valid_593875, JString, required = false,
                                  default = nil)
-  if valid_600875 != nil:
-    section.add "X-Amz-Date", valid_600875
-  var valid_600876 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600876 = validateParameter(valid_600876, JString, required = false,
+  if valid_593875 != nil:
+    section.add "X-Amz-Date", valid_593875
+  var valid_593876 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593876 = validateParameter(valid_593876, JString, required = false,
                                  default = nil)
-  if valid_600876 != nil:
-    section.add "X-Amz-Security-Token", valid_600876
-  var valid_600877 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600877 = validateParameter(valid_600877, JString, required = false,
+  if valid_593876 != nil:
+    section.add "X-Amz-Security-Token", valid_593876
+  var valid_593877 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593877 = validateParameter(valid_593877, JString, required = false,
                                  default = nil)
-  if valid_600877 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600877
-  var valid_600878 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600878 = validateParameter(valid_600878, JString, required = false,
+  if valid_593877 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593877
+  var valid_593878 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593878 = validateParameter(valid_593878, JString, required = false,
                                  default = nil)
-  if valid_600878 != nil:
-    section.add "X-Amz-Algorithm", valid_600878
-  var valid_600879 = header.getOrDefault("X-Amz-Signature")
-  valid_600879 = validateParameter(valid_600879, JString, required = false,
+  if valid_593878 != nil:
+    section.add "X-Amz-Algorithm", valid_593878
+  var valid_593879 = header.getOrDefault("X-Amz-Signature")
+  valid_593879 = validateParameter(valid_593879, JString, required = false,
                                  default = nil)
-  if valid_600879 != nil:
-    section.add "X-Amz-Signature", valid_600879
-  var valid_600880 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600880 = validateParameter(valid_600880, JString, required = false,
+  if valid_593879 != nil:
+    section.add "X-Amz-Signature", valid_593879
+  var valid_593880 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593880 = validateParameter(valid_593880, JString, required = false,
                                  default = nil)
-  if valid_600880 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600880
-  var valid_600881 = header.getOrDefault("X-Amz-Credential")
-  valid_600881 = validateParameter(valid_600881, JString, required = false,
+  if valid_593880 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593880
+  var valid_593881 = header.getOrDefault("X-Amz-Credential")
+  valid_593881 = validateParameter(valid_593881, JString, required = false,
                                  default = nil)
-  if valid_600881 != nil:
-    section.add "X-Amz-Credential", valid_600881
+  if valid_593881 != nil:
+    section.add "X-Amz-Credential", valid_593881
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -202,33 +202,33 @@ proc validate_PutEvents_600762(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600905: Call_PutEvents_600761; path: JsonNode; query: JsonNode;
+proc call*(call_593905: Call_PutEvents_593761; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Records user interaction event data.
   ## 
-  let valid = call_600905.validator(path, query, header, formData, body)
-  let scheme = call_600905.pickScheme
+  let valid = call_593905.validator(path, query, header, formData, body)
+  let scheme = call_593905.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600905.url(scheme.get, call_600905.host, call_600905.base,
-                         call_600905.route, valid.getOrDefault("path"),
+  let url = call_593905.url(scheme.get, call_593905.host, call_593905.base,
+                         call_593905.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600905, url, valid)
+  result = hook(call_593905, url, valid)
 
-proc call*(call_600976: Call_PutEvents_600761; body: JsonNode): Recallable =
+proc call*(call_593976: Call_PutEvents_593761; body: JsonNode): Recallable =
   ## putEvents
   ## Records user interaction event data.
   ##   body: JObject (required)
-  var body_600977 = newJObject()
+  var body_593977 = newJObject()
   if body != nil:
-    body_600977 = body
-  result = call_600976.call(nil, nil, nil, nil, body_600977)
+    body_593977 = body
+  result = call_593976.call(nil, nil, nil, nil, body_593977)
 
-var putEvents* = Call_PutEvents_600761(name: "putEvents", meth: HttpMethod.HttpPost,
+var putEvents* = Call_PutEvents_593761(name: "putEvents", meth: HttpMethod.HttpPost,
                                     host: "personalize-events.amazonaws.com",
                                     route: "/events",
-                                    validator: validate_PutEvents_600762,
-                                    base: "/", url: url_PutEvents_600763,
+                                    validator: validate_PutEvents_593762,
+                                    base: "/", url: url_PutEvents_593763,
                                     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

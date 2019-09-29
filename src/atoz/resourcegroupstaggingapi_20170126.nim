@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS Resource Groups Tagging API
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600424 = ref object of OpenApiRestCall
+  OpenApiRestCall_593424 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600424](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593424](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600424): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593424): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -142,15 +142,15 @@ const
   awsServiceName = "resourcegroupstaggingapi"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GetResources_600761 = ref object of OpenApiRestCall_600424
-proc url_GetResources_600763(protocol: Scheme; host: string; base: string;
+  Call_GetResources_593761 = ref object of OpenApiRestCall_593424
+proc url_GetResources_593763(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetResources_600762(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetResources_593762(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns all the tagged or previously tagged resources that are located in the specified region for the AWS account. You can optionally specify <i>filters</i> (tags and resource types) in your request, depending on what information you want returned. The response includes all tags that are associated with the requested resources.</p> <note> <p>You can check the <code>PaginationToken</code> response parameter to determine if a query completed. Queries can occasionally return fewer results on a page than allowed. The <code>PaginationToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display. </p> </note>
   ## 
@@ -164,16 +164,16 @@ proc validate_GetResources_600762(path: JsonNode; query: JsonNode; header: JsonN
   ##   PaginationToken: JString
   ##                  : Pagination token
   section = newJObject()
-  var valid_600875 = query.getOrDefault("ResourcesPerPage")
-  valid_600875 = validateParameter(valid_600875, JString, required = false,
+  var valid_593875 = query.getOrDefault("ResourcesPerPage")
+  valid_593875 = validateParameter(valid_593875, JString, required = false,
                                  default = nil)
-  if valid_600875 != nil:
-    section.add "ResourcesPerPage", valid_600875
-  var valid_600876 = query.getOrDefault("PaginationToken")
-  valid_600876 = validateParameter(valid_600876, JString, required = false,
+  if valid_593875 != nil:
+    section.add "ResourcesPerPage", valid_593875
+  var valid_593876 = query.getOrDefault("PaginationToken")
+  valid_593876 = validateParameter(valid_593876, JString, required = false,
                                  default = nil)
-  if valid_600876 != nil:
-    section.add "PaginationToken", valid_600876
+  if valid_593876 != nil:
+    section.add "PaginationToken", valid_593876
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -185,48 +185,48 @@ proc validate_GetResources_600762(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600877 = header.getOrDefault("X-Amz-Date")
-  valid_600877 = validateParameter(valid_600877, JString, required = false,
+  var valid_593877 = header.getOrDefault("X-Amz-Date")
+  valid_593877 = validateParameter(valid_593877, JString, required = false,
                                  default = nil)
-  if valid_600877 != nil:
-    section.add "X-Amz-Date", valid_600877
-  var valid_600878 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600878 = validateParameter(valid_600878, JString, required = false,
+  if valid_593877 != nil:
+    section.add "X-Amz-Date", valid_593877
+  var valid_593878 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593878 = validateParameter(valid_593878, JString, required = false,
                                  default = nil)
-  if valid_600878 != nil:
-    section.add "X-Amz-Security-Token", valid_600878
+  if valid_593878 != nil:
+    section.add "X-Amz-Security-Token", valid_593878
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600892 = header.getOrDefault("X-Amz-Target")
-  valid_600892 = validateParameter(valid_600892, JString, required = true, default = newJString(
+  var valid_593892 = header.getOrDefault("X-Amz-Target")
+  valid_593892 = validateParameter(valid_593892, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.GetResources"))
-  if valid_600892 != nil:
-    section.add "X-Amz-Target", valid_600892
-  var valid_600893 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600893 = validateParameter(valid_600893, JString, required = false,
+  if valid_593892 != nil:
+    section.add "X-Amz-Target", valid_593892
+  var valid_593893 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593893 = validateParameter(valid_593893, JString, required = false,
                                  default = nil)
-  if valid_600893 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600893
-  var valid_600894 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600894 = validateParameter(valid_600894, JString, required = false,
+  if valid_593893 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593893
+  var valid_593894 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593894 = validateParameter(valid_593894, JString, required = false,
                                  default = nil)
-  if valid_600894 != nil:
-    section.add "X-Amz-Algorithm", valid_600894
-  var valid_600895 = header.getOrDefault("X-Amz-Signature")
-  valid_600895 = validateParameter(valid_600895, JString, required = false,
+  if valid_593894 != nil:
+    section.add "X-Amz-Algorithm", valid_593894
+  var valid_593895 = header.getOrDefault("X-Amz-Signature")
+  valid_593895 = validateParameter(valid_593895, JString, required = false,
                                  default = nil)
-  if valid_600895 != nil:
-    section.add "X-Amz-Signature", valid_600895
-  var valid_600896 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600896 = validateParameter(valid_600896, JString, required = false,
+  if valid_593895 != nil:
+    section.add "X-Amz-Signature", valid_593895
+  var valid_593896 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593896 = validateParameter(valid_593896, JString, required = false,
                                  default = nil)
-  if valid_600896 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600896
-  var valid_600897 = header.getOrDefault("X-Amz-Credential")
-  valid_600897 = validateParameter(valid_600897, JString, required = false,
+  if valid_593896 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593896
+  var valid_593897 = header.getOrDefault("X-Amz-Credential")
+  valid_593897 = validateParameter(valid_593897, JString, required = false,
                                  default = nil)
-  if valid_600897 != nil:
-    section.add "X-Amz-Credential", valid_600897
+  if valid_593897 != nil:
+    section.add "X-Amz-Credential", valid_593897
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -237,20 +237,20 @@ proc validate_GetResources_600762(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600921: Call_GetResources_600761; path: JsonNode; query: JsonNode;
+proc call*(call_593921: Call_GetResources_593761; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns all the tagged or previously tagged resources that are located in the specified region for the AWS account. You can optionally specify <i>filters</i> (tags and resource types) in your request, depending on what information you want returned. The response includes all tags that are associated with the requested resources.</p> <note> <p>You can check the <code>PaginationToken</code> response parameter to determine if a query completed. Queries can occasionally return fewer results on a page than allowed. The <code>PaginationToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display. </p> </note>
   ## 
-  let valid = call_600921.validator(path, query, header, formData, body)
-  let scheme = call_600921.pickScheme
+  let valid = call_593921.validator(path, query, header, formData, body)
+  let scheme = call_593921.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600921.url(scheme.get, call_600921.host, call_600921.base,
-                         call_600921.route, valid.getOrDefault("path"),
+  let url = call_593921.url(scheme.get, call_593921.host, call_593921.base,
+                         call_593921.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600921, url, valid)
+  result = hook(call_593921, url, valid)
 
-proc call*(call_600992: Call_GetResources_600761; body: JsonNode;
+proc call*(call_593992: Call_GetResources_593761; body: JsonNode;
           ResourcesPerPage: string = ""; PaginationToken: string = ""): Recallable =
   ## getResources
   ## <p>Returns all the tagged or previously tagged resources that are located in the specified region for the AWS account. You can optionally specify <i>filters</i> (tags and resource types) in your request, depending on what information you want returned. The response includes all tags that are associated with the requested resources.</p> <note> <p>You can check the <code>PaginationToken</code> response parameter to determine if a query completed. Queries can occasionally return fewer results on a page than allowed. The <code>PaginationToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display. </p> </note>
@@ -259,29 +259,29 @@ proc call*(call_600992: Call_GetResources_600761; body: JsonNode;
   ##   PaginationToken: string
   ##                  : Pagination token
   ##   body: JObject (required)
-  var query_600993 = newJObject()
-  var body_600995 = newJObject()
-  add(query_600993, "ResourcesPerPage", newJString(ResourcesPerPage))
-  add(query_600993, "PaginationToken", newJString(PaginationToken))
+  var query_593993 = newJObject()
+  var body_593995 = newJObject()
+  add(query_593993, "ResourcesPerPage", newJString(ResourcesPerPage))
+  add(query_593993, "PaginationToken", newJString(PaginationToken))
   if body != nil:
-    body_600995 = body
-  result = call_600992.call(nil, query_600993, nil, nil, body_600995)
+    body_593995 = body
+  result = call_593992.call(nil, query_593993, nil, nil, body_593995)
 
-var getResources* = Call_GetResources_600761(name: "getResources",
+var getResources* = Call_GetResources_593761(name: "getResources",
     meth: HttpMethod.HttpPost, host: "tagging.amazonaws.com",
     route: "/#X-Amz-Target=ResourceGroupsTaggingAPI_20170126.GetResources",
-    validator: validate_GetResources_600762, base: "/", url: url_GetResources_600763,
+    validator: validate_GetResources_593762, base: "/", url: url_GetResources_593763,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTagKeys_601034 = ref object of OpenApiRestCall_600424
-proc url_GetTagKeys_601036(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetTagKeys_594034 = ref object of OpenApiRestCall_593424
+proc url_GetTagKeys_594036(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetTagKeys_601035(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetTagKeys_594035(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns all tag keys in the specified region for the AWS account.
   ## 
@@ -293,11 +293,11 @@ proc validate_GetTagKeys_601035(path: JsonNode; query: JsonNode; header: JsonNod
   ##   PaginationToken: JString
   ##                  : Pagination token
   section = newJObject()
-  var valid_601037 = query.getOrDefault("PaginationToken")
-  valid_601037 = validateParameter(valid_601037, JString, required = false,
+  var valid_594037 = query.getOrDefault("PaginationToken")
+  valid_594037 = validateParameter(valid_594037, JString, required = false,
                                  default = nil)
-  if valid_601037 != nil:
-    section.add "PaginationToken", valid_601037
+  if valid_594037 != nil:
+    section.add "PaginationToken", valid_594037
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -309,48 +309,48 @@ proc validate_GetTagKeys_601035(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601038 = header.getOrDefault("X-Amz-Date")
-  valid_601038 = validateParameter(valid_601038, JString, required = false,
+  var valid_594038 = header.getOrDefault("X-Amz-Date")
+  valid_594038 = validateParameter(valid_594038, JString, required = false,
                                  default = nil)
-  if valid_601038 != nil:
-    section.add "X-Amz-Date", valid_601038
-  var valid_601039 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601039 = validateParameter(valid_601039, JString, required = false,
+  if valid_594038 != nil:
+    section.add "X-Amz-Date", valid_594038
+  var valid_594039 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594039 = validateParameter(valid_594039, JString, required = false,
                                  default = nil)
-  if valid_601039 != nil:
-    section.add "X-Amz-Security-Token", valid_601039
+  if valid_594039 != nil:
+    section.add "X-Amz-Security-Token", valid_594039
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601040 = header.getOrDefault("X-Amz-Target")
-  valid_601040 = validateParameter(valid_601040, JString, required = true, default = newJString(
+  var valid_594040 = header.getOrDefault("X-Amz-Target")
+  valid_594040 = validateParameter(valid_594040, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.GetTagKeys"))
-  if valid_601040 != nil:
-    section.add "X-Amz-Target", valid_601040
-  var valid_601041 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601041 = validateParameter(valid_601041, JString, required = false,
+  if valid_594040 != nil:
+    section.add "X-Amz-Target", valid_594040
+  var valid_594041 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594041 = validateParameter(valid_594041, JString, required = false,
                                  default = nil)
-  if valid_601041 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601041
-  var valid_601042 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601042 = validateParameter(valid_601042, JString, required = false,
+  if valid_594041 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594041
+  var valid_594042 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594042 = validateParameter(valid_594042, JString, required = false,
                                  default = nil)
-  if valid_601042 != nil:
-    section.add "X-Amz-Algorithm", valid_601042
-  var valid_601043 = header.getOrDefault("X-Amz-Signature")
-  valid_601043 = validateParameter(valid_601043, JString, required = false,
+  if valid_594042 != nil:
+    section.add "X-Amz-Algorithm", valid_594042
+  var valid_594043 = header.getOrDefault("X-Amz-Signature")
+  valid_594043 = validateParameter(valid_594043, JString, required = false,
                                  default = nil)
-  if valid_601043 != nil:
-    section.add "X-Amz-Signature", valid_601043
-  var valid_601044 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601044 = validateParameter(valid_601044, JString, required = false,
+  if valid_594043 != nil:
+    section.add "X-Amz-Signature", valid_594043
+  var valid_594044 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594044 = validateParameter(valid_594044, JString, required = false,
                                  default = nil)
-  if valid_601044 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601044
-  var valid_601045 = header.getOrDefault("X-Amz-Credential")
-  valid_601045 = validateParameter(valid_601045, JString, required = false,
+  if valid_594044 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594044
+  var valid_594045 = header.getOrDefault("X-Amz-Credential")
+  valid_594045 = validateParameter(valid_594045, JString, required = false,
                                  default = nil)
-  if valid_601045 != nil:
-    section.add "X-Amz-Credential", valid_601045
+  if valid_594045 != nil:
+    section.add "X-Amz-Credential", valid_594045
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -361,49 +361,49 @@ proc validate_GetTagKeys_601035(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_601047: Call_GetTagKeys_601034; path: JsonNode; query: JsonNode;
+proc call*(call_594047: Call_GetTagKeys_594034; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns all tag keys in the specified region for the AWS account.
   ## 
-  let valid = call_601047.validator(path, query, header, formData, body)
-  let scheme = call_601047.pickScheme
+  let valid = call_594047.validator(path, query, header, formData, body)
+  let scheme = call_594047.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601047.url(scheme.get, call_601047.host, call_601047.base,
-                         call_601047.route, valid.getOrDefault("path"),
+  let url = call_594047.url(scheme.get, call_594047.host, call_594047.base,
+                         call_594047.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601047, url, valid)
+  result = hook(call_594047, url, valid)
 
-proc call*(call_601048: Call_GetTagKeys_601034; body: JsonNode;
+proc call*(call_594048: Call_GetTagKeys_594034; body: JsonNode;
           PaginationToken: string = ""): Recallable =
   ## getTagKeys
   ## Returns all tag keys in the specified region for the AWS account.
   ##   PaginationToken: string
   ##                  : Pagination token
   ##   body: JObject (required)
-  var query_601049 = newJObject()
-  var body_601050 = newJObject()
-  add(query_601049, "PaginationToken", newJString(PaginationToken))
+  var query_594049 = newJObject()
+  var body_594050 = newJObject()
+  add(query_594049, "PaginationToken", newJString(PaginationToken))
   if body != nil:
-    body_601050 = body
-  result = call_601048.call(nil, query_601049, nil, nil, body_601050)
+    body_594050 = body
+  result = call_594048.call(nil, query_594049, nil, nil, body_594050)
 
-var getTagKeys* = Call_GetTagKeys_601034(name: "getTagKeys",
+var getTagKeys* = Call_GetTagKeys_594034(name: "getTagKeys",
                                       meth: HttpMethod.HttpPost,
                                       host: "tagging.amazonaws.com", route: "/#X-Amz-Target=ResourceGroupsTaggingAPI_20170126.GetTagKeys",
-                                      validator: validate_GetTagKeys_601035,
-                                      base: "/", url: url_GetTagKeys_601036,
+                                      validator: validate_GetTagKeys_594035,
+                                      base: "/", url: url_GetTagKeys_594036,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTagValues_601051 = ref object of OpenApiRestCall_600424
-proc url_GetTagValues_601053(protocol: Scheme; host: string; base: string;
+  Call_GetTagValues_594051 = ref object of OpenApiRestCall_593424
+proc url_GetTagValues_594053(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetTagValues_601052(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetTagValues_594052(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns all tag values for the specified key in the specified region for the AWS account.
   ## 
@@ -415,11 +415,11 @@ proc validate_GetTagValues_601052(path: JsonNode; query: JsonNode; header: JsonN
   ##   PaginationToken: JString
   ##                  : Pagination token
   section = newJObject()
-  var valid_601054 = query.getOrDefault("PaginationToken")
-  valid_601054 = validateParameter(valid_601054, JString, required = false,
+  var valid_594054 = query.getOrDefault("PaginationToken")
+  valid_594054 = validateParameter(valid_594054, JString, required = false,
                                  default = nil)
-  if valid_601054 != nil:
-    section.add "PaginationToken", valid_601054
+  if valid_594054 != nil:
+    section.add "PaginationToken", valid_594054
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -431,48 +431,48 @@ proc validate_GetTagValues_601052(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601055 = header.getOrDefault("X-Amz-Date")
-  valid_601055 = validateParameter(valid_601055, JString, required = false,
+  var valid_594055 = header.getOrDefault("X-Amz-Date")
+  valid_594055 = validateParameter(valid_594055, JString, required = false,
                                  default = nil)
-  if valid_601055 != nil:
-    section.add "X-Amz-Date", valid_601055
-  var valid_601056 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601056 = validateParameter(valid_601056, JString, required = false,
+  if valid_594055 != nil:
+    section.add "X-Amz-Date", valid_594055
+  var valid_594056 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594056 = validateParameter(valid_594056, JString, required = false,
                                  default = nil)
-  if valid_601056 != nil:
-    section.add "X-Amz-Security-Token", valid_601056
+  if valid_594056 != nil:
+    section.add "X-Amz-Security-Token", valid_594056
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601057 = header.getOrDefault("X-Amz-Target")
-  valid_601057 = validateParameter(valid_601057, JString, required = true, default = newJString(
+  var valid_594057 = header.getOrDefault("X-Amz-Target")
+  valid_594057 = validateParameter(valid_594057, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.GetTagValues"))
-  if valid_601057 != nil:
-    section.add "X-Amz-Target", valid_601057
-  var valid_601058 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601058 = validateParameter(valid_601058, JString, required = false,
+  if valid_594057 != nil:
+    section.add "X-Amz-Target", valid_594057
+  var valid_594058 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594058 = validateParameter(valid_594058, JString, required = false,
                                  default = nil)
-  if valid_601058 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601058
-  var valid_601059 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601059 = validateParameter(valid_601059, JString, required = false,
+  if valid_594058 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594058
+  var valid_594059 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594059 = validateParameter(valid_594059, JString, required = false,
                                  default = nil)
-  if valid_601059 != nil:
-    section.add "X-Amz-Algorithm", valid_601059
-  var valid_601060 = header.getOrDefault("X-Amz-Signature")
-  valid_601060 = validateParameter(valid_601060, JString, required = false,
+  if valid_594059 != nil:
+    section.add "X-Amz-Algorithm", valid_594059
+  var valid_594060 = header.getOrDefault("X-Amz-Signature")
+  valid_594060 = validateParameter(valid_594060, JString, required = false,
                                  default = nil)
-  if valid_601060 != nil:
-    section.add "X-Amz-Signature", valid_601060
-  var valid_601061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601061 = validateParameter(valid_601061, JString, required = false,
+  if valid_594060 != nil:
+    section.add "X-Amz-Signature", valid_594060
+  var valid_594061 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594061 = validateParameter(valid_594061, JString, required = false,
                                  default = nil)
-  if valid_601061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601061
-  var valid_601062 = header.getOrDefault("X-Amz-Credential")
-  valid_601062 = validateParameter(valid_601062, JString, required = false,
+  if valid_594061 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594061
+  var valid_594062 = header.getOrDefault("X-Amz-Credential")
+  valid_594062 = validateParameter(valid_594062, JString, required = false,
                                  default = nil)
-  if valid_601062 != nil:
-    section.add "X-Amz-Credential", valid_601062
+  if valid_594062 != nil:
+    section.add "X-Amz-Credential", valid_594062
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -483,48 +483,48 @@ proc validate_GetTagValues_601052(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601064: Call_GetTagValues_601051; path: JsonNode; query: JsonNode;
+proc call*(call_594064: Call_GetTagValues_594051; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns all tag values for the specified key in the specified region for the AWS account.
   ## 
-  let valid = call_601064.validator(path, query, header, formData, body)
-  let scheme = call_601064.pickScheme
+  let valid = call_594064.validator(path, query, header, formData, body)
+  let scheme = call_594064.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601064.url(scheme.get, call_601064.host, call_601064.base,
-                         call_601064.route, valid.getOrDefault("path"),
+  let url = call_594064.url(scheme.get, call_594064.host, call_594064.base,
+                         call_594064.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601064, url, valid)
+  result = hook(call_594064, url, valid)
 
-proc call*(call_601065: Call_GetTagValues_601051; body: JsonNode;
+proc call*(call_594065: Call_GetTagValues_594051; body: JsonNode;
           PaginationToken: string = ""): Recallable =
   ## getTagValues
   ## Returns all tag values for the specified key in the specified region for the AWS account.
   ##   PaginationToken: string
   ##                  : Pagination token
   ##   body: JObject (required)
-  var query_601066 = newJObject()
-  var body_601067 = newJObject()
-  add(query_601066, "PaginationToken", newJString(PaginationToken))
+  var query_594066 = newJObject()
+  var body_594067 = newJObject()
+  add(query_594066, "PaginationToken", newJString(PaginationToken))
   if body != nil:
-    body_601067 = body
-  result = call_601065.call(nil, query_601066, nil, nil, body_601067)
+    body_594067 = body
+  result = call_594065.call(nil, query_594066, nil, nil, body_594067)
 
-var getTagValues* = Call_GetTagValues_601051(name: "getTagValues",
+var getTagValues* = Call_GetTagValues_594051(name: "getTagValues",
     meth: HttpMethod.HttpPost, host: "tagging.amazonaws.com",
     route: "/#X-Amz-Target=ResourceGroupsTaggingAPI_20170126.GetTagValues",
-    validator: validate_GetTagValues_601052, base: "/", url: url_GetTagValues_601053,
+    validator: validate_GetTagValues_594052, base: "/", url: url_GetTagValues_594053,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResources_601068 = ref object of OpenApiRestCall_600424
-proc url_TagResources_601070(protocol: Scheme; host: string; base: string;
+  Call_TagResources_594068 = ref object of OpenApiRestCall_593424
+proc url_TagResources_594070(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_TagResources_601069(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResources_594069(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Applies one or more tags to the specified resources. Note the following:</p> <ul> <li> <p>Not all resources can have tags. For a list of resources that support tagging, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/supported-resources.html">Supported Resources</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> <li> <p>Each resource can have up to 50 tags. For other limits, see <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html#tag-restrictions">Tag Restrictions</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p> </li> <li> <p>You can only tag resources that are located in the specified region for the AWS account.</p> </li> <li> <p>To add tags to a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for adding tags. For more information, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/obtaining-permissions-for-tagging.html">Obtaining Permissions for Tagging</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> </ul>
   ## 
@@ -544,48 +544,48 @@ proc validate_TagResources_601069(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601071 = header.getOrDefault("X-Amz-Date")
-  valid_601071 = validateParameter(valid_601071, JString, required = false,
+  var valid_594071 = header.getOrDefault("X-Amz-Date")
+  valid_594071 = validateParameter(valid_594071, JString, required = false,
                                  default = nil)
-  if valid_601071 != nil:
-    section.add "X-Amz-Date", valid_601071
-  var valid_601072 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601072 = validateParameter(valid_601072, JString, required = false,
+  if valid_594071 != nil:
+    section.add "X-Amz-Date", valid_594071
+  var valid_594072 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594072 = validateParameter(valid_594072, JString, required = false,
                                  default = nil)
-  if valid_601072 != nil:
-    section.add "X-Amz-Security-Token", valid_601072
+  if valid_594072 != nil:
+    section.add "X-Amz-Security-Token", valid_594072
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601073 = header.getOrDefault("X-Amz-Target")
-  valid_601073 = validateParameter(valid_601073, JString, required = true, default = newJString(
+  var valid_594073 = header.getOrDefault("X-Amz-Target")
+  valid_594073 = validateParameter(valid_594073, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.TagResources"))
-  if valid_601073 != nil:
-    section.add "X-Amz-Target", valid_601073
-  var valid_601074 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601074 = validateParameter(valid_601074, JString, required = false,
+  if valid_594073 != nil:
+    section.add "X-Amz-Target", valid_594073
+  var valid_594074 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594074 = validateParameter(valid_594074, JString, required = false,
                                  default = nil)
-  if valid_601074 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601074
-  var valid_601075 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601075 = validateParameter(valid_601075, JString, required = false,
+  if valid_594074 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594074
+  var valid_594075 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594075 = validateParameter(valid_594075, JString, required = false,
                                  default = nil)
-  if valid_601075 != nil:
-    section.add "X-Amz-Algorithm", valid_601075
-  var valid_601076 = header.getOrDefault("X-Amz-Signature")
-  valid_601076 = validateParameter(valid_601076, JString, required = false,
+  if valid_594075 != nil:
+    section.add "X-Amz-Algorithm", valid_594075
+  var valid_594076 = header.getOrDefault("X-Amz-Signature")
+  valid_594076 = validateParameter(valid_594076, JString, required = false,
                                  default = nil)
-  if valid_601076 != nil:
-    section.add "X-Amz-Signature", valid_601076
-  var valid_601077 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601077 = validateParameter(valid_601077, JString, required = false,
+  if valid_594076 != nil:
+    section.add "X-Amz-Signature", valid_594076
+  var valid_594077 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594077 = validateParameter(valid_594077, JString, required = false,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601077
-  var valid_601078 = header.getOrDefault("X-Amz-Credential")
-  valid_601078 = validateParameter(valid_601078, JString, required = false,
+  if valid_594077 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594077
+  var valid_594078 = header.getOrDefault("X-Amz-Credential")
+  valid_594078 = validateParameter(valid_594078, JString, required = false,
                                  default = nil)
-  if valid_601078 != nil:
-    section.add "X-Amz-Credential", valid_601078
+  if valid_594078 != nil:
+    section.add "X-Amz-Credential", valid_594078
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -596,43 +596,43 @@ proc validate_TagResources_601069(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601080: Call_TagResources_601068; path: JsonNode; query: JsonNode;
+proc call*(call_594080: Call_TagResources_594068; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Applies one or more tags to the specified resources. Note the following:</p> <ul> <li> <p>Not all resources can have tags. For a list of resources that support tagging, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/supported-resources.html">Supported Resources</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> <li> <p>Each resource can have up to 50 tags. For other limits, see <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html#tag-restrictions">Tag Restrictions</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p> </li> <li> <p>You can only tag resources that are located in the specified region for the AWS account.</p> </li> <li> <p>To add tags to a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for adding tags. For more information, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/obtaining-permissions-for-tagging.html">Obtaining Permissions for Tagging</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> </ul>
   ## 
-  let valid = call_601080.validator(path, query, header, formData, body)
-  let scheme = call_601080.pickScheme
+  let valid = call_594080.validator(path, query, header, formData, body)
+  let scheme = call_594080.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601080.url(scheme.get, call_601080.host, call_601080.base,
-                         call_601080.route, valid.getOrDefault("path"),
+  let url = call_594080.url(scheme.get, call_594080.host, call_594080.base,
+                         call_594080.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601080, url, valid)
+  result = hook(call_594080, url, valid)
 
-proc call*(call_601081: Call_TagResources_601068; body: JsonNode): Recallable =
+proc call*(call_594081: Call_TagResources_594068; body: JsonNode): Recallable =
   ## tagResources
   ## <p>Applies one or more tags to the specified resources. Note the following:</p> <ul> <li> <p>Not all resources can have tags. For a list of resources that support tagging, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/supported-resources.html">Supported Resources</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> <li> <p>Each resource can have up to 50 tags. For other limits, see <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html#tag-restrictions">Tag Restrictions</a> in the <i>Amazon EC2 User Guide for Linux Instances</i>.</p> </li> <li> <p>You can only tag resources that are located in the specified region for the AWS account.</p> </li> <li> <p>To add tags to a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for adding tags. For more information, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/obtaining-permissions-for-tagging.html">Obtaining Permissions for Tagging</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601082 = newJObject()
+  var body_594082 = newJObject()
   if body != nil:
-    body_601082 = body
-  result = call_601081.call(nil, nil, nil, nil, body_601082)
+    body_594082 = body
+  result = call_594081.call(nil, nil, nil, nil, body_594082)
 
-var tagResources* = Call_TagResources_601068(name: "tagResources",
+var tagResources* = Call_TagResources_594068(name: "tagResources",
     meth: HttpMethod.HttpPost, host: "tagging.amazonaws.com",
     route: "/#X-Amz-Target=ResourceGroupsTaggingAPI_20170126.TagResources",
-    validator: validate_TagResources_601069, base: "/", url: url_TagResources_601070,
+    validator: validate_TagResources_594069, base: "/", url: url_TagResources_594070,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResources_601083 = ref object of OpenApiRestCall_600424
-proc url_UntagResources_601085(protocol: Scheme; host: string; base: string;
+  Call_UntagResources_594083 = ref object of OpenApiRestCall_593424
+proc url_UntagResources_594085(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UntagResources_601084(path: JsonNode; query: JsonNode;
+proc validate_UntagResources_594084(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Removes the specified tags from the specified resources. When you specify a tag key, the action removes both that key and its associated value. The operation succeeds even if you attempt to remove tags from a resource that were already removed. Note the following:</p> <ul> <li> <p>To remove tags from a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for removing tags. For more information, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/obtaining-permissions-for-tagging.html">Obtaining Permissions for Tagging</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> <li> <p>You can only tag resources that are located in the specified region for the AWS account.</p> </li> </ul>
@@ -653,48 +653,48 @@ proc validate_UntagResources_601084(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601086 = header.getOrDefault("X-Amz-Date")
-  valid_601086 = validateParameter(valid_601086, JString, required = false,
+  var valid_594086 = header.getOrDefault("X-Amz-Date")
+  valid_594086 = validateParameter(valid_594086, JString, required = false,
                                  default = nil)
-  if valid_601086 != nil:
-    section.add "X-Amz-Date", valid_601086
-  var valid_601087 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601087 = validateParameter(valid_601087, JString, required = false,
+  if valid_594086 != nil:
+    section.add "X-Amz-Date", valid_594086
+  var valid_594087 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594087 = validateParameter(valid_594087, JString, required = false,
                                  default = nil)
-  if valid_601087 != nil:
-    section.add "X-Amz-Security-Token", valid_601087
+  if valid_594087 != nil:
+    section.add "X-Amz-Security-Token", valid_594087
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601088 = header.getOrDefault("X-Amz-Target")
-  valid_601088 = validateParameter(valid_601088, JString, required = true, default = newJString(
+  var valid_594088 = header.getOrDefault("X-Amz-Target")
+  valid_594088 = validateParameter(valid_594088, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.UntagResources"))
-  if valid_601088 != nil:
-    section.add "X-Amz-Target", valid_601088
-  var valid_601089 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601089 = validateParameter(valid_601089, JString, required = false,
+  if valid_594088 != nil:
+    section.add "X-Amz-Target", valid_594088
+  var valid_594089 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594089 = validateParameter(valid_594089, JString, required = false,
                                  default = nil)
-  if valid_601089 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601089
-  var valid_601090 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601090 = validateParameter(valid_601090, JString, required = false,
+  if valid_594089 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594089
+  var valid_594090 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594090 = validateParameter(valid_594090, JString, required = false,
                                  default = nil)
-  if valid_601090 != nil:
-    section.add "X-Amz-Algorithm", valid_601090
-  var valid_601091 = header.getOrDefault("X-Amz-Signature")
-  valid_601091 = validateParameter(valid_601091, JString, required = false,
+  if valid_594090 != nil:
+    section.add "X-Amz-Algorithm", valid_594090
+  var valid_594091 = header.getOrDefault("X-Amz-Signature")
+  valid_594091 = validateParameter(valid_594091, JString, required = false,
                                  default = nil)
-  if valid_601091 != nil:
-    section.add "X-Amz-Signature", valid_601091
-  var valid_601092 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  if valid_594091 != nil:
+    section.add "X-Amz-Signature", valid_594091
+  var valid_594092 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594092 = validateParameter(valid_594092, JString, required = false,
                                  default = nil)
-  if valid_601092 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601092
-  var valid_601093 = header.getOrDefault("X-Amz-Credential")
-  valid_601093 = validateParameter(valid_601093, JString, required = false,
+  if valid_594092 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594092
+  var valid_594093 = header.getOrDefault("X-Amz-Credential")
+  valid_594093 = validateParameter(valid_594093, JString, required = false,
                                  default = nil)
-  if valid_601093 != nil:
-    section.add "X-Amz-Credential", valid_601093
+  if valid_594093 != nil:
+    section.add "X-Amz-Credential", valid_594093
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -705,32 +705,32 @@ proc validate_UntagResources_601084(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601095: Call_UntagResources_601083; path: JsonNode; query: JsonNode;
+proc call*(call_594095: Call_UntagResources_594083; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes the specified tags from the specified resources. When you specify a tag key, the action removes both that key and its associated value. The operation succeeds even if you attempt to remove tags from a resource that were already removed. Note the following:</p> <ul> <li> <p>To remove tags from a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for removing tags. For more information, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/obtaining-permissions-for-tagging.html">Obtaining Permissions for Tagging</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> <li> <p>You can only tag resources that are located in the specified region for the AWS account.</p> </li> </ul>
   ## 
-  let valid = call_601095.validator(path, query, header, formData, body)
-  let scheme = call_601095.pickScheme
+  let valid = call_594095.validator(path, query, header, formData, body)
+  let scheme = call_594095.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601095.url(scheme.get, call_601095.host, call_601095.base,
-                         call_601095.route, valid.getOrDefault("path"),
+  let url = call_594095.url(scheme.get, call_594095.host, call_594095.base,
+                         call_594095.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601095, url, valid)
+  result = hook(call_594095, url, valid)
 
-proc call*(call_601096: Call_UntagResources_601083; body: JsonNode): Recallable =
+proc call*(call_594096: Call_UntagResources_594083; body: JsonNode): Recallable =
   ## untagResources
   ## <p>Removes the specified tags from the specified resources. When you specify a tag key, the action removes both that key and its associated value. The operation succeeds even if you attempt to remove tags from a resource that were already removed. Note the following:</p> <ul> <li> <p>To remove tags from a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for removing tags. For more information, see <a href="http://docs.aws.amazon.com/ARG/latest/userguide/obtaining-permissions-for-tagging.html">Obtaining Permissions for Tagging</a> in the <i>AWS Resource Groups User Guide</i>.</p> </li> <li> <p>You can only tag resources that are located in the specified region for the AWS account.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601097 = newJObject()
+  var body_594097 = newJObject()
   if body != nil:
-    body_601097 = body
-  result = call_601096.call(nil, nil, nil, nil, body_601097)
+    body_594097 = body
+  result = call_594096.call(nil, nil, nil, nil, body_594097)
 
-var untagResources* = Call_UntagResources_601083(name: "untagResources",
+var untagResources* = Call_UntagResources_594083(name: "untagResources",
     meth: HttpMethod.HttpPost, host: "tagging.amazonaws.com",
     route: "/#X-Amz-Target=ResourceGroupsTaggingAPI_20170126.UntagResources",
-    validator: validate_UntagResources_601084, base: "/", url: url_UntagResources_601085,
+    validator: validate_UntagResources_594084, base: "/", url: url_UntagResources_594085,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

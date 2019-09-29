@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, openapi/rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS Secrets Manager
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_600438 = ref object of OpenApiRestCall
+  OpenApiRestCall_593438 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_600438](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_593438](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_600438): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_593438): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -74,7 +74,7 @@ type
   PathTokenKind = enum
     ConstantSegment, VariableSegment
   PathToken = tuple[kind: PathTokenKind, value: string]
-proc queryString(query: JsonNode): string =
+proc queryString(query: JsonNode): string {.used.} =
   var qs: seq[KeyVal]
   if query == nil:
     return ""
@@ -82,7 +82,7 @@ proc queryString(query: JsonNode): string =
     qs.add (key: k, val: v.getStr)
   result = encodeQuery(qs)
 
-proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] =
+proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.used.} =
   ## reconstitute a path with constants and variable values taken from json
   var head: string
   if segments.len == 0:
@@ -130,15 +130,15 @@ const
   awsServiceName = "secretsmanager"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CancelRotateSecret_600775 = ref object of OpenApiRestCall_600438
-proc url_CancelRotateSecret_600777(protocol: Scheme; host: string; base: string;
+  Call_CancelRotateSecret_593775 = ref object of OpenApiRestCall_593438
+proc url_CancelRotateSecret_593777(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CancelRotateSecret_600776(path: JsonNode; query: JsonNode;
+proc validate_CancelRotateSecret_593776(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Disables automatic scheduled rotation and cancels the rotation of a secret if one is currently in progress.</p> <p>To re-enable scheduled rotation, call <a>RotateSecret</a> with <code>AutomaticallyRotateAfterDays</code> set to a value greater than 0. This will immediately rotate your secret and then enable the automatic schedule.</p> <note> <p>If you cancel a rotation that is in progress, it can leave the <code>VersionStage</code> labels in an unexpected state. Depending on what step of the rotation was in progress, you might need to remove the staging label <code>AWSPENDING</code> from the partially created version, specified by the <code>VersionId</code> response value. You should also evaluate the partially rotated new version to see if it should be deleted, which you can do by removing all staging labels from the new version's <code>VersionStage</code> field.</p> </note> <p>To successfully start a rotation, the staging label <code>AWSPENDING</code> must be in one of the following states:</p> <ul> <li> <p>Not be attached to any version at all</p> </li> <li> <p>Attached to the same version as the staging label <code>AWSCURRENT</code> </p> </li> </ul> <p>If the staging label <code>AWSPENDING</code> is attached to a different version than the version with <code>AWSCURRENT</code> then the attempt to rotate fails.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:CancelRotateSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To configure rotation for a secret or to manually trigger a rotation, use <a>RotateSecret</a>.</p> </li> <li> <p>To get the rotation configuration details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> <li> <p>To list all of the versions currently associated with a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
@@ -159,48 +159,48 @@ proc validate_CancelRotateSecret_600776(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600889 = header.getOrDefault("X-Amz-Date")
-  valid_600889 = validateParameter(valid_600889, JString, required = false,
+  var valid_593889 = header.getOrDefault("X-Amz-Date")
+  valid_593889 = validateParameter(valid_593889, JString, required = false,
                                  default = nil)
-  if valid_600889 != nil:
-    section.add "X-Amz-Date", valid_600889
-  var valid_600890 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600890 = validateParameter(valid_600890, JString, required = false,
+  if valid_593889 != nil:
+    section.add "X-Amz-Date", valid_593889
+  var valid_593890 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593890 = validateParameter(valid_593890, JString, required = false,
                                  default = nil)
-  if valid_600890 != nil:
-    section.add "X-Amz-Security-Token", valid_600890
+  if valid_593890 != nil:
+    section.add "X-Amz-Security-Token", valid_593890
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600904 = header.getOrDefault("X-Amz-Target")
-  valid_600904 = validateParameter(valid_600904, JString, required = true, default = newJString(
+  var valid_593904 = header.getOrDefault("X-Amz-Target")
+  valid_593904 = validateParameter(valid_593904, JString, required = true, default = newJString(
       "secretsmanager.CancelRotateSecret"))
-  if valid_600904 != nil:
-    section.add "X-Amz-Target", valid_600904
-  var valid_600905 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600905 = validateParameter(valid_600905, JString, required = false,
+  if valid_593904 != nil:
+    section.add "X-Amz-Target", valid_593904
+  var valid_593905 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593905 = validateParameter(valid_593905, JString, required = false,
                                  default = nil)
-  if valid_600905 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600905
-  var valid_600906 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600906 = validateParameter(valid_600906, JString, required = false,
+  if valid_593905 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593905
+  var valid_593906 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593906 = validateParameter(valid_593906, JString, required = false,
                                  default = nil)
-  if valid_600906 != nil:
-    section.add "X-Amz-Algorithm", valid_600906
-  var valid_600907 = header.getOrDefault("X-Amz-Signature")
-  valid_600907 = validateParameter(valid_600907, JString, required = false,
+  if valid_593906 != nil:
+    section.add "X-Amz-Algorithm", valid_593906
+  var valid_593907 = header.getOrDefault("X-Amz-Signature")
+  valid_593907 = validateParameter(valid_593907, JString, required = false,
                                  default = nil)
-  if valid_600907 != nil:
-    section.add "X-Amz-Signature", valid_600907
-  var valid_600908 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600908 = validateParameter(valid_600908, JString, required = false,
+  if valid_593907 != nil:
+    section.add "X-Amz-Signature", valid_593907
+  var valid_593908 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593908 = validateParameter(valid_593908, JString, required = false,
                                  default = nil)
-  if valid_600908 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600908
-  var valid_600909 = header.getOrDefault("X-Amz-Credential")
-  valid_600909 = validateParameter(valid_600909, JString, required = false,
+  if valid_593908 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593908
+  var valid_593909 = header.getOrDefault("X-Amz-Credential")
+  valid_593909 = validateParameter(valid_593909, JString, required = false,
                                  default = nil)
-  if valid_600909 != nil:
-    section.add "X-Amz-Credential", valid_600909
+  if valid_593909 != nil:
+    section.add "X-Amz-Credential", valid_593909
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -211,44 +211,44 @@ proc validate_CancelRotateSecret_600776(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600933: Call_CancelRotateSecret_600775; path: JsonNode;
+proc call*(call_593933: Call_CancelRotateSecret_593775; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Disables automatic scheduled rotation and cancels the rotation of a secret if one is currently in progress.</p> <p>To re-enable scheduled rotation, call <a>RotateSecret</a> with <code>AutomaticallyRotateAfterDays</code> set to a value greater than 0. This will immediately rotate your secret and then enable the automatic schedule.</p> <note> <p>If you cancel a rotation that is in progress, it can leave the <code>VersionStage</code> labels in an unexpected state. Depending on what step of the rotation was in progress, you might need to remove the staging label <code>AWSPENDING</code> from the partially created version, specified by the <code>VersionId</code> response value. You should also evaluate the partially rotated new version to see if it should be deleted, which you can do by removing all staging labels from the new version's <code>VersionStage</code> field.</p> </note> <p>To successfully start a rotation, the staging label <code>AWSPENDING</code> must be in one of the following states:</p> <ul> <li> <p>Not be attached to any version at all</p> </li> <li> <p>Attached to the same version as the staging label <code>AWSCURRENT</code> </p> </li> </ul> <p>If the staging label <code>AWSPENDING</code> is attached to a different version than the version with <code>AWSCURRENT</code> then the attempt to rotate fails.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:CancelRotateSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To configure rotation for a secret or to manually trigger a rotation, use <a>RotateSecret</a>.</p> </li> <li> <p>To get the rotation configuration details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> <li> <p>To list all of the versions currently associated with a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ## 
-  let valid = call_600933.validator(path, query, header, formData, body)
-  let scheme = call_600933.pickScheme
+  let valid = call_593933.validator(path, query, header, formData, body)
+  let scheme = call_593933.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600933.url(scheme.get, call_600933.host, call_600933.base,
-                         call_600933.route, valid.getOrDefault("path"),
+  let url = call_593933.url(scheme.get, call_593933.host, call_593933.base,
+                         call_593933.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_600933, url, valid)
+  result = hook(call_593933, url, valid)
 
-proc call*(call_601004: Call_CancelRotateSecret_600775; body: JsonNode): Recallable =
+proc call*(call_594004: Call_CancelRotateSecret_593775; body: JsonNode): Recallable =
   ## cancelRotateSecret
   ## <p>Disables automatic scheduled rotation and cancels the rotation of a secret if one is currently in progress.</p> <p>To re-enable scheduled rotation, call <a>RotateSecret</a> with <code>AutomaticallyRotateAfterDays</code> set to a value greater than 0. This will immediately rotate your secret and then enable the automatic schedule.</p> <note> <p>If you cancel a rotation that is in progress, it can leave the <code>VersionStage</code> labels in an unexpected state. Depending on what step of the rotation was in progress, you might need to remove the staging label <code>AWSPENDING</code> from the partially created version, specified by the <code>VersionId</code> response value. You should also evaluate the partially rotated new version to see if it should be deleted, which you can do by removing all staging labels from the new version's <code>VersionStage</code> field.</p> </note> <p>To successfully start a rotation, the staging label <code>AWSPENDING</code> must be in one of the following states:</p> <ul> <li> <p>Not be attached to any version at all</p> </li> <li> <p>Attached to the same version as the staging label <code>AWSCURRENT</code> </p> </li> </ul> <p>If the staging label <code>AWSPENDING</code> is attached to a different version than the version with <code>AWSCURRENT</code> then the attempt to rotate fails.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:CancelRotateSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To configure rotation for a secret or to manually trigger a rotation, use <a>RotateSecret</a>.</p> </li> <li> <p>To get the rotation configuration details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> <li> <p>To list all of the versions currently associated with a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601005 = newJObject()
+  var body_594005 = newJObject()
   if body != nil:
-    body_601005 = body
-  result = call_601004.call(nil, nil, nil, nil, body_601005)
+    body_594005 = body
+  result = call_594004.call(nil, nil, nil, nil, body_594005)
 
-var cancelRotateSecret* = Call_CancelRotateSecret_600775(
+var cancelRotateSecret* = Call_CancelRotateSecret_593775(
     name: "cancelRotateSecret", meth: HttpMethod.HttpPost,
     host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.CancelRotateSecret",
-    validator: validate_CancelRotateSecret_600776, base: "/",
-    url: url_CancelRotateSecret_600777, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CancelRotateSecret_593776, base: "/",
+    url: url_CancelRotateSecret_593777, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSecret_601044 = ref object of OpenApiRestCall_600438
-proc url_CreateSecret_601046(protocol: Scheme; host: string; base: string;
+  Call_CreateSecret_594044 = ref object of OpenApiRestCall_593438
+proc url_CreateSecret_594046(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateSecret_601045(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateSecret_594045(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new secret. A secret in Secrets Manager consists of both the protected secret data and the important information needed to manage the secret.</p> <p>Secrets Manager stores the encrypted secret data in one of a collection of "versions" associated with the secret. Each version contains a copy of the encrypted secret data. Each version is associated with one or more "staging labels" that identify where the version is in the rotation cycle. The <code>SecretVersionsToStages</code> field of the secret contains the mapping of staging labels to the active versions of the secret. Versions without a staging label are considered deprecated and are not included in the list.</p> <p>You provide the secret data to be encrypted by putting text in either the <code>SecretString</code> parameter or binary data in the <code>SecretBinary</code> parameter, but not both. If you include <code>SecretString</code> or <code>SecretBinary</code> then Secrets Manager also creates an initial secret version and automatically attaches the staging label <code>AWSCURRENT</code> to the new version.</p> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> </p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:CreateSecret</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> <li> <p>kms:Decrypt - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> <li> <p>secretsmanager:TagResource - needed only if you include the <code>Tags</code> parameter. </p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To delete a secret, use <a>DeleteSecret</a>.</p> </li> <li> <p>To modify an existing secret, use <a>UpdateSecret</a>.</p> </li> <li> <p>To create a new version of a secret, use <a>PutSecretValue</a>.</p> </li> <li> <p>To retrieve the encrypted secure string and secure binary values, use <a>GetSecretValue</a>.</p> </li> <li> <p>To retrieve all other details for a secret, use <a>DescribeSecret</a>. This does not include the encrypted secure string and secure binary values.</p> </li> <li> <p>To retrieve the list of secret versions associated with the current secret, use <a>DescribeSecret</a> and examine the <code>SecretVersionsToStages</code> response value.</p> </li> </ul>
   ## 
@@ -268,48 +268,48 @@ proc validate_CreateSecret_601045(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601047 = header.getOrDefault("X-Amz-Date")
-  valid_601047 = validateParameter(valid_601047, JString, required = false,
+  var valid_594047 = header.getOrDefault("X-Amz-Date")
+  valid_594047 = validateParameter(valid_594047, JString, required = false,
                                  default = nil)
-  if valid_601047 != nil:
-    section.add "X-Amz-Date", valid_601047
-  var valid_601048 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601048 = validateParameter(valid_601048, JString, required = false,
+  if valid_594047 != nil:
+    section.add "X-Amz-Date", valid_594047
+  var valid_594048 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594048 = validateParameter(valid_594048, JString, required = false,
                                  default = nil)
-  if valid_601048 != nil:
-    section.add "X-Amz-Security-Token", valid_601048
+  if valid_594048 != nil:
+    section.add "X-Amz-Security-Token", valid_594048
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601049 = header.getOrDefault("X-Amz-Target")
-  valid_601049 = validateParameter(valid_601049, JString, required = true, default = newJString(
+  var valid_594049 = header.getOrDefault("X-Amz-Target")
+  valid_594049 = validateParameter(valid_594049, JString, required = true, default = newJString(
       "secretsmanager.CreateSecret"))
-  if valid_601049 != nil:
-    section.add "X-Amz-Target", valid_601049
-  var valid_601050 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601050 = validateParameter(valid_601050, JString, required = false,
+  if valid_594049 != nil:
+    section.add "X-Amz-Target", valid_594049
+  var valid_594050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594050 = validateParameter(valid_594050, JString, required = false,
                                  default = nil)
-  if valid_601050 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601050
-  var valid_601051 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601051 = validateParameter(valid_601051, JString, required = false,
+  if valid_594050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594050
+  var valid_594051 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594051 = validateParameter(valid_594051, JString, required = false,
                                  default = nil)
-  if valid_601051 != nil:
-    section.add "X-Amz-Algorithm", valid_601051
-  var valid_601052 = header.getOrDefault("X-Amz-Signature")
-  valid_601052 = validateParameter(valid_601052, JString, required = false,
+  if valid_594051 != nil:
+    section.add "X-Amz-Algorithm", valid_594051
+  var valid_594052 = header.getOrDefault("X-Amz-Signature")
+  valid_594052 = validateParameter(valid_594052, JString, required = false,
                                  default = nil)
-  if valid_601052 != nil:
-    section.add "X-Amz-Signature", valid_601052
-  var valid_601053 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601053 = validateParameter(valid_601053, JString, required = false,
+  if valid_594052 != nil:
+    section.add "X-Amz-Signature", valid_594052
+  var valid_594053 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594053 = validateParameter(valid_594053, JString, required = false,
                                  default = nil)
-  if valid_601053 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601053
-  var valid_601054 = header.getOrDefault("X-Amz-Credential")
-  valid_601054 = validateParameter(valid_601054, JString, required = false,
+  if valid_594053 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594053
+  var valid_594054 = header.getOrDefault("X-Amz-Credential")
+  valid_594054 = validateParameter(valid_594054, JString, required = false,
                                  default = nil)
-  if valid_601054 != nil:
-    section.add "X-Amz-Credential", valid_601054
+  if valid_594054 != nil:
+    section.add "X-Amz-Credential", valid_594054
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -320,43 +320,43 @@ proc validate_CreateSecret_601045(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601056: Call_CreateSecret_601044; path: JsonNode; query: JsonNode;
+proc call*(call_594056: Call_CreateSecret_594044; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new secret. A secret in Secrets Manager consists of both the protected secret data and the important information needed to manage the secret.</p> <p>Secrets Manager stores the encrypted secret data in one of a collection of "versions" associated with the secret. Each version contains a copy of the encrypted secret data. Each version is associated with one or more "staging labels" that identify where the version is in the rotation cycle. The <code>SecretVersionsToStages</code> field of the secret contains the mapping of staging labels to the active versions of the secret. Versions without a staging label are considered deprecated and are not included in the list.</p> <p>You provide the secret data to be encrypted by putting text in either the <code>SecretString</code> parameter or binary data in the <code>SecretBinary</code> parameter, but not both. If you include <code>SecretString</code> or <code>SecretBinary</code> then Secrets Manager also creates an initial secret version and automatically attaches the staging label <code>AWSCURRENT</code> to the new version.</p> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> </p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:CreateSecret</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> <li> <p>kms:Decrypt - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> <li> <p>secretsmanager:TagResource - needed only if you include the <code>Tags</code> parameter. </p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To delete a secret, use <a>DeleteSecret</a>.</p> </li> <li> <p>To modify an existing secret, use <a>UpdateSecret</a>.</p> </li> <li> <p>To create a new version of a secret, use <a>PutSecretValue</a>.</p> </li> <li> <p>To retrieve the encrypted secure string and secure binary values, use <a>GetSecretValue</a>.</p> </li> <li> <p>To retrieve all other details for a secret, use <a>DescribeSecret</a>. This does not include the encrypted secure string and secure binary values.</p> </li> <li> <p>To retrieve the list of secret versions associated with the current secret, use <a>DescribeSecret</a> and examine the <code>SecretVersionsToStages</code> response value.</p> </li> </ul>
   ## 
-  let valid = call_601056.validator(path, query, header, formData, body)
-  let scheme = call_601056.pickScheme
+  let valid = call_594056.validator(path, query, header, formData, body)
+  let scheme = call_594056.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601056.url(scheme.get, call_601056.host, call_601056.base,
-                         call_601056.route, valid.getOrDefault("path"),
+  let url = call_594056.url(scheme.get, call_594056.host, call_594056.base,
+                         call_594056.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601056, url, valid)
+  result = hook(call_594056, url, valid)
 
-proc call*(call_601057: Call_CreateSecret_601044; body: JsonNode): Recallable =
+proc call*(call_594057: Call_CreateSecret_594044; body: JsonNode): Recallable =
   ## createSecret
   ## <p>Creates a new secret. A secret in Secrets Manager consists of both the protected secret data and the important information needed to manage the secret.</p> <p>Secrets Manager stores the encrypted secret data in one of a collection of "versions" associated with the secret. Each version contains a copy of the encrypted secret data. Each version is associated with one or more "staging labels" that identify where the version is in the rotation cycle. The <code>SecretVersionsToStages</code> field of the secret contains the mapping of staging labels to the active versions of the secret. Versions without a staging label are considered deprecated and are not included in the list.</p> <p>You provide the secret data to be encrypted by putting text in either the <code>SecretString</code> parameter or binary data in the <code>SecretBinary</code> parameter, but not both. If you include <code>SecretString</code> or <code>SecretBinary</code> then Secrets Manager also creates an initial secret version and automatically attaches the staging label <code>AWSCURRENT</code> to the new version.</p> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> </p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:CreateSecret</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> <li> <p>kms:Decrypt - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> <li> <p>secretsmanager:TagResource - needed only if you include the <code>Tags</code> parameter. </p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To delete a secret, use <a>DeleteSecret</a>.</p> </li> <li> <p>To modify an existing secret, use <a>UpdateSecret</a>.</p> </li> <li> <p>To create a new version of a secret, use <a>PutSecretValue</a>.</p> </li> <li> <p>To retrieve the encrypted secure string and secure binary values, use <a>GetSecretValue</a>.</p> </li> <li> <p>To retrieve all other details for a secret, use <a>DescribeSecret</a>. This does not include the encrypted secure string and secure binary values.</p> </li> <li> <p>To retrieve the list of secret versions associated with the current secret, use <a>DescribeSecret</a> and examine the <code>SecretVersionsToStages</code> response value.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601058 = newJObject()
+  var body_594058 = newJObject()
   if body != nil:
-    body_601058 = body
-  result = call_601057.call(nil, nil, nil, nil, body_601058)
+    body_594058 = body
+  result = call_594057.call(nil, nil, nil, nil, body_594058)
 
-var createSecret* = Call_CreateSecret_601044(name: "createSecret",
+var createSecret* = Call_CreateSecret_594044(name: "createSecret",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.CreateSecret",
-    validator: validate_CreateSecret_601045, base: "/", url: url_CreateSecret_601046,
+    validator: validate_CreateSecret_594045, base: "/", url: url_CreateSecret_594046,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteResourcePolicy_601059 = ref object of OpenApiRestCall_600438
-proc url_DeleteResourcePolicy_601061(protocol: Scheme; host: string; base: string;
+  Call_DeleteResourcePolicy_594059 = ref object of OpenApiRestCall_593438
+proc url_DeleteResourcePolicy_594061(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteResourcePolicy_601060(path: JsonNode; query: JsonNode;
+proc validate_DeleteResourcePolicy_594060(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the resource-based permission policy that's attached to the secret.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DeleteResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To attach a resource policy to a secret, use <a>PutResourcePolicy</a>.</p> </li> <li> <p>To retrieve the current resource-based policy that's attached to a secret, use <a>GetResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
   ## 
@@ -376,48 +376,48 @@ proc validate_DeleteResourcePolicy_601060(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601062 = header.getOrDefault("X-Amz-Date")
-  valid_601062 = validateParameter(valid_601062, JString, required = false,
+  var valid_594062 = header.getOrDefault("X-Amz-Date")
+  valid_594062 = validateParameter(valid_594062, JString, required = false,
                                  default = nil)
-  if valid_601062 != nil:
-    section.add "X-Amz-Date", valid_601062
-  var valid_601063 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601063 = validateParameter(valid_601063, JString, required = false,
+  if valid_594062 != nil:
+    section.add "X-Amz-Date", valid_594062
+  var valid_594063 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594063 = validateParameter(valid_594063, JString, required = false,
                                  default = nil)
-  if valid_601063 != nil:
-    section.add "X-Amz-Security-Token", valid_601063
+  if valid_594063 != nil:
+    section.add "X-Amz-Security-Token", valid_594063
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601064 = header.getOrDefault("X-Amz-Target")
-  valid_601064 = validateParameter(valid_601064, JString, required = true, default = newJString(
+  var valid_594064 = header.getOrDefault("X-Amz-Target")
+  valid_594064 = validateParameter(valid_594064, JString, required = true, default = newJString(
       "secretsmanager.DeleteResourcePolicy"))
-  if valid_601064 != nil:
-    section.add "X-Amz-Target", valid_601064
-  var valid_601065 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601065 = validateParameter(valid_601065, JString, required = false,
+  if valid_594064 != nil:
+    section.add "X-Amz-Target", valid_594064
+  var valid_594065 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594065 = validateParameter(valid_594065, JString, required = false,
                                  default = nil)
-  if valid_601065 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601065
-  var valid_601066 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601066 = validateParameter(valid_601066, JString, required = false,
+  if valid_594065 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594065
+  var valid_594066 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594066 = validateParameter(valid_594066, JString, required = false,
                                  default = nil)
-  if valid_601066 != nil:
-    section.add "X-Amz-Algorithm", valid_601066
-  var valid_601067 = header.getOrDefault("X-Amz-Signature")
-  valid_601067 = validateParameter(valid_601067, JString, required = false,
+  if valid_594066 != nil:
+    section.add "X-Amz-Algorithm", valid_594066
+  var valid_594067 = header.getOrDefault("X-Amz-Signature")
+  valid_594067 = validateParameter(valid_594067, JString, required = false,
                                  default = nil)
-  if valid_601067 != nil:
-    section.add "X-Amz-Signature", valid_601067
-  var valid_601068 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601068 = validateParameter(valid_601068, JString, required = false,
+  if valid_594067 != nil:
+    section.add "X-Amz-Signature", valid_594067
+  var valid_594068 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594068 = validateParameter(valid_594068, JString, required = false,
                                  default = nil)
-  if valid_601068 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601068
-  var valid_601069 = header.getOrDefault("X-Amz-Credential")
-  valid_601069 = validateParameter(valid_601069, JString, required = false,
+  if valid_594068 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594068
+  var valid_594069 = header.getOrDefault("X-Amz-Credential")
+  valid_594069 = validateParameter(valid_594069, JString, required = false,
                                  default = nil)
-  if valid_601069 != nil:
-    section.add "X-Amz-Credential", valid_601069
+  if valid_594069 != nil:
+    section.add "X-Amz-Credential", valid_594069
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -428,44 +428,44 @@ proc validate_DeleteResourcePolicy_601060(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601071: Call_DeleteResourcePolicy_601059; path: JsonNode;
+proc call*(call_594071: Call_DeleteResourcePolicy_594059; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the resource-based permission policy that's attached to the secret.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DeleteResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To attach a resource policy to a secret, use <a>PutResourcePolicy</a>.</p> </li> <li> <p>To retrieve the current resource-based policy that's attached to a secret, use <a>GetResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
   ## 
-  let valid = call_601071.validator(path, query, header, formData, body)
-  let scheme = call_601071.pickScheme
+  let valid = call_594071.validator(path, query, header, formData, body)
+  let scheme = call_594071.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601071.url(scheme.get, call_601071.host, call_601071.base,
-                         call_601071.route, valid.getOrDefault("path"),
+  let url = call_594071.url(scheme.get, call_594071.host, call_594071.base,
+                         call_594071.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601071, url, valid)
+  result = hook(call_594071, url, valid)
 
-proc call*(call_601072: Call_DeleteResourcePolicy_601059; body: JsonNode): Recallable =
+proc call*(call_594072: Call_DeleteResourcePolicy_594059; body: JsonNode): Recallable =
   ## deleteResourcePolicy
   ## <p>Deletes the resource-based permission policy that's attached to the secret.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DeleteResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To attach a resource policy to a secret, use <a>PutResourcePolicy</a>.</p> </li> <li> <p>To retrieve the current resource-based policy that's attached to a secret, use <a>GetResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601073 = newJObject()
+  var body_594073 = newJObject()
   if body != nil:
-    body_601073 = body
-  result = call_601072.call(nil, nil, nil, nil, body_601073)
+    body_594073 = body
+  result = call_594072.call(nil, nil, nil, nil, body_594073)
 
-var deleteResourcePolicy* = Call_DeleteResourcePolicy_601059(
+var deleteResourcePolicy* = Call_DeleteResourcePolicy_594059(
     name: "deleteResourcePolicy", meth: HttpMethod.HttpPost,
     host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.DeleteResourcePolicy",
-    validator: validate_DeleteResourcePolicy_601060, base: "/",
-    url: url_DeleteResourcePolicy_601061, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteResourcePolicy_594060, base: "/",
+    url: url_DeleteResourcePolicy_594061, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSecret_601074 = ref object of OpenApiRestCall_600438
-proc url_DeleteSecret_601076(protocol: Scheme; host: string; base: string;
+  Call_DeleteSecret_594074 = ref object of OpenApiRestCall_593438
+proc url_DeleteSecret_594076(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteSecret_601075(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteSecret_594075(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes an entire secret and all of its versions. You can optionally include a recovery window during which you can restore the secret. If you don't specify a recovery window value, the operation defaults to 30 days. Secrets Manager attaches a <code>DeletionDate</code> stamp to the secret that specifies the end of the recovery window. At the end of the recovery window, Secrets Manager deletes the secret permanently.</p> <p>At any time before recovery window ends, you can use <a>RestoreSecret</a> to remove the <code>DeletionDate</code> and cancel the deletion of the secret.</p> <p>You cannot access the encrypted secret information in any secret that is scheduled for deletion. If you need to access that information, you must cancel the deletion with <a>RestoreSecret</a> and then retrieve the information.</p> <note> <ul> <li> <p>There is no explicit operation to delete a version of a secret. Instead, remove all staging labels from the <code>VersionStage</code> field of a version. That marks the version as deprecated and allows Secrets Manager to delete it as needed. Versions that do not have any staging labels do not show up in <a>ListSecretVersionIds</a> unless you specify <code>IncludeDeprecated</code>.</p> </li> <li> <p>The permanent secret deletion at the end of the waiting period is performed as a background task with low priority. There is no guarantee of a specific time after the recovery window for the actual delete operation to occur.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DeleteSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To cancel deletion of a version of a secret before the recovery window has expired, use <a>RestoreSecret</a>.</p> </li> </ul>
   ## 
@@ -485,48 +485,48 @@ proc validate_DeleteSecret_601075(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601077 = header.getOrDefault("X-Amz-Date")
-  valid_601077 = validateParameter(valid_601077, JString, required = false,
+  var valid_594077 = header.getOrDefault("X-Amz-Date")
+  valid_594077 = validateParameter(valid_594077, JString, required = false,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "X-Amz-Date", valid_601077
-  var valid_601078 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601078 = validateParameter(valid_601078, JString, required = false,
+  if valid_594077 != nil:
+    section.add "X-Amz-Date", valid_594077
+  var valid_594078 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594078 = validateParameter(valid_594078, JString, required = false,
                                  default = nil)
-  if valid_601078 != nil:
-    section.add "X-Amz-Security-Token", valid_601078
+  if valid_594078 != nil:
+    section.add "X-Amz-Security-Token", valid_594078
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601079 = header.getOrDefault("X-Amz-Target")
-  valid_601079 = validateParameter(valid_601079, JString, required = true, default = newJString(
+  var valid_594079 = header.getOrDefault("X-Amz-Target")
+  valid_594079 = validateParameter(valid_594079, JString, required = true, default = newJString(
       "secretsmanager.DeleteSecret"))
-  if valid_601079 != nil:
-    section.add "X-Amz-Target", valid_601079
-  var valid_601080 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601080 = validateParameter(valid_601080, JString, required = false,
+  if valid_594079 != nil:
+    section.add "X-Amz-Target", valid_594079
+  var valid_594080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594080 = validateParameter(valid_594080, JString, required = false,
                                  default = nil)
-  if valid_601080 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601080
-  var valid_601081 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601081 = validateParameter(valid_601081, JString, required = false,
+  if valid_594080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594080
+  var valid_594081 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594081 = validateParameter(valid_594081, JString, required = false,
                                  default = nil)
-  if valid_601081 != nil:
-    section.add "X-Amz-Algorithm", valid_601081
-  var valid_601082 = header.getOrDefault("X-Amz-Signature")
-  valid_601082 = validateParameter(valid_601082, JString, required = false,
+  if valid_594081 != nil:
+    section.add "X-Amz-Algorithm", valid_594081
+  var valid_594082 = header.getOrDefault("X-Amz-Signature")
+  valid_594082 = validateParameter(valid_594082, JString, required = false,
                                  default = nil)
-  if valid_601082 != nil:
-    section.add "X-Amz-Signature", valid_601082
-  var valid_601083 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601083 = validateParameter(valid_601083, JString, required = false,
+  if valid_594082 != nil:
+    section.add "X-Amz-Signature", valid_594082
+  var valid_594083 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594083 = validateParameter(valid_594083, JString, required = false,
                                  default = nil)
-  if valid_601083 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601083
-  var valid_601084 = header.getOrDefault("X-Amz-Credential")
-  valid_601084 = validateParameter(valid_601084, JString, required = false,
+  if valid_594083 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594083
+  var valid_594084 = header.getOrDefault("X-Amz-Credential")
+  valid_594084 = validateParameter(valid_594084, JString, required = false,
                                  default = nil)
-  if valid_601084 != nil:
-    section.add "X-Amz-Credential", valid_601084
+  if valid_594084 != nil:
+    section.add "X-Amz-Credential", valid_594084
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -537,43 +537,43 @@ proc validate_DeleteSecret_601075(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601086: Call_DeleteSecret_601074; path: JsonNode; query: JsonNode;
+proc call*(call_594086: Call_DeleteSecret_594074; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes an entire secret and all of its versions. You can optionally include a recovery window during which you can restore the secret. If you don't specify a recovery window value, the operation defaults to 30 days. Secrets Manager attaches a <code>DeletionDate</code> stamp to the secret that specifies the end of the recovery window. At the end of the recovery window, Secrets Manager deletes the secret permanently.</p> <p>At any time before recovery window ends, you can use <a>RestoreSecret</a> to remove the <code>DeletionDate</code> and cancel the deletion of the secret.</p> <p>You cannot access the encrypted secret information in any secret that is scheduled for deletion. If you need to access that information, you must cancel the deletion with <a>RestoreSecret</a> and then retrieve the information.</p> <note> <ul> <li> <p>There is no explicit operation to delete a version of a secret. Instead, remove all staging labels from the <code>VersionStage</code> field of a version. That marks the version as deprecated and allows Secrets Manager to delete it as needed. Versions that do not have any staging labels do not show up in <a>ListSecretVersionIds</a> unless you specify <code>IncludeDeprecated</code>.</p> </li> <li> <p>The permanent secret deletion at the end of the waiting period is performed as a background task with low priority. There is no guarantee of a specific time after the recovery window for the actual delete operation to occur.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DeleteSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To cancel deletion of a version of a secret before the recovery window has expired, use <a>RestoreSecret</a>.</p> </li> </ul>
   ## 
-  let valid = call_601086.validator(path, query, header, formData, body)
-  let scheme = call_601086.pickScheme
+  let valid = call_594086.validator(path, query, header, formData, body)
+  let scheme = call_594086.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601086.url(scheme.get, call_601086.host, call_601086.base,
-                         call_601086.route, valid.getOrDefault("path"),
+  let url = call_594086.url(scheme.get, call_594086.host, call_594086.base,
+                         call_594086.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601086, url, valid)
+  result = hook(call_594086, url, valid)
 
-proc call*(call_601087: Call_DeleteSecret_601074; body: JsonNode): Recallable =
+proc call*(call_594087: Call_DeleteSecret_594074; body: JsonNode): Recallable =
   ## deleteSecret
   ## <p>Deletes an entire secret and all of its versions. You can optionally include a recovery window during which you can restore the secret. If you don't specify a recovery window value, the operation defaults to 30 days. Secrets Manager attaches a <code>DeletionDate</code> stamp to the secret that specifies the end of the recovery window. At the end of the recovery window, Secrets Manager deletes the secret permanently.</p> <p>At any time before recovery window ends, you can use <a>RestoreSecret</a> to remove the <code>DeletionDate</code> and cancel the deletion of the secret.</p> <p>You cannot access the encrypted secret information in any secret that is scheduled for deletion. If you need to access that information, you must cancel the deletion with <a>RestoreSecret</a> and then retrieve the information.</p> <note> <ul> <li> <p>There is no explicit operation to delete a version of a secret. Instead, remove all staging labels from the <code>VersionStage</code> field of a version. That marks the version as deprecated and allows Secrets Manager to delete it as needed. Versions that do not have any staging labels do not show up in <a>ListSecretVersionIds</a> unless you specify <code>IncludeDeprecated</code>.</p> </li> <li> <p>The permanent secret deletion at the end of the waiting period is performed as a background task with low priority. There is no guarantee of a specific time after the recovery window for the actual delete operation to occur.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DeleteSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To cancel deletion of a version of a secret before the recovery window has expired, use <a>RestoreSecret</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601088 = newJObject()
+  var body_594088 = newJObject()
   if body != nil:
-    body_601088 = body
-  result = call_601087.call(nil, nil, nil, nil, body_601088)
+    body_594088 = body
+  result = call_594087.call(nil, nil, nil, nil, body_594088)
 
-var deleteSecret* = Call_DeleteSecret_601074(name: "deleteSecret",
+var deleteSecret* = Call_DeleteSecret_594074(name: "deleteSecret",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.DeleteSecret",
-    validator: validate_DeleteSecret_601075, base: "/", url: url_DeleteSecret_601076,
+    validator: validate_DeleteSecret_594075, base: "/", url: url_DeleteSecret_594076,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSecret_601089 = ref object of OpenApiRestCall_600438
-proc url_DescribeSecret_601091(protocol: Scheme; host: string; base: string;
+  Call_DescribeSecret_594089 = ref object of OpenApiRestCall_593438
+proc url_DescribeSecret_594091(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeSecret_601090(path: JsonNode; query: JsonNode;
+proc validate_DescribeSecret_594090(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Retrieves the details of a secret. It does not include the encrypted fields. Only those fields that are populated with a value are returned in the response. </p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DescribeSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To modify a secret, use <a>UpdateSecret</a>.</p> </li> <li> <p>To retrieve the encrypted secret information in a version of the secret, use <a>GetSecretValue</a>.</p> </li> <li> <p>To list all of the secrets in the AWS account, use <a>ListSecrets</a>.</p> </li> </ul>
@@ -594,48 +594,48 @@ proc validate_DescribeSecret_601090(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601092 = header.getOrDefault("X-Amz-Date")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  var valid_594092 = header.getOrDefault("X-Amz-Date")
+  valid_594092 = validateParameter(valid_594092, JString, required = false,
                                  default = nil)
-  if valid_601092 != nil:
-    section.add "X-Amz-Date", valid_601092
-  var valid_601093 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601093 = validateParameter(valid_601093, JString, required = false,
+  if valid_594092 != nil:
+    section.add "X-Amz-Date", valid_594092
+  var valid_594093 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594093 = validateParameter(valid_594093, JString, required = false,
                                  default = nil)
-  if valid_601093 != nil:
-    section.add "X-Amz-Security-Token", valid_601093
+  if valid_594093 != nil:
+    section.add "X-Amz-Security-Token", valid_594093
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601094 = header.getOrDefault("X-Amz-Target")
-  valid_601094 = validateParameter(valid_601094, JString, required = true, default = newJString(
+  var valid_594094 = header.getOrDefault("X-Amz-Target")
+  valid_594094 = validateParameter(valid_594094, JString, required = true, default = newJString(
       "secretsmanager.DescribeSecret"))
-  if valid_601094 != nil:
-    section.add "X-Amz-Target", valid_601094
-  var valid_601095 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601095 = validateParameter(valid_601095, JString, required = false,
+  if valid_594094 != nil:
+    section.add "X-Amz-Target", valid_594094
+  var valid_594095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594095 = validateParameter(valid_594095, JString, required = false,
                                  default = nil)
-  if valid_601095 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601095
-  var valid_601096 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601096 = validateParameter(valid_601096, JString, required = false,
+  if valid_594095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594095
+  var valid_594096 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594096 = validateParameter(valid_594096, JString, required = false,
                                  default = nil)
-  if valid_601096 != nil:
-    section.add "X-Amz-Algorithm", valid_601096
-  var valid_601097 = header.getOrDefault("X-Amz-Signature")
-  valid_601097 = validateParameter(valid_601097, JString, required = false,
+  if valid_594096 != nil:
+    section.add "X-Amz-Algorithm", valid_594096
+  var valid_594097 = header.getOrDefault("X-Amz-Signature")
+  valid_594097 = validateParameter(valid_594097, JString, required = false,
                                  default = nil)
-  if valid_601097 != nil:
-    section.add "X-Amz-Signature", valid_601097
-  var valid_601098 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601098 = validateParameter(valid_601098, JString, required = false,
+  if valid_594097 != nil:
+    section.add "X-Amz-Signature", valid_594097
+  var valid_594098 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594098 = validateParameter(valid_594098, JString, required = false,
                                  default = nil)
-  if valid_601098 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601098
-  var valid_601099 = header.getOrDefault("X-Amz-Credential")
-  valid_601099 = validateParameter(valid_601099, JString, required = false,
+  if valid_594098 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594098
+  var valid_594099 = header.getOrDefault("X-Amz-Credential")
+  valid_594099 = validateParameter(valid_594099, JString, required = false,
                                  default = nil)
-  if valid_601099 != nil:
-    section.add "X-Amz-Credential", valid_601099
+  if valid_594099 != nil:
+    section.add "X-Amz-Credential", valid_594099
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -646,43 +646,43 @@ proc validate_DescribeSecret_601090(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601101: Call_DescribeSecret_601089; path: JsonNode; query: JsonNode;
+proc call*(call_594101: Call_DescribeSecret_594089; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves the details of a secret. It does not include the encrypted fields. Only those fields that are populated with a value are returned in the response. </p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DescribeSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To modify a secret, use <a>UpdateSecret</a>.</p> </li> <li> <p>To retrieve the encrypted secret information in a version of the secret, use <a>GetSecretValue</a>.</p> </li> <li> <p>To list all of the secrets in the AWS account, use <a>ListSecrets</a>.</p> </li> </ul>
   ## 
-  let valid = call_601101.validator(path, query, header, formData, body)
-  let scheme = call_601101.pickScheme
+  let valid = call_594101.validator(path, query, header, formData, body)
+  let scheme = call_594101.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601101.url(scheme.get, call_601101.host, call_601101.base,
-                         call_601101.route, valid.getOrDefault("path"),
+  let url = call_594101.url(scheme.get, call_594101.host, call_594101.base,
+                         call_594101.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601101, url, valid)
+  result = hook(call_594101, url, valid)
 
-proc call*(call_601102: Call_DescribeSecret_601089; body: JsonNode): Recallable =
+proc call*(call_594102: Call_DescribeSecret_594089; body: JsonNode): Recallable =
   ## describeSecret
   ## <p>Retrieves the details of a secret. It does not include the encrypted fields. Only those fields that are populated with a value are returned in the response. </p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:DescribeSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To modify a secret, use <a>UpdateSecret</a>.</p> </li> <li> <p>To retrieve the encrypted secret information in a version of the secret, use <a>GetSecretValue</a>.</p> </li> <li> <p>To list all of the secrets in the AWS account, use <a>ListSecrets</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601103 = newJObject()
+  var body_594103 = newJObject()
   if body != nil:
-    body_601103 = body
-  result = call_601102.call(nil, nil, nil, nil, body_601103)
+    body_594103 = body
+  result = call_594102.call(nil, nil, nil, nil, body_594103)
 
-var describeSecret* = Call_DescribeSecret_601089(name: "describeSecret",
+var describeSecret* = Call_DescribeSecret_594089(name: "describeSecret",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.DescribeSecret",
-    validator: validate_DescribeSecret_601090, base: "/", url: url_DescribeSecret_601091,
+    validator: validate_DescribeSecret_594090, base: "/", url: url_DescribeSecret_594091,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRandomPassword_601104 = ref object of OpenApiRestCall_600438
-proc url_GetRandomPassword_601106(protocol: Scheme; host: string; base: string;
+  Call_GetRandomPassword_594104 = ref object of OpenApiRestCall_593438
+proc url_GetRandomPassword_594106(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetRandomPassword_601105(path: JsonNode; query: JsonNode;
+proc validate_GetRandomPassword_594105(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Generates a random password of the specified complexity. This operation is intended for use in the Lambda rotation function. Per best practice, we recommend that you specify the maximum length and include every character type that the system you are generating a password for can support.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetRandomPassword</p> </li> </ul>
@@ -703,48 +703,48 @@ proc validate_GetRandomPassword_601105(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601107 = header.getOrDefault("X-Amz-Date")
-  valid_601107 = validateParameter(valid_601107, JString, required = false,
+  var valid_594107 = header.getOrDefault("X-Amz-Date")
+  valid_594107 = validateParameter(valid_594107, JString, required = false,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "X-Amz-Date", valid_601107
-  var valid_601108 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601108 = validateParameter(valid_601108, JString, required = false,
+  if valid_594107 != nil:
+    section.add "X-Amz-Date", valid_594107
+  var valid_594108 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594108 = validateParameter(valid_594108, JString, required = false,
                                  default = nil)
-  if valid_601108 != nil:
-    section.add "X-Amz-Security-Token", valid_601108
+  if valid_594108 != nil:
+    section.add "X-Amz-Security-Token", valid_594108
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601109 = header.getOrDefault("X-Amz-Target")
-  valid_601109 = validateParameter(valid_601109, JString, required = true, default = newJString(
+  var valid_594109 = header.getOrDefault("X-Amz-Target")
+  valid_594109 = validateParameter(valid_594109, JString, required = true, default = newJString(
       "secretsmanager.GetRandomPassword"))
-  if valid_601109 != nil:
-    section.add "X-Amz-Target", valid_601109
-  var valid_601110 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601110 = validateParameter(valid_601110, JString, required = false,
+  if valid_594109 != nil:
+    section.add "X-Amz-Target", valid_594109
+  var valid_594110 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594110 = validateParameter(valid_594110, JString, required = false,
                                  default = nil)
-  if valid_601110 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601110
-  var valid_601111 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601111 = validateParameter(valid_601111, JString, required = false,
+  if valid_594110 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594110
+  var valid_594111 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594111 = validateParameter(valid_594111, JString, required = false,
                                  default = nil)
-  if valid_601111 != nil:
-    section.add "X-Amz-Algorithm", valid_601111
-  var valid_601112 = header.getOrDefault("X-Amz-Signature")
-  valid_601112 = validateParameter(valid_601112, JString, required = false,
+  if valid_594111 != nil:
+    section.add "X-Amz-Algorithm", valid_594111
+  var valid_594112 = header.getOrDefault("X-Amz-Signature")
+  valid_594112 = validateParameter(valid_594112, JString, required = false,
                                  default = nil)
-  if valid_601112 != nil:
-    section.add "X-Amz-Signature", valid_601112
-  var valid_601113 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601113 = validateParameter(valid_601113, JString, required = false,
+  if valid_594112 != nil:
+    section.add "X-Amz-Signature", valid_594112
+  var valid_594113 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594113 = validateParameter(valid_594113, JString, required = false,
                                  default = nil)
-  if valid_601113 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601113
-  var valid_601114 = header.getOrDefault("X-Amz-Credential")
-  valid_601114 = validateParameter(valid_601114, JString, required = false,
+  if valid_594113 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594113
+  var valid_594114 = header.getOrDefault("X-Amz-Credential")
+  valid_594114 = validateParameter(valid_594114, JString, required = false,
                                  default = nil)
-  if valid_601114 != nil:
-    section.add "X-Amz-Credential", valid_601114
+  if valid_594114 != nil:
+    section.add "X-Amz-Credential", valid_594114
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -755,43 +755,43 @@ proc validate_GetRandomPassword_601105(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601116: Call_GetRandomPassword_601104; path: JsonNode;
+proc call*(call_594116: Call_GetRandomPassword_594104; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Generates a random password of the specified complexity. This operation is intended for use in the Lambda rotation function. Per best practice, we recommend that you specify the maximum length and include every character type that the system you are generating a password for can support.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetRandomPassword</p> </li> </ul>
   ## 
-  let valid = call_601116.validator(path, query, header, formData, body)
-  let scheme = call_601116.pickScheme
+  let valid = call_594116.validator(path, query, header, formData, body)
+  let scheme = call_594116.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601116.url(scheme.get, call_601116.host, call_601116.base,
-                         call_601116.route, valid.getOrDefault("path"),
+  let url = call_594116.url(scheme.get, call_594116.host, call_594116.base,
+                         call_594116.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601116, url, valid)
+  result = hook(call_594116, url, valid)
 
-proc call*(call_601117: Call_GetRandomPassword_601104; body: JsonNode): Recallable =
+proc call*(call_594117: Call_GetRandomPassword_594104; body: JsonNode): Recallable =
   ## getRandomPassword
   ## <p>Generates a random password of the specified complexity. This operation is intended for use in the Lambda rotation function. Per best practice, we recommend that you specify the maximum length and include every character type that the system you are generating a password for can support.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetRandomPassword</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601118 = newJObject()
+  var body_594118 = newJObject()
   if body != nil:
-    body_601118 = body
-  result = call_601117.call(nil, nil, nil, nil, body_601118)
+    body_594118 = body
+  result = call_594117.call(nil, nil, nil, nil, body_594118)
 
-var getRandomPassword* = Call_GetRandomPassword_601104(name: "getRandomPassword",
+var getRandomPassword* = Call_GetRandomPassword_594104(name: "getRandomPassword",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.GetRandomPassword",
-    validator: validate_GetRandomPassword_601105, base: "/",
-    url: url_GetRandomPassword_601106, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRandomPassword_594105, base: "/",
+    url: url_GetRandomPassword_594106, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetResourcePolicy_601119 = ref object of OpenApiRestCall_600438
-proc url_GetResourcePolicy_601121(protocol: Scheme; host: string; base: string;
+  Call_GetResourcePolicy_594119 = ref object of OpenApiRestCall_593438
+proc url_GetResourcePolicy_594121(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetResourcePolicy_601120(path: JsonNode; query: JsonNode;
+proc validate_GetResourcePolicy_594120(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Retrieves the JSON text of the resource-based policy document that's attached to the specified secret. The JSON request string input and response output are shown formatted with white space and line breaks for better readability. Submit your input as a single line JSON string.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To attach a resource policy to a secret, use <a>PutResourcePolicy</a>.</p> </li> <li> <p>To delete the resource-based policy that's attached to a secret, use <a>DeleteResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
@@ -812,48 +812,48 @@ proc validate_GetResourcePolicy_601120(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601122 = header.getOrDefault("X-Amz-Date")
-  valid_601122 = validateParameter(valid_601122, JString, required = false,
+  var valid_594122 = header.getOrDefault("X-Amz-Date")
+  valid_594122 = validateParameter(valid_594122, JString, required = false,
                                  default = nil)
-  if valid_601122 != nil:
-    section.add "X-Amz-Date", valid_601122
-  var valid_601123 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601123 = validateParameter(valid_601123, JString, required = false,
+  if valid_594122 != nil:
+    section.add "X-Amz-Date", valid_594122
+  var valid_594123 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594123 = validateParameter(valid_594123, JString, required = false,
                                  default = nil)
-  if valid_601123 != nil:
-    section.add "X-Amz-Security-Token", valid_601123
+  if valid_594123 != nil:
+    section.add "X-Amz-Security-Token", valid_594123
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601124 = header.getOrDefault("X-Amz-Target")
-  valid_601124 = validateParameter(valid_601124, JString, required = true, default = newJString(
+  var valid_594124 = header.getOrDefault("X-Amz-Target")
+  valid_594124 = validateParameter(valid_594124, JString, required = true, default = newJString(
       "secretsmanager.GetResourcePolicy"))
-  if valid_601124 != nil:
-    section.add "X-Amz-Target", valid_601124
-  var valid_601125 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601125 = validateParameter(valid_601125, JString, required = false,
+  if valid_594124 != nil:
+    section.add "X-Amz-Target", valid_594124
+  var valid_594125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594125 = validateParameter(valid_594125, JString, required = false,
                                  default = nil)
-  if valid_601125 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601125
-  var valid_601126 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601126 = validateParameter(valid_601126, JString, required = false,
+  if valid_594125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594125
+  var valid_594126 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594126 = validateParameter(valid_594126, JString, required = false,
                                  default = nil)
-  if valid_601126 != nil:
-    section.add "X-Amz-Algorithm", valid_601126
-  var valid_601127 = header.getOrDefault("X-Amz-Signature")
-  valid_601127 = validateParameter(valid_601127, JString, required = false,
+  if valid_594126 != nil:
+    section.add "X-Amz-Algorithm", valid_594126
+  var valid_594127 = header.getOrDefault("X-Amz-Signature")
+  valid_594127 = validateParameter(valid_594127, JString, required = false,
                                  default = nil)
-  if valid_601127 != nil:
-    section.add "X-Amz-Signature", valid_601127
-  var valid_601128 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601128 = validateParameter(valid_601128, JString, required = false,
+  if valid_594127 != nil:
+    section.add "X-Amz-Signature", valid_594127
+  var valid_594128 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594128 = validateParameter(valid_594128, JString, required = false,
                                  default = nil)
-  if valid_601128 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601128
-  var valid_601129 = header.getOrDefault("X-Amz-Credential")
-  valid_601129 = validateParameter(valid_601129, JString, required = false,
+  if valid_594128 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594128
+  var valid_594129 = header.getOrDefault("X-Amz-Credential")
+  valid_594129 = validateParameter(valid_594129, JString, required = false,
                                  default = nil)
-  if valid_601129 != nil:
-    section.add "X-Amz-Credential", valid_601129
+  if valid_594129 != nil:
+    section.add "X-Amz-Credential", valid_594129
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -864,43 +864,43 @@ proc validate_GetResourcePolicy_601120(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601131: Call_GetResourcePolicy_601119; path: JsonNode;
+proc call*(call_594131: Call_GetResourcePolicy_594119; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves the JSON text of the resource-based policy document that's attached to the specified secret. The JSON request string input and response output are shown formatted with white space and line breaks for better readability. Submit your input as a single line JSON string.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To attach a resource policy to a secret, use <a>PutResourcePolicy</a>.</p> </li> <li> <p>To delete the resource-based policy that's attached to a secret, use <a>DeleteResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
   ## 
-  let valid = call_601131.validator(path, query, header, formData, body)
-  let scheme = call_601131.pickScheme
+  let valid = call_594131.validator(path, query, header, formData, body)
+  let scheme = call_594131.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601131.url(scheme.get, call_601131.host, call_601131.base,
-                         call_601131.route, valid.getOrDefault("path"),
+  let url = call_594131.url(scheme.get, call_594131.host, call_594131.base,
+                         call_594131.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601131, url, valid)
+  result = hook(call_594131, url, valid)
 
-proc call*(call_601132: Call_GetResourcePolicy_601119; body: JsonNode): Recallable =
+proc call*(call_594132: Call_GetResourcePolicy_594119; body: JsonNode): Recallable =
   ## getResourcePolicy
   ## <p>Retrieves the JSON text of the resource-based policy document that's attached to the specified secret. The JSON request string input and response output are shown formatted with white space and line breaks for better readability. Submit your input as a single line JSON string.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To attach a resource policy to a secret, use <a>PutResourcePolicy</a>.</p> </li> <li> <p>To delete the resource-based policy that's attached to a secret, use <a>DeleteResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601133 = newJObject()
+  var body_594133 = newJObject()
   if body != nil:
-    body_601133 = body
-  result = call_601132.call(nil, nil, nil, nil, body_601133)
+    body_594133 = body
+  result = call_594132.call(nil, nil, nil, nil, body_594133)
 
-var getResourcePolicy* = Call_GetResourcePolicy_601119(name: "getResourcePolicy",
+var getResourcePolicy* = Call_GetResourcePolicy_594119(name: "getResourcePolicy",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.GetResourcePolicy",
-    validator: validate_GetResourcePolicy_601120, base: "/",
-    url: url_GetResourcePolicy_601121, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetResourcePolicy_594120, base: "/",
+    url: url_GetResourcePolicy_594121, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSecretValue_601134 = ref object of OpenApiRestCall_600438
-proc url_GetSecretValue_601136(protocol: Scheme; host: string; base: string;
+  Call_GetSecretValue_594134 = ref object of OpenApiRestCall_593438
+proc url_GetSecretValue_594136(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetSecretValue_601135(path: JsonNode; query: JsonNode;
+proc validate_GetSecretValue_594135(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Retrieves the contents of the encrypted fields <code>SecretString</code> or <code>SecretBinary</code> from the specified version of a secret, whichever contains content.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetSecretValue</p> </li> <li> <p>kms:Decrypt - required only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a new version of the secret with different encrypted information, use <a>PutSecretValue</a>.</p> </li> <li> <p>To retrieve the non-encrypted details for the secret, use <a>DescribeSecret</a>.</p> </li> </ul>
@@ -921,48 +921,48 @@ proc validate_GetSecretValue_601135(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601137 = header.getOrDefault("X-Amz-Date")
-  valid_601137 = validateParameter(valid_601137, JString, required = false,
+  var valid_594137 = header.getOrDefault("X-Amz-Date")
+  valid_594137 = validateParameter(valid_594137, JString, required = false,
                                  default = nil)
-  if valid_601137 != nil:
-    section.add "X-Amz-Date", valid_601137
-  var valid_601138 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601138 = validateParameter(valid_601138, JString, required = false,
+  if valid_594137 != nil:
+    section.add "X-Amz-Date", valid_594137
+  var valid_594138 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594138 = validateParameter(valid_594138, JString, required = false,
                                  default = nil)
-  if valid_601138 != nil:
-    section.add "X-Amz-Security-Token", valid_601138
+  if valid_594138 != nil:
+    section.add "X-Amz-Security-Token", valid_594138
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601139 = header.getOrDefault("X-Amz-Target")
-  valid_601139 = validateParameter(valid_601139, JString, required = true, default = newJString(
+  var valid_594139 = header.getOrDefault("X-Amz-Target")
+  valid_594139 = validateParameter(valid_594139, JString, required = true, default = newJString(
       "secretsmanager.GetSecretValue"))
-  if valid_601139 != nil:
-    section.add "X-Amz-Target", valid_601139
-  var valid_601140 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601140 = validateParameter(valid_601140, JString, required = false,
+  if valid_594139 != nil:
+    section.add "X-Amz-Target", valid_594139
+  var valid_594140 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594140 = validateParameter(valid_594140, JString, required = false,
                                  default = nil)
-  if valid_601140 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601140
-  var valid_601141 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601141 = validateParameter(valid_601141, JString, required = false,
+  if valid_594140 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594140
+  var valid_594141 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594141 = validateParameter(valid_594141, JString, required = false,
                                  default = nil)
-  if valid_601141 != nil:
-    section.add "X-Amz-Algorithm", valid_601141
-  var valid_601142 = header.getOrDefault("X-Amz-Signature")
-  valid_601142 = validateParameter(valid_601142, JString, required = false,
+  if valid_594141 != nil:
+    section.add "X-Amz-Algorithm", valid_594141
+  var valid_594142 = header.getOrDefault("X-Amz-Signature")
+  valid_594142 = validateParameter(valid_594142, JString, required = false,
                                  default = nil)
-  if valid_601142 != nil:
-    section.add "X-Amz-Signature", valid_601142
-  var valid_601143 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601143 = validateParameter(valid_601143, JString, required = false,
+  if valid_594142 != nil:
+    section.add "X-Amz-Signature", valid_594142
+  var valid_594143 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594143 = validateParameter(valid_594143, JString, required = false,
                                  default = nil)
-  if valid_601143 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601143
-  var valid_601144 = header.getOrDefault("X-Amz-Credential")
-  valid_601144 = validateParameter(valid_601144, JString, required = false,
+  if valid_594143 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594143
+  var valid_594144 = header.getOrDefault("X-Amz-Credential")
+  valid_594144 = validateParameter(valid_594144, JString, required = false,
                                  default = nil)
-  if valid_601144 != nil:
-    section.add "X-Amz-Credential", valid_601144
+  if valid_594144 != nil:
+    section.add "X-Amz-Credential", valid_594144
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -973,43 +973,43 @@ proc validate_GetSecretValue_601135(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601146: Call_GetSecretValue_601134; path: JsonNode; query: JsonNode;
+proc call*(call_594146: Call_GetSecretValue_594134; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves the contents of the encrypted fields <code>SecretString</code> or <code>SecretBinary</code> from the specified version of a secret, whichever contains content.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetSecretValue</p> </li> <li> <p>kms:Decrypt - required only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a new version of the secret with different encrypted information, use <a>PutSecretValue</a>.</p> </li> <li> <p>To retrieve the non-encrypted details for the secret, use <a>DescribeSecret</a>.</p> </li> </ul>
   ## 
-  let valid = call_601146.validator(path, query, header, formData, body)
-  let scheme = call_601146.pickScheme
+  let valid = call_594146.validator(path, query, header, formData, body)
+  let scheme = call_594146.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601146.url(scheme.get, call_601146.host, call_601146.base,
-                         call_601146.route, valid.getOrDefault("path"),
+  let url = call_594146.url(scheme.get, call_594146.host, call_594146.base,
+                         call_594146.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601146, url, valid)
+  result = hook(call_594146, url, valid)
 
-proc call*(call_601147: Call_GetSecretValue_601134; body: JsonNode): Recallable =
+proc call*(call_594147: Call_GetSecretValue_594134; body: JsonNode): Recallable =
   ## getSecretValue
   ## <p>Retrieves the contents of the encrypted fields <code>SecretString</code> or <code>SecretBinary</code> from the specified version of a secret, whichever contains content.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:GetSecretValue</p> </li> <li> <p>kms:Decrypt - required only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a new version of the secret with different encrypted information, use <a>PutSecretValue</a>.</p> </li> <li> <p>To retrieve the non-encrypted details for the secret, use <a>DescribeSecret</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601148 = newJObject()
+  var body_594148 = newJObject()
   if body != nil:
-    body_601148 = body
-  result = call_601147.call(nil, nil, nil, nil, body_601148)
+    body_594148 = body
+  result = call_594147.call(nil, nil, nil, nil, body_594148)
 
-var getSecretValue* = Call_GetSecretValue_601134(name: "getSecretValue",
+var getSecretValue* = Call_GetSecretValue_594134(name: "getSecretValue",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.GetSecretValue",
-    validator: validate_GetSecretValue_601135, base: "/", url: url_GetSecretValue_601136,
+    validator: validate_GetSecretValue_594135, base: "/", url: url_GetSecretValue_594136,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSecretVersionIds_601149 = ref object of OpenApiRestCall_600438
-proc url_ListSecretVersionIds_601151(protocol: Scheme; host: string; base: string;
+  Call_ListSecretVersionIds_594149 = ref object of OpenApiRestCall_593438
+proc url_ListSecretVersionIds_594151(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListSecretVersionIds_601150(path: JsonNode; query: JsonNode;
+proc validate_ListSecretVersionIds_594150(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists all of the versions attached to the specified secret. The output does not include the <code>SecretString</code> or <code>SecretBinary</code> fields. By default, the list includes only versions that have at least one staging label in <code>VersionStage</code> attached.</p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can occasionally return an empty or shorter than expected list of results even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass to the next call to the same API to request the next part of the list.</p> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:ListSecretVersionIds</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the secrets in an account, use <a>ListSecrets</a>.</p> </li> </ul>
   ## 
@@ -1023,16 +1023,16 @@ proc validate_ListSecretVersionIds_601150(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601152 = query.getOrDefault("NextToken")
-  valid_601152 = validateParameter(valid_601152, JString, required = false,
+  var valid_594152 = query.getOrDefault("NextToken")
+  valid_594152 = validateParameter(valid_594152, JString, required = false,
                                  default = nil)
-  if valid_601152 != nil:
-    section.add "NextToken", valid_601152
-  var valid_601153 = query.getOrDefault("MaxResults")
-  valid_601153 = validateParameter(valid_601153, JString, required = false,
+  if valid_594152 != nil:
+    section.add "NextToken", valid_594152
+  var valid_594153 = query.getOrDefault("MaxResults")
+  valid_594153 = validateParameter(valid_594153, JString, required = false,
                                  default = nil)
-  if valid_601153 != nil:
-    section.add "MaxResults", valid_601153
+  if valid_594153 != nil:
+    section.add "MaxResults", valid_594153
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1044,48 +1044,48 @@ proc validate_ListSecretVersionIds_601150(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601154 = header.getOrDefault("X-Amz-Date")
-  valid_601154 = validateParameter(valid_601154, JString, required = false,
+  var valid_594154 = header.getOrDefault("X-Amz-Date")
+  valid_594154 = validateParameter(valid_594154, JString, required = false,
                                  default = nil)
-  if valid_601154 != nil:
-    section.add "X-Amz-Date", valid_601154
-  var valid_601155 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601155 = validateParameter(valid_601155, JString, required = false,
+  if valid_594154 != nil:
+    section.add "X-Amz-Date", valid_594154
+  var valid_594155 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594155 = validateParameter(valid_594155, JString, required = false,
                                  default = nil)
-  if valid_601155 != nil:
-    section.add "X-Amz-Security-Token", valid_601155
+  if valid_594155 != nil:
+    section.add "X-Amz-Security-Token", valid_594155
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601156 = header.getOrDefault("X-Amz-Target")
-  valid_601156 = validateParameter(valid_601156, JString, required = true, default = newJString(
+  var valid_594156 = header.getOrDefault("X-Amz-Target")
+  valid_594156 = validateParameter(valid_594156, JString, required = true, default = newJString(
       "secretsmanager.ListSecretVersionIds"))
-  if valid_601156 != nil:
-    section.add "X-Amz-Target", valid_601156
-  var valid_601157 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601157 = validateParameter(valid_601157, JString, required = false,
+  if valid_594156 != nil:
+    section.add "X-Amz-Target", valid_594156
+  var valid_594157 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594157 = validateParameter(valid_594157, JString, required = false,
                                  default = nil)
-  if valid_601157 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601157
-  var valid_601158 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601158 = validateParameter(valid_601158, JString, required = false,
+  if valid_594157 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594157
+  var valid_594158 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594158 = validateParameter(valid_594158, JString, required = false,
                                  default = nil)
-  if valid_601158 != nil:
-    section.add "X-Amz-Algorithm", valid_601158
-  var valid_601159 = header.getOrDefault("X-Amz-Signature")
-  valid_601159 = validateParameter(valid_601159, JString, required = false,
+  if valid_594158 != nil:
+    section.add "X-Amz-Algorithm", valid_594158
+  var valid_594159 = header.getOrDefault("X-Amz-Signature")
+  valid_594159 = validateParameter(valid_594159, JString, required = false,
                                  default = nil)
-  if valid_601159 != nil:
-    section.add "X-Amz-Signature", valid_601159
-  var valid_601160 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601160 = validateParameter(valid_601160, JString, required = false,
+  if valid_594159 != nil:
+    section.add "X-Amz-Signature", valid_594159
+  var valid_594160 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594160 = validateParameter(valid_594160, JString, required = false,
                                  default = nil)
-  if valid_601160 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601160
-  var valid_601161 = header.getOrDefault("X-Amz-Credential")
-  valid_601161 = validateParameter(valid_601161, JString, required = false,
+  if valid_594160 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594160
+  var valid_594161 = header.getOrDefault("X-Amz-Credential")
+  valid_594161 = validateParameter(valid_594161, JString, required = false,
                                  default = nil)
-  if valid_601161 != nil:
-    section.add "X-Amz-Credential", valid_601161
+  if valid_594161 != nil:
+    section.add "X-Amz-Credential", valid_594161
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1096,20 +1096,20 @@ proc validate_ListSecretVersionIds_601150(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601163: Call_ListSecretVersionIds_601149; path: JsonNode;
+proc call*(call_594163: Call_ListSecretVersionIds_594149; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all of the versions attached to the specified secret. The output does not include the <code>SecretString</code> or <code>SecretBinary</code> fields. By default, the list includes only versions that have at least one staging label in <code>VersionStage</code> attached.</p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can occasionally return an empty or shorter than expected list of results even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass to the next call to the same API to request the next part of the list.</p> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:ListSecretVersionIds</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the secrets in an account, use <a>ListSecrets</a>.</p> </li> </ul>
   ## 
-  let valid = call_601163.validator(path, query, header, formData, body)
-  let scheme = call_601163.pickScheme
+  let valid = call_594163.validator(path, query, header, formData, body)
+  let scheme = call_594163.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601163.url(scheme.get, call_601163.host, call_601163.base,
-                         call_601163.route, valid.getOrDefault("path"),
+  let url = call_594163.url(scheme.get, call_594163.host, call_594163.base,
+                         call_594163.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601163, url, valid)
+  result = hook(call_594163, url, valid)
 
-proc call*(call_601164: Call_ListSecretVersionIds_601149; body: JsonNode;
+proc call*(call_594164: Call_ListSecretVersionIds_594149; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listSecretVersionIds
   ## <p>Lists all of the versions attached to the specified secret. The output does not include the <code>SecretString</code> or <code>SecretBinary</code> fields. By default, the list includes only versions that have at least one staging label in <code>VersionStage</code> attached.</p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can occasionally return an empty or shorter than expected list of results even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass to the next call to the same API to request the next part of the list.</p> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:ListSecretVersionIds</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the secrets in an account, use <a>ListSecrets</a>.</p> </li> </ul>
@@ -1118,30 +1118,30 @@ proc call*(call_601164: Call_ListSecretVersionIds_601149; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601165 = newJObject()
-  var body_601166 = newJObject()
-  add(query_601165, "NextToken", newJString(NextToken))
+  var query_594165 = newJObject()
+  var body_594166 = newJObject()
+  add(query_594165, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601166 = body
-  add(query_601165, "MaxResults", newJString(MaxResults))
-  result = call_601164.call(nil, query_601165, nil, nil, body_601166)
+    body_594166 = body
+  add(query_594165, "MaxResults", newJString(MaxResults))
+  result = call_594164.call(nil, query_594165, nil, nil, body_594166)
 
-var listSecretVersionIds* = Call_ListSecretVersionIds_601149(
+var listSecretVersionIds* = Call_ListSecretVersionIds_594149(
     name: "listSecretVersionIds", meth: HttpMethod.HttpPost,
     host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.ListSecretVersionIds",
-    validator: validate_ListSecretVersionIds_601150, base: "/",
-    url: url_ListSecretVersionIds_601151, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSecretVersionIds_594150, base: "/",
+    url: url_ListSecretVersionIds_594151, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSecrets_601168 = ref object of OpenApiRestCall_600438
-proc url_ListSecrets_601170(protocol: Scheme; host: string; base: string;
+  Call_ListSecrets_594168 = ref object of OpenApiRestCall_593438
+proc url_ListSecrets_594170(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListSecrets_601169(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListSecrets_594169(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists all of the secrets that are stored by Secrets Manager in the AWS account. To list the versions currently stored for a specific secret, use <a>ListSecretVersionIds</a>. The encrypted fields <code>SecretString</code> and <code>SecretBinary</code> are not included in the output. To get that information, call the <a>GetSecretValue</a> operation.</p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can occasionally return an empty or shorter than expected list of results even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass to the next call to the same API to request the next part of the list.</p> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:ListSecrets</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the versions attached to a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ## 
@@ -1155,16 +1155,16 @@ proc validate_ListSecrets_601169(path: JsonNode; query: JsonNode; header: JsonNo
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_601171 = query.getOrDefault("NextToken")
-  valid_601171 = validateParameter(valid_601171, JString, required = false,
+  var valid_594171 = query.getOrDefault("NextToken")
+  valid_594171 = validateParameter(valid_594171, JString, required = false,
                                  default = nil)
-  if valid_601171 != nil:
-    section.add "NextToken", valid_601171
-  var valid_601172 = query.getOrDefault("MaxResults")
-  valid_601172 = validateParameter(valid_601172, JString, required = false,
+  if valid_594171 != nil:
+    section.add "NextToken", valid_594171
+  var valid_594172 = query.getOrDefault("MaxResults")
+  valid_594172 = validateParameter(valid_594172, JString, required = false,
                                  default = nil)
-  if valid_601172 != nil:
-    section.add "MaxResults", valid_601172
+  if valid_594172 != nil:
+    section.add "MaxResults", valid_594172
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -1176,48 +1176,48 @@ proc validate_ListSecrets_601169(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601173 = header.getOrDefault("X-Amz-Date")
-  valid_601173 = validateParameter(valid_601173, JString, required = false,
+  var valid_594173 = header.getOrDefault("X-Amz-Date")
+  valid_594173 = validateParameter(valid_594173, JString, required = false,
                                  default = nil)
-  if valid_601173 != nil:
-    section.add "X-Amz-Date", valid_601173
-  var valid_601174 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601174 = validateParameter(valid_601174, JString, required = false,
+  if valid_594173 != nil:
+    section.add "X-Amz-Date", valid_594173
+  var valid_594174 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594174 = validateParameter(valid_594174, JString, required = false,
                                  default = nil)
-  if valid_601174 != nil:
-    section.add "X-Amz-Security-Token", valid_601174
+  if valid_594174 != nil:
+    section.add "X-Amz-Security-Token", valid_594174
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601175 = header.getOrDefault("X-Amz-Target")
-  valid_601175 = validateParameter(valid_601175, JString, required = true, default = newJString(
+  var valid_594175 = header.getOrDefault("X-Amz-Target")
+  valid_594175 = validateParameter(valid_594175, JString, required = true, default = newJString(
       "secretsmanager.ListSecrets"))
-  if valid_601175 != nil:
-    section.add "X-Amz-Target", valid_601175
-  var valid_601176 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601176 = validateParameter(valid_601176, JString, required = false,
+  if valid_594175 != nil:
+    section.add "X-Amz-Target", valid_594175
+  var valid_594176 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594176 = validateParameter(valid_594176, JString, required = false,
                                  default = nil)
-  if valid_601176 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601176
-  var valid_601177 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601177 = validateParameter(valid_601177, JString, required = false,
+  if valid_594176 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594176
+  var valid_594177 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594177 = validateParameter(valid_594177, JString, required = false,
                                  default = nil)
-  if valid_601177 != nil:
-    section.add "X-Amz-Algorithm", valid_601177
-  var valid_601178 = header.getOrDefault("X-Amz-Signature")
-  valid_601178 = validateParameter(valid_601178, JString, required = false,
+  if valid_594177 != nil:
+    section.add "X-Amz-Algorithm", valid_594177
+  var valid_594178 = header.getOrDefault("X-Amz-Signature")
+  valid_594178 = validateParameter(valid_594178, JString, required = false,
                                  default = nil)
-  if valid_601178 != nil:
-    section.add "X-Amz-Signature", valid_601178
-  var valid_601179 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601179 = validateParameter(valid_601179, JString, required = false,
+  if valid_594178 != nil:
+    section.add "X-Amz-Signature", valid_594178
+  var valid_594179 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594179 = validateParameter(valid_594179, JString, required = false,
                                  default = nil)
-  if valid_601179 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601179
-  var valid_601180 = header.getOrDefault("X-Amz-Credential")
-  valid_601180 = validateParameter(valid_601180, JString, required = false,
+  if valid_594179 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594179
+  var valid_594180 = header.getOrDefault("X-Amz-Credential")
+  valid_594180 = validateParameter(valid_594180, JString, required = false,
                                  default = nil)
-  if valid_601180 != nil:
-    section.add "X-Amz-Credential", valid_601180
+  if valid_594180 != nil:
+    section.add "X-Amz-Credential", valid_594180
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1228,20 +1228,20 @@ proc validate_ListSecrets_601169(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601182: Call_ListSecrets_601168; path: JsonNode; query: JsonNode;
+proc call*(call_594182: Call_ListSecrets_594168; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all of the secrets that are stored by Secrets Manager in the AWS account. To list the versions currently stored for a specific secret, use <a>ListSecretVersionIds</a>. The encrypted fields <code>SecretString</code> and <code>SecretBinary</code> are not included in the output. To get that information, call the <a>GetSecretValue</a> operation.</p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can occasionally return an empty or shorter than expected list of results even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass to the next call to the same API to request the next part of the list.</p> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:ListSecrets</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the versions attached to a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ## 
-  let valid = call_601182.validator(path, query, header, formData, body)
-  let scheme = call_601182.pickScheme
+  let valid = call_594182.validator(path, query, header, formData, body)
+  let scheme = call_594182.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601182.url(scheme.get, call_601182.host, call_601182.base,
-                         call_601182.route, valid.getOrDefault("path"),
+  let url = call_594182.url(scheme.get, call_594182.host, call_594182.base,
+                         call_594182.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601182, url, valid)
+  result = hook(call_594182, url, valid)
 
-proc call*(call_601183: Call_ListSecrets_601168; body: JsonNode;
+proc call*(call_594183: Call_ListSecrets_594168; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listSecrets
   ## <p>Lists all of the secrets that are stored by Secrets Manager in the AWS account. To list the versions currently stored for a specific secret, use <a>ListSecretVersionIds</a>. The encrypted fields <code>SecretString</code> and <code>SecretBinary</code> are not included in the output. To get that information, call the <a>GetSecretValue</a> operation.</p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can occasionally return an empty or shorter than expected list of results even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass to the next call to the same API to request the next part of the list.</p> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:ListSecrets</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the versions attached to a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
@@ -1250,30 +1250,30 @@ proc call*(call_601183: Call_ListSecrets_601168; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_601184 = newJObject()
-  var body_601185 = newJObject()
-  add(query_601184, "NextToken", newJString(NextToken))
+  var query_594184 = newJObject()
+  var body_594185 = newJObject()
+  add(query_594184, "NextToken", newJString(NextToken))
   if body != nil:
-    body_601185 = body
-  add(query_601184, "MaxResults", newJString(MaxResults))
-  result = call_601183.call(nil, query_601184, nil, nil, body_601185)
+    body_594185 = body
+  add(query_594184, "MaxResults", newJString(MaxResults))
+  result = call_594183.call(nil, query_594184, nil, nil, body_594185)
 
-var listSecrets* = Call_ListSecrets_601168(name: "listSecrets",
+var listSecrets* = Call_ListSecrets_594168(name: "listSecrets",
                                         meth: HttpMethod.HttpPost,
                                         host: "secretsmanager.amazonaws.com", route: "/#X-Amz-Target=secretsmanager.ListSecrets",
-                                        validator: validate_ListSecrets_601169,
-                                        base: "/", url: url_ListSecrets_601170,
+                                        validator: validate_ListSecrets_594169,
+                                        base: "/", url: url_ListSecrets_594170,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutResourcePolicy_601186 = ref object of OpenApiRestCall_600438
-proc url_PutResourcePolicy_601188(protocol: Scheme; host: string; base: string;
+  Call_PutResourcePolicy_594186 = ref object of OpenApiRestCall_593438
+proc url_PutResourcePolicy_594188(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutResourcePolicy_601187(path: JsonNode; query: JsonNode;
+proc validate_PutResourcePolicy_594187(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Attaches the contents of the specified resource-based permission policy to a secret. A resource-based policy is optional. Alternatively, you can use IAM identity-based policies that specify the secret's Amazon Resource Name (ARN) in the policy statement's <code>Resources</code> element. You can also use a combination of both identity-based and resource-based policies. The affected users and roles receive the permissions that are permitted by all of the relevant policies. For more information, see <a href="http://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_resource-based-policies.html">Using Resource-Based Policies for AWS Secrets Manager</a>. For the complete description of the AWS policy syntax and grammar, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html">IAM JSON Policy Reference</a> in the <i>IAM User Guide</i>.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:PutResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To retrieve the resource policy that's attached to a secret, use <a>GetResourcePolicy</a>.</p> </li> <li> <p>To delete the resource-based policy that's attached to a secret, use <a>DeleteResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
@@ -1294,48 +1294,48 @@ proc validate_PutResourcePolicy_601187(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601189 = header.getOrDefault("X-Amz-Date")
-  valid_601189 = validateParameter(valid_601189, JString, required = false,
+  var valid_594189 = header.getOrDefault("X-Amz-Date")
+  valid_594189 = validateParameter(valid_594189, JString, required = false,
                                  default = nil)
-  if valid_601189 != nil:
-    section.add "X-Amz-Date", valid_601189
-  var valid_601190 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601190 = validateParameter(valid_601190, JString, required = false,
+  if valid_594189 != nil:
+    section.add "X-Amz-Date", valid_594189
+  var valid_594190 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594190 = validateParameter(valid_594190, JString, required = false,
                                  default = nil)
-  if valid_601190 != nil:
-    section.add "X-Amz-Security-Token", valid_601190
+  if valid_594190 != nil:
+    section.add "X-Amz-Security-Token", valid_594190
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601191 = header.getOrDefault("X-Amz-Target")
-  valid_601191 = validateParameter(valid_601191, JString, required = true, default = newJString(
+  var valid_594191 = header.getOrDefault("X-Amz-Target")
+  valid_594191 = validateParameter(valid_594191, JString, required = true, default = newJString(
       "secretsmanager.PutResourcePolicy"))
-  if valid_601191 != nil:
-    section.add "X-Amz-Target", valid_601191
-  var valid_601192 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601192 = validateParameter(valid_601192, JString, required = false,
+  if valid_594191 != nil:
+    section.add "X-Amz-Target", valid_594191
+  var valid_594192 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594192 = validateParameter(valid_594192, JString, required = false,
                                  default = nil)
-  if valid_601192 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601192
-  var valid_601193 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601193 = validateParameter(valid_601193, JString, required = false,
+  if valid_594192 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594192
+  var valid_594193 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594193 = validateParameter(valid_594193, JString, required = false,
                                  default = nil)
-  if valid_601193 != nil:
-    section.add "X-Amz-Algorithm", valid_601193
-  var valid_601194 = header.getOrDefault("X-Amz-Signature")
-  valid_601194 = validateParameter(valid_601194, JString, required = false,
+  if valid_594193 != nil:
+    section.add "X-Amz-Algorithm", valid_594193
+  var valid_594194 = header.getOrDefault("X-Amz-Signature")
+  valid_594194 = validateParameter(valid_594194, JString, required = false,
                                  default = nil)
-  if valid_601194 != nil:
-    section.add "X-Amz-Signature", valid_601194
-  var valid_601195 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601195 = validateParameter(valid_601195, JString, required = false,
+  if valid_594194 != nil:
+    section.add "X-Amz-Signature", valid_594194
+  var valid_594195 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594195 = validateParameter(valid_594195, JString, required = false,
                                  default = nil)
-  if valid_601195 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601195
-  var valid_601196 = header.getOrDefault("X-Amz-Credential")
-  valid_601196 = validateParameter(valid_601196, JString, required = false,
+  if valid_594195 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594195
+  var valid_594196 = header.getOrDefault("X-Amz-Credential")
+  valid_594196 = validateParameter(valid_594196, JString, required = false,
                                  default = nil)
-  if valid_601196 != nil:
-    section.add "X-Amz-Credential", valid_601196
+  if valid_594196 != nil:
+    section.add "X-Amz-Credential", valid_594196
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1346,43 +1346,43 @@ proc validate_PutResourcePolicy_601187(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601198: Call_PutResourcePolicy_601186; path: JsonNode;
+proc call*(call_594198: Call_PutResourcePolicy_594186; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Attaches the contents of the specified resource-based permission policy to a secret. A resource-based policy is optional. Alternatively, you can use IAM identity-based policies that specify the secret's Amazon Resource Name (ARN) in the policy statement's <code>Resources</code> element. You can also use a combination of both identity-based and resource-based policies. The affected users and roles receive the permissions that are permitted by all of the relevant policies. For more information, see <a href="http://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_resource-based-policies.html">Using Resource-Based Policies for AWS Secrets Manager</a>. For the complete description of the AWS policy syntax and grammar, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html">IAM JSON Policy Reference</a> in the <i>IAM User Guide</i>.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:PutResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To retrieve the resource policy that's attached to a secret, use <a>GetResourcePolicy</a>.</p> </li> <li> <p>To delete the resource-based policy that's attached to a secret, use <a>DeleteResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
   ## 
-  let valid = call_601198.validator(path, query, header, formData, body)
-  let scheme = call_601198.pickScheme
+  let valid = call_594198.validator(path, query, header, formData, body)
+  let scheme = call_594198.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601198.url(scheme.get, call_601198.host, call_601198.base,
-                         call_601198.route, valid.getOrDefault("path"),
+  let url = call_594198.url(scheme.get, call_594198.host, call_594198.base,
+                         call_594198.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601198, url, valid)
+  result = hook(call_594198, url, valid)
 
-proc call*(call_601199: Call_PutResourcePolicy_601186; body: JsonNode): Recallable =
+proc call*(call_594199: Call_PutResourcePolicy_594186; body: JsonNode): Recallable =
   ## putResourcePolicy
   ## <p>Attaches the contents of the specified resource-based permission policy to a secret. A resource-based policy is optional. Alternatively, you can use IAM identity-based policies that specify the secret's Amazon Resource Name (ARN) in the policy statement's <code>Resources</code> element. You can also use a combination of both identity-based and resource-based policies. The affected users and roles receive the permissions that are permitted by all of the relevant policies. For more information, see <a href="http://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_resource-based-policies.html">Using Resource-Based Policies for AWS Secrets Manager</a>. For the complete description of the AWS policy syntax and grammar, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html">IAM JSON Policy Reference</a> in the <i>IAM User Guide</i>.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:PutResourcePolicy</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To retrieve the resource policy that's attached to a secret, use <a>GetResourcePolicy</a>.</p> </li> <li> <p>To delete the resource-based policy that's attached to a secret, use <a>DeleteResourcePolicy</a>.</p> </li> <li> <p>To list all of the currently available secrets, use <a>ListSecrets</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601200 = newJObject()
+  var body_594200 = newJObject()
   if body != nil:
-    body_601200 = body
-  result = call_601199.call(nil, nil, nil, nil, body_601200)
+    body_594200 = body
+  result = call_594199.call(nil, nil, nil, nil, body_594200)
 
-var putResourcePolicy* = Call_PutResourcePolicy_601186(name: "putResourcePolicy",
+var putResourcePolicy* = Call_PutResourcePolicy_594186(name: "putResourcePolicy",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.PutResourcePolicy",
-    validator: validate_PutResourcePolicy_601187, base: "/",
-    url: url_PutResourcePolicy_601188, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutResourcePolicy_594187, base: "/",
+    url: url_PutResourcePolicy_594188, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutSecretValue_601201 = ref object of OpenApiRestCall_600438
-proc url_PutSecretValue_601203(protocol: Scheme; host: string; base: string;
+  Call_PutSecretValue_594201 = ref object of OpenApiRestCall_593438
+proc url_PutSecretValue_594203(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutSecretValue_601202(path: JsonNode; query: JsonNode;
+proc validate_PutSecretValue_594202(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Stores a new encrypted secret value in the specified secret. To do this, the operation creates a new version and attaches it to the secret. The version can contain a new <code>SecretString</code> value or a new <code>SecretBinary</code> value. You can also specify the staging labels that are initially attached to the new version.</p> <note> <p>The Secrets Manager console uses only the <code>SecretString</code> field. To add binary data to a secret with the <code>SecretBinary</code> field you must use the AWS CLI or one of the AWS SDKs.</p> </note> <ul> <li> <p>If this operation creates the first version for the secret then Secrets Manager automatically attaches the staging label <code>AWSCURRENT</code> to the new version.</p> </li> <li> <p>If another version of this secret already exists, then this operation does not automatically move any staging labels other than those that you explicitly specify in the <code>VersionStages</code> parameter.</p> </li> <li> <p>If this operation moves the staging label <code>AWSCURRENT</code> from another version to this version (because you included it in the <code>StagingLabels</code> parameter) then Secrets Manager also automatically moves the staging label <code>AWSPREVIOUS</code> to the version that <code>AWSCURRENT</code> was removed from.</p> </li> <li> <p>This operation is idempotent. If a version with a <code>VersionId</code> with the same value as the <code>ClientRequestToken</code> parameter already exists and you specify the same secret data, the operation succeeds but does nothing. However, if the secret data is different, then the operation fails because you cannot modify an existing version; you can only create new ones.</p> </li> </ul> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:PutSecretValue</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To retrieve the encrypted value you store in the version of a secret, use <a>GetSecretValue</a>.</p> </li> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To get the details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list the versions attached to a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
@@ -1403,48 +1403,48 @@ proc validate_PutSecretValue_601202(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601204 = header.getOrDefault("X-Amz-Date")
-  valid_601204 = validateParameter(valid_601204, JString, required = false,
+  var valid_594204 = header.getOrDefault("X-Amz-Date")
+  valid_594204 = validateParameter(valid_594204, JString, required = false,
                                  default = nil)
-  if valid_601204 != nil:
-    section.add "X-Amz-Date", valid_601204
-  var valid_601205 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601205 = validateParameter(valid_601205, JString, required = false,
+  if valid_594204 != nil:
+    section.add "X-Amz-Date", valid_594204
+  var valid_594205 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594205 = validateParameter(valid_594205, JString, required = false,
                                  default = nil)
-  if valid_601205 != nil:
-    section.add "X-Amz-Security-Token", valid_601205
+  if valid_594205 != nil:
+    section.add "X-Amz-Security-Token", valid_594205
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601206 = header.getOrDefault("X-Amz-Target")
-  valid_601206 = validateParameter(valid_601206, JString, required = true, default = newJString(
+  var valid_594206 = header.getOrDefault("X-Amz-Target")
+  valid_594206 = validateParameter(valid_594206, JString, required = true, default = newJString(
       "secretsmanager.PutSecretValue"))
-  if valid_601206 != nil:
-    section.add "X-Amz-Target", valid_601206
-  var valid_601207 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601207 = validateParameter(valid_601207, JString, required = false,
+  if valid_594206 != nil:
+    section.add "X-Amz-Target", valid_594206
+  var valid_594207 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594207 = validateParameter(valid_594207, JString, required = false,
                                  default = nil)
-  if valid_601207 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601207
-  var valid_601208 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601208 = validateParameter(valid_601208, JString, required = false,
+  if valid_594207 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594207
+  var valid_594208 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594208 = validateParameter(valid_594208, JString, required = false,
                                  default = nil)
-  if valid_601208 != nil:
-    section.add "X-Amz-Algorithm", valid_601208
-  var valid_601209 = header.getOrDefault("X-Amz-Signature")
-  valid_601209 = validateParameter(valid_601209, JString, required = false,
+  if valid_594208 != nil:
+    section.add "X-Amz-Algorithm", valid_594208
+  var valid_594209 = header.getOrDefault("X-Amz-Signature")
+  valid_594209 = validateParameter(valid_594209, JString, required = false,
                                  default = nil)
-  if valid_601209 != nil:
-    section.add "X-Amz-Signature", valid_601209
-  var valid_601210 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601210 = validateParameter(valid_601210, JString, required = false,
+  if valid_594209 != nil:
+    section.add "X-Amz-Signature", valid_594209
+  var valid_594210 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594210 = validateParameter(valid_594210, JString, required = false,
                                  default = nil)
-  if valid_601210 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601210
-  var valid_601211 = header.getOrDefault("X-Amz-Credential")
-  valid_601211 = validateParameter(valid_601211, JString, required = false,
+  if valid_594210 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594210
+  var valid_594211 = header.getOrDefault("X-Amz-Credential")
+  valid_594211 = validateParameter(valid_594211, JString, required = false,
                                  default = nil)
-  if valid_601211 != nil:
-    section.add "X-Amz-Credential", valid_601211
+  if valid_594211 != nil:
+    section.add "X-Amz-Credential", valid_594211
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1455,43 +1455,43 @@ proc validate_PutSecretValue_601202(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601213: Call_PutSecretValue_601201; path: JsonNode; query: JsonNode;
+proc call*(call_594213: Call_PutSecretValue_594201; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stores a new encrypted secret value in the specified secret. To do this, the operation creates a new version and attaches it to the secret. The version can contain a new <code>SecretString</code> value or a new <code>SecretBinary</code> value. You can also specify the staging labels that are initially attached to the new version.</p> <note> <p>The Secrets Manager console uses only the <code>SecretString</code> field. To add binary data to a secret with the <code>SecretBinary</code> field you must use the AWS CLI or one of the AWS SDKs.</p> </note> <ul> <li> <p>If this operation creates the first version for the secret then Secrets Manager automatically attaches the staging label <code>AWSCURRENT</code> to the new version.</p> </li> <li> <p>If another version of this secret already exists, then this operation does not automatically move any staging labels other than those that you explicitly specify in the <code>VersionStages</code> parameter.</p> </li> <li> <p>If this operation moves the staging label <code>AWSCURRENT</code> from another version to this version (because you included it in the <code>StagingLabels</code> parameter) then Secrets Manager also automatically moves the staging label <code>AWSPREVIOUS</code> to the version that <code>AWSCURRENT</code> was removed from.</p> </li> <li> <p>This operation is idempotent. If a version with a <code>VersionId</code> with the same value as the <code>ClientRequestToken</code> parameter already exists and you specify the same secret data, the operation succeeds but does nothing. However, if the secret data is different, then the operation fails because you cannot modify an existing version; you can only create new ones.</p> </li> </ul> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:PutSecretValue</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To retrieve the encrypted value you store in the version of a secret, use <a>GetSecretValue</a>.</p> </li> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To get the details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list the versions attached to a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ## 
-  let valid = call_601213.validator(path, query, header, formData, body)
-  let scheme = call_601213.pickScheme
+  let valid = call_594213.validator(path, query, header, formData, body)
+  let scheme = call_594213.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601213.url(scheme.get, call_601213.host, call_601213.base,
-                         call_601213.route, valid.getOrDefault("path"),
+  let url = call_594213.url(scheme.get, call_594213.host, call_594213.base,
+                         call_594213.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601213, url, valid)
+  result = hook(call_594213, url, valid)
 
-proc call*(call_601214: Call_PutSecretValue_601201; body: JsonNode): Recallable =
+proc call*(call_594214: Call_PutSecretValue_594201; body: JsonNode): Recallable =
   ## putSecretValue
   ## <p>Stores a new encrypted secret value in the specified secret. To do this, the operation creates a new version and attaches it to the secret. The version can contain a new <code>SecretString</code> value or a new <code>SecretBinary</code> value. You can also specify the staging labels that are initially attached to the new version.</p> <note> <p>The Secrets Manager console uses only the <code>SecretString</code> field. To add binary data to a secret with the <code>SecretBinary</code> field you must use the AWS CLI or one of the AWS SDKs.</p> </note> <ul> <li> <p>If this operation creates the first version for the secret then Secrets Manager automatically attaches the staging label <code>AWSCURRENT</code> to the new version.</p> </li> <li> <p>If another version of this secret already exists, then this operation does not automatically move any staging labels other than those that you explicitly specify in the <code>VersionStages</code> parameter.</p> </li> <li> <p>If this operation moves the staging label <code>AWSCURRENT</code> from another version to this version (because you included it in the <code>StagingLabels</code> parameter) then Secrets Manager also automatically moves the staging label <code>AWSPREVIOUS</code> to the version that <code>AWSCURRENT</code> was removed from.</p> </li> <li> <p>This operation is idempotent. If a version with a <code>VersionId</code> with the same value as the <code>ClientRequestToken</code> parameter already exists and you specify the same secret data, the operation succeeds but does nothing. However, if the secret data is different, then the operation fails because you cannot modify an existing version; you can only create new ones.</p> </li> </ul> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:PutSecretValue</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a customer-managed AWS KMS key to encrypt the secret. You do not need this permission to use the account's default AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To retrieve the encrypted value you store in the version of a secret, use <a>GetSecretValue</a>.</p> </li> <li> <p>To create a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To get the details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list the versions attached to a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601215 = newJObject()
+  var body_594215 = newJObject()
   if body != nil:
-    body_601215 = body
-  result = call_601214.call(nil, nil, nil, nil, body_601215)
+    body_594215 = body
+  result = call_594214.call(nil, nil, nil, nil, body_594215)
 
-var putSecretValue* = Call_PutSecretValue_601201(name: "putSecretValue",
+var putSecretValue* = Call_PutSecretValue_594201(name: "putSecretValue",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.PutSecretValue",
-    validator: validate_PutSecretValue_601202, base: "/", url: url_PutSecretValue_601203,
+    validator: validate_PutSecretValue_594202, base: "/", url: url_PutSecretValue_594203,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestoreSecret_601216 = ref object of OpenApiRestCall_600438
-proc url_RestoreSecret_601218(protocol: Scheme; host: string; base: string;
+  Call_RestoreSecret_594216 = ref object of OpenApiRestCall_593438
+proc url_RestoreSecret_594218(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RestoreSecret_601217(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RestoreSecret_594217(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Cancels the scheduled deletion of a secret by removing the <code>DeletedDate</code> time stamp. This makes the secret accessible to query once again.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:RestoreSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To delete a secret, use <a>DeleteSecret</a>.</p> </li> </ul>
   ## 
@@ -1511,48 +1511,48 @@ proc validate_RestoreSecret_601217(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601219 = header.getOrDefault("X-Amz-Date")
-  valid_601219 = validateParameter(valid_601219, JString, required = false,
+  var valid_594219 = header.getOrDefault("X-Amz-Date")
+  valid_594219 = validateParameter(valid_594219, JString, required = false,
                                  default = nil)
-  if valid_601219 != nil:
-    section.add "X-Amz-Date", valid_601219
-  var valid_601220 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601220 = validateParameter(valid_601220, JString, required = false,
+  if valid_594219 != nil:
+    section.add "X-Amz-Date", valid_594219
+  var valid_594220 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594220 = validateParameter(valid_594220, JString, required = false,
                                  default = nil)
-  if valid_601220 != nil:
-    section.add "X-Amz-Security-Token", valid_601220
+  if valid_594220 != nil:
+    section.add "X-Amz-Security-Token", valid_594220
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601221 = header.getOrDefault("X-Amz-Target")
-  valid_601221 = validateParameter(valid_601221, JString, required = true, default = newJString(
+  var valid_594221 = header.getOrDefault("X-Amz-Target")
+  valid_594221 = validateParameter(valid_594221, JString, required = true, default = newJString(
       "secretsmanager.RestoreSecret"))
-  if valid_601221 != nil:
-    section.add "X-Amz-Target", valid_601221
-  var valid_601222 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601222 = validateParameter(valid_601222, JString, required = false,
+  if valid_594221 != nil:
+    section.add "X-Amz-Target", valid_594221
+  var valid_594222 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594222 = validateParameter(valid_594222, JString, required = false,
                                  default = nil)
-  if valid_601222 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601222
-  var valid_601223 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601223 = validateParameter(valid_601223, JString, required = false,
+  if valid_594222 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594222
+  var valid_594223 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594223 = validateParameter(valid_594223, JString, required = false,
                                  default = nil)
-  if valid_601223 != nil:
-    section.add "X-Amz-Algorithm", valid_601223
-  var valid_601224 = header.getOrDefault("X-Amz-Signature")
-  valid_601224 = validateParameter(valid_601224, JString, required = false,
+  if valid_594223 != nil:
+    section.add "X-Amz-Algorithm", valid_594223
+  var valid_594224 = header.getOrDefault("X-Amz-Signature")
+  valid_594224 = validateParameter(valid_594224, JString, required = false,
                                  default = nil)
-  if valid_601224 != nil:
-    section.add "X-Amz-Signature", valid_601224
-  var valid_601225 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601225 = validateParameter(valid_601225, JString, required = false,
+  if valid_594224 != nil:
+    section.add "X-Amz-Signature", valid_594224
+  var valid_594225 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594225 = validateParameter(valid_594225, JString, required = false,
                                  default = nil)
-  if valid_601225 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601225
-  var valid_601226 = header.getOrDefault("X-Amz-Credential")
-  valid_601226 = validateParameter(valid_601226, JString, required = false,
+  if valid_594225 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594225
+  var valid_594226 = header.getOrDefault("X-Amz-Credential")
+  valid_594226 = validateParameter(valid_594226, JString, required = false,
                                  default = nil)
-  if valid_601226 != nil:
-    section.add "X-Amz-Credential", valid_601226
+  if valid_594226 != nil:
+    section.add "X-Amz-Credential", valid_594226
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1563,43 +1563,43 @@ proc validate_RestoreSecret_601217(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601228: Call_RestoreSecret_601216; path: JsonNode; query: JsonNode;
+proc call*(call_594228: Call_RestoreSecret_594216; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Cancels the scheduled deletion of a secret by removing the <code>DeletedDate</code> time stamp. This makes the secret accessible to query once again.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:RestoreSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To delete a secret, use <a>DeleteSecret</a>.</p> </li> </ul>
   ## 
-  let valid = call_601228.validator(path, query, header, formData, body)
-  let scheme = call_601228.pickScheme
+  let valid = call_594228.validator(path, query, header, formData, body)
+  let scheme = call_594228.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601228.url(scheme.get, call_601228.host, call_601228.base,
-                         call_601228.route, valid.getOrDefault("path"),
+  let url = call_594228.url(scheme.get, call_594228.host, call_594228.base,
+                         call_594228.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601228, url, valid)
+  result = hook(call_594228, url, valid)
 
-proc call*(call_601229: Call_RestoreSecret_601216; body: JsonNode): Recallable =
+proc call*(call_594229: Call_RestoreSecret_594216; body: JsonNode): Recallable =
   ## restoreSecret
   ## <p>Cancels the scheduled deletion of a secret by removing the <code>DeletedDate</code> time stamp. This makes the secret accessible to query once again.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:RestoreSecret</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To delete a secret, use <a>DeleteSecret</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601230 = newJObject()
+  var body_594230 = newJObject()
   if body != nil:
-    body_601230 = body
-  result = call_601229.call(nil, nil, nil, nil, body_601230)
+    body_594230 = body
+  result = call_594229.call(nil, nil, nil, nil, body_594230)
 
-var restoreSecret* = Call_RestoreSecret_601216(name: "restoreSecret",
+var restoreSecret* = Call_RestoreSecret_594216(name: "restoreSecret",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.RestoreSecret",
-    validator: validate_RestoreSecret_601217, base: "/", url: url_RestoreSecret_601218,
+    validator: validate_RestoreSecret_594217, base: "/", url: url_RestoreSecret_594218,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RotateSecret_601231 = ref object of OpenApiRestCall_600438
-proc url_RotateSecret_601233(protocol: Scheme; host: string; base: string;
+  Call_RotateSecret_594231 = ref object of OpenApiRestCall_593438
+proc url_RotateSecret_594233(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RotateSecret_601232(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RotateSecret_594232(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Configures and starts the asynchronous process of rotating this secret. If you include the configuration parameters, the operation sets those values for the secret and then immediately starts a rotation. If you do not include the configuration parameters, the operation starts a rotation with the values already stored in the secret. After the rotation completes, the protected service and its clients all use the new version of the secret. </p> <p>This required configuration information includes the ARN of an AWS Lambda function and the time between scheduled rotations. The Lambda rotation function creates a new version of the secret and creates or updates the credentials on the protected service to match. After testing the new credentials, the function marks the new secret with the staging label <code>AWSCURRENT</code> so that your clients all immediately begin to use the new version. For more information about rotating secrets and how to configure a Lambda function to rotate the secrets for your protected service, see <a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html">Rotating Secrets in AWS Secrets Manager</a> in the <i>AWS Secrets Manager User Guide</i>.</p> <p>Secrets Manager schedules the next rotation when the previous one is complete. Secrets Manager schedules the date by adding the rotation interval (number of days) to the actual date of the last rotation. The service chooses the hour within that 24-hour date window randomly. The minute is also chosen somewhat randomly, but weighted towards the top of the hour and influenced by a variety of factors that help distribute load.</p> <p>The rotation function must end with the versions of the secret in one of two states:</p> <ul> <li> <p>The <code>AWSPENDING</code> and <code>AWSCURRENT</code> staging labels are attached to the same version of the secret, or</p> </li> <li> <p>The <code>AWSPENDING</code> staging label is not attached to any version of the secret.</p> </li> </ul> <p>If instead the <code>AWSPENDING</code> staging label is present but is not attached to the same version as <code>AWSCURRENT</code> then any later invocation of <code>RotateSecret</code> assumes that a previous rotation request is still in progress and returns an error.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:RotateSecret</p> </li> <li> <p>lambda:InvokeFunction (on the function specified in the secret's metadata)</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the secrets in your account, use <a>ListSecrets</a>.</p> </li> <li> <p>To get the details for a version of a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To create a new version of a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To attach staging labels to or remove staging labels from a version of a secret, use <a>UpdateSecretVersionStage</a>.</p> </li> </ul>
   ## 
@@ -1619,48 +1619,48 @@ proc validate_RotateSecret_601232(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601234 = header.getOrDefault("X-Amz-Date")
-  valid_601234 = validateParameter(valid_601234, JString, required = false,
+  var valid_594234 = header.getOrDefault("X-Amz-Date")
+  valid_594234 = validateParameter(valid_594234, JString, required = false,
                                  default = nil)
-  if valid_601234 != nil:
-    section.add "X-Amz-Date", valid_601234
-  var valid_601235 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601235 = validateParameter(valid_601235, JString, required = false,
+  if valid_594234 != nil:
+    section.add "X-Amz-Date", valid_594234
+  var valid_594235 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594235 = validateParameter(valid_594235, JString, required = false,
                                  default = nil)
-  if valid_601235 != nil:
-    section.add "X-Amz-Security-Token", valid_601235
+  if valid_594235 != nil:
+    section.add "X-Amz-Security-Token", valid_594235
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601236 = header.getOrDefault("X-Amz-Target")
-  valid_601236 = validateParameter(valid_601236, JString, required = true, default = newJString(
+  var valid_594236 = header.getOrDefault("X-Amz-Target")
+  valid_594236 = validateParameter(valid_594236, JString, required = true, default = newJString(
       "secretsmanager.RotateSecret"))
-  if valid_601236 != nil:
-    section.add "X-Amz-Target", valid_601236
-  var valid_601237 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601237 = validateParameter(valid_601237, JString, required = false,
+  if valid_594236 != nil:
+    section.add "X-Amz-Target", valid_594236
+  var valid_594237 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594237 = validateParameter(valid_594237, JString, required = false,
                                  default = nil)
-  if valid_601237 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601237
-  var valid_601238 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601238 = validateParameter(valid_601238, JString, required = false,
+  if valid_594237 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594237
+  var valid_594238 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594238 = validateParameter(valid_594238, JString, required = false,
                                  default = nil)
-  if valid_601238 != nil:
-    section.add "X-Amz-Algorithm", valid_601238
-  var valid_601239 = header.getOrDefault("X-Amz-Signature")
-  valid_601239 = validateParameter(valid_601239, JString, required = false,
+  if valid_594238 != nil:
+    section.add "X-Amz-Algorithm", valid_594238
+  var valid_594239 = header.getOrDefault("X-Amz-Signature")
+  valid_594239 = validateParameter(valid_594239, JString, required = false,
                                  default = nil)
-  if valid_601239 != nil:
-    section.add "X-Amz-Signature", valid_601239
-  var valid_601240 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601240 = validateParameter(valid_601240, JString, required = false,
+  if valid_594239 != nil:
+    section.add "X-Amz-Signature", valid_594239
+  var valid_594240 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594240 = validateParameter(valid_594240, JString, required = false,
                                  default = nil)
-  if valid_601240 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601240
-  var valid_601241 = header.getOrDefault("X-Amz-Credential")
-  valid_601241 = validateParameter(valid_601241, JString, required = false,
+  if valid_594240 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594240
+  var valid_594241 = header.getOrDefault("X-Amz-Credential")
+  valid_594241 = validateParameter(valid_594241, JString, required = false,
                                  default = nil)
-  if valid_601241 != nil:
-    section.add "X-Amz-Credential", valid_601241
+  if valid_594241 != nil:
+    section.add "X-Amz-Credential", valid_594241
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1671,43 +1671,43 @@ proc validate_RotateSecret_601232(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601243: Call_RotateSecret_601231; path: JsonNode; query: JsonNode;
+proc call*(call_594243: Call_RotateSecret_594231; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Configures and starts the asynchronous process of rotating this secret. If you include the configuration parameters, the operation sets those values for the secret and then immediately starts a rotation. If you do not include the configuration parameters, the operation starts a rotation with the values already stored in the secret. After the rotation completes, the protected service and its clients all use the new version of the secret. </p> <p>This required configuration information includes the ARN of an AWS Lambda function and the time between scheduled rotations. The Lambda rotation function creates a new version of the secret and creates or updates the credentials on the protected service to match. After testing the new credentials, the function marks the new secret with the staging label <code>AWSCURRENT</code> so that your clients all immediately begin to use the new version. For more information about rotating secrets and how to configure a Lambda function to rotate the secrets for your protected service, see <a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html">Rotating Secrets in AWS Secrets Manager</a> in the <i>AWS Secrets Manager User Guide</i>.</p> <p>Secrets Manager schedules the next rotation when the previous one is complete. Secrets Manager schedules the date by adding the rotation interval (number of days) to the actual date of the last rotation. The service chooses the hour within that 24-hour date window randomly. The minute is also chosen somewhat randomly, but weighted towards the top of the hour and influenced by a variety of factors that help distribute load.</p> <p>The rotation function must end with the versions of the secret in one of two states:</p> <ul> <li> <p>The <code>AWSPENDING</code> and <code>AWSCURRENT</code> staging labels are attached to the same version of the secret, or</p> </li> <li> <p>The <code>AWSPENDING</code> staging label is not attached to any version of the secret.</p> </li> </ul> <p>If instead the <code>AWSPENDING</code> staging label is present but is not attached to the same version as <code>AWSCURRENT</code> then any later invocation of <code>RotateSecret</code> assumes that a previous rotation request is still in progress and returns an error.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:RotateSecret</p> </li> <li> <p>lambda:InvokeFunction (on the function specified in the secret's metadata)</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the secrets in your account, use <a>ListSecrets</a>.</p> </li> <li> <p>To get the details for a version of a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To create a new version of a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To attach staging labels to or remove staging labels from a version of a secret, use <a>UpdateSecretVersionStage</a>.</p> </li> </ul>
   ## 
-  let valid = call_601243.validator(path, query, header, formData, body)
-  let scheme = call_601243.pickScheme
+  let valid = call_594243.validator(path, query, header, formData, body)
+  let scheme = call_594243.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601243.url(scheme.get, call_601243.host, call_601243.base,
-                         call_601243.route, valid.getOrDefault("path"),
+  let url = call_594243.url(scheme.get, call_594243.host, call_594243.base,
+                         call_594243.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601243, url, valid)
+  result = hook(call_594243, url, valid)
 
-proc call*(call_601244: Call_RotateSecret_601231; body: JsonNode): Recallable =
+proc call*(call_594244: Call_RotateSecret_594231; body: JsonNode): Recallable =
   ## rotateSecret
   ## <p>Configures and starts the asynchronous process of rotating this secret. If you include the configuration parameters, the operation sets those values for the secret and then immediately starts a rotation. If you do not include the configuration parameters, the operation starts a rotation with the values already stored in the secret. After the rotation completes, the protected service and its clients all use the new version of the secret. </p> <p>This required configuration information includes the ARN of an AWS Lambda function and the time between scheduled rotations. The Lambda rotation function creates a new version of the secret and creates or updates the credentials on the protected service to match. After testing the new credentials, the function marks the new secret with the staging label <code>AWSCURRENT</code> so that your clients all immediately begin to use the new version. For more information about rotating secrets and how to configure a Lambda function to rotate the secrets for your protected service, see <a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html">Rotating Secrets in AWS Secrets Manager</a> in the <i>AWS Secrets Manager User Guide</i>.</p> <p>Secrets Manager schedules the next rotation when the previous one is complete. Secrets Manager schedules the date by adding the rotation interval (number of days) to the actual date of the last rotation. The service chooses the hour within that 24-hour date window randomly. The minute is also chosen somewhat randomly, but weighted towards the top of the hour and influenced by a variety of factors that help distribute load.</p> <p>The rotation function must end with the versions of the secret in one of two states:</p> <ul> <li> <p>The <code>AWSPENDING</code> and <code>AWSCURRENT</code> staging labels are attached to the same version of the secret, or</p> </li> <li> <p>The <code>AWSPENDING</code> staging label is not attached to any version of the secret.</p> </li> </ul> <p>If instead the <code>AWSPENDING</code> staging label is present but is not attached to the same version as <code>AWSCURRENT</code> then any later invocation of <code>RotateSecret</code> assumes that a previous rotation request is still in progress and returns an error.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:RotateSecret</p> </li> <li> <p>lambda:InvokeFunction (on the function specified in the secret's metadata)</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To list the secrets in your account, use <a>ListSecrets</a>.</p> </li> <li> <p>To get the details for a version of a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To create a new version of a secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To attach staging labels to or remove staging labels from a version of a secret, use <a>UpdateSecretVersionStage</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601245 = newJObject()
+  var body_594245 = newJObject()
   if body != nil:
-    body_601245 = body
-  result = call_601244.call(nil, nil, nil, nil, body_601245)
+    body_594245 = body
+  result = call_594244.call(nil, nil, nil, nil, body_594245)
 
-var rotateSecret* = Call_RotateSecret_601231(name: "rotateSecret",
+var rotateSecret* = Call_RotateSecret_594231(name: "rotateSecret",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.RotateSecret",
-    validator: validate_RotateSecret_601232, base: "/", url: url_RotateSecret_601233,
+    validator: validate_RotateSecret_594232, base: "/", url: url_RotateSecret_594233,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_601246 = ref object of OpenApiRestCall_600438
-proc url_TagResource_601248(protocol: Scheme; host: string; base: string;
+  Call_TagResource_594246 = ref object of OpenApiRestCall_593438
+proc url_TagResource_594248(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_TagResource_601247(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_594247(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Attaches one or more tags, each consisting of a key name and a value, to the specified secret. Tags are part of the secret's overall metadata, and are not associated with any specific version of the secret. This operation only appends tags to the existing list of tags. To remove tags, you must use <a>UntagResource</a>.</p> <p>The following basic restrictions apply to tags:</p> <ul> <li> <p>Maximum number of tags per secret—50</p> </li> <li> <p>Maximum key length—127 Unicode characters in UTF-8</p> </li> <li> <p>Maximum value length—255 Unicode characters in UTF-8</p> </li> <li> <p>Tag keys and values are case sensitive.</p> </li> <li> <p>Do not use the <code>aws:</code> prefix in your tag names or values because it is reserved for AWS use. You can't edit or delete tag names or values with this prefix. Tags with this prefix do not count against your tags per secret limit.</p> </li> <li> <p>If your tagging schema will be used across multiple services and resources, remember that other services might have restrictions on allowed characters. Generally allowed characters are: letters, spaces, and numbers representable in UTF-8, plus the following special characters: + - = . _ : / @.</p> </li> </ul> <important> <p>If you use tags as part of your security strategy, then adding or removing a tag can change permissions. If successfully completing this operation would result in you losing your permissions for this secret, then the operation is blocked and returns an Access Denied error.</p> </important> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:TagResource</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To remove one or more tags from the collection attached to a secret, use <a>UntagResource</a>.</p> </li> <li> <p>To view the list of tags attached to a secret, use <a>DescribeSecret</a>.</p> </li> </ul>
   ## 
@@ -1727,48 +1727,48 @@ proc validate_TagResource_601247(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601249 = header.getOrDefault("X-Amz-Date")
-  valid_601249 = validateParameter(valid_601249, JString, required = false,
+  var valid_594249 = header.getOrDefault("X-Amz-Date")
+  valid_594249 = validateParameter(valid_594249, JString, required = false,
                                  default = nil)
-  if valid_601249 != nil:
-    section.add "X-Amz-Date", valid_601249
-  var valid_601250 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601250 = validateParameter(valid_601250, JString, required = false,
+  if valid_594249 != nil:
+    section.add "X-Amz-Date", valid_594249
+  var valid_594250 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594250 = validateParameter(valid_594250, JString, required = false,
                                  default = nil)
-  if valid_601250 != nil:
-    section.add "X-Amz-Security-Token", valid_601250
+  if valid_594250 != nil:
+    section.add "X-Amz-Security-Token", valid_594250
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601251 = header.getOrDefault("X-Amz-Target")
-  valid_601251 = validateParameter(valid_601251, JString, required = true, default = newJString(
+  var valid_594251 = header.getOrDefault("X-Amz-Target")
+  valid_594251 = validateParameter(valid_594251, JString, required = true, default = newJString(
       "secretsmanager.TagResource"))
-  if valid_601251 != nil:
-    section.add "X-Amz-Target", valid_601251
-  var valid_601252 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601252 = validateParameter(valid_601252, JString, required = false,
+  if valid_594251 != nil:
+    section.add "X-Amz-Target", valid_594251
+  var valid_594252 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594252 = validateParameter(valid_594252, JString, required = false,
                                  default = nil)
-  if valid_601252 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601252
-  var valid_601253 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601253 = validateParameter(valid_601253, JString, required = false,
+  if valid_594252 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594252
+  var valid_594253 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594253 = validateParameter(valid_594253, JString, required = false,
                                  default = nil)
-  if valid_601253 != nil:
-    section.add "X-Amz-Algorithm", valid_601253
-  var valid_601254 = header.getOrDefault("X-Amz-Signature")
-  valid_601254 = validateParameter(valid_601254, JString, required = false,
+  if valid_594253 != nil:
+    section.add "X-Amz-Algorithm", valid_594253
+  var valid_594254 = header.getOrDefault("X-Amz-Signature")
+  valid_594254 = validateParameter(valid_594254, JString, required = false,
                                  default = nil)
-  if valid_601254 != nil:
-    section.add "X-Amz-Signature", valid_601254
-  var valid_601255 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601255 = validateParameter(valid_601255, JString, required = false,
+  if valid_594254 != nil:
+    section.add "X-Amz-Signature", valid_594254
+  var valid_594255 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594255 = validateParameter(valid_594255, JString, required = false,
                                  default = nil)
-  if valid_601255 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601255
-  var valid_601256 = header.getOrDefault("X-Amz-Credential")
-  valid_601256 = validateParameter(valid_601256, JString, required = false,
+  if valid_594255 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594255
+  var valid_594256 = header.getOrDefault("X-Amz-Credential")
+  valid_594256 = validateParameter(valid_594256, JString, required = false,
                                  default = nil)
-  if valid_601256 != nil:
-    section.add "X-Amz-Credential", valid_601256
+  if valid_594256 != nil:
+    section.add "X-Amz-Credential", valid_594256
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1779,44 +1779,44 @@ proc validate_TagResource_601247(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601258: Call_TagResource_601246; path: JsonNode; query: JsonNode;
+proc call*(call_594258: Call_TagResource_594246; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Attaches one or more tags, each consisting of a key name and a value, to the specified secret. Tags are part of the secret's overall metadata, and are not associated with any specific version of the secret. This operation only appends tags to the existing list of tags. To remove tags, you must use <a>UntagResource</a>.</p> <p>The following basic restrictions apply to tags:</p> <ul> <li> <p>Maximum number of tags per secret—50</p> </li> <li> <p>Maximum key length—127 Unicode characters in UTF-8</p> </li> <li> <p>Maximum value length—255 Unicode characters in UTF-8</p> </li> <li> <p>Tag keys and values are case sensitive.</p> </li> <li> <p>Do not use the <code>aws:</code> prefix in your tag names or values because it is reserved for AWS use. You can't edit or delete tag names or values with this prefix. Tags with this prefix do not count against your tags per secret limit.</p> </li> <li> <p>If your tagging schema will be used across multiple services and resources, remember that other services might have restrictions on allowed characters. Generally allowed characters are: letters, spaces, and numbers representable in UTF-8, plus the following special characters: + - = . _ : / @.</p> </li> </ul> <important> <p>If you use tags as part of your security strategy, then adding or removing a tag can change permissions. If successfully completing this operation would result in you losing your permissions for this secret, then the operation is blocked and returns an Access Denied error.</p> </important> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:TagResource</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To remove one or more tags from the collection attached to a secret, use <a>UntagResource</a>.</p> </li> <li> <p>To view the list of tags attached to a secret, use <a>DescribeSecret</a>.</p> </li> </ul>
   ## 
-  let valid = call_601258.validator(path, query, header, formData, body)
-  let scheme = call_601258.pickScheme
+  let valid = call_594258.validator(path, query, header, formData, body)
+  let scheme = call_594258.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601258.url(scheme.get, call_601258.host, call_601258.base,
-                         call_601258.route, valid.getOrDefault("path"),
+  let url = call_594258.url(scheme.get, call_594258.host, call_594258.base,
+                         call_594258.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601258, url, valid)
+  result = hook(call_594258, url, valid)
 
-proc call*(call_601259: Call_TagResource_601246; body: JsonNode): Recallable =
+proc call*(call_594259: Call_TagResource_594246; body: JsonNode): Recallable =
   ## tagResource
   ## <p>Attaches one or more tags, each consisting of a key name and a value, to the specified secret. Tags are part of the secret's overall metadata, and are not associated with any specific version of the secret. This operation only appends tags to the existing list of tags. To remove tags, you must use <a>UntagResource</a>.</p> <p>The following basic restrictions apply to tags:</p> <ul> <li> <p>Maximum number of tags per secret—50</p> </li> <li> <p>Maximum key length—127 Unicode characters in UTF-8</p> </li> <li> <p>Maximum value length—255 Unicode characters in UTF-8</p> </li> <li> <p>Tag keys and values are case sensitive.</p> </li> <li> <p>Do not use the <code>aws:</code> prefix in your tag names or values because it is reserved for AWS use. You can't edit or delete tag names or values with this prefix. Tags with this prefix do not count against your tags per secret limit.</p> </li> <li> <p>If your tagging schema will be used across multiple services and resources, remember that other services might have restrictions on allowed characters. Generally allowed characters are: letters, spaces, and numbers representable in UTF-8, plus the following special characters: + - = . _ : / @.</p> </li> </ul> <important> <p>If you use tags as part of your security strategy, then adding or removing a tag can change permissions. If successfully completing this operation would result in you losing your permissions for this secret, then the operation is blocked and returns an Access Denied error.</p> </important> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:TagResource</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To remove one or more tags from the collection attached to a secret, use <a>UntagResource</a>.</p> </li> <li> <p>To view the list of tags attached to a secret, use <a>DescribeSecret</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601260 = newJObject()
+  var body_594260 = newJObject()
   if body != nil:
-    body_601260 = body
-  result = call_601259.call(nil, nil, nil, nil, body_601260)
+    body_594260 = body
+  result = call_594259.call(nil, nil, nil, nil, body_594260)
 
-var tagResource* = Call_TagResource_601246(name: "tagResource",
+var tagResource* = Call_TagResource_594246(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "secretsmanager.amazonaws.com", route: "/#X-Amz-Target=secretsmanager.TagResource",
-                                        validator: validate_TagResource_601247,
-                                        base: "/", url: url_TagResource_601248,
+                                        validator: validate_TagResource_594247,
+                                        base: "/", url: url_TagResource_594248,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_601261 = ref object of OpenApiRestCall_600438
-proc url_UntagResource_601263(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_594261 = ref object of OpenApiRestCall_593438
+proc url_UntagResource_594263(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UntagResource_601262(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_594262(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes one or more tags from the specified secret.</p> <p>This operation is idempotent. If a requested tag is not attached to the secret, no error is returned and the secret metadata is unchanged.</p> <important> <p>If you use tags as part of your security strategy, then removing a tag can change permissions. If successfully completing this operation would result in you losing your permissions for this secret, then the operation is blocked and returns an Access Denied error.</p> </important> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UntagResource</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To add one or more tags to the collection attached to a secret, use <a>TagResource</a>.</p> </li> <li> <p>To view the list of tags attached to a secret, use <a>DescribeSecret</a>.</p> </li> </ul>
   ## 
@@ -1836,48 +1836,48 @@ proc validate_UntagResource_601262(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601264 = header.getOrDefault("X-Amz-Date")
-  valid_601264 = validateParameter(valid_601264, JString, required = false,
+  var valid_594264 = header.getOrDefault("X-Amz-Date")
+  valid_594264 = validateParameter(valid_594264, JString, required = false,
                                  default = nil)
-  if valid_601264 != nil:
-    section.add "X-Amz-Date", valid_601264
-  var valid_601265 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601265 = validateParameter(valid_601265, JString, required = false,
+  if valid_594264 != nil:
+    section.add "X-Amz-Date", valid_594264
+  var valid_594265 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594265 = validateParameter(valid_594265, JString, required = false,
                                  default = nil)
-  if valid_601265 != nil:
-    section.add "X-Amz-Security-Token", valid_601265
+  if valid_594265 != nil:
+    section.add "X-Amz-Security-Token", valid_594265
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601266 = header.getOrDefault("X-Amz-Target")
-  valid_601266 = validateParameter(valid_601266, JString, required = true, default = newJString(
+  var valid_594266 = header.getOrDefault("X-Amz-Target")
+  valid_594266 = validateParameter(valid_594266, JString, required = true, default = newJString(
       "secretsmanager.UntagResource"))
-  if valid_601266 != nil:
-    section.add "X-Amz-Target", valid_601266
-  var valid_601267 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601267 = validateParameter(valid_601267, JString, required = false,
+  if valid_594266 != nil:
+    section.add "X-Amz-Target", valid_594266
+  var valid_594267 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594267 = validateParameter(valid_594267, JString, required = false,
                                  default = nil)
-  if valid_601267 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601267
-  var valid_601268 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601268 = validateParameter(valid_601268, JString, required = false,
+  if valid_594267 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594267
+  var valid_594268 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594268 = validateParameter(valid_594268, JString, required = false,
                                  default = nil)
-  if valid_601268 != nil:
-    section.add "X-Amz-Algorithm", valid_601268
-  var valid_601269 = header.getOrDefault("X-Amz-Signature")
-  valid_601269 = validateParameter(valid_601269, JString, required = false,
+  if valid_594268 != nil:
+    section.add "X-Amz-Algorithm", valid_594268
+  var valid_594269 = header.getOrDefault("X-Amz-Signature")
+  valid_594269 = validateParameter(valid_594269, JString, required = false,
                                  default = nil)
-  if valid_601269 != nil:
-    section.add "X-Amz-Signature", valid_601269
-  var valid_601270 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601270 = validateParameter(valid_601270, JString, required = false,
+  if valid_594269 != nil:
+    section.add "X-Amz-Signature", valid_594269
+  var valid_594270 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594270 = validateParameter(valid_594270, JString, required = false,
                                  default = nil)
-  if valid_601270 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601270
-  var valid_601271 = header.getOrDefault("X-Amz-Credential")
-  valid_601271 = validateParameter(valid_601271, JString, required = false,
+  if valid_594270 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594270
+  var valid_594271 = header.getOrDefault("X-Amz-Credential")
+  valid_594271 = validateParameter(valid_594271, JString, required = false,
                                  default = nil)
-  if valid_601271 != nil:
-    section.add "X-Amz-Credential", valid_601271
+  if valid_594271 != nil:
+    section.add "X-Amz-Credential", valid_594271
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1888,43 +1888,43 @@ proc validate_UntagResource_601262(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601273: Call_UntagResource_601261; path: JsonNode; query: JsonNode;
+proc call*(call_594273: Call_UntagResource_594261; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes one or more tags from the specified secret.</p> <p>This operation is idempotent. If a requested tag is not attached to the secret, no error is returned and the secret metadata is unchanged.</p> <important> <p>If you use tags as part of your security strategy, then removing a tag can change permissions. If successfully completing this operation would result in you losing your permissions for this secret, then the operation is blocked and returns an Access Denied error.</p> </important> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UntagResource</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To add one or more tags to the collection attached to a secret, use <a>TagResource</a>.</p> </li> <li> <p>To view the list of tags attached to a secret, use <a>DescribeSecret</a>.</p> </li> </ul>
   ## 
-  let valid = call_601273.validator(path, query, header, formData, body)
-  let scheme = call_601273.pickScheme
+  let valid = call_594273.validator(path, query, header, formData, body)
+  let scheme = call_594273.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601273.url(scheme.get, call_601273.host, call_601273.base,
-                         call_601273.route, valid.getOrDefault("path"),
+  let url = call_594273.url(scheme.get, call_594273.host, call_594273.base,
+                         call_594273.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601273, url, valid)
+  result = hook(call_594273, url, valid)
 
-proc call*(call_601274: Call_UntagResource_601261; body: JsonNode): Recallable =
+proc call*(call_594274: Call_UntagResource_594261; body: JsonNode): Recallable =
   ## untagResource
   ## <p>Removes one or more tags from the specified secret.</p> <p>This operation is idempotent. If a requested tag is not attached to the secret, no error is returned and the secret metadata is unchanged.</p> <important> <p>If you use tags as part of your security strategy, then removing a tag can change permissions. If successfully completing this operation would result in you losing your permissions for this secret, then the operation is blocked and returns an Access Denied error.</p> </important> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UntagResource</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To add one or more tags to the collection attached to a secret, use <a>TagResource</a>.</p> </li> <li> <p>To view the list of tags attached to a secret, use <a>DescribeSecret</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601275 = newJObject()
+  var body_594275 = newJObject()
   if body != nil:
-    body_601275 = body
-  result = call_601274.call(nil, nil, nil, nil, body_601275)
+    body_594275 = body
+  result = call_594274.call(nil, nil, nil, nil, body_594275)
 
-var untagResource* = Call_UntagResource_601261(name: "untagResource",
+var untagResource* = Call_UntagResource_594261(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.UntagResource",
-    validator: validate_UntagResource_601262, base: "/", url: url_UntagResource_601263,
+    validator: validate_UntagResource_594262, base: "/", url: url_UntagResource_594263,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSecret_601276 = ref object of OpenApiRestCall_600438
-proc url_UpdateSecret_601278(protocol: Scheme; host: string; base: string;
+  Call_UpdateSecret_594276 = ref object of OpenApiRestCall_593438
+proc url_UpdateSecret_594278(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateSecret_601277(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateSecret_594277(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Modifies many of the details of the specified secret. If you include a <code>ClientRequestToken</code> and <i>either</i> <code>SecretString</code> or <code>SecretBinary</code> then it also creates a new version attached to the secret.</p> <p>To modify the rotation configuration of a secret, use <a>RotateSecret</a> instead.</p> <note> <p>The Secrets Manager console uses only the <code>SecretString</code> parameter and therefore limits you to encrypting and storing only a text string. To encrypt and store binary data as part of the version of a secret, you must use either the AWS CLI or one of the AWS SDKs.</p> </note> <ul> <li> <p>If a version with a <code>VersionId</code> with the same value as the <code>ClientRequestToken</code> parameter already exists, the operation results in an error. You cannot modify an existing version, you can only create a new version.</p> </li> <li> <p>If you include <code>SecretString</code> or <code>SecretBinary</code> to create a new secret version, Secrets Manager automatically attaches the staging label <code>AWSCURRENT</code> to the new version. </p> </li> </ul> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UpdateSecret</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a custom AWS KMS key to encrypt the secret. You do not need this permission to use the account's AWS managed CMK for Secrets Manager.</p> </li> <li> <p>kms:Decrypt - needed only if you use a custom AWS KMS key to encrypt the secret. You do not need this permission to use the account's AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a new secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To add only a new version to an existing secret, use <a>PutSecretValue</a>.</p> </li> <li> <p>To get the details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list the versions contained in a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ## 
@@ -1944,48 +1944,48 @@ proc validate_UpdateSecret_601277(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601279 = header.getOrDefault("X-Amz-Date")
-  valid_601279 = validateParameter(valid_601279, JString, required = false,
+  var valid_594279 = header.getOrDefault("X-Amz-Date")
+  valid_594279 = validateParameter(valid_594279, JString, required = false,
                                  default = nil)
-  if valid_601279 != nil:
-    section.add "X-Amz-Date", valid_601279
-  var valid_601280 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601280 = validateParameter(valid_601280, JString, required = false,
+  if valid_594279 != nil:
+    section.add "X-Amz-Date", valid_594279
+  var valid_594280 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594280 = validateParameter(valid_594280, JString, required = false,
                                  default = nil)
-  if valid_601280 != nil:
-    section.add "X-Amz-Security-Token", valid_601280
+  if valid_594280 != nil:
+    section.add "X-Amz-Security-Token", valid_594280
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601281 = header.getOrDefault("X-Amz-Target")
-  valid_601281 = validateParameter(valid_601281, JString, required = true, default = newJString(
+  var valid_594281 = header.getOrDefault("X-Amz-Target")
+  valid_594281 = validateParameter(valid_594281, JString, required = true, default = newJString(
       "secretsmanager.UpdateSecret"))
-  if valid_601281 != nil:
-    section.add "X-Amz-Target", valid_601281
-  var valid_601282 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601282 = validateParameter(valid_601282, JString, required = false,
+  if valid_594281 != nil:
+    section.add "X-Amz-Target", valid_594281
+  var valid_594282 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594282 = validateParameter(valid_594282, JString, required = false,
                                  default = nil)
-  if valid_601282 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601282
-  var valid_601283 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601283 = validateParameter(valid_601283, JString, required = false,
+  if valid_594282 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594282
+  var valid_594283 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594283 = validateParameter(valid_594283, JString, required = false,
                                  default = nil)
-  if valid_601283 != nil:
-    section.add "X-Amz-Algorithm", valid_601283
-  var valid_601284 = header.getOrDefault("X-Amz-Signature")
-  valid_601284 = validateParameter(valid_601284, JString, required = false,
+  if valid_594283 != nil:
+    section.add "X-Amz-Algorithm", valid_594283
+  var valid_594284 = header.getOrDefault("X-Amz-Signature")
+  valid_594284 = validateParameter(valid_594284, JString, required = false,
                                  default = nil)
-  if valid_601284 != nil:
-    section.add "X-Amz-Signature", valid_601284
-  var valid_601285 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601285 = validateParameter(valid_601285, JString, required = false,
+  if valid_594284 != nil:
+    section.add "X-Amz-Signature", valid_594284
+  var valid_594285 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594285 = validateParameter(valid_594285, JString, required = false,
                                  default = nil)
-  if valid_601285 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601285
-  var valid_601286 = header.getOrDefault("X-Amz-Credential")
-  valid_601286 = validateParameter(valid_601286, JString, required = false,
+  if valid_594285 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594285
+  var valid_594286 = header.getOrDefault("X-Amz-Credential")
+  valid_594286 = validateParameter(valid_594286, JString, required = false,
                                  default = nil)
-  if valid_601286 != nil:
-    section.add "X-Amz-Credential", valid_601286
+  if valid_594286 != nil:
+    section.add "X-Amz-Credential", valid_594286
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1996,36 +1996,36 @@ proc validate_UpdateSecret_601277(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601288: Call_UpdateSecret_601276; path: JsonNode; query: JsonNode;
+proc call*(call_594288: Call_UpdateSecret_594276; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Modifies many of the details of the specified secret. If you include a <code>ClientRequestToken</code> and <i>either</i> <code>SecretString</code> or <code>SecretBinary</code> then it also creates a new version attached to the secret.</p> <p>To modify the rotation configuration of a secret, use <a>RotateSecret</a> instead.</p> <note> <p>The Secrets Manager console uses only the <code>SecretString</code> parameter and therefore limits you to encrypting and storing only a text string. To encrypt and store binary data as part of the version of a secret, you must use either the AWS CLI or one of the AWS SDKs.</p> </note> <ul> <li> <p>If a version with a <code>VersionId</code> with the same value as the <code>ClientRequestToken</code> parameter already exists, the operation results in an error. You cannot modify an existing version, you can only create a new version.</p> </li> <li> <p>If you include <code>SecretString</code> or <code>SecretBinary</code> to create a new secret version, Secrets Manager automatically attaches the staging label <code>AWSCURRENT</code> to the new version. </p> </li> </ul> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UpdateSecret</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a custom AWS KMS key to encrypt the secret. You do not need this permission to use the account's AWS managed CMK for Secrets Manager.</p> </li> <li> <p>kms:Decrypt - needed only if you use a custom AWS KMS key to encrypt the secret. You do not need this permission to use the account's AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a new secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To add only a new version to an existing secret, use <a>PutSecretValue</a>.</p> </li> <li> <p>To get the details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list the versions contained in a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ## 
-  let valid = call_601288.validator(path, query, header, formData, body)
-  let scheme = call_601288.pickScheme
+  let valid = call_594288.validator(path, query, header, formData, body)
+  let scheme = call_594288.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601288.url(scheme.get, call_601288.host, call_601288.base,
-                         call_601288.route, valid.getOrDefault("path"),
+  let url = call_594288.url(scheme.get, call_594288.host, call_594288.base,
+                         call_594288.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601288, url, valid)
+  result = hook(call_594288, url, valid)
 
-proc call*(call_601289: Call_UpdateSecret_601276; body: JsonNode): Recallable =
+proc call*(call_594289: Call_UpdateSecret_594276; body: JsonNode): Recallable =
   ## updateSecret
   ## <p>Modifies many of the details of the specified secret. If you include a <code>ClientRequestToken</code> and <i>either</i> <code>SecretString</code> or <code>SecretBinary</code> then it also creates a new version attached to the secret.</p> <p>To modify the rotation configuration of a secret, use <a>RotateSecret</a> instead.</p> <note> <p>The Secrets Manager console uses only the <code>SecretString</code> parameter and therefore limits you to encrypting and storing only a text string. To encrypt and store binary data as part of the version of a secret, you must use either the AWS CLI or one of the AWS SDKs.</p> </note> <ul> <li> <p>If a version with a <code>VersionId</code> with the same value as the <code>ClientRequestToken</code> parameter already exists, the operation results in an error. You cannot modify an existing version, you can only create a new version.</p> </li> <li> <p>If you include <code>SecretString</code> or <code>SecretBinary</code> to create a new secret version, Secrets Manager automatically attaches the staging label <code>AWSCURRENT</code> to the new version. </p> </li> </ul> <note> <ul> <li> <p>If you call an operation that needs to encrypt or decrypt the <code>SecretString</code> or <code>SecretBinary</code> for a secret in the same account as the calling user and that secret doesn't specify a AWS KMS encryption key, Secrets Manager uses the account's default AWS managed customer master key (CMK) with the alias <code>aws/secretsmanager</code>. If this key doesn't already exist in your account then Secrets Manager creates it for you automatically. All users and roles in the same AWS account automatically have access to use the default CMK. Note that if an Secrets Manager API call results in AWS having to create the account's AWS-managed CMK, it can result in a one-time significant delay in returning the result.</p> </li> <li> <p>If the secret is in a different AWS account from the credentials calling an API that requires encryption or decryption of the secret value then you must create and use a custom AWS KMS CMK because you can't access the default CMK for the account using credentials from a different AWS account. Store the ARN of the CMK in the secret when you create the secret or when you update it by including it in the <code>KMSKeyId</code>. If you call an API that must encrypt or decrypt <code>SecretString</code> or <code>SecretBinary</code> using credentials from a different account then the AWS KMS key policy must grant cross-account access to that other account's user or role for both the kms:GenerateDataKey and kms:Decrypt operations.</p> </li> </ul> </note> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UpdateSecret</p> </li> <li> <p>kms:GenerateDataKey - needed only if you use a custom AWS KMS key to encrypt the secret. You do not need this permission to use the account's AWS managed CMK for Secrets Manager.</p> </li> <li> <p>kms:Decrypt - needed only if you use a custom AWS KMS key to encrypt the secret. You do not need this permission to use the account's AWS managed CMK for Secrets Manager.</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To create a new secret, use <a>CreateSecret</a>.</p> </li> <li> <p>To add only a new version to an existing secret, use <a>PutSecretValue</a>.</p> </li> <li> <p>To get the details for a secret, use <a>DescribeSecret</a>.</p> </li> <li> <p>To list the versions contained in a secret, use <a>ListSecretVersionIds</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_601290 = newJObject()
+  var body_594290 = newJObject()
   if body != nil:
-    body_601290 = body
-  result = call_601289.call(nil, nil, nil, nil, body_601290)
+    body_594290 = body
+  result = call_594289.call(nil, nil, nil, nil, body_594290)
 
-var updateSecret* = Call_UpdateSecret_601276(name: "updateSecret",
+var updateSecret* = Call_UpdateSecret_594276(name: "updateSecret",
     meth: HttpMethod.HttpPost, host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.UpdateSecret",
-    validator: validate_UpdateSecret_601277, base: "/", url: url_UpdateSecret_601278,
+    validator: validate_UpdateSecret_594277, base: "/", url: url_UpdateSecret_594278,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSecretVersionStage_601291 = ref object of OpenApiRestCall_600438
-proc url_UpdateSecretVersionStage_601293(protocol: Scheme; host: string;
+  Call_UpdateSecretVersionStage_594291 = ref object of OpenApiRestCall_593438
+proc url_UpdateSecretVersionStage_594293(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -2033,7 +2033,7 @@ proc url_UpdateSecretVersionStage_601293(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateSecretVersionStage_601292(path: JsonNode; query: JsonNode;
+proc validate_UpdateSecretVersionStage_594292(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Modifies the staging labels attached to a version of a secret. Staging labels are used to track a version as it progresses through the secret rotation process. You can attach a staging label to only one version of a secret at a time. If a staging label to be added is already attached to another version, then it is moved--removed from the other version first and then attached to this one. For more information about staging labels, see <a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/terms-concepts.html#term_staging-label">Staging Labels</a> in the <i>AWS Secrets Manager User Guide</i>. </p> <p>The staging labels that you specify in the <code>VersionStage</code> parameter are added to the existing list of staging labels--they don't replace it.</p> <p>You can move the <code>AWSCURRENT</code> staging label to this version by including it in this call.</p> <note> <p>Whenever you move <code>AWSCURRENT</code>, Secrets Manager automatically moves the label <code>AWSPREVIOUS</code> to the version that <code>AWSCURRENT</code> was removed from.</p> </note> <p>If this action results in the last label being removed from a version, then the version is considered to be 'deprecated' and can be deleted by Secrets Manager.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UpdateSecretVersionStage</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To get the list of staging labels that are currently associated with a version of a secret, use <code> <a>DescribeSecret</a> </code> and examine the <code>SecretVersionsToStages</code> response value. </p> </li> </ul>
   ## 
@@ -2053,48 +2053,48 @@ proc validate_UpdateSecretVersionStage_601292(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_601294 = header.getOrDefault("X-Amz-Date")
-  valid_601294 = validateParameter(valid_601294, JString, required = false,
+  var valid_594294 = header.getOrDefault("X-Amz-Date")
+  valid_594294 = validateParameter(valid_594294, JString, required = false,
                                  default = nil)
-  if valid_601294 != nil:
-    section.add "X-Amz-Date", valid_601294
-  var valid_601295 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601295 = validateParameter(valid_601295, JString, required = false,
+  if valid_594294 != nil:
+    section.add "X-Amz-Date", valid_594294
+  var valid_594295 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594295 = validateParameter(valid_594295, JString, required = false,
                                  default = nil)
-  if valid_601295 != nil:
-    section.add "X-Amz-Security-Token", valid_601295
+  if valid_594295 != nil:
+    section.add "X-Amz-Security-Token", valid_594295
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601296 = header.getOrDefault("X-Amz-Target")
-  valid_601296 = validateParameter(valid_601296, JString, required = true, default = newJString(
+  var valid_594296 = header.getOrDefault("X-Amz-Target")
+  valid_594296 = validateParameter(valid_594296, JString, required = true, default = newJString(
       "secretsmanager.UpdateSecretVersionStage"))
-  if valid_601296 != nil:
-    section.add "X-Amz-Target", valid_601296
-  var valid_601297 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601297 = validateParameter(valid_601297, JString, required = false,
+  if valid_594296 != nil:
+    section.add "X-Amz-Target", valid_594296
+  var valid_594297 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594297 = validateParameter(valid_594297, JString, required = false,
                                  default = nil)
-  if valid_601297 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601297
-  var valid_601298 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601298 = validateParameter(valid_601298, JString, required = false,
+  if valid_594297 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594297
+  var valid_594298 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594298 = validateParameter(valid_594298, JString, required = false,
                                  default = nil)
-  if valid_601298 != nil:
-    section.add "X-Amz-Algorithm", valid_601298
-  var valid_601299 = header.getOrDefault("X-Amz-Signature")
-  valid_601299 = validateParameter(valid_601299, JString, required = false,
+  if valid_594298 != nil:
+    section.add "X-Amz-Algorithm", valid_594298
+  var valid_594299 = header.getOrDefault("X-Amz-Signature")
+  valid_594299 = validateParameter(valid_594299, JString, required = false,
                                  default = nil)
-  if valid_601299 != nil:
-    section.add "X-Amz-Signature", valid_601299
-  var valid_601300 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601300 = validateParameter(valid_601300, JString, required = false,
+  if valid_594299 != nil:
+    section.add "X-Amz-Signature", valid_594299
+  var valid_594300 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594300 = validateParameter(valid_594300, JString, required = false,
                                  default = nil)
-  if valid_601300 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601300
-  var valid_601301 = header.getOrDefault("X-Amz-Credential")
-  valid_601301 = validateParameter(valid_601301, JString, required = false,
+  if valid_594300 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594300
+  var valid_594301 = header.getOrDefault("X-Amz-Credential")
+  valid_594301 = validateParameter(valid_594301, JString, required = false,
                                  default = nil)
-  if valid_601301 != nil:
-    section.add "X-Amz-Credential", valid_601301
+  if valid_594301 != nil:
+    section.add "X-Amz-Credential", valid_594301
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2105,34 +2105,34 @@ proc validate_UpdateSecretVersionStage_601292(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601303: Call_UpdateSecretVersionStage_601291; path: JsonNode;
+proc call*(call_594303: Call_UpdateSecretVersionStage_594291; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Modifies the staging labels attached to a version of a secret. Staging labels are used to track a version as it progresses through the secret rotation process. You can attach a staging label to only one version of a secret at a time. If a staging label to be added is already attached to another version, then it is moved--removed from the other version first and then attached to this one. For more information about staging labels, see <a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/terms-concepts.html#term_staging-label">Staging Labels</a> in the <i>AWS Secrets Manager User Guide</i>. </p> <p>The staging labels that you specify in the <code>VersionStage</code> parameter are added to the existing list of staging labels--they don't replace it.</p> <p>You can move the <code>AWSCURRENT</code> staging label to this version by including it in this call.</p> <note> <p>Whenever you move <code>AWSCURRENT</code>, Secrets Manager automatically moves the label <code>AWSPREVIOUS</code> to the version that <code>AWSCURRENT</code> was removed from.</p> </note> <p>If this action results in the last label being removed from a version, then the version is considered to be 'deprecated' and can be deleted by Secrets Manager.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UpdateSecretVersionStage</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To get the list of staging labels that are currently associated with a version of a secret, use <code> <a>DescribeSecret</a> </code> and examine the <code>SecretVersionsToStages</code> response value. </p> </li> </ul>
   ## 
-  let valid = call_601303.validator(path, query, header, formData, body)
-  let scheme = call_601303.pickScheme
+  let valid = call_594303.validator(path, query, header, formData, body)
+  let scheme = call_594303.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601303.url(scheme.get, call_601303.host, call_601303.base,
-                         call_601303.route, valid.getOrDefault("path"),
+  let url = call_594303.url(scheme.get, call_594303.host, call_594303.base,
+                         call_594303.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_601303, url, valid)
+  result = hook(call_594303, url, valid)
 
-proc call*(call_601304: Call_UpdateSecretVersionStage_601291; body: JsonNode): Recallable =
+proc call*(call_594304: Call_UpdateSecretVersionStage_594291; body: JsonNode): Recallable =
   ## updateSecretVersionStage
   ## <p>Modifies the staging labels attached to a version of a secret. Staging labels are used to track a version as it progresses through the secret rotation process. You can attach a staging label to only one version of a secret at a time. If a staging label to be added is already attached to another version, then it is moved--removed from the other version first and then attached to this one. For more information about staging labels, see <a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/terms-concepts.html#term_staging-label">Staging Labels</a> in the <i>AWS Secrets Manager User Guide</i>. </p> <p>The staging labels that you specify in the <code>VersionStage</code> parameter are added to the existing list of staging labels--they don't replace it.</p> <p>You can move the <code>AWSCURRENT</code> staging label to this version by including it in this call.</p> <note> <p>Whenever you move <code>AWSCURRENT</code>, Secrets Manager automatically moves the label <code>AWSPREVIOUS</code> to the version that <code>AWSCURRENT</code> was removed from.</p> </note> <p>If this action results in the last label being removed from a version, then the version is considered to be 'deprecated' and can be deleted by Secrets Manager.</p> <p> <b>Minimum permissions</b> </p> <p>To run this command, you must have the following permissions:</p> <ul> <li> <p>secretsmanager:UpdateSecretVersionStage</p> </li> </ul> <p> <b>Related operations</b> </p> <ul> <li> <p>To get the list of staging labels that are currently associated with a version of a secret, use <code> <a>DescribeSecret</a> </code> and examine the <code>SecretVersionsToStages</code> response value. </p> </li> </ul>
   ##   body: JObject (required)
-  var body_601305 = newJObject()
+  var body_594305 = newJObject()
   if body != nil:
-    body_601305 = body
-  result = call_601304.call(nil, nil, nil, nil, body_601305)
+    body_594305 = body
+  result = call_594304.call(nil, nil, nil, nil, body_594305)
 
-var updateSecretVersionStage* = Call_UpdateSecretVersionStage_601291(
+var updateSecretVersionStage* = Call_UpdateSecretVersionStage_594291(
     name: "updateSecretVersionStage", meth: HttpMethod.HttpPost,
     host: "secretsmanager.amazonaws.com",
     route: "/#X-Amz-Target=secretsmanager.UpdateSecretVersionStage",
-    validator: validate_UpdateSecretVersionStage_601292, base: "/",
-    url: url_UpdateSecretVersionStage_601293, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateSecretVersionStage_594292, base: "/",
+    url: url_UpdateSecretVersionStage_594293, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
