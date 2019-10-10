@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_593421 = ref object of OpenApiRestCall
+  OpenApiRestCall_602450 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_593421](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_602450](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_593421): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_602450): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -130,15 +130,15 @@ const
   awsServiceName = "cloudsearchdomain"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_Search_593758 = ref object of OpenApiRestCall_593421
-proc url_Search_593760(protocol: Scheme; host: string; base: string; route: string;
+  Call_Search_602787 = ref object of OpenApiRestCall_602450
+proc url_Search_602789(protocol: Scheme; host: string; base: string; route: string;
                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_Search_593759(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_Search_602788(path: JsonNode; query: JsonNode; header: JsonNode;
                            formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves a list of documents that match the specified search criteria. How you specify the search criteria depends on which query parser you use. Amazon CloudSearch supports four query parsers:</p> <ul> <li><code>simple</code>: search all <code>text</code> and <code>text-array</code> fields for the specified string. Search for phrases, individual terms, and prefixes. </li> <li><code>structured</code>: search specific fields, construct compound queries using Boolean operators, and use advanced features such as term boosting and proximity searching.</li> <li><code>lucene</code>: specify search criteria using the Apache Lucene query parser syntax.</li> <li><code>dismax</code>: specify search criteria using the simplified subset of the Apache Lucene query parser syntax defined by the DisMax query parser.</li> </ul> <p>For more information, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/searching.html">Searching Your Data</a> in the <i>Amazon CloudSearch Developer Guide</i>.</p> <p>The endpoint for submitting <code>Search</code> requests is domain-specific. You submit search requests to a domain's search endpoint. To get the search endpoint for your domain, use the Amazon CloudSearch configuration service <code>DescribeDomains</code> action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. </p>
   ## 
@@ -192,84 +192,84 @@ proc validate_Search_593759(path: JsonNode; query: JsonNode; header: JsonNode;
   ##        : <p>Specifies the offset of the first search hit you want to return. Note that the result set is zero-based; the first result is at index 0. You can specify either the <code>start</code> or <code>cursor</code> parameter in a request, they are mutually exclusive. </p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/paginating-results.html">Paginating Results</a> in the <i>Amazon CloudSearch Developer Guide</i>.</p>
   section = newJObject()
-  var valid_593872 = query.getOrDefault("expr")
-  valid_593872 = validateParameter(valid_593872, JString, required = false,
+  var valid_602901 = query.getOrDefault("expr")
+  valid_602901 = validateParameter(valid_602901, JString, required = false,
                                  default = nil)
-  if valid_593872 != nil:
-    section.add "expr", valid_593872
-  var valid_593873 = query.getOrDefault("stats")
-  valid_593873 = validateParameter(valid_593873, JString, required = false,
+  if valid_602901 != nil:
+    section.add "expr", valid_602901
+  var valid_602902 = query.getOrDefault("stats")
+  valid_602902 = validateParameter(valid_602902, JString, required = false,
                                  default = nil)
-  if valid_593873 != nil:
-    section.add "stats", valid_593873
-  var valid_593874 = query.getOrDefault("cursor")
-  valid_593874 = validateParameter(valid_593874, JString, required = false,
+  if valid_602902 != nil:
+    section.add "stats", valid_602902
+  var valid_602903 = query.getOrDefault("cursor")
+  valid_602903 = validateParameter(valid_602903, JString, required = false,
                                  default = nil)
-  if valid_593874 != nil:
-    section.add "cursor", valid_593874
-  var valid_593875 = query.getOrDefault("partial")
-  valid_593875 = validateParameter(valid_593875, JBool, required = false, default = nil)
-  if valid_593875 != nil:
-    section.add "partial", valid_593875
+  if valid_602903 != nil:
+    section.add "cursor", valid_602903
+  var valid_602904 = query.getOrDefault("partial")
+  valid_602904 = validateParameter(valid_602904, JBool, required = false, default = nil)
+  if valid_602904 != nil:
+    section.add "partial", valid_602904
   assert query != nil, "query argument is necessary due to required `pretty` field"
-  var valid_593889 = query.getOrDefault("pretty")
-  valid_593889 = validateParameter(valid_593889, JString, required = true,
+  var valid_602918 = query.getOrDefault("pretty")
+  valid_602918 = validateParameter(valid_602918, JString, required = true,
                                  default = newJString("true"))
-  if valid_593889 != nil:
-    section.add "pretty", valid_593889
-  var valid_593890 = query.getOrDefault("sort")
-  valid_593890 = validateParameter(valid_593890, JString, required = false,
+  if valid_602918 != nil:
+    section.add "pretty", valid_602918
+  var valid_602919 = query.getOrDefault("sort")
+  valid_602919 = validateParameter(valid_602919, JString, required = false,
                                  default = nil)
-  if valid_593890 != nil:
-    section.add "sort", valid_593890
-  var valid_593891 = query.getOrDefault("return")
-  valid_593891 = validateParameter(valid_593891, JString, required = false,
+  if valid_602919 != nil:
+    section.add "sort", valid_602919
+  var valid_602920 = query.getOrDefault("return")
+  valid_602920 = validateParameter(valid_602920, JString, required = false,
                                  default = nil)
-  if valid_593891 != nil:
-    section.add "return", valid_593891
-  var valid_593892 = query.getOrDefault("highlight")
-  valid_593892 = validateParameter(valid_593892, JString, required = false,
+  if valid_602920 != nil:
+    section.add "return", valid_602920
+  var valid_602921 = query.getOrDefault("highlight")
+  valid_602921 = validateParameter(valid_602921, JString, required = false,
                                  default = nil)
-  if valid_593892 != nil:
-    section.add "highlight", valid_593892
-  var valid_593893 = query.getOrDefault("q")
-  valid_593893 = validateParameter(valid_593893, JString, required = true,
+  if valid_602921 != nil:
+    section.add "highlight", valid_602921
+  var valid_602922 = query.getOrDefault("q")
+  valid_602922 = validateParameter(valid_602922, JString, required = true,
                                  default = nil)
-  if valid_593893 != nil:
-    section.add "q", valid_593893
-  var valid_593894 = query.getOrDefault("size")
-  valid_593894 = validateParameter(valid_593894, JInt, required = false, default = nil)
-  if valid_593894 != nil:
-    section.add "size", valid_593894
-  var valid_593895 = query.getOrDefault("fq")
-  valid_593895 = validateParameter(valid_593895, JString, required = false,
+  if valid_602922 != nil:
+    section.add "q", valid_602922
+  var valid_602923 = query.getOrDefault("size")
+  valid_602923 = validateParameter(valid_602923, JInt, required = false, default = nil)
+  if valid_602923 != nil:
+    section.add "size", valid_602923
+  var valid_602924 = query.getOrDefault("fq")
+  valid_602924 = validateParameter(valid_602924, JString, required = false,
                                  default = nil)
-  if valid_593895 != nil:
-    section.add "fq", valid_593895
-  var valid_593896 = query.getOrDefault("format")
-  valid_593896 = validateParameter(valid_593896, JString, required = true,
+  if valid_602924 != nil:
+    section.add "fq", valid_602924
+  var valid_602925 = query.getOrDefault("format")
+  valid_602925 = validateParameter(valid_602925, JString, required = true,
                                  default = newJString("sdk"))
-  if valid_593896 != nil:
-    section.add "format", valid_593896
-  var valid_593897 = query.getOrDefault("facet")
-  valid_593897 = validateParameter(valid_593897, JString, required = false,
+  if valid_602925 != nil:
+    section.add "format", valid_602925
+  var valid_602926 = query.getOrDefault("facet")
+  valid_602926 = validateParameter(valid_602926, JString, required = false,
                                  default = nil)
-  if valid_593897 != nil:
-    section.add "facet", valid_593897
-  var valid_593898 = query.getOrDefault("q.options")
-  valid_593898 = validateParameter(valid_593898, JString, required = false,
+  if valid_602926 != nil:
+    section.add "facet", valid_602926
+  var valid_602927 = query.getOrDefault("q.options")
+  valid_602927 = validateParameter(valid_602927, JString, required = false,
                                  default = nil)
-  if valid_593898 != nil:
-    section.add "q.options", valid_593898
-  var valid_593899 = query.getOrDefault("q.parser")
-  valid_593899 = validateParameter(valid_593899, JString, required = false,
+  if valid_602927 != nil:
+    section.add "q.options", valid_602927
+  var valid_602928 = query.getOrDefault("q.parser")
+  valid_602928 = validateParameter(valid_602928, JString, required = false,
                                  default = newJString("simple"))
-  if valid_593899 != nil:
-    section.add "q.parser", valid_593899
-  var valid_593900 = query.getOrDefault("start")
-  valid_593900 = validateParameter(valid_593900, JInt, required = false, default = nil)
-  if valid_593900 != nil:
-    section.add "start", valid_593900
+  if valid_602928 != nil:
+    section.add "q.parser", valid_602928
+  var valid_602929 = query.getOrDefault("start")
+  valid_602929 = validateParameter(valid_602929, JInt, required = false, default = nil)
+  if valid_602929 != nil:
+    section.add "start", valid_602929
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -280,61 +280,61 @@ proc validate_Search_593759(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593901 = header.getOrDefault("X-Amz-Date")
-  valid_593901 = validateParameter(valid_593901, JString, required = false,
+  var valid_602930 = header.getOrDefault("X-Amz-Date")
+  valid_602930 = validateParameter(valid_602930, JString, required = false,
                                  default = nil)
-  if valid_593901 != nil:
-    section.add "X-Amz-Date", valid_593901
-  var valid_593902 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593902 = validateParameter(valid_593902, JString, required = false,
+  if valid_602930 != nil:
+    section.add "X-Amz-Date", valid_602930
+  var valid_602931 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602931 = validateParameter(valid_602931, JString, required = false,
                                  default = nil)
-  if valid_593902 != nil:
-    section.add "X-Amz-Security-Token", valid_593902
-  var valid_593903 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593903 = validateParameter(valid_593903, JString, required = false,
+  if valid_602931 != nil:
+    section.add "X-Amz-Security-Token", valid_602931
+  var valid_602932 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602932 = validateParameter(valid_602932, JString, required = false,
                                  default = nil)
-  if valid_593903 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593903
-  var valid_593904 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593904 = validateParameter(valid_593904, JString, required = false,
+  if valid_602932 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602932
+  var valid_602933 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602933 = validateParameter(valid_602933, JString, required = false,
                                  default = nil)
-  if valid_593904 != nil:
-    section.add "X-Amz-Algorithm", valid_593904
-  var valid_593905 = header.getOrDefault("X-Amz-Signature")
-  valid_593905 = validateParameter(valid_593905, JString, required = false,
+  if valid_602933 != nil:
+    section.add "X-Amz-Algorithm", valid_602933
+  var valid_602934 = header.getOrDefault("X-Amz-Signature")
+  valid_602934 = validateParameter(valid_602934, JString, required = false,
                                  default = nil)
-  if valid_593905 != nil:
-    section.add "X-Amz-Signature", valid_593905
-  var valid_593906 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593906 = validateParameter(valid_593906, JString, required = false,
+  if valid_602934 != nil:
+    section.add "X-Amz-Signature", valid_602934
+  var valid_602935 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602935 = validateParameter(valid_602935, JString, required = false,
                                  default = nil)
-  if valid_593906 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593906
-  var valid_593907 = header.getOrDefault("X-Amz-Credential")
-  valid_593907 = validateParameter(valid_593907, JString, required = false,
+  if valid_602935 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602935
+  var valid_602936 = header.getOrDefault("X-Amz-Credential")
+  valid_602936 = validateParameter(valid_602936, JString, required = false,
                                  default = nil)
-  if valid_593907 != nil:
-    section.add "X-Amz-Credential", valid_593907
+  if valid_602936 != nil:
+    section.add "X-Amz-Credential", valid_602936
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593930: Call_Search_593758; path: JsonNode; query: JsonNode;
+proc call*(call_602959: Call_Search_602787; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves a list of documents that match the specified search criteria. How you specify the search criteria depends on which query parser you use. Amazon CloudSearch supports four query parsers:</p> <ul> <li><code>simple</code>: search all <code>text</code> and <code>text-array</code> fields for the specified string. Search for phrases, individual terms, and prefixes. </li> <li><code>structured</code>: search specific fields, construct compound queries using Boolean operators, and use advanced features such as term boosting and proximity searching.</li> <li><code>lucene</code>: specify search criteria using the Apache Lucene query parser syntax.</li> <li><code>dismax</code>: specify search criteria using the simplified subset of the Apache Lucene query parser syntax defined by the DisMax query parser.</li> </ul> <p>For more information, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/searching.html">Searching Your Data</a> in the <i>Amazon CloudSearch Developer Guide</i>.</p> <p>The endpoint for submitting <code>Search</code> requests is domain-specific. You submit search requests to a domain's search endpoint. To get the search endpoint for your domain, use the Amazon CloudSearch configuration service <code>DescribeDomains</code> action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. </p>
   ## 
-  let valid = call_593930.validator(path, query, header, formData, body)
-  let scheme = call_593930.pickScheme
+  let valid = call_602959.validator(path, query, header, formData, body)
+  let scheme = call_602959.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593930.url(scheme.get, call_593930.host, call_593930.base,
-                         call_593930.route, valid.getOrDefault("path"),
+  let url = call_602959.url(scheme.get, call_602959.host, call_602959.base,
+                         call_602959.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593930, url, valid)
+  result = hook(call_602959, url, valid)
 
-proc call*(call_594001: Call_Search_593758; q: string; expr: string = "";
+proc call*(call_603030: Call_Search_602787; q: string; expr: string = "";
           stats: string = ""; cursor: string = ""; partial: bool = false;
           pretty: string = "true"; sort: string = ""; `return`: string = "";
           highlight: string = ""; size: int = 0; fq: string = ""; format: string = "sdk";
@@ -386,40 +386,40 @@ proc call*(call_594001: Call_Search_593758; q: string; expr: string = "";
   ##   start: int
   ##        : <p>Specifies the offset of the first search hit you want to return. Note that the result set is zero-based; the first result is at index 0. You can specify either the <code>start</code> or <code>cursor</code> parameter in a request, they are mutually exclusive. </p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/paginating-results.html">Paginating Results</a> in the <i>Amazon CloudSearch Developer Guide</i>.</p>
-  var query_594002 = newJObject()
-  add(query_594002, "expr", newJString(expr))
-  add(query_594002, "stats", newJString(stats))
-  add(query_594002, "cursor", newJString(cursor))
-  add(query_594002, "partial", newJBool(partial))
-  add(query_594002, "pretty", newJString(pretty))
-  add(query_594002, "sort", newJString(sort))
-  add(query_594002, "return", newJString(`return`))
-  add(query_594002, "highlight", newJString(highlight))
-  add(query_594002, "q", newJString(q))
-  add(query_594002, "size", newJInt(size))
-  add(query_594002, "fq", newJString(fq))
-  add(query_594002, "format", newJString(format))
-  add(query_594002, "facet", newJString(facet))
-  add(query_594002, "q.options", newJString(qOptions))
-  add(query_594002, "q.parser", newJString(qParser))
-  add(query_594002, "start", newJInt(start))
-  result = call_594001.call(nil, query_594002, nil, nil, nil)
+  var query_603031 = newJObject()
+  add(query_603031, "expr", newJString(expr))
+  add(query_603031, "stats", newJString(stats))
+  add(query_603031, "cursor", newJString(cursor))
+  add(query_603031, "partial", newJBool(partial))
+  add(query_603031, "pretty", newJString(pretty))
+  add(query_603031, "sort", newJString(sort))
+  add(query_603031, "return", newJString(`return`))
+  add(query_603031, "highlight", newJString(highlight))
+  add(query_603031, "q", newJString(q))
+  add(query_603031, "size", newJInt(size))
+  add(query_603031, "fq", newJString(fq))
+  add(query_603031, "format", newJString(format))
+  add(query_603031, "facet", newJString(facet))
+  add(query_603031, "q.options", newJString(qOptions))
+  add(query_603031, "q.parser", newJString(qParser))
+  add(query_603031, "start", newJInt(start))
+  result = call_603030.call(nil, query_603031, nil, nil, nil)
 
-var search* = Call_Search_593758(name: "search", meth: HttpMethod.HttpGet,
+var search* = Call_Search_602787(name: "search", meth: HttpMethod.HttpGet,
                               host: "cloudsearchdomain.amazonaws.com", route: "/2013-01-01/search#format=sdk&pretty=true&q",
-                              validator: validate_Search_593759, base: "/",
-                              url: url_Search_593760,
+                              validator: validate_Search_602788, base: "/",
+                              url: url_Search_602789,
                               schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_Suggest_594042 = ref object of OpenApiRestCall_593421
-proc url_Suggest_594044(protocol: Scheme; host: string; base: string; route: string;
+  Call_Suggest_603071 = ref object of OpenApiRestCall_602450
+proc url_Suggest_603073(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_Suggest_594043(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_Suggest_603072(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves autocomplete suggestions for a partial query string. You can use suggestions enable you to display likely matches before users finish typing. In Amazon CloudSearch, suggestions are based on the contents of a particular text field. When you request suggestions, Amazon CloudSearch finds all of the documents whose values in the suggester field start with the specified query string. The beginning of the field must match the query string to be considered a match. </p> <p>For more information about configuring suggesters and retrieving suggestions, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/getting-suggestions.html">Getting Suggestions</a> in the <i>Amazon CloudSearch Developer Guide</i>. </p> <p>The endpoint for submitting <code>Suggest</code> requests is domain-specific. You submit suggest requests to a domain's search endpoint. To get the search endpoint for your domain, use the Amazon CloudSearch configuration service <code>DescribeDomains</code> action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. </p>
   ## 
@@ -438,30 +438,30 @@ proc validate_Suggest_594043(path: JsonNode; query: JsonNode; header: JsonNode;
   ##            : Specifies the name of the suggester to use to find suggested matches.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `pretty` field"
-  var valid_594045 = query.getOrDefault("pretty")
-  valid_594045 = validateParameter(valid_594045, JString, required = true,
+  var valid_603074 = query.getOrDefault("pretty")
+  valid_603074 = validateParameter(valid_603074, JString, required = true,
                                  default = newJString("true"))
-  if valid_594045 != nil:
-    section.add "pretty", valid_594045
-  var valid_594046 = query.getOrDefault("q")
-  valid_594046 = validateParameter(valid_594046, JString, required = true,
+  if valid_603074 != nil:
+    section.add "pretty", valid_603074
+  var valid_603075 = query.getOrDefault("q")
+  valid_603075 = validateParameter(valid_603075, JString, required = true,
                                  default = nil)
-  if valid_594046 != nil:
-    section.add "q", valid_594046
-  var valid_594047 = query.getOrDefault("size")
-  valid_594047 = validateParameter(valid_594047, JInt, required = false, default = nil)
-  if valid_594047 != nil:
-    section.add "size", valid_594047
-  var valid_594048 = query.getOrDefault("format")
-  valid_594048 = validateParameter(valid_594048, JString, required = true,
+  if valid_603075 != nil:
+    section.add "q", valid_603075
+  var valid_603076 = query.getOrDefault("size")
+  valid_603076 = validateParameter(valid_603076, JInt, required = false, default = nil)
+  if valid_603076 != nil:
+    section.add "size", valid_603076
+  var valid_603077 = query.getOrDefault("format")
+  valid_603077 = validateParameter(valid_603077, JString, required = true,
                                  default = newJString("sdk"))
-  if valid_594048 != nil:
-    section.add "format", valid_594048
-  var valid_594049 = query.getOrDefault("suggester")
-  valid_594049 = validateParameter(valid_594049, JString, required = true,
+  if valid_603077 != nil:
+    section.add "format", valid_603077
+  var valid_603078 = query.getOrDefault("suggester")
+  valid_603078 = validateParameter(valid_603078, JString, required = true,
                                  default = nil)
-  if valid_594049 != nil:
-    section.add "suggester", valid_594049
+  if valid_603078 != nil:
+    section.add "suggester", valid_603078
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -472,61 +472,61 @@ proc validate_Suggest_594043(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_594050 = header.getOrDefault("X-Amz-Date")
-  valid_594050 = validateParameter(valid_594050, JString, required = false,
+  var valid_603079 = header.getOrDefault("X-Amz-Date")
+  valid_603079 = validateParameter(valid_603079, JString, required = false,
                                  default = nil)
-  if valid_594050 != nil:
-    section.add "X-Amz-Date", valid_594050
-  var valid_594051 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594051 = validateParameter(valid_594051, JString, required = false,
+  if valid_603079 != nil:
+    section.add "X-Amz-Date", valid_603079
+  var valid_603080 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603080 = validateParameter(valid_603080, JString, required = false,
                                  default = nil)
-  if valid_594051 != nil:
-    section.add "X-Amz-Security-Token", valid_594051
-  var valid_594052 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594052 = validateParameter(valid_594052, JString, required = false,
+  if valid_603080 != nil:
+    section.add "X-Amz-Security-Token", valid_603080
+  var valid_603081 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603081 = validateParameter(valid_603081, JString, required = false,
                                  default = nil)
-  if valid_594052 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594052
-  var valid_594053 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594053 = validateParameter(valid_594053, JString, required = false,
+  if valid_603081 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603081
+  var valid_603082 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603082 = validateParameter(valid_603082, JString, required = false,
                                  default = nil)
-  if valid_594053 != nil:
-    section.add "X-Amz-Algorithm", valid_594053
-  var valid_594054 = header.getOrDefault("X-Amz-Signature")
-  valid_594054 = validateParameter(valid_594054, JString, required = false,
+  if valid_603082 != nil:
+    section.add "X-Amz-Algorithm", valid_603082
+  var valid_603083 = header.getOrDefault("X-Amz-Signature")
+  valid_603083 = validateParameter(valid_603083, JString, required = false,
                                  default = nil)
-  if valid_594054 != nil:
-    section.add "X-Amz-Signature", valid_594054
-  var valid_594055 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594055 = validateParameter(valid_594055, JString, required = false,
+  if valid_603083 != nil:
+    section.add "X-Amz-Signature", valid_603083
+  var valid_603084 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603084 = validateParameter(valid_603084, JString, required = false,
                                  default = nil)
-  if valid_594055 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594055
-  var valid_594056 = header.getOrDefault("X-Amz-Credential")
-  valid_594056 = validateParameter(valid_594056, JString, required = false,
+  if valid_603084 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603084
+  var valid_603085 = header.getOrDefault("X-Amz-Credential")
+  valid_603085 = validateParameter(valid_603085, JString, required = false,
                                  default = nil)
-  if valid_594056 != nil:
-    section.add "X-Amz-Credential", valid_594056
+  if valid_603085 != nil:
+    section.add "X-Amz-Credential", valid_603085
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_594057: Call_Suggest_594042; path: JsonNode; query: JsonNode;
+proc call*(call_603086: Call_Suggest_603071; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves autocomplete suggestions for a partial query string. You can use suggestions enable you to display likely matches before users finish typing. In Amazon CloudSearch, suggestions are based on the contents of a particular text field. When you request suggestions, Amazon CloudSearch finds all of the documents whose values in the suggester field start with the specified query string. The beginning of the field must match the query string to be considered a match. </p> <p>For more information about configuring suggesters and retrieving suggestions, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/getting-suggestions.html">Getting Suggestions</a> in the <i>Amazon CloudSearch Developer Guide</i>. </p> <p>The endpoint for submitting <code>Suggest</code> requests is domain-specific. You submit suggest requests to a domain's search endpoint. To get the search endpoint for your domain, use the Amazon CloudSearch configuration service <code>DescribeDomains</code> action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. </p>
   ## 
-  let valid = call_594057.validator(path, query, header, formData, body)
-  let scheme = call_594057.pickScheme
+  let valid = call_603086.validator(path, query, header, formData, body)
+  let scheme = call_603086.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594057.url(scheme.get, call_594057.host, call_594057.base,
-                         call_594057.route, valid.getOrDefault("path"),
+  let url = call_603086.url(scheme.get, call_603086.host, call_603086.base,
+                         call_603086.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594057, url, valid)
+  result = hook(call_603086, url, valid)
 
-proc call*(call_594058: Call_Suggest_594042; q: string; suggester: string;
+proc call*(call_603087: Call_Suggest_603071; q: string; suggester: string;
           pretty: string = "true"; size: int = 0; format: string = "sdk"): Recallable =
   ## suggest
   ## <p>Retrieves autocomplete suggestions for a partial query string. You can use suggestions enable you to display likely matches before users finish typing. In Amazon CloudSearch, suggestions are based on the contents of a particular text field. When you request suggestions, Amazon CloudSearch finds all of the documents whose values in the suggester field start with the specified query string. The beginning of the field must match the query string to be considered a match. </p> <p>For more information about configuring suggesters and retrieving suggestions, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/getting-suggestions.html">Getting Suggestions</a> in the <i>Amazon CloudSearch Developer Guide</i>. </p> <p>The endpoint for submitting <code>Suggest</code> requests is domain-specific. You submit suggest requests to a domain's search endpoint. To get the search endpoint for your domain, use the Amazon CloudSearch configuration service <code>DescribeDomains</code> action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. </p>
@@ -538,29 +538,29 @@ proc call*(call_594058: Call_Suggest_594042; q: string; suggester: string;
   ##   format: string (required)
   ##   suggester: string (required)
   ##            : Specifies the name of the suggester to use to find suggested matches.
-  var query_594059 = newJObject()
-  add(query_594059, "pretty", newJString(pretty))
-  add(query_594059, "q", newJString(q))
-  add(query_594059, "size", newJInt(size))
-  add(query_594059, "format", newJString(format))
-  add(query_594059, "suggester", newJString(suggester))
-  result = call_594058.call(nil, query_594059, nil, nil, nil)
+  var query_603088 = newJObject()
+  add(query_603088, "pretty", newJString(pretty))
+  add(query_603088, "q", newJString(q))
+  add(query_603088, "size", newJInt(size))
+  add(query_603088, "format", newJString(format))
+  add(query_603088, "suggester", newJString(suggester))
+  result = call_603087.call(nil, query_603088, nil, nil, nil)
 
-var suggest* = Call_Suggest_594042(name: "suggest", meth: HttpMethod.HttpGet,
+var suggest* = Call_Suggest_603071(name: "suggest", meth: HttpMethod.HttpGet,
                                 host: "cloudsearchdomain.amazonaws.com", route: "/2013-01-01/suggest#format=sdk&pretty=true&q&suggester",
-                                validator: validate_Suggest_594043, base: "/",
-                                url: url_Suggest_594044,
+                                validator: validate_Suggest_603072, base: "/",
+                                url: url_Suggest_603073,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UploadDocuments_594060 = ref object of OpenApiRestCall_593421
-proc url_UploadDocuments_594062(protocol: Scheme; host: string; base: string;
+  Call_UploadDocuments_603089 = ref object of OpenApiRestCall_602450
+proc url_UploadDocuments_603091(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UploadDocuments_594061(path: JsonNode; query: JsonNode;
+proc validate_UploadDocuments_603090(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Posts a batch of documents to a search domain for indexing. A document batch is a collection of add and delete operations that represent the documents you want to add, update, or delete from your domain. Batches can be described in either JSON or XML. Each item that you want Amazon CloudSearch to return as a search result (such as a product) is represented as a document. Every document has a unique ID and one or more fields that contain the data that you want to search and return in results. Individual documents cannot contain more than 1 MB of data. The entire batch cannot exceed 5 MB. To get the best possible upload performance, group add and delete operations in batches that are close the 5 MB limit. Submitting a large volume of single-document batches can overload a domain's document service. </p> <p>The endpoint for submitting <code>UploadDocuments</code> requests is domain-specific. To get the document endpoint for your domain, use the Amazon CloudSearch configuration service <code>DescribeDomains</code> action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. </p> <p>For more information about formatting your data for Amazon CloudSearch, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/preparing-data.html">Preparing Your Data</a> in the <i>Amazon CloudSearch Developer Guide</i>. For more information about uploading data for indexing, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/uploading-data.html">Uploading Data</a> in the <i>Amazon CloudSearch Developer Guide</i>. </p>
@@ -573,11 +573,11 @@ proc validate_UploadDocuments_594061(path: JsonNode; query: JsonNode;
   ##   format: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `format` field"
-  var valid_594063 = query.getOrDefault("format")
-  valid_594063 = validateParameter(valid_594063, JString, required = true,
+  var valid_603092 = query.getOrDefault("format")
+  valid_603092 = validateParameter(valid_603092, JString, required = true,
                                  default = newJString("sdk"))
-  if valid_594063 != nil:
-    section.add "format", valid_594063
+  if valid_603092 != nil:
+    section.add "format", valid_603092
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -590,48 +590,48 @@ proc validate_UploadDocuments_594061(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_594064 = header.getOrDefault("X-Amz-Date")
-  valid_594064 = validateParameter(valid_594064, JString, required = false,
+  var valid_603093 = header.getOrDefault("X-Amz-Date")
+  valid_603093 = validateParameter(valid_603093, JString, required = false,
                                  default = nil)
-  if valid_594064 != nil:
-    section.add "X-Amz-Date", valid_594064
-  var valid_594065 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594065 = validateParameter(valid_594065, JString, required = false,
+  if valid_603093 != nil:
+    section.add "X-Amz-Date", valid_603093
+  var valid_603094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603094 = validateParameter(valid_603094, JString, required = false,
                                  default = nil)
-  if valid_594065 != nil:
-    section.add "X-Amz-Security-Token", valid_594065
-  var valid_594066 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594066 = validateParameter(valid_594066, JString, required = false,
+  if valid_603094 != nil:
+    section.add "X-Amz-Security-Token", valid_603094
+  var valid_603095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603095 = validateParameter(valid_603095, JString, required = false,
                                  default = nil)
-  if valid_594066 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594066
+  if valid_603095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603095
   assert header != nil,
         "header argument is necessary due to required `Content-Type` field"
-  var valid_594067 = header.getOrDefault("Content-Type")
-  valid_594067 = validateParameter(valid_594067, JString, required = true,
+  var valid_603096 = header.getOrDefault("Content-Type")
+  valid_603096 = validateParameter(valid_603096, JString, required = true,
                                  default = newJString("application/json"))
-  if valid_594067 != nil:
-    section.add "Content-Type", valid_594067
-  var valid_594068 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594068 = validateParameter(valid_594068, JString, required = false,
+  if valid_603096 != nil:
+    section.add "Content-Type", valid_603096
+  var valid_603097 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603097 = validateParameter(valid_603097, JString, required = false,
                                  default = nil)
-  if valid_594068 != nil:
-    section.add "X-Amz-Algorithm", valid_594068
-  var valid_594069 = header.getOrDefault("X-Amz-Signature")
-  valid_594069 = validateParameter(valid_594069, JString, required = false,
+  if valid_603097 != nil:
+    section.add "X-Amz-Algorithm", valid_603097
+  var valid_603098 = header.getOrDefault("X-Amz-Signature")
+  valid_603098 = validateParameter(valid_603098, JString, required = false,
                                  default = nil)
-  if valid_594069 != nil:
-    section.add "X-Amz-Signature", valid_594069
-  var valid_594070 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594070 = validateParameter(valid_594070, JString, required = false,
+  if valid_603098 != nil:
+    section.add "X-Amz-Signature", valid_603098
+  var valid_603099 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603099 = validateParameter(valid_603099, JString, required = false,
                                  default = nil)
-  if valid_594070 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594070
-  var valid_594071 = header.getOrDefault("X-Amz-Credential")
-  valid_594071 = validateParameter(valid_594071, JString, required = false,
+  if valid_603099 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603099
+  var valid_603100 = header.getOrDefault("X-Amz-Credential")
+  valid_603100 = validateParameter(valid_603100, JString, required = false,
                                  default = nil)
-  if valid_594071 != nil:
-    section.add "X-Amz-Credential", valid_594071
+  if valid_603100 != nil:
+    section.add "X-Amz-Credential", valid_603100
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -642,36 +642,36 @@ proc validate_UploadDocuments_594061(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594073: Call_UploadDocuments_594060; path: JsonNode; query: JsonNode;
+proc call*(call_603102: Call_UploadDocuments_603089; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Posts a batch of documents to a search domain for indexing. A document batch is a collection of add and delete operations that represent the documents you want to add, update, or delete from your domain. Batches can be described in either JSON or XML. Each item that you want Amazon CloudSearch to return as a search result (such as a product) is represented as a document. Every document has a unique ID and one or more fields that contain the data that you want to search and return in results. Individual documents cannot contain more than 1 MB of data. The entire batch cannot exceed 5 MB. To get the best possible upload performance, group add and delete operations in batches that are close the 5 MB limit. Submitting a large volume of single-document batches can overload a domain's document service. </p> <p>The endpoint for submitting <code>UploadDocuments</code> requests is domain-specific. To get the document endpoint for your domain, use the Amazon CloudSearch configuration service <code>DescribeDomains</code> action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. </p> <p>For more information about formatting your data for Amazon CloudSearch, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/preparing-data.html">Preparing Your Data</a> in the <i>Amazon CloudSearch Developer Guide</i>. For more information about uploading data for indexing, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/uploading-data.html">Uploading Data</a> in the <i>Amazon CloudSearch Developer Guide</i>. </p>
   ## 
-  let valid = call_594073.validator(path, query, header, formData, body)
-  let scheme = call_594073.pickScheme
+  let valid = call_603102.validator(path, query, header, formData, body)
+  let scheme = call_603102.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594073.url(scheme.get, call_594073.host, call_594073.base,
-                         call_594073.route, valid.getOrDefault("path"),
+  let url = call_603102.url(scheme.get, call_603102.host, call_603102.base,
+                         call_603102.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594073, url, valid)
+  result = hook(call_603102, url, valid)
 
-proc call*(call_594074: Call_UploadDocuments_594060; body: JsonNode;
+proc call*(call_603103: Call_UploadDocuments_603089; body: JsonNode;
           format: string = "sdk"): Recallable =
   ## uploadDocuments
   ## <p>Posts a batch of documents to a search domain for indexing. A document batch is a collection of add and delete operations that represent the documents you want to add, update, or delete from your domain. Batches can be described in either JSON or XML. Each item that you want Amazon CloudSearch to return as a search result (such as a product) is represented as a document. Every document has a unique ID and one or more fields that contain the data that you want to search and return in results. Individual documents cannot contain more than 1 MB of data. The entire batch cannot exceed 5 MB. To get the best possible upload performance, group add and delete operations in batches that are close the 5 MB limit. Submitting a large volume of single-document batches can overload a domain's document service. </p> <p>The endpoint for submitting <code>UploadDocuments</code> requests is domain-specific. To get the document endpoint for your domain, use the Amazon CloudSearch configuration service <code>DescribeDomains</code> action. A domain's endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console. </p> <p>For more information about formatting your data for Amazon CloudSearch, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/preparing-data.html">Preparing Your Data</a> in the <i>Amazon CloudSearch Developer Guide</i>. For more information about uploading data for indexing, see <a href="http://docs.aws.amazon.com/cloudsearch/latest/developerguide/uploading-data.html">Uploading Data</a> in the <i>Amazon CloudSearch Developer Guide</i>. </p>
   ##   body: JObject (required)
   ##   format: string (required)
-  var query_594075 = newJObject()
-  var body_594076 = newJObject()
+  var query_603104 = newJObject()
+  var body_603105 = newJObject()
   if body != nil:
-    body_594076 = body
-  add(query_594075, "format", newJString(format))
-  result = call_594074.call(nil, query_594075, nil, nil, body_594076)
+    body_603105 = body
+  add(query_603104, "format", newJString(format))
+  result = call_603103.call(nil, query_603104, nil, nil, body_603105)
 
-var uploadDocuments* = Call_UploadDocuments_594060(name: "uploadDocuments",
+var uploadDocuments* = Call_UploadDocuments_603089(name: "uploadDocuments",
     meth: HttpMethod.HttpPost, host: "cloudsearchdomain.amazonaws.com",
     route: "/2013-01-01/documents/batch#format=sdk&Content-Type",
-    validator: validate_UploadDocuments_594061, base: "/", url: url_UploadDocuments_594062,
+    validator: validate_UploadDocuments_603090, base: "/", url: url_UploadDocuments_603091,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
