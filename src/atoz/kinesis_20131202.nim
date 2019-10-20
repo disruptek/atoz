@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602466 = ref object of OpenApiRestCall
+  OpenApiRestCall_592364 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602466](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_592364](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602466): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_592364): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -95,9 +95,13 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
     if head notin input:
       return
     let js = input[head]
-    if js.kind notin {JString, JInt, JFloat, JNull, JBool}:
+    case js.kind
+    of JInt, JFloat, JNull, JBool:
+      head = $js
+    of JString:
+      head = js.getStr
+    else:
       return
-    head = $js
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
@@ -142,15 +146,15 @@ const
   awsServiceName = "kinesis"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AddTagsToStream_602803 = ref object of OpenApiRestCall_602466
-proc url_AddTagsToStream_602805(protocol: Scheme; host: string; base: string;
+  Call_AddTagsToStream_592703 = ref object of OpenApiRestCall_592364
+proc url_AddTagsToStream_592705(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AddTagsToStream_602804(path: JsonNode; query: JsonNode;
+proc validate_AddTagsToStream_592704(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Adds or updates tags for the specified Kinesis data stream. Each time you invoke this operation, you can specify up to 10 tags. If you want to add more than 10 tags to your stream, you can invoke this operation multiple times. In total, each stream can have up to 50 tags.</p> <p>If tags have already been assigned to the stream, <code>AddTagsToStream</code> overwrites any existing tags that correspond to the specified tag keys.</p> <p> <a>AddTagsToStream</a> has a limit of five transactions per second per account.</p>
@@ -162,57 +166,57 @@ proc validate_AddTagsToStream_602804(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602917 = header.getOrDefault("X-Amz-Date")
-  valid_602917 = validateParameter(valid_602917, JString, required = false,
-                                 default = nil)
-  if valid_602917 != nil:
-    section.add "X-Amz-Date", valid_602917
-  var valid_602918 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602918 = validateParameter(valid_602918, JString, required = false,
-                                 default = nil)
-  if valid_602918 != nil:
-    section.add "X-Amz-Security-Token", valid_602918
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602932 = header.getOrDefault("X-Amz-Target")
-  valid_602932 = validateParameter(valid_602932, JString, required = true, default = newJString(
+  var valid_592830 = header.getOrDefault("X-Amz-Target")
+  valid_592830 = validateParameter(valid_592830, JString, required = true, default = newJString(
       "Kinesis_20131202.AddTagsToStream"))
-  if valid_602932 != nil:
-    section.add "X-Amz-Target", valid_602932
-  var valid_602933 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602933 = validateParameter(valid_602933, JString, required = false,
+  if valid_592830 != nil:
+    section.add "X-Amz-Target", valid_592830
+  var valid_592831 = header.getOrDefault("X-Amz-Signature")
+  valid_592831 = validateParameter(valid_592831, JString, required = false,
                                  default = nil)
-  if valid_602933 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602933
-  var valid_602934 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602934 = validateParameter(valid_602934, JString, required = false,
+  if valid_592831 != nil:
+    section.add "X-Amz-Signature", valid_592831
+  var valid_592832 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592832 = validateParameter(valid_592832, JString, required = false,
                                  default = nil)
-  if valid_602934 != nil:
-    section.add "X-Amz-Algorithm", valid_602934
-  var valid_602935 = header.getOrDefault("X-Amz-Signature")
-  valid_602935 = validateParameter(valid_602935, JString, required = false,
+  if valid_592832 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592832
+  var valid_592833 = header.getOrDefault("X-Amz-Date")
+  valid_592833 = validateParameter(valid_592833, JString, required = false,
                                  default = nil)
-  if valid_602935 != nil:
-    section.add "X-Amz-Signature", valid_602935
-  var valid_602936 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602936 = validateParameter(valid_602936, JString, required = false,
+  if valid_592833 != nil:
+    section.add "X-Amz-Date", valid_592833
+  var valid_592834 = header.getOrDefault("X-Amz-Credential")
+  valid_592834 = validateParameter(valid_592834, JString, required = false,
                                  default = nil)
-  if valid_602936 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602936
-  var valid_602937 = header.getOrDefault("X-Amz-Credential")
-  valid_602937 = validateParameter(valid_602937, JString, required = false,
+  if valid_592834 != nil:
+    section.add "X-Amz-Credential", valid_592834
+  var valid_592835 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592835 = validateParameter(valid_592835, JString, required = false,
                                  default = nil)
-  if valid_602937 != nil:
-    section.add "X-Amz-Credential", valid_602937
+  if valid_592835 != nil:
+    section.add "X-Amz-Security-Token", valid_592835
+  var valid_592836 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592836 = validateParameter(valid_592836, JString, required = false,
+                                 default = nil)
+  if valid_592836 != nil:
+    section.add "X-Amz-Algorithm", valid_592836
+  var valid_592837 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592837 = validateParameter(valid_592837, JString, required = false,
+                                 default = nil)
+  if valid_592837 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592837
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -223,43 +227,43 @@ proc validate_AddTagsToStream_602804(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602961: Call_AddTagsToStream_602803; path: JsonNode; query: JsonNode;
+proc call*(call_592861: Call_AddTagsToStream_592703; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds or updates tags for the specified Kinesis data stream. Each time you invoke this operation, you can specify up to 10 tags. If you want to add more than 10 tags to your stream, you can invoke this operation multiple times. In total, each stream can have up to 50 tags.</p> <p>If tags have already been assigned to the stream, <code>AddTagsToStream</code> overwrites any existing tags that correspond to the specified tag keys.</p> <p> <a>AddTagsToStream</a> has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_602961.validator(path, query, header, formData, body)
-  let scheme = call_602961.pickScheme
+  let valid = call_592861.validator(path, query, header, formData, body)
+  let scheme = call_592861.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602961.url(scheme.get, call_602961.host, call_602961.base,
-                         call_602961.route, valid.getOrDefault("path"),
+  let url = call_592861.url(scheme.get, call_592861.host, call_592861.base,
+                         call_592861.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_602961, url, valid)
+  result = hook(call_592861, url, valid)
 
-proc call*(call_603032: Call_AddTagsToStream_602803; body: JsonNode): Recallable =
+proc call*(call_592932: Call_AddTagsToStream_592703; body: JsonNode): Recallable =
   ## addTagsToStream
   ## <p>Adds or updates tags for the specified Kinesis data stream. Each time you invoke this operation, you can specify up to 10 tags. If you want to add more than 10 tags to your stream, you can invoke this operation multiple times. In total, each stream can have up to 50 tags.</p> <p>If tags have already been assigned to the stream, <code>AddTagsToStream</code> overwrites any existing tags that correspond to the specified tag keys.</p> <p> <a>AddTagsToStream</a> has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603033 = newJObject()
+  var body_592933 = newJObject()
   if body != nil:
-    body_603033 = body
-  result = call_603032.call(nil, nil, nil, nil, body_603033)
+    body_592933 = body
+  result = call_592932.call(nil, nil, nil, nil, body_592933)
 
-var addTagsToStream* = Call_AddTagsToStream_602803(name: "addTagsToStream",
+var addTagsToStream* = Call_AddTagsToStream_592703(name: "addTagsToStream",
     meth: HttpMethod.HttpPost, host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.AddTagsToStream",
-    validator: validate_AddTagsToStream_602804, base: "/", url: url_AddTagsToStream_602805,
+    validator: validate_AddTagsToStream_592704, base: "/", url: url_AddTagsToStream_592705,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateStream_603072 = ref object of OpenApiRestCall_602466
-proc url_CreateStream_603074(protocol: Scheme; host: string; base: string;
+  Call_CreateStream_592972 = ref object of OpenApiRestCall_592364
+proc url_CreateStream_592974(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateStream_603073(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateStream_592973(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a Kinesis data stream. A stream captures and transports data records that are continuously emitted from different data sources or <i>producers</i>. Scale-out within a stream is explicitly supported by means of shards, which are uniquely identified groups of data records in a stream.</p> <p>You specify and control the number of shards that a stream is composed of. Each shard can support reads up to five transactions per second, up to a maximum data read total of 2 MB per second. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second. If the amount of data input increases or decreases, you can add or remove shards.</p> <p>The stream name identifies the stream. The name is scoped to the AWS account used by the application. It is also scoped by AWS Region. That is, two streams in two different accounts can have the same name, and two streams in the same account, but in two different Regions, can have the same name.</p> <p> <code>CreateStream</code> is an asynchronous operation. Upon receiving a <code>CreateStream</code> request, Kinesis Data Streams immediately returns and sets the stream status to <code>CREATING</code>. After the stream is created, Kinesis Data Streams sets the stream status to <code>ACTIVE</code>. You should perform read and write operations only on an <code>ACTIVE</code> stream. </p> <p>You receive a <code>LimitExceededException</code> when making a <code>CreateStream</code> request when you try to do one of the following:</p> <ul> <li> <p>Have more than five streams in the <code>CREATING</code> state at any point in time.</p> </li> <li> <p>Create more shards than are authorized for your account.</p> </li> </ul> <p>For the default shard limit for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Amazon Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To increase this limit, <a href="http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">contact AWS Support</a>.</p> <p>You can use <code>DescribeStream</code> to check the stream status, which is returned in <code>StreamStatus</code>.</p> <p> <a>CreateStream</a> has a limit of five transactions per second per account.</p>
   ## 
@@ -270,57 +274,57 @@ proc validate_CreateStream_603073(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603075 = header.getOrDefault("X-Amz-Date")
-  valid_603075 = validateParameter(valid_603075, JString, required = false,
-                                 default = nil)
-  if valid_603075 != nil:
-    section.add "X-Amz-Date", valid_603075
-  var valid_603076 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603076 = validateParameter(valid_603076, JString, required = false,
-                                 default = nil)
-  if valid_603076 != nil:
-    section.add "X-Amz-Security-Token", valid_603076
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603077 = header.getOrDefault("X-Amz-Target")
-  valid_603077 = validateParameter(valid_603077, JString, required = true, default = newJString(
+  var valid_592975 = header.getOrDefault("X-Amz-Target")
+  valid_592975 = validateParameter(valid_592975, JString, required = true, default = newJString(
       "Kinesis_20131202.CreateStream"))
-  if valid_603077 != nil:
-    section.add "X-Amz-Target", valid_603077
-  var valid_603078 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603078 = validateParameter(valid_603078, JString, required = false,
+  if valid_592975 != nil:
+    section.add "X-Amz-Target", valid_592975
+  var valid_592976 = header.getOrDefault("X-Amz-Signature")
+  valid_592976 = validateParameter(valid_592976, JString, required = false,
                                  default = nil)
-  if valid_603078 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603078
-  var valid_603079 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603079 = validateParameter(valid_603079, JString, required = false,
+  if valid_592976 != nil:
+    section.add "X-Amz-Signature", valid_592976
+  var valid_592977 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592977 = validateParameter(valid_592977, JString, required = false,
                                  default = nil)
-  if valid_603079 != nil:
-    section.add "X-Amz-Algorithm", valid_603079
-  var valid_603080 = header.getOrDefault("X-Amz-Signature")
-  valid_603080 = validateParameter(valid_603080, JString, required = false,
+  if valid_592977 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592977
+  var valid_592978 = header.getOrDefault("X-Amz-Date")
+  valid_592978 = validateParameter(valid_592978, JString, required = false,
                                  default = nil)
-  if valid_603080 != nil:
-    section.add "X-Amz-Signature", valid_603080
-  var valid_603081 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603081 = validateParameter(valid_603081, JString, required = false,
+  if valid_592978 != nil:
+    section.add "X-Amz-Date", valid_592978
+  var valid_592979 = header.getOrDefault("X-Amz-Credential")
+  valid_592979 = validateParameter(valid_592979, JString, required = false,
                                  default = nil)
-  if valid_603081 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603081
-  var valid_603082 = header.getOrDefault("X-Amz-Credential")
-  valid_603082 = validateParameter(valid_603082, JString, required = false,
+  if valid_592979 != nil:
+    section.add "X-Amz-Credential", valid_592979
+  var valid_592980 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592980 = validateParameter(valid_592980, JString, required = false,
                                  default = nil)
-  if valid_603082 != nil:
-    section.add "X-Amz-Credential", valid_603082
+  if valid_592980 != nil:
+    section.add "X-Amz-Security-Token", valid_592980
+  var valid_592981 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592981 = validateParameter(valid_592981, JString, required = false,
+                                 default = nil)
+  if valid_592981 != nil:
+    section.add "X-Amz-Algorithm", valid_592981
+  var valid_592982 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592982 = validateParameter(valid_592982, JString, required = false,
+                                 default = nil)
+  if valid_592982 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592982
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -331,43 +335,43 @@ proc validate_CreateStream_603073(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603084: Call_CreateStream_603072; path: JsonNode; query: JsonNode;
+proc call*(call_592984: Call_CreateStream_592972; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a Kinesis data stream. A stream captures and transports data records that are continuously emitted from different data sources or <i>producers</i>. Scale-out within a stream is explicitly supported by means of shards, which are uniquely identified groups of data records in a stream.</p> <p>You specify and control the number of shards that a stream is composed of. Each shard can support reads up to five transactions per second, up to a maximum data read total of 2 MB per second. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second. If the amount of data input increases or decreases, you can add or remove shards.</p> <p>The stream name identifies the stream. The name is scoped to the AWS account used by the application. It is also scoped by AWS Region. That is, two streams in two different accounts can have the same name, and two streams in the same account, but in two different Regions, can have the same name.</p> <p> <code>CreateStream</code> is an asynchronous operation. Upon receiving a <code>CreateStream</code> request, Kinesis Data Streams immediately returns and sets the stream status to <code>CREATING</code>. After the stream is created, Kinesis Data Streams sets the stream status to <code>ACTIVE</code>. You should perform read and write operations only on an <code>ACTIVE</code> stream. </p> <p>You receive a <code>LimitExceededException</code> when making a <code>CreateStream</code> request when you try to do one of the following:</p> <ul> <li> <p>Have more than five streams in the <code>CREATING</code> state at any point in time.</p> </li> <li> <p>Create more shards than are authorized for your account.</p> </li> </ul> <p>For the default shard limit for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Amazon Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To increase this limit, <a href="http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">contact AWS Support</a>.</p> <p>You can use <code>DescribeStream</code> to check the stream status, which is returned in <code>StreamStatus</code>.</p> <p> <a>CreateStream</a> has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603084.validator(path, query, header, formData, body)
-  let scheme = call_603084.pickScheme
+  let valid = call_592984.validator(path, query, header, formData, body)
+  let scheme = call_592984.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603084.url(scheme.get, call_603084.host, call_603084.base,
-                         call_603084.route, valid.getOrDefault("path"),
+  let url = call_592984.url(scheme.get, call_592984.host, call_592984.base,
+                         call_592984.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603084, url, valid)
+  result = hook(call_592984, url, valid)
 
-proc call*(call_603085: Call_CreateStream_603072; body: JsonNode): Recallable =
+proc call*(call_592985: Call_CreateStream_592972; body: JsonNode): Recallable =
   ## createStream
   ## <p>Creates a Kinesis data stream. A stream captures and transports data records that are continuously emitted from different data sources or <i>producers</i>. Scale-out within a stream is explicitly supported by means of shards, which are uniquely identified groups of data records in a stream.</p> <p>You specify and control the number of shards that a stream is composed of. Each shard can support reads up to five transactions per second, up to a maximum data read total of 2 MB per second. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second. If the amount of data input increases or decreases, you can add or remove shards.</p> <p>The stream name identifies the stream. The name is scoped to the AWS account used by the application. It is also scoped by AWS Region. That is, two streams in two different accounts can have the same name, and two streams in the same account, but in two different Regions, can have the same name.</p> <p> <code>CreateStream</code> is an asynchronous operation. Upon receiving a <code>CreateStream</code> request, Kinesis Data Streams immediately returns and sets the stream status to <code>CREATING</code>. After the stream is created, Kinesis Data Streams sets the stream status to <code>ACTIVE</code>. You should perform read and write operations only on an <code>ACTIVE</code> stream. </p> <p>You receive a <code>LimitExceededException</code> when making a <code>CreateStream</code> request when you try to do one of the following:</p> <ul> <li> <p>Have more than five streams in the <code>CREATING</code> state at any point in time.</p> </li> <li> <p>Create more shards than are authorized for your account.</p> </li> </ul> <p>For the default shard limit for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Amazon Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To increase this limit, <a href="http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">contact AWS Support</a>.</p> <p>You can use <code>DescribeStream</code> to check the stream status, which is returned in <code>StreamStatus</code>.</p> <p> <a>CreateStream</a> has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603086 = newJObject()
+  var body_592986 = newJObject()
   if body != nil:
-    body_603086 = body
-  result = call_603085.call(nil, nil, nil, nil, body_603086)
+    body_592986 = body
+  result = call_592985.call(nil, nil, nil, nil, body_592986)
 
-var createStream* = Call_CreateStream_603072(name: "createStream",
+var createStream* = Call_CreateStream_592972(name: "createStream",
     meth: HttpMethod.HttpPost, host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.CreateStream",
-    validator: validate_CreateStream_603073, base: "/", url: url_CreateStream_603074,
+    validator: validate_CreateStream_592973, base: "/", url: url_CreateStream_592974,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DecreaseStreamRetentionPeriod_603087 = ref object of OpenApiRestCall_602466
-proc url_DecreaseStreamRetentionPeriod_603089(protocol: Scheme; host: string;
+  Call_DecreaseStreamRetentionPeriod_592987 = ref object of OpenApiRestCall_592364
+proc url_DecreaseStreamRetentionPeriod_592989(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DecreaseStreamRetentionPeriod_603088(path: JsonNode; query: JsonNode;
+proc validate_DecreaseStreamRetentionPeriod_592988(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Decreases the Kinesis data stream's retention period, which is the length of time data records are accessible after they are added to the stream. The minimum value of a stream's retention period is 24 hours.</p> <p>This operation may result in lost data. For example, if the stream's retention period is 48 hours and is decreased to 24 hours, any data already in the stream that is older than 24 hours is inaccessible.</p>
   ## 
@@ -378,57 +382,57 @@ proc validate_DecreaseStreamRetentionPeriod_603088(path: JsonNode; query: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603090 = header.getOrDefault("X-Amz-Date")
-  valid_603090 = validateParameter(valid_603090, JString, required = false,
-                                 default = nil)
-  if valid_603090 != nil:
-    section.add "X-Amz-Date", valid_603090
-  var valid_603091 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603091 = validateParameter(valid_603091, JString, required = false,
-                                 default = nil)
-  if valid_603091 != nil:
-    section.add "X-Amz-Security-Token", valid_603091
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603092 = header.getOrDefault("X-Amz-Target")
-  valid_603092 = validateParameter(valid_603092, JString, required = true, default = newJString(
+  var valid_592990 = header.getOrDefault("X-Amz-Target")
+  valid_592990 = validateParameter(valid_592990, JString, required = true, default = newJString(
       "Kinesis_20131202.DecreaseStreamRetentionPeriod"))
-  if valid_603092 != nil:
-    section.add "X-Amz-Target", valid_603092
-  var valid_603093 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603093 = validateParameter(valid_603093, JString, required = false,
+  if valid_592990 != nil:
+    section.add "X-Amz-Target", valid_592990
+  var valid_592991 = header.getOrDefault("X-Amz-Signature")
+  valid_592991 = validateParameter(valid_592991, JString, required = false,
                                  default = nil)
-  if valid_603093 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603093
-  var valid_603094 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603094 = validateParameter(valid_603094, JString, required = false,
+  if valid_592991 != nil:
+    section.add "X-Amz-Signature", valid_592991
+  var valid_592992 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592992 = validateParameter(valid_592992, JString, required = false,
                                  default = nil)
-  if valid_603094 != nil:
-    section.add "X-Amz-Algorithm", valid_603094
-  var valid_603095 = header.getOrDefault("X-Amz-Signature")
-  valid_603095 = validateParameter(valid_603095, JString, required = false,
+  if valid_592992 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592992
+  var valid_592993 = header.getOrDefault("X-Amz-Date")
+  valid_592993 = validateParameter(valid_592993, JString, required = false,
                                  default = nil)
-  if valid_603095 != nil:
-    section.add "X-Amz-Signature", valid_603095
-  var valid_603096 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603096 = validateParameter(valid_603096, JString, required = false,
+  if valid_592993 != nil:
+    section.add "X-Amz-Date", valid_592993
+  var valid_592994 = header.getOrDefault("X-Amz-Credential")
+  valid_592994 = validateParameter(valid_592994, JString, required = false,
                                  default = nil)
-  if valid_603096 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603096
-  var valid_603097 = header.getOrDefault("X-Amz-Credential")
-  valid_603097 = validateParameter(valid_603097, JString, required = false,
+  if valid_592994 != nil:
+    section.add "X-Amz-Credential", valid_592994
+  var valid_592995 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592995 = validateParameter(valid_592995, JString, required = false,
                                  default = nil)
-  if valid_603097 != nil:
-    section.add "X-Amz-Credential", valid_603097
+  if valid_592995 != nil:
+    section.add "X-Amz-Security-Token", valid_592995
+  var valid_592996 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592996 = validateParameter(valid_592996, JString, required = false,
+                                 default = nil)
+  if valid_592996 != nil:
+    section.add "X-Amz-Algorithm", valid_592996
+  var valid_592997 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592997 = validateParameter(valid_592997, JString, required = false,
+                                 default = nil)
+  if valid_592997 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592997
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -439,45 +443,45 @@ proc validate_DecreaseStreamRetentionPeriod_603088(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603099: Call_DecreaseStreamRetentionPeriod_603087; path: JsonNode;
+proc call*(call_592999: Call_DecreaseStreamRetentionPeriod_592987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Decreases the Kinesis data stream's retention period, which is the length of time data records are accessible after they are added to the stream. The minimum value of a stream's retention period is 24 hours.</p> <p>This operation may result in lost data. For example, if the stream's retention period is 48 hours and is decreased to 24 hours, any data already in the stream that is older than 24 hours is inaccessible.</p>
   ## 
-  let valid = call_603099.validator(path, query, header, formData, body)
-  let scheme = call_603099.pickScheme
+  let valid = call_592999.validator(path, query, header, formData, body)
+  let scheme = call_592999.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603099.url(scheme.get, call_603099.host, call_603099.base,
-                         call_603099.route, valid.getOrDefault("path"),
+  let url = call_592999.url(scheme.get, call_592999.host, call_592999.base,
+                         call_592999.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603099, url, valid)
+  result = hook(call_592999, url, valid)
 
-proc call*(call_603100: Call_DecreaseStreamRetentionPeriod_603087; body: JsonNode): Recallable =
+proc call*(call_593000: Call_DecreaseStreamRetentionPeriod_592987; body: JsonNode): Recallable =
   ## decreaseStreamRetentionPeriod
   ## <p>Decreases the Kinesis data stream's retention period, which is the length of time data records are accessible after they are added to the stream. The minimum value of a stream's retention period is 24 hours.</p> <p>This operation may result in lost data. For example, if the stream's retention period is 48 hours and is decreased to 24 hours, any data already in the stream that is older than 24 hours is inaccessible.</p>
   ##   body: JObject (required)
-  var body_603101 = newJObject()
+  var body_593001 = newJObject()
   if body != nil:
-    body_603101 = body
-  result = call_603100.call(nil, nil, nil, nil, body_603101)
+    body_593001 = body
+  result = call_593000.call(nil, nil, nil, nil, body_593001)
 
-var decreaseStreamRetentionPeriod* = Call_DecreaseStreamRetentionPeriod_603087(
+var decreaseStreamRetentionPeriod* = Call_DecreaseStreamRetentionPeriod_592987(
     name: "decreaseStreamRetentionPeriod", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.DecreaseStreamRetentionPeriod",
-    validator: validate_DecreaseStreamRetentionPeriod_603088, base: "/",
-    url: url_DecreaseStreamRetentionPeriod_603089,
+    validator: validate_DecreaseStreamRetentionPeriod_592988, base: "/",
+    url: url_DecreaseStreamRetentionPeriod_592989,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteStream_603102 = ref object of OpenApiRestCall_602466
-proc url_DeleteStream_603104(protocol: Scheme; host: string; base: string;
+  Call_DeleteStream_593002 = ref object of OpenApiRestCall_592364
+proc url_DeleteStream_593004(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteStream_603103(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteStream_593003(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a Kinesis data stream and all its shards and data. You must shut down any applications that are operating on the stream before you delete the stream. If an application attempts to operate on a deleted stream, it receives the exception <code>ResourceNotFoundException</code>.</p> <p>If the stream is in the <code>ACTIVE</code> state, you can delete it. After a <code>DeleteStream</code> request, the specified stream is in the <code>DELETING</code> state until Kinesis Data Streams completes the deletion.</p> <p> <b>Note:</b> Kinesis Data Streams might continue to accept data read and write operations, such as <a>PutRecord</a>, <a>PutRecords</a>, and <a>GetRecords</a>, on a stream in the <code>DELETING</code> state until the stream deletion is complete.</p> <p>When you delete a stream, any shards in that stream are also deleted, and any tags are dissociated from the stream.</p> <p>You can use the <a>DescribeStream</a> operation to check the state of the stream, which is returned in <code>StreamStatus</code>.</p> <p> <a>DeleteStream</a> has a limit of five transactions per second per account.</p>
   ## 
@@ -488,57 +492,57 @@ proc validate_DeleteStream_603103(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603105 = header.getOrDefault("X-Amz-Date")
-  valid_603105 = validateParameter(valid_603105, JString, required = false,
-                                 default = nil)
-  if valid_603105 != nil:
-    section.add "X-Amz-Date", valid_603105
-  var valid_603106 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603106 = validateParameter(valid_603106, JString, required = false,
-                                 default = nil)
-  if valid_603106 != nil:
-    section.add "X-Amz-Security-Token", valid_603106
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603107 = header.getOrDefault("X-Amz-Target")
-  valid_603107 = validateParameter(valid_603107, JString, required = true, default = newJString(
+  var valid_593005 = header.getOrDefault("X-Amz-Target")
+  valid_593005 = validateParameter(valid_593005, JString, required = true, default = newJString(
       "Kinesis_20131202.DeleteStream"))
-  if valid_603107 != nil:
-    section.add "X-Amz-Target", valid_603107
-  var valid_603108 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603108 = validateParameter(valid_603108, JString, required = false,
+  if valid_593005 != nil:
+    section.add "X-Amz-Target", valid_593005
+  var valid_593006 = header.getOrDefault("X-Amz-Signature")
+  valid_593006 = validateParameter(valid_593006, JString, required = false,
                                  default = nil)
-  if valid_603108 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603108
-  var valid_603109 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603109 = validateParameter(valid_603109, JString, required = false,
+  if valid_593006 != nil:
+    section.add "X-Amz-Signature", valid_593006
+  var valid_593007 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593007 = validateParameter(valid_593007, JString, required = false,
                                  default = nil)
-  if valid_603109 != nil:
-    section.add "X-Amz-Algorithm", valid_603109
-  var valid_603110 = header.getOrDefault("X-Amz-Signature")
-  valid_603110 = validateParameter(valid_603110, JString, required = false,
+  if valid_593007 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593007
+  var valid_593008 = header.getOrDefault("X-Amz-Date")
+  valid_593008 = validateParameter(valid_593008, JString, required = false,
                                  default = nil)
-  if valid_603110 != nil:
-    section.add "X-Amz-Signature", valid_603110
-  var valid_603111 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603111 = validateParameter(valid_603111, JString, required = false,
+  if valid_593008 != nil:
+    section.add "X-Amz-Date", valid_593008
+  var valid_593009 = header.getOrDefault("X-Amz-Credential")
+  valid_593009 = validateParameter(valid_593009, JString, required = false,
                                  default = nil)
-  if valid_603111 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603111
-  var valid_603112 = header.getOrDefault("X-Amz-Credential")
-  valid_603112 = validateParameter(valid_603112, JString, required = false,
+  if valid_593009 != nil:
+    section.add "X-Amz-Credential", valid_593009
+  var valid_593010 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593010 = validateParameter(valid_593010, JString, required = false,
                                  default = nil)
-  if valid_603112 != nil:
-    section.add "X-Amz-Credential", valid_603112
+  if valid_593010 != nil:
+    section.add "X-Amz-Security-Token", valid_593010
+  var valid_593011 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593011 = validateParameter(valid_593011, JString, required = false,
+                                 default = nil)
+  if valid_593011 != nil:
+    section.add "X-Amz-Algorithm", valid_593011
+  var valid_593012 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593012 = validateParameter(valid_593012, JString, required = false,
+                                 default = nil)
+  if valid_593012 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593012
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -549,36 +553,36 @@ proc validate_DeleteStream_603103(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603114: Call_DeleteStream_603102; path: JsonNode; query: JsonNode;
+proc call*(call_593014: Call_DeleteStream_593002; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a Kinesis data stream and all its shards and data. You must shut down any applications that are operating on the stream before you delete the stream. If an application attempts to operate on a deleted stream, it receives the exception <code>ResourceNotFoundException</code>.</p> <p>If the stream is in the <code>ACTIVE</code> state, you can delete it. After a <code>DeleteStream</code> request, the specified stream is in the <code>DELETING</code> state until Kinesis Data Streams completes the deletion.</p> <p> <b>Note:</b> Kinesis Data Streams might continue to accept data read and write operations, such as <a>PutRecord</a>, <a>PutRecords</a>, and <a>GetRecords</a>, on a stream in the <code>DELETING</code> state until the stream deletion is complete.</p> <p>When you delete a stream, any shards in that stream are also deleted, and any tags are dissociated from the stream.</p> <p>You can use the <a>DescribeStream</a> operation to check the state of the stream, which is returned in <code>StreamStatus</code>.</p> <p> <a>DeleteStream</a> has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603114.validator(path, query, header, formData, body)
-  let scheme = call_603114.pickScheme
+  let valid = call_593014.validator(path, query, header, formData, body)
+  let scheme = call_593014.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603114.url(scheme.get, call_603114.host, call_603114.base,
-                         call_603114.route, valid.getOrDefault("path"),
+  let url = call_593014.url(scheme.get, call_593014.host, call_593014.base,
+                         call_593014.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603114, url, valid)
+  result = hook(call_593014, url, valid)
 
-proc call*(call_603115: Call_DeleteStream_603102; body: JsonNode): Recallable =
+proc call*(call_593015: Call_DeleteStream_593002; body: JsonNode): Recallable =
   ## deleteStream
   ## <p>Deletes a Kinesis data stream and all its shards and data. You must shut down any applications that are operating on the stream before you delete the stream. If an application attempts to operate on a deleted stream, it receives the exception <code>ResourceNotFoundException</code>.</p> <p>If the stream is in the <code>ACTIVE</code> state, you can delete it. After a <code>DeleteStream</code> request, the specified stream is in the <code>DELETING</code> state until Kinesis Data Streams completes the deletion.</p> <p> <b>Note:</b> Kinesis Data Streams might continue to accept data read and write operations, such as <a>PutRecord</a>, <a>PutRecords</a>, and <a>GetRecords</a>, on a stream in the <code>DELETING</code> state until the stream deletion is complete.</p> <p>When you delete a stream, any shards in that stream are also deleted, and any tags are dissociated from the stream.</p> <p>You can use the <a>DescribeStream</a> operation to check the state of the stream, which is returned in <code>StreamStatus</code>.</p> <p> <a>DeleteStream</a> has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603116 = newJObject()
+  var body_593016 = newJObject()
   if body != nil:
-    body_603116 = body
-  result = call_603115.call(nil, nil, nil, nil, body_603116)
+    body_593016 = body
+  result = call_593015.call(nil, nil, nil, nil, body_593016)
 
-var deleteStream* = Call_DeleteStream_603102(name: "deleteStream",
+var deleteStream* = Call_DeleteStream_593002(name: "deleteStream",
     meth: HttpMethod.HttpPost, host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.DeleteStream",
-    validator: validate_DeleteStream_603103, base: "/", url: url_DeleteStream_603104,
+    validator: validate_DeleteStream_593003, base: "/", url: url_DeleteStream_593004,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterStreamConsumer_603117 = ref object of OpenApiRestCall_602466
-proc url_DeregisterStreamConsumer_603119(protocol: Scheme; host: string;
+  Call_DeregisterStreamConsumer_593017 = ref object of OpenApiRestCall_592364
+proc url_DeregisterStreamConsumer_593019(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -586,7 +590,7 @@ proc url_DeregisterStreamConsumer_603119(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeregisterStreamConsumer_603118(path: JsonNode; query: JsonNode;
+proc validate_DeregisterStreamConsumer_593018(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>To deregister a consumer, provide its ARN. Alternatively, you can provide the ARN of the data stream and the name you gave the consumer when you registered it. You may also provide all three parameters, as long as they don't conflict with each other. If you don't know the name or ARN of the consumer that you want to deregister, you can use the <a>ListStreamConsumers</a> operation to get a list of the descriptions of all the consumers that are currently registered with a given data stream. The description of a consumer contains its name and ARN.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ## 
@@ -597,57 +601,57 @@ proc validate_DeregisterStreamConsumer_603118(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603120 = header.getOrDefault("X-Amz-Date")
-  valid_603120 = validateParameter(valid_603120, JString, required = false,
-                                 default = nil)
-  if valid_603120 != nil:
-    section.add "X-Amz-Date", valid_603120
-  var valid_603121 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603121 = validateParameter(valid_603121, JString, required = false,
-                                 default = nil)
-  if valid_603121 != nil:
-    section.add "X-Amz-Security-Token", valid_603121
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603122 = header.getOrDefault("X-Amz-Target")
-  valid_603122 = validateParameter(valid_603122, JString, required = true, default = newJString(
+  var valid_593020 = header.getOrDefault("X-Amz-Target")
+  valid_593020 = validateParameter(valid_593020, JString, required = true, default = newJString(
       "Kinesis_20131202.DeregisterStreamConsumer"))
-  if valid_603122 != nil:
-    section.add "X-Amz-Target", valid_603122
-  var valid_603123 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603123 = validateParameter(valid_603123, JString, required = false,
+  if valid_593020 != nil:
+    section.add "X-Amz-Target", valid_593020
+  var valid_593021 = header.getOrDefault("X-Amz-Signature")
+  valid_593021 = validateParameter(valid_593021, JString, required = false,
                                  default = nil)
-  if valid_603123 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603123
-  var valid_603124 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603124 = validateParameter(valid_603124, JString, required = false,
+  if valid_593021 != nil:
+    section.add "X-Amz-Signature", valid_593021
+  var valid_593022 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593022 = validateParameter(valid_593022, JString, required = false,
                                  default = nil)
-  if valid_603124 != nil:
-    section.add "X-Amz-Algorithm", valid_603124
-  var valid_603125 = header.getOrDefault("X-Amz-Signature")
-  valid_603125 = validateParameter(valid_603125, JString, required = false,
+  if valid_593022 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593022
+  var valid_593023 = header.getOrDefault("X-Amz-Date")
+  valid_593023 = validateParameter(valid_593023, JString, required = false,
                                  default = nil)
-  if valid_603125 != nil:
-    section.add "X-Amz-Signature", valid_603125
-  var valid_603126 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603126 = validateParameter(valid_603126, JString, required = false,
+  if valid_593023 != nil:
+    section.add "X-Amz-Date", valid_593023
+  var valid_593024 = header.getOrDefault("X-Amz-Credential")
+  valid_593024 = validateParameter(valid_593024, JString, required = false,
                                  default = nil)
-  if valid_603126 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603126
-  var valid_603127 = header.getOrDefault("X-Amz-Credential")
-  valid_603127 = validateParameter(valid_603127, JString, required = false,
+  if valid_593024 != nil:
+    section.add "X-Amz-Credential", valid_593024
+  var valid_593025 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593025 = validateParameter(valid_593025, JString, required = false,
                                  default = nil)
-  if valid_603127 != nil:
-    section.add "X-Amz-Credential", valid_603127
+  if valid_593025 != nil:
+    section.add "X-Amz-Security-Token", valid_593025
+  var valid_593026 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593026 = validateParameter(valid_593026, JString, required = false,
+                                 default = nil)
+  if valid_593026 != nil:
+    section.add "X-Amz-Algorithm", valid_593026
+  var valid_593027 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593027 = validateParameter(valid_593027, JString, required = false,
+                                 default = nil)
+  if valid_593027 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593027
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -658,44 +662,44 @@ proc validate_DeregisterStreamConsumer_603118(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603129: Call_DeregisterStreamConsumer_603117; path: JsonNode;
+proc call*(call_593029: Call_DeregisterStreamConsumer_593017; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>To deregister a consumer, provide its ARN. Alternatively, you can provide the ARN of the data stream and the name you gave the consumer when you registered it. You may also provide all three parameters, as long as they don't conflict with each other. If you don't know the name or ARN of the consumer that you want to deregister, you can use the <a>ListStreamConsumers</a> operation to get a list of the descriptions of all the consumers that are currently registered with a given data stream. The description of a consumer contains its name and ARN.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603129.validator(path, query, header, formData, body)
-  let scheme = call_603129.pickScheme
+  let valid = call_593029.validator(path, query, header, formData, body)
+  let scheme = call_593029.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603129.url(scheme.get, call_603129.host, call_603129.base,
-                         call_603129.route, valid.getOrDefault("path"),
+  let url = call_593029.url(scheme.get, call_593029.host, call_593029.base,
+                         call_593029.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603129, url, valid)
+  result = hook(call_593029, url, valid)
 
-proc call*(call_603130: Call_DeregisterStreamConsumer_603117; body: JsonNode): Recallable =
+proc call*(call_593030: Call_DeregisterStreamConsumer_593017; body: JsonNode): Recallable =
   ## deregisterStreamConsumer
   ## <p>To deregister a consumer, provide its ARN. Alternatively, you can provide the ARN of the data stream and the name you gave the consumer when you registered it. You may also provide all three parameters, as long as they don't conflict with each other. If you don't know the name or ARN of the consumer that you want to deregister, you can use the <a>ListStreamConsumers</a> operation to get a list of the descriptions of all the consumers that are currently registered with a given data stream. The description of a consumer contains its name and ARN.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603131 = newJObject()
+  var body_593031 = newJObject()
   if body != nil:
-    body_603131 = body
-  result = call_603130.call(nil, nil, nil, nil, body_603131)
+    body_593031 = body
+  result = call_593030.call(nil, nil, nil, nil, body_593031)
 
-var deregisterStreamConsumer* = Call_DeregisterStreamConsumer_603117(
+var deregisterStreamConsumer* = Call_DeregisterStreamConsumer_593017(
     name: "deregisterStreamConsumer", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.DeregisterStreamConsumer",
-    validator: validate_DeregisterStreamConsumer_603118, base: "/",
-    url: url_DeregisterStreamConsumer_603119, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterStreamConsumer_593018, base: "/",
+    url: url_DeregisterStreamConsumer_593019, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeLimits_603132 = ref object of OpenApiRestCall_602466
-proc url_DescribeLimits_603134(protocol: Scheme; host: string; base: string;
+  Call_DescribeLimits_593032 = ref object of OpenApiRestCall_592364
+proc url_DescribeLimits_593034(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeLimits_603133(path: JsonNode; query: JsonNode;
+proc validate_DescribeLimits_593033(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Describes the shard limits and usage for the account.</p> <p>If you update your account limits, the old limits might be returned for a few minutes.</p> <p>This operation has a limit of one transaction per second per account.</p>
@@ -707,57 +711,57 @@ proc validate_DescribeLimits_603133(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603135 = header.getOrDefault("X-Amz-Date")
-  valid_603135 = validateParameter(valid_603135, JString, required = false,
-                                 default = nil)
-  if valid_603135 != nil:
-    section.add "X-Amz-Date", valid_603135
-  var valid_603136 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
-                                 default = nil)
-  if valid_603136 != nil:
-    section.add "X-Amz-Security-Token", valid_603136
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603137 = header.getOrDefault("X-Amz-Target")
-  valid_603137 = validateParameter(valid_603137, JString, required = true, default = newJString(
+  var valid_593035 = header.getOrDefault("X-Amz-Target")
+  valid_593035 = validateParameter(valid_593035, JString, required = true, default = newJString(
       "Kinesis_20131202.DescribeLimits"))
-  if valid_603137 != nil:
-    section.add "X-Amz-Target", valid_603137
-  var valid_603138 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603138 = validateParameter(valid_603138, JString, required = false,
+  if valid_593035 != nil:
+    section.add "X-Amz-Target", valid_593035
+  var valid_593036 = header.getOrDefault("X-Amz-Signature")
+  valid_593036 = validateParameter(valid_593036, JString, required = false,
                                  default = nil)
-  if valid_603138 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603138
-  var valid_603139 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603139 = validateParameter(valid_603139, JString, required = false,
+  if valid_593036 != nil:
+    section.add "X-Amz-Signature", valid_593036
+  var valid_593037 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593037 = validateParameter(valid_593037, JString, required = false,
                                  default = nil)
-  if valid_603139 != nil:
-    section.add "X-Amz-Algorithm", valid_603139
-  var valid_603140 = header.getOrDefault("X-Amz-Signature")
-  valid_603140 = validateParameter(valid_603140, JString, required = false,
+  if valid_593037 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593037
+  var valid_593038 = header.getOrDefault("X-Amz-Date")
+  valid_593038 = validateParameter(valid_593038, JString, required = false,
                                  default = nil)
-  if valid_603140 != nil:
-    section.add "X-Amz-Signature", valid_603140
-  var valid_603141 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603141 = validateParameter(valid_603141, JString, required = false,
+  if valid_593038 != nil:
+    section.add "X-Amz-Date", valid_593038
+  var valid_593039 = header.getOrDefault("X-Amz-Credential")
+  valid_593039 = validateParameter(valid_593039, JString, required = false,
                                  default = nil)
-  if valid_603141 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603141
-  var valid_603142 = header.getOrDefault("X-Amz-Credential")
-  valid_603142 = validateParameter(valid_603142, JString, required = false,
+  if valid_593039 != nil:
+    section.add "X-Amz-Credential", valid_593039
+  var valid_593040 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593040 = validateParameter(valid_593040, JString, required = false,
                                  default = nil)
-  if valid_603142 != nil:
-    section.add "X-Amz-Credential", valid_603142
+  if valid_593040 != nil:
+    section.add "X-Amz-Security-Token", valid_593040
+  var valid_593041 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593041 = validateParameter(valid_593041, JString, required = false,
+                                 default = nil)
+  if valid_593041 != nil:
+    section.add "X-Amz-Algorithm", valid_593041
+  var valid_593042 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593042 = validateParameter(valid_593042, JString, required = false,
+                                 default = nil)
+  if valid_593042 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593042
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -768,43 +772,43 @@ proc validate_DescribeLimits_603133(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603144: Call_DescribeLimits_603132; path: JsonNode; query: JsonNode;
+proc call*(call_593044: Call_DescribeLimits_593032; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the shard limits and usage for the account.</p> <p>If you update your account limits, the old limits might be returned for a few minutes.</p> <p>This operation has a limit of one transaction per second per account.</p>
   ## 
-  let valid = call_603144.validator(path, query, header, formData, body)
-  let scheme = call_603144.pickScheme
+  let valid = call_593044.validator(path, query, header, formData, body)
+  let scheme = call_593044.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603144.url(scheme.get, call_603144.host, call_603144.base,
-                         call_603144.route, valid.getOrDefault("path"),
+  let url = call_593044.url(scheme.get, call_593044.host, call_593044.base,
+                         call_593044.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603144, url, valid)
+  result = hook(call_593044, url, valid)
 
-proc call*(call_603145: Call_DescribeLimits_603132; body: JsonNode): Recallable =
+proc call*(call_593045: Call_DescribeLimits_593032; body: JsonNode): Recallable =
   ## describeLimits
   ## <p>Describes the shard limits and usage for the account.</p> <p>If you update your account limits, the old limits might be returned for a few minutes.</p> <p>This operation has a limit of one transaction per second per account.</p>
   ##   body: JObject (required)
-  var body_603146 = newJObject()
+  var body_593046 = newJObject()
   if body != nil:
-    body_603146 = body
-  result = call_603145.call(nil, nil, nil, nil, body_603146)
+    body_593046 = body
+  result = call_593045.call(nil, nil, nil, nil, body_593046)
 
-var describeLimits* = Call_DescribeLimits_603132(name: "describeLimits",
+var describeLimits* = Call_DescribeLimits_593032(name: "describeLimits",
     meth: HttpMethod.HttpPost, host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.DescribeLimits",
-    validator: validate_DescribeLimits_603133, base: "/", url: url_DescribeLimits_603134,
+    validator: validate_DescribeLimits_593033, base: "/", url: url_DescribeLimits_593034,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStream_603147 = ref object of OpenApiRestCall_602466
-proc url_DescribeStream_603149(protocol: Scheme; host: string; base: string;
+  Call_DescribeStream_593047 = ref object of OpenApiRestCall_592364
+proc url_DescribeStream_593049(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeStream_603148(path: JsonNode; query: JsonNode;
+proc validate_DescribeStream_593048(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Describes the specified Kinesis data stream.</p> <p>The information returned includes the stream name, Amazon Resource Name (ARN), creation time, enhanced metric configuration, and shard map. The shard map is an array of shard objects. For each shard object, there is the hash key and sequence number ranges that the shard spans, and the IDs of any earlier shards that played in a role in creating the shard. Every record ingested in the stream is identified by a sequence number, which is assigned when the record is put into the stream.</p> <p>You can limit the number of shards returned by each call. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-retrieve-shards.html">Retrieving Shards from a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>There are no guarantees about the chronological order shards returned. To process shards in chronological order, use the ID of the parent shard to track the lineage to the oldest shard.</p> <p>This operation has a limit of 10 transactions per second per account.</p>
@@ -814,74 +818,74 @@ proc validate_DescribeStream_603148(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   ExclusiveStartShardId: JString
-  ##                        : Pagination token
   ##   Limit: JString
   ##        : Pagination limit
+  ##   ExclusiveStartShardId: JString
+  ##                        : Pagination token
   section = newJObject()
-  var valid_603150 = query.getOrDefault("ExclusiveStartShardId")
-  valid_603150 = validateParameter(valid_603150, JString, required = false,
+  var valid_593050 = query.getOrDefault("Limit")
+  valid_593050 = validateParameter(valid_593050, JString, required = false,
                                  default = nil)
-  if valid_603150 != nil:
-    section.add "ExclusiveStartShardId", valid_603150
-  var valid_603151 = query.getOrDefault("Limit")
-  valid_603151 = validateParameter(valid_603151, JString, required = false,
+  if valid_593050 != nil:
+    section.add "Limit", valid_593050
+  var valid_593051 = query.getOrDefault("ExclusiveStartShardId")
+  valid_593051 = validateParameter(valid_593051, JString, required = false,
                                  default = nil)
-  if valid_603151 != nil:
-    section.add "Limit", valid_603151
+  if valid_593051 != nil:
+    section.add "ExclusiveStartShardId", valid_593051
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603152 = header.getOrDefault("X-Amz-Date")
-  valid_603152 = validateParameter(valid_603152, JString, required = false,
-                                 default = nil)
-  if valid_603152 != nil:
-    section.add "X-Amz-Date", valid_603152
-  var valid_603153 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603153 = validateParameter(valid_603153, JString, required = false,
-                                 default = nil)
-  if valid_603153 != nil:
-    section.add "X-Amz-Security-Token", valid_603153
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603154 = header.getOrDefault("X-Amz-Target")
-  valid_603154 = validateParameter(valid_603154, JString, required = true, default = newJString(
+  var valid_593052 = header.getOrDefault("X-Amz-Target")
+  valid_593052 = validateParameter(valid_593052, JString, required = true, default = newJString(
       "Kinesis_20131202.DescribeStream"))
-  if valid_603154 != nil:
-    section.add "X-Amz-Target", valid_603154
-  var valid_603155 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603155 = validateParameter(valid_603155, JString, required = false,
+  if valid_593052 != nil:
+    section.add "X-Amz-Target", valid_593052
+  var valid_593053 = header.getOrDefault("X-Amz-Signature")
+  valid_593053 = validateParameter(valid_593053, JString, required = false,
                                  default = nil)
-  if valid_603155 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603155
-  var valid_603156 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603156 = validateParameter(valid_603156, JString, required = false,
+  if valid_593053 != nil:
+    section.add "X-Amz-Signature", valid_593053
+  var valid_593054 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593054 = validateParameter(valid_593054, JString, required = false,
                                  default = nil)
-  if valid_603156 != nil:
-    section.add "X-Amz-Algorithm", valid_603156
-  var valid_603157 = header.getOrDefault("X-Amz-Signature")
-  valid_603157 = validateParameter(valid_603157, JString, required = false,
+  if valid_593054 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593054
+  var valid_593055 = header.getOrDefault("X-Amz-Date")
+  valid_593055 = validateParameter(valid_593055, JString, required = false,
                                  default = nil)
-  if valid_603157 != nil:
-    section.add "X-Amz-Signature", valid_603157
-  var valid_603158 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603158 = validateParameter(valid_603158, JString, required = false,
+  if valid_593055 != nil:
+    section.add "X-Amz-Date", valid_593055
+  var valid_593056 = header.getOrDefault("X-Amz-Credential")
+  valid_593056 = validateParameter(valid_593056, JString, required = false,
                                  default = nil)
-  if valid_603158 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603158
-  var valid_603159 = header.getOrDefault("X-Amz-Credential")
-  valid_603159 = validateParameter(valid_603159, JString, required = false,
+  if valid_593056 != nil:
+    section.add "X-Amz-Credential", valid_593056
+  var valid_593057 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593057 = validateParameter(valid_593057, JString, required = false,
                                  default = nil)
-  if valid_603159 != nil:
-    section.add "X-Amz-Credential", valid_603159
+  if valid_593057 != nil:
+    section.add "X-Amz-Security-Token", valid_593057
+  var valid_593058 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593058 = validateParameter(valid_593058, JString, required = false,
+                                 default = nil)
+  if valid_593058 != nil:
+    section.add "X-Amz-Algorithm", valid_593058
+  var valid_593059 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593059 = validateParameter(valid_593059, JString, required = false,
+                                 default = nil)
+  if valid_593059 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593059
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -892,51 +896,51 @@ proc validate_DescribeStream_603148(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603161: Call_DescribeStream_603147; path: JsonNode; query: JsonNode;
+proc call*(call_593061: Call_DescribeStream_593047; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the specified Kinesis data stream.</p> <p>The information returned includes the stream name, Amazon Resource Name (ARN), creation time, enhanced metric configuration, and shard map. The shard map is an array of shard objects. For each shard object, there is the hash key and sequence number ranges that the shard spans, and the IDs of any earlier shards that played in a role in creating the shard. Every record ingested in the stream is identified by a sequence number, which is assigned when the record is put into the stream.</p> <p>You can limit the number of shards returned by each call. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-retrieve-shards.html">Retrieving Shards from a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>There are no guarantees about the chronological order shards returned. To process shards in chronological order, use the ID of the parent shard to track the lineage to the oldest shard.</p> <p>This operation has a limit of 10 transactions per second per account.</p>
   ## 
-  let valid = call_603161.validator(path, query, header, formData, body)
-  let scheme = call_603161.pickScheme
+  let valid = call_593061.validator(path, query, header, formData, body)
+  let scheme = call_593061.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603161.url(scheme.get, call_603161.host, call_603161.base,
-                         call_603161.route, valid.getOrDefault("path"),
+  let url = call_593061.url(scheme.get, call_593061.host, call_593061.base,
+                         call_593061.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603161, url, valid)
+  result = hook(call_593061, url, valid)
 
-proc call*(call_603162: Call_DescribeStream_603147; body: JsonNode;
-          ExclusiveStartShardId: string = ""; Limit: string = ""): Recallable =
+proc call*(call_593062: Call_DescribeStream_593047; body: JsonNode;
+          Limit: string = ""; ExclusiveStartShardId: string = ""): Recallable =
   ## describeStream
   ## <p>Describes the specified Kinesis data stream.</p> <p>The information returned includes the stream name, Amazon Resource Name (ARN), creation time, enhanced metric configuration, and shard map. The shard map is an array of shard objects. For each shard object, there is the hash key and sequence number ranges that the shard spans, and the IDs of any earlier shards that played in a role in creating the shard. Every record ingested in the stream is identified by a sequence number, which is assigned when the record is put into the stream.</p> <p>You can limit the number of shards returned by each call. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-retrieve-shards.html">Retrieving Shards from a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>There are no guarantees about the chronological order shards returned. To process shards in chronological order, use the ID of the parent shard to track the lineage to the oldest shard.</p> <p>This operation has a limit of 10 transactions per second per account.</p>
-  ##   ExclusiveStartShardId: string
-  ##                        : Pagination token
   ##   Limit: string
   ##        : Pagination limit
+  ##   ExclusiveStartShardId: string
+  ##                        : Pagination token
   ##   body: JObject (required)
-  var query_603163 = newJObject()
-  var body_603164 = newJObject()
-  add(query_603163, "ExclusiveStartShardId", newJString(ExclusiveStartShardId))
-  add(query_603163, "Limit", newJString(Limit))
+  var query_593063 = newJObject()
+  var body_593064 = newJObject()
+  add(query_593063, "Limit", newJString(Limit))
+  add(query_593063, "ExclusiveStartShardId", newJString(ExclusiveStartShardId))
   if body != nil:
-    body_603164 = body
-  result = call_603162.call(nil, query_603163, nil, nil, body_603164)
+    body_593064 = body
+  result = call_593062.call(nil, query_593063, nil, nil, body_593064)
 
-var describeStream* = Call_DescribeStream_603147(name: "describeStream",
+var describeStream* = Call_DescribeStream_593047(name: "describeStream",
     meth: HttpMethod.HttpPost, host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.DescribeStream",
-    validator: validate_DescribeStream_603148, base: "/", url: url_DescribeStream_603149,
+    validator: validate_DescribeStream_593048, base: "/", url: url_DescribeStream_593049,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStreamConsumer_603166 = ref object of OpenApiRestCall_602466
-proc url_DescribeStreamConsumer_603168(protocol: Scheme; host: string; base: string;
+  Call_DescribeStreamConsumer_593066 = ref object of OpenApiRestCall_592364
+proc url_DescribeStreamConsumer_593068(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeStreamConsumer_603167(path: JsonNode; query: JsonNode;
+proc validate_DescribeStreamConsumer_593067(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>To get the description of a registered consumer, provide the ARN of the consumer. Alternatively, you can provide the ARN of the data stream and the name you gave the consumer when you registered it. You may also provide all three parameters, as long as they don't conflict with each other. If you don't know the name or ARN of the consumer that you want to describe, you can use the <a>ListStreamConsumers</a> operation to get a list of the descriptions of all the consumers that are currently registered with a given data stream.</p> <p>This operation has a limit of 20 transactions per second per account.</p>
   ## 
@@ -947,57 +951,57 @@ proc validate_DescribeStreamConsumer_603167(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603169 = header.getOrDefault("X-Amz-Date")
-  valid_603169 = validateParameter(valid_603169, JString, required = false,
-                                 default = nil)
-  if valid_603169 != nil:
-    section.add "X-Amz-Date", valid_603169
-  var valid_603170 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603170 = validateParameter(valid_603170, JString, required = false,
-                                 default = nil)
-  if valid_603170 != nil:
-    section.add "X-Amz-Security-Token", valid_603170
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603171 = header.getOrDefault("X-Amz-Target")
-  valid_603171 = validateParameter(valid_603171, JString, required = true, default = newJString(
+  var valid_593069 = header.getOrDefault("X-Amz-Target")
+  valid_593069 = validateParameter(valid_593069, JString, required = true, default = newJString(
       "Kinesis_20131202.DescribeStreamConsumer"))
-  if valid_603171 != nil:
-    section.add "X-Amz-Target", valid_603171
-  var valid_603172 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603172 = validateParameter(valid_603172, JString, required = false,
+  if valid_593069 != nil:
+    section.add "X-Amz-Target", valid_593069
+  var valid_593070 = header.getOrDefault("X-Amz-Signature")
+  valid_593070 = validateParameter(valid_593070, JString, required = false,
                                  default = nil)
-  if valid_603172 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603172
-  var valid_603173 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603173 = validateParameter(valid_603173, JString, required = false,
+  if valid_593070 != nil:
+    section.add "X-Amz-Signature", valid_593070
+  var valid_593071 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593071 = validateParameter(valid_593071, JString, required = false,
                                  default = nil)
-  if valid_603173 != nil:
-    section.add "X-Amz-Algorithm", valid_603173
-  var valid_603174 = header.getOrDefault("X-Amz-Signature")
-  valid_603174 = validateParameter(valid_603174, JString, required = false,
+  if valid_593071 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593071
+  var valid_593072 = header.getOrDefault("X-Amz-Date")
+  valid_593072 = validateParameter(valid_593072, JString, required = false,
                                  default = nil)
-  if valid_603174 != nil:
-    section.add "X-Amz-Signature", valid_603174
-  var valid_603175 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603175 = validateParameter(valid_603175, JString, required = false,
+  if valid_593072 != nil:
+    section.add "X-Amz-Date", valid_593072
+  var valid_593073 = header.getOrDefault("X-Amz-Credential")
+  valid_593073 = validateParameter(valid_593073, JString, required = false,
                                  default = nil)
-  if valid_603175 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603175
-  var valid_603176 = header.getOrDefault("X-Amz-Credential")
-  valid_603176 = validateParameter(valid_603176, JString, required = false,
+  if valid_593073 != nil:
+    section.add "X-Amz-Credential", valid_593073
+  var valid_593074 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593074 = validateParameter(valid_593074, JString, required = false,
                                  default = nil)
-  if valid_603176 != nil:
-    section.add "X-Amz-Credential", valid_603176
+  if valid_593074 != nil:
+    section.add "X-Amz-Security-Token", valid_593074
+  var valid_593075 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593075 = validateParameter(valid_593075, JString, required = false,
+                                 default = nil)
+  if valid_593075 != nil:
+    section.add "X-Amz-Algorithm", valid_593075
+  var valid_593076 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593076 = validateParameter(valid_593076, JString, required = false,
+                                 default = nil)
+  if valid_593076 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593076
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1008,44 +1012,44 @@ proc validate_DescribeStreamConsumer_603167(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603178: Call_DescribeStreamConsumer_603166; path: JsonNode;
+proc call*(call_593078: Call_DescribeStreamConsumer_593066; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>To get the description of a registered consumer, provide the ARN of the consumer. Alternatively, you can provide the ARN of the data stream and the name you gave the consumer when you registered it. You may also provide all three parameters, as long as they don't conflict with each other. If you don't know the name or ARN of the consumer that you want to describe, you can use the <a>ListStreamConsumers</a> operation to get a list of the descriptions of all the consumers that are currently registered with a given data stream.</p> <p>This operation has a limit of 20 transactions per second per account.</p>
   ## 
-  let valid = call_603178.validator(path, query, header, formData, body)
-  let scheme = call_603178.pickScheme
+  let valid = call_593078.validator(path, query, header, formData, body)
+  let scheme = call_593078.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603178.url(scheme.get, call_603178.host, call_603178.base,
-                         call_603178.route, valid.getOrDefault("path"),
+  let url = call_593078.url(scheme.get, call_593078.host, call_593078.base,
+                         call_593078.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603178, url, valid)
+  result = hook(call_593078, url, valid)
 
-proc call*(call_603179: Call_DescribeStreamConsumer_603166; body: JsonNode): Recallable =
+proc call*(call_593079: Call_DescribeStreamConsumer_593066; body: JsonNode): Recallable =
   ## describeStreamConsumer
   ## <p>To get the description of a registered consumer, provide the ARN of the consumer. Alternatively, you can provide the ARN of the data stream and the name you gave the consumer when you registered it. You may also provide all three parameters, as long as they don't conflict with each other. If you don't know the name or ARN of the consumer that you want to describe, you can use the <a>ListStreamConsumers</a> operation to get a list of the descriptions of all the consumers that are currently registered with a given data stream.</p> <p>This operation has a limit of 20 transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603180 = newJObject()
+  var body_593080 = newJObject()
   if body != nil:
-    body_603180 = body
-  result = call_603179.call(nil, nil, nil, nil, body_603180)
+    body_593080 = body
+  result = call_593079.call(nil, nil, nil, nil, body_593080)
 
-var describeStreamConsumer* = Call_DescribeStreamConsumer_603166(
+var describeStreamConsumer* = Call_DescribeStreamConsumer_593066(
     name: "describeStreamConsumer", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.DescribeStreamConsumer",
-    validator: validate_DescribeStreamConsumer_603167, base: "/",
-    url: url_DescribeStreamConsumer_603168, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeStreamConsumer_593067, base: "/",
+    url: url_DescribeStreamConsumer_593068, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStreamSummary_603181 = ref object of OpenApiRestCall_602466
-proc url_DescribeStreamSummary_603183(protocol: Scheme; host: string; base: string;
+  Call_DescribeStreamSummary_593081 = ref object of OpenApiRestCall_592364
+proc url_DescribeStreamSummary_593083(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeStreamSummary_603182(path: JsonNode; query: JsonNode;
+proc validate_DescribeStreamSummary_593082(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Provides a summarized description of the specified Kinesis data stream without the shard list.</p> <p>The information returned includes the stream name, Amazon Resource Name (ARN), status, record retention period, approximate creation time, monitoring, encryption details, and open shard count. </p>
   ## 
@@ -1056,57 +1060,57 @@ proc validate_DescribeStreamSummary_603182(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603184 = header.getOrDefault("X-Amz-Date")
-  valid_603184 = validateParameter(valid_603184, JString, required = false,
-                                 default = nil)
-  if valid_603184 != nil:
-    section.add "X-Amz-Date", valid_603184
-  var valid_603185 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603185 = validateParameter(valid_603185, JString, required = false,
-                                 default = nil)
-  if valid_603185 != nil:
-    section.add "X-Amz-Security-Token", valid_603185
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603186 = header.getOrDefault("X-Amz-Target")
-  valid_603186 = validateParameter(valid_603186, JString, required = true, default = newJString(
+  var valid_593084 = header.getOrDefault("X-Amz-Target")
+  valid_593084 = validateParameter(valid_593084, JString, required = true, default = newJString(
       "Kinesis_20131202.DescribeStreamSummary"))
-  if valid_603186 != nil:
-    section.add "X-Amz-Target", valid_603186
-  var valid_603187 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603187 = validateParameter(valid_603187, JString, required = false,
+  if valid_593084 != nil:
+    section.add "X-Amz-Target", valid_593084
+  var valid_593085 = header.getOrDefault("X-Amz-Signature")
+  valid_593085 = validateParameter(valid_593085, JString, required = false,
                                  default = nil)
-  if valid_603187 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603187
-  var valid_603188 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603188 = validateParameter(valid_603188, JString, required = false,
+  if valid_593085 != nil:
+    section.add "X-Amz-Signature", valid_593085
+  var valid_593086 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593086 = validateParameter(valid_593086, JString, required = false,
                                  default = nil)
-  if valid_603188 != nil:
-    section.add "X-Amz-Algorithm", valid_603188
-  var valid_603189 = header.getOrDefault("X-Amz-Signature")
-  valid_603189 = validateParameter(valid_603189, JString, required = false,
+  if valid_593086 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593086
+  var valid_593087 = header.getOrDefault("X-Amz-Date")
+  valid_593087 = validateParameter(valid_593087, JString, required = false,
                                  default = nil)
-  if valid_603189 != nil:
-    section.add "X-Amz-Signature", valid_603189
-  var valid_603190 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603190 = validateParameter(valid_603190, JString, required = false,
+  if valid_593087 != nil:
+    section.add "X-Amz-Date", valid_593087
+  var valid_593088 = header.getOrDefault("X-Amz-Credential")
+  valid_593088 = validateParameter(valid_593088, JString, required = false,
                                  default = nil)
-  if valid_603190 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603190
-  var valid_603191 = header.getOrDefault("X-Amz-Credential")
-  valid_603191 = validateParameter(valid_603191, JString, required = false,
+  if valid_593088 != nil:
+    section.add "X-Amz-Credential", valid_593088
+  var valid_593089 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593089 = validateParameter(valid_593089, JString, required = false,
                                  default = nil)
-  if valid_603191 != nil:
-    section.add "X-Amz-Credential", valid_603191
+  if valid_593089 != nil:
+    section.add "X-Amz-Security-Token", valid_593089
+  var valid_593090 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593090 = validateParameter(valid_593090, JString, required = false,
+                                 default = nil)
+  if valid_593090 != nil:
+    section.add "X-Amz-Algorithm", valid_593090
+  var valid_593091 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593091 = validateParameter(valid_593091, JString, required = false,
+                                 default = nil)
+  if valid_593091 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593091
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1117,44 +1121,44 @@ proc validate_DescribeStreamSummary_603182(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603193: Call_DescribeStreamSummary_603181; path: JsonNode;
+proc call*(call_593093: Call_DescribeStreamSummary_593081; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Provides a summarized description of the specified Kinesis data stream without the shard list.</p> <p>The information returned includes the stream name, Amazon Resource Name (ARN), status, record retention period, approximate creation time, monitoring, encryption details, and open shard count. </p>
   ## 
-  let valid = call_603193.validator(path, query, header, formData, body)
-  let scheme = call_603193.pickScheme
+  let valid = call_593093.validator(path, query, header, formData, body)
+  let scheme = call_593093.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603193.url(scheme.get, call_603193.host, call_603193.base,
-                         call_603193.route, valid.getOrDefault("path"),
+  let url = call_593093.url(scheme.get, call_593093.host, call_593093.base,
+                         call_593093.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603193, url, valid)
+  result = hook(call_593093, url, valid)
 
-proc call*(call_603194: Call_DescribeStreamSummary_603181; body: JsonNode): Recallable =
+proc call*(call_593094: Call_DescribeStreamSummary_593081; body: JsonNode): Recallable =
   ## describeStreamSummary
   ## <p>Provides a summarized description of the specified Kinesis data stream without the shard list.</p> <p>The information returned includes the stream name, Amazon Resource Name (ARN), status, record retention period, approximate creation time, monitoring, encryption details, and open shard count. </p>
   ##   body: JObject (required)
-  var body_603195 = newJObject()
+  var body_593095 = newJObject()
   if body != nil:
-    body_603195 = body
-  result = call_603194.call(nil, nil, nil, nil, body_603195)
+    body_593095 = body
+  result = call_593094.call(nil, nil, nil, nil, body_593095)
 
-var describeStreamSummary* = Call_DescribeStreamSummary_603181(
+var describeStreamSummary* = Call_DescribeStreamSummary_593081(
     name: "describeStreamSummary", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.DescribeStreamSummary",
-    validator: validate_DescribeStreamSummary_603182, base: "/",
-    url: url_DescribeStreamSummary_603183, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeStreamSummary_593082, base: "/",
+    url: url_DescribeStreamSummary_593083, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableEnhancedMonitoring_603196 = ref object of OpenApiRestCall_602466
-proc url_DisableEnhancedMonitoring_603198(protocol: Scheme; host: string;
+  Call_DisableEnhancedMonitoring_593096 = ref object of OpenApiRestCall_592364
+proc url_DisableEnhancedMonitoring_593098(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisableEnhancedMonitoring_603197(path: JsonNode; query: JsonNode;
+proc validate_DisableEnhancedMonitoring_593097(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Disables enhanced monitoring.
   ## 
@@ -1165,57 +1169,57 @@ proc validate_DisableEnhancedMonitoring_603197(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603199 = header.getOrDefault("X-Amz-Date")
-  valid_603199 = validateParameter(valid_603199, JString, required = false,
-                                 default = nil)
-  if valid_603199 != nil:
-    section.add "X-Amz-Date", valid_603199
-  var valid_603200 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603200 = validateParameter(valid_603200, JString, required = false,
-                                 default = nil)
-  if valid_603200 != nil:
-    section.add "X-Amz-Security-Token", valid_603200
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603201 = header.getOrDefault("X-Amz-Target")
-  valid_603201 = validateParameter(valid_603201, JString, required = true, default = newJString(
+  var valid_593099 = header.getOrDefault("X-Amz-Target")
+  valid_593099 = validateParameter(valid_593099, JString, required = true, default = newJString(
       "Kinesis_20131202.DisableEnhancedMonitoring"))
-  if valid_603201 != nil:
-    section.add "X-Amz-Target", valid_603201
-  var valid_603202 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603202 = validateParameter(valid_603202, JString, required = false,
+  if valid_593099 != nil:
+    section.add "X-Amz-Target", valid_593099
+  var valid_593100 = header.getOrDefault("X-Amz-Signature")
+  valid_593100 = validateParameter(valid_593100, JString, required = false,
                                  default = nil)
-  if valid_603202 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603202
-  var valid_603203 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603203 = validateParameter(valid_603203, JString, required = false,
+  if valid_593100 != nil:
+    section.add "X-Amz-Signature", valid_593100
+  var valid_593101 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593101 = validateParameter(valid_593101, JString, required = false,
                                  default = nil)
-  if valid_603203 != nil:
-    section.add "X-Amz-Algorithm", valid_603203
-  var valid_603204 = header.getOrDefault("X-Amz-Signature")
-  valid_603204 = validateParameter(valid_603204, JString, required = false,
+  if valid_593101 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593101
+  var valid_593102 = header.getOrDefault("X-Amz-Date")
+  valid_593102 = validateParameter(valid_593102, JString, required = false,
                                  default = nil)
-  if valid_603204 != nil:
-    section.add "X-Amz-Signature", valid_603204
-  var valid_603205 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603205 = validateParameter(valid_603205, JString, required = false,
+  if valid_593102 != nil:
+    section.add "X-Amz-Date", valid_593102
+  var valid_593103 = header.getOrDefault("X-Amz-Credential")
+  valid_593103 = validateParameter(valid_593103, JString, required = false,
                                  default = nil)
-  if valid_603205 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603205
-  var valid_603206 = header.getOrDefault("X-Amz-Credential")
-  valid_603206 = validateParameter(valid_603206, JString, required = false,
+  if valid_593103 != nil:
+    section.add "X-Amz-Credential", valid_593103
+  var valid_593104 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593104 = validateParameter(valid_593104, JString, required = false,
                                  default = nil)
-  if valid_603206 != nil:
-    section.add "X-Amz-Credential", valid_603206
+  if valid_593104 != nil:
+    section.add "X-Amz-Security-Token", valid_593104
+  var valid_593105 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593105 = validateParameter(valid_593105, JString, required = false,
+                                 default = nil)
+  if valid_593105 != nil:
+    section.add "X-Amz-Algorithm", valid_593105
+  var valid_593106 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593106 = validateParameter(valid_593106, JString, required = false,
+                                 default = nil)
+  if valid_593106 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593106
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1226,38 +1230,38 @@ proc validate_DisableEnhancedMonitoring_603197(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603208: Call_DisableEnhancedMonitoring_603196; path: JsonNode;
+proc call*(call_593108: Call_DisableEnhancedMonitoring_593096; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Disables enhanced monitoring.
   ## 
-  let valid = call_603208.validator(path, query, header, formData, body)
-  let scheme = call_603208.pickScheme
+  let valid = call_593108.validator(path, query, header, formData, body)
+  let scheme = call_593108.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603208.url(scheme.get, call_603208.host, call_603208.base,
-                         call_603208.route, valid.getOrDefault("path"),
+  let url = call_593108.url(scheme.get, call_593108.host, call_593108.base,
+                         call_593108.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603208, url, valid)
+  result = hook(call_593108, url, valid)
 
-proc call*(call_603209: Call_DisableEnhancedMonitoring_603196; body: JsonNode): Recallable =
+proc call*(call_593109: Call_DisableEnhancedMonitoring_593096; body: JsonNode): Recallable =
   ## disableEnhancedMonitoring
   ## Disables enhanced monitoring.
   ##   body: JObject (required)
-  var body_603210 = newJObject()
+  var body_593110 = newJObject()
   if body != nil:
-    body_603210 = body
-  result = call_603209.call(nil, nil, nil, nil, body_603210)
+    body_593110 = body
+  result = call_593109.call(nil, nil, nil, nil, body_593110)
 
-var disableEnhancedMonitoring* = Call_DisableEnhancedMonitoring_603196(
+var disableEnhancedMonitoring* = Call_DisableEnhancedMonitoring_593096(
     name: "disableEnhancedMonitoring", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.DisableEnhancedMonitoring",
-    validator: validate_DisableEnhancedMonitoring_603197, base: "/",
-    url: url_DisableEnhancedMonitoring_603198,
+    validator: validate_DisableEnhancedMonitoring_593097, base: "/",
+    url: url_DisableEnhancedMonitoring_593098,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableEnhancedMonitoring_603211 = ref object of OpenApiRestCall_602466
-proc url_EnableEnhancedMonitoring_603213(protocol: Scheme; host: string;
+  Call_EnableEnhancedMonitoring_593111 = ref object of OpenApiRestCall_592364
+proc url_EnableEnhancedMonitoring_593113(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1265,7 +1269,7 @@ proc url_EnableEnhancedMonitoring_603213(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_EnableEnhancedMonitoring_603212(path: JsonNode; query: JsonNode;
+proc validate_EnableEnhancedMonitoring_593112(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Enables enhanced Kinesis data stream monitoring for shard-level metrics.
   ## 
@@ -1276,57 +1280,57 @@ proc validate_EnableEnhancedMonitoring_603212(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603214 = header.getOrDefault("X-Amz-Date")
-  valid_603214 = validateParameter(valid_603214, JString, required = false,
-                                 default = nil)
-  if valid_603214 != nil:
-    section.add "X-Amz-Date", valid_603214
-  var valid_603215 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603215 = validateParameter(valid_603215, JString, required = false,
-                                 default = nil)
-  if valid_603215 != nil:
-    section.add "X-Amz-Security-Token", valid_603215
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603216 = header.getOrDefault("X-Amz-Target")
-  valid_603216 = validateParameter(valid_603216, JString, required = true, default = newJString(
+  var valid_593114 = header.getOrDefault("X-Amz-Target")
+  valid_593114 = validateParameter(valid_593114, JString, required = true, default = newJString(
       "Kinesis_20131202.EnableEnhancedMonitoring"))
-  if valid_603216 != nil:
-    section.add "X-Amz-Target", valid_603216
-  var valid_603217 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603217 = validateParameter(valid_603217, JString, required = false,
+  if valid_593114 != nil:
+    section.add "X-Amz-Target", valid_593114
+  var valid_593115 = header.getOrDefault("X-Amz-Signature")
+  valid_593115 = validateParameter(valid_593115, JString, required = false,
                                  default = nil)
-  if valid_603217 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603217
-  var valid_603218 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603218 = validateParameter(valid_603218, JString, required = false,
+  if valid_593115 != nil:
+    section.add "X-Amz-Signature", valid_593115
+  var valid_593116 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593116 = validateParameter(valid_593116, JString, required = false,
                                  default = nil)
-  if valid_603218 != nil:
-    section.add "X-Amz-Algorithm", valid_603218
-  var valid_603219 = header.getOrDefault("X-Amz-Signature")
-  valid_603219 = validateParameter(valid_603219, JString, required = false,
+  if valid_593116 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593116
+  var valid_593117 = header.getOrDefault("X-Amz-Date")
+  valid_593117 = validateParameter(valid_593117, JString, required = false,
                                  default = nil)
-  if valid_603219 != nil:
-    section.add "X-Amz-Signature", valid_603219
-  var valid_603220 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603220 = validateParameter(valid_603220, JString, required = false,
+  if valid_593117 != nil:
+    section.add "X-Amz-Date", valid_593117
+  var valid_593118 = header.getOrDefault("X-Amz-Credential")
+  valid_593118 = validateParameter(valid_593118, JString, required = false,
                                  default = nil)
-  if valid_603220 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603220
-  var valid_603221 = header.getOrDefault("X-Amz-Credential")
-  valid_603221 = validateParameter(valid_603221, JString, required = false,
+  if valid_593118 != nil:
+    section.add "X-Amz-Credential", valid_593118
+  var valid_593119 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593119 = validateParameter(valid_593119, JString, required = false,
                                  default = nil)
-  if valid_603221 != nil:
-    section.add "X-Amz-Credential", valid_603221
+  if valid_593119 != nil:
+    section.add "X-Amz-Security-Token", valid_593119
+  var valid_593120 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593120 = validateParameter(valid_593120, JString, required = false,
+                                 default = nil)
+  if valid_593120 != nil:
+    section.add "X-Amz-Algorithm", valid_593120
+  var valid_593121 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593121 = validateParameter(valid_593121, JString, required = false,
+                                 default = nil)
+  if valid_593121 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593121
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1337,44 +1341,44 @@ proc validate_EnableEnhancedMonitoring_603212(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603223: Call_EnableEnhancedMonitoring_603211; path: JsonNode;
+proc call*(call_593123: Call_EnableEnhancedMonitoring_593111; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Enables enhanced Kinesis data stream monitoring for shard-level metrics.
   ## 
-  let valid = call_603223.validator(path, query, header, formData, body)
-  let scheme = call_603223.pickScheme
+  let valid = call_593123.validator(path, query, header, formData, body)
+  let scheme = call_593123.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603223.url(scheme.get, call_603223.host, call_603223.base,
-                         call_603223.route, valid.getOrDefault("path"),
+  let url = call_593123.url(scheme.get, call_593123.host, call_593123.base,
+                         call_593123.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603223, url, valid)
+  result = hook(call_593123, url, valid)
 
-proc call*(call_603224: Call_EnableEnhancedMonitoring_603211; body: JsonNode): Recallable =
+proc call*(call_593124: Call_EnableEnhancedMonitoring_593111; body: JsonNode): Recallable =
   ## enableEnhancedMonitoring
   ## Enables enhanced Kinesis data stream monitoring for shard-level metrics.
   ##   body: JObject (required)
-  var body_603225 = newJObject()
+  var body_593125 = newJObject()
   if body != nil:
-    body_603225 = body
-  result = call_603224.call(nil, nil, nil, nil, body_603225)
+    body_593125 = body
+  result = call_593124.call(nil, nil, nil, nil, body_593125)
 
-var enableEnhancedMonitoring* = Call_EnableEnhancedMonitoring_603211(
+var enableEnhancedMonitoring* = Call_EnableEnhancedMonitoring_593111(
     name: "enableEnhancedMonitoring", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.EnableEnhancedMonitoring",
-    validator: validate_EnableEnhancedMonitoring_603212, base: "/",
-    url: url_EnableEnhancedMonitoring_603213, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_EnableEnhancedMonitoring_593112, base: "/",
+    url: url_EnableEnhancedMonitoring_593113, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRecords_603226 = ref object of OpenApiRestCall_602466
-proc url_GetRecords_603228(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetRecords_593126 = ref object of OpenApiRestCall_592364
+proc url_GetRecords_593128(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetRecords_603227(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetRecords_593127(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets data records from a Kinesis data stream's shard.</p> <p>Specify a shard iterator using the <code>ShardIterator</code> parameter. The shard iterator specifies the position in the shard from which you want to start reading data records sequentially. If there are no records available in the portion of the shard that the iterator points to, <a>GetRecords</a> returns an empty list. It might take multiple calls to get to a portion of the shard that contains records.</p> <p>You can scale by provisioning multiple shards per stream while considering service limits (for more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Amazon Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>). Your application should have one thread per shard, each reading continuously from its stream. To read from a stream continually, call <a>GetRecords</a> in a loop. Use <a>GetShardIterator</a> to get the shard iterator to specify in the first <a>GetRecords</a> call. <a>GetRecords</a> returns a new shard iterator in <code>NextShardIterator</code>. Specify the shard iterator returned in <code>NextShardIterator</code> in subsequent calls to <a>GetRecords</a>. If the shard has been closed, the shard iterator can't return more data and <a>GetRecords</a> returns <code>null</code> in <code>NextShardIterator</code>. You can terminate the loop when the shard is closed, or when the shard iterator reaches the record with the sequence number or other attribute that marks it as the last record to process.</p> <p>Each data record can be up to 1 MiB in size, and each shard can read up to 2 MiB per second. You can ensure that your calls don't exceed the maximum supported size or throughput by using the <code>Limit</code> parameter to specify the maximum number of records that <a>GetRecords</a> can return. Consider your average record size when determining this limit. The maximum number of records that can be returned per call is 10,000.</p> <p>The size of the data returned by <a>GetRecords</a> varies depending on the utilization of the shard. The maximum size of data that <a>GetRecords</a> can return is 10 MiB. If a call returns this amount of data, subsequent calls made within the next 5 seconds throw <code>ProvisionedThroughputExceededException</code>. If there is insufficient provisioned throughput on the stream, subsequent calls made within the next 1 second throw <code>ProvisionedThroughputExceededException</code>. <a>GetRecords</a> doesn't return any data when it throws an exception. For this reason, we recommend that you wait 1 second between calls to <a>GetRecords</a>. However, it's possible that the application will get exceptions for longer than 1 second.</p> <p>To detect whether the application is falling behind in processing, you can use the <code>MillisBehindLatest</code> response attribute. You can also monitor the stream using CloudWatch metrics and other mechanisms (see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/monitoring.html">Monitoring</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>).</p> <p>Each Amazon Kinesis record includes a value, <code>ApproximateArrivalTimestamp</code>, that is set when a stream successfully receives and stores a record. This is commonly referred to as a server-side time stamp, whereas a client-side time stamp is set when a data producer creates or sends the record to a stream (a data producer is any data source putting data records into a stream, for example with <a>PutRecords</a>). The time stamp has millisecond precision. There are no guarantees about the time stamp accuracy, or that the time stamp is always increasing. For example, records in a shard or across a stream might have time stamps that are out of order.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ## 
@@ -1385,57 +1389,57 @@ proc validate_GetRecords_603227(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603229 = header.getOrDefault("X-Amz-Date")
-  valid_603229 = validateParameter(valid_603229, JString, required = false,
-                                 default = nil)
-  if valid_603229 != nil:
-    section.add "X-Amz-Date", valid_603229
-  var valid_603230 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603230 = validateParameter(valid_603230, JString, required = false,
-                                 default = nil)
-  if valid_603230 != nil:
-    section.add "X-Amz-Security-Token", valid_603230
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603231 = header.getOrDefault("X-Amz-Target")
-  valid_603231 = validateParameter(valid_603231, JString, required = true, default = newJString(
+  var valid_593129 = header.getOrDefault("X-Amz-Target")
+  valid_593129 = validateParameter(valid_593129, JString, required = true, default = newJString(
       "Kinesis_20131202.GetRecords"))
-  if valid_603231 != nil:
-    section.add "X-Amz-Target", valid_603231
-  var valid_603232 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603232 = validateParameter(valid_603232, JString, required = false,
+  if valid_593129 != nil:
+    section.add "X-Amz-Target", valid_593129
+  var valid_593130 = header.getOrDefault("X-Amz-Signature")
+  valid_593130 = validateParameter(valid_593130, JString, required = false,
                                  default = nil)
-  if valid_603232 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603232
-  var valid_603233 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603233 = validateParameter(valid_603233, JString, required = false,
+  if valid_593130 != nil:
+    section.add "X-Amz-Signature", valid_593130
+  var valid_593131 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593131 = validateParameter(valid_593131, JString, required = false,
                                  default = nil)
-  if valid_603233 != nil:
-    section.add "X-Amz-Algorithm", valid_603233
-  var valid_603234 = header.getOrDefault("X-Amz-Signature")
-  valid_603234 = validateParameter(valid_603234, JString, required = false,
+  if valid_593131 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593131
+  var valid_593132 = header.getOrDefault("X-Amz-Date")
+  valid_593132 = validateParameter(valid_593132, JString, required = false,
                                  default = nil)
-  if valid_603234 != nil:
-    section.add "X-Amz-Signature", valid_603234
-  var valid_603235 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603235 = validateParameter(valid_603235, JString, required = false,
+  if valid_593132 != nil:
+    section.add "X-Amz-Date", valid_593132
+  var valid_593133 = header.getOrDefault("X-Amz-Credential")
+  valid_593133 = validateParameter(valid_593133, JString, required = false,
                                  default = nil)
-  if valid_603235 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603235
-  var valid_603236 = header.getOrDefault("X-Amz-Credential")
-  valid_603236 = validateParameter(valid_603236, JString, required = false,
+  if valid_593133 != nil:
+    section.add "X-Amz-Credential", valid_593133
+  var valid_593134 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593134 = validateParameter(valid_593134, JString, required = false,
                                  default = nil)
-  if valid_603236 != nil:
-    section.add "X-Amz-Credential", valid_603236
+  if valid_593134 != nil:
+    section.add "X-Amz-Security-Token", valid_593134
+  var valid_593135 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593135 = validateParameter(valid_593135, JString, required = false,
+                                 default = nil)
+  if valid_593135 != nil:
+    section.add "X-Amz-Algorithm", valid_593135
+  var valid_593136 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593136 = validateParameter(valid_593136, JString, required = false,
+                                 default = nil)
+  if valid_593136 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593136
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1446,44 +1450,44 @@ proc validate_GetRecords_603227(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603238: Call_GetRecords_603226; path: JsonNode; query: JsonNode;
+proc call*(call_593138: Call_GetRecords_593126; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets data records from a Kinesis data stream's shard.</p> <p>Specify a shard iterator using the <code>ShardIterator</code> parameter. The shard iterator specifies the position in the shard from which you want to start reading data records sequentially. If there are no records available in the portion of the shard that the iterator points to, <a>GetRecords</a> returns an empty list. It might take multiple calls to get to a portion of the shard that contains records.</p> <p>You can scale by provisioning multiple shards per stream while considering service limits (for more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Amazon Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>). Your application should have one thread per shard, each reading continuously from its stream. To read from a stream continually, call <a>GetRecords</a> in a loop. Use <a>GetShardIterator</a> to get the shard iterator to specify in the first <a>GetRecords</a> call. <a>GetRecords</a> returns a new shard iterator in <code>NextShardIterator</code>. Specify the shard iterator returned in <code>NextShardIterator</code> in subsequent calls to <a>GetRecords</a>. If the shard has been closed, the shard iterator can't return more data and <a>GetRecords</a> returns <code>null</code> in <code>NextShardIterator</code>. You can terminate the loop when the shard is closed, or when the shard iterator reaches the record with the sequence number or other attribute that marks it as the last record to process.</p> <p>Each data record can be up to 1 MiB in size, and each shard can read up to 2 MiB per second. You can ensure that your calls don't exceed the maximum supported size or throughput by using the <code>Limit</code> parameter to specify the maximum number of records that <a>GetRecords</a> can return. Consider your average record size when determining this limit. The maximum number of records that can be returned per call is 10,000.</p> <p>The size of the data returned by <a>GetRecords</a> varies depending on the utilization of the shard. The maximum size of data that <a>GetRecords</a> can return is 10 MiB. If a call returns this amount of data, subsequent calls made within the next 5 seconds throw <code>ProvisionedThroughputExceededException</code>. If there is insufficient provisioned throughput on the stream, subsequent calls made within the next 1 second throw <code>ProvisionedThroughputExceededException</code>. <a>GetRecords</a> doesn't return any data when it throws an exception. For this reason, we recommend that you wait 1 second between calls to <a>GetRecords</a>. However, it's possible that the application will get exceptions for longer than 1 second.</p> <p>To detect whether the application is falling behind in processing, you can use the <code>MillisBehindLatest</code> response attribute. You can also monitor the stream using CloudWatch metrics and other mechanisms (see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/monitoring.html">Monitoring</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>).</p> <p>Each Amazon Kinesis record includes a value, <code>ApproximateArrivalTimestamp</code>, that is set when a stream successfully receives and stores a record. This is commonly referred to as a server-side time stamp, whereas a client-side time stamp is set when a data producer creates or sends the record to a stream (a data producer is any data source putting data records into a stream, for example with <a>PutRecords</a>). The time stamp has millisecond precision. There are no guarantees about the time stamp accuracy, or that the time stamp is always increasing. For example, records in a shard or across a stream might have time stamps that are out of order.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603238.validator(path, query, header, formData, body)
-  let scheme = call_603238.pickScheme
+  let valid = call_593138.validator(path, query, header, formData, body)
+  let scheme = call_593138.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603238.url(scheme.get, call_603238.host, call_603238.base,
-                         call_603238.route, valid.getOrDefault("path"),
+  let url = call_593138.url(scheme.get, call_593138.host, call_593138.base,
+                         call_593138.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603238, url, valid)
+  result = hook(call_593138, url, valid)
 
-proc call*(call_603239: Call_GetRecords_603226; body: JsonNode): Recallable =
+proc call*(call_593139: Call_GetRecords_593126; body: JsonNode): Recallable =
   ## getRecords
   ## <p>Gets data records from a Kinesis data stream's shard.</p> <p>Specify a shard iterator using the <code>ShardIterator</code> parameter. The shard iterator specifies the position in the shard from which you want to start reading data records sequentially. If there are no records available in the portion of the shard that the iterator points to, <a>GetRecords</a> returns an empty list. It might take multiple calls to get to a portion of the shard that contains records.</p> <p>You can scale by provisioning multiple shards per stream while considering service limits (for more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Amazon Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>). Your application should have one thread per shard, each reading continuously from its stream. To read from a stream continually, call <a>GetRecords</a> in a loop. Use <a>GetShardIterator</a> to get the shard iterator to specify in the first <a>GetRecords</a> call. <a>GetRecords</a> returns a new shard iterator in <code>NextShardIterator</code>. Specify the shard iterator returned in <code>NextShardIterator</code> in subsequent calls to <a>GetRecords</a>. If the shard has been closed, the shard iterator can't return more data and <a>GetRecords</a> returns <code>null</code> in <code>NextShardIterator</code>. You can terminate the loop when the shard is closed, or when the shard iterator reaches the record with the sequence number or other attribute that marks it as the last record to process.</p> <p>Each data record can be up to 1 MiB in size, and each shard can read up to 2 MiB per second. You can ensure that your calls don't exceed the maximum supported size or throughput by using the <code>Limit</code> parameter to specify the maximum number of records that <a>GetRecords</a> can return. Consider your average record size when determining this limit. The maximum number of records that can be returned per call is 10,000.</p> <p>The size of the data returned by <a>GetRecords</a> varies depending on the utilization of the shard. The maximum size of data that <a>GetRecords</a> can return is 10 MiB. If a call returns this amount of data, subsequent calls made within the next 5 seconds throw <code>ProvisionedThroughputExceededException</code>. If there is insufficient provisioned throughput on the stream, subsequent calls made within the next 1 second throw <code>ProvisionedThroughputExceededException</code>. <a>GetRecords</a> doesn't return any data when it throws an exception. For this reason, we recommend that you wait 1 second between calls to <a>GetRecords</a>. However, it's possible that the application will get exceptions for longer than 1 second.</p> <p>To detect whether the application is falling behind in processing, you can use the <code>MillisBehindLatest</code> response attribute. You can also monitor the stream using CloudWatch metrics and other mechanisms (see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/monitoring.html">Monitoring</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>).</p> <p>Each Amazon Kinesis record includes a value, <code>ApproximateArrivalTimestamp</code>, that is set when a stream successfully receives and stores a record. This is commonly referred to as a server-side time stamp, whereas a client-side time stamp is set when a data producer creates or sends the record to a stream (a data producer is any data source putting data records into a stream, for example with <a>PutRecords</a>). The time stamp has millisecond precision. There are no guarantees about the time stamp accuracy, or that the time stamp is always increasing. For example, records in a shard or across a stream might have time stamps that are out of order.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603240 = newJObject()
+  var body_593140 = newJObject()
   if body != nil:
-    body_603240 = body
-  result = call_603239.call(nil, nil, nil, nil, body_603240)
+    body_593140 = body
+  result = call_593139.call(nil, nil, nil, nil, body_593140)
 
-var getRecords* = Call_GetRecords_603226(name: "getRecords",
+var getRecords* = Call_GetRecords_593126(name: "getRecords",
                                       meth: HttpMethod.HttpPost,
                                       host: "kinesis.amazonaws.com", route: "/#X-Amz-Target=Kinesis_20131202.GetRecords",
-                                      validator: validate_GetRecords_603227,
-                                      base: "/", url: url_GetRecords_603228,
+                                      validator: validate_GetRecords_593127,
+                                      base: "/", url: url_GetRecords_593128,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetShardIterator_603241 = ref object of OpenApiRestCall_602466
-proc url_GetShardIterator_603243(protocol: Scheme; host: string; base: string;
+  Call_GetShardIterator_593141 = ref object of OpenApiRestCall_592364
+proc url_GetShardIterator_593143(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetShardIterator_603242(path: JsonNode; query: JsonNode;
+proc validate_GetShardIterator_593142(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Gets an Amazon Kinesis shard iterator. A shard iterator expires 5 minutes after it is returned to the requester.</p> <p>A shard iterator specifies the shard position from which to start reading data records sequentially. The position is specified using the sequence number of a data record in a shard. A sequence number is the identifier associated with every record ingested in the stream, and is assigned when a record is put into the stream. Each stream has one or more shards.</p> <p>You must specify the shard iterator type. For example, you can set the <code>ShardIteratorType</code> parameter to read exactly from the position denoted by a specific sequence number by using the <code>AT_SEQUENCE_NUMBER</code> shard iterator type. Alternatively, the parameter can read right after the sequence number by using the <code>AFTER_SEQUENCE_NUMBER</code> shard iterator type, using sequence numbers returned by earlier calls to <a>PutRecord</a>, <a>PutRecords</a>, <a>GetRecords</a>, or <a>DescribeStream</a>. In the request, you can specify the shard iterator type <code>AT_TIMESTAMP</code> to read records from an arbitrary point in time, <code>TRIM_HORIZON</code> to cause <code>ShardIterator</code> to point to the last untrimmed record in the shard in the system (the oldest data record in the shard), or <code>LATEST</code> so that you always read the most recent data in the shard. </p> <p>When you read repeatedly from a stream, use a <a>GetShardIterator</a> request to get the first shard iterator for use in your first <a>GetRecords</a> request and for subsequent reads use the shard iterator returned by the <a>GetRecords</a> request in <code>NextShardIterator</code>. A new shard iterator is returned by every <a>GetRecords</a> request in <code>NextShardIterator</code>, which you use in the <code>ShardIterator</code> parameter of the next <a>GetRecords</a> request. </p> <p>If a <a>GetShardIterator</a> request is made too often, you receive a <code>ProvisionedThroughputExceededException</code>. For more information about throughput limits, see <a>GetRecords</a>, and <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If the shard is closed, <a>GetShardIterator</a> returns a valid iterator for the last sequence number of the shard. A shard can be closed as a result of using <a>SplitShard</a> or <a>MergeShards</a>.</p> <p> <a>GetShardIterator</a> has a limit of five transactions per second per account per open shard.</p>
@@ -1495,57 +1499,57 @@ proc validate_GetShardIterator_603242(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603244 = header.getOrDefault("X-Amz-Date")
-  valid_603244 = validateParameter(valid_603244, JString, required = false,
-                                 default = nil)
-  if valid_603244 != nil:
-    section.add "X-Amz-Date", valid_603244
-  var valid_603245 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603245 = validateParameter(valid_603245, JString, required = false,
-                                 default = nil)
-  if valid_603245 != nil:
-    section.add "X-Amz-Security-Token", valid_603245
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603246 = header.getOrDefault("X-Amz-Target")
-  valid_603246 = validateParameter(valid_603246, JString, required = true, default = newJString(
+  var valid_593144 = header.getOrDefault("X-Amz-Target")
+  valid_593144 = validateParameter(valid_593144, JString, required = true, default = newJString(
       "Kinesis_20131202.GetShardIterator"))
-  if valid_603246 != nil:
-    section.add "X-Amz-Target", valid_603246
-  var valid_603247 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603247 = validateParameter(valid_603247, JString, required = false,
+  if valid_593144 != nil:
+    section.add "X-Amz-Target", valid_593144
+  var valid_593145 = header.getOrDefault("X-Amz-Signature")
+  valid_593145 = validateParameter(valid_593145, JString, required = false,
                                  default = nil)
-  if valid_603247 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603247
-  var valid_603248 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603248 = validateParameter(valid_603248, JString, required = false,
+  if valid_593145 != nil:
+    section.add "X-Amz-Signature", valid_593145
+  var valid_593146 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593146 = validateParameter(valid_593146, JString, required = false,
                                  default = nil)
-  if valid_603248 != nil:
-    section.add "X-Amz-Algorithm", valid_603248
-  var valid_603249 = header.getOrDefault("X-Amz-Signature")
-  valid_603249 = validateParameter(valid_603249, JString, required = false,
+  if valid_593146 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593146
+  var valid_593147 = header.getOrDefault("X-Amz-Date")
+  valid_593147 = validateParameter(valid_593147, JString, required = false,
                                  default = nil)
-  if valid_603249 != nil:
-    section.add "X-Amz-Signature", valid_603249
-  var valid_603250 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603250 = validateParameter(valid_603250, JString, required = false,
+  if valid_593147 != nil:
+    section.add "X-Amz-Date", valid_593147
+  var valid_593148 = header.getOrDefault("X-Amz-Credential")
+  valid_593148 = validateParameter(valid_593148, JString, required = false,
                                  default = nil)
-  if valid_603250 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603250
-  var valid_603251 = header.getOrDefault("X-Amz-Credential")
-  valid_603251 = validateParameter(valid_603251, JString, required = false,
+  if valid_593148 != nil:
+    section.add "X-Amz-Credential", valid_593148
+  var valid_593149 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593149 = validateParameter(valid_593149, JString, required = false,
                                  default = nil)
-  if valid_603251 != nil:
-    section.add "X-Amz-Credential", valid_603251
+  if valid_593149 != nil:
+    section.add "X-Amz-Security-Token", valid_593149
+  var valid_593150 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593150 = validateParameter(valid_593150, JString, required = false,
+                                 default = nil)
+  if valid_593150 != nil:
+    section.add "X-Amz-Algorithm", valid_593150
+  var valid_593151 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593151 = validateParameter(valid_593151, JString, required = false,
+                                 default = nil)
+  if valid_593151 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593151
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1556,43 +1560,43 @@ proc validate_GetShardIterator_603242(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603253: Call_GetShardIterator_603241; path: JsonNode;
+proc call*(call_593153: Call_GetShardIterator_593141; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets an Amazon Kinesis shard iterator. A shard iterator expires 5 minutes after it is returned to the requester.</p> <p>A shard iterator specifies the shard position from which to start reading data records sequentially. The position is specified using the sequence number of a data record in a shard. A sequence number is the identifier associated with every record ingested in the stream, and is assigned when a record is put into the stream. Each stream has one or more shards.</p> <p>You must specify the shard iterator type. For example, you can set the <code>ShardIteratorType</code> parameter to read exactly from the position denoted by a specific sequence number by using the <code>AT_SEQUENCE_NUMBER</code> shard iterator type. Alternatively, the parameter can read right after the sequence number by using the <code>AFTER_SEQUENCE_NUMBER</code> shard iterator type, using sequence numbers returned by earlier calls to <a>PutRecord</a>, <a>PutRecords</a>, <a>GetRecords</a>, or <a>DescribeStream</a>. In the request, you can specify the shard iterator type <code>AT_TIMESTAMP</code> to read records from an arbitrary point in time, <code>TRIM_HORIZON</code> to cause <code>ShardIterator</code> to point to the last untrimmed record in the shard in the system (the oldest data record in the shard), or <code>LATEST</code> so that you always read the most recent data in the shard. </p> <p>When you read repeatedly from a stream, use a <a>GetShardIterator</a> request to get the first shard iterator for use in your first <a>GetRecords</a> request and for subsequent reads use the shard iterator returned by the <a>GetRecords</a> request in <code>NextShardIterator</code>. A new shard iterator is returned by every <a>GetRecords</a> request in <code>NextShardIterator</code>, which you use in the <code>ShardIterator</code> parameter of the next <a>GetRecords</a> request. </p> <p>If a <a>GetShardIterator</a> request is made too often, you receive a <code>ProvisionedThroughputExceededException</code>. For more information about throughput limits, see <a>GetRecords</a>, and <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If the shard is closed, <a>GetShardIterator</a> returns a valid iterator for the last sequence number of the shard. A shard can be closed as a result of using <a>SplitShard</a> or <a>MergeShards</a>.</p> <p> <a>GetShardIterator</a> has a limit of five transactions per second per account per open shard.</p>
   ## 
-  let valid = call_603253.validator(path, query, header, formData, body)
-  let scheme = call_603253.pickScheme
+  let valid = call_593153.validator(path, query, header, formData, body)
+  let scheme = call_593153.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603253.url(scheme.get, call_603253.host, call_603253.base,
-                         call_603253.route, valid.getOrDefault("path"),
+  let url = call_593153.url(scheme.get, call_593153.host, call_593153.base,
+                         call_593153.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603253, url, valid)
+  result = hook(call_593153, url, valid)
 
-proc call*(call_603254: Call_GetShardIterator_603241; body: JsonNode): Recallable =
+proc call*(call_593154: Call_GetShardIterator_593141; body: JsonNode): Recallable =
   ## getShardIterator
   ## <p>Gets an Amazon Kinesis shard iterator. A shard iterator expires 5 minutes after it is returned to the requester.</p> <p>A shard iterator specifies the shard position from which to start reading data records sequentially. The position is specified using the sequence number of a data record in a shard. A sequence number is the identifier associated with every record ingested in the stream, and is assigned when a record is put into the stream. Each stream has one or more shards.</p> <p>You must specify the shard iterator type. For example, you can set the <code>ShardIteratorType</code> parameter to read exactly from the position denoted by a specific sequence number by using the <code>AT_SEQUENCE_NUMBER</code> shard iterator type. Alternatively, the parameter can read right after the sequence number by using the <code>AFTER_SEQUENCE_NUMBER</code> shard iterator type, using sequence numbers returned by earlier calls to <a>PutRecord</a>, <a>PutRecords</a>, <a>GetRecords</a>, or <a>DescribeStream</a>. In the request, you can specify the shard iterator type <code>AT_TIMESTAMP</code> to read records from an arbitrary point in time, <code>TRIM_HORIZON</code> to cause <code>ShardIterator</code> to point to the last untrimmed record in the shard in the system (the oldest data record in the shard), or <code>LATEST</code> so that you always read the most recent data in the shard. </p> <p>When you read repeatedly from a stream, use a <a>GetShardIterator</a> request to get the first shard iterator for use in your first <a>GetRecords</a> request and for subsequent reads use the shard iterator returned by the <a>GetRecords</a> request in <code>NextShardIterator</code>. A new shard iterator is returned by every <a>GetRecords</a> request in <code>NextShardIterator</code>, which you use in the <code>ShardIterator</code> parameter of the next <a>GetRecords</a> request. </p> <p>If a <a>GetShardIterator</a> request is made too often, you receive a <code>ProvisionedThroughputExceededException</code>. For more information about throughput limits, see <a>GetRecords</a>, and <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If the shard is closed, <a>GetShardIterator</a> returns a valid iterator for the last sequence number of the shard. A shard can be closed as a result of using <a>SplitShard</a> or <a>MergeShards</a>.</p> <p> <a>GetShardIterator</a> has a limit of five transactions per second per account per open shard.</p>
   ##   body: JObject (required)
-  var body_603255 = newJObject()
+  var body_593155 = newJObject()
   if body != nil:
-    body_603255 = body
-  result = call_603254.call(nil, nil, nil, nil, body_603255)
+    body_593155 = body
+  result = call_593154.call(nil, nil, nil, nil, body_593155)
 
-var getShardIterator* = Call_GetShardIterator_603241(name: "getShardIterator",
+var getShardIterator* = Call_GetShardIterator_593141(name: "getShardIterator",
     meth: HttpMethod.HttpPost, host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.GetShardIterator",
-    validator: validate_GetShardIterator_603242, base: "/",
-    url: url_GetShardIterator_603243, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetShardIterator_593142, base: "/",
+    url: url_GetShardIterator_593143, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_IncreaseStreamRetentionPeriod_603256 = ref object of OpenApiRestCall_602466
-proc url_IncreaseStreamRetentionPeriod_603258(protocol: Scheme; host: string;
+  Call_IncreaseStreamRetentionPeriod_593156 = ref object of OpenApiRestCall_592364
+proc url_IncreaseStreamRetentionPeriod_593158(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_IncreaseStreamRetentionPeriod_603257(path: JsonNode; query: JsonNode;
+proc validate_IncreaseStreamRetentionPeriod_593157(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Increases the Kinesis data stream's retention period, which is the length of time data records are accessible after they are added to the stream. The maximum value of a stream's retention period is 168 hours (7 days).</p> <p>If you choose a longer stream retention period, this operation increases the time period during which records that have not yet expired are accessible. However, it does not make previous, expired data (older than the stream's previous retention period) accessible after the operation has been called. For example, if a stream's retention period is set to 24 hours and is increased to 168 hours, any data that is older than 24 hours remains inaccessible to consumer applications.</p>
   ## 
@@ -1603,57 +1607,57 @@ proc validate_IncreaseStreamRetentionPeriod_603257(path: JsonNode; query: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603259 = header.getOrDefault("X-Amz-Date")
-  valid_603259 = validateParameter(valid_603259, JString, required = false,
-                                 default = nil)
-  if valid_603259 != nil:
-    section.add "X-Amz-Date", valid_603259
-  var valid_603260 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603260 = validateParameter(valid_603260, JString, required = false,
-                                 default = nil)
-  if valid_603260 != nil:
-    section.add "X-Amz-Security-Token", valid_603260
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603261 = header.getOrDefault("X-Amz-Target")
-  valid_603261 = validateParameter(valid_603261, JString, required = true, default = newJString(
+  var valid_593159 = header.getOrDefault("X-Amz-Target")
+  valid_593159 = validateParameter(valid_593159, JString, required = true, default = newJString(
       "Kinesis_20131202.IncreaseStreamRetentionPeriod"))
-  if valid_603261 != nil:
-    section.add "X-Amz-Target", valid_603261
-  var valid_603262 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603262 = validateParameter(valid_603262, JString, required = false,
+  if valid_593159 != nil:
+    section.add "X-Amz-Target", valid_593159
+  var valid_593160 = header.getOrDefault("X-Amz-Signature")
+  valid_593160 = validateParameter(valid_593160, JString, required = false,
                                  default = nil)
-  if valid_603262 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603262
-  var valid_603263 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603263 = validateParameter(valid_603263, JString, required = false,
+  if valid_593160 != nil:
+    section.add "X-Amz-Signature", valid_593160
+  var valid_593161 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593161 = validateParameter(valid_593161, JString, required = false,
                                  default = nil)
-  if valid_603263 != nil:
-    section.add "X-Amz-Algorithm", valid_603263
-  var valid_603264 = header.getOrDefault("X-Amz-Signature")
-  valid_603264 = validateParameter(valid_603264, JString, required = false,
+  if valid_593161 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593161
+  var valid_593162 = header.getOrDefault("X-Amz-Date")
+  valid_593162 = validateParameter(valid_593162, JString, required = false,
                                  default = nil)
-  if valid_603264 != nil:
-    section.add "X-Amz-Signature", valid_603264
-  var valid_603265 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603265 = validateParameter(valid_603265, JString, required = false,
+  if valid_593162 != nil:
+    section.add "X-Amz-Date", valid_593162
+  var valid_593163 = header.getOrDefault("X-Amz-Credential")
+  valid_593163 = validateParameter(valid_593163, JString, required = false,
                                  default = nil)
-  if valid_603265 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603265
-  var valid_603266 = header.getOrDefault("X-Amz-Credential")
-  valid_603266 = validateParameter(valid_603266, JString, required = false,
+  if valid_593163 != nil:
+    section.add "X-Amz-Credential", valid_593163
+  var valid_593164 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593164 = validateParameter(valid_593164, JString, required = false,
                                  default = nil)
-  if valid_603266 != nil:
-    section.add "X-Amz-Credential", valid_603266
+  if valid_593164 != nil:
+    section.add "X-Amz-Security-Token", valid_593164
+  var valid_593165 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593165 = validateParameter(valid_593165, JString, required = false,
+                                 default = nil)
+  if valid_593165 != nil:
+    section.add "X-Amz-Algorithm", valid_593165
+  var valid_593166 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593166 = validateParameter(valid_593166, JString, required = false,
+                                 default = nil)
+  if valid_593166 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593166
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1664,45 +1668,45 @@ proc validate_IncreaseStreamRetentionPeriod_603257(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603268: Call_IncreaseStreamRetentionPeriod_603256; path: JsonNode;
+proc call*(call_593168: Call_IncreaseStreamRetentionPeriod_593156; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Increases the Kinesis data stream's retention period, which is the length of time data records are accessible after they are added to the stream. The maximum value of a stream's retention period is 168 hours (7 days).</p> <p>If you choose a longer stream retention period, this operation increases the time period during which records that have not yet expired are accessible. However, it does not make previous, expired data (older than the stream's previous retention period) accessible after the operation has been called. For example, if a stream's retention period is set to 24 hours and is increased to 168 hours, any data that is older than 24 hours remains inaccessible to consumer applications.</p>
   ## 
-  let valid = call_603268.validator(path, query, header, formData, body)
-  let scheme = call_603268.pickScheme
+  let valid = call_593168.validator(path, query, header, formData, body)
+  let scheme = call_593168.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603268.url(scheme.get, call_603268.host, call_603268.base,
-                         call_603268.route, valid.getOrDefault("path"),
+  let url = call_593168.url(scheme.get, call_593168.host, call_593168.base,
+                         call_593168.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603268, url, valid)
+  result = hook(call_593168, url, valid)
 
-proc call*(call_603269: Call_IncreaseStreamRetentionPeriod_603256; body: JsonNode): Recallable =
+proc call*(call_593169: Call_IncreaseStreamRetentionPeriod_593156; body: JsonNode): Recallable =
   ## increaseStreamRetentionPeriod
   ## <p>Increases the Kinesis data stream's retention period, which is the length of time data records are accessible after they are added to the stream. The maximum value of a stream's retention period is 168 hours (7 days).</p> <p>If you choose a longer stream retention period, this operation increases the time period during which records that have not yet expired are accessible. However, it does not make previous, expired data (older than the stream's previous retention period) accessible after the operation has been called. For example, if a stream's retention period is set to 24 hours and is increased to 168 hours, any data that is older than 24 hours remains inaccessible to consumer applications.</p>
   ##   body: JObject (required)
-  var body_603270 = newJObject()
+  var body_593170 = newJObject()
   if body != nil:
-    body_603270 = body
-  result = call_603269.call(nil, nil, nil, nil, body_603270)
+    body_593170 = body
+  result = call_593169.call(nil, nil, nil, nil, body_593170)
 
-var increaseStreamRetentionPeriod* = Call_IncreaseStreamRetentionPeriod_603256(
+var increaseStreamRetentionPeriod* = Call_IncreaseStreamRetentionPeriod_593156(
     name: "increaseStreamRetentionPeriod", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.IncreaseStreamRetentionPeriod",
-    validator: validate_IncreaseStreamRetentionPeriod_603257, base: "/",
-    url: url_IncreaseStreamRetentionPeriod_603258,
+    validator: validate_IncreaseStreamRetentionPeriod_593157, base: "/",
+    url: url_IncreaseStreamRetentionPeriod_593158,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListShards_603271 = ref object of OpenApiRestCall_602466
-proc url_ListShards_603273(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListShards_593171 = ref object of OpenApiRestCall_592364
+proc url_ListShards_593173(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListShards_603272(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListShards_593172(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the shards in a stream and provides information about each shard. This operation has a limit of 100 transactions per second per data stream.</p> <important> <p>This API is a new operation that is used by the Amazon Kinesis Client Library (KCL). If you have a fine-grained IAM policy that only allows specific operations, you must update your policy to allow calls to this API. For more information, see <a href="https://docs.aws.amazon.com/streams/latest/dev/controlling-access.html">Controlling Access to Amazon Kinesis Data Streams Resources Using IAM</a>.</p> </important>
   ## 
@@ -1713,57 +1717,57 @@ proc validate_ListShards_603272(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603274 = header.getOrDefault("X-Amz-Date")
-  valid_603274 = validateParameter(valid_603274, JString, required = false,
-                                 default = nil)
-  if valid_603274 != nil:
-    section.add "X-Amz-Date", valid_603274
-  var valid_603275 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603275 = validateParameter(valid_603275, JString, required = false,
-                                 default = nil)
-  if valid_603275 != nil:
-    section.add "X-Amz-Security-Token", valid_603275
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603276 = header.getOrDefault("X-Amz-Target")
-  valid_603276 = validateParameter(valid_603276, JString, required = true, default = newJString(
+  var valid_593174 = header.getOrDefault("X-Amz-Target")
+  valid_593174 = validateParameter(valid_593174, JString, required = true, default = newJString(
       "Kinesis_20131202.ListShards"))
-  if valid_603276 != nil:
-    section.add "X-Amz-Target", valid_603276
-  var valid_603277 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603277 = validateParameter(valid_603277, JString, required = false,
+  if valid_593174 != nil:
+    section.add "X-Amz-Target", valid_593174
+  var valid_593175 = header.getOrDefault("X-Amz-Signature")
+  valid_593175 = validateParameter(valid_593175, JString, required = false,
                                  default = nil)
-  if valid_603277 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603277
-  var valid_603278 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603278 = validateParameter(valid_603278, JString, required = false,
+  if valid_593175 != nil:
+    section.add "X-Amz-Signature", valid_593175
+  var valid_593176 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593176 = validateParameter(valid_593176, JString, required = false,
                                  default = nil)
-  if valid_603278 != nil:
-    section.add "X-Amz-Algorithm", valid_603278
-  var valid_603279 = header.getOrDefault("X-Amz-Signature")
-  valid_603279 = validateParameter(valid_603279, JString, required = false,
+  if valid_593176 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593176
+  var valid_593177 = header.getOrDefault("X-Amz-Date")
+  valid_593177 = validateParameter(valid_593177, JString, required = false,
                                  default = nil)
-  if valid_603279 != nil:
-    section.add "X-Amz-Signature", valid_603279
-  var valid_603280 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603280 = validateParameter(valid_603280, JString, required = false,
+  if valid_593177 != nil:
+    section.add "X-Amz-Date", valid_593177
+  var valid_593178 = header.getOrDefault("X-Amz-Credential")
+  valid_593178 = validateParameter(valid_593178, JString, required = false,
                                  default = nil)
-  if valid_603280 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603280
-  var valid_603281 = header.getOrDefault("X-Amz-Credential")
-  valid_603281 = validateParameter(valid_603281, JString, required = false,
+  if valid_593178 != nil:
+    section.add "X-Amz-Credential", valid_593178
+  var valid_593179 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593179 = validateParameter(valid_593179, JString, required = false,
                                  default = nil)
-  if valid_603281 != nil:
-    section.add "X-Amz-Credential", valid_603281
+  if valid_593179 != nil:
+    section.add "X-Amz-Security-Token", valid_593179
+  var valid_593180 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593180 = validateParameter(valid_593180, JString, required = false,
+                                 default = nil)
+  if valid_593180 != nil:
+    section.add "X-Amz-Algorithm", valid_593180
+  var valid_593181 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593181 = validateParameter(valid_593181, JString, required = false,
+                                 default = nil)
+  if valid_593181 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593181
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1774,44 +1778,44 @@ proc validate_ListShards_603272(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603283: Call_ListShards_603271; path: JsonNode; query: JsonNode;
+proc call*(call_593183: Call_ListShards_593171; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the shards in a stream and provides information about each shard. This operation has a limit of 100 transactions per second per data stream.</p> <important> <p>This API is a new operation that is used by the Amazon Kinesis Client Library (KCL). If you have a fine-grained IAM policy that only allows specific operations, you must update your policy to allow calls to this API. For more information, see <a href="https://docs.aws.amazon.com/streams/latest/dev/controlling-access.html">Controlling Access to Amazon Kinesis Data Streams Resources Using IAM</a>.</p> </important>
   ## 
-  let valid = call_603283.validator(path, query, header, formData, body)
-  let scheme = call_603283.pickScheme
+  let valid = call_593183.validator(path, query, header, formData, body)
+  let scheme = call_593183.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603283.url(scheme.get, call_603283.host, call_603283.base,
-                         call_603283.route, valid.getOrDefault("path"),
+  let url = call_593183.url(scheme.get, call_593183.host, call_593183.base,
+                         call_593183.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603283, url, valid)
+  result = hook(call_593183, url, valid)
 
-proc call*(call_603284: Call_ListShards_603271; body: JsonNode): Recallable =
+proc call*(call_593184: Call_ListShards_593171; body: JsonNode): Recallable =
   ## listShards
   ## <p>Lists the shards in a stream and provides information about each shard. This operation has a limit of 100 transactions per second per data stream.</p> <important> <p>This API is a new operation that is used by the Amazon Kinesis Client Library (KCL). If you have a fine-grained IAM policy that only allows specific operations, you must update your policy to allow calls to this API. For more information, see <a href="https://docs.aws.amazon.com/streams/latest/dev/controlling-access.html">Controlling Access to Amazon Kinesis Data Streams Resources Using IAM</a>.</p> </important>
   ##   body: JObject (required)
-  var body_603285 = newJObject()
+  var body_593185 = newJObject()
   if body != nil:
-    body_603285 = body
-  result = call_603284.call(nil, nil, nil, nil, body_603285)
+    body_593185 = body
+  result = call_593184.call(nil, nil, nil, nil, body_593185)
 
-var listShards* = Call_ListShards_603271(name: "listShards",
+var listShards* = Call_ListShards_593171(name: "listShards",
                                       meth: HttpMethod.HttpPost,
                                       host: "kinesis.amazonaws.com", route: "/#X-Amz-Target=Kinesis_20131202.ListShards",
-                                      validator: validate_ListShards_603272,
-                                      base: "/", url: url_ListShards_603273,
+                                      validator: validate_ListShards_593172,
+                                      base: "/", url: url_ListShards_593173,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListStreamConsumers_603286 = ref object of OpenApiRestCall_602466
-proc url_ListStreamConsumers_603288(protocol: Scheme; host: string; base: string;
+  Call_ListStreamConsumers_593186 = ref object of OpenApiRestCall_592364
+proc url_ListStreamConsumers_593188(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListStreamConsumers_603287(path: JsonNode; query: JsonNode;
+proc validate_ListStreamConsumers_593187(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Lists the consumers registered to receive data from a stream using enhanced fan-out, and provides information about each consumer.</p> <p>This operation has a limit of 10 transactions per second per account.</p>
@@ -1821,74 +1825,74 @@ proc validate_ListStreamConsumers_603287(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_603289 = query.getOrDefault("NextToken")
-  valid_603289 = validateParameter(valid_603289, JString, required = false,
+  var valid_593189 = query.getOrDefault("MaxResults")
+  valid_593189 = validateParameter(valid_593189, JString, required = false,
                                  default = nil)
-  if valid_603289 != nil:
-    section.add "NextToken", valid_603289
-  var valid_603290 = query.getOrDefault("MaxResults")
-  valid_603290 = validateParameter(valid_603290, JString, required = false,
+  if valid_593189 != nil:
+    section.add "MaxResults", valid_593189
+  var valid_593190 = query.getOrDefault("NextToken")
+  valid_593190 = validateParameter(valid_593190, JString, required = false,
                                  default = nil)
-  if valid_603290 != nil:
-    section.add "MaxResults", valid_603290
+  if valid_593190 != nil:
+    section.add "NextToken", valid_593190
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603291 = header.getOrDefault("X-Amz-Date")
-  valid_603291 = validateParameter(valid_603291, JString, required = false,
-                                 default = nil)
-  if valid_603291 != nil:
-    section.add "X-Amz-Date", valid_603291
-  var valid_603292 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603292 = validateParameter(valid_603292, JString, required = false,
-                                 default = nil)
-  if valid_603292 != nil:
-    section.add "X-Amz-Security-Token", valid_603292
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603293 = header.getOrDefault("X-Amz-Target")
-  valid_603293 = validateParameter(valid_603293, JString, required = true, default = newJString(
+  var valid_593191 = header.getOrDefault("X-Amz-Target")
+  valid_593191 = validateParameter(valid_593191, JString, required = true, default = newJString(
       "Kinesis_20131202.ListStreamConsumers"))
-  if valid_603293 != nil:
-    section.add "X-Amz-Target", valid_603293
-  var valid_603294 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603294 = validateParameter(valid_603294, JString, required = false,
+  if valid_593191 != nil:
+    section.add "X-Amz-Target", valid_593191
+  var valid_593192 = header.getOrDefault("X-Amz-Signature")
+  valid_593192 = validateParameter(valid_593192, JString, required = false,
                                  default = nil)
-  if valid_603294 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603294
-  var valid_603295 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603295 = validateParameter(valid_603295, JString, required = false,
+  if valid_593192 != nil:
+    section.add "X-Amz-Signature", valid_593192
+  var valid_593193 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593193 = validateParameter(valid_593193, JString, required = false,
                                  default = nil)
-  if valid_603295 != nil:
-    section.add "X-Amz-Algorithm", valid_603295
-  var valid_603296 = header.getOrDefault("X-Amz-Signature")
-  valid_603296 = validateParameter(valid_603296, JString, required = false,
+  if valid_593193 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593193
+  var valid_593194 = header.getOrDefault("X-Amz-Date")
+  valid_593194 = validateParameter(valid_593194, JString, required = false,
                                  default = nil)
-  if valid_603296 != nil:
-    section.add "X-Amz-Signature", valid_603296
-  var valid_603297 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603297 = validateParameter(valid_603297, JString, required = false,
+  if valid_593194 != nil:
+    section.add "X-Amz-Date", valid_593194
+  var valid_593195 = header.getOrDefault("X-Amz-Credential")
+  valid_593195 = validateParameter(valid_593195, JString, required = false,
                                  default = nil)
-  if valid_603297 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603297
-  var valid_603298 = header.getOrDefault("X-Amz-Credential")
-  valid_603298 = validateParameter(valid_603298, JString, required = false,
+  if valid_593195 != nil:
+    section.add "X-Amz-Credential", valid_593195
+  var valid_593196 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593196 = validateParameter(valid_593196, JString, required = false,
                                  default = nil)
-  if valid_603298 != nil:
-    section.add "X-Amz-Credential", valid_603298
+  if valid_593196 != nil:
+    section.add "X-Amz-Security-Token", valid_593196
+  var valid_593197 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593197 = validateParameter(valid_593197, JString, required = false,
+                                 default = nil)
+  if valid_593197 != nil:
+    section.add "X-Amz-Algorithm", valid_593197
+  var valid_593198 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593198 = validateParameter(valid_593198, JString, required = false,
+                                 default = nil)
+  if valid_593198 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593198
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1899,52 +1903,52 @@ proc validate_ListStreamConsumers_603287(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603300: Call_ListStreamConsumers_603286; path: JsonNode;
+proc call*(call_593200: Call_ListStreamConsumers_593186; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the consumers registered to receive data from a stream using enhanced fan-out, and provides information about each consumer.</p> <p>This operation has a limit of 10 transactions per second per account.</p>
   ## 
-  let valid = call_603300.validator(path, query, header, formData, body)
-  let scheme = call_603300.pickScheme
+  let valid = call_593200.validator(path, query, header, formData, body)
+  let scheme = call_593200.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603300.url(scheme.get, call_603300.host, call_603300.base,
-                         call_603300.route, valid.getOrDefault("path"),
+  let url = call_593200.url(scheme.get, call_593200.host, call_593200.base,
+                         call_593200.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603300, url, valid)
+  result = hook(call_593200, url, valid)
 
-proc call*(call_603301: Call_ListStreamConsumers_603286; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_593201: Call_ListStreamConsumers_593186; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listStreamConsumers
   ## <p>Lists the consumers registered to receive data from a stream using enhanced fan-out, and provides information about each consumer.</p> <p>This operation has a limit of 10 transactions per second per account.</p>
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_603302 = newJObject()
-  var body_603303 = newJObject()
-  add(query_603302, "NextToken", newJString(NextToken))
+  var query_593202 = newJObject()
+  var body_593203 = newJObject()
+  add(query_593202, "MaxResults", newJString(MaxResults))
+  add(query_593202, "NextToken", newJString(NextToken))
   if body != nil:
-    body_603303 = body
-  add(query_603302, "MaxResults", newJString(MaxResults))
-  result = call_603301.call(nil, query_603302, nil, nil, body_603303)
+    body_593203 = body
+  result = call_593201.call(nil, query_593202, nil, nil, body_593203)
 
-var listStreamConsumers* = Call_ListStreamConsumers_603286(
+var listStreamConsumers* = Call_ListStreamConsumers_593186(
     name: "listStreamConsumers", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.ListStreamConsumers",
-    validator: validate_ListStreamConsumers_603287, base: "/",
-    url: url_ListStreamConsumers_603288, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListStreamConsumers_593187, base: "/",
+    url: url_ListStreamConsumers_593188, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListStreams_603304 = ref object of OpenApiRestCall_602466
-proc url_ListStreams_603306(protocol: Scheme; host: string; base: string;
+  Call_ListStreams_593204 = ref object of OpenApiRestCall_592364
+proc url_ListStreams_593206(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListStreams_603305(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListStreams_593205(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists your Kinesis data streams.</p> <p>The number of streams may be too large to return from a single call to <code>ListStreams</code>. You can limit the number of returned streams using the <code>Limit</code> parameter. If you do not specify a value for the <code>Limit</code> parameter, Kinesis Data Streams uses the default limit, which is currently 10.</p> <p>You can detect if there are more streams available to list by using the <code>HasMoreStreams</code> flag from the returned output. If there are more streams available, you can request more streams by using the name of the last stream returned by the <code>ListStreams</code> request in the <code>ExclusiveStartStreamName</code> parameter in a subsequent request to <code>ListStreams</code>. The group of stream names returned by the subsequent request is then added to the list. You can continue this process until all the stream names have been collected in the list. </p> <p> <a>ListStreams</a> has a limit of five transactions per second per account.</p>
   ## 
@@ -1958,69 +1962,69 @@ proc validate_ListStreams_603305(path: JsonNode; query: JsonNode; header: JsonNo
   ##   Limit: JString
   ##        : Pagination limit
   section = newJObject()
-  var valid_603307 = query.getOrDefault("ExclusiveStartStreamName")
-  valid_603307 = validateParameter(valid_603307, JString, required = false,
+  var valid_593207 = query.getOrDefault("ExclusiveStartStreamName")
+  valid_593207 = validateParameter(valid_593207, JString, required = false,
                                  default = nil)
-  if valid_603307 != nil:
-    section.add "ExclusiveStartStreamName", valid_603307
-  var valid_603308 = query.getOrDefault("Limit")
-  valid_603308 = validateParameter(valid_603308, JString, required = false,
+  if valid_593207 != nil:
+    section.add "ExclusiveStartStreamName", valid_593207
+  var valid_593208 = query.getOrDefault("Limit")
+  valid_593208 = validateParameter(valid_593208, JString, required = false,
                                  default = nil)
-  if valid_603308 != nil:
-    section.add "Limit", valid_603308
+  if valid_593208 != nil:
+    section.add "Limit", valid_593208
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603309 = header.getOrDefault("X-Amz-Date")
-  valid_603309 = validateParameter(valid_603309, JString, required = false,
-                                 default = nil)
-  if valid_603309 != nil:
-    section.add "X-Amz-Date", valid_603309
-  var valid_603310 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603310 = validateParameter(valid_603310, JString, required = false,
-                                 default = nil)
-  if valid_603310 != nil:
-    section.add "X-Amz-Security-Token", valid_603310
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603311 = header.getOrDefault("X-Amz-Target")
-  valid_603311 = validateParameter(valid_603311, JString, required = true, default = newJString(
+  var valid_593209 = header.getOrDefault("X-Amz-Target")
+  valid_593209 = validateParameter(valid_593209, JString, required = true, default = newJString(
       "Kinesis_20131202.ListStreams"))
-  if valid_603311 != nil:
-    section.add "X-Amz-Target", valid_603311
-  var valid_603312 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603312 = validateParameter(valid_603312, JString, required = false,
+  if valid_593209 != nil:
+    section.add "X-Amz-Target", valid_593209
+  var valid_593210 = header.getOrDefault("X-Amz-Signature")
+  valid_593210 = validateParameter(valid_593210, JString, required = false,
                                  default = nil)
-  if valid_603312 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603312
-  var valid_603313 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603313 = validateParameter(valid_603313, JString, required = false,
+  if valid_593210 != nil:
+    section.add "X-Amz-Signature", valid_593210
+  var valid_593211 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593211 = validateParameter(valid_593211, JString, required = false,
                                  default = nil)
-  if valid_603313 != nil:
-    section.add "X-Amz-Algorithm", valid_603313
-  var valid_603314 = header.getOrDefault("X-Amz-Signature")
-  valid_603314 = validateParameter(valid_603314, JString, required = false,
+  if valid_593211 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593211
+  var valid_593212 = header.getOrDefault("X-Amz-Date")
+  valid_593212 = validateParameter(valid_593212, JString, required = false,
                                  default = nil)
-  if valid_603314 != nil:
-    section.add "X-Amz-Signature", valid_603314
-  var valid_603315 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603315 = validateParameter(valid_603315, JString, required = false,
+  if valid_593212 != nil:
+    section.add "X-Amz-Date", valid_593212
+  var valid_593213 = header.getOrDefault("X-Amz-Credential")
+  valid_593213 = validateParameter(valid_593213, JString, required = false,
                                  default = nil)
-  if valid_603315 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603315
-  var valid_603316 = header.getOrDefault("X-Amz-Credential")
-  valid_603316 = validateParameter(valid_603316, JString, required = false,
+  if valid_593213 != nil:
+    section.add "X-Amz-Credential", valid_593213
+  var valid_593214 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593214 = validateParameter(valid_593214, JString, required = false,
                                  default = nil)
-  if valid_603316 != nil:
-    section.add "X-Amz-Credential", valid_603316
+  if valid_593214 != nil:
+    section.add "X-Amz-Security-Token", valid_593214
+  var valid_593215 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593215 = validateParameter(valid_593215, JString, required = false,
+                                 default = nil)
+  if valid_593215 != nil:
+    section.add "X-Amz-Algorithm", valid_593215
+  var valid_593216 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593216 = validateParameter(valid_593216, JString, required = false,
+                                 default = nil)
+  if valid_593216 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593216
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2031,20 +2035,20 @@ proc validate_ListStreams_603305(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603318: Call_ListStreams_603304; path: JsonNode; query: JsonNode;
+proc call*(call_593218: Call_ListStreams_593204; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists your Kinesis data streams.</p> <p>The number of streams may be too large to return from a single call to <code>ListStreams</code>. You can limit the number of returned streams using the <code>Limit</code> parameter. If you do not specify a value for the <code>Limit</code> parameter, Kinesis Data Streams uses the default limit, which is currently 10.</p> <p>You can detect if there are more streams available to list by using the <code>HasMoreStreams</code> flag from the returned output. If there are more streams available, you can request more streams by using the name of the last stream returned by the <code>ListStreams</code> request in the <code>ExclusiveStartStreamName</code> parameter in a subsequent request to <code>ListStreams</code>. The group of stream names returned by the subsequent request is then added to the list. You can continue this process until all the stream names have been collected in the list. </p> <p> <a>ListStreams</a> has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603318.validator(path, query, header, formData, body)
-  let scheme = call_603318.pickScheme
+  let valid = call_593218.validator(path, query, header, formData, body)
+  let scheme = call_593218.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603318.url(scheme.get, call_603318.host, call_603318.base,
-                         call_603318.route, valid.getOrDefault("path"),
+  let url = call_593218.url(scheme.get, call_593218.host, call_593218.base,
+                         call_593218.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603318, url, valid)
+  result = hook(call_593218, url, valid)
 
-proc call*(call_603319: Call_ListStreams_603304; body: JsonNode;
+proc call*(call_593219: Call_ListStreams_593204; body: JsonNode;
           ExclusiveStartStreamName: string = ""; Limit: string = ""): Recallable =
   ## listStreams
   ## <p>Lists your Kinesis data streams.</p> <p>The number of streams may be too large to return from a single call to <code>ListStreams</code>. You can limit the number of returned streams using the <code>Limit</code> parameter. If you do not specify a value for the <code>Limit</code> parameter, Kinesis Data Streams uses the default limit, which is currently 10.</p> <p>You can detect if there are more streams available to list by using the <code>HasMoreStreams</code> flag from the returned output. If there are more streams available, you can request more streams by using the name of the last stream returned by the <code>ListStreams</code> request in the <code>ExclusiveStartStreamName</code> parameter in a subsequent request to <code>ListStreams</code>. The group of stream names returned by the subsequent request is then added to the list. You can continue this process until all the stream names have been collected in the list. </p> <p> <a>ListStreams</a> has a limit of five transactions per second per account.</p>
@@ -2053,31 +2057,31 @@ proc call*(call_603319: Call_ListStreams_603304; body: JsonNode;
   ##   Limit: string
   ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603320 = newJObject()
-  var body_603321 = newJObject()
-  add(query_603320, "ExclusiveStartStreamName",
+  var query_593220 = newJObject()
+  var body_593221 = newJObject()
+  add(query_593220, "ExclusiveStartStreamName",
       newJString(ExclusiveStartStreamName))
-  add(query_603320, "Limit", newJString(Limit))
+  add(query_593220, "Limit", newJString(Limit))
   if body != nil:
-    body_603321 = body
-  result = call_603319.call(nil, query_603320, nil, nil, body_603321)
+    body_593221 = body
+  result = call_593219.call(nil, query_593220, nil, nil, body_593221)
 
-var listStreams* = Call_ListStreams_603304(name: "listStreams",
+var listStreams* = Call_ListStreams_593204(name: "listStreams",
                                         meth: HttpMethod.HttpPost,
                                         host: "kinesis.amazonaws.com", route: "/#X-Amz-Target=Kinesis_20131202.ListStreams",
-                                        validator: validate_ListStreams_603305,
-                                        base: "/", url: url_ListStreams_603306,
+                                        validator: validate_ListStreams_593205,
+                                        base: "/", url: url_ListStreams_593206,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForStream_603322 = ref object of OpenApiRestCall_602466
-proc url_ListTagsForStream_603324(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForStream_593222 = ref object of OpenApiRestCall_592364
+proc url_ListTagsForStream_593224(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListTagsForStream_603323(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForStream_593223(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Lists the tags for the specified Kinesis data stream. This operation has a limit of five transactions per second per account.
@@ -2089,57 +2093,57 @@ proc validate_ListTagsForStream_603323(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603325 = header.getOrDefault("X-Amz-Date")
-  valid_603325 = validateParameter(valid_603325, JString, required = false,
-                                 default = nil)
-  if valid_603325 != nil:
-    section.add "X-Amz-Date", valid_603325
-  var valid_603326 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603326 = validateParameter(valid_603326, JString, required = false,
-                                 default = nil)
-  if valid_603326 != nil:
-    section.add "X-Amz-Security-Token", valid_603326
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603327 = header.getOrDefault("X-Amz-Target")
-  valid_603327 = validateParameter(valid_603327, JString, required = true, default = newJString(
+  var valid_593225 = header.getOrDefault("X-Amz-Target")
+  valid_593225 = validateParameter(valid_593225, JString, required = true, default = newJString(
       "Kinesis_20131202.ListTagsForStream"))
-  if valid_603327 != nil:
-    section.add "X-Amz-Target", valid_603327
-  var valid_603328 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603328 = validateParameter(valid_603328, JString, required = false,
+  if valid_593225 != nil:
+    section.add "X-Amz-Target", valid_593225
+  var valid_593226 = header.getOrDefault("X-Amz-Signature")
+  valid_593226 = validateParameter(valid_593226, JString, required = false,
                                  default = nil)
-  if valid_603328 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603328
-  var valid_603329 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603329 = validateParameter(valid_603329, JString, required = false,
+  if valid_593226 != nil:
+    section.add "X-Amz-Signature", valid_593226
+  var valid_593227 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593227 = validateParameter(valid_593227, JString, required = false,
                                  default = nil)
-  if valid_603329 != nil:
-    section.add "X-Amz-Algorithm", valid_603329
-  var valid_603330 = header.getOrDefault("X-Amz-Signature")
-  valid_603330 = validateParameter(valid_603330, JString, required = false,
+  if valid_593227 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593227
+  var valid_593228 = header.getOrDefault("X-Amz-Date")
+  valid_593228 = validateParameter(valid_593228, JString, required = false,
                                  default = nil)
-  if valid_603330 != nil:
-    section.add "X-Amz-Signature", valid_603330
-  var valid_603331 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603331 = validateParameter(valid_603331, JString, required = false,
+  if valid_593228 != nil:
+    section.add "X-Amz-Date", valid_593228
+  var valid_593229 = header.getOrDefault("X-Amz-Credential")
+  valid_593229 = validateParameter(valid_593229, JString, required = false,
                                  default = nil)
-  if valid_603331 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603331
-  var valid_603332 = header.getOrDefault("X-Amz-Credential")
-  valid_603332 = validateParameter(valid_603332, JString, required = false,
+  if valid_593229 != nil:
+    section.add "X-Amz-Credential", valid_593229
+  var valid_593230 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593230 = validateParameter(valid_593230, JString, required = false,
                                  default = nil)
-  if valid_603332 != nil:
-    section.add "X-Amz-Credential", valid_603332
+  if valid_593230 != nil:
+    section.add "X-Amz-Security-Token", valid_593230
+  var valid_593231 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593231 = validateParameter(valid_593231, JString, required = false,
+                                 default = nil)
+  if valid_593231 != nil:
+    section.add "X-Amz-Algorithm", valid_593231
+  var valid_593232 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593232 = validateParameter(valid_593232, JString, required = false,
+                                 default = nil)
+  if valid_593232 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593232
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2150,43 +2154,43 @@ proc validate_ListTagsForStream_603323(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603334: Call_ListTagsForStream_603322; path: JsonNode;
+proc call*(call_593234: Call_ListTagsForStream_593222; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the tags for the specified Kinesis data stream. This operation has a limit of five transactions per second per account.
   ## 
-  let valid = call_603334.validator(path, query, header, formData, body)
-  let scheme = call_603334.pickScheme
+  let valid = call_593234.validator(path, query, header, formData, body)
+  let scheme = call_593234.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603334.url(scheme.get, call_603334.host, call_603334.base,
-                         call_603334.route, valid.getOrDefault("path"),
+  let url = call_593234.url(scheme.get, call_593234.host, call_593234.base,
+                         call_593234.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603334, url, valid)
+  result = hook(call_593234, url, valid)
 
-proc call*(call_603335: Call_ListTagsForStream_603322; body: JsonNode): Recallable =
+proc call*(call_593235: Call_ListTagsForStream_593222; body: JsonNode): Recallable =
   ## listTagsForStream
   ## Lists the tags for the specified Kinesis data stream. This operation has a limit of five transactions per second per account.
   ##   body: JObject (required)
-  var body_603336 = newJObject()
+  var body_593236 = newJObject()
   if body != nil:
-    body_603336 = body
-  result = call_603335.call(nil, nil, nil, nil, body_603336)
+    body_593236 = body
+  result = call_593235.call(nil, nil, nil, nil, body_593236)
 
-var listTagsForStream* = Call_ListTagsForStream_603322(name: "listTagsForStream",
+var listTagsForStream* = Call_ListTagsForStream_593222(name: "listTagsForStream",
     meth: HttpMethod.HttpPost, host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.ListTagsForStream",
-    validator: validate_ListTagsForStream_603323, base: "/",
-    url: url_ListTagsForStream_603324, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForStream_593223, base: "/",
+    url: url_ListTagsForStream_593224, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_MergeShards_603337 = ref object of OpenApiRestCall_602466
-proc url_MergeShards_603339(protocol: Scheme; host: string; base: string;
+  Call_MergeShards_593237 = ref object of OpenApiRestCall_592364
+proc url_MergeShards_593239(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_MergeShards_603338(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_MergeShards_593238(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Merges two adjacent shards in a Kinesis data stream and combines them into a single shard to reduce the stream's capacity to ingest and transport data. Two shards are considered adjacent if the union of the hash key ranges for the two shards form a contiguous set with no gaps. For example, if you have two shards, one with a hash key range of 276...381 and the other with a hash key range of 382...454, then you could merge these two shards into a single shard that would have a hash key range of 276...454. After the merge, the single child shard receives data for all hash key values covered by the two parent shards.</p> <p> <code>MergeShards</code> is called when there is a need to reduce the overall capacity of a stream because of excess capacity that is not being used. You must specify the shard to be merged and the adjacent shard for a stream. For more information about merging shards, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-resharding-merge.html">Merge Two Shards</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If the stream is in the <code>ACTIVE</code> state, you can call <code>MergeShards</code>. If a stream is in the <code>CREATING</code>, <code>UPDATING</code>, or <code>DELETING</code> state, <code>MergeShards</code> returns a <code>ResourceInUseException</code>. If the specified stream does not exist, <code>MergeShards</code> returns a <code>ResourceNotFoundException</code>. </p> <p>You can use <a>DescribeStream</a> to check the state of the stream, which is returned in <code>StreamStatus</code>.</p> <p> <code>MergeShards</code> is an asynchronous operation. Upon receiving a <code>MergeShards</code> request, Amazon Kinesis Data Streams immediately returns a response and sets the <code>StreamStatus</code> to <code>UPDATING</code>. After the operation is completed, Kinesis Data Streams sets the <code>StreamStatus</code> to <code>ACTIVE</code>. Read and write operations continue to work while the stream is in the <code>UPDATING</code> state. </p> <p>You use <a>DescribeStream</a> to determine the shard IDs that are specified in the <code>MergeShards</code> request. </p> <p>If you try to operate on too many streams in parallel using <a>CreateStream</a>, <a>DeleteStream</a>, <code>MergeShards</code>, or <a>SplitShard</a>, you receive a <code>LimitExceededException</code>. </p> <p> <code>MergeShards</code> has a limit of five transactions per second per account.</p>
   ## 
@@ -2197,57 +2201,57 @@ proc validate_MergeShards_603338(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603340 = header.getOrDefault("X-Amz-Date")
-  valid_603340 = validateParameter(valid_603340, JString, required = false,
-                                 default = nil)
-  if valid_603340 != nil:
-    section.add "X-Amz-Date", valid_603340
-  var valid_603341 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603341 = validateParameter(valid_603341, JString, required = false,
-                                 default = nil)
-  if valid_603341 != nil:
-    section.add "X-Amz-Security-Token", valid_603341
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603342 = header.getOrDefault("X-Amz-Target")
-  valid_603342 = validateParameter(valid_603342, JString, required = true, default = newJString(
+  var valid_593240 = header.getOrDefault("X-Amz-Target")
+  valid_593240 = validateParameter(valid_593240, JString, required = true, default = newJString(
       "Kinesis_20131202.MergeShards"))
-  if valid_603342 != nil:
-    section.add "X-Amz-Target", valid_603342
-  var valid_603343 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603343 = validateParameter(valid_603343, JString, required = false,
+  if valid_593240 != nil:
+    section.add "X-Amz-Target", valid_593240
+  var valid_593241 = header.getOrDefault("X-Amz-Signature")
+  valid_593241 = validateParameter(valid_593241, JString, required = false,
                                  default = nil)
-  if valid_603343 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603343
-  var valid_603344 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603344 = validateParameter(valid_603344, JString, required = false,
+  if valid_593241 != nil:
+    section.add "X-Amz-Signature", valid_593241
+  var valid_593242 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593242 = validateParameter(valid_593242, JString, required = false,
                                  default = nil)
-  if valid_603344 != nil:
-    section.add "X-Amz-Algorithm", valid_603344
-  var valid_603345 = header.getOrDefault("X-Amz-Signature")
-  valid_603345 = validateParameter(valid_603345, JString, required = false,
+  if valid_593242 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593242
+  var valid_593243 = header.getOrDefault("X-Amz-Date")
+  valid_593243 = validateParameter(valid_593243, JString, required = false,
                                  default = nil)
-  if valid_603345 != nil:
-    section.add "X-Amz-Signature", valid_603345
-  var valid_603346 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603346 = validateParameter(valid_603346, JString, required = false,
+  if valid_593243 != nil:
+    section.add "X-Amz-Date", valid_593243
+  var valid_593244 = header.getOrDefault("X-Amz-Credential")
+  valid_593244 = validateParameter(valid_593244, JString, required = false,
                                  default = nil)
-  if valid_603346 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603346
-  var valid_603347 = header.getOrDefault("X-Amz-Credential")
-  valid_603347 = validateParameter(valid_603347, JString, required = false,
+  if valid_593244 != nil:
+    section.add "X-Amz-Credential", valid_593244
+  var valid_593245 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593245 = validateParameter(valid_593245, JString, required = false,
                                  default = nil)
-  if valid_603347 != nil:
-    section.add "X-Amz-Credential", valid_603347
+  if valid_593245 != nil:
+    section.add "X-Amz-Security-Token", valid_593245
+  var valid_593246 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593246 = validateParameter(valid_593246, JString, required = false,
+                                 default = nil)
+  if valid_593246 != nil:
+    section.add "X-Amz-Algorithm", valid_593246
+  var valid_593247 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593247 = validateParameter(valid_593247, JString, required = false,
+                                 default = nil)
+  if valid_593247 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593247
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2258,44 +2262,44 @@ proc validate_MergeShards_603338(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603349: Call_MergeShards_603337; path: JsonNode; query: JsonNode;
+proc call*(call_593249: Call_MergeShards_593237; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Merges two adjacent shards in a Kinesis data stream and combines them into a single shard to reduce the stream's capacity to ingest and transport data. Two shards are considered adjacent if the union of the hash key ranges for the two shards form a contiguous set with no gaps. For example, if you have two shards, one with a hash key range of 276...381 and the other with a hash key range of 382...454, then you could merge these two shards into a single shard that would have a hash key range of 276...454. After the merge, the single child shard receives data for all hash key values covered by the two parent shards.</p> <p> <code>MergeShards</code> is called when there is a need to reduce the overall capacity of a stream because of excess capacity that is not being used. You must specify the shard to be merged and the adjacent shard for a stream. For more information about merging shards, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-resharding-merge.html">Merge Two Shards</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If the stream is in the <code>ACTIVE</code> state, you can call <code>MergeShards</code>. If a stream is in the <code>CREATING</code>, <code>UPDATING</code>, or <code>DELETING</code> state, <code>MergeShards</code> returns a <code>ResourceInUseException</code>. If the specified stream does not exist, <code>MergeShards</code> returns a <code>ResourceNotFoundException</code>. </p> <p>You can use <a>DescribeStream</a> to check the state of the stream, which is returned in <code>StreamStatus</code>.</p> <p> <code>MergeShards</code> is an asynchronous operation. Upon receiving a <code>MergeShards</code> request, Amazon Kinesis Data Streams immediately returns a response and sets the <code>StreamStatus</code> to <code>UPDATING</code>. After the operation is completed, Kinesis Data Streams sets the <code>StreamStatus</code> to <code>ACTIVE</code>. Read and write operations continue to work while the stream is in the <code>UPDATING</code> state. </p> <p>You use <a>DescribeStream</a> to determine the shard IDs that are specified in the <code>MergeShards</code> request. </p> <p>If you try to operate on too many streams in parallel using <a>CreateStream</a>, <a>DeleteStream</a>, <code>MergeShards</code>, or <a>SplitShard</a>, you receive a <code>LimitExceededException</code>. </p> <p> <code>MergeShards</code> has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603349.validator(path, query, header, formData, body)
-  let scheme = call_603349.pickScheme
+  let valid = call_593249.validator(path, query, header, formData, body)
+  let scheme = call_593249.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603349.url(scheme.get, call_603349.host, call_603349.base,
-                         call_603349.route, valid.getOrDefault("path"),
+  let url = call_593249.url(scheme.get, call_593249.host, call_593249.base,
+                         call_593249.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603349, url, valid)
+  result = hook(call_593249, url, valid)
 
-proc call*(call_603350: Call_MergeShards_603337; body: JsonNode): Recallable =
+proc call*(call_593250: Call_MergeShards_593237; body: JsonNode): Recallable =
   ## mergeShards
   ## <p>Merges two adjacent shards in a Kinesis data stream and combines them into a single shard to reduce the stream's capacity to ingest and transport data. Two shards are considered adjacent if the union of the hash key ranges for the two shards form a contiguous set with no gaps. For example, if you have two shards, one with a hash key range of 276...381 and the other with a hash key range of 382...454, then you could merge these two shards into a single shard that would have a hash key range of 276...454. After the merge, the single child shard receives data for all hash key values covered by the two parent shards.</p> <p> <code>MergeShards</code> is called when there is a need to reduce the overall capacity of a stream because of excess capacity that is not being used. You must specify the shard to be merged and the adjacent shard for a stream. For more information about merging shards, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-resharding-merge.html">Merge Two Shards</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If the stream is in the <code>ACTIVE</code> state, you can call <code>MergeShards</code>. If a stream is in the <code>CREATING</code>, <code>UPDATING</code>, or <code>DELETING</code> state, <code>MergeShards</code> returns a <code>ResourceInUseException</code>. If the specified stream does not exist, <code>MergeShards</code> returns a <code>ResourceNotFoundException</code>. </p> <p>You can use <a>DescribeStream</a> to check the state of the stream, which is returned in <code>StreamStatus</code>.</p> <p> <code>MergeShards</code> is an asynchronous operation. Upon receiving a <code>MergeShards</code> request, Amazon Kinesis Data Streams immediately returns a response and sets the <code>StreamStatus</code> to <code>UPDATING</code>. After the operation is completed, Kinesis Data Streams sets the <code>StreamStatus</code> to <code>ACTIVE</code>. Read and write operations continue to work while the stream is in the <code>UPDATING</code> state. </p> <p>You use <a>DescribeStream</a> to determine the shard IDs that are specified in the <code>MergeShards</code> request. </p> <p>If you try to operate on too many streams in parallel using <a>CreateStream</a>, <a>DeleteStream</a>, <code>MergeShards</code>, or <a>SplitShard</a>, you receive a <code>LimitExceededException</code>. </p> <p> <code>MergeShards</code> has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603351 = newJObject()
+  var body_593251 = newJObject()
   if body != nil:
-    body_603351 = body
-  result = call_603350.call(nil, nil, nil, nil, body_603351)
+    body_593251 = body
+  result = call_593250.call(nil, nil, nil, nil, body_593251)
 
-var mergeShards* = Call_MergeShards_603337(name: "mergeShards",
+var mergeShards* = Call_MergeShards_593237(name: "mergeShards",
                                         meth: HttpMethod.HttpPost,
                                         host: "kinesis.amazonaws.com", route: "/#X-Amz-Target=Kinesis_20131202.MergeShards",
-                                        validator: validate_MergeShards_603338,
-                                        base: "/", url: url_MergeShards_603339,
+                                        validator: validate_MergeShards_593238,
+                                        base: "/", url: url_MergeShards_593239,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutRecord_603352 = ref object of OpenApiRestCall_602466
-proc url_PutRecord_603354(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutRecord_593252 = ref object of OpenApiRestCall_592364
+proc url_PutRecord_593254(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutRecord_603353(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutRecord_593253(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Writes a single data record into an Amazon Kinesis data stream. Call <code>PutRecord</code> to send data into the stream for real-time ingestion and subsequent processing, one record at a time. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second.</p> <p>You must specify the name of the stream that captures, stores, and transports the data; a partition key; and the data blob itself.</p> <p>The data blob can be any type of data; for example, a segment from a log file, geographic/location data, website clickstream data, and so on.</p> <p>The partition key is used by Kinesis Data Streams to distribute data across shards. Kinesis Data Streams segregates the data records that belong to a stream into multiple shards, using the partition key associated with each data record to determine the shard to which a given data record belongs.</p> <p>Partition keys are Unicode strings, with a maximum length limit of 256 characters for each key. An MD5 hash function is used to map partition keys to 128-bit integer values and to map associated data records to shards using the hash key ranges of the shards. You can override hashing the partition key to determine the shard by explicitly specifying a hash value using the <code>ExplicitHashKey</code> parameter. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p> <code>PutRecord</code> returns the shard ID of where the data record was placed and the sequence number that was assigned to the data record.</p> <p>Sequence numbers increase over time and are specific to a shard within a stream, not across all shards within a stream. To guarantee strictly increasing ordering, write serially to a shard and use the <code>SequenceNumberForOrdering</code> parameter. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If a <code>PutRecord</code> request cannot be processed because of insufficient provisioned throughput on the shard involved in the request, <code>PutRecord</code> throws <code>ProvisionedThroughputExceededException</code>. </p> <p>By default, data records are accessible for 24 hours from the time that they are added to a stream. You can use <a>IncreaseStreamRetentionPeriod</a> or <a>DecreaseStreamRetentionPeriod</a> to modify this retention period.</p>
   ## 
@@ -2306,57 +2310,57 @@ proc validate_PutRecord_603353(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603355 = header.getOrDefault("X-Amz-Date")
-  valid_603355 = validateParameter(valid_603355, JString, required = false,
-                                 default = nil)
-  if valid_603355 != nil:
-    section.add "X-Amz-Date", valid_603355
-  var valid_603356 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603356 = validateParameter(valid_603356, JString, required = false,
-                                 default = nil)
-  if valid_603356 != nil:
-    section.add "X-Amz-Security-Token", valid_603356
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603357 = header.getOrDefault("X-Amz-Target")
-  valid_603357 = validateParameter(valid_603357, JString, required = true, default = newJString(
+  var valid_593255 = header.getOrDefault("X-Amz-Target")
+  valid_593255 = validateParameter(valid_593255, JString, required = true, default = newJString(
       "Kinesis_20131202.PutRecord"))
-  if valid_603357 != nil:
-    section.add "X-Amz-Target", valid_603357
-  var valid_603358 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603358 = validateParameter(valid_603358, JString, required = false,
+  if valid_593255 != nil:
+    section.add "X-Amz-Target", valid_593255
+  var valid_593256 = header.getOrDefault("X-Amz-Signature")
+  valid_593256 = validateParameter(valid_593256, JString, required = false,
                                  default = nil)
-  if valid_603358 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603358
-  var valid_603359 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603359 = validateParameter(valid_603359, JString, required = false,
+  if valid_593256 != nil:
+    section.add "X-Amz-Signature", valid_593256
+  var valid_593257 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593257 = validateParameter(valid_593257, JString, required = false,
                                  default = nil)
-  if valid_603359 != nil:
-    section.add "X-Amz-Algorithm", valid_603359
-  var valid_603360 = header.getOrDefault("X-Amz-Signature")
-  valid_603360 = validateParameter(valid_603360, JString, required = false,
+  if valid_593257 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593257
+  var valid_593258 = header.getOrDefault("X-Amz-Date")
+  valid_593258 = validateParameter(valid_593258, JString, required = false,
                                  default = nil)
-  if valid_603360 != nil:
-    section.add "X-Amz-Signature", valid_603360
-  var valid_603361 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603361 = validateParameter(valid_603361, JString, required = false,
+  if valid_593258 != nil:
+    section.add "X-Amz-Date", valid_593258
+  var valid_593259 = header.getOrDefault("X-Amz-Credential")
+  valid_593259 = validateParameter(valid_593259, JString, required = false,
                                  default = nil)
-  if valid_603361 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603361
-  var valid_603362 = header.getOrDefault("X-Amz-Credential")
-  valid_603362 = validateParameter(valid_603362, JString, required = false,
+  if valid_593259 != nil:
+    section.add "X-Amz-Credential", valid_593259
+  var valid_593260 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593260 = validateParameter(valid_593260, JString, required = false,
                                  default = nil)
-  if valid_603362 != nil:
-    section.add "X-Amz-Credential", valid_603362
+  if valid_593260 != nil:
+    section.add "X-Amz-Security-Token", valid_593260
+  var valid_593261 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593261 = validateParameter(valid_593261, JString, required = false,
+                                 default = nil)
+  if valid_593261 != nil:
+    section.add "X-Amz-Algorithm", valid_593261
+  var valid_593262 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593262 = validateParameter(valid_593262, JString, required = false,
+                                 default = nil)
+  if valid_593262 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593262
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2367,43 +2371,43 @@ proc validate_PutRecord_603353(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603364: Call_PutRecord_603352; path: JsonNode; query: JsonNode;
+proc call*(call_593264: Call_PutRecord_593252; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Writes a single data record into an Amazon Kinesis data stream. Call <code>PutRecord</code> to send data into the stream for real-time ingestion and subsequent processing, one record at a time. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second.</p> <p>You must specify the name of the stream that captures, stores, and transports the data; a partition key; and the data blob itself.</p> <p>The data blob can be any type of data; for example, a segment from a log file, geographic/location data, website clickstream data, and so on.</p> <p>The partition key is used by Kinesis Data Streams to distribute data across shards. Kinesis Data Streams segregates the data records that belong to a stream into multiple shards, using the partition key associated with each data record to determine the shard to which a given data record belongs.</p> <p>Partition keys are Unicode strings, with a maximum length limit of 256 characters for each key. An MD5 hash function is used to map partition keys to 128-bit integer values and to map associated data records to shards using the hash key ranges of the shards. You can override hashing the partition key to determine the shard by explicitly specifying a hash value using the <code>ExplicitHashKey</code> parameter. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p> <code>PutRecord</code> returns the shard ID of where the data record was placed and the sequence number that was assigned to the data record.</p> <p>Sequence numbers increase over time and are specific to a shard within a stream, not across all shards within a stream. To guarantee strictly increasing ordering, write serially to a shard and use the <code>SequenceNumberForOrdering</code> parameter. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If a <code>PutRecord</code> request cannot be processed because of insufficient provisioned throughput on the shard involved in the request, <code>PutRecord</code> throws <code>ProvisionedThroughputExceededException</code>. </p> <p>By default, data records are accessible for 24 hours from the time that they are added to a stream. You can use <a>IncreaseStreamRetentionPeriod</a> or <a>DecreaseStreamRetentionPeriod</a> to modify this retention period.</p>
   ## 
-  let valid = call_603364.validator(path, query, header, formData, body)
-  let scheme = call_603364.pickScheme
+  let valid = call_593264.validator(path, query, header, formData, body)
+  let scheme = call_593264.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603364.url(scheme.get, call_603364.host, call_603364.base,
-                         call_603364.route, valid.getOrDefault("path"),
+  let url = call_593264.url(scheme.get, call_593264.host, call_593264.base,
+                         call_593264.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603364, url, valid)
+  result = hook(call_593264, url, valid)
 
-proc call*(call_603365: Call_PutRecord_603352; body: JsonNode): Recallable =
+proc call*(call_593265: Call_PutRecord_593252; body: JsonNode): Recallable =
   ## putRecord
   ## <p>Writes a single data record into an Amazon Kinesis data stream. Call <code>PutRecord</code> to send data into the stream for real-time ingestion and subsequent processing, one record at a time. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second.</p> <p>You must specify the name of the stream that captures, stores, and transports the data; a partition key; and the data blob itself.</p> <p>The data blob can be any type of data; for example, a segment from a log file, geographic/location data, website clickstream data, and so on.</p> <p>The partition key is used by Kinesis Data Streams to distribute data across shards. Kinesis Data Streams segregates the data records that belong to a stream into multiple shards, using the partition key associated with each data record to determine the shard to which a given data record belongs.</p> <p>Partition keys are Unicode strings, with a maximum length limit of 256 characters for each key. An MD5 hash function is used to map partition keys to 128-bit integer values and to map associated data records to shards using the hash key ranges of the shards. You can override hashing the partition key to determine the shard by explicitly specifying a hash value using the <code>ExplicitHashKey</code> parameter. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p> <code>PutRecord</code> returns the shard ID of where the data record was placed and the sequence number that was assigned to the data record.</p> <p>Sequence numbers increase over time and are specific to a shard within a stream, not across all shards within a stream. To guarantee strictly increasing ordering, write serially to a shard and use the <code>SequenceNumberForOrdering</code> parameter. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>If a <code>PutRecord</code> request cannot be processed because of insufficient provisioned throughput on the shard involved in the request, <code>PutRecord</code> throws <code>ProvisionedThroughputExceededException</code>. </p> <p>By default, data records are accessible for 24 hours from the time that they are added to a stream. You can use <a>IncreaseStreamRetentionPeriod</a> or <a>DecreaseStreamRetentionPeriod</a> to modify this retention period.</p>
   ##   body: JObject (required)
-  var body_603366 = newJObject()
+  var body_593266 = newJObject()
   if body != nil:
-    body_603366 = body
-  result = call_603365.call(nil, nil, nil, nil, body_603366)
+    body_593266 = body
+  result = call_593265.call(nil, nil, nil, nil, body_593266)
 
-var putRecord* = Call_PutRecord_603352(name: "putRecord", meth: HttpMethod.HttpPost,
+var putRecord* = Call_PutRecord_593252(name: "putRecord", meth: HttpMethod.HttpPost,
                                     host: "kinesis.amazonaws.com", route: "/#X-Amz-Target=Kinesis_20131202.PutRecord",
-                                    validator: validate_PutRecord_603353,
-                                    base: "/", url: url_PutRecord_603354,
+                                    validator: validate_PutRecord_593253,
+                                    base: "/", url: url_PutRecord_593254,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutRecords_603367 = ref object of OpenApiRestCall_602466
-proc url_PutRecords_603369(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutRecords_593267 = ref object of OpenApiRestCall_592364
+proc url_PutRecords_593269(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutRecords_603368(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutRecords_593268(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Writes multiple data records into a Kinesis data stream in a single call (also referred to as a <code>PutRecords</code> request). Use this operation to send data into the stream for data ingestion and processing. </p> <p>Each <code>PutRecords</code> request can support up to 500 records. Each record in the request can be as large as 1 MB, up to a limit of 5 MB for the entire request, including partition keys. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second.</p> <p>You must specify the name of the stream that captures, stores, and transports the data; and an array of request <code>Records</code>, with each record in the array requiring a partition key and data blob. The record size limit applies to the total size of the partition key and data blob.</p> <p>The data blob can be any type of data; for example, a segment from a log file, geographic/location data, website clickstream data, and so on.</p> <p>The partition key is used by Kinesis Data Streams as input to a hash function that maps the partition key and associated data to a specific shard. An MD5 hash function is used to map partition keys to 128-bit integer values and to map associated data records to shards. As a result of this hashing mechanism, all data records with the same partition key map to the same shard within the stream. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>Each record in the <code>Records</code> array may include an optional parameter, <code>ExplicitHashKey</code>, which overrides the partition key to shard mapping. This parameter allows a data producer to determine explicitly the shard where the record is stored. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-putrecords">Adding Multiple Records with PutRecords</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>The <code>PutRecords</code> response includes an array of response <code>Records</code>. Each record in the response array directly correlates with a record in the request array using natural ordering, from the top to the bottom of the request and response. The response <code>Records</code> array always includes the same number of records as the request array.</p> <p>The response <code>Records</code> array includes both successfully and unsuccessfully processed records. Kinesis Data Streams attempts to process all records in each <code>PutRecords</code> request. A single record failure does not stop the processing of subsequent records.</p> <p>A successfully processed record includes <code>ShardId</code> and <code>SequenceNumber</code> values. The <code>ShardId</code> parameter identifies the shard in the stream where the record is stored. The <code>SequenceNumber</code> parameter is an identifier assigned to the put record, unique to all records in the stream.</p> <p>An unsuccessfully processed record includes <code>ErrorCode</code> and <code>ErrorMessage</code> values. <code>ErrorCode</code> reflects the type of error and can be one of the following values: <code>ProvisionedThroughputExceededException</code> or <code>InternalFailure</code>. <code>ErrorMessage</code> provides more detailed information about the <code>ProvisionedThroughputExceededException</code> exception including the account ID, stream name, and shard ID of the record that was throttled. For more information about partially successful responses, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-add-data-to-stream.html#kinesis-using-sdk-java-putrecords">Adding Multiple Records with PutRecords</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>By default, data records are accessible for 24 hours from the time that they are added to a stream. You can use <a>IncreaseStreamRetentionPeriod</a> or <a>DecreaseStreamRetentionPeriod</a> to modify this retention period.</p>
   ## 
@@ -2414,57 +2418,57 @@ proc validate_PutRecords_603368(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603370 = header.getOrDefault("X-Amz-Date")
-  valid_603370 = validateParameter(valid_603370, JString, required = false,
-                                 default = nil)
-  if valid_603370 != nil:
-    section.add "X-Amz-Date", valid_603370
-  var valid_603371 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603371 = validateParameter(valid_603371, JString, required = false,
-                                 default = nil)
-  if valid_603371 != nil:
-    section.add "X-Amz-Security-Token", valid_603371
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603372 = header.getOrDefault("X-Amz-Target")
-  valid_603372 = validateParameter(valid_603372, JString, required = true, default = newJString(
+  var valid_593270 = header.getOrDefault("X-Amz-Target")
+  valid_593270 = validateParameter(valid_593270, JString, required = true, default = newJString(
       "Kinesis_20131202.PutRecords"))
-  if valid_603372 != nil:
-    section.add "X-Amz-Target", valid_603372
-  var valid_603373 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603373 = validateParameter(valid_603373, JString, required = false,
+  if valid_593270 != nil:
+    section.add "X-Amz-Target", valid_593270
+  var valid_593271 = header.getOrDefault("X-Amz-Signature")
+  valid_593271 = validateParameter(valid_593271, JString, required = false,
                                  default = nil)
-  if valid_603373 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603373
-  var valid_603374 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603374 = validateParameter(valid_603374, JString, required = false,
+  if valid_593271 != nil:
+    section.add "X-Amz-Signature", valid_593271
+  var valid_593272 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593272 = validateParameter(valid_593272, JString, required = false,
                                  default = nil)
-  if valid_603374 != nil:
-    section.add "X-Amz-Algorithm", valid_603374
-  var valid_603375 = header.getOrDefault("X-Amz-Signature")
-  valid_603375 = validateParameter(valid_603375, JString, required = false,
+  if valid_593272 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593272
+  var valid_593273 = header.getOrDefault("X-Amz-Date")
+  valid_593273 = validateParameter(valid_593273, JString, required = false,
                                  default = nil)
-  if valid_603375 != nil:
-    section.add "X-Amz-Signature", valid_603375
-  var valid_603376 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603376 = validateParameter(valid_603376, JString, required = false,
+  if valid_593273 != nil:
+    section.add "X-Amz-Date", valid_593273
+  var valid_593274 = header.getOrDefault("X-Amz-Credential")
+  valid_593274 = validateParameter(valid_593274, JString, required = false,
                                  default = nil)
-  if valid_603376 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603376
-  var valid_603377 = header.getOrDefault("X-Amz-Credential")
-  valid_603377 = validateParameter(valid_603377, JString, required = false,
+  if valid_593274 != nil:
+    section.add "X-Amz-Credential", valid_593274
+  var valid_593275 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593275 = validateParameter(valid_593275, JString, required = false,
                                  default = nil)
-  if valid_603377 != nil:
-    section.add "X-Amz-Credential", valid_603377
+  if valid_593275 != nil:
+    section.add "X-Amz-Security-Token", valid_593275
+  var valid_593276 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593276 = validateParameter(valid_593276, JString, required = false,
+                                 default = nil)
+  if valid_593276 != nil:
+    section.add "X-Amz-Algorithm", valid_593276
+  var valid_593277 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593277 = validateParameter(valid_593277, JString, required = false,
+                                 default = nil)
+  if valid_593277 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593277
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2475,44 +2479,44 @@ proc validate_PutRecords_603368(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603379: Call_PutRecords_603367; path: JsonNode; query: JsonNode;
+proc call*(call_593279: Call_PutRecords_593267; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Writes multiple data records into a Kinesis data stream in a single call (also referred to as a <code>PutRecords</code> request). Use this operation to send data into the stream for data ingestion and processing. </p> <p>Each <code>PutRecords</code> request can support up to 500 records. Each record in the request can be as large as 1 MB, up to a limit of 5 MB for the entire request, including partition keys. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second.</p> <p>You must specify the name of the stream that captures, stores, and transports the data; and an array of request <code>Records</code>, with each record in the array requiring a partition key and data blob. The record size limit applies to the total size of the partition key and data blob.</p> <p>The data blob can be any type of data; for example, a segment from a log file, geographic/location data, website clickstream data, and so on.</p> <p>The partition key is used by Kinesis Data Streams as input to a hash function that maps the partition key and associated data to a specific shard. An MD5 hash function is used to map partition keys to 128-bit integer values and to map associated data records to shards. As a result of this hashing mechanism, all data records with the same partition key map to the same shard within the stream. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>Each record in the <code>Records</code> array may include an optional parameter, <code>ExplicitHashKey</code>, which overrides the partition key to shard mapping. This parameter allows a data producer to determine explicitly the shard where the record is stored. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-putrecords">Adding Multiple Records with PutRecords</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>The <code>PutRecords</code> response includes an array of response <code>Records</code>. Each record in the response array directly correlates with a record in the request array using natural ordering, from the top to the bottom of the request and response. The response <code>Records</code> array always includes the same number of records as the request array.</p> <p>The response <code>Records</code> array includes both successfully and unsuccessfully processed records. Kinesis Data Streams attempts to process all records in each <code>PutRecords</code> request. A single record failure does not stop the processing of subsequent records.</p> <p>A successfully processed record includes <code>ShardId</code> and <code>SequenceNumber</code> values. The <code>ShardId</code> parameter identifies the shard in the stream where the record is stored. The <code>SequenceNumber</code> parameter is an identifier assigned to the put record, unique to all records in the stream.</p> <p>An unsuccessfully processed record includes <code>ErrorCode</code> and <code>ErrorMessage</code> values. <code>ErrorCode</code> reflects the type of error and can be one of the following values: <code>ProvisionedThroughputExceededException</code> or <code>InternalFailure</code>. <code>ErrorMessage</code> provides more detailed information about the <code>ProvisionedThroughputExceededException</code> exception including the account ID, stream name, and shard ID of the record that was throttled. For more information about partially successful responses, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-add-data-to-stream.html#kinesis-using-sdk-java-putrecords">Adding Multiple Records with PutRecords</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>By default, data records are accessible for 24 hours from the time that they are added to a stream. You can use <a>IncreaseStreamRetentionPeriod</a> or <a>DecreaseStreamRetentionPeriod</a> to modify this retention period.</p>
   ## 
-  let valid = call_603379.validator(path, query, header, formData, body)
-  let scheme = call_603379.pickScheme
+  let valid = call_593279.validator(path, query, header, formData, body)
+  let scheme = call_593279.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603379.url(scheme.get, call_603379.host, call_603379.base,
-                         call_603379.route, valid.getOrDefault("path"),
+  let url = call_593279.url(scheme.get, call_593279.host, call_593279.base,
+                         call_593279.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603379, url, valid)
+  result = hook(call_593279, url, valid)
 
-proc call*(call_603380: Call_PutRecords_603367; body: JsonNode): Recallable =
+proc call*(call_593280: Call_PutRecords_593267; body: JsonNode): Recallable =
   ## putRecords
   ## <p>Writes multiple data records into a Kinesis data stream in a single call (also referred to as a <code>PutRecords</code> request). Use this operation to send data into the stream for data ingestion and processing. </p> <p>Each <code>PutRecords</code> request can support up to 500 records. Each record in the request can be as large as 1 MB, up to a limit of 5 MB for the entire request, including partition keys. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MB per second.</p> <p>You must specify the name of the stream that captures, stores, and transports the data; and an array of request <code>Records</code>, with each record in the array requiring a partition key and data blob. The record size limit applies to the total size of the partition key and data blob.</p> <p>The data blob can be any type of data; for example, a segment from a log file, geographic/location data, website clickstream data, and so on.</p> <p>The partition key is used by Kinesis Data Streams as input to a hash function that maps the partition key and associated data to a specific shard. An MD5 hash function is used to map partition keys to 128-bit integer values and to map associated data records to shards. As a result of this hashing mechanism, all data records with the same partition key map to the same shard within the stream. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-add-data-to-stream">Adding Data to a Stream</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>Each record in the <code>Records</code> array may include an optional parameter, <code>ExplicitHashKey</code>, which overrides the partition key to shard mapping. This parameter allows a data producer to determine explicitly the shard where the record is stored. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/developing-producers-with-sdk.html#kinesis-using-sdk-java-putrecords">Adding Multiple Records with PutRecords</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>The <code>PutRecords</code> response includes an array of response <code>Records</code>. Each record in the response array directly correlates with a record in the request array using natural ordering, from the top to the bottom of the request and response. The response <code>Records</code> array always includes the same number of records as the request array.</p> <p>The response <code>Records</code> array includes both successfully and unsuccessfully processed records. Kinesis Data Streams attempts to process all records in each <code>PutRecords</code> request. A single record failure does not stop the processing of subsequent records.</p> <p>A successfully processed record includes <code>ShardId</code> and <code>SequenceNumber</code> values. The <code>ShardId</code> parameter identifies the shard in the stream where the record is stored. The <code>SequenceNumber</code> parameter is an identifier assigned to the put record, unique to all records in the stream.</p> <p>An unsuccessfully processed record includes <code>ErrorCode</code> and <code>ErrorMessage</code> values. <code>ErrorCode</code> reflects the type of error and can be one of the following values: <code>ProvisionedThroughputExceededException</code> or <code>InternalFailure</code>. <code>ErrorMessage</code> provides more detailed information about the <code>ProvisionedThroughputExceededException</code> exception including the account ID, stream name, and shard ID of the record that was throttled. For more information about partially successful responses, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-add-data-to-stream.html#kinesis-using-sdk-java-putrecords">Adding Multiple Records with PutRecords</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>By default, data records are accessible for 24 hours from the time that they are added to a stream. You can use <a>IncreaseStreamRetentionPeriod</a> or <a>DecreaseStreamRetentionPeriod</a> to modify this retention period.</p>
   ##   body: JObject (required)
-  var body_603381 = newJObject()
+  var body_593281 = newJObject()
   if body != nil:
-    body_603381 = body
-  result = call_603380.call(nil, nil, nil, nil, body_603381)
+    body_593281 = body
+  result = call_593280.call(nil, nil, nil, nil, body_593281)
 
-var putRecords* = Call_PutRecords_603367(name: "putRecords",
+var putRecords* = Call_PutRecords_593267(name: "putRecords",
                                       meth: HttpMethod.HttpPost,
                                       host: "kinesis.amazonaws.com", route: "/#X-Amz-Target=Kinesis_20131202.PutRecords",
-                                      validator: validate_PutRecords_603368,
-                                      base: "/", url: url_PutRecords_603369,
+                                      validator: validate_PutRecords_593268,
+                                      base: "/", url: url_PutRecords_593269,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterStreamConsumer_603382 = ref object of OpenApiRestCall_602466
-proc url_RegisterStreamConsumer_603384(protocol: Scheme; host: string; base: string;
+  Call_RegisterStreamConsumer_593282 = ref object of OpenApiRestCall_592364
+proc url_RegisterStreamConsumer_593284(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RegisterStreamConsumer_603383(path: JsonNode; query: JsonNode;
+proc validate_RegisterStreamConsumer_593283(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Registers a consumer with a Kinesis data stream. When you use this operation, the consumer you register can read data from the stream at a rate of up to 2 MiB per second. This rate is unaffected by the total number of consumers that read from the same stream.</p> <p>You can register up to 5 consumers per stream. A given consumer can only be registered with one stream.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ## 
@@ -2523,57 +2527,57 @@ proc validate_RegisterStreamConsumer_603383(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603385 = header.getOrDefault("X-Amz-Date")
-  valid_603385 = validateParameter(valid_603385, JString, required = false,
-                                 default = nil)
-  if valid_603385 != nil:
-    section.add "X-Amz-Date", valid_603385
-  var valid_603386 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603386 = validateParameter(valid_603386, JString, required = false,
-                                 default = nil)
-  if valid_603386 != nil:
-    section.add "X-Amz-Security-Token", valid_603386
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603387 = header.getOrDefault("X-Amz-Target")
-  valid_603387 = validateParameter(valid_603387, JString, required = true, default = newJString(
+  var valid_593285 = header.getOrDefault("X-Amz-Target")
+  valid_593285 = validateParameter(valid_593285, JString, required = true, default = newJString(
       "Kinesis_20131202.RegisterStreamConsumer"))
-  if valid_603387 != nil:
-    section.add "X-Amz-Target", valid_603387
-  var valid_603388 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603388 = validateParameter(valid_603388, JString, required = false,
+  if valid_593285 != nil:
+    section.add "X-Amz-Target", valid_593285
+  var valid_593286 = header.getOrDefault("X-Amz-Signature")
+  valid_593286 = validateParameter(valid_593286, JString, required = false,
                                  default = nil)
-  if valid_603388 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603388
-  var valid_603389 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603389 = validateParameter(valid_603389, JString, required = false,
+  if valid_593286 != nil:
+    section.add "X-Amz-Signature", valid_593286
+  var valid_593287 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593287 = validateParameter(valid_593287, JString, required = false,
                                  default = nil)
-  if valid_603389 != nil:
-    section.add "X-Amz-Algorithm", valid_603389
-  var valid_603390 = header.getOrDefault("X-Amz-Signature")
-  valid_603390 = validateParameter(valid_603390, JString, required = false,
+  if valid_593287 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593287
+  var valid_593288 = header.getOrDefault("X-Amz-Date")
+  valid_593288 = validateParameter(valid_593288, JString, required = false,
                                  default = nil)
-  if valid_603390 != nil:
-    section.add "X-Amz-Signature", valid_603390
-  var valid_603391 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603391 = validateParameter(valid_603391, JString, required = false,
+  if valid_593288 != nil:
+    section.add "X-Amz-Date", valid_593288
+  var valid_593289 = header.getOrDefault("X-Amz-Credential")
+  valid_593289 = validateParameter(valid_593289, JString, required = false,
                                  default = nil)
-  if valid_603391 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603391
-  var valid_603392 = header.getOrDefault("X-Amz-Credential")
-  valid_603392 = validateParameter(valid_603392, JString, required = false,
+  if valid_593289 != nil:
+    section.add "X-Amz-Credential", valid_593289
+  var valid_593290 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593290 = validateParameter(valid_593290, JString, required = false,
                                  default = nil)
-  if valid_603392 != nil:
-    section.add "X-Amz-Credential", valid_603392
+  if valid_593290 != nil:
+    section.add "X-Amz-Security-Token", valid_593290
+  var valid_593291 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593291 = validateParameter(valid_593291, JString, required = false,
+                                 default = nil)
+  if valid_593291 != nil:
+    section.add "X-Amz-Algorithm", valid_593291
+  var valid_593292 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593292 = validateParameter(valid_593292, JString, required = false,
+                                 default = nil)
+  if valid_593292 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593292
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2584,44 +2588,44 @@ proc validate_RegisterStreamConsumer_603383(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603394: Call_RegisterStreamConsumer_603382; path: JsonNode;
+proc call*(call_593294: Call_RegisterStreamConsumer_593282; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers a consumer with a Kinesis data stream. When you use this operation, the consumer you register can read data from the stream at a rate of up to 2 MiB per second. This rate is unaffected by the total number of consumers that read from the same stream.</p> <p>You can register up to 5 consumers per stream. A given consumer can only be registered with one stream.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603394.validator(path, query, header, formData, body)
-  let scheme = call_603394.pickScheme
+  let valid = call_593294.validator(path, query, header, formData, body)
+  let scheme = call_593294.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603394.url(scheme.get, call_603394.host, call_603394.base,
-                         call_603394.route, valid.getOrDefault("path"),
+  let url = call_593294.url(scheme.get, call_593294.host, call_593294.base,
+                         call_593294.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603394, url, valid)
+  result = hook(call_593294, url, valid)
 
-proc call*(call_603395: Call_RegisterStreamConsumer_603382; body: JsonNode): Recallable =
+proc call*(call_593295: Call_RegisterStreamConsumer_593282; body: JsonNode): Recallable =
   ## registerStreamConsumer
   ## <p>Registers a consumer with a Kinesis data stream. When you use this operation, the consumer you register can read data from the stream at a rate of up to 2 MiB per second. This rate is unaffected by the total number of consumers that read from the same stream.</p> <p>You can register up to 5 consumers per stream. A given consumer can only be registered with one stream.</p> <p>This operation has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603396 = newJObject()
+  var body_593296 = newJObject()
   if body != nil:
-    body_603396 = body
-  result = call_603395.call(nil, nil, nil, nil, body_603396)
+    body_593296 = body
+  result = call_593295.call(nil, nil, nil, nil, body_593296)
 
-var registerStreamConsumer* = Call_RegisterStreamConsumer_603382(
+var registerStreamConsumer* = Call_RegisterStreamConsumer_593282(
     name: "registerStreamConsumer", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.RegisterStreamConsumer",
-    validator: validate_RegisterStreamConsumer_603383, base: "/",
-    url: url_RegisterStreamConsumer_603384, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterStreamConsumer_593283, base: "/",
+    url: url_RegisterStreamConsumer_593284, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RemoveTagsFromStream_603397 = ref object of OpenApiRestCall_602466
-proc url_RemoveTagsFromStream_603399(protocol: Scheme; host: string; base: string;
+  Call_RemoveTagsFromStream_593297 = ref object of OpenApiRestCall_592364
+proc url_RemoveTagsFromStream_593299(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RemoveTagsFromStream_603398(path: JsonNode; query: JsonNode;
+proc validate_RemoveTagsFromStream_593298(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes tags from the specified Kinesis data stream. Removed tags are deleted and cannot be recovered after this operation successfully completes.</p> <p>If you specify a tag that does not exist, it is ignored.</p> <p> <a>RemoveTagsFromStream</a> has a limit of five transactions per second per account.</p>
   ## 
@@ -2632,57 +2636,57 @@ proc validate_RemoveTagsFromStream_603398(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603400 = header.getOrDefault("X-Amz-Date")
-  valid_603400 = validateParameter(valid_603400, JString, required = false,
-                                 default = nil)
-  if valid_603400 != nil:
-    section.add "X-Amz-Date", valid_603400
-  var valid_603401 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603401 = validateParameter(valid_603401, JString, required = false,
-                                 default = nil)
-  if valid_603401 != nil:
-    section.add "X-Amz-Security-Token", valid_603401
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603402 = header.getOrDefault("X-Amz-Target")
-  valid_603402 = validateParameter(valid_603402, JString, required = true, default = newJString(
+  var valid_593300 = header.getOrDefault("X-Amz-Target")
+  valid_593300 = validateParameter(valid_593300, JString, required = true, default = newJString(
       "Kinesis_20131202.RemoveTagsFromStream"))
-  if valid_603402 != nil:
-    section.add "X-Amz-Target", valid_603402
-  var valid_603403 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603403 = validateParameter(valid_603403, JString, required = false,
+  if valid_593300 != nil:
+    section.add "X-Amz-Target", valid_593300
+  var valid_593301 = header.getOrDefault("X-Amz-Signature")
+  valid_593301 = validateParameter(valid_593301, JString, required = false,
                                  default = nil)
-  if valid_603403 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603403
-  var valid_603404 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603404 = validateParameter(valid_603404, JString, required = false,
+  if valid_593301 != nil:
+    section.add "X-Amz-Signature", valid_593301
+  var valid_593302 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593302 = validateParameter(valid_593302, JString, required = false,
                                  default = nil)
-  if valid_603404 != nil:
-    section.add "X-Amz-Algorithm", valid_603404
-  var valid_603405 = header.getOrDefault("X-Amz-Signature")
-  valid_603405 = validateParameter(valid_603405, JString, required = false,
+  if valid_593302 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593302
+  var valid_593303 = header.getOrDefault("X-Amz-Date")
+  valid_593303 = validateParameter(valid_593303, JString, required = false,
                                  default = nil)
-  if valid_603405 != nil:
-    section.add "X-Amz-Signature", valid_603405
-  var valid_603406 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603406 = validateParameter(valid_603406, JString, required = false,
+  if valid_593303 != nil:
+    section.add "X-Amz-Date", valid_593303
+  var valid_593304 = header.getOrDefault("X-Amz-Credential")
+  valid_593304 = validateParameter(valid_593304, JString, required = false,
                                  default = nil)
-  if valid_603406 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603406
-  var valid_603407 = header.getOrDefault("X-Amz-Credential")
-  valid_603407 = validateParameter(valid_603407, JString, required = false,
+  if valid_593304 != nil:
+    section.add "X-Amz-Credential", valid_593304
+  var valid_593305 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593305 = validateParameter(valid_593305, JString, required = false,
                                  default = nil)
-  if valid_603407 != nil:
-    section.add "X-Amz-Credential", valid_603407
+  if valid_593305 != nil:
+    section.add "X-Amz-Security-Token", valid_593305
+  var valid_593306 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593306 = validateParameter(valid_593306, JString, required = false,
+                                 default = nil)
+  if valid_593306 != nil:
+    section.add "X-Amz-Algorithm", valid_593306
+  var valid_593307 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593307 = validateParameter(valid_593307, JString, required = false,
+                                 default = nil)
+  if valid_593307 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593307
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2693,44 +2697,44 @@ proc validate_RemoveTagsFromStream_603398(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603409: Call_RemoveTagsFromStream_603397; path: JsonNode;
+proc call*(call_593309: Call_RemoveTagsFromStream_593297; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes tags from the specified Kinesis data stream. Removed tags are deleted and cannot be recovered after this operation successfully completes.</p> <p>If you specify a tag that does not exist, it is ignored.</p> <p> <a>RemoveTagsFromStream</a> has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603409.validator(path, query, header, formData, body)
-  let scheme = call_603409.pickScheme
+  let valid = call_593309.validator(path, query, header, formData, body)
+  let scheme = call_593309.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603409.url(scheme.get, call_603409.host, call_603409.base,
-                         call_603409.route, valid.getOrDefault("path"),
+  let url = call_593309.url(scheme.get, call_593309.host, call_593309.base,
+                         call_593309.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603409, url, valid)
+  result = hook(call_593309, url, valid)
 
-proc call*(call_603410: Call_RemoveTagsFromStream_603397; body: JsonNode): Recallable =
+proc call*(call_593310: Call_RemoveTagsFromStream_593297; body: JsonNode): Recallable =
   ## removeTagsFromStream
   ## <p>Removes tags from the specified Kinesis data stream. Removed tags are deleted and cannot be recovered after this operation successfully completes.</p> <p>If you specify a tag that does not exist, it is ignored.</p> <p> <a>RemoveTagsFromStream</a> has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603411 = newJObject()
+  var body_593311 = newJObject()
   if body != nil:
-    body_603411 = body
-  result = call_603410.call(nil, nil, nil, nil, body_603411)
+    body_593311 = body
+  result = call_593310.call(nil, nil, nil, nil, body_593311)
 
-var removeTagsFromStream* = Call_RemoveTagsFromStream_603397(
+var removeTagsFromStream* = Call_RemoveTagsFromStream_593297(
     name: "removeTagsFromStream", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.RemoveTagsFromStream",
-    validator: validate_RemoveTagsFromStream_603398, base: "/",
-    url: url_RemoveTagsFromStream_603399, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RemoveTagsFromStream_593298, base: "/",
+    url: url_RemoveTagsFromStream_593299, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SplitShard_603412 = ref object of OpenApiRestCall_602466
-proc url_SplitShard_603414(protocol: Scheme; host: string; base: string; route: string;
+  Call_SplitShard_593312 = ref object of OpenApiRestCall_592364
+proc url_SplitShard_593314(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_SplitShard_603413(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_SplitShard_593313(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Splits a shard into two new shards in the Kinesis data stream, to increase the stream's capacity to ingest and transport data. <code>SplitShard</code> is called when there is a need to increase the overall capacity of a stream because of an expected increase in the volume of data records being ingested. </p> <p>You can also use <code>SplitShard</code> when a shard appears to be approaching its maximum utilization; for example, the producers sending data into the specific shard are suddenly sending more than previously anticipated. You can also call <code>SplitShard</code> to increase stream capacity, so that more Kinesis Data Streams applications can simultaneously read data from the stream for real-time processing. </p> <p>You must specify the shard to be split and the new hash key, which is the position in the shard where the shard gets split in two. In many cases, the new hash key might be the average of the beginning and ending hash key, but it can be any hash key value in the range being mapped into the shard. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-resharding-split.html">Split a Shard</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>You can use <a>DescribeStream</a> to determine the shard ID and hash key values for the <code>ShardToSplit</code> and <code>NewStartingHashKey</code> parameters that are specified in the <code>SplitShard</code> request.</p> <p> <code>SplitShard</code> is an asynchronous operation. Upon receiving a <code>SplitShard</code> request, Kinesis Data Streams immediately returns a response and sets the stream status to <code>UPDATING</code>. After the operation is completed, Kinesis Data Streams sets the stream status to <code>ACTIVE</code>. Read and write operations continue to work while the stream is in the <code>UPDATING</code> state. </p> <p>You can use <code>DescribeStream</code> to check the status of the stream, which is returned in <code>StreamStatus</code>. If the stream is in the <code>ACTIVE</code> state, you can call <code>SplitShard</code>. If a stream is in <code>CREATING</code> or <code>UPDATING</code> or <code>DELETING</code> states, <code>DescribeStream</code> returns a <code>ResourceInUseException</code>.</p> <p>If the specified stream does not exist, <code>DescribeStream</code> returns a <code>ResourceNotFoundException</code>. If you try to create more shards than are authorized for your account, you receive a <code>LimitExceededException</code>. </p> <p>For the default shard limit for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To increase this limit, <a href="http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">contact AWS Support</a>.</p> <p>If you try to operate on too many streams simultaneously using <a>CreateStream</a>, <a>DeleteStream</a>, <a>MergeShards</a>, and/or <a>SplitShard</a>, you receive a <code>LimitExceededException</code>. </p> <p> <code>SplitShard</code> has a limit of five transactions per second per account.</p>
   ## 
@@ -2741,57 +2745,57 @@ proc validate_SplitShard_603413(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603415 = header.getOrDefault("X-Amz-Date")
-  valid_603415 = validateParameter(valid_603415, JString, required = false,
-                                 default = nil)
-  if valid_603415 != nil:
-    section.add "X-Amz-Date", valid_603415
-  var valid_603416 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603416 = validateParameter(valid_603416, JString, required = false,
-                                 default = nil)
-  if valid_603416 != nil:
-    section.add "X-Amz-Security-Token", valid_603416
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603417 = header.getOrDefault("X-Amz-Target")
-  valid_603417 = validateParameter(valid_603417, JString, required = true, default = newJString(
+  var valid_593315 = header.getOrDefault("X-Amz-Target")
+  valid_593315 = validateParameter(valid_593315, JString, required = true, default = newJString(
       "Kinesis_20131202.SplitShard"))
-  if valid_603417 != nil:
-    section.add "X-Amz-Target", valid_603417
-  var valid_603418 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603418 = validateParameter(valid_603418, JString, required = false,
+  if valid_593315 != nil:
+    section.add "X-Amz-Target", valid_593315
+  var valid_593316 = header.getOrDefault("X-Amz-Signature")
+  valid_593316 = validateParameter(valid_593316, JString, required = false,
                                  default = nil)
-  if valid_603418 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603418
-  var valid_603419 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603419 = validateParameter(valid_603419, JString, required = false,
+  if valid_593316 != nil:
+    section.add "X-Amz-Signature", valid_593316
+  var valid_593317 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593317 = validateParameter(valid_593317, JString, required = false,
                                  default = nil)
-  if valid_603419 != nil:
-    section.add "X-Amz-Algorithm", valid_603419
-  var valid_603420 = header.getOrDefault("X-Amz-Signature")
-  valid_603420 = validateParameter(valid_603420, JString, required = false,
+  if valid_593317 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593317
+  var valid_593318 = header.getOrDefault("X-Amz-Date")
+  valid_593318 = validateParameter(valid_593318, JString, required = false,
                                  default = nil)
-  if valid_603420 != nil:
-    section.add "X-Amz-Signature", valid_603420
-  var valid_603421 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603421 = validateParameter(valid_603421, JString, required = false,
+  if valid_593318 != nil:
+    section.add "X-Amz-Date", valid_593318
+  var valid_593319 = header.getOrDefault("X-Amz-Credential")
+  valid_593319 = validateParameter(valid_593319, JString, required = false,
                                  default = nil)
-  if valid_603421 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603421
-  var valid_603422 = header.getOrDefault("X-Amz-Credential")
-  valid_603422 = validateParameter(valid_603422, JString, required = false,
+  if valid_593319 != nil:
+    section.add "X-Amz-Credential", valid_593319
+  var valid_593320 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593320 = validateParameter(valid_593320, JString, required = false,
                                  default = nil)
-  if valid_603422 != nil:
-    section.add "X-Amz-Credential", valid_603422
+  if valid_593320 != nil:
+    section.add "X-Amz-Security-Token", valid_593320
+  var valid_593321 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593321 = validateParameter(valid_593321, JString, required = false,
+                                 default = nil)
+  if valid_593321 != nil:
+    section.add "X-Amz-Algorithm", valid_593321
+  var valid_593322 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593322 = validateParameter(valid_593322, JString, required = false,
+                                 default = nil)
+  if valid_593322 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593322
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2802,44 +2806,44 @@ proc validate_SplitShard_603413(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603424: Call_SplitShard_603412; path: JsonNode; query: JsonNode;
+proc call*(call_593324: Call_SplitShard_593312; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Splits a shard into two new shards in the Kinesis data stream, to increase the stream's capacity to ingest and transport data. <code>SplitShard</code> is called when there is a need to increase the overall capacity of a stream because of an expected increase in the volume of data records being ingested. </p> <p>You can also use <code>SplitShard</code> when a shard appears to be approaching its maximum utilization; for example, the producers sending data into the specific shard are suddenly sending more than previously anticipated. You can also call <code>SplitShard</code> to increase stream capacity, so that more Kinesis Data Streams applications can simultaneously read data from the stream for real-time processing. </p> <p>You must specify the shard to be split and the new hash key, which is the position in the shard where the shard gets split in two. In many cases, the new hash key might be the average of the beginning and ending hash key, but it can be any hash key value in the range being mapped into the shard. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-resharding-split.html">Split a Shard</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>You can use <a>DescribeStream</a> to determine the shard ID and hash key values for the <code>ShardToSplit</code> and <code>NewStartingHashKey</code> parameters that are specified in the <code>SplitShard</code> request.</p> <p> <code>SplitShard</code> is an asynchronous operation. Upon receiving a <code>SplitShard</code> request, Kinesis Data Streams immediately returns a response and sets the stream status to <code>UPDATING</code>. After the operation is completed, Kinesis Data Streams sets the stream status to <code>ACTIVE</code>. Read and write operations continue to work while the stream is in the <code>UPDATING</code> state. </p> <p>You can use <code>DescribeStream</code> to check the status of the stream, which is returned in <code>StreamStatus</code>. If the stream is in the <code>ACTIVE</code> state, you can call <code>SplitShard</code>. If a stream is in <code>CREATING</code> or <code>UPDATING</code> or <code>DELETING</code> states, <code>DescribeStream</code> returns a <code>ResourceInUseException</code>.</p> <p>If the specified stream does not exist, <code>DescribeStream</code> returns a <code>ResourceNotFoundException</code>. If you try to create more shards than are authorized for your account, you receive a <code>LimitExceededException</code>. </p> <p>For the default shard limit for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To increase this limit, <a href="http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">contact AWS Support</a>.</p> <p>If you try to operate on too many streams simultaneously using <a>CreateStream</a>, <a>DeleteStream</a>, <a>MergeShards</a>, and/or <a>SplitShard</a>, you receive a <code>LimitExceededException</code>. </p> <p> <code>SplitShard</code> has a limit of five transactions per second per account.</p>
   ## 
-  let valid = call_603424.validator(path, query, header, formData, body)
-  let scheme = call_603424.pickScheme
+  let valid = call_593324.validator(path, query, header, formData, body)
+  let scheme = call_593324.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603424.url(scheme.get, call_603424.host, call_603424.base,
-                         call_603424.route, valid.getOrDefault("path"),
+  let url = call_593324.url(scheme.get, call_593324.host, call_593324.base,
+                         call_593324.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603424, url, valid)
+  result = hook(call_593324, url, valid)
 
-proc call*(call_603425: Call_SplitShard_603412; body: JsonNode): Recallable =
+proc call*(call_593325: Call_SplitShard_593312; body: JsonNode): Recallable =
   ## splitShard
   ## <p>Splits a shard into two new shards in the Kinesis data stream, to increase the stream's capacity to ingest and transport data. <code>SplitShard</code> is called when there is a need to increase the overall capacity of a stream because of an expected increase in the volume of data records being ingested. </p> <p>You can also use <code>SplitShard</code> when a shard appears to be approaching its maximum utilization; for example, the producers sending data into the specific shard are suddenly sending more than previously anticipated. You can also call <code>SplitShard</code> to increase stream capacity, so that more Kinesis Data Streams applications can simultaneously read data from the stream for real-time processing. </p> <p>You must specify the shard to be split and the new hash key, which is the position in the shard where the shard gets split in two. In many cases, the new hash key might be the average of the beginning and ending hash key, but it can be any hash key value in the range being mapped into the shard. For more information, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/kinesis-using-sdk-java-resharding-split.html">Split a Shard</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>.</p> <p>You can use <a>DescribeStream</a> to determine the shard ID and hash key values for the <code>ShardToSplit</code> and <code>NewStartingHashKey</code> parameters that are specified in the <code>SplitShard</code> request.</p> <p> <code>SplitShard</code> is an asynchronous operation. Upon receiving a <code>SplitShard</code> request, Kinesis Data Streams immediately returns a response and sets the stream status to <code>UPDATING</code>. After the operation is completed, Kinesis Data Streams sets the stream status to <code>ACTIVE</code>. Read and write operations continue to work while the stream is in the <code>UPDATING</code> state. </p> <p>You can use <code>DescribeStream</code> to check the status of the stream, which is returned in <code>StreamStatus</code>. If the stream is in the <code>ACTIVE</code> state, you can call <code>SplitShard</code>. If a stream is in <code>CREATING</code> or <code>UPDATING</code> or <code>DELETING</code> states, <code>DescribeStream</code> returns a <code>ResourceInUseException</code>.</p> <p>If the specified stream does not exist, <code>DescribeStream</code> returns a <code>ResourceNotFoundException</code>. If you try to create more shards than are authorized for your account, you receive a <code>LimitExceededException</code>. </p> <p>For the default shard limit for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Kinesis Data Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To increase this limit, <a href="http://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">contact AWS Support</a>.</p> <p>If you try to operate on too many streams simultaneously using <a>CreateStream</a>, <a>DeleteStream</a>, <a>MergeShards</a>, and/or <a>SplitShard</a>, you receive a <code>LimitExceededException</code>. </p> <p> <code>SplitShard</code> has a limit of five transactions per second per account.</p>
   ##   body: JObject (required)
-  var body_603426 = newJObject()
+  var body_593326 = newJObject()
   if body != nil:
-    body_603426 = body
-  result = call_603425.call(nil, nil, nil, nil, body_603426)
+    body_593326 = body
+  result = call_593325.call(nil, nil, nil, nil, body_593326)
 
-var splitShard* = Call_SplitShard_603412(name: "splitShard",
+var splitShard* = Call_SplitShard_593312(name: "splitShard",
                                       meth: HttpMethod.HttpPost,
                                       host: "kinesis.amazonaws.com", route: "/#X-Amz-Target=Kinesis_20131202.SplitShard",
-                                      validator: validate_SplitShard_603413,
-                                      base: "/", url: url_SplitShard_603414,
+                                      validator: validate_SplitShard_593313,
+                                      base: "/", url: url_SplitShard_593314,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartStreamEncryption_603427 = ref object of OpenApiRestCall_602466
-proc url_StartStreamEncryption_603429(protocol: Scheme; host: string; base: string;
+  Call_StartStreamEncryption_593327 = ref object of OpenApiRestCall_592364
+proc url_StartStreamEncryption_593329(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_StartStreamEncryption_603428(path: JsonNode; query: JsonNode;
+proc validate_StartStreamEncryption_593328(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Enables or updates server-side encryption using an AWS KMS key for a specified stream. </p> <p>Starting encryption is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Updating or applying encryption normally takes a few seconds to complete, but it can take minutes. You can continue to read and write data to your stream while its status is <code>UPDATING</code>. Once the status of the stream is <code>ACTIVE</code>, encryption begins for records written to the stream. </p> <p>API Limits: You can successfully apply a new AWS KMS key for server-side encryption 25 times in a rolling 24-hour period.</p> <p>Note: It can take up to 5 seconds after the stream is in an <code>ACTIVE</code> status before all records written to the stream are encrypted. After you enable encryption, you can verify that encryption is applied by inspecting the API response from <code>PutRecord</code> or <code>PutRecords</code>.</p>
   ## 
@@ -2850,57 +2854,57 @@ proc validate_StartStreamEncryption_603428(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603430 = header.getOrDefault("X-Amz-Date")
-  valid_603430 = validateParameter(valid_603430, JString, required = false,
-                                 default = nil)
-  if valid_603430 != nil:
-    section.add "X-Amz-Date", valid_603430
-  var valid_603431 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603431 = validateParameter(valid_603431, JString, required = false,
-                                 default = nil)
-  if valid_603431 != nil:
-    section.add "X-Amz-Security-Token", valid_603431
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603432 = header.getOrDefault("X-Amz-Target")
-  valid_603432 = validateParameter(valid_603432, JString, required = true, default = newJString(
+  var valid_593330 = header.getOrDefault("X-Amz-Target")
+  valid_593330 = validateParameter(valid_593330, JString, required = true, default = newJString(
       "Kinesis_20131202.StartStreamEncryption"))
-  if valid_603432 != nil:
-    section.add "X-Amz-Target", valid_603432
-  var valid_603433 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603433 = validateParameter(valid_603433, JString, required = false,
+  if valid_593330 != nil:
+    section.add "X-Amz-Target", valid_593330
+  var valid_593331 = header.getOrDefault("X-Amz-Signature")
+  valid_593331 = validateParameter(valid_593331, JString, required = false,
                                  default = nil)
-  if valid_603433 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603433
-  var valid_603434 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603434 = validateParameter(valid_603434, JString, required = false,
+  if valid_593331 != nil:
+    section.add "X-Amz-Signature", valid_593331
+  var valid_593332 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593332 = validateParameter(valid_593332, JString, required = false,
                                  default = nil)
-  if valid_603434 != nil:
-    section.add "X-Amz-Algorithm", valid_603434
-  var valid_603435 = header.getOrDefault("X-Amz-Signature")
-  valid_603435 = validateParameter(valid_603435, JString, required = false,
+  if valid_593332 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593332
+  var valid_593333 = header.getOrDefault("X-Amz-Date")
+  valid_593333 = validateParameter(valid_593333, JString, required = false,
                                  default = nil)
-  if valid_603435 != nil:
-    section.add "X-Amz-Signature", valid_603435
-  var valid_603436 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603436 = validateParameter(valid_603436, JString, required = false,
+  if valid_593333 != nil:
+    section.add "X-Amz-Date", valid_593333
+  var valid_593334 = header.getOrDefault("X-Amz-Credential")
+  valid_593334 = validateParameter(valid_593334, JString, required = false,
                                  default = nil)
-  if valid_603436 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603436
-  var valid_603437 = header.getOrDefault("X-Amz-Credential")
-  valid_603437 = validateParameter(valid_603437, JString, required = false,
+  if valid_593334 != nil:
+    section.add "X-Amz-Credential", valid_593334
+  var valid_593335 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593335 = validateParameter(valid_593335, JString, required = false,
                                  default = nil)
-  if valid_603437 != nil:
-    section.add "X-Amz-Credential", valid_603437
+  if valid_593335 != nil:
+    section.add "X-Amz-Security-Token", valid_593335
+  var valid_593336 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593336 = validateParameter(valid_593336, JString, required = false,
+                                 default = nil)
+  if valid_593336 != nil:
+    section.add "X-Amz-Algorithm", valid_593336
+  var valid_593337 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593337 = validateParameter(valid_593337, JString, required = false,
+                                 default = nil)
+  if valid_593337 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593337
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2911,44 +2915,44 @@ proc validate_StartStreamEncryption_603428(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603439: Call_StartStreamEncryption_603427; path: JsonNode;
+proc call*(call_593339: Call_StartStreamEncryption_593327; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Enables or updates server-side encryption using an AWS KMS key for a specified stream. </p> <p>Starting encryption is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Updating or applying encryption normally takes a few seconds to complete, but it can take minutes. You can continue to read and write data to your stream while its status is <code>UPDATING</code>. Once the status of the stream is <code>ACTIVE</code>, encryption begins for records written to the stream. </p> <p>API Limits: You can successfully apply a new AWS KMS key for server-side encryption 25 times in a rolling 24-hour period.</p> <p>Note: It can take up to 5 seconds after the stream is in an <code>ACTIVE</code> status before all records written to the stream are encrypted. After you enable encryption, you can verify that encryption is applied by inspecting the API response from <code>PutRecord</code> or <code>PutRecords</code>.</p>
   ## 
-  let valid = call_603439.validator(path, query, header, formData, body)
-  let scheme = call_603439.pickScheme
+  let valid = call_593339.validator(path, query, header, formData, body)
+  let scheme = call_593339.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603439.url(scheme.get, call_603439.host, call_603439.base,
-                         call_603439.route, valid.getOrDefault("path"),
+  let url = call_593339.url(scheme.get, call_593339.host, call_593339.base,
+                         call_593339.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603439, url, valid)
+  result = hook(call_593339, url, valid)
 
-proc call*(call_603440: Call_StartStreamEncryption_603427; body: JsonNode): Recallable =
+proc call*(call_593340: Call_StartStreamEncryption_593327; body: JsonNode): Recallable =
   ## startStreamEncryption
   ## <p>Enables or updates server-side encryption using an AWS KMS key for a specified stream. </p> <p>Starting encryption is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Updating or applying encryption normally takes a few seconds to complete, but it can take minutes. You can continue to read and write data to your stream while its status is <code>UPDATING</code>. Once the status of the stream is <code>ACTIVE</code>, encryption begins for records written to the stream. </p> <p>API Limits: You can successfully apply a new AWS KMS key for server-side encryption 25 times in a rolling 24-hour period.</p> <p>Note: It can take up to 5 seconds after the stream is in an <code>ACTIVE</code> status before all records written to the stream are encrypted. After you enable encryption, you can verify that encryption is applied by inspecting the API response from <code>PutRecord</code> or <code>PutRecords</code>.</p>
   ##   body: JObject (required)
-  var body_603441 = newJObject()
+  var body_593341 = newJObject()
   if body != nil:
-    body_603441 = body
-  result = call_603440.call(nil, nil, nil, nil, body_603441)
+    body_593341 = body
+  result = call_593340.call(nil, nil, nil, nil, body_593341)
 
-var startStreamEncryption* = Call_StartStreamEncryption_603427(
+var startStreamEncryption* = Call_StartStreamEncryption_593327(
     name: "startStreamEncryption", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.StartStreamEncryption",
-    validator: validate_StartStreamEncryption_603428, base: "/",
-    url: url_StartStreamEncryption_603429, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartStreamEncryption_593328, base: "/",
+    url: url_StartStreamEncryption_593329, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopStreamEncryption_603442 = ref object of OpenApiRestCall_602466
-proc url_StopStreamEncryption_603444(protocol: Scheme; host: string; base: string;
+  Call_StopStreamEncryption_593342 = ref object of OpenApiRestCall_592364
+proc url_StopStreamEncryption_593344(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_StopStreamEncryption_603443(path: JsonNode; query: JsonNode;
+proc validate_StopStreamEncryption_593343(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Disables server-side encryption for a specified stream. </p> <p>Stopping encryption is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Stopping encryption normally takes a few seconds to complete, but it can take minutes. You can continue to read and write data to your stream while its status is <code>UPDATING</code>. Once the status of the stream is <code>ACTIVE</code>, records written to the stream are no longer encrypted by Kinesis Data Streams. </p> <p>API Limits: You can successfully disable server-side encryption 25 times in a rolling 24-hour period. </p> <p>Note: It can take up to 5 seconds after the stream is in an <code>ACTIVE</code> status before all records written to the stream are no longer subject to encryption. After you disabled encryption, you can verify that encryption is not applied by inspecting the API response from <code>PutRecord</code> or <code>PutRecords</code>.</p>
   ## 
@@ -2959,57 +2963,57 @@ proc validate_StopStreamEncryption_603443(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603445 = header.getOrDefault("X-Amz-Date")
-  valid_603445 = validateParameter(valid_603445, JString, required = false,
-                                 default = nil)
-  if valid_603445 != nil:
-    section.add "X-Amz-Date", valid_603445
-  var valid_603446 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603446 = validateParameter(valid_603446, JString, required = false,
-                                 default = nil)
-  if valid_603446 != nil:
-    section.add "X-Amz-Security-Token", valid_603446
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603447 = header.getOrDefault("X-Amz-Target")
-  valid_603447 = validateParameter(valid_603447, JString, required = true, default = newJString(
+  var valid_593345 = header.getOrDefault("X-Amz-Target")
+  valid_593345 = validateParameter(valid_593345, JString, required = true, default = newJString(
       "Kinesis_20131202.StopStreamEncryption"))
-  if valid_603447 != nil:
-    section.add "X-Amz-Target", valid_603447
-  var valid_603448 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603448 = validateParameter(valid_603448, JString, required = false,
+  if valid_593345 != nil:
+    section.add "X-Amz-Target", valid_593345
+  var valid_593346 = header.getOrDefault("X-Amz-Signature")
+  valid_593346 = validateParameter(valid_593346, JString, required = false,
                                  default = nil)
-  if valid_603448 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603448
-  var valid_603449 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603449 = validateParameter(valid_603449, JString, required = false,
+  if valid_593346 != nil:
+    section.add "X-Amz-Signature", valid_593346
+  var valid_593347 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593347 = validateParameter(valid_593347, JString, required = false,
                                  default = nil)
-  if valid_603449 != nil:
-    section.add "X-Amz-Algorithm", valid_603449
-  var valid_603450 = header.getOrDefault("X-Amz-Signature")
-  valid_603450 = validateParameter(valid_603450, JString, required = false,
+  if valid_593347 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593347
+  var valid_593348 = header.getOrDefault("X-Amz-Date")
+  valid_593348 = validateParameter(valid_593348, JString, required = false,
                                  default = nil)
-  if valid_603450 != nil:
-    section.add "X-Amz-Signature", valid_603450
-  var valid_603451 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603451 = validateParameter(valid_603451, JString, required = false,
+  if valid_593348 != nil:
+    section.add "X-Amz-Date", valid_593348
+  var valid_593349 = header.getOrDefault("X-Amz-Credential")
+  valid_593349 = validateParameter(valid_593349, JString, required = false,
                                  default = nil)
-  if valid_603451 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603451
-  var valid_603452 = header.getOrDefault("X-Amz-Credential")
-  valid_603452 = validateParameter(valid_603452, JString, required = false,
+  if valid_593349 != nil:
+    section.add "X-Amz-Credential", valid_593349
+  var valid_593350 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593350 = validateParameter(valid_593350, JString, required = false,
                                  default = nil)
-  if valid_603452 != nil:
-    section.add "X-Amz-Credential", valid_603452
+  if valid_593350 != nil:
+    section.add "X-Amz-Security-Token", valid_593350
+  var valid_593351 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593351 = validateParameter(valid_593351, JString, required = false,
+                                 default = nil)
+  if valid_593351 != nil:
+    section.add "X-Amz-Algorithm", valid_593351
+  var valid_593352 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593352 = validateParameter(valid_593352, JString, required = false,
+                                 default = nil)
+  if valid_593352 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593352
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3020,44 +3024,44 @@ proc validate_StopStreamEncryption_603443(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603454: Call_StopStreamEncryption_603442; path: JsonNode;
+proc call*(call_593354: Call_StopStreamEncryption_593342; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Disables server-side encryption for a specified stream. </p> <p>Stopping encryption is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Stopping encryption normally takes a few seconds to complete, but it can take minutes. You can continue to read and write data to your stream while its status is <code>UPDATING</code>. Once the status of the stream is <code>ACTIVE</code>, records written to the stream are no longer encrypted by Kinesis Data Streams. </p> <p>API Limits: You can successfully disable server-side encryption 25 times in a rolling 24-hour period. </p> <p>Note: It can take up to 5 seconds after the stream is in an <code>ACTIVE</code> status before all records written to the stream are no longer subject to encryption. After you disabled encryption, you can verify that encryption is not applied by inspecting the API response from <code>PutRecord</code> or <code>PutRecords</code>.</p>
   ## 
-  let valid = call_603454.validator(path, query, header, formData, body)
-  let scheme = call_603454.pickScheme
+  let valid = call_593354.validator(path, query, header, formData, body)
+  let scheme = call_593354.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603454.url(scheme.get, call_603454.host, call_603454.base,
-                         call_603454.route, valid.getOrDefault("path"),
+  let url = call_593354.url(scheme.get, call_593354.host, call_593354.base,
+                         call_593354.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603454, url, valid)
+  result = hook(call_593354, url, valid)
 
-proc call*(call_603455: Call_StopStreamEncryption_603442; body: JsonNode): Recallable =
+proc call*(call_593355: Call_StopStreamEncryption_593342; body: JsonNode): Recallable =
   ## stopStreamEncryption
   ## <p>Disables server-side encryption for a specified stream. </p> <p>Stopping encryption is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Stopping encryption normally takes a few seconds to complete, but it can take minutes. You can continue to read and write data to your stream while its status is <code>UPDATING</code>. Once the status of the stream is <code>ACTIVE</code>, records written to the stream are no longer encrypted by Kinesis Data Streams. </p> <p>API Limits: You can successfully disable server-side encryption 25 times in a rolling 24-hour period. </p> <p>Note: It can take up to 5 seconds after the stream is in an <code>ACTIVE</code> status before all records written to the stream are no longer subject to encryption. After you disabled encryption, you can verify that encryption is not applied by inspecting the API response from <code>PutRecord</code> or <code>PutRecords</code>.</p>
   ##   body: JObject (required)
-  var body_603456 = newJObject()
+  var body_593356 = newJObject()
   if body != nil:
-    body_603456 = body
-  result = call_603455.call(nil, nil, nil, nil, body_603456)
+    body_593356 = body
+  result = call_593355.call(nil, nil, nil, nil, body_593356)
 
-var stopStreamEncryption* = Call_StopStreamEncryption_603442(
+var stopStreamEncryption* = Call_StopStreamEncryption_593342(
     name: "stopStreamEncryption", meth: HttpMethod.HttpPost,
     host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.StopStreamEncryption",
-    validator: validate_StopStreamEncryption_603443, base: "/",
-    url: url_StopStreamEncryption_603444, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StopStreamEncryption_593343, base: "/",
+    url: url_StopStreamEncryption_593344, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateShardCount_603457 = ref object of OpenApiRestCall_602466
-proc url_UpdateShardCount_603459(protocol: Scheme; host: string; base: string;
+  Call_UpdateShardCount_593357 = ref object of OpenApiRestCall_592364
+proc url_UpdateShardCount_593359(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateShardCount_603458(path: JsonNode; query: JsonNode;
+proc validate_UpdateShardCount_593358(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Updates the shard count of the specified stream to the specified number of shards.</p> <p>Updating the shard count is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Depending on the size of the stream, the scaling action could take a few minutes to complete. You can continue to read and write data to your stream while its status is <code>UPDATING</code>.</p> <p>To update the shard count, Kinesis Data Streams performs splits or merges on individual shards. This can cause short-lived shards to be created, in addition to the final shards. We recommend that you double or halve the shard count, as this results in the fewest number of splits or merges.</p> <p>This operation has the following default limits. By default, you cannot do the following:</p> <ul> <li> <p>Scale more than twice per rolling 24-hour period per stream</p> </li> <li> <p>Scale up to more than double your current shard count for a stream</p> </li> <li> <p>Scale down below half your current shard count for a stream</p> </li> <li> <p>Scale up to more than 500 shards in a stream</p> </li> <li> <p>Scale a stream with more than 500 shards down unless the result is less than 500 shards</p> </li> <li> <p>Scale up to more than the shard limit for your account</p> </li> </ul> <p>For the default limits for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To request an increase in the call rate limit, the shard limit for this API, or your overall shard limit, use the <a href="https://console.aws.amazon.com/support/v1#/case/create?issueType=service-limit-increase&amp;limitType=service-code-kinesis">limits form</a>.</p>
@@ -3069,57 +3073,57 @@ proc validate_UpdateShardCount_603458(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603460 = header.getOrDefault("X-Amz-Date")
-  valid_603460 = validateParameter(valid_603460, JString, required = false,
-                                 default = nil)
-  if valid_603460 != nil:
-    section.add "X-Amz-Date", valid_603460
-  var valid_603461 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603461 = validateParameter(valid_603461, JString, required = false,
-                                 default = nil)
-  if valid_603461 != nil:
-    section.add "X-Amz-Security-Token", valid_603461
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603462 = header.getOrDefault("X-Amz-Target")
-  valid_603462 = validateParameter(valid_603462, JString, required = true, default = newJString(
+  var valid_593360 = header.getOrDefault("X-Amz-Target")
+  valid_593360 = validateParameter(valid_593360, JString, required = true, default = newJString(
       "Kinesis_20131202.UpdateShardCount"))
-  if valid_603462 != nil:
-    section.add "X-Amz-Target", valid_603462
-  var valid_603463 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603463 = validateParameter(valid_603463, JString, required = false,
+  if valid_593360 != nil:
+    section.add "X-Amz-Target", valid_593360
+  var valid_593361 = header.getOrDefault("X-Amz-Signature")
+  valid_593361 = validateParameter(valid_593361, JString, required = false,
                                  default = nil)
-  if valid_603463 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603463
-  var valid_603464 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603464 = validateParameter(valid_603464, JString, required = false,
+  if valid_593361 != nil:
+    section.add "X-Amz-Signature", valid_593361
+  var valid_593362 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593362 = validateParameter(valid_593362, JString, required = false,
                                  default = nil)
-  if valid_603464 != nil:
-    section.add "X-Amz-Algorithm", valid_603464
-  var valid_603465 = header.getOrDefault("X-Amz-Signature")
-  valid_603465 = validateParameter(valid_603465, JString, required = false,
+  if valid_593362 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593362
+  var valid_593363 = header.getOrDefault("X-Amz-Date")
+  valid_593363 = validateParameter(valid_593363, JString, required = false,
                                  default = nil)
-  if valid_603465 != nil:
-    section.add "X-Amz-Signature", valid_603465
-  var valid_603466 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603466 = validateParameter(valid_603466, JString, required = false,
+  if valid_593363 != nil:
+    section.add "X-Amz-Date", valid_593363
+  var valid_593364 = header.getOrDefault("X-Amz-Credential")
+  valid_593364 = validateParameter(valid_593364, JString, required = false,
                                  default = nil)
-  if valid_603466 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603466
-  var valid_603467 = header.getOrDefault("X-Amz-Credential")
-  valid_603467 = validateParameter(valid_603467, JString, required = false,
+  if valid_593364 != nil:
+    section.add "X-Amz-Credential", valid_593364
+  var valid_593365 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593365 = validateParameter(valid_593365, JString, required = false,
                                  default = nil)
-  if valid_603467 != nil:
-    section.add "X-Amz-Credential", valid_603467
+  if valid_593365 != nil:
+    section.add "X-Amz-Security-Token", valid_593365
+  var valid_593366 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593366 = validateParameter(valid_593366, JString, required = false,
+                                 default = nil)
+  if valid_593366 != nil:
+    section.add "X-Amz-Algorithm", valid_593366
+  var valid_593367 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593367 = validateParameter(valid_593367, JString, required = false,
+                                 default = nil)
+  if valid_593367 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593367
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3130,33 +3134,33 @@ proc validate_UpdateShardCount_603458(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603469: Call_UpdateShardCount_603457; path: JsonNode;
+proc call*(call_593369: Call_UpdateShardCount_593357; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the shard count of the specified stream to the specified number of shards.</p> <p>Updating the shard count is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Depending on the size of the stream, the scaling action could take a few minutes to complete. You can continue to read and write data to your stream while its status is <code>UPDATING</code>.</p> <p>To update the shard count, Kinesis Data Streams performs splits or merges on individual shards. This can cause short-lived shards to be created, in addition to the final shards. We recommend that you double or halve the shard count, as this results in the fewest number of splits or merges.</p> <p>This operation has the following default limits. By default, you cannot do the following:</p> <ul> <li> <p>Scale more than twice per rolling 24-hour period per stream</p> </li> <li> <p>Scale up to more than double your current shard count for a stream</p> </li> <li> <p>Scale down below half your current shard count for a stream</p> </li> <li> <p>Scale up to more than 500 shards in a stream</p> </li> <li> <p>Scale a stream with more than 500 shards down unless the result is less than 500 shards</p> </li> <li> <p>Scale up to more than the shard limit for your account</p> </li> </ul> <p>For the default limits for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To request an increase in the call rate limit, the shard limit for this API, or your overall shard limit, use the <a href="https://console.aws.amazon.com/support/v1#/case/create?issueType=service-limit-increase&amp;limitType=service-code-kinesis">limits form</a>.</p>
   ## 
-  let valid = call_603469.validator(path, query, header, formData, body)
-  let scheme = call_603469.pickScheme
+  let valid = call_593369.validator(path, query, header, formData, body)
+  let scheme = call_593369.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603469.url(scheme.get, call_603469.host, call_603469.base,
-                         call_603469.route, valid.getOrDefault("path"),
+  let url = call_593369.url(scheme.get, call_593369.host, call_593369.base,
+                         call_593369.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603469, url, valid)
+  result = hook(call_593369, url, valid)
 
-proc call*(call_603470: Call_UpdateShardCount_603457; body: JsonNode): Recallable =
+proc call*(call_593370: Call_UpdateShardCount_593357; body: JsonNode): Recallable =
   ## updateShardCount
   ## <p>Updates the shard count of the specified stream to the specified number of shards.</p> <p>Updating the shard count is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to <code>UPDATING</code>. After the update is complete, Kinesis Data Streams sets the status of the stream back to <code>ACTIVE</code>. Depending on the size of the stream, the scaling action could take a few minutes to complete. You can continue to read and write data to your stream while its status is <code>UPDATING</code>.</p> <p>To update the shard count, Kinesis Data Streams performs splits or merges on individual shards. This can cause short-lived shards to be created, in addition to the final shards. We recommend that you double or halve the shard count, as this results in the fewest number of splits or merges.</p> <p>This operation has the following default limits. By default, you cannot do the following:</p> <ul> <li> <p>Scale more than twice per rolling 24-hour period per stream</p> </li> <li> <p>Scale up to more than double your current shard count for a stream</p> </li> <li> <p>Scale down below half your current shard count for a stream</p> </li> <li> <p>Scale up to more than 500 shards in a stream</p> </li> <li> <p>Scale a stream with more than 500 shards down unless the result is less than 500 shards</p> </li> <li> <p>Scale up to more than the shard limit for your account</p> </li> </ul> <p>For the default limits for an AWS account, see <a href="http://docs.aws.amazon.com/kinesis/latest/dev/service-sizes-and-limits.html">Streams Limits</a> in the <i>Amazon Kinesis Data Streams Developer Guide</i>. To request an increase in the call rate limit, the shard limit for this API, or your overall shard limit, use the <a href="https://console.aws.amazon.com/support/v1#/case/create?issueType=service-limit-increase&amp;limitType=service-code-kinesis">limits form</a>.</p>
   ##   body: JObject (required)
-  var body_603471 = newJObject()
+  var body_593371 = newJObject()
   if body != nil:
-    body_603471 = body
-  result = call_603470.call(nil, nil, nil, nil, body_603471)
+    body_593371 = body
+  result = call_593370.call(nil, nil, nil, nil, body_593371)
 
-var updateShardCount* = Call_UpdateShardCount_603457(name: "updateShardCount",
+var updateShardCount* = Call_UpdateShardCount_593357(name: "updateShardCount",
     meth: HttpMethod.HttpPost, host: "kinesis.amazonaws.com",
     route: "/#X-Amz-Target=Kinesis_20131202.UpdateShardCount",
-    validator: validate_UpdateShardCount_603458, base: "/",
-    url: url_UpdateShardCount_603459, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateShardCount_593358, base: "/",
+    url: url_UpdateShardCount_593359, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

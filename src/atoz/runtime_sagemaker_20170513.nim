@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602457 = ref object of OpenApiRestCall
+  OpenApiRestCall_592355 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602457](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_592355](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602457): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_592355): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -95,9 +95,13 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
     if head notin input:
       return
     let js = input[head]
-    if js.kind notin {JString, JInt, JFloat, JNull, JBool}:
+    case js.kind
+    of JInt, JFloat, JNull, JBool:
+      head = $js
+    of JString:
+      head = js.getStr
+    else:
       return
-    head = $js
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
@@ -130,8 +134,8 @@ const
   awsServiceName = "runtime.sagemaker"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_InvokeEndpoint_602794 = ref object of OpenApiRestCall_602457
-proc url_InvokeEndpoint_602796(protocol: Scheme; host: string; base: string;
+  Call_InvokeEndpoint_592694 = ref object of OpenApiRestCall_592355
+proc url_InvokeEndpoint_592696(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -147,7 +151,7 @@ proc url_InvokeEndpoint_602796(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_InvokeEndpoint_602795(path: JsonNode; query: JsonNode;
+proc validate_InvokeEndpoint_592695(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>After you deploy a model into production using Amazon SageMaker hosting services, your client applications use this API to get inferences from the model hosted at the specified endpoint. </p> <p>For an overview of Amazon SageMaker, see <a href="http://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works.html">How It Works</a>. </p> <p>Amazon SageMaker strips all POST headers except those supported by the API. Amazon SageMaker might add additional headers. You should not rely on the behavior of headers outside those enumerated in the request syntax. </p> <p>Cals to <code>InvokeEndpoint</code> are authenticated by using AWS Signature Version 4. For information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html">Authenticating Requests (AWS Signature Version 4)</a> in the <i>Amazon S3 API Reference</i>.</p> <note> <p>Endpoints are scoped to an individual account, and are not public. The URL does not contain the account ID, but Amazon SageMaker determines the account ID from the authentication token that is supplied by the caller.</p> </note>
@@ -161,79 +165,79 @@ proc validate_InvokeEndpoint_602795(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EndpointName` field"
-  var valid_602922 = path.getOrDefault("EndpointName")
-  valid_602922 = validateParameter(valid_602922, JString, required = true,
+  var valid_592822 = path.getOrDefault("EndpointName")
+  valid_592822 = validateParameter(valid_592822, JString, required = true,
                                  default = nil)
-  if valid_602922 != nil:
-    section.add "EndpointName", valid_602922
+  if valid_592822 != nil:
+    section.add "EndpointName", valid_592822
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
+  ##   X-Amzn-SageMaker-Custom-Attributes: JString
+  ##                                     : <p/>
+  ##   X-Amz-Signature: JString
   ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
   ##   Content-Type: JString
   ##               : The MIME type of the input data in the request body.
   ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
   ##   Accept: JString
   ##         : The desired MIME type of the inference in the response.
-  ##   X-Amzn-SageMaker-Custom-Attributes: JString
-  ##                                     : <p/>
-  ##   X-Amz-Credential: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602923 = header.getOrDefault("X-Amz-Date")
-  valid_602923 = validateParameter(valid_602923, JString, required = false,
+  var valid_592823 = header.getOrDefault("X-Amzn-SageMaker-Custom-Attributes")
+  valid_592823 = validateParameter(valid_592823, JString, required = false,
                                  default = nil)
-  if valid_602923 != nil:
-    section.add "X-Amz-Date", valid_602923
-  var valid_602924 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602924 = validateParameter(valid_602924, JString, required = false,
+  if valid_592823 != nil:
+    section.add "X-Amzn-SageMaker-Custom-Attributes", valid_592823
+  var valid_592824 = header.getOrDefault("X-Amz-Signature")
+  valid_592824 = validateParameter(valid_592824, JString, required = false,
                                  default = nil)
-  if valid_602924 != nil:
-    section.add "X-Amz-Security-Token", valid_602924
-  var valid_602925 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602925 = validateParameter(valid_602925, JString, required = false,
+  if valid_592824 != nil:
+    section.add "X-Amz-Signature", valid_592824
+  var valid_592825 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592825 = validateParameter(valid_592825, JString, required = false,
                                  default = nil)
-  if valid_602925 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602925
-  var valid_602926 = header.getOrDefault("Content-Type")
-  valid_602926 = validateParameter(valid_602926, JString, required = false,
+  if valid_592825 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592825
+  var valid_592826 = header.getOrDefault("X-Amz-Date")
+  valid_592826 = validateParameter(valid_592826, JString, required = false,
                                  default = nil)
-  if valid_602926 != nil:
-    section.add "Content-Type", valid_602926
-  var valid_602927 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602927 = validateParameter(valid_602927, JString, required = false,
+  if valid_592826 != nil:
+    section.add "X-Amz-Date", valid_592826
+  var valid_592827 = header.getOrDefault("X-Amz-Credential")
+  valid_592827 = validateParameter(valid_592827, JString, required = false,
                                  default = nil)
-  if valid_602927 != nil:
-    section.add "X-Amz-Algorithm", valid_602927
-  var valid_602928 = header.getOrDefault("X-Amz-Signature")
-  valid_602928 = validateParameter(valid_602928, JString, required = false,
+  if valid_592827 != nil:
+    section.add "X-Amz-Credential", valid_592827
+  var valid_592828 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592828 = validateParameter(valid_592828, JString, required = false,
                                  default = nil)
-  if valid_602928 != nil:
-    section.add "X-Amz-Signature", valid_602928
-  var valid_602929 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602929 = validateParameter(valid_602929, JString, required = false,
+  if valid_592828 != nil:
+    section.add "X-Amz-Security-Token", valid_592828
+  var valid_592829 = header.getOrDefault("Content-Type")
+  valid_592829 = validateParameter(valid_592829, JString, required = false,
                                  default = nil)
-  if valid_602929 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602929
-  var valid_602930 = header.getOrDefault("Accept")
-  valid_602930 = validateParameter(valid_602930, JString, required = false,
+  if valid_592829 != nil:
+    section.add "Content-Type", valid_592829
+  var valid_592830 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592830 = validateParameter(valid_592830, JString, required = false,
                                  default = nil)
-  if valid_602930 != nil:
-    section.add "Accept", valid_602930
-  var valid_602931 = header.getOrDefault("X-Amzn-SageMaker-Custom-Attributes")
-  valid_602931 = validateParameter(valid_602931, JString, required = false,
+  if valid_592830 != nil:
+    section.add "X-Amz-Algorithm", valid_592830
+  var valid_592831 = header.getOrDefault("Accept")
+  valid_592831 = validateParameter(valid_592831, JString, required = false,
                                  default = nil)
-  if valid_602931 != nil:
-    section.add "X-Amzn-SageMaker-Custom-Attributes", valid_602931
-  var valid_602932 = header.getOrDefault("X-Amz-Credential")
-  valid_602932 = validateParameter(valid_602932, JString, required = false,
+  if valid_592831 != nil:
+    section.add "Accept", valid_592831
+  var valid_592832 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592832 = validateParameter(valid_592832, JString, required = false,
                                  default = nil)
-  if valid_602932 != nil:
-    section.add "X-Amz-Credential", valid_602932
+  if valid_592832 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592832
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -244,20 +248,20 @@ proc validate_InvokeEndpoint_602795(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602956: Call_InvokeEndpoint_602794; path: JsonNode; query: JsonNode;
+proc call*(call_592856: Call_InvokeEndpoint_592694; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>After you deploy a model into production using Amazon SageMaker hosting services, your client applications use this API to get inferences from the model hosted at the specified endpoint. </p> <p>For an overview of Amazon SageMaker, see <a href="http://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works.html">How It Works</a>. </p> <p>Amazon SageMaker strips all POST headers except those supported by the API. Amazon SageMaker might add additional headers. You should not rely on the behavior of headers outside those enumerated in the request syntax. </p> <p>Cals to <code>InvokeEndpoint</code> are authenticated by using AWS Signature Version 4. For information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html">Authenticating Requests (AWS Signature Version 4)</a> in the <i>Amazon S3 API Reference</i>.</p> <note> <p>Endpoints are scoped to an individual account, and are not public. The URL does not contain the account ID, but Amazon SageMaker determines the account ID from the authentication token that is supplied by the caller.</p> </note>
   ## 
-  let valid = call_602956.validator(path, query, header, formData, body)
-  let scheme = call_602956.pickScheme
+  let valid = call_592856.validator(path, query, header, formData, body)
+  let scheme = call_592856.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602956.url(scheme.get, call_602956.host, call_602956.base,
-                         call_602956.route, valid.getOrDefault("path"),
+  let url = call_592856.url(scheme.get, call_592856.host, call_592856.base,
+                         call_592856.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_602956, url, valid)
+  result = hook(call_592856, url, valid)
 
-proc call*(call_603027: Call_InvokeEndpoint_602794; EndpointName: string;
+proc call*(call_592927: Call_InvokeEndpoint_592694; EndpointName: string;
           body: JsonNode): Recallable =
   ## invokeEndpoint
   ## <p>After you deploy a model into production using Amazon SageMaker hosting services, your client applications use this API to get inferences from the model hosted at the specified endpoint. </p> <p>For an overview of Amazon SageMaker, see <a href="http://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works.html">How It Works</a>. </p> <p>Amazon SageMaker strips all POST headers except those supported by the API. Amazon SageMaker might add additional headers. You should not rely on the behavior of headers outside those enumerated in the request syntax. </p> <p>Cals to <code>InvokeEndpoint</code> are authenticated by using AWS Signature Version 4. For information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html">Authenticating Requests (AWS Signature Version 4)</a> in the <i>Amazon S3 API Reference</i>.</p> <note> <p>Endpoints are scoped to an individual account, and are not public. The URL does not contain the account ID, but Amazon SageMaker determines the account ID from the authentication token that is supplied by the caller.</p> </note>
@@ -265,17 +269,17 @@ proc call*(call_603027: Call_InvokeEndpoint_602794; EndpointName: string;
   ##               : The name of the endpoint that you specified when you created the endpoint using the <a 
   ## href="http://docs.aws.amazon.com/sagemaker/latest/dg/API_CreateEndpoint.html">CreateEndpoint</a> API. 
   ##   body: JObject (required)
-  var path_603028 = newJObject()
-  var body_603030 = newJObject()
-  add(path_603028, "EndpointName", newJString(EndpointName))
+  var path_592928 = newJObject()
+  var body_592930 = newJObject()
+  add(path_592928, "EndpointName", newJString(EndpointName))
   if body != nil:
-    body_603030 = body
-  result = call_603027.call(path_603028, nil, nil, nil, body_603030)
+    body_592930 = body
+  result = call_592927.call(path_592928, nil, nil, nil, body_592930)
 
-var invokeEndpoint* = Call_InvokeEndpoint_602794(name: "invokeEndpoint",
+var invokeEndpoint* = Call_InvokeEndpoint_592694(name: "invokeEndpoint",
     meth: HttpMethod.HttpPost, host: "runtime.sagemaker.amazonaws.com",
     route: "/endpoints/{EndpointName}/invocations",
-    validator: validate_InvokeEndpoint_602795, base: "/", url: url_InvokeEndpoint_602796,
+    validator: validate_InvokeEndpoint_592695, base: "/", url: url_InvokeEndpoint_592696,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

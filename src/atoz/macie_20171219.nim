@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602457 = ref object of OpenApiRestCall
+  OpenApiRestCall_592355 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602457](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_592355](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602457): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_592355): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -95,9 +95,13 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
     if head notin input:
       return
     let js = input[head]
-    if js.kind notin {JString, JInt, JFloat, JNull, JBool}:
+    case js.kind
+    of JInt, JFloat, JNull, JBool:
+      head = $js
+    of JString:
+      head = js.getStr
+    else:
       return
-    head = $js
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
@@ -143,15 +147,15 @@ const
   awsServiceName = "macie"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AssociateMemberAccount_602794 = ref object of OpenApiRestCall_602457
-proc url_AssociateMemberAccount_602796(protocol: Scheme; host: string; base: string;
+  Call_AssociateMemberAccount_592694 = ref object of OpenApiRestCall_592355
+proc url_AssociateMemberAccount_592696(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AssociateMemberAccount_602795(path: JsonNode; query: JsonNode;
+proc validate_AssociateMemberAccount_592695(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Associates a specified AWS account with Amazon Macie as a member account.
   ## 
@@ -162,57 +166,57 @@ proc validate_AssociateMemberAccount_602795(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602908 = header.getOrDefault("X-Amz-Date")
-  valid_602908 = validateParameter(valid_602908, JString, required = false,
-                                 default = nil)
-  if valid_602908 != nil:
-    section.add "X-Amz-Date", valid_602908
-  var valid_602909 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602909 = validateParameter(valid_602909, JString, required = false,
-                                 default = nil)
-  if valid_602909 != nil:
-    section.add "X-Amz-Security-Token", valid_602909
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602923 = header.getOrDefault("X-Amz-Target")
-  valid_602923 = validateParameter(valid_602923, JString, required = true, default = newJString(
+  var valid_592821 = header.getOrDefault("X-Amz-Target")
+  valid_592821 = validateParameter(valid_592821, JString, required = true, default = newJString(
       "MacieService.AssociateMemberAccount"))
-  if valid_602923 != nil:
-    section.add "X-Amz-Target", valid_602923
-  var valid_602924 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602924 = validateParameter(valid_602924, JString, required = false,
+  if valid_592821 != nil:
+    section.add "X-Amz-Target", valid_592821
+  var valid_592822 = header.getOrDefault("X-Amz-Signature")
+  valid_592822 = validateParameter(valid_592822, JString, required = false,
                                  default = nil)
-  if valid_602924 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602924
-  var valid_602925 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602925 = validateParameter(valid_602925, JString, required = false,
+  if valid_592822 != nil:
+    section.add "X-Amz-Signature", valid_592822
+  var valid_592823 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592823 = validateParameter(valid_592823, JString, required = false,
                                  default = nil)
-  if valid_602925 != nil:
-    section.add "X-Amz-Algorithm", valid_602925
-  var valid_602926 = header.getOrDefault("X-Amz-Signature")
-  valid_602926 = validateParameter(valid_602926, JString, required = false,
+  if valid_592823 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592823
+  var valid_592824 = header.getOrDefault("X-Amz-Date")
+  valid_592824 = validateParameter(valid_592824, JString, required = false,
                                  default = nil)
-  if valid_602926 != nil:
-    section.add "X-Amz-Signature", valid_602926
-  var valid_602927 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602927 = validateParameter(valid_602927, JString, required = false,
+  if valid_592824 != nil:
+    section.add "X-Amz-Date", valid_592824
+  var valid_592825 = header.getOrDefault("X-Amz-Credential")
+  valid_592825 = validateParameter(valid_592825, JString, required = false,
                                  default = nil)
-  if valid_602927 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602927
-  var valid_602928 = header.getOrDefault("X-Amz-Credential")
-  valid_602928 = validateParameter(valid_602928, JString, required = false,
+  if valid_592825 != nil:
+    section.add "X-Amz-Credential", valid_592825
+  var valid_592826 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592826 = validateParameter(valid_592826, JString, required = false,
                                  default = nil)
-  if valid_602928 != nil:
-    section.add "X-Amz-Credential", valid_602928
+  if valid_592826 != nil:
+    section.add "X-Amz-Security-Token", valid_592826
+  var valid_592827 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592827 = validateParameter(valid_592827, JString, required = false,
+                                 default = nil)
+  if valid_592827 != nil:
+    section.add "X-Amz-Algorithm", valid_592827
+  var valid_592828 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592828 = validateParameter(valid_592828, JString, required = false,
+                                 default = nil)
+  if valid_592828 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592828
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -223,44 +227,44 @@ proc validate_AssociateMemberAccount_602795(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602952: Call_AssociateMemberAccount_602794; path: JsonNode;
+proc call*(call_592852: Call_AssociateMemberAccount_592694; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Associates a specified AWS account with Amazon Macie as a member account.
   ## 
-  let valid = call_602952.validator(path, query, header, formData, body)
-  let scheme = call_602952.pickScheme
+  let valid = call_592852.validator(path, query, header, formData, body)
+  let scheme = call_592852.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602952.url(scheme.get, call_602952.host, call_602952.base,
-                         call_602952.route, valid.getOrDefault("path"),
+  let url = call_592852.url(scheme.get, call_592852.host, call_592852.base,
+                         call_592852.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_602952, url, valid)
+  result = hook(call_592852, url, valid)
 
-proc call*(call_603023: Call_AssociateMemberAccount_602794; body: JsonNode): Recallable =
+proc call*(call_592923: Call_AssociateMemberAccount_592694; body: JsonNode): Recallable =
   ## associateMemberAccount
   ## Associates a specified AWS account with Amazon Macie as a member account.
   ##   body: JObject (required)
-  var body_603024 = newJObject()
+  var body_592924 = newJObject()
   if body != nil:
-    body_603024 = body
-  result = call_603023.call(nil, nil, nil, nil, body_603024)
+    body_592924 = body
+  result = call_592923.call(nil, nil, nil, nil, body_592924)
 
-var associateMemberAccount* = Call_AssociateMemberAccount_602794(
+var associateMemberAccount* = Call_AssociateMemberAccount_592694(
     name: "associateMemberAccount", meth: HttpMethod.HttpPost,
     host: "macie.amazonaws.com",
     route: "/#X-Amz-Target=MacieService.AssociateMemberAccount",
-    validator: validate_AssociateMemberAccount_602795, base: "/",
-    url: url_AssociateMemberAccount_602796, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AssociateMemberAccount_592695, base: "/",
+    url: url_AssociateMemberAccount_592696, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AssociateS3Resources_603063 = ref object of OpenApiRestCall_602457
-proc url_AssociateS3Resources_603065(protocol: Scheme; host: string; base: string;
+  Call_AssociateS3Resources_592963 = ref object of OpenApiRestCall_592355
+proc url_AssociateS3Resources_592965(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AssociateS3Resources_603064(path: JsonNode; query: JsonNode;
+proc validate_AssociateS3Resources_592964(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Associates specified S3 resources with Amazon Macie for monitoring and data classification. If memberAccountId isn't specified, the action associates specified S3 resources with Macie for the current master account. If memberAccountId is specified, the action associates specified S3 resources with Macie for the specified member account. 
   ## 
@@ -271,57 +275,57 @@ proc validate_AssociateS3Resources_603064(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603066 = header.getOrDefault("X-Amz-Date")
-  valid_603066 = validateParameter(valid_603066, JString, required = false,
-                                 default = nil)
-  if valid_603066 != nil:
-    section.add "X-Amz-Date", valid_603066
-  var valid_603067 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603067 = validateParameter(valid_603067, JString, required = false,
-                                 default = nil)
-  if valid_603067 != nil:
-    section.add "X-Amz-Security-Token", valid_603067
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603068 = header.getOrDefault("X-Amz-Target")
-  valid_603068 = validateParameter(valid_603068, JString, required = true, default = newJString(
+  var valid_592966 = header.getOrDefault("X-Amz-Target")
+  valid_592966 = validateParameter(valid_592966, JString, required = true, default = newJString(
       "MacieService.AssociateS3Resources"))
-  if valid_603068 != nil:
-    section.add "X-Amz-Target", valid_603068
-  var valid_603069 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603069 = validateParameter(valid_603069, JString, required = false,
+  if valid_592966 != nil:
+    section.add "X-Amz-Target", valid_592966
+  var valid_592967 = header.getOrDefault("X-Amz-Signature")
+  valid_592967 = validateParameter(valid_592967, JString, required = false,
                                  default = nil)
-  if valid_603069 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603069
-  var valid_603070 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603070 = validateParameter(valid_603070, JString, required = false,
+  if valid_592967 != nil:
+    section.add "X-Amz-Signature", valid_592967
+  var valid_592968 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592968 = validateParameter(valid_592968, JString, required = false,
                                  default = nil)
-  if valid_603070 != nil:
-    section.add "X-Amz-Algorithm", valid_603070
-  var valid_603071 = header.getOrDefault("X-Amz-Signature")
-  valid_603071 = validateParameter(valid_603071, JString, required = false,
+  if valid_592968 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592968
+  var valid_592969 = header.getOrDefault("X-Amz-Date")
+  valid_592969 = validateParameter(valid_592969, JString, required = false,
                                  default = nil)
-  if valid_603071 != nil:
-    section.add "X-Amz-Signature", valid_603071
-  var valid_603072 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603072 = validateParameter(valid_603072, JString, required = false,
+  if valid_592969 != nil:
+    section.add "X-Amz-Date", valid_592969
+  var valid_592970 = header.getOrDefault("X-Amz-Credential")
+  valid_592970 = validateParameter(valid_592970, JString, required = false,
                                  default = nil)
-  if valid_603072 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603072
-  var valid_603073 = header.getOrDefault("X-Amz-Credential")
-  valid_603073 = validateParameter(valid_603073, JString, required = false,
+  if valid_592970 != nil:
+    section.add "X-Amz-Credential", valid_592970
+  var valid_592971 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592971 = validateParameter(valid_592971, JString, required = false,
                                  default = nil)
-  if valid_603073 != nil:
-    section.add "X-Amz-Credential", valid_603073
+  if valid_592971 != nil:
+    section.add "X-Amz-Security-Token", valid_592971
+  var valid_592972 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592972 = validateParameter(valid_592972, JString, required = false,
+                                 default = nil)
+  if valid_592972 != nil:
+    section.add "X-Amz-Algorithm", valid_592972
+  var valid_592973 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592973 = validateParameter(valid_592973, JString, required = false,
+                                 default = nil)
+  if valid_592973 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592973
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -332,44 +336,44 @@ proc validate_AssociateS3Resources_603064(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603075: Call_AssociateS3Resources_603063; path: JsonNode;
+proc call*(call_592975: Call_AssociateS3Resources_592963; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Associates specified S3 resources with Amazon Macie for monitoring and data classification. If memberAccountId isn't specified, the action associates specified S3 resources with Macie for the current master account. If memberAccountId is specified, the action associates specified S3 resources with Macie for the specified member account. 
   ## 
-  let valid = call_603075.validator(path, query, header, formData, body)
-  let scheme = call_603075.pickScheme
+  let valid = call_592975.validator(path, query, header, formData, body)
+  let scheme = call_592975.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603075.url(scheme.get, call_603075.host, call_603075.base,
-                         call_603075.route, valid.getOrDefault("path"),
+  let url = call_592975.url(scheme.get, call_592975.host, call_592975.base,
+                         call_592975.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603075, url, valid)
+  result = hook(call_592975, url, valid)
 
-proc call*(call_603076: Call_AssociateS3Resources_603063; body: JsonNode): Recallable =
+proc call*(call_592976: Call_AssociateS3Resources_592963; body: JsonNode): Recallable =
   ## associateS3Resources
   ## Associates specified S3 resources with Amazon Macie for monitoring and data classification. If memberAccountId isn't specified, the action associates specified S3 resources with Macie for the current master account. If memberAccountId is specified, the action associates specified S3 resources with Macie for the specified member account. 
   ##   body: JObject (required)
-  var body_603077 = newJObject()
+  var body_592977 = newJObject()
   if body != nil:
-    body_603077 = body
-  result = call_603076.call(nil, nil, nil, nil, body_603077)
+    body_592977 = body
+  result = call_592976.call(nil, nil, nil, nil, body_592977)
 
-var associateS3Resources* = Call_AssociateS3Resources_603063(
+var associateS3Resources* = Call_AssociateS3Resources_592963(
     name: "associateS3Resources", meth: HttpMethod.HttpPost,
     host: "macie.amazonaws.com",
     route: "/#X-Amz-Target=MacieService.AssociateS3Resources",
-    validator: validate_AssociateS3Resources_603064, base: "/",
-    url: url_AssociateS3Resources_603065, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AssociateS3Resources_592964, base: "/",
+    url: url_AssociateS3Resources_592965, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateMemberAccount_603078 = ref object of OpenApiRestCall_602457
-proc url_DisassociateMemberAccount_603080(protocol: Scheme; host: string;
+  Call_DisassociateMemberAccount_592978 = ref object of OpenApiRestCall_592355
+proc url_DisassociateMemberAccount_592980(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisassociateMemberAccount_603079(path: JsonNode; query: JsonNode;
+proc validate_DisassociateMemberAccount_592979(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes the specified member account from Amazon Macie.
   ## 
@@ -380,57 +384,57 @@ proc validate_DisassociateMemberAccount_603079(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603081 = header.getOrDefault("X-Amz-Date")
-  valid_603081 = validateParameter(valid_603081, JString, required = false,
-                                 default = nil)
-  if valid_603081 != nil:
-    section.add "X-Amz-Date", valid_603081
-  var valid_603082 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603082 = validateParameter(valid_603082, JString, required = false,
-                                 default = nil)
-  if valid_603082 != nil:
-    section.add "X-Amz-Security-Token", valid_603082
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603083 = header.getOrDefault("X-Amz-Target")
-  valid_603083 = validateParameter(valid_603083, JString, required = true, default = newJString(
+  var valid_592981 = header.getOrDefault("X-Amz-Target")
+  valid_592981 = validateParameter(valid_592981, JString, required = true, default = newJString(
       "MacieService.DisassociateMemberAccount"))
-  if valid_603083 != nil:
-    section.add "X-Amz-Target", valid_603083
-  var valid_603084 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603084 = validateParameter(valid_603084, JString, required = false,
+  if valid_592981 != nil:
+    section.add "X-Amz-Target", valid_592981
+  var valid_592982 = header.getOrDefault("X-Amz-Signature")
+  valid_592982 = validateParameter(valid_592982, JString, required = false,
                                  default = nil)
-  if valid_603084 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603084
-  var valid_603085 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603085 = validateParameter(valid_603085, JString, required = false,
+  if valid_592982 != nil:
+    section.add "X-Amz-Signature", valid_592982
+  var valid_592983 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592983 = validateParameter(valid_592983, JString, required = false,
                                  default = nil)
-  if valid_603085 != nil:
-    section.add "X-Amz-Algorithm", valid_603085
-  var valid_603086 = header.getOrDefault("X-Amz-Signature")
-  valid_603086 = validateParameter(valid_603086, JString, required = false,
+  if valid_592983 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592983
+  var valid_592984 = header.getOrDefault("X-Amz-Date")
+  valid_592984 = validateParameter(valid_592984, JString, required = false,
                                  default = nil)
-  if valid_603086 != nil:
-    section.add "X-Amz-Signature", valid_603086
-  var valid_603087 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603087 = validateParameter(valid_603087, JString, required = false,
+  if valid_592984 != nil:
+    section.add "X-Amz-Date", valid_592984
+  var valid_592985 = header.getOrDefault("X-Amz-Credential")
+  valid_592985 = validateParameter(valid_592985, JString, required = false,
                                  default = nil)
-  if valid_603087 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603087
-  var valid_603088 = header.getOrDefault("X-Amz-Credential")
-  valid_603088 = validateParameter(valid_603088, JString, required = false,
+  if valid_592985 != nil:
+    section.add "X-Amz-Credential", valid_592985
+  var valid_592986 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592986 = validateParameter(valid_592986, JString, required = false,
                                  default = nil)
-  if valid_603088 != nil:
-    section.add "X-Amz-Credential", valid_603088
+  if valid_592986 != nil:
+    section.add "X-Amz-Security-Token", valid_592986
+  var valid_592987 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592987 = validateParameter(valid_592987, JString, required = false,
+                                 default = nil)
+  if valid_592987 != nil:
+    section.add "X-Amz-Algorithm", valid_592987
+  var valid_592988 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592988 = validateParameter(valid_592988, JString, required = false,
+                                 default = nil)
+  if valid_592988 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592988
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -441,38 +445,38 @@ proc validate_DisassociateMemberAccount_603079(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603090: Call_DisassociateMemberAccount_603078; path: JsonNode;
+proc call*(call_592990: Call_DisassociateMemberAccount_592978; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes the specified member account from Amazon Macie.
   ## 
-  let valid = call_603090.validator(path, query, header, formData, body)
-  let scheme = call_603090.pickScheme
+  let valid = call_592990.validator(path, query, header, formData, body)
+  let scheme = call_592990.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603090.url(scheme.get, call_603090.host, call_603090.base,
-                         call_603090.route, valid.getOrDefault("path"),
+  let url = call_592990.url(scheme.get, call_592990.host, call_592990.base,
+                         call_592990.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603090, url, valid)
+  result = hook(call_592990, url, valid)
 
-proc call*(call_603091: Call_DisassociateMemberAccount_603078; body: JsonNode): Recallable =
+proc call*(call_592991: Call_DisassociateMemberAccount_592978; body: JsonNode): Recallable =
   ## disassociateMemberAccount
   ## Removes the specified member account from Amazon Macie.
   ##   body: JObject (required)
-  var body_603092 = newJObject()
+  var body_592992 = newJObject()
   if body != nil:
-    body_603092 = body
-  result = call_603091.call(nil, nil, nil, nil, body_603092)
+    body_592992 = body
+  result = call_592991.call(nil, nil, nil, nil, body_592992)
 
-var disassociateMemberAccount* = Call_DisassociateMemberAccount_603078(
+var disassociateMemberAccount* = Call_DisassociateMemberAccount_592978(
     name: "disassociateMemberAccount", meth: HttpMethod.HttpPost,
     host: "macie.amazonaws.com",
     route: "/#X-Amz-Target=MacieService.DisassociateMemberAccount",
-    validator: validate_DisassociateMemberAccount_603079, base: "/",
-    url: url_DisassociateMemberAccount_603080,
+    validator: validate_DisassociateMemberAccount_592979, base: "/",
+    url: url_DisassociateMemberAccount_592980,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateS3Resources_603093 = ref object of OpenApiRestCall_602457
-proc url_DisassociateS3Resources_603095(protocol: Scheme; host: string; base: string;
+  Call_DisassociateS3Resources_592993 = ref object of OpenApiRestCall_592355
+proc url_DisassociateS3Resources_592995(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -480,7 +484,7 @@ proc url_DisassociateS3Resources_603095(protocol: Scheme; host: string; base: st
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisassociateS3Resources_603094(path: JsonNode; query: JsonNode;
+proc validate_DisassociateS3Resources_592994(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes specified S3 resources from being monitored by Amazon Macie. If memberAccountId isn't specified, the action removes specified S3 resources from Macie for the current master account. If memberAccountId is specified, the action removes specified S3 resources from Macie for the specified member account.
   ## 
@@ -491,57 +495,57 @@ proc validate_DisassociateS3Resources_603094(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603096 = header.getOrDefault("X-Amz-Date")
-  valid_603096 = validateParameter(valid_603096, JString, required = false,
-                                 default = nil)
-  if valid_603096 != nil:
-    section.add "X-Amz-Date", valid_603096
-  var valid_603097 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603097 = validateParameter(valid_603097, JString, required = false,
-                                 default = nil)
-  if valid_603097 != nil:
-    section.add "X-Amz-Security-Token", valid_603097
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603098 = header.getOrDefault("X-Amz-Target")
-  valid_603098 = validateParameter(valid_603098, JString, required = true, default = newJString(
+  var valid_592996 = header.getOrDefault("X-Amz-Target")
+  valid_592996 = validateParameter(valid_592996, JString, required = true, default = newJString(
       "MacieService.DisassociateS3Resources"))
-  if valid_603098 != nil:
-    section.add "X-Amz-Target", valid_603098
-  var valid_603099 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603099 = validateParameter(valid_603099, JString, required = false,
+  if valid_592996 != nil:
+    section.add "X-Amz-Target", valid_592996
+  var valid_592997 = header.getOrDefault("X-Amz-Signature")
+  valid_592997 = validateParameter(valid_592997, JString, required = false,
                                  default = nil)
-  if valid_603099 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603099
-  var valid_603100 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603100 = validateParameter(valid_603100, JString, required = false,
+  if valid_592997 != nil:
+    section.add "X-Amz-Signature", valid_592997
+  var valid_592998 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592998 = validateParameter(valid_592998, JString, required = false,
                                  default = nil)
-  if valid_603100 != nil:
-    section.add "X-Amz-Algorithm", valid_603100
-  var valid_603101 = header.getOrDefault("X-Amz-Signature")
-  valid_603101 = validateParameter(valid_603101, JString, required = false,
+  if valid_592998 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592998
+  var valid_592999 = header.getOrDefault("X-Amz-Date")
+  valid_592999 = validateParameter(valid_592999, JString, required = false,
                                  default = nil)
-  if valid_603101 != nil:
-    section.add "X-Amz-Signature", valid_603101
-  var valid_603102 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603102 = validateParameter(valid_603102, JString, required = false,
+  if valid_592999 != nil:
+    section.add "X-Amz-Date", valid_592999
+  var valid_593000 = header.getOrDefault("X-Amz-Credential")
+  valid_593000 = validateParameter(valid_593000, JString, required = false,
                                  default = nil)
-  if valid_603102 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603102
-  var valid_603103 = header.getOrDefault("X-Amz-Credential")
-  valid_603103 = validateParameter(valid_603103, JString, required = false,
+  if valid_593000 != nil:
+    section.add "X-Amz-Credential", valid_593000
+  var valid_593001 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593001 = validateParameter(valid_593001, JString, required = false,
                                  default = nil)
-  if valid_603103 != nil:
-    section.add "X-Amz-Credential", valid_603103
+  if valid_593001 != nil:
+    section.add "X-Amz-Security-Token", valid_593001
+  var valid_593002 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593002 = validateParameter(valid_593002, JString, required = false,
+                                 default = nil)
+  if valid_593002 != nil:
+    section.add "X-Amz-Algorithm", valid_593002
+  var valid_593003 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593003 = validateParameter(valid_593003, JString, required = false,
+                                 default = nil)
+  if valid_593003 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593003
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -552,44 +556,44 @@ proc validate_DisassociateS3Resources_603094(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603105: Call_DisassociateS3Resources_603093; path: JsonNode;
+proc call*(call_593005: Call_DisassociateS3Resources_592993; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes specified S3 resources from being monitored by Amazon Macie. If memberAccountId isn't specified, the action removes specified S3 resources from Macie for the current master account. If memberAccountId is specified, the action removes specified S3 resources from Macie for the specified member account.
   ## 
-  let valid = call_603105.validator(path, query, header, formData, body)
-  let scheme = call_603105.pickScheme
+  let valid = call_593005.validator(path, query, header, formData, body)
+  let scheme = call_593005.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603105.url(scheme.get, call_603105.host, call_603105.base,
-                         call_603105.route, valid.getOrDefault("path"),
+  let url = call_593005.url(scheme.get, call_593005.host, call_593005.base,
+                         call_593005.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603105, url, valid)
+  result = hook(call_593005, url, valid)
 
-proc call*(call_603106: Call_DisassociateS3Resources_603093; body: JsonNode): Recallable =
+proc call*(call_593006: Call_DisassociateS3Resources_592993; body: JsonNode): Recallable =
   ## disassociateS3Resources
   ## Removes specified S3 resources from being monitored by Amazon Macie. If memberAccountId isn't specified, the action removes specified S3 resources from Macie for the current master account. If memberAccountId is specified, the action removes specified S3 resources from Macie for the specified member account.
   ##   body: JObject (required)
-  var body_603107 = newJObject()
+  var body_593007 = newJObject()
   if body != nil:
-    body_603107 = body
-  result = call_603106.call(nil, nil, nil, nil, body_603107)
+    body_593007 = body
+  result = call_593006.call(nil, nil, nil, nil, body_593007)
 
-var disassociateS3Resources* = Call_DisassociateS3Resources_603093(
+var disassociateS3Resources* = Call_DisassociateS3Resources_592993(
     name: "disassociateS3Resources", meth: HttpMethod.HttpPost,
     host: "macie.amazonaws.com",
     route: "/#X-Amz-Target=MacieService.DisassociateS3Resources",
-    validator: validate_DisassociateS3Resources_603094, base: "/",
-    url: url_DisassociateS3Resources_603095, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisassociateS3Resources_592994, base: "/",
+    url: url_DisassociateS3Resources_592995, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListMemberAccounts_603108 = ref object of OpenApiRestCall_602457
-proc url_ListMemberAccounts_603110(protocol: Scheme; host: string; base: string;
+  Call_ListMemberAccounts_593008 = ref object of OpenApiRestCall_592355
+proc url_ListMemberAccounts_593010(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListMemberAccounts_603109(path: JsonNode; query: JsonNode;
+proc validate_ListMemberAccounts_593009(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Lists all Amazon Macie member accounts for the current Amazon Macie master account.
@@ -599,74 +603,74 @@ proc validate_ListMemberAccounts_603109(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   maxResults: JString
-  ##             : Pagination limit
   ##   nextToken: JString
   ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_603111 = query.getOrDefault("maxResults")
-  valid_603111 = validateParameter(valid_603111, JString, required = false,
+  var valid_593011 = query.getOrDefault("nextToken")
+  valid_593011 = validateParameter(valid_593011, JString, required = false,
                                  default = nil)
-  if valid_603111 != nil:
-    section.add "maxResults", valid_603111
-  var valid_603112 = query.getOrDefault("nextToken")
-  valid_603112 = validateParameter(valid_603112, JString, required = false,
+  if valid_593011 != nil:
+    section.add "nextToken", valid_593011
+  var valid_593012 = query.getOrDefault("maxResults")
+  valid_593012 = validateParameter(valid_593012, JString, required = false,
                                  default = nil)
-  if valid_603112 != nil:
-    section.add "nextToken", valid_603112
+  if valid_593012 != nil:
+    section.add "maxResults", valid_593012
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603113 = header.getOrDefault("X-Amz-Date")
-  valid_603113 = validateParameter(valid_603113, JString, required = false,
-                                 default = nil)
-  if valid_603113 != nil:
-    section.add "X-Amz-Date", valid_603113
-  var valid_603114 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603114 = validateParameter(valid_603114, JString, required = false,
-                                 default = nil)
-  if valid_603114 != nil:
-    section.add "X-Amz-Security-Token", valid_603114
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603115 = header.getOrDefault("X-Amz-Target")
-  valid_603115 = validateParameter(valid_603115, JString, required = true, default = newJString(
+  var valid_593013 = header.getOrDefault("X-Amz-Target")
+  valid_593013 = validateParameter(valid_593013, JString, required = true, default = newJString(
       "MacieService.ListMemberAccounts"))
-  if valid_603115 != nil:
-    section.add "X-Amz-Target", valid_603115
-  var valid_603116 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603116 = validateParameter(valid_603116, JString, required = false,
+  if valid_593013 != nil:
+    section.add "X-Amz-Target", valid_593013
+  var valid_593014 = header.getOrDefault("X-Amz-Signature")
+  valid_593014 = validateParameter(valid_593014, JString, required = false,
                                  default = nil)
-  if valid_603116 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603116
-  var valid_603117 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603117 = validateParameter(valid_603117, JString, required = false,
+  if valid_593014 != nil:
+    section.add "X-Amz-Signature", valid_593014
+  var valid_593015 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593015 = validateParameter(valid_593015, JString, required = false,
                                  default = nil)
-  if valid_603117 != nil:
-    section.add "X-Amz-Algorithm", valid_603117
-  var valid_603118 = header.getOrDefault("X-Amz-Signature")
-  valid_603118 = validateParameter(valid_603118, JString, required = false,
+  if valid_593015 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593015
+  var valid_593016 = header.getOrDefault("X-Amz-Date")
+  valid_593016 = validateParameter(valid_593016, JString, required = false,
                                  default = nil)
-  if valid_603118 != nil:
-    section.add "X-Amz-Signature", valid_603118
-  var valid_603119 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603119 = validateParameter(valid_603119, JString, required = false,
+  if valid_593016 != nil:
+    section.add "X-Amz-Date", valid_593016
+  var valid_593017 = header.getOrDefault("X-Amz-Credential")
+  valid_593017 = validateParameter(valid_593017, JString, required = false,
                                  default = nil)
-  if valid_603119 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603119
-  var valid_603120 = header.getOrDefault("X-Amz-Credential")
-  valid_603120 = validateParameter(valid_603120, JString, required = false,
+  if valid_593017 != nil:
+    section.add "X-Amz-Credential", valid_593017
+  var valid_593018 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593018 = validateParameter(valid_593018, JString, required = false,
                                  default = nil)
-  if valid_603120 != nil:
-    section.add "X-Amz-Credential", valid_603120
+  if valid_593018 != nil:
+    section.add "X-Amz-Security-Token", valid_593018
+  var valid_593019 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593019 = validateParameter(valid_593019, JString, required = false,
+                                 default = nil)
+  if valid_593019 != nil:
+    section.add "X-Amz-Algorithm", valid_593019
+  var valid_593020 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593020 = validateParameter(valid_593020, JString, required = false,
+                                 default = nil)
+  if valid_593020 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593020
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -677,52 +681,52 @@ proc validate_ListMemberAccounts_603109(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603122: Call_ListMemberAccounts_603108; path: JsonNode;
+proc call*(call_593022: Call_ListMemberAccounts_593008; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all Amazon Macie member accounts for the current Amazon Macie master account.
   ## 
-  let valid = call_603122.validator(path, query, header, formData, body)
-  let scheme = call_603122.pickScheme
+  let valid = call_593022.validator(path, query, header, formData, body)
+  let scheme = call_593022.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603122.url(scheme.get, call_603122.host, call_603122.base,
-                         call_603122.route, valid.getOrDefault("path"),
+  let url = call_593022.url(scheme.get, call_593022.host, call_593022.base,
+                         call_593022.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603122, url, valid)
+  result = hook(call_593022, url, valid)
 
-proc call*(call_603123: Call_ListMemberAccounts_603108; body: JsonNode;
-          maxResults: string = ""; nextToken: string = ""): Recallable =
+proc call*(call_593023: Call_ListMemberAccounts_593008; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listMemberAccounts
   ## Lists all Amazon Macie member accounts for the current Amazon Macie master account.
-  ##   maxResults: string
-  ##             : Pagination limit
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_603124 = newJObject()
-  var body_603125 = newJObject()
-  add(query_603124, "maxResults", newJString(maxResults))
-  add(query_603124, "nextToken", newJString(nextToken))
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_593024 = newJObject()
+  var body_593025 = newJObject()
+  add(query_593024, "nextToken", newJString(nextToken))
   if body != nil:
-    body_603125 = body
-  result = call_603123.call(nil, query_603124, nil, nil, body_603125)
+    body_593025 = body
+  add(query_593024, "maxResults", newJString(maxResults))
+  result = call_593023.call(nil, query_593024, nil, nil, body_593025)
 
-var listMemberAccounts* = Call_ListMemberAccounts_603108(
+var listMemberAccounts* = Call_ListMemberAccounts_593008(
     name: "listMemberAccounts", meth: HttpMethod.HttpPost,
     host: "macie.amazonaws.com",
     route: "/#X-Amz-Target=MacieService.ListMemberAccounts",
-    validator: validate_ListMemberAccounts_603109, base: "/",
-    url: url_ListMemberAccounts_603110, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListMemberAccounts_593009, base: "/",
+    url: url_ListMemberAccounts_593010, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListS3Resources_603127 = ref object of OpenApiRestCall_602457
-proc url_ListS3Resources_603129(protocol: Scheme; host: string; base: string;
+  Call_ListS3Resources_593027 = ref object of OpenApiRestCall_592355
+proc url_ListS3Resources_593029(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListS3Resources_603128(path: JsonNode; query: JsonNode;
+proc validate_ListS3Resources_593028(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Lists all the S3 resources associated with Amazon Macie. If memberAccountId isn't specified, the action lists the S3 resources associated with Amazon Macie for the current master account. If memberAccountId is specified, the action lists the S3 resources associated with Amazon Macie for the specified member account. 
@@ -732,74 +736,74 @@ proc validate_ListS3Resources_603128(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   maxResults: JString
-  ##             : Pagination limit
   ##   nextToken: JString
   ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_603130 = query.getOrDefault("maxResults")
-  valid_603130 = validateParameter(valid_603130, JString, required = false,
+  var valid_593030 = query.getOrDefault("nextToken")
+  valid_593030 = validateParameter(valid_593030, JString, required = false,
                                  default = nil)
-  if valid_603130 != nil:
-    section.add "maxResults", valid_603130
-  var valid_603131 = query.getOrDefault("nextToken")
-  valid_603131 = validateParameter(valid_603131, JString, required = false,
+  if valid_593030 != nil:
+    section.add "nextToken", valid_593030
+  var valid_593031 = query.getOrDefault("maxResults")
+  valid_593031 = validateParameter(valid_593031, JString, required = false,
                                  default = nil)
-  if valid_603131 != nil:
-    section.add "nextToken", valid_603131
+  if valid_593031 != nil:
+    section.add "maxResults", valid_593031
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603132 = header.getOrDefault("X-Amz-Date")
-  valid_603132 = validateParameter(valid_603132, JString, required = false,
-                                 default = nil)
-  if valid_603132 != nil:
-    section.add "X-Amz-Date", valid_603132
-  var valid_603133 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603133 = validateParameter(valid_603133, JString, required = false,
-                                 default = nil)
-  if valid_603133 != nil:
-    section.add "X-Amz-Security-Token", valid_603133
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603134 = header.getOrDefault("X-Amz-Target")
-  valid_603134 = validateParameter(valid_603134, JString, required = true, default = newJString(
+  var valid_593032 = header.getOrDefault("X-Amz-Target")
+  valid_593032 = validateParameter(valid_593032, JString, required = true, default = newJString(
       "MacieService.ListS3Resources"))
-  if valid_603134 != nil:
-    section.add "X-Amz-Target", valid_603134
-  var valid_603135 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603135 = validateParameter(valid_603135, JString, required = false,
+  if valid_593032 != nil:
+    section.add "X-Amz-Target", valid_593032
+  var valid_593033 = header.getOrDefault("X-Amz-Signature")
+  valid_593033 = validateParameter(valid_593033, JString, required = false,
                                  default = nil)
-  if valid_603135 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603135
-  var valid_603136 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
+  if valid_593033 != nil:
+    section.add "X-Amz-Signature", valid_593033
+  var valid_593034 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593034 = validateParameter(valid_593034, JString, required = false,
                                  default = nil)
-  if valid_603136 != nil:
-    section.add "X-Amz-Algorithm", valid_603136
-  var valid_603137 = header.getOrDefault("X-Amz-Signature")
-  valid_603137 = validateParameter(valid_603137, JString, required = false,
+  if valid_593034 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593034
+  var valid_593035 = header.getOrDefault("X-Amz-Date")
+  valid_593035 = validateParameter(valid_593035, JString, required = false,
                                  default = nil)
-  if valid_603137 != nil:
-    section.add "X-Amz-Signature", valid_603137
-  var valid_603138 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603138 = validateParameter(valid_603138, JString, required = false,
+  if valid_593035 != nil:
+    section.add "X-Amz-Date", valid_593035
+  var valid_593036 = header.getOrDefault("X-Amz-Credential")
+  valid_593036 = validateParameter(valid_593036, JString, required = false,
                                  default = nil)
-  if valid_603138 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603138
-  var valid_603139 = header.getOrDefault("X-Amz-Credential")
-  valid_603139 = validateParameter(valid_603139, JString, required = false,
+  if valid_593036 != nil:
+    section.add "X-Amz-Credential", valid_593036
+  var valid_593037 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593037 = validateParameter(valid_593037, JString, required = false,
                                  default = nil)
-  if valid_603139 != nil:
-    section.add "X-Amz-Credential", valid_603139
+  if valid_593037 != nil:
+    section.add "X-Amz-Security-Token", valid_593037
+  var valid_593038 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593038 = validateParameter(valid_593038, JString, required = false,
+                                 default = nil)
+  if valid_593038 != nil:
+    section.add "X-Amz-Algorithm", valid_593038
+  var valid_593039 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593039 = validateParameter(valid_593039, JString, required = false,
+                                 default = nil)
+  if valid_593039 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593039
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -810,51 +814,51 @@ proc validate_ListS3Resources_603128(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603141: Call_ListS3Resources_603127; path: JsonNode; query: JsonNode;
+proc call*(call_593041: Call_ListS3Resources_593027; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all the S3 resources associated with Amazon Macie. If memberAccountId isn't specified, the action lists the S3 resources associated with Amazon Macie for the current master account. If memberAccountId is specified, the action lists the S3 resources associated with Amazon Macie for the specified member account. 
   ## 
-  let valid = call_603141.validator(path, query, header, formData, body)
-  let scheme = call_603141.pickScheme
+  let valid = call_593041.validator(path, query, header, formData, body)
+  let scheme = call_593041.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603141.url(scheme.get, call_603141.host, call_603141.base,
-                         call_603141.route, valid.getOrDefault("path"),
+  let url = call_593041.url(scheme.get, call_593041.host, call_593041.base,
+                         call_593041.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603141, url, valid)
+  result = hook(call_593041, url, valid)
 
-proc call*(call_603142: Call_ListS3Resources_603127; body: JsonNode;
-          maxResults: string = ""; nextToken: string = ""): Recallable =
+proc call*(call_593042: Call_ListS3Resources_593027; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listS3Resources
   ## Lists all the S3 resources associated with Amazon Macie. If memberAccountId isn't specified, the action lists the S3 resources associated with Amazon Macie for the current master account. If memberAccountId is specified, the action lists the S3 resources associated with Amazon Macie for the specified member account. 
-  ##   maxResults: string
-  ##             : Pagination limit
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_603143 = newJObject()
-  var body_603144 = newJObject()
-  add(query_603143, "maxResults", newJString(maxResults))
-  add(query_603143, "nextToken", newJString(nextToken))
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_593043 = newJObject()
+  var body_593044 = newJObject()
+  add(query_593043, "nextToken", newJString(nextToken))
   if body != nil:
-    body_603144 = body
-  result = call_603142.call(nil, query_603143, nil, nil, body_603144)
+    body_593044 = body
+  add(query_593043, "maxResults", newJString(maxResults))
+  result = call_593042.call(nil, query_593043, nil, nil, body_593044)
 
-var listS3Resources* = Call_ListS3Resources_603127(name: "listS3Resources",
+var listS3Resources* = Call_ListS3Resources_593027(name: "listS3Resources",
     meth: HttpMethod.HttpPost, host: "macie.amazonaws.com",
     route: "/#X-Amz-Target=MacieService.ListS3Resources",
-    validator: validate_ListS3Resources_603128, base: "/", url: url_ListS3Resources_603129,
+    validator: validate_ListS3Resources_593028, base: "/", url: url_ListS3Resources_593029,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateS3Resources_603145 = ref object of OpenApiRestCall_602457
-proc url_UpdateS3Resources_603147(protocol: Scheme; host: string; base: string;
+  Call_UpdateS3Resources_593045 = ref object of OpenApiRestCall_592355
+proc url_UpdateS3Resources_593047(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateS3Resources_603146(path: JsonNode; query: JsonNode;
+proc validate_UpdateS3Resources_593046(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Updates the classification types for the specified S3 resources. If memberAccountId isn't specified, the action updates the classification types of the S3 resources associated with Amazon Macie for the current master account. If memberAccountId is specified, the action updates the classification types of the S3 resources associated with Amazon Macie for the specified member account. 
@@ -866,57 +870,57 @@ proc validate_UpdateS3Resources_603146(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603148 = header.getOrDefault("X-Amz-Date")
-  valid_603148 = validateParameter(valid_603148, JString, required = false,
-                                 default = nil)
-  if valid_603148 != nil:
-    section.add "X-Amz-Date", valid_603148
-  var valid_603149 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603149 = validateParameter(valid_603149, JString, required = false,
-                                 default = nil)
-  if valid_603149 != nil:
-    section.add "X-Amz-Security-Token", valid_603149
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603150 = header.getOrDefault("X-Amz-Target")
-  valid_603150 = validateParameter(valid_603150, JString, required = true, default = newJString(
+  var valid_593048 = header.getOrDefault("X-Amz-Target")
+  valid_593048 = validateParameter(valid_593048, JString, required = true, default = newJString(
       "MacieService.UpdateS3Resources"))
-  if valid_603150 != nil:
-    section.add "X-Amz-Target", valid_603150
-  var valid_603151 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603151 = validateParameter(valid_603151, JString, required = false,
+  if valid_593048 != nil:
+    section.add "X-Amz-Target", valid_593048
+  var valid_593049 = header.getOrDefault("X-Amz-Signature")
+  valid_593049 = validateParameter(valid_593049, JString, required = false,
                                  default = nil)
-  if valid_603151 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603151
-  var valid_603152 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603152 = validateParameter(valid_603152, JString, required = false,
+  if valid_593049 != nil:
+    section.add "X-Amz-Signature", valid_593049
+  var valid_593050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593050 = validateParameter(valid_593050, JString, required = false,
                                  default = nil)
-  if valid_603152 != nil:
-    section.add "X-Amz-Algorithm", valid_603152
-  var valid_603153 = header.getOrDefault("X-Amz-Signature")
-  valid_603153 = validateParameter(valid_603153, JString, required = false,
+  if valid_593050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593050
+  var valid_593051 = header.getOrDefault("X-Amz-Date")
+  valid_593051 = validateParameter(valid_593051, JString, required = false,
                                  default = nil)
-  if valid_603153 != nil:
-    section.add "X-Amz-Signature", valid_603153
-  var valid_603154 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603154 = validateParameter(valid_603154, JString, required = false,
+  if valid_593051 != nil:
+    section.add "X-Amz-Date", valid_593051
+  var valid_593052 = header.getOrDefault("X-Amz-Credential")
+  valid_593052 = validateParameter(valid_593052, JString, required = false,
                                  default = nil)
-  if valid_603154 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603154
-  var valid_603155 = header.getOrDefault("X-Amz-Credential")
-  valid_603155 = validateParameter(valid_603155, JString, required = false,
+  if valid_593052 != nil:
+    section.add "X-Amz-Credential", valid_593052
+  var valid_593053 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593053 = validateParameter(valid_593053, JString, required = false,
                                  default = nil)
-  if valid_603155 != nil:
-    section.add "X-Amz-Credential", valid_603155
+  if valid_593053 != nil:
+    section.add "X-Amz-Security-Token", valid_593053
+  var valid_593054 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593054 = validateParameter(valid_593054, JString, required = false,
+                                 default = nil)
+  if valid_593054 != nil:
+    section.add "X-Amz-Algorithm", valid_593054
+  var valid_593055 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593055 = validateParameter(valid_593055, JString, required = false,
+                                 default = nil)
+  if valid_593055 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593055
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -927,33 +931,33 @@ proc validate_UpdateS3Resources_603146(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603157: Call_UpdateS3Resources_603145; path: JsonNode;
+proc call*(call_593057: Call_UpdateS3Resources_593045; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the classification types for the specified S3 resources. If memberAccountId isn't specified, the action updates the classification types of the S3 resources associated with Amazon Macie for the current master account. If memberAccountId is specified, the action updates the classification types of the S3 resources associated with Amazon Macie for the specified member account. 
   ## 
-  let valid = call_603157.validator(path, query, header, formData, body)
-  let scheme = call_603157.pickScheme
+  let valid = call_593057.validator(path, query, header, formData, body)
+  let scheme = call_593057.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603157.url(scheme.get, call_603157.host, call_603157.base,
-                         call_603157.route, valid.getOrDefault("path"),
+  let url = call_593057.url(scheme.get, call_593057.host, call_593057.base,
+                         call_593057.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603157, url, valid)
+  result = hook(call_593057, url, valid)
 
-proc call*(call_603158: Call_UpdateS3Resources_603145; body: JsonNode): Recallable =
+proc call*(call_593058: Call_UpdateS3Resources_593045; body: JsonNode): Recallable =
   ## updateS3Resources
   ## Updates the classification types for the specified S3 resources. If memberAccountId isn't specified, the action updates the classification types of the S3 resources associated with Amazon Macie for the current master account. If memberAccountId is specified, the action updates the classification types of the S3 resources associated with Amazon Macie for the specified member account. 
   ##   body: JObject (required)
-  var body_603159 = newJObject()
+  var body_593059 = newJObject()
   if body != nil:
-    body_603159 = body
-  result = call_603158.call(nil, nil, nil, nil, body_603159)
+    body_593059 = body
+  result = call_593058.call(nil, nil, nil, nil, body_593059)
 
-var updateS3Resources* = Call_UpdateS3Resources_603145(name: "updateS3Resources",
+var updateS3Resources* = Call_UpdateS3Resources_593045(name: "updateS3Resources",
     meth: HttpMethod.HttpPost, host: "macie.amazonaws.com",
     route: "/#X-Amz-Target=MacieService.UpdateS3Resources",
-    validator: validate_UpdateS3Resources_603146, base: "/",
-    url: url_UpdateS3Resources_603147, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateS3Resources_593046, base: "/",
+    url: url_UpdateS3Resources_593047, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

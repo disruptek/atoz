@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602457 = ref object of OpenApiRestCall
+  OpenApiRestCall_592355 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602457](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_592355](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602457): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_592355): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -95,9 +95,13 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
     if head notin input:
       return
     let js = input[head]
-    if js.kind notin {JString, JInt, JFloat, JNull, JBool}:
+    case js.kind
+    of JInt, JFloat, JNull, JBool:
+      head = $js
+    of JString:
+      head = js.getStr
+    else:
       return
-    head = $js
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
@@ -130,8 +134,8 @@ const
   awsServiceName = "workmailmessageflow"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GetRawMessageContent_602794 = ref object of OpenApiRestCall_602457
-proc url_GetRawMessageContent_602796(protocol: Scheme; host: string; base: string;
+  Call_GetRawMessageContent_592694 = ref object of OpenApiRestCall_592355
+proc url_GetRawMessageContent_592696(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -146,7 +150,7 @@ proc url_GetRawMessageContent_602796(protocol: Scheme; host: string; base: strin
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetRawMessageContent_602795(path: JsonNode; query: JsonNode;
+proc validate_GetRawMessageContent_592695(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the raw content of an in-transit email message, in MIME format. 
   ## 
@@ -157,91 +161,91 @@ proc validate_GetRawMessageContent_602795(path: JsonNode; query: JsonNode;
   ##            : The identifier of the email message to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `messageId` field"
-  var valid_602922 = path.getOrDefault("messageId")
-  valid_602922 = validateParameter(valid_602922, JString, required = true,
+  var valid_592822 = path.getOrDefault("messageId")
+  valid_592822 = validateParameter(valid_592822, JString, required = true,
                                  default = nil)
-  if valid_602922 != nil:
-    section.add "messageId", valid_602922
+  if valid_592822 != nil:
+    section.add "messageId", valid_592822
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602923 = header.getOrDefault("X-Amz-Date")
-  valid_602923 = validateParameter(valid_602923, JString, required = false,
+  var valid_592823 = header.getOrDefault("X-Amz-Signature")
+  valid_592823 = validateParameter(valid_592823, JString, required = false,
                                  default = nil)
-  if valid_602923 != nil:
-    section.add "X-Amz-Date", valid_602923
-  var valid_602924 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602924 = validateParameter(valid_602924, JString, required = false,
+  if valid_592823 != nil:
+    section.add "X-Amz-Signature", valid_592823
+  var valid_592824 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592824 = validateParameter(valid_592824, JString, required = false,
                                  default = nil)
-  if valid_602924 != nil:
-    section.add "X-Amz-Security-Token", valid_602924
-  var valid_602925 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602925 = validateParameter(valid_602925, JString, required = false,
+  if valid_592824 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592824
+  var valid_592825 = header.getOrDefault("X-Amz-Date")
+  valid_592825 = validateParameter(valid_592825, JString, required = false,
                                  default = nil)
-  if valid_602925 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602925
-  var valid_602926 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602926 = validateParameter(valid_602926, JString, required = false,
+  if valid_592825 != nil:
+    section.add "X-Amz-Date", valid_592825
+  var valid_592826 = header.getOrDefault("X-Amz-Credential")
+  valid_592826 = validateParameter(valid_592826, JString, required = false,
                                  default = nil)
-  if valid_602926 != nil:
-    section.add "X-Amz-Algorithm", valid_602926
-  var valid_602927 = header.getOrDefault("X-Amz-Signature")
-  valid_602927 = validateParameter(valid_602927, JString, required = false,
+  if valid_592826 != nil:
+    section.add "X-Amz-Credential", valid_592826
+  var valid_592827 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592827 = validateParameter(valid_592827, JString, required = false,
                                  default = nil)
-  if valid_602927 != nil:
-    section.add "X-Amz-Signature", valid_602927
-  var valid_602928 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602928 = validateParameter(valid_602928, JString, required = false,
+  if valid_592827 != nil:
+    section.add "X-Amz-Security-Token", valid_592827
+  var valid_592828 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592828 = validateParameter(valid_592828, JString, required = false,
                                  default = nil)
-  if valid_602928 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602928
-  var valid_602929 = header.getOrDefault("X-Amz-Credential")
-  valid_602929 = validateParameter(valid_602929, JString, required = false,
+  if valid_592828 != nil:
+    section.add "X-Amz-Algorithm", valid_592828
+  var valid_592829 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592829 = validateParameter(valid_592829, JString, required = false,
                                  default = nil)
-  if valid_602929 != nil:
-    section.add "X-Amz-Credential", valid_602929
+  if valid_592829 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592829
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602952: Call_GetRawMessageContent_602794; path: JsonNode;
+proc call*(call_592852: Call_GetRawMessageContent_592694; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the raw content of an in-transit email message, in MIME format. 
   ## 
-  let valid = call_602952.validator(path, query, header, formData, body)
-  let scheme = call_602952.pickScheme
+  let valid = call_592852.validator(path, query, header, formData, body)
+  let scheme = call_592852.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602952.url(scheme.get, call_602952.host, call_602952.base,
-                         call_602952.route, valid.getOrDefault("path"),
+  let url = call_592852.url(scheme.get, call_592852.host, call_592852.base,
+                         call_592852.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_602952, url, valid)
+  result = hook(call_592852, url, valid)
 
-proc call*(call_603023: Call_GetRawMessageContent_602794; messageId: string): Recallable =
+proc call*(call_592923: Call_GetRawMessageContent_592694; messageId: string): Recallable =
   ## getRawMessageContent
   ## Retrieves the raw content of an in-transit email message, in MIME format. 
   ##   messageId: string (required)
   ##            : The identifier of the email message to retrieve.
-  var path_603024 = newJObject()
-  add(path_603024, "messageId", newJString(messageId))
-  result = call_603023.call(path_603024, nil, nil, nil, nil)
+  var path_592924 = newJObject()
+  add(path_592924, "messageId", newJString(messageId))
+  result = call_592923.call(path_592924, nil, nil, nil, nil)
 
-var getRawMessageContent* = Call_GetRawMessageContent_602794(
+var getRawMessageContent* = Call_GetRawMessageContent_592694(
     name: "getRawMessageContent", meth: HttpMethod.HttpGet,
     host: "workmailmessageflow.amazonaws.com", route: "/messages/{messageId}",
-    validator: validate_GetRawMessageContent_602795, base: "/",
-    url: url_GetRawMessageContent_602796, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRawMessageContent_592695, base: "/",
+    url: url_GetRawMessageContent_592696, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

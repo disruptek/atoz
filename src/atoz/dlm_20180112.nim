@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602466 = ref object of OpenApiRestCall
+  OpenApiRestCall_592364 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602466](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_592364](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602466): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_592364): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -95,9 +95,13 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
     if head notin input:
       return
     let js = input[head]
-    if js.kind notin {JString, JInt, JFloat, JNull, JBool}:
+    case js.kind
+    of JInt, JFloat, JNull, JBool:
+      head = $js
+    of JString:
+      head = js.getStr
+    else:
       return
-    head = $js
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
@@ -145,15 +149,15 @@ const
   awsServiceName = "dlm"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateLifecyclePolicy_603076 = ref object of OpenApiRestCall_602466
-proc url_CreateLifecyclePolicy_603078(protocol: Scheme; host: string; base: string;
+  Call_CreateLifecyclePolicy_592976 = ref object of OpenApiRestCall_592364
+proc url_CreateLifecyclePolicy_592978(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateLifecyclePolicy_603077(path: JsonNode; query: JsonNode;
+proc validate_CreateLifecyclePolicy_592977(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a policy to manage the lifecycle of the specified AWS resources. You can create up to 100 lifecycle policies.
   ## 
@@ -164,49 +168,49 @@ proc validate_CreateLifecyclePolicy_603077(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603079 = header.getOrDefault("X-Amz-Date")
-  valid_603079 = validateParameter(valid_603079, JString, required = false,
+  var valid_592979 = header.getOrDefault("X-Amz-Signature")
+  valid_592979 = validateParameter(valid_592979, JString, required = false,
                                  default = nil)
-  if valid_603079 != nil:
-    section.add "X-Amz-Date", valid_603079
-  var valid_603080 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603080 = validateParameter(valid_603080, JString, required = false,
+  if valid_592979 != nil:
+    section.add "X-Amz-Signature", valid_592979
+  var valid_592980 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592980 = validateParameter(valid_592980, JString, required = false,
                                  default = nil)
-  if valid_603080 != nil:
-    section.add "X-Amz-Security-Token", valid_603080
-  var valid_603081 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603081 = validateParameter(valid_603081, JString, required = false,
+  if valid_592980 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592980
+  var valid_592981 = header.getOrDefault("X-Amz-Date")
+  valid_592981 = validateParameter(valid_592981, JString, required = false,
                                  default = nil)
-  if valid_603081 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603081
-  var valid_603082 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603082 = validateParameter(valid_603082, JString, required = false,
+  if valid_592981 != nil:
+    section.add "X-Amz-Date", valid_592981
+  var valid_592982 = header.getOrDefault("X-Amz-Credential")
+  valid_592982 = validateParameter(valid_592982, JString, required = false,
                                  default = nil)
-  if valid_603082 != nil:
-    section.add "X-Amz-Algorithm", valid_603082
-  var valid_603083 = header.getOrDefault("X-Amz-Signature")
-  valid_603083 = validateParameter(valid_603083, JString, required = false,
+  if valid_592982 != nil:
+    section.add "X-Amz-Credential", valid_592982
+  var valid_592983 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592983 = validateParameter(valid_592983, JString, required = false,
                                  default = nil)
-  if valid_603083 != nil:
-    section.add "X-Amz-Signature", valid_603083
-  var valid_603084 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603084 = validateParameter(valid_603084, JString, required = false,
+  if valid_592983 != nil:
+    section.add "X-Amz-Security-Token", valid_592983
+  var valid_592984 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592984 = validateParameter(valid_592984, JString, required = false,
                                  default = nil)
-  if valid_603084 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603084
-  var valid_603085 = header.getOrDefault("X-Amz-Credential")
-  valid_603085 = validateParameter(valid_603085, JString, required = false,
+  if valid_592984 != nil:
+    section.add "X-Amz-Algorithm", valid_592984
+  var valid_592985 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592985 = validateParameter(valid_592985, JString, required = false,
                                  default = nil)
-  if valid_603085 != nil:
-    section.add "X-Amz-Credential", valid_603085
+  if valid_592985 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592985
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -217,43 +221,43 @@ proc validate_CreateLifecyclePolicy_603077(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603087: Call_CreateLifecyclePolicy_603076; path: JsonNode;
+proc call*(call_592987: Call_CreateLifecyclePolicy_592976; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a policy to manage the lifecycle of the specified AWS resources. You can create up to 100 lifecycle policies.
   ## 
-  let valid = call_603087.validator(path, query, header, formData, body)
-  let scheme = call_603087.pickScheme
+  let valid = call_592987.validator(path, query, header, formData, body)
+  let scheme = call_592987.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603087.url(scheme.get, call_603087.host, call_603087.base,
-                         call_603087.route, valid.getOrDefault("path"),
+  let url = call_592987.url(scheme.get, call_592987.host, call_592987.base,
+                         call_592987.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603087, url, valid)
+  result = hook(call_592987, url, valid)
 
-proc call*(call_603088: Call_CreateLifecyclePolicy_603076; body: JsonNode): Recallable =
+proc call*(call_592988: Call_CreateLifecyclePolicy_592976; body: JsonNode): Recallable =
   ## createLifecyclePolicy
   ## Creates a policy to manage the lifecycle of the specified AWS resources. You can create up to 100 lifecycle policies.
   ##   body: JObject (required)
-  var body_603089 = newJObject()
+  var body_592989 = newJObject()
   if body != nil:
-    body_603089 = body
-  result = call_603088.call(nil, nil, nil, nil, body_603089)
+    body_592989 = body
+  result = call_592988.call(nil, nil, nil, nil, body_592989)
 
-var createLifecyclePolicy* = Call_CreateLifecyclePolicy_603076(
+var createLifecyclePolicy* = Call_CreateLifecyclePolicy_592976(
     name: "createLifecyclePolicy", meth: HttpMethod.HttpPost,
     host: "dlm.amazonaws.com", route: "/policies",
-    validator: validate_CreateLifecyclePolicy_603077, base: "/",
-    url: url_CreateLifecyclePolicy_603078, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateLifecyclePolicy_592977, base: "/",
+    url: url_CreateLifecyclePolicy_592978, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLifecyclePolicies_602803 = ref object of OpenApiRestCall_602466
-proc url_GetLifecyclePolicies_602805(protocol: Scheme; host: string; base: string;
+  Call_GetLifecyclePolicies_592703 = ref object of OpenApiRestCall_592364
+proc url_GetLifecyclePolicies_592705(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetLifecyclePolicies_602804(path: JsonNode; query: JsonNode;
+proc validate_GetLifecyclePolicies_592704(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets summary information about all or the specified data lifecycle policies.</p> <p>To get complete information about a policy, use <a>GetLifecyclePolicy</a>.</p>
   ## 
@@ -262,142 +266,142 @@ proc validate_GetLifecyclePolicies_602804(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   targetTags: JArray
-  ##             : <p>The target tag for a policy.</p> <p>Tags are strings in the format <code>key=value</code>.</p>
-  ##   policyIds: JArray
-  ##            : The identifiers of the data lifecycle policies.
-  ##   resourceTypes: JArray
-  ##                : The resource type.
   ##   tagsToAdd: JArray
   ##            : <p>The tags to add to objects created by the policy.</p> <p>Tags are strings in the format <code>key=value</code>.</p> <p>These user-defined tags are added in addition to the AWS-added lifecycle tags.</p>
   ##   state: JString
   ##        : The activation state.
+  ##   resourceTypes: JArray
+  ##                : The resource type.
+  ##   policyIds: JArray
+  ##            : The identifiers of the data lifecycle policies.
+  ##   targetTags: JArray
+  ##             : <p>The target tag for a policy.</p> <p>Tags are strings in the format <code>key=value</code>.</p>
   section = newJObject()
-  var valid_602917 = query.getOrDefault("targetTags")
-  valid_602917 = validateParameter(valid_602917, JArray, required = false,
+  var valid_592817 = query.getOrDefault("tagsToAdd")
+  valid_592817 = validateParameter(valid_592817, JArray, required = false,
                                  default = nil)
-  if valid_602917 != nil:
-    section.add "targetTags", valid_602917
-  var valid_602918 = query.getOrDefault("policyIds")
-  valid_602918 = validateParameter(valid_602918, JArray, required = false,
-                                 default = nil)
-  if valid_602918 != nil:
-    section.add "policyIds", valid_602918
-  var valid_602919 = query.getOrDefault("resourceTypes")
-  valid_602919 = validateParameter(valid_602919, JArray, required = false,
-                                 default = nil)
-  if valid_602919 != nil:
-    section.add "resourceTypes", valid_602919
-  var valid_602920 = query.getOrDefault("tagsToAdd")
-  valid_602920 = validateParameter(valid_602920, JArray, required = false,
-                                 default = nil)
-  if valid_602920 != nil:
-    section.add "tagsToAdd", valid_602920
-  var valid_602934 = query.getOrDefault("state")
-  valid_602934 = validateParameter(valid_602934, JString, required = false,
+  if valid_592817 != nil:
+    section.add "tagsToAdd", valid_592817
+  var valid_592831 = query.getOrDefault("state")
+  valid_592831 = validateParameter(valid_592831, JString, required = false,
                                  default = newJString("ENABLED"))
-  if valid_602934 != nil:
-    section.add "state", valid_602934
+  if valid_592831 != nil:
+    section.add "state", valid_592831
+  var valid_592832 = query.getOrDefault("resourceTypes")
+  valid_592832 = validateParameter(valid_592832, JArray, required = false,
+                                 default = nil)
+  if valid_592832 != nil:
+    section.add "resourceTypes", valid_592832
+  var valid_592833 = query.getOrDefault("policyIds")
+  valid_592833 = validateParameter(valid_592833, JArray, required = false,
+                                 default = nil)
+  if valid_592833 != nil:
+    section.add "policyIds", valid_592833
+  var valid_592834 = query.getOrDefault("targetTags")
+  valid_592834 = validateParameter(valid_592834, JArray, required = false,
+                                 default = nil)
+  if valid_592834 != nil:
+    section.add "targetTags", valid_592834
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602935 = header.getOrDefault("X-Amz-Date")
-  valid_602935 = validateParameter(valid_602935, JString, required = false,
+  var valid_592835 = header.getOrDefault("X-Amz-Signature")
+  valid_592835 = validateParameter(valid_592835, JString, required = false,
                                  default = nil)
-  if valid_602935 != nil:
-    section.add "X-Amz-Date", valid_602935
-  var valid_602936 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602936 = validateParameter(valid_602936, JString, required = false,
+  if valid_592835 != nil:
+    section.add "X-Amz-Signature", valid_592835
+  var valid_592836 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592836 = validateParameter(valid_592836, JString, required = false,
                                  default = nil)
-  if valid_602936 != nil:
-    section.add "X-Amz-Security-Token", valid_602936
-  var valid_602937 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602937 = validateParameter(valid_602937, JString, required = false,
+  if valid_592836 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592836
+  var valid_592837 = header.getOrDefault("X-Amz-Date")
+  valid_592837 = validateParameter(valid_592837, JString, required = false,
                                  default = nil)
-  if valid_602937 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602937
-  var valid_602938 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602938 = validateParameter(valid_602938, JString, required = false,
+  if valid_592837 != nil:
+    section.add "X-Amz-Date", valid_592837
+  var valid_592838 = header.getOrDefault("X-Amz-Credential")
+  valid_592838 = validateParameter(valid_592838, JString, required = false,
                                  default = nil)
-  if valid_602938 != nil:
-    section.add "X-Amz-Algorithm", valid_602938
-  var valid_602939 = header.getOrDefault("X-Amz-Signature")
-  valid_602939 = validateParameter(valid_602939, JString, required = false,
+  if valid_592838 != nil:
+    section.add "X-Amz-Credential", valid_592838
+  var valid_592839 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592839 = validateParameter(valid_592839, JString, required = false,
                                  default = nil)
-  if valid_602939 != nil:
-    section.add "X-Amz-Signature", valid_602939
-  var valid_602940 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602940 = validateParameter(valid_602940, JString, required = false,
+  if valid_592839 != nil:
+    section.add "X-Amz-Security-Token", valid_592839
+  var valid_592840 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592840 = validateParameter(valid_592840, JString, required = false,
                                  default = nil)
-  if valid_602940 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602940
-  var valid_602941 = header.getOrDefault("X-Amz-Credential")
-  valid_602941 = validateParameter(valid_602941, JString, required = false,
+  if valid_592840 != nil:
+    section.add "X-Amz-Algorithm", valid_592840
+  var valid_592841 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592841 = validateParameter(valid_592841, JString, required = false,
                                  default = nil)
-  if valid_602941 != nil:
-    section.add "X-Amz-Credential", valid_602941
+  if valid_592841 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592841
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602964: Call_GetLifecyclePolicies_602803; path: JsonNode;
+proc call*(call_592864: Call_GetLifecyclePolicies_592703; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets summary information about all or the specified data lifecycle policies.</p> <p>To get complete information about a policy, use <a>GetLifecyclePolicy</a>.</p>
   ## 
-  let valid = call_602964.validator(path, query, header, formData, body)
-  let scheme = call_602964.pickScheme
+  let valid = call_592864.validator(path, query, header, formData, body)
+  let scheme = call_592864.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602964.url(scheme.get, call_602964.host, call_602964.base,
-                         call_602964.route, valid.getOrDefault("path"),
+  let url = call_592864.url(scheme.get, call_592864.host, call_592864.base,
+                         call_592864.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_602964, url, valid)
+  result = hook(call_592864, url, valid)
 
-proc call*(call_603035: Call_GetLifecyclePolicies_602803;
-          targetTags: JsonNode = nil; policyIds: JsonNode = nil;
-          resourceTypes: JsonNode = nil; tagsToAdd: JsonNode = nil;
-          state: string = "ENABLED"): Recallable =
+proc call*(call_592935: Call_GetLifecyclePolicies_592703;
+          tagsToAdd: JsonNode = nil; state: string = "ENABLED";
+          resourceTypes: JsonNode = nil; policyIds: JsonNode = nil;
+          targetTags: JsonNode = nil): Recallable =
   ## getLifecyclePolicies
   ## <p>Gets summary information about all or the specified data lifecycle policies.</p> <p>To get complete information about a policy, use <a>GetLifecyclePolicy</a>.</p>
-  ##   targetTags: JArray
-  ##             : <p>The target tag for a policy.</p> <p>Tags are strings in the format <code>key=value</code>.</p>
-  ##   policyIds: JArray
-  ##            : The identifiers of the data lifecycle policies.
-  ##   resourceTypes: JArray
-  ##                : The resource type.
   ##   tagsToAdd: JArray
   ##            : <p>The tags to add to objects created by the policy.</p> <p>Tags are strings in the format <code>key=value</code>.</p> <p>These user-defined tags are added in addition to the AWS-added lifecycle tags.</p>
   ##   state: string
   ##        : The activation state.
-  var query_603036 = newJObject()
-  if targetTags != nil:
-    query_603036.add "targetTags", targetTags
-  if policyIds != nil:
-    query_603036.add "policyIds", policyIds
-  if resourceTypes != nil:
-    query_603036.add "resourceTypes", resourceTypes
+  ##   resourceTypes: JArray
+  ##                : The resource type.
+  ##   policyIds: JArray
+  ##            : The identifiers of the data lifecycle policies.
+  ##   targetTags: JArray
+  ##             : <p>The target tag for a policy.</p> <p>Tags are strings in the format <code>key=value</code>.</p>
+  var query_592936 = newJObject()
   if tagsToAdd != nil:
-    query_603036.add "tagsToAdd", tagsToAdd
-  add(query_603036, "state", newJString(state))
-  result = call_603035.call(nil, query_603036, nil, nil, nil)
+    query_592936.add "tagsToAdd", tagsToAdd
+  add(query_592936, "state", newJString(state))
+  if resourceTypes != nil:
+    query_592936.add "resourceTypes", resourceTypes
+  if policyIds != nil:
+    query_592936.add "policyIds", policyIds
+  if targetTags != nil:
+    query_592936.add "targetTags", targetTags
+  result = call_592935.call(nil, query_592936, nil, nil, nil)
 
-var getLifecyclePolicies* = Call_GetLifecyclePolicies_602803(
+var getLifecyclePolicies* = Call_GetLifecyclePolicies_592703(
     name: "getLifecyclePolicies", meth: HttpMethod.HttpGet,
     host: "dlm.amazonaws.com", route: "/policies",
-    validator: validate_GetLifecyclePolicies_602804, base: "/",
-    url: url_GetLifecyclePolicies_602805, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetLifecyclePolicies_592704, base: "/",
+    url: url_GetLifecyclePolicies_592705, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLifecyclePolicy_603090 = ref object of OpenApiRestCall_602466
-proc url_GetLifecyclePolicy_603092(protocol: Scheme; host: string; base: string;
+  Call_GetLifecyclePolicy_592990 = ref object of OpenApiRestCall_592364
+proc url_GetLifecyclePolicy_592992(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -413,7 +417,7 @@ proc url_GetLifecyclePolicy_603092(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetLifecyclePolicy_603091(path: JsonNode; query: JsonNode;
+proc validate_GetLifecyclePolicy_592991(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Gets detailed information about the specified lifecycle policy.
@@ -425,94 +429,94 @@ proc validate_GetLifecyclePolicy_603091(path: JsonNode; query: JsonNode;
   ##           : The identifier of the lifecycle policy.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `policyId` field"
-  var valid_603107 = path.getOrDefault("policyId")
-  valid_603107 = validateParameter(valid_603107, JString, required = true,
+  var valid_593007 = path.getOrDefault("policyId")
+  valid_593007 = validateParameter(valid_593007, JString, required = true,
                                  default = nil)
-  if valid_603107 != nil:
-    section.add "policyId", valid_603107
+  if valid_593007 != nil:
+    section.add "policyId", valid_593007
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603108 = header.getOrDefault("X-Amz-Date")
-  valid_603108 = validateParameter(valid_603108, JString, required = false,
+  var valid_593008 = header.getOrDefault("X-Amz-Signature")
+  valid_593008 = validateParameter(valid_593008, JString, required = false,
                                  default = nil)
-  if valid_603108 != nil:
-    section.add "X-Amz-Date", valid_603108
-  var valid_603109 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603109 = validateParameter(valid_603109, JString, required = false,
+  if valid_593008 != nil:
+    section.add "X-Amz-Signature", valid_593008
+  var valid_593009 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593009 = validateParameter(valid_593009, JString, required = false,
                                  default = nil)
-  if valid_603109 != nil:
-    section.add "X-Amz-Security-Token", valid_603109
-  var valid_603110 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603110 = validateParameter(valid_603110, JString, required = false,
+  if valid_593009 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593009
+  var valid_593010 = header.getOrDefault("X-Amz-Date")
+  valid_593010 = validateParameter(valid_593010, JString, required = false,
                                  default = nil)
-  if valid_603110 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603110
-  var valid_603111 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603111 = validateParameter(valid_603111, JString, required = false,
+  if valid_593010 != nil:
+    section.add "X-Amz-Date", valid_593010
+  var valid_593011 = header.getOrDefault("X-Amz-Credential")
+  valid_593011 = validateParameter(valid_593011, JString, required = false,
                                  default = nil)
-  if valid_603111 != nil:
-    section.add "X-Amz-Algorithm", valid_603111
-  var valid_603112 = header.getOrDefault("X-Amz-Signature")
-  valid_603112 = validateParameter(valid_603112, JString, required = false,
+  if valid_593011 != nil:
+    section.add "X-Amz-Credential", valid_593011
+  var valid_593012 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593012 = validateParameter(valid_593012, JString, required = false,
                                  default = nil)
-  if valid_603112 != nil:
-    section.add "X-Amz-Signature", valid_603112
-  var valid_603113 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603113 = validateParameter(valid_603113, JString, required = false,
+  if valid_593012 != nil:
+    section.add "X-Amz-Security-Token", valid_593012
+  var valid_593013 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593013 = validateParameter(valid_593013, JString, required = false,
                                  default = nil)
-  if valid_603113 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603113
-  var valid_603114 = header.getOrDefault("X-Amz-Credential")
-  valid_603114 = validateParameter(valid_603114, JString, required = false,
+  if valid_593013 != nil:
+    section.add "X-Amz-Algorithm", valid_593013
+  var valid_593014 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593014 = validateParameter(valid_593014, JString, required = false,
                                  default = nil)
-  if valid_603114 != nil:
-    section.add "X-Amz-Credential", valid_603114
+  if valid_593014 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593014
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603115: Call_GetLifecyclePolicy_603090; path: JsonNode;
+proc call*(call_593015: Call_GetLifecyclePolicy_592990; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets detailed information about the specified lifecycle policy.
   ## 
-  let valid = call_603115.validator(path, query, header, formData, body)
-  let scheme = call_603115.pickScheme
+  let valid = call_593015.validator(path, query, header, formData, body)
+  let scheme = call_593015.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603115.url(scheme.get, call_603115.host, call_603115.base,
-                         call_603115.route, valid.getOrDefault("path"),
+  let url = call_593015.url(scheme.get, call_593015.host, call_593015.base,
+                         call_593015.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603115, url, valid)
+  result = hook(call_593015, url, valid)
 
-proc call*(call_603116: Call_GetLifecyclePolicy_603090; policyId: string): Recallable =
+proc call*(call_593016: Call_GetLifecyclePolicy_592990; policyId: string): Recallable =
   ## getLifecyclePolicy
   ## Gets detailed information about the specified lifecycle policy.
   ##   policyId: string (required)
   ##           : The identifier of the lifecycle policy.
-  var path_603117 = newJObject()
-  add(path_603117, "policyId", newJString(policyId))
-  result = call_603116.call(path_603117, nil, nil, nil, nil)
+  var path_593017 = newJObject()
+  add(path_593017, "policyId", newJString(policyId))
+  result = call_593016.call(path_593017, nil, nil, nil, nil)
 
-var getLifecyclePolicy* = Call_GetLifecyclePolicy_603090(
+var getLifecyclePolicy* = Call_GetLifecyclePolicy_592990(
     name: "getLifecyclePolicy", meth: HttpMethod.HttpGet, host: "dlm.amazonaws.com",
-    route: "/policies/{policyId}/", validator: validate_GetLifecyclePolicy_603091,
-    base: "/", url: url_GetLifecyclePolicy_603092,
+    route: "/policies/{policyId}/", validator: validate_GetLifecyclePolicy_592991,
+    base: "/", url: url_GetLifecyclePolicy_592992,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteLifecyclePolicy_603118 = ref object of OpenApiRestCall_602466
-proc url_DeleteLifecyclePolicy_603120(protocol: Scheme; host: string; base: string;
+  Call_DeleteLifecyclePolicy_593018 = ref object of OpenApiRestCall_592364
+proc url_DeleteLifecyclePolicy_593020(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -528,7 +532,7 @@ proc url_DeleteLifecyclePolicy_603120(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DeleteLifecyclePolicy_603119(path: JsonNode; query: JsonNode;
+proc validate_DeleteLifecyclePolicy_593019(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified lifecycle policy and halts the automated operations that the policy specified.
   ## 
@@ -539,94 +543,94 @@ proc validate_DeleteLifecyclePolicy_603119(path: JsonNode; query: JsonNode;
   ##           : The identifier of the lifecycle policy.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `policyId` field"
-  var valid_603121 = path.getOrDefault("policyId")
-  valid_603121 = validateParameter(valid_603121, JString, required = true,
+  var valid_593021 = path.getOrDefault("policyId")
+  valid_593021 = validateParameter(valid_593021, JString, required = true,
                                  default = nil)
-  if valid_603121 != nil:
-    section.add "policyId", valid_603121
+  if valid_593021 != nil:
+    section.add "policyId", valid_593021
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603122 = header.getOrDefault("X-Amz-Date")
-  valid_603122 = validateParameter(valid_603122, JString, required = false,
+  var valid_593022 = header.getOrDefault("X-Amz-Signature")
+  valid_593022 = validateParameter(valid_593022, JString, required = false,
                                  default = nil)
-  if valid_603122 != nil:
-    section.add "X-Amz-Date", valid_603122
-  var valid_603123 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603123 = validateParameter(valid_603123, JString, required = false,
+  if valid_593022 != nil:
+    section.add "X-Amz-Signature", valid_593022
+  var valid_593023 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593023 = validateParameter(valid_593023, JString, required = false,
                                  default = nil)
-  if valid_603123 != nil:
-    section.add "X-Amz-Security-Token", valid_603123
-  var valid_603124 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603124 = validateParameter(valid_603124, JString, required = false,
+  if valid_593023 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593023
+  var valid_593024 = header.getOrDefault("X-Amz-Date")
+  valid_593024 = validateParameter(valid_593024, JString, required = false,
                                  default = nil)
-  if valid_603124 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603124
-  var valid_603125 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603125 = validateParameter(valid_603125, JString, required = false,
+  if valid_593024 != nil:
+    section.add "X-Amz-Date", valid_593024
+  var valid_593025 = header.getOrDefault("X-Amz-Credential")
+  valid_593025 = validateParameter(valid_593025, JString, required = false,
                                  default = nil)
-  if valid_603125 != nil:
-    section.add "X-Amz-Algorithm", valid_603125
-  var valid_603126 = header.getOrDefault("X-Amz-Signature")
-  valid_603126 = validateParameter(valid_603126, JString, required = false,
+  if valid_593025 != nil:
+    section.add "X-Amz-Credential", valid_593025
+  var valid_593026 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593026 = validateParameter(valid_593026, JString, required = false,
                                  default = nil)
-  if valid_603126 != nil:
-    section.add "X-Amz-Signature", valid_603126
-  var valid_603127 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603127 = validateParameter(valid_603127, JString, required = false,
+  if valid_593026 != nil:
+    section.add "X-Amz-Security-Token", valid_593026
+  var valid_593027 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593027 = validateParameter(valid_593027, JString, required = false,
                                  default = nil)
-  if valid_603127 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603127
-  var valid_603128 = header.getOrDefault("X-Amz-Credential")
-  valid_603128 = validateParameter(valid_603128, JString, required = false,
+  if valid_593027 != nil:
+    section.add "X-Amz-Algorithm", valid_593027
+  var valid_593028 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593028 = validateParameter(valid_593028, JString, required = false,
                                  default = nil)
-  if valid_603128 != nil:
-    section.add "X-Amz-Credential", valid_603128
+  if valid_593028 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593028
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603129: Call_DeleteLifecyclePolicy_603118; path: JsonNode;
+proc call*(call_593029: Call_DeleteLifecyclePolicy_593018; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified lifecycle policy and halts the automated operations that the policy specified.
   ## 
-  let valid = call_603129.validator(path, query, header, formData, body)
-  let scheme = call_603129.pickScheme
+  let valid = call_593029.validator(path, query, header, formData, body)
+  let scheme = call_593029.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603129.url(scheme.get, call_603129.host, call_603129.base,
-                         call_603129.route, valid.getOrDefault("path"),
+  let url = call_593029.url(scheme.get, call_593029.host, call_593029.base,
+                         call_593029.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603129, url, valid)
+  result = hook(call_593029, url, valid)
 
-proc call*(call_603130: Call_DeleteLifecyclePolicy_603118; policyId: string): Recallable =
+proc call*(call_593030: Call_DeleteLifecyclePolicy_593018; policyId: string): Recallable =
   ## deleteLifecyclePolicy
   ## Deletes the specified lifecycle policy and halts the automated operations that the policy specified.
   ##   policyId: string (required)
   ##           : The identifier of the lifecycle policy.
-  var path_603131 = newJObject()
-  add(path_603131, "policyId", newJString(policyId))
-  result = call_603130.call(path_603131, nil, nil, nil, nil)
+  var path_593031 = newJObject()
+  add(path_593031, "policyId", newJString(policyId))
+  result = call_593030.call(path_593031, nil, nil, nil, nil)
 
-var deleteLifecyclePolicy* = Call_DeleteLifecyclePolicy_603118(
+var deleteLifecyclePolicy* = Call_DeleteLifecyclePolicy_593018(
     name: "deleteLifecyclePolicy", meth: HttpMethod.HttpDelete,
     host: "dlm.amazonaws.com", route: "/policies/{policyId}/",
-    validator: validate_DeleteLifecyclePolicy_603119, base: "/",
-    url: url_DeleteLifecyclePolicy_603120, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteLifecyclePolicy_593019, base: "/",
+    url: url_DeleteLifecyclePolicy_593020, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateLifecyclePolicy_603132 = ref object of OpenApiRestCall_602466
-proc url_UpdateLifecyclePolicy_603134(protocol: Scheme; host: string; base: string;
+  Call_UpdateLifecyclePolicy_593032 = ref object of OpenApiRestCall_592364
+proc url_UpdateLifecyclePolicy_593034(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -641,7 +645,7 @@ proc url_UpdateLifecyclePolicy_603134(protocol: Scheme; host: string; base: stri
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_UpdateLifecyclePolicy_603133(path: JsonNode; query: JsonNode;
+proc validate_UpdateLifecyclePolicy_593033(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates the specified lifecycle policy.
   ## 
@@ -652,58 +656,58 @@ proc validate_UpdateLifecyclePolicy_603133(path: JsonNode; query: JsonNode;
   ##           : The identifier of the lifecycle policy.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `policyId` field"
-  var valid_603135 = path.getOrDefault("policyId")
-  valid_603135 = validateParameter(valid_603135, JString, required = true,
+  var valid_593035 = path.getOrDefault("policyId")
+  valid_593035 = validateParameter(valid_593035, JString, required = true,
                                  default = nil)
-  if valid_603135 != nil:
-    section.add "policyId", valid_603135
+  if valid_593035 != nil:
+    section.add "policyId", valid_593035
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603136 = header.getOrDefault("X-Amz-Date")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
+  var valid_593036 = header.getOrDefault("X-Amz-Signature")
+  valid_593036 = validateParameter(valid_593036, JString, required = false,
                                  default = nil)
-  if valid_603136 != nil:
-    section.add "X-Amz-Date", valid_603136
-  var valid_603137 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603137 = validateParameter(valid_603137, JString, required = false,
+  if valid_593036 != nil:
+    section.add "X-Amz-Signature", valid_593036
+  var valid_593037 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593037 = validateParameter(valid_593037, JString, required = false,
                                  default = nil)
-  if valid_603137 != nil:
-    section.add "X-Amz-Security-Token", valid_603137
-  var valid_603138 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603138 = validateParameter(valid_603138, JString, required = false,
+  if valid_593037 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593037
+  var valid_593038 = header.getOrDefault("X-Amz-Date")
+  valid_593038 = validateParameter(valid_593038, JString, required = false,
                                  default = nil)
-  if valid_603138 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603138
-  var valid_603139 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603139 = validateParameter(valid_603139, JString, required = false,
+  if valid_593038 != nil:
+    section.add "X-Amz-Date", valid_593038
+  var valid_593039 = header.getOrDefault("X-Amz-Credential")
+  valid_593039 = validateParameter(valid_593039, JString, required = false,
                                  default = nil)
-  if valid_603139 != nil:
-    section.add "X-Amz-Algorithm", valid_603139
-  var valid_603140 = header.getOrDefault("X-Amz-Signature")
-  valid_603140 = validateParameter(valid_603140, JString, required = false,
+  if valid_593039 != nil:
+    section.add "X-Amz-Credential", valid_593039
+  var valid_593040 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593040 = validateParameter(valid_593040, JString, required = false,
                                  default = nil)
-  if valid_603140 != nil:
-    section.add "X-Amz-Signature", valid_603140
-  var valid_603141 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603141 = validateParameter(valid_603141, JString, required = false,
+  if valid_593040 != nil:
+    section.add "X-Amz-Security-Token", valid_593040
+  var valid_593041 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593041 = validateParameter(valid_593041, JString, required = false,
                                  default = nil)
-  if valid_603141 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603141
-  var valid_603142 = header.getOrDefault("X-Amz-Credential")
-  valid_603142 = validateParameter(valid_603142, JString, required = false,
+  if valid_593041 != nil:
+    section.add "X-Amz-Algorithm", valid_593041
+  var valid_593042 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593042 = validateParameter(valid_593042, JString, required = false,
                                  default = nil)
-  if valid_603142 != nil:
-    section.add "X-Amz-Credential", valid_603142
+  if valid_593042 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593042
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -714,38 +718,38 @@ proc validate_UpdateLifecyclePolicy_603133(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603144: Call_UpdateLifecyclePolicy_603132; path: JsonNode;
+proc call*(call_593044: Call_UpdateLifecyclePolicy_593032; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the specified lifecycle policy.
   ## 
-  let valid = call_603144.validator(path, query, header, formData, body)
-  let scheme = call_603144.pickScheme
+  let valid = call_593044.validator(path, query, header, formData, body)
+  let scheme = call_593044.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603144.url(scheme.get, call_603144.host, call_603144.base,
-                         call_603144.route, valid.getOrDefault("path"),
+  let url = call_593044.url(scheme.get, call_593044.host, call_593044.base,
+                         call_593044.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603144, url, valid)
+  result = hook(call_593044, url, valid)
 
-proc call*(call_603145: Call_UpdateLifecyclePolicy_603132; policyId: string;
+proc call*(call_593045: Call_UpdateLifecyclePolicy_593032; policyId: string;
           body: JsonNode): Recallable =
   ## updateLifecyclePolicy
   ## Updates the specified lifecycle policy.
   ##   policyId: string (required)
   ##           : The identifier of the lifecycle policy.
   ##   body: JObject (required)
-  var path_603146 = newJObject()
-  var body_603147 = newJObject()
-  add(path_603146, "policyId", newJString(policyId))
+  var path_593046 = newJObject()
+  var body_593047 = newJObject()
+  add(path_593046, "policyId", newJString(policyId))
   if body != nil:
-    body_603147 = body
-  result = call_603145.call(path_603146, nil, nil, nil, body_603147)
+    body_593047 = body
+  result = call_593045.call(path_593046, nil, nil, nil, body_593047)
 
-var updateLifecyclePolicy* = Call_UpdateLifecyclePolicy_603132(
+var updateLifecyclePolicy* = Call_UpdateLifecyclePolicy_593032(
     name: "updateLifecyclePolicy", meth: HttpMethod.HttpPatch,
     host: "dlm.amazonaws.com", route: "/policies/{policyId}",
-    validator: validate_UpdateLifecyclePolicy_603133, base: "/",
-    url: url_UpdateLifecyclePolicy_603134, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateLifecyclePolicy_593033, base: "/",
+    url: url_UpdateLifecyclePolicy_593034, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602466 = ref object of OpenApiRestCall
+  OpenApiRestCall_592364 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602466](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_592364](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602466): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_592364): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -95,9 +95,13 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
     if head notin input:
       return
     let js = input[head]
-    if js.kind notin {JString, JInt, JFloat, JNull, JBool}:
+    case js.kind
+    of JInt, JFloat, JNull, JBool:
+      head = $js
+    of JString:
+      head = js.getStr
+    else:
       return
-    head = $js
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
@@ -145,15 +149,15 @@ const
   awsServiceName = "kms"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CancelKeyDeletion_602803 = ref object of OpenApiRestCall_602466
-proc url_CancelKeyDeletion_602805(protocol: Scheme; host: string; base: string;
+  Call_CancelKeyDeletion_592703 = ref object of OpenApiRestCall_592364
+proc url_CancelKeyDeletion_592705(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CancelKeyDeletion_602804(path: JsonNode; query: JsonNode;
+proc validate_CancelKeyDeletion_592704(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Cancels the deletion of a customer master key (CMK). When this operation is successful, the CMK is set to the <code>Disabled</code> state. To enable a CMK, use <a>EnableKey</a>. You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about scheduling and canceling deletion of a CMK, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html">Deleting Customer Master Keys</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
@@ -165,57 +169,57 @@ proc validate_CancelKeyDeletion_602804(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602917 = header.getOrDefault("X-Amz-Date")
-  valid_602917 = validateParameter(valid_602917, JString, required = false,
-                                 default = nil)
-  if valid_602917 != nil:
-    section.add "X-Amz-Date", valid_602917
-  var valid_602918 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602918 = validateParameter(valid_602918, JString, required = false,
-                                 default = nil)
-  if valid_602918 != nil:
-    section.add "X-Amz-Security-Token", valid_602918
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602932 = header.getOrDefault("X-Amz-Target")
-  valid_602932 = validateParameter(valid_602932, JString, required = true, default = newJString(
+  var valid_592830 = header.getOrDefault("X-Amz-Target")
+  valid_592830 = validateParameter(valid_592830, JString, required = true, default = newJString(
       "TrentService.CancelKeyDeletion"))
-  if valid_602932 != nil:
-    section.add "X-Amz-Target", valid_602932
-  var valid_602933 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602933 = validateParameter(valid_602933, JString, required = false,
+  if valid_592830 != nil:
+    section.add "X-Amz-Target", valid_592830
+  var valid_592831 = header.getOrDefault("X-Amz-Signature")
+  valid_592831 = validateParameter(valid_592831, JString, required = false,
                                  default = nil)
-  if valid_602933 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602933
-  var valid_602934 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602934 = validateParameter(valid_602934, JString, required = false,
+  if valid_592831 != nil:
+    section.add "X-Amz-Signature", valid_592831
+  var valid_592832 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592832 = validateParameter(valid_592832, JString, required = false,
                                  default = nil)
-  if valid_602934 != nil:
-    section.add "X-Amz-Algorithm", valid_602934
-  var valid_602935 = header.getOrDefault("X-Amz-Signature")
-  valid_602935 = validateParameter(valid_602935, JString, required = false,
+  if valid_592832 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592832
+  var valid_592833 = header.getOrDefault("X-Amz-Date")
+  valid_592833 = validateParameter(valid_592833, JString, required = false,
                                  default = nil)
-  if valid_602935 != nil:
-    section.add "X-Amz-Signature", valid_602935
-  var valid_602936 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602936 = validateParameter(valid_602936, JString, required = false,
+  if valid_592833 != nil:
+    section.add "X-Amz-Date", valid_592833
+  var valid_592834 = header.getOrDefault("X-Amz-Credential")
+  valid_592834 = validateParameter(valid_592834, JString, required = false,
                                  default = nil)
-  if valid_602936 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602936
-  var valid_602937 = header.getOrDefault("X-Amz-Credential")
-  valid_602937 = validateParameter(valid_602937, JString, required = false,
+  if valid_592834 != nil:
+    section.add "X-Amz-Credential", valid_592834
+  var valid_592835 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592835 = validateParameter(valid_592835, JString, required = false,
                                  default = nil)
-  if valid_602937 != nil:
-    section.add "X-Amz-Credential", valid_602937
+  if valid_592835 != nil:
+    section.add "X-Amz-Security-Token", valid_592835
+  var valid_592836 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592836 = validateParameter(valid_592836, JString, required = false,
+                                 default = nil)
+  if valid_592836 != nil:
+    section.add "X-Amz-Algorithm", valid_592836
+  var valid_592837 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592837 = validateParameter(valid_592837, JString, required = false,
+                                 default = nil)
+  if valid_592837 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592837
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -226,43 +230,43 @@ proc validate_CancelKeyDeletion_602804(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602961: Call_CancelKeyDeletion_602803; path: JsonNode;
+proc call*(call_592861: Call_CancelKeyDeletion_592703; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Cancels the deletion of a customer master key (CMK). When this operation is successful, the CMK is set to the <code>Disabled</code> state. To enable a CMK, use <a>EnableKey</a>. You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about scheduling and canceling deletion of a CMK, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html">Deleting Customer Master Keys</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_602961.validator(path, query, header, formData, body)
-  let scheme = call_602961.pickScheme
+  let valid = call_592861.validator(path, query, header, formData, body)
+  let scheme = call_592861.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602961.url(scheme.get, call_602961.host, call_602961.base,
-                         call_602961.route, valid.getOrDefault("path"),
+  let url = call_592861.url(scheme.get, call_592861.host, call_592861.base,
+                         call_592861.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_602961, url, valid)
+  result = hook(call_592861, url, valid)
 
-proc call*(call_603032: Call_CancelKeyDeletion_602803; body: JsonNode): Recallable =
+proc call*(call_592932: Call_CancelKeyDeletion_592703; body: JsonNode): Recallable =
   ## cancelKeyDeletion
   ## <p>Cancels the deletion of a customer master key (CMK). When this operation is successful, the CMK is set to the <code>Disabled</code> state. To enable a CMK, use <a>EnableKey</a>. You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about scheduling and canceling deletion of a CMK, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html">Deleting Customer Master Keys</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603033 = newJObject()
+  var body_592933 = newJObject()
   if body != nil:
-    body_603033 = body
-  result = call_603032.call(nil, nil, nil, nil, body_603033)
+    body_592933 = body
+  result = call_592932.call(nil, nil, nil, nil, body_592933)
 
-var cancelKeyDeletion* = Call_CancelKeyDeletion_602803(name: "cancelKeyDeletion",
+var cancelKeyDeletion* = Call_CancelKeyDeletion_592703(name: "cancelKeyDeletion",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.CancelKeyDeletion",
-    validator: validate_CancelKeyDeletion_602804, base: "/",
-    url: url_CancelKeyDeletion_602805, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CancelKeyDeletion_592704, base: "/",
+    url: url_CancelKeyDeletion_592705, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ConnectCustomKeyStore_603072 = ref object of OpenApiRestCall_602466
-proc url_ConnectCustomKeyStore_603074(protocol: Scheme; host: string; base: string;
+  Call_ConnectCustomKeyStore_592972 = ref object of OpenApiRestCall_592364
+proc url_ConnectCustomKeyStore_592974(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ConnectCustomKeyStore_603073(path: JsonNode; query: JsonNode;
+proc validate_ConnectCustomKeyStore_592973(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Connects or reconnects a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> to its associated AWS CloudHSM cluster.</p> <p>The custom key store must be connected before you can create customer master keys (CMKs) in the key store or use the CMKs it contains. You can disconnect and reconnect a custom key store at any time.</p> <p>To connect a custom key store, its associated AWS CloudHSM cluster must have at least one active HSM. To get the number of active HSMs in a cluster, use the <a href="https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_DescribeClusters.html">DescribeClusters</a> operation. To add HSMs to the cluster, use the <a href="https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_CreateHsm.html">CreateHsm</a> operation.</p> <p>The connection process can take an extended amount of time to complete; up to 20 minutes. This operation starts the connection process, but it does not wait for it to complete. When it succeeds, this operation quickly returns an HTTP 200 response and a JSON object with no properties. However, this response does not indicate that the custom key store is connected. To get the connection state of the custom key store, use the <a>DescribeCustomKeyStores</a> operation.</p> <p>During the connection process, AWS KMS finds the AWS CloudHSM cluster that is associated with the custom key store, creates the connection infrastructure, connects to the cluster, logs into the AWS CloudHSM client as the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-store-concepts.html#concept-kmsuser"> <code>kmsuser</code> crypto user</a> (CU), and rotates its password.</p> <p>The <code>ConnectCustomKeyStore</code> operation might fail for various reasons. To find the reason, use the <a>DescribeCustomKeyStores</a> operation and see the <code>ConnectionErrorCode</code> in the response. For help interpreting the <code>ConnectionErrorCode</code>, see <a>CustomKeyStoresListEntry</a>.</p> <p>To fix the failure, use the <a>DisconnectCustomKeyStore</a> operation to disconnect the custom key store, correct the error, use the <a>UpdateCustomKeyStore</a> operation if necessary, and then use <code>ConnectCustomKeyStore</code> again.</p> <p>If you are having trouble connecting or disconnecting a custom key store, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting a Custom Key Store</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -273,57 +277,57 @@ proc validate_ConnectCustomKeyStore_603073(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603075 = header.getOrDefault("X-Amz-Date")
-  valid_603075 = validateParameter(valid_603075, JString, required = false,
-                                 default = nil)
-  if valid_603075 != nil:
-    section.add "X-Amz-Date", valid_603075
-  var valid_603076 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603076 = validateParameter(valid_603076, JString, required = false,
-                                 default = nil)
-  if valid_603076 != nil:
-    section.add "X-Amz-Security-Token", valid_603076
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603077 = header.getOrDefault("X-Amz-Target")
-  valid_603077 = validateParameter(valid_603077, JString, required = true, default = newJString(
+  var valid_592975 = header.getOrDefault("X-Amz-Target")
+  valid_592975 = validateParameter(valid_592975, JString, required = true, default = newJString(
       "TrentService.ConnectCustomKeyStore"))
-  if valid_603077 != nil:
-    section.add "X-Amz-Target", valid_603077
-  var valid_603078 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603078 = validateParameter(valid_603078, JString, required = false,
+  if valid_592975 != nil:
+    section.add "X-Amz-Target", valid_592975
+  var valid_592976 = header.getOrDefault("X-Amz-Signature")
+  valid_592976 = validateParameter(valid_592976, JString, required = false,
                                  default = nil)
-  if valid_603078 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603078
-  var valid_603079 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603079 = validateParameter(valid_603079, JString, required = false,
+  if valid_592976 != nil:
+    section.add "X-Amz-Signature", valid_592976
+  var valid_592977 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592977 = validateParameter(valid_592977, JString, required = false,
                                  default = nil)
-  if valid_603079 != nil:
-    section.add "X-Amz-Algorithm", valid_603079
-  var valid_603080 = header.getOrDefault("X-Amz-Signature")
-  valid_603080 = validateParameter(valid_603080, JString, required = false,
+  if valid_592977 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592977
+  var valid_592978 = header.getOrDefault("X-Amz-Date")
+  valid_592978 = validateParameter(valid_592978, JString, required = false,
                                  default = nil)
-  if valid_603080 != nil:
-    section.add "X-Amz-Signature", valid_603080
-  var valid_603081 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603081 = validateParameter(valid_603081, JString, required = false,
+  if valid_592978 != nil:
+    section.add "X-Amz-Date", valid_592978
+  var valid_592979 = header.getOrDefault("X-Amz-Credential")
+  valid_592979 = validateParameter(valid_592979, JString, required = false,
                                  default = nil)
-  if valid_603081 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603081
-  var valid_603082 = header.getOrDefault("X-Amz-Credential")
-  valid_603082 = validateParameter(valid_603082, JString, required = false,
+  if valid_592979 != nil:
+    section.add "X-Amz-Credential", valid_592979
+  var valid_592980 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592980 = validateParameter(valid_592980, JString, required = false,
                                  default = nil)
-  if valid_603082 != nil:
-    section.add "X-Amz-Credential", valid_603082
+  if valid_592980 != nil:
+    section.add "X-Amz-Security-Token", valid_592980
+  var valid_592981 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592981 = validateParameter(valid_592981, JString, required = false,
+                                 default = nil)
+  if valid_592981 != nil:
+    section.add "X-Amz-Algorithm", valid_592981
+  var valid_592982 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592982 = validateParameter(valid_592982, JString, required = false,
+                                 default = nil)
+  if valid_592982 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592982
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -334,44 +338,44 @@ proc validate_ConnectCustomKeyStore_603073(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603084: Call_ConnectCustomKeyStore_603072; path: JsonNode;
+proc call*(call_592984: Call_ConnectCustomKeyStore_592972; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Connects or reconnects a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> to its associated AWS CloudHSM cluster.</p> <p>The custom key store must be connected before you can create customer master keys (CMKs) in the key store or use the CMKs it contains. You can disconnect and reconnect a custom key store at any time.</p> <p>To connect a custom key store, its associated AWS CloudHSM cluster must have at least one active HSM. To get the number of active HSMs in a cluster, use the <a href="https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_DescribeClusters.html">DescribeClusters</a> operation. To add HSMs to the cluster, use the <a href="https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_CreateHsm.html">CreateHsm</a> operation.</p> <p>The connection process can take an extended amount of time to complete; up to 20 minutes. This operation starts the connection process, but it does not wait for it to complete. When it succeeds, this operation quickly returns an HTTP 200 response and a JSON object with no properties. However, this response does not indicate that the custom key store is connected. To get the connection state of the custom key store, use the <a>DescribeCustomKeyStores</a> operation.</p> <p>During the connection process, AWS KMS finds the AWS CloudHSM cluster that is associated with the custom key store, creates the connection infrastructure, connects to the cluster, logs into the AWS CloudHSM client as the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-store-concepts.html#concept-kmsuser"> <code>kmsuser</code> crypto user</a> (CU), and rotates its password.</p> <p>The <code>ConnectCustomKeyStore</code> operation might fail for various reasons. To find the reason, use the <a>DescribeCustomKeyStores</a> operation and see the <code>ConnectionErrorCode</code> in the response. For help interpreting the <code>ConnectionErrorCode</code>, see <a>CustomKeyStoresListEntry</a>.</p> <p>To fix the failure, use the <a>DisconnectCustomKeyStore</a> operation to disconnect the custom key store, correct the error, use the <a>UpdateCustomKeyStore</a> operation if necessary, and then use <code>ConnectCustomKeyStore</code> again.</p> <p>If you are having trouble connecting or disconnecting a custom key store, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting a Custom Key Store</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603084.validator(path, query, header, formData, body)
-  let scheme = call_603084.pickScheme
+  let valid = call_592984.validator(path, query, header, formData, body)
+  let scheme = call_592984.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603084.url(scheme.get, call_603084.host, call_603084.base,
-                         call_603084.route, valid.getOrDefault("path"),
+  let url = call_592984.url(scheme.get, call_592984.host, call_592984.base,
+                         call_592984.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603084, url, valid)
+  result = hook(call_592984, url, valid)
 
-proc call*(call_603085: Call_ConnectCustomKeyStore_603072; body: JsonNode): Recallable =
+proc call*(call_592985: Call_ConnectCustomKeyStore_592972; body: JsonNode): Recallable =
   ## connectCustomKeyStore
   ## <p>Connects or reconnects a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> to its associated AWS CloudHSM cluster.</p> <p>The custom key store must be connected before you can create customer master keys (CMKs) in the key store or use the CMKs it contains. You can disconnect and reconnect a custom key store at any time.</p> <p>To connect a custom key store, its associated AWS CloudHSM cluster must have at least one active HSM. To get the number of active HSMs in a cluster, use the <a href="https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_DescribeClusters.html">DescribeClusters</a> operation. To add HSMs to the cluster, use the <a href="https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_CreateHsm.html">CreateHsm</a> operation.</p> <p>The connection process can take an extended amount of time to complete; up to 20 minutes. This operation starts the connection process, but it does not wait for it to complete. When it succeeds, this operation quickly returns an HTTP 200 response and a JSON object with no properties. However, this response does not indicate that the custom key store is connected. To get the connection state of the custom key store, use the <a>DescribeCustomKeyStores</a> operation.</p> <p>During the connection process, AWS KMS finds the AWS CloudHSM cluster that is associated with the custom key store, creates the connection infrastructure, connects to the cluster, logs into the AWS CloudHSM client as the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-store-concepts.html#concept-kmsuser"> <code>kmsuser</code> crypto user</a> (CU), and rotates its password.</p> <p>The <code>ConnectCustomKeyStore</code> operation might fail for various reasons. To find the reason, use the <a>DescribeCustomKeyStores</a> operation and see the <code>ConnectionErrorCode</code> in the response. For help interpreting the <code>ConnectionErrorCode</code>, see <a>CustomKeyStoresListEntry</a>.</p> <p>To fix the failure, use the <a>DisconnectCustomKeyStore</a> operation to disconnect the custom key store, correct the error, use the <a>UpdateCustomKeyStore</a> operation if necessary, and then use <code>ConnectCustomKeyStore</code> again.</p> <p>If you are having trouble connecting or disconnecting a custom key store, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting a Custom Key Store</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603086 = newJObject()
+  var body_592986 = newJObject()
   if body != nil:
-    body_603086 = body
-  result = call_603085.call(nil, nil, nil, nil, body_603086)
+    body_592986 = body
+  result = call_592985.call(nil, nil, nil, nil, body_592986)
 
-var connectCustomKeyStore* = Call_ConnectCustomKeyStore_603072(
+var connectCustomKeyStore* = Call_ConnectCustomKeyStore_592972(
     name: "connectCustomKeyStore", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.ConnectCustomKeyStore",
-    validator: validate_ConnectCustomKeyStore_603073, base: "/",
-    url: url_ConnectCustomKeyStore_603074, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ConnectCustomKeyStore_592973, base: "/",
+    url: url_ConnectCustomKeyStore_592974, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateAlias_603087 = ref object of OpenApiRestCall_602466
-proc url_CreateAlias_603089(protocol: Scheme; host: string; base: string;
+  Call_CreateAlias_592987 = ref object of OpenApiRestCall_592364
+proc url_CreateAlias_592989(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateAlias_603088(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateAlias_592988(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a display name for a customer managed customer master key (CMK). You can use an alias to identify a CMK in selected operations, such as <a>Encrypt</a> and <a>GenerateDataKey</a>. </p> <p>Each CMK can have multiple aliases, but each alias points to only one CMK. The alias name must be unique in the AWS account and region. To simplify code that runs in multiple regions, use the same alias name, but point it to a different CMK in each region. </p> <p>Because an alias is not a property of a CMK, you can delete and change the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs, use the <a>ListAliases</a> operation.</p> <p>The alias name must begin with <code>alias/</code> followed by a name, such as <code>alias/ExampleAlias</code>. It can contain only alphanumeric characters, forward slashes (/), underscores (_), and dashes (-). The alias name cannot begin with <code>alias/aws/</code>. The <code>alias/aws/</code> prefix is reserved for <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk">AWS managed CMKs</a>. </p> <p>The alias and the CMK it is mapped to must be in the same AWS account and the same region. You cannot perform this operation on an alias in a different AWS account.</p> <p>To map an existing alias to a different CMK, call <a>UpdateAlias</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -382,57 +386,57 @@ proc validate_CreateAlias_603088(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603090 = header.getOrDefault("X-Amz-Date")
-  valid_603090 = validateParameter(valid_603090, JString, required = false,
-                                 default = nil)
-  if valid_603090 != nil:
-    section.add "X-Amz-Date", valid_603090
-  var valid_603091 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603091 = validateParameter(valid_603091, JString, required = false,
-                                 default = nil)
-  if valid_603091 != nil:
-    section.add "X-Amz-Security-Token", valid_603091
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603092 = header.getOrDefault("X-Amz-Target")
-  valid_603092 = validateParameter(valid_603092, JString, required = true, default = newJString(
+  var valid_592990 = header.getOrDefault("X-Amz-Target")
+  valid_592990 = validateParameter(valid_592990, JString, required = true, default = newJString(
       "TrentService.CreateAlias"))
-  if valid_603092 != nil:
-    section.add "X-Amz-Target", valid_603092
-  var valid_603093 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603093 = validateParameter(valid_603093, JString, required = false,
+  if valid_592990 != nil:
+    section.add "X-Amz-Target", valid_592990
+  var valid_592991 = header.getOrDefault("X-Amz-Signature")
+  valid_592991 = validateParameter(valid_592991, JString, required = false,
                                  default = nil)
-  if valid_603093 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603093
-  var valid_603094 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603094 = validateParameter(valid_603094, JString, required = false,
+  if valid_592991 != nil:
+    section.add "X-Amz-Signature", valid_592991
+  var valid_592992 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592992 = validateParameter(valid_592992, JString, required = false,
                                  default = nil)
-  if valid_603094 != nil:
-    section.add "X-Amz-Algorithm", valid_603094
-  var valid_603095 = header.getOrDefault("X-Amz-Signature")
-  valid_603095 = validateParameter(valid_603095, JString, required = false,
+  if valid_592992 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592992
+  var valid_592993 = header.getOrDefault("X-Amz-Date")
+  valid_592993 = validateParameter(valid_592993, JString, required = false,
                                  default = nil)
-  if valid_603095 != nil:
-    section.add "X-Amz-Signature", valid_603095
-  var valid_603096 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603096 = validateParameter(valid_603096, JString, required = false,
+  if valid_592993 != nil:
+    section.add "X-Amz-Date", valid_592993
+  var valid_592994 = header.getOrDefault("X-Amz-Credential")
+  valid_592994 = validateParameter(valid_592994, JString, required = false,
                                  default = nil)
-  if valid_603096 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603096
-  var valid_603097 = header.getOrDefault("X-Amz-Credential")
-  valid_603097 = validateParameter(valid_603097, JString, required = false,
+  if valid_592994 != nil:
+    section.add "X-Amz-Credential", valid_592994
+  var valid_592995 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592995 = validateParameter(valid_592995, JString, required = false,
                                  default = nil)
-  if valid_603097 != nil:
-    section.add "X-Amz-Credential", valid_603097
+  if valid_592995 != nil:
+    section.add "X-Amz-Security-Token", valid_592995
+  var valid_592996 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592996 = validateParameter(valid_592996, JString, required = false,
+                                 default = nil)
+  if valid_592996 != nil:
+    section.add "X-Amz-Algorithm", valid_592996
+  var valid_592997 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592997 = validateParameter(valid_592997, JString, required = false,
+                                 default = nil)
+  if valid_592997 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592997
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -443,44 +447,44 @@ proc validate_CreateAlias_603088(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603099: Call_CreateAlias_603087; path: JsonNode; query: JsonNode;
+proc call*(call_592999: Call_CreateAlias_592987; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a display name for a customer managed customer master key (CMK). You can use an alias to identify a CMK in selected operations, such as <a>Encrypt</a> and <a>GenerateDataKey</a>. </p> <p>Each CMK can have multiple aliases, but each alias points to only one CMK. The alias name must be unique in the AWS account and region. To simplify code that runs in multiple regions, use the same alias name, but point it to a different CMK in each region. </p> <p>Because an alias is not a property of a CMK, you can delete and change the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs, use the <a>ListAliases</a> operation.</p> <p>The alias name must begin with <code>alias/</code> followed by a name, such as <code>alias/ExampleAlias</code>. It can contain only alphanumeric characters, forward slashes (/), underscores (_), and dashes (-). The alias name cannot begin with <code>alias/aws/</code>. The <code>alias/aws/</code> prefix is reserved for <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk">AWS managed CMKs</a>. </p> <p>The alias and the CMK it is mapped to must be in the same AWS account and the same region. You cannot perform this operation on an alias in a different AWS account.</p> <p>To map an existing alias to a different CMK, call <a>UpdateAlias</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603099.validator(path, query, header, formData, body)
-  let scheme = call_603099.pickScheme
+  let valid = call_592999.validator(path, query, header, formData, body)
+  let scheme = call_592999.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603099.url(scheme.get, call_603099.host, call_603099.base,
-                         call_603099.route, valid.getOrDefault("path"),
+  let url = call_592999.url(scheme.get, call_592999.host, call_592999.base,
+                         call_592999.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603099, url, valid)
+  result = hook(call_592999, url, valid)
 
-proc call*(call_603100: Call_CreateAlias_603087; body: JsonNode): Recallable =
+proc call*(call_593000: Call_CreateAlias_592987; body: JsonNode): Recallable =
   ## createAlias
   ## <p>Creates a display name for a customer managed customer master key (CMK). You can use an alias to identify a CMK in selected operations, such as <a>Encrypt</a> and <a>GenerateDataKey</a>. </p> <p>Each CMK can have multiple aliases, but each alias points to only one CMK. The alias name must be unique in the AWS account and region. To simplify code that runs in multiple regions, use the same alias name, but point it to a different CMK in each region. </p> <p>Because an alias is not a property of a CMK, you can delete and change the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs, use the <a>ListAliases</a> operation.</p> <p>The alias name must begin with <code>alias/</code> followed by a name, such as <code>alias/ExampleAlias</code>. It can contain only alphanumeric characters, forward slashes (/), underscores (_), and dashes (-). The alias name cannot begin with <code>alias/aws/</code>. The <code>alias/aws/</code> prefix is reserved for <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk">AWS managed CMKs</a>. </p> <p>The alias and the CMK it is mapped to must be in the same AWS account and the same region. You cannot perform this operation on an alias in a different AWS account.</p> <p>To map an existing alias to a different CMK, call <a>UpdateAlias</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603101 = newJObject()
+  var body_593001 = newJObject()
   if body != nil:
-    body_603101 = body
-  result = call_603100.call(nil, nil, nil, nil, body_603101)
+    body_593001 = body
+  result = call_593000.call(nil, nil, nil, nil, body_593001)
 
-var createAlias* = Call_CreateAlias_603087(name: "createAlias",
+var createAlias* = Call_CreateAlias_592987(name: "createAlias",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.CreateAlias",
-                                        validator: validate_CreateAlias_603088,
-                                        base: "/", url: url_CreateAlias_603089,
+                                        validator: validate_CreateAlias_592988,
+                                        base: "/", url: url_CreateAlias_592989,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateCustomKeyStore_603102 = ref object of OpenApiRestCall_602466
-proc url_CreateCustomKeyStore_603104(protocol: Scheme; host: string; base: string;
+  Call_CreateCustomKeyStore_593002 = ref object of OpenApiRestCall_592364
+proc url_CreateCustomKeyStore_593004(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateCustomKeyStore_603103(path: JsonNode; query: JsonNode;
+proc validate_CreateCustomKeyStore_593003(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> that is associated with an <a href="https://docs.aws.amazon.com/cloudhsm/latest/userguide/clusters.html">AWS CloudHSM cluster</a> that you own and manage.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p> <p>Before you create the custom key store, you must assemble the required elements, including an AWS CloudHSM cluster that fulfills the requirements for a custom key store. For details about the required elements, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/create-keystore.html#before-keystore">Assemble the Prerequisites</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>When the operation completes successfully, it returns the ID of the new custom key store. Before you can use your new custom key store, you need to use the <a>ConnectCustomKeyStore</a> operation to connect the new key store to its AWS CloudHSM cluster. Even if you are not going to use your custom key store immediately, you might want to connect it to verify that all settings are correct and then disconnect it until you are ready to use it.</p> <p>For help with failures, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting a Custom Key Store</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -491,57 +495,57 @@ proc validate_CreateCustomKeyStore_603103(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603105 = header.getOrDefault("X-Amz-Date")
-  valid_603105 = validateParameter(valid_603105, JString, required = false,
-                                 default = nil)
-  if valid_603105 != nil:
-    section.add "X-Amz-Date", valid_603105
-  var valid_603106 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603106 = validateParameter(valid_603106, JString, required = false,
-                                 default = nil)
-  if valid_603106 != nil:
-    section.add "X-Amz-Security-Token", valid_603106
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603107 = header.getOrDefault("X-Amz-Target")
-  valid_603107 = validateParameter(valid_603107, JString, required = true, default = newJString(
+  var valid_593005 = header.getOrDefault("X-Amz-Target")
+  valid_593005 = validateParameter(valid_593005, JString, required = true, default = newJString(
       "TrentService.CreateCustomKeyStore"))
-  if valid_603107 != nil:
-    section.add "X-Amz-Target", valid_603107
-  var valid_603108 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603108 = validateParameter(valid_603108, JString, required = false,
+  if valid_593005 != nil:
+    section.add "X-Amz-Target", valid_593005
+  var valid_593006 = header.getOrDefault("X-Amz-Signature")
+  valid_593006 = validateParameter(valid_593006, JString, required = false,
                                  default = nil)
-  if valid_603108 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603108
-  var valid_603109 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603109 = validateParameter(valid_603109, JString, required = false,
+  if valid_593006 != nil:
+    section.add "X-Amz-Signature", valid_593006
+  var valid_593007 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593007 = validateParameter(valid_593007, JString, required = false,
                                  default = nil)
-  if valid_603109 != nil:
-    section.add "X-Amz-Algorithm", valid_603109
-  var valid_603110 = header.getOrDefault("X-Amz-Signature")
-  valid_603110 = validateParameter(valid_603110, JString, required = false,
+  if valid_593007 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593007
+  var valid_593008 = header.getOrDefault("X-Amz-Date")
+  valid_593008 = validateParameter(valid_593008, JString, required = false,
                                  default = nil)
-  if valid_603110 != nil:
-    section.add "X-Amz-Signature", valid_603110
-  var valid_603111 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603111 = validateParameter(valid_603111, JString, required = false,
+  if valid_593008 != nil:
+    section.add "X-Amz-Date", valid_593008
+  var valid_593009 = header.getOrDefault("X-Amz-Credential")
+  valid_593009 = validateParameter(valid_593009, JString, required = false,
                                  default = nil)
-  if valid_603111 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603111
-  var valid_603112 = header.getOrDefault("X-Amz-Credential")
-  valid_603112 = validateParameter(valid_603112, JString, required = false,
+  if valid_593009 != nil:
+    section.add "X-Amz-Credential", valid_593009
+  var valid_593010 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593010 = validateParameter(valid_593010, JString, required = false,
                                  default = nil)
-  if valid_603112 != nil:
-    section.add "X-Amz-Credential", valid_603112
+  if valid_593010 != nil:
+    section.add "X-Amz-Security-Token", valid_593010
+  var valid_593011 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593011 = validateParameter(valid_593011, JString, required = false,
+                                 default = nil)
+  if valid_593011 != nil:
+    section.add "X-Amz-Algorithm", valid_593011
+  var valid_593012 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593012 = validateParameter(valid_593012, JString, required = false,
+                                 default = nil)
+  if valid_593012 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593012
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -552,44 +556,44 @@ proc validate_CreateCustomKeyStore_603103(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603114: Call_CreateCustomKeyStore_603102; path: JsonNode;
+proc call*(call_593014: Call_CreateCustomKeyStore_593002; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> that is associated with an <a href="https://docs.aws.amazon.com/cloudhsm/latest/userguide/clusters.html">AWS CloudHSM cluster</a> that you own and manage.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p> <p>Before you create the custom key store, you must assemble the required elements, including an AWS CloudHSM cluster that fulfills the requirements for a custom key store. For details about the required elements, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/create-keystore.html#before-keystore">Assemble the Prerequisites</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>When the operation completes successfully, it returns the ID of the new custom key store. Before you can use your new custom key store, you need to use the <a>ConnectCustomKeyStore</a> operation to connect the new key store to its AWS CloudHSM cluster. Even if you are not going to use your custom key store immediately, you might want to connect it to verify that all settings are correct and then disconnect it until you are ready to use it.</p> <p>For help with failures, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting a Custom Key Store</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603114.validator(path, query, header, formData, body)
-  let scheme = call_603114.pickScheme
+  let valid = call_593014.validator(path, query, header, formData, body)
+  let scheme = call_593014.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603114.url(scheme.get, call_603114.host, call_603114.base,
-                         call_603114.route, valid.getOrDefault("path"),
+  let url = call_593014.url(scheme.get, call_593014.host, call_593014.base,
+                         call_593014.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603114, url, valid)
+  result = hook(call_593014, url, valid)
 
-proc call*(call_603115: Call_CreateCustomKeyStore_603102; body: JsonNode): Recallable =
+proc call*(call_593015: Call_CreateCustomKeyStore_593002; body: JsonNode): Recallable =
   ## createCustomKeyStore
   ## <p>Creates a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> that is associated with an <a href="https://docs.aws.amazon.com/cloudhsm/latest/userguide/clusters.html">AWS CloudHSM cluster</a> that you own and manage.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p> <p>Before you create the custom key store, you must assemble the required elements, including an AWS CloudHSM cluster that fulfills the requirements for a custom key store. For details about the required elements, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/create-keystore.html#before-keystore">Assemble the Prerequisites</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>When the operation completes successfully, it returns the ID of the new custom key store. Before you can use your new custom key store, you need to use the <a>ConnectCustomKeyStore</a> operation to connect the new key store to its AWS CloudHSM cluster. Even if you are not going to use your custom key store immediately, you might want to connect it to verify that all settings are correct and then disconnect it until you are ready to use it.</p> <p>For help with failures, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting a Custom Key Store</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603116 = newJObject()
+  var body_593016 = newJObject()
   if body != nil:
-    body_603116 = body
-  result = call_603115.call(nil, nil, nil, nil, body_603116)
+    body_593016 = body
+  result = call_593015.call(nil, nil, nil, nil, body_593016)
 
-var createCustomKeyStore* = Call_CreateCustomKeyStore_603102(
+var createCustomKeyStore* = Call_CreateCustomKeyStore_593002(
     name: "createCustomKeyStore", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.CreateCustomKeyStore",
-    validator: validate_CreateCustomKeyStore_603103, base: "/",
-    url: url_CreateCustomKeyStore_603104, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateCustomKeyStore_593003, base: "/",
+    url: url_CreateCustomKeyStore_593004, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateGrant_603117 = ref object of OpenApiRestCall_602466
-proc url_CreateGrant_603119(protocol: Scheme; host: string; base: string;
+  Call_CreateGrant_593017 = ref object of OpenApiRestCall_592364
+proc url_CreateGrant_593019(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateGrant_603118(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateGrant_593018(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds a grant to a customer master key (CMK). The grant allows the grantee principal to use the CMK when the conditions specified in the grant are met. When setting permissions, grants are an alternative to key policies. </p> <p>To create a grant that allows a cryptographic operation only when the encryption context in the operation request matches or includes a specified encryption context, use the <code>Constraints</code> parameter. For details, see <a>GrantConstraints</a>.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter. For more information about grants, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/grants.html">Grants</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -600,57 +604,57 @@ proc validate_CreateGrant_603118(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603120 = header.getOrDefault("X-Amz-Date")
-  valid_603120 = validateParameter(valid_603120, JString, required = false,
-                                 default = nil)
-  if valid_603120 != nil:
-    section.add "X-Amz-Date", valid_603120
-  var valid_603121 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603121 = validateParameter(valid_603121, JString, required = false,
-                                 default = nil)
-  if valid_603121 != nil:
-    section.add "X-Amz-Security-Token", valid_603121
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603122 = header.getOrDefault("X-Amz-Target")
-  valid_603122 = validateParameter(valid_603122, JString, required = true, default = newJString(
+  var valid_593020 = header.getOrDefault("X-Amz-Target")
+  valid_593020 = validateParameter(valid_593020, JString, required = true, default = newJString(
       "TrentService.CreateGrant"))
-  if valid_603122 != nil:
-    section.add "X-Amz-Target", valid_603122
-  var valid_603123 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603123 = validateParameter(valid_603123, JString, required = false,
+  if valid_593020 != nil:
+    section.add "X-Amz-Target", valid_593020
+  var valid_593021 = header.getOrDefault("X-Amz-Signature")
+  valid_593021 = validateParameter(valid_593021, JString, required = false,
                                  default = nil)
-  if valid_603123 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603123
-  var valid_603124 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603124 = validateParameter(valid_603124, JString, required = false,
+  if valid_593021 != nil:
+    section.add "X-Amz-Signature", valid_593021
+  var valid_593022 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593022 = validateParameter(valid_593022, JString, required = false,
                                  default = nil)
-  if valid_603124 != nil:
-    section.add "X-Amz-Algorithm", valid_603124
-  var valid_603125 = header.getOrDefault("X-Amz-Signature")
-  valid_603125 = validateParameter(valid_603125, JString, required = false,
+  if valid_593022 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593022
+  var valid_593023 = header.getOrDefault("X-Amz-Date")
+  valid_593023 = validateParameter(valid_593023, JString, required = false,
                                  default = nil)
-  if valid_603125 != nil:
-    section.add "X-Amz-Signature", valid_603125
-  var valid_603126 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603126 = validateParameter(valid_603126, JString, required = false,
+  if valid_593023 != nil:
+    section.add "X-Amz-Date", valid_593023
+  var valid_593024 = header.getOrDefault("X-Amz-Credential")
+  valid_593024 = validateParameter(valid_593024, JString, required = false,
                                  default = nil)
-  if valid_603126 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603126
-  var valid_603127 = header.getOrDefault("X-Amz-Credential")
-  valid_603127 = validateParameter(valid_603127, JString, required = false,
+  if valid_593024 != nil:
+    section.add "X-Amz-Credential", valid_593024
+  var valid_593025 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593025 = validateParameter(valid_593025, JString, required = false,
                                  default = nil)
-  if valid_603127 != nil:
-    section.add "X-Amz-Credential", valid_603127
+  if valid_593025 != nil:
+    section.add "X-Amz-Security-Token", valid_593025
+  var valid_593026 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593026 = validateParameter(valid_593026, JString, required = false,
+                                 default = nil)
+  if valid_593026 != nil:
+    section.add "X-Amz-Algorithm", valid_593026
+  var valid_593027 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593027 = validateParameter(valid_593027, JString, required = false,
+                                 default = nil)
+  if valid_593027 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593027
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -661,44 +665,44 @@ proc validate_CreateGrant_603118(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603129: Call_CreateGrant_603117; path: JsonNode; query: JsonNode;
+proc call*(call_593029: Call_CreateGrant_593017; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds a grant to a customer master key (CMK). The grant allows the grantee principal to use the CMK when the conditions specified in the grant are met. When setting permissions, grants are an alternative to key policies. </p> <p>To create a grant that allows a cryptographic operation only when the encryption context in the operation request matches or includes a specified encryption context, use the <code>Constraints</code> parameter. For details, see <a>GrantConstraints</a>.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter. For more information about grants, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/grants.html">Grants</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603129.validator(path, query, header, formData, body)
-  let scheme = call_603129.pickScheme
+  let valid = call_593029.validator(path, query, header, formData, body)
+  let scheme = call_593029.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603129.url(scheme.get, call_603129.host, call_603129.base,
-                         call_603129.route, valid.getOrDefault("path"),
+  let url = call_593029.url(scheme.get, call_593029.host, call_593029.base,
+                         call_593029.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603129, url, valid)
+  result = hook(call_593029, url, valid)
 
-proc call*(call_603130: Call_CreateGrant_603117; body: JsonNode): Recallable =
+proc call*(call_593030: Call_CreateGrant_593017; body: JsonNode): Recallable =
   ## createGrant
   ## <p>Adds a grant to a customer master key (CMK). The grant allows the grantee principal to use the CMK when the conditions specified in the grant are met. When setting permissions, grants are an alternative to key policies. </p> <p>To create a grant that allows a cryptographic operation only when the encryption context in the operation request matches or includes a specified encryption context, use the <code>Constraints</code> parameter. For details, see <a>GrantConstraints</a>.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter. For more information about grants, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/grants.html">Grants</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603131 = newJObject()
+  var body_593031 = newJObject()
   if body != nil:
-    body_603131 = body
-  result = call_603130.call(nil, nil, nil, nil, body_603131)
+    body_593031 = body
+  result = call_593030.call(nil, nil, nil, nil, body_593031)
 
-var createGrant* = Call_CreateGrant_603117(name: "createGrant",
+var createGrant* = Call_CreateGrant_593017(name: "createGrant",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.CreateGrant",
-                                        validator: validate_CreateGrant_603118,
-                                        base: "/", url: url_CreateGrant_603119,
+                                        validator: validate_CreateGrant_593018,
+                                        base: "/", url: url_CreateGrant_593019,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateKey_603132 = ref object of OpenApiRestCall_602466
-proc url_CreateKey_603134(protocol: Scheme; host: string; base: string; route: string;
+  Call_CreateKey_593032 = ref object of OpenApiRestCall_592364
+proc url_CreateKey_593034(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateKey_603133(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateKey_593033(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a customer managed <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">customer master key</a> (CMK) in your AWS account.</p> <p>You can use a CMK to encrypt small amounts of data (up to 4096 bytes) directly. But CMKs are more commonly used to encrypt the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#data-keys">data keys</a> that are used to encrypt data.</p> <p>To create a CMK for imported key material, use the <code>Origin</code> parameter with a value of <code>EXTERNAL</code>.</p> <p>To create a CMK in a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, use the <code>CustomKeyStoreId</code> parameter to specify the custom key store. You must also use the <code>Origin</code> parameter with a value of <code>AWS_CLOUDHSM</code>. The AWS CloudHSM cluster that is associated with the custom key store must have at least two active HSMs in different Availability Zones in the AWS Region.</p> <p>You cannot use this operation to create a CMK in a different AWS account.</p>
   ## 
@@ -709,57 +713,57 @@ proc validate_CreateKey_603133(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603135 = header.getOrDefault("X-Amz-Date")
-  valid_603135 = validateParameter(valid_603135, JString, required = false,
-                                 default = nil)
-  if valid_603135 != nil:
-    section.add "X-Amz-Date", valid_603135
-  var valid_603136 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
-                                 default = nil)
-  if valid_603136 != nil:
-    section.add "X-Amz-Security-Token", valid_603136
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603137 = header.getOrDefault("X-Amz-Target")
-  valid_603137 = validateParameter(valid_603137, JString, required = true,
+  var valid_593035 = header.getOrDefault("X-Amz-Target")
+  valid_593035 = validateParameter(valid_593035, JString, required = true,
                                  default = newJString("TrentService.CreateKey"))
-  if valid_603137 != nil:
-    section.add "X-Amz-Target", valid_603137
-  var valid_603138 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603138 = validateParameter(valid_603138, JString, required = false,
+  if valid_593035 != nil:
+    section.add "X-Amz-Target", valid_593035
+  var valid_593036 = header.getOrDefault("X-Amz-Signature")
+  valid_593036 = validateParameter(valid_593036, JString, required = false,
                                  default = nil)
-  if valid_603138 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603138
-  var valid_603139 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603139 = validateParameter(valid_603139, JString, required = false,
+  if valid_593036 != nil:
+    section.add "X-Amz-Signature", valid_593036
+  var valid_593037 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593037 = validateParameter(valid_593037, JString, required = false,
                                  default = nil)
-  if valid_603139 != nil:
-    section.add "X-Amz-Algorithm", valid_603139
-  var valid_603140 = header.getOrDefault("X-Amz-Signature")
-  valid_603140 = validateParameter(valid_603140, JString, required = false,
+  if valid_593037 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593037
+  var valid_593038 = header.getOrDefault("X-Amz-Date")
+  valid_593038 = validateParameter(valid_593038, JString, required = false,
                                  default = nil)
-  if valid_603140 != nil:
-    section.add "X-Amz-Signature", valid_603140
-  var valid_603141 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603141 = validateParameter(valid_603141, JString, required = false,
+  if valid_593038 != nil:
+    section.add "X-Amz-Date", valid_593038
+  var valid_593039 = header.getOrDefault("X-Amz-Credential")
+  valid_593039 = validateParameter(valid_593039, JString, required = false,
                                  default = nil)
-  if valid_603141 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603141
-  var valid_603142 = header.getOrDefault("X-Amz-Credential")
-  valid_603142 = validateParameter(valid_603142, JString, required = false,
+  if valid_593039 != nil:
+    section.add "X-Amz-Credential", valid_593039
+  var valid_593040 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593040 = validateParameter(valid_593040, JString, required = false,
                                  default = nil)
-  if valid_603142 != nil:
-    section.add "X-Amz-Credential", valid_603142
+  if valid_593040 != nil:
+    section.add "X-Amz-Security-Token", valid_593040
+  var valid_593041 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593041 = validateParameter(valid_593041, JString, required = false,
+                                 default = nil)
+  if valid_593041 != nil:
+    section.add "X-Amz-Algorithm", valid_593041
+  var valid_593042 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593042 = validateParameter(valid_593042, JString, required = false,
+                                 default = nil)
+  if valid_593042 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593042
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -770,43 +774,43 @@ proc validate_CreateKey_603133(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603144: Call_CreateKey_603132; path: JsonNode; query: JsonNode;
+proc call*(call_593044: Call_CreateKey_593032; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a customer managed <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">customer master key</a> (CMK) in your AWS account.</p> <p>You can use a CMK to encrypt small amounts of data (up to 4096 bytes) directly. But CMKs are more commonly used to encrypt the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#data-keys">data keys</a> that are used to encrypt data.</p> <p>To create a CMK for imported key material, use the <code>Origin</code> parameter with a value of <code>EXTERNAL</code>.</p> <p>To create a CMK in a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, use the <code>CustomKeyStoreId</code> parameter to specify the custom key store. You must also use the <code>Origin</code> parameter with a value of <code>AWS_CLOUDHSM</code>. The AWS CloudHSM cluster that is associated with the custom key store must have at least two active HSMs in different Availability Zones in the AWS Region.</p> <p>You cannot use this operation to create a CMK in a different AWS account.</p>
   ## 
-  let valid = call_603144.validator(path, query, header, formData, body)
-  let scheme = call_603144.pickScheme
+  let valid = call_593044.validator(path, query, header, formData, body)
+  let scheme = call_593044.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603144.url(scheme.get, call_603144.host, call_603144.base,
-                         call_603144.route, valid.getOrDefault("path"),
+  let url = call_593044.url(scheme.get, call_593044.host, call_593044.base,
+                         call_593044.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603144, url, valid)
+  result = hook(call_593044, url, valid)
 
-proc call*(call_603145: Call_CreateKey_603132; body: JsonNode): Recallable =
+proc call*(call_593045: Call_CreateKey_593032; body: JsonNode): Recallable =
   ## createKey
   ## <p>Creates a customer managed <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">customer master key</a> (CMK) in your AWS account.</p> <p>You can use a CMK to encrypt small amounts of data (up to 4096 bytes) directly. But CMKs are more commonly used to encrypt the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#data-keys">data keys</a> that are used to encrypt data.</p> <p>To create a CMK for imported key material, use the <code>Origin</code> parameter with a value of <code>EXTERNAL</code>.</p> <p>To create a CMK in a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, use the <code>CustomKeyStoreId</code> parameter to specify the custom key store. You must also use the <code>Origin</code> parameter with a value of <code>AWS_CLOUDHSM</code>. The AWS CloudHSM cluster that is associated with the custom key store must have at least two active HSMs in different Availability Zones in the AWS Region.</p> <p>You cannot use this operation to create a CMK in a different AWS account.</p>
   ##   body: JObject (required)
-  var body_603146 = newJObject()
+  var body_593046 = newJObject()
   if body != nil:
-    body_603146 = body
-  result = call_603145.call(nil, nil, nil, nil, body_603146)
+    body_593046 = body
+  result = call_593045.call(nil, nil, nil, nil, body_593046)
 
-var createKey* = Call_CreateKey_603132(name: "createKey", meth: HttpMethod.HttpPost,
+var createKey* = Call_CreateKey_593032(name: "createKey", meth: HttpMethod.HttpPost,
                                     host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.CreateKey",
-                                    validator: validate_CreateKey_603133,
-                                    base: "/", url: url_CreateKey_603134,
+                                    validator: validate_CreateKey_593033,
+                                    base: "/", url: url_CreateKey_593034,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_Decrypt_603147 = ref object of OpenApiRestCall_602466
-proc url_Decrypt_603149(protocol: Scheme; host: string; base: string; route: string;
+  Call_Decrypt_593047 = ref object of OpenApiRestCall_592364
+proc url_Decrypt_593049(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_Decrypt_603148(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_Decrypt_593048(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Decrypts ciphertext. Ciphertext is plaintext that has been previously encrypted by using any of the following operations:</p> <ul> <li> <p> <a>GenerateDataKey</a> </p> </li> <li> <p> <a>GenerateDataKeyWithoutPlaintext</a> </p> </li> <li> <p> <a>Encrypt</a> </p> </li> </ul> <p>Whenever possible, use key policies to give users permission to call the Decrypt operation on the CMK, instead of IAM policies. Otherwise, you might create an IAM user policy that gives the user Decrypt permission on all CMKs. This user could decrypt ciphertext that was encrypted by CMKs in other accounts if the key policy for the cross-account CMK permits it. If you must use an IAM policy for <code>Decrypt</code> permissions, limit the user to particular CMKs or particular trusted accounts.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -817,57 +821,57 @@ proc validate_Decrypt_603148(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603150 = header.getOrDefault("X-Amz-Date")
-  valid_603150 = validateParameter(valid_603150, JString, required = false,
-                                 default = nil)
-  if valid_603150 != nil:
-    section.add "X-Amz-Date", valid_603150
-  var valid_603151 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603151 = validateParameter(valid_603151, JString, required = false,
-                                 default = nil)
-  if valid_603151 != nil:
-    section.add "X-Amz-Security-Token", valid_603151
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603152 = header.getOrDefault("X-Amz-Target")
-  valid_603152 = validateParameter(valid_603152, JString, required = true,
+  var valid_593050 = header.getOrDefault("X-Amz-Target")
+  valid_593050 = validateParameter(valid_593050, JString, required = true,
                                  default = newJString("TrentService.Decrypt"))
-  if valid_603152 != nil:
-    section.add "X-Amz-Target", valid_603152
-  var valid_603153 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603153 = validateParameter(valid_603153, JString, required = false,
+  if valid_593050 != nil:
+    section.add "X-Amz-Target", valid_593050
+  var valid_593051 = header.getOrDefault("X-Amz-Signature")
+  valid_593051 = validateParameter(valid_593051, JString, required = false,
                                  default = nil)
-  if valid_603153 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603153
-  var valid_603154 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603154 = validateParameter(valid_603154, JString, required = false,
+  if valid_593051 != nil:
+    section.add "X-Amz-Signature", valid_593051
+  var valid_593052 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593052 = validateParameter(valid_593052, JString, required = false,
                                  default = nil)
-  if valid_603154 != nil:
-    section.add "X-Amz-Algorithm", valid_603154
-  var valid_603155 = header.getOrDefault("X-Amz-Signature")
-  valid_603155 = validateParameter(valid_603155, JString, required = false,
+  if valid_593052 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593052
+  var valid_593053 = header.getOrDefault("X-Amz-Date")
+  valid_593053 = validateParameter(valid_593053, JString, required = false,
                                  default = nil)
-  if valid_603155 != nil:
-    section.add "X-Amz-Signature", valid_603155
-  var valid_603156 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603156 = validateParameter(valid_603156, JString, required = false,
+  if valid_593053 != nil:
+    section.add "X-Amz-Date", valid_593053
+  var valid_593054 = header.getOrDefault("X-Amz-Credential")
+  valid_593054 = validateParameter(valid_593054, JString, required = false,
                                  default = nil)
-  if valid_603156 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603156
-  var valid_603157 = header.getOrDefault("X-Amz-Credential")
-  valid_603157 = validateParameter(valid_603157, JString, required = false,
+  if valid_593054 != nil:
+    section.add "X-Amz-Credential", valid_593054
+  var valid_593055 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593055 = validateParameter(valid_593055, JString, required = false,
                                  default = nil)
-  if valid_603157 != nil:
-    section.add "X-Amz-Credential", valid_603157
+  if valid_593055 != nil:
+    section.add "X-Amz-Security-Token", valid_593055
+  var valid_593056 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593056 = validateParameter(valid_593056, JString, required = false,
+                                 default = nil)
+  if valid_593056 != nil:
+    section.add "X-Amz-Algorithm", valid_593056
+  var valid_593057 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593057 = validateParameter(valid_593057, JString, required = false,
+                                 default = nil)
+  if valid_593057 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593057
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -878,44 +882,44 @@ proc validate_Decrypt_603148(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603159: Call_Decrypt_603147; path: JsonNode; query: JsonNode;
+proc call*(call_593059: Call_Decrypt_593047; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Decrypts ciphertext. Ciphertext is plaintext that has been previously encrypted by using any of the following operations:</p> <ul> <li> <p> <a>GenerateDataKey</a> </p> </li> <li> <p> <a>GenerateDataKeyWithoutPlaintext</a> </p> </li> <li> <p> <a>Encrypt</a> </p> </li> </ul> <p>Whenever possible, use key policies to give users permission to call the Decrypt operation on the CMK, instead of IAM policies. Otherwise, you might create an IAM user policy that gives the user Decrypt permission on all CMKs. This user could decrypt ciphertext that was encrypted by CMKs in other accounts if the key policy for the cross-account CMK permits it. If you must use an IAM policy for <code>Decrypt</code> permissions, limit the user to particular CMKs or particular trusted accounts.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603159.validator(path, query, header, formData, body)
-  let scheme = call_603159.pickScheme
+  let valid = call_593059.validator(path, query, header, formData, body)
+  let scheme = call_593059.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603159.url(scheme.get, call_603159.host, call_603159.base,
-                         call_603159.route, valid.getOrDefault("path"),
+  let url = call_593059.url(scheme.get, call_593059.host, call_593059.base,
+                         call_593059.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603159, url, valid)
+  result = hook(call_593059, url, valid)
 
-proc call*(call_603160: Call_Decrypt_603147; body: JsonNode): Recallable =
+proc call*(call_593060: Call_Decrypt_593047; body: JsonNode): Recallable =
   ## decrypt
   ## <p>Decrypts ciphertext. Ciphertext is plaintext that has been previously encrypted by using any of the following operations:</p> <ul> <li> <p> <a>GenerateDataKey</a> </p> </li> <li> <p> <a>GenerateDataKeyWithoutPlaintext</a> </p> </li> <li> <p> <a>Encrypt</a> </p> </li> </ul> <p>Whenever possible, use key policies to give users permission to call the Decrypt operation on the CMK, instead of IAM policies. Otherwise, you might create an IAM user policy that gives the user Decrypt permission on all CMKs. This user could decrypt ciphertext that was encrypted by CMKs in other accounts if the key policy for the cross-account CMK permits it. If you must use an IAM policy for <code>Decrypt</code> permissions, limit the user to particular CMKs or particular trusted accounts.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603161 = newJObject()
+  var body_593061 = newJObject()
   if body != nil:
-    body_603161 = body
-  result = call_603160.call(nil, nil, nil, nil, body_603161)
+    body_593061 = body
+  result = call_593060.call(nil, nil, nil, nil, body_593061)
 
-var decrypt* = Call_Decrypt_603147(name: "decrypt", meth: HttpMethod.HttpPost,
+var decrypt* = Call_Decrypt_593047(name: "decrypt", meth: HttpMethod.HttpPost,
                                 host: "kms.amazonaws.com",
                                 route: "/#X-Amz-Target=TrentService.Decrypt",
-                                validator: validate_Decrypt_603148, base: "/",
-                                url: url_Decrypt_603149,
+                                validator: validate_Decrypt_593048, base: "/",
+                                url: url_Decrypt_593049,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteAlias_603162 = ref object of OpenApiRestCall_602466
-proc url_DeleteAlias_603164(protocol: Scheme; host: string; base: string;
+  Call_DeleteAlias_593062 = ref object of OpenApiRestCall_592364
+proc url_DeleteAlias_593064(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteAlias_603163(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteAlias_593063(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified alias. You cannot perform this operation on an alias in a different AWS account. </p> <p>Because an alias is not a property of a CMK, you can delete and change the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs, use the <a>ListAliases</a> operation. </p> <p>Each CMK can have multiple aliases. To change the alias of a CMK, use <a>DeleteAlias</a> to delete the current alias and <a>CreateAlias</a> to create a new alias. To associate an existing alias with a different customer master key (CMK), call <a>UpdateAlias</a>.</p>
   ## 
@@ -926,57 +930,57 @@ proc validate_DeleteAlias_603163(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603165 = header.getOrDefault("X-Amz-Date")
-  valid_603165 = validateParameter(valid_603165, JString, required = false,
-                                 default = nil)
-  if valid_603165 != nil:
-    section.add "X-Amz-Date", valid_603165
-  var valid_603166 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603166 = validateParameter(valid_603166, JString, required = false,
-                                 default = nil)
-  if valid_603166 != nil:
-    section.add "X-Amz-Security-Token", valid_603166
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603167 = header.getOrDefault("X-Amz-Target")
-  valid_603167 = validateParameter(valid_603167, JString, required = true, default = newJString(
+  var valid_593065 = header.getOrDefault("X-Amz-Target")
+  valid_593065 = validateParameter(valid_593065, JString, required = true, default = newJString(
       "TrentService.DeleteAlias"))
-  if valid_603167 != nil:
-    section.add "X-Amz-Target", valid_603167
-  var valid_603168 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603168 = validateParameter(valid_603168, JString, required = false,
+  if valid_593065 != nil:
+    section.add "X-Amz-Target", valid_593065
+  var valid_593066 = header.getOrDefault("X-Amz-Signature")
+  valid_593066 = validateParameter(valid_593066, JString, required = false,
                                  default = nil)
-  if valid_603168 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603168
-  var valid_603169 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603169 = validateParameter(valid_603169, JString, required = false,
+  if valid_593066 != nil:
+    section.add "X-Amz-Signature", valid_593066
+  var valid_593067 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593067 = validateParameter(valid_593067, JString, required = false,
                                  default = nil)
-  if valid_603169 != nil:
-    section.add "X-Amz-Algorithm", valid_603169
-  var valid_603170 = header.getOrDefault("X-Amz-Signature")
-  valid_603170 = validateParameter(valid_603170, JString, required = false,
+  if valid_593067 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593067
+  var valid_593068 = header.getOrDefault("X-Amz-Date")
+  valid_593068 = validateParameter(valid_593068, JString, required = false,
                                  default = nil)
-  if valid_603170 != nil:
-    section.add "X-Amz-Signature", valid_603170
-  var valid_603171 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603171 = validateParameter(valid_603171, JString, required = false,
+  if valid_593068 != nil:
+    section.add "X-Amz-Date", valid_593068
+  var valid_593069 = header.getOrDefault("X-Amz-Credential")
+  valid_593069 = validateParameter(valid_593069, JString, required = false,
                                  default = nil)
-  if valid_603171 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603171
-  var valid_603172 = header.getOrDefault("X-Amz-Credential")
-  valid_603172 = validateParameter(valid_603172, JString, required = false,
+  if valid_593069 != nil:
+    section.add "X-Amz-Credential", valid_593069
+  var valid_593070 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593070 = validateParameter(valid_593070, JString, required = false,
                                  default = nil)
-  if valid_603172 != nil:
-    section.add "X-Amz-Credential", valid_603172
+  if valid_593070 != nil:
+    section.add "X-Amz-Security-Token", valid_593070
+  var valid_593071 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593071 = validateParameter(valid_593071, JString, required = false,
+                                 default = nil)
+  if valid_593071 != nil:
+    section.add "X-Amz-Algorithm", valid_593071
+  var valid_593072 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593072 = validateParameter(valid_593072, JString, required = false,
+                                 default = nil)
+  if valid_593072 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593072
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -987,44 +991,44 @@ proc validate_DeleteAlias_603163(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603174: Call_DeleteAlias_603162; path: JsonNode; query: JsonNode;
+proc call*(call_593074: Call_DeleteAlias_593062; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified alias. You cannot perform this operation on an alias in a different AWS account. </p> <p>Because an alias is not a property of a CMK, you can delete and change the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs, use the <a>ListAliases</a> operation. </p> <p>Each CMK can have multiple aliases. To change the alias of a CMK, use <a>DeleteAlias</a> to delete the current alias and <a>CreateAlias</a> to create a new alias. To associate an existing alias with a different customer master key (CMK), call <a>UpdateAlias</a>.</p>
   ## 
-  let valid = call_603174.validator(path, query, header, formData, body)
-  let scheme = call_603174.pickScheme
+  let valid = call_593074.validator(path, query, header, formData, body)
+  let scheme = call_593074.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603174.url(scheme.get, call_603174.host, call_603174.base,
-                         call_603174.route, valid.getOrDefault("path"),
+  let url = call_593074.url(scheme.get, call_593074.host, call_593074.base,
+                         call_593074.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603174, url, valid)
+  result = hook(call_593074, url, valid)
 
-proc call*(call_603175: Call_DeleteAlias_603162; body: JsonNode): Recallable =
+proc call*(call_593075: Call_DeleteAlias_593062; body: JsonNode): Recallable =
   ## deleteAlias
   ## <p>Deletes the specified alias. You cannot perform this operation on an alias in a different AWS account. </p> <p>Because an alias is not a property of a CMK, you can delete and change the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs, use the <a>ListAliases</a> operation. </p> <p>Each CMK can have multiple aliases. To change the alias of a CMK, use <a>DeleteAlias</a> to delete the current alias and <a>CreateAlias</a> to create a new alias. To associate an existing alias with a different customer master key (CMK), call <a>UpdateAlias</a>.</p>
   ##   body: JObject (required)
-  var body_603176 = newJObject()
+  var body_593076 = newJObject()
   if body != nil:
-    body_603176 = body
-  result = call_603175.call(nil, nil, nil, nil, body_603176)
+    body_593076 = body
+  result = call_593075.call(nil, nil, nil, nil, body_593076)
 
-var deleteAlias* = Call_DeleteAlias_603162(name: "deleteAlias",
+var deleteAlias* = Call_DeleteAlias_593062(name: "deleteAlias",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.DeleteAlias",
-                                        validator: validate_DeleteAlias_603163,
-                                        base: "/", url: url_DeleteAlias_603164,
+                                        validator: validate_DeleteAlias_593063,
+                                        base: "/", url: url_DeleteAlias_593064,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteCustomKeyStore_603177 = ref object of OpenApiRestCall_602466
-proc url_DeleteCustomKeyStore_603179(protocol: Scheme; host: string; base: string;
+  Call_DeleteCustomKeyStore_593077 = ref object of OpenApiRestCall_592364
+proc url_DeleteCustomKeyStore_593079(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteCustomKeyStore_603178(path: JsonNode; query: JsonNode;
+proc validate_DeleteCustomKeyStore_593078(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>. This operation does not delete the AWS CloudHSM cluster that is associated with the custom key store, or affect any users or keys in the cluster.</p> <p>The custom key store that you delete cannot contain any AWS KMS <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">customer master keys (CMKs)</a>. Before deleting the key store, verify that you will never need to use any of the CMKs in the key store for any cryptographic operations. Then, use <a>ScheduleKeyDeletion</a> to delete the AWS KMS customer master keys (CMKs) from the key store. When the scheduled waiting period expires, the <code>ScheduleKeyDeletion</code> operation deletes the CMKs. Then it makes a best effort to delete the key material from the associated cluster. However, you might need to manually <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-orphaned-key">delete the orphaned key material</a> from the cluster and its backups.</p> <p>After all CMKs are deleted from AWS KMS, use <a>DisconnectCustomKeyStore</a> to disconnect the key store from AWS KMS. Then, you can delete the custom key store.</p> <p>Instead of deleting the custom key store, consider using <a>DisconnectCustomKeyStore</a> to disconnect it from AWS KMS. While the key store is disconnected, you cannot create or use the CMKs in the key store. But, you do not need to delete CMKs and you can reconnect a disconnected custom key store at any time.</p> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ## 
@@ -1035,57 +1039,57 @@ proc validate_DeleteCustomKeyStore_603178(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603180 = header.getOrDefault("X-Amz-Date")
-  valid_603180 = validateParameter(valid_603180, JString, required = false,
-                                 default = nil)
-  if valid_603180 != nil:
-    section.add "X-Amz-Date", valid_603180
-  var valid_603181 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603181 = validateParameter(valid_603181, JString, required = false,
-                                 default = nil)
-  if valid_603181 != nil:
-    section.add "X-Amz-Security-Token", valid_603181
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603182 = header.getOrDefault("X-Amz-Target")
-  valid_603182 = validateParameter(valid_603182, JString, required = true, default = newJString(
+  var valid_593080 = header.getOrDefault("X-Amz-Target")
+  valid_593080 = validateParameter(valid_593080, JString, required = true, default = newJString(
       "TrentService.DeleteCustomKeyStore"))
-  if valid_603182 != nil:
-    section.add "X-Amz-Target", valid_603182
-  var valid_603183 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603183 = validateParameter(valid_603183, JString, required = false,
+  if valid_593080 != nil:
+    section.add "X-Amz-Target", valid_593080
+  var valid_593081 = header.getOrDefault("X-Amz-Signature")
+  valid_593081 = validateParameter(valid_593081, JString, required = false,
                                  default = nil)
-  if valid_603183 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603183
-  var valid_603184 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603184 = validateParameter(valid_603184, JString, required = false,
+  if valid_593081 != nil:
+    section.add "X-Amz-Signature", valid_593081
+  var valid_593082 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593082 = validateParameter(valid_593082, JString, required = false,
                                  default = nil)
-  if valid_603184 != nil:
-    section.add "X-Amz-Algorithm", valid_603184
-  var valid_603185 = header.getOrDefault("X-Amz-Signature")
-  valid_603185 = validateParameter(valid_603185, JString, required = false,
+  if valid_593082 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593082
+  var valid_593083 = header.getOrDefault("X-Amz-Date")
+  valid_593083 = validateParameter(valid_593083, JString, required = false,
                                  default = nil)
-  if valid_603185 != nil:
-    section.add "X-Amz-Signature", valid_603185
-  var valid_603186 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603186 = validateParameter(valid_603186, JString, required = false,
+  if valid_593083 != nil:
+    section.add "X-Amz-Date", valid_593083
+  var valid_593084 = header.getOrDefault("X-Amz-Credential")
+  valid_593084 = validateParameter(valid_593084, JString, required = false,
                                  default = nil)
-  if valid_603186 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603186
-  var valid_603187 = header.getOrDefault("X-Amz-Credential")
-  valid_603187 = validateParameter(valid_603187, JString, required = false,
+  if valid_593084 != nil:
+    section.add "X-Amz-Credential", valid_593084
+  var valid_593085 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593085 = validateParameter(valid_593085, JString, required = false,
                                  default = nil)
-  if valid_603187 != nil:
-    section.add "X-Amz-Credential", valid_603187
+  if valid_593085 != nil:
+    section.add "X-Amz-Security-Token", valid_593085
+  var valid_593086 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593086 = validateParameter(valid_593086, JString, required = false,
+                                 default = nil)
+  if valid_593086 != nil:
+    section.add "X-Amz-Algorithm", valid_593086
+  var valid_593087 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593087 = validateParameter(valid_593087, JString, required = false,
+                                 default = nil)
+  if valid_593087 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593087
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1096,44 +1100,44 @@ proc validate_DeleteCustomKeyStore_603178(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603189: Call_DeleteCustomKeyStore_603177; path: JsonNode;
+proc call*(call_593089: Call_DeleteCustomKeyStore_593077; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>. This operation does not delete the AWS CloudHSM cluster that is associated with the custom key store, or affect any users or keys in the cluster.</p> <p>The custom key store that you delete cannot contain any AWS KMS <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">customer master keys (CMKs)</a>. Before deleting the key store, verify that you will never need to use any of the CMKs in the key store for any cryptographic operations. Then, use <a>ScheduleKeyDeletion</a> to delete the AWS KMS customer master keys (CMKs) from the key store. When the scheduled waiting period expires, the <code>ScheduleKeyDeletion</code> operation deletes the CMKs. Then it makes a best effort to delete the key material from the associated cluster. However, you might need to manually <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-orphaned-key">delete the orphaned key material</a> from the cluster and its backups.</p> <p>After all CMKs are deleted from AWS KMS, use <a>DisconnectCustomKeyStore</a> to disconnect the key store from AWS KMS. Then, you can delete the custom key store.</p> <p>Instead of deleting the custom key store, consider using <a>DisconnectCustomKeyStore</a> to disconnect it from AWS KMS. While the key store is disconnected, you cannot create or use the CMKs in the key store. But, you do not need to delete CMKs and you can reconnect a disconnected custom key store at any time.</p> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ## 
-  let valid = call_603189.validator(path, query, header, formData, body)
-  let scheme = call_603189.pickScheme
+  let valid = call_593089.validator(path, query, header, formData, body)
+  let scheme = call_593089.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603189.url(scheme.get, call_603189.host, call_603189.base,
-                         call_603189.route, valid.getOrDefault("path"),
+  let url = call_593089.url(scheme.get, call_593089.host, call_593089.base,
+                         call_593089.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603189, url, valid)
+  result = hook(call_593089, url, valid)
 
-proc call*(call_603190: Call_DeleteCustomKeyStore_603177; body: JsonNode): Recallable =
+proc call*(call_593090: Call_DeleteCustomKeyStore_593077; body: JsonNode): Recallable =
   ## deleteCustomKeyStore
   ## <p>Deletes a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>. This operation does not delete the AWS CloudHSM cluster that is associated with the custom key store, or affect any users or keys in the cluster.</p> <p>The custom key store that you delete cannot contain any AWS KMS <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">customer master keys (CMKs)</a>. Before deleting the key store, verify that you will never need to use any of the CMKs in the key store for any cryptographic operations. Then, use <a>ScheduleKeyDeletion</a> to delete the AWS KMS customer master keys (CMKs) from the key store. When the scheduled waiting period expires, the <code>ScheduleKeyDeletion</code> operation deletes the CMKs. Then it makes a best effort to delete the key material from the associated cluster. However, you might need to manually <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-orphaned-key">delete the orphaned key material</a> from the cluster and its backups.</p> <p>After all CMKs are deleted from AWS KMS, use <a>DisconnectCustomKeyStore</a> to disconnect the key store from AWS KMS. Then, you can delete the custom key store.</p> <p>Instead of deleting the custom key store, consider using <a>DisconnectCustomKeyStore</a> to disconnect it from AWS KMS. While the key store is disconnected, you cannot create or use the CMKs in the key store. But, you do not need to delete CMKs and you can reconnect a disconnected custom key store at any time.</p> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ##   body: JObject (required)
-  var body_603191 = newJObject()
+  var body_593091 = newJObject()
   if body != nil:
-    body_603191 = body
-  result = call_603190.call(nil, nil, nil, nil, body_603191)
+    body_593091 = body
+  result = call_593090.call(nil, nil, nil, nil, body_593091)
 
-var deleteCustomKeyStore* = Call_DeleteCustomKeyStore_603177(
+var deleteCustomKeyStore* = Call_DeleteCustomKeyStore_593077(
     name: "deleteCustomKeyStore", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.DeleteCustomKeyStore",
-    validator: validate_DeleteCustomKeyStore_603178, base: "/",
-    url: url_DeleteCustomKeyStore_603179, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteCustomKeyStore_593078, base: "/",
+    url: url_DeleteCustomKeyStore_593079, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteImportedKeyMaterial_603192 = ref object of OpenApiRestCall_602466
-proc url_DeleteImportedKeyMaterial_603194(protocol: Scheme; host: string;
+  Call_DeleteImportedKeyMaterial_593092 = ref object of OpenApiRestCall_592364
+proc url_DeleteImportedKeyMaterial_593094(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteImportedKeyMaterial_603193(path: JsonNode; query: JsonNode;
+proc validate_DeleteImportedKeyMaterial_593093(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes key material that you previously imported. This operation makes the specified customer master key (CMK) unusable. For more information about importing key material into AWS KMS, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>. You cannot perform this operation on a CMK in a different AWS account.</p> <p>When the specified CMK is in the <code>PendingDeletion</code> state, this operation does not change the CMK's state. Otherwise, it changes the CMK's state to <code>PendingImport</code>.</p> <p>After you delete key material, you can use <a>ImportKeyMaterial</a> to reimport the same key material into the CMK.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -1144,57 +1148,57 @@ proc validate_DeleteImportedKeyMaterial_603193(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603195 = header.getOrDefault("X-Amz-Date")
-  valid_603195 = validateParameter(valid_603195, JString, required = false,
-                                 default = nil)
-  if valid_603195 != nil:
-    section.add "X-Amz-Date", valid_603195
-  var valid_603196 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603196 = validateParameter(valid_603196, JString, required = false,
-                                 default = nil)
-  if valid_603196 != nil:
-    section.add "X-Amz-Security-Token", valid_603196
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603197 = header.getOrDefault("X-Amz-Target")
-  valid_603197 = validateParameter(valid_603197, JString, required = true, default = newJString(
+  var valid_593095 = header.getOrDefault("X-Amz-Target")
+  valid_593095 = validateParameter(valid_593095, JString, required = true, default = newJString(
       "TrentService.DeleteImportedKeyMaterial"))
-  if valid_603197 != nil:
-    section.add "X-Amz-Target", valid_603197
-  var valid_603198 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603198 = validateParameter(valid_603198, JString, required = false,
+  if valid_593095 != nil:
+    section.add "X-Amz-Target", valid_593095
+  var valid_593096 = header.getOrDefault("X-Amz-Signature")
+  valid_593096 = validateParameter(valid_593096, JString, required = false,
                                  default = nil)
-  if valid_603198 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603198
-  var valid_603199 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603199 = validateParameter(valid_603199, JString, required = false,
+  if valid_593096 != nil:
+    section.add "X-Amz-Signature", valid_593096
+  var valid_593097 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593097 = validateParameter(valid_593097, JString, required = false,
                                  default = nil)
-  if valid_603199 != nil:
-    section.add "X-Amz-Algorithm", valid_603199
-  var valid_603200 = header.getOrDefault("X-Amz-Signature")
-  valid_603200 = validateParameter(valid_603200, JString, required = false,
+  if valid_593097 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593097
+  var valid_593098 = header.getOrDefault("X-Amz-Date")
+  valid_593098 = validateParameter(valid_593098, JString, required = false,
                                  default = nil)
-  if valid_603200 != nil:
-    section.add "X-Amz-Signature", valid_603200
-  var valid_603201 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603201 = validateParameter(valid_603201, JString, required = false,
+  if valid_593098 != nil:
+    section.add "X-Amz-Date", valid_593098
+  var valid_593099 = header.getOrDefault("X-Amz-Credential")
+  valid_593099 = validateParameter(valid_593099, JString, required = false,
                                  default = nil)
-  if valid_603201 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603201
-  var valid_603202 = header.getOrDefault("X-Amz-Credential")
-  valid_603202 = validateParameter(valid_603202, JString, required = false,
+  if valid_593099 != nil:
+    section.add "X-Amz-Credential", valid_593099
+  var valid_593100 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593100 = validateParameter(valid_593100, JString, required = false,
                                  default = nil)
-  if valid_603202 != nil:
-    section.add "X-Amz-Credential", valid_603202
+  if valid_593100 != nil:
+    section.add "X-Amz-Security-Token", valid_593100
+  var valid_593101 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593101 = validateParameter(valid_593101, JString, required = false,
+                                 default = nil)
+  if valid_593101 != nil:
+    section.add "X-Amz-Algorithm", valid_593101
+  var valid_593102 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593102 = validateParameter(valid_593102, JString, required = false,
+                                 default = nil)
+  if valid_593102 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593102
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1205,38 +1209,38 @@ proc validate_DeleteImportedKeyMaterial_603193(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603204: Call_DeleteImportedKeyMaterial_603192; path: JsonNode;
+proc call*(call_593104: Call_DeleteImportedKeyMaterial_593092; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes key material that you previously imported. This operation makes the specified customer master key (CMK) unusable. For more information about importing key material into AWS KMS, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>. You cannot perform this operation on a CMK in a different AWS account.</p> <p>When the specified CMK is in the <code>PendingDeletion</code> state, this operation does not change the CMK's state. Otherwise, it changes the CMK's state to <code>PendingImport</code>.</p> <p>After you delete key material, you can use <a>ImportKeyMaterial</a> to reimport the same key material into the CMK.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603204.validator(path, query, header, formData, body)
-  let scheme = call_603204.pickScheme
+  let valid = call_593104.validator(path, query, header, formData, body)
+  let scheme = call_593104.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603204.url(scheme.get, call_603204.host, call_603204.base,
-                         call_603204.route, valid.getOrDefault("path"),
+  let url = call_593104.url(scheme.get, call_593104.host, call_593104.base,
+                         call_593104.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603204, url, valid)
+  result = hook(call_593104, url, valid)
 
-proc call*(call_603205: Call_DeleteImportedKeyMaterial_603192; body: JsonNode): Recallable =
+proc call*(call_593105: Call_DeleteImportedKeyMaterial_593092; body: JsonNode): Recallable =
   ## deleteImportedKeyMaterial
   ## <p>Deletes key material that you previously imported. This operation makes the specified customer master key (CMK) unusable. For more information about importing key material into AWS KMS, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>. You cannot perform this operation on a CMK in a different AWS account.</p> <p>When the specified CMK is in the <code>PendingDeletion</code> state, this operation does not change the CMK's state. Otherwise, it changes the CMK's state to <code>PendingImport</code>.</p> <p>After you delete key material, you can use <a>ImportKeyMaterial</a> to reimport the same key material into the CMK.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603206 = newJObject()
+  var body_593106 = newJObject()
   if body != nil:
-    body_603206 = body
-  result = call_603205.call(nil, nil, nil, nil, body_603206)
+    body_593106 = body
+  result = call_593105.call(nil, nil, nil, nil, body_593106)
 
-var deleteImportedKeyMaterial* = Call_DeleteImportedKeyMaterial_603192(
+var deleteImportedKeyMaterial* = Call_DeleteImportedKeyMaterial_593092(
     name: "deleteImportedKeyMaterial", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.DeleteImportedKeyMaterial",
-    validator: validate_DeleteImportedKeyMaterial_603193, base: "/",
-    url: url_DeleteImportedKeyMaterial_603194,
+    validator: validate_DeleteImportedKeyMaterial_593093, base: "/",
+    url: url_DeleteImportedKeyMaterial_593094,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCustomKeyStores_603207 = ref object of OpenApiRestCall_602466
-proc url_DescribeCustomKeyStores_603209(protocol: Scheme; host: string; base: string;
+  Call_DescribeCustomKeyStores_593107 = ref object of OpenApiRestCall_592364
+proc url_DescribeCustomKeyStores_593109(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1244,7 +1248,7 @@ proc url_DescribeCustomKeyStores_603209(protocol: Scheme; host: string; base: st
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeCustomKeyStores_603208(path: JsonNode; query: JsonNode;
+proc validate_DescribeCustomKeyStores_593108(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets information about <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key stores</a> in the account and region.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p> <p>By default, this operation returns information about all custom key stores in the account and region. To get only information about a particular custom key store, use either the <code>CustomKeyStoreName</code> or <code>CustomKeyStoreId</code> parameter (but not both).</p> <p>To determine whether the custom key store is connected to its AWS CloudHSM cluster, use the <code>ConnectionState</code> element in the response. If an attempt to connect the custom key store failed, the <code>ConnectionState</code> value is <code>FAILED</code> and the <code>ConnectionErrorCode</code> element in the response indicates the cause of the failure. For help interpreting the <code>ConnectionErrorCode</code>, see <a>CustomKeyStoresListEntry</a>.</p> <p>Custom key stores have a <code>DISCONNECTED</code> connection state if the key store has never been connected or you use the <a>DisconnectCustomKeyStore</a> operation to disconnect it. If your custom key store state is <code>CONNECTED</code> but you are having trouble using it, make sure that its associated AWS CloudHSM cluster is active and contains the minimum number of HSMs required for the operation, if any.</p> <p> For help repairing your custom key store, see the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting Custom Key Stores</a> topic in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -1255,57 +1259,57 @@ proc validate_DescribeCustomKeyStores_603208(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603210 = header.getOrDefault("X-Amz-Date")
-  valid_603210 = validateParameter(valid_603210, JString, required = false,
-                                 default = nil)
-  if valid_603210 != nil:
-    section.add "X-Amz-Date", valid_603210
-  var valid_603211 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603211 = validateParameter(valid_603211, JString, required = false,
-                                 default = nil)
-  if valid_603211 != nil:
-    section.add "X-Amz-Security-Token", valid_603211
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603212 = header.getOrDefault("X-Amz-Target")
-  valid_603212 = validateParameter(valid_603212, JString, required = true, default = newJString(
+  var valid_593110 = header.getOrDefault("X-Amz-Target")
+  valid_593110 = validateParameter(valid_593110, JString, required = true, default = newJString(
       "TrentService.DescribeCustomKeyStores"))
-  if valid_603212 != nil:
-    section.add "X-Amz-Target", valid_603212
-  var valid_603213 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603213 = validateParameter(valid_603213, JString, required = false,
+  if valid_593110 != nil:
+    section.add "X-Amz-Target", valid_593110
+  var valid_593111 = header.getOrDefault("X-Amz-Signature")
+  valid_593111 = validateParameter(valid_593111, JString, required = false,
                                  default = nil)
-  if valid_603213 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603213
-  var valid_603214 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603214 = validateParameter(valid_603214, JString, required = false,
+  if valid_593111 != nil:
+    section.add "X-Amz-Signature", valid_593111
+  var valid_593112 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593112 = validateParameter(valid_593112, JString, required = false,
                                  default = nil)
-  if valid_603214 != nil:
-    section.add "X-Amz-Algorithm", valid_603214
-  var valid_603215 = header.getOrDefault("X-Amz-Signature")
-  valid_603215 = validateParameter(valid_603215, JString, required = false,
+  if valid_593112 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593112
+  var valid_593113 = header.getOrDefault("X-Amz-Date")
+  valid_593113 = validateParameter(valid_593113, JString, required = false,
                                  default = nil)
-  if valid_603215 != nil:
-    section.add "X-Amz-Signature", valid_603215
-  var valid_603216 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603216 = validateParameter(valid_603216, JString, required = false,
+  if valid_593113 != nil:
+    section.add "X-Amz-Date", valid_593113
+  var valid_593114 = header.getOrDefault("X-Amz-Credential")
+  valid_593114 = validateParameter(valid_593114, JString, required = false,
                                  default = nil)
-  if valid_603216 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603216
-  var valid_603217 = header.getOrDefault("X-Amz-Credential")
-  valid_603217 = validateParameter(valid_603217, JString, required = false,
+  if valid_593114 != nil:
+    section.add "X-Amz-Credential", valid_593114
+  var valid_593115 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593115 = validateParameter(valid_593115, JString, required = false,
                                  default = nil)
-  if valid_603217 != nil:
-    section.add "X-Amz-Credential", valid_603217
+  if valid_593115 != nil:
+    section.add "X-Amz-Security-Token", valid_593115
+  var valid_593116 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593116 = validateParameter(valid_593116, JString, required = false,
+                                 default = nil)
+  if valid_593116 != nil:
+    section.add "X-Amz-Algorithm", valid_593116
+  var valid_593117 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593117 = validateParameter(valid_593117, JString, required = false,
+                                 default = nil)
+  if valid_593117 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593117
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1316,44 +1320,44 @@ proc validate_DescribeCustomKeyStores_603208(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603219: Call_DescribeCustomKeyStores_603207; path: JsonNode;
+proc call*(call_593119: Call_DescribeCustomKeyStores_593107; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key stores</a> in the account and region.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p> <p>By default, this operation returns information about all custom key stores in the account and region. To get only information about a particular custom key store, use either the <code>CustomKeyStoreName</code> or <code>CustomKeyStoreId</code> parameter (but not both).</p> <p>To determine whether the custom key store is connected to its AWS CloudHSM cluster, use the <code>ConnectionState</code> element in the response. If an attempt to connect the custom key store failed, the <code>ConnectionState</code> value is <code>FAILED</code> and the <code>ConnectionErrorCode</code> element in the response indicates the cause of the failure. For help interpreting the <code>ConnectionErrorCode</code>, see <a>CustomKeyStoresListEntry</a>.</p> <p>Custom key stores have a <code>DISCONNECTED</code> connection state if the key store has never been connected or you use the <a>DisconnectCustomKeyStore</a> operation to disconnect it. If your custom key store state is <code>CONNECTED</code> but you are having trouble using it, make sure that its associated AWS CloudHSM cluster is active and contains the minimum number of HSMs required for the operation, if any.</p> <p> For help repairing your custom key store, see the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting Custom Key Stores</a> topic in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603219.validator(path, query, header, formData, body)
-  let scheme = call_603219.pickScheme
+  let valid = call_593119.validator(path, query, header, formData, body)
+  let scheme = call_593119.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603219.url(scheme.get, call_603219.host, call_603219.base,
-                         call_603219.route, valid.getOrDefault("path"),
+  let url = call_593119.url(scheme.get, call_593119.host, call_593119.base,
+                         call_593119.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603219, url, valid)
+  result = hook(call_593119, url, valid)
 
-proc call*(call_603220: Call_DescribeCustomKeyStores_603207; body: JsonNode): Recallable =
+proc call*(call_593120: Call_DescribeCustomKeyStores_593107; body: JsonNode): Recallable =
   ## describeCustomKeyStores
   ## <p>Gets information about <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key stores</a> in the account and region.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p> <p>By default, this operation returns information about all custom key stores in the account and region. To get only information about a particular custom key store, use either the <code>CustomKeyStoreName</code> or <code>CustomKeyStoreId</code> parameter (but not both).</p> <p>To determine whether the custom key store is connected to its AWS CloudHSM cluster, use the <code>ConnectionState</code> element in the response. If an attempt to connect the custom key store failed, the <code>ConnectionState</code> value is <code>FAILED</code> and the <code>ConnectionErrorCode</code> element in the response indicates the cause of the failure. For help interpreting the <code>ConnectionErrorCode</code>, see <a>CustomKeyStoresListEntry</a>.</p> <p>Custom key stores have a <code>DISCONNECTED</code> connection state if the key store has never been connected or you use the <a>DisconnectCustomKeyStore</a> operation to disconnect it. If your custom key store state is <code>CONNECTED</code> but you are having trouble using it, make sure that its associated AWS CloudHSM cluster is active and contains the minimum number of HSMs required for the operation, if any.</p> <p> For help repairing your custom key store, see the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html">Troubleshooting Custom Key Stores</a> topic in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603221 = newJObject()
+  var body_593121 = newJObject()
   if body != nil:
-    body_603221 = body
-  result = call_603220.call(nil, nil, nil, nil, body_603221)
+    body_593121 = body
+  result = call_593120.call(nil, nil, nil, nil, body_593121)
 
-var describeCustomKeyStores* = Call_DescribeCustomKeyStores_603207(
+var describeCustomKeyStores* = Call_DescribeCustomKeyStores_593107(
     name: "describeCustomKeyStores", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.DescribeCustomKeyStores",
-    validator: validate_DescribeCustomKeyStores_603208, base: "/",
-    url: url_DescribeCustomKeyStores_603209, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeCustomKeyStores_593108, base: "/",
+    url: url_DescribeCustomKeyStores_593109, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeKey_603222 = ref object of OpenApiRestCall_602466
-proc url_DescribeKey_603224(protocol: Scheme; host: string; base: string;
+  Call_DescribeKey_593122 = ref object of OpenApiRestCall_592364
+proc url_DescribeKey_593124(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeKey_603223(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeKey_593123(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Provides detailed information about the specified customer master key (CMK).</p> <p>You can use <code>DescribeKey</code> on a predefined AWS alias, that is, an AWS alias with no key ID. When you do, AWS KMS associates the alias with an <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">AWS managed CMK</a> and returns its <code>KeyId</code> and <code>Arn</code> in the response.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p>
   ## 
@@ -1364,57 +1368,57 @@ proc validate_DescribeKey_603223(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603225 = header.getOrDefault("X-Amz-Date")
-  valid_603225 = validateParameter(valid_603225, JString, required = false,
-                                 default = nil)
-  if valid_603225 != nil:
-    section.add "X-Amz-Date", valid_603225
-  var valid_603226 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603226 = validateParameter(valid_603226, JString, required = false,
-                                 default = nil)
-  if valid_603226 != nil:
-    section.add "X-Amz-Security-Token", valid_603226
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603227 = header.getOrDefault("X-Amz-Target")
-  valid_603227 = validateParameter(valid_603227, JString, required = true, default = newJString(
+  var valid_593125 = header.getOrDefault("X-Amz-Target")
+  valid_593125 = validateParameter(valid_593125, JString, required = true, default = newJString(
       "TrentService.DescribeKey"))
-  if valid_603227 != nil:
-    section.add "X-Amz-Target", valid_603227
-  var valid_603228 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603228 = validateParameter(valid_603228, JString, required = false,
+  if valid_593125 != nil:
+    section.add "X-Amz-Target", valid_593125
+  var valid_593126 = header.getOrDefault("X-Amz-Signature")
+  valid_593126 = validateParameter(valid_593126, JString, required = false,
                                  default = nil)
-  if valid_603228 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603228
-  var valid_603229 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603229 = validateParameter(valid_603229, JString, required = false,
+  if valid_593126 != nil:
+    section.add "X-Amz-Signature", valid_593126
+  var valid_593127 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593127 = validateParameter(valid_593127, JString, required = false,
                                  default = nil)
-  if valid_603229 != nil:
-    section.add "X-Amz-Algorithm", valid_603229
-  var valid_603230 = header.getOrDefault("X-Amz-Signature")
-  valid_603230 = validateParameter(valid_603230, JString, required = false,
+  if valid_593127 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593127
+  var valid_593128 = header.getOrDefault("X-Amz-Date")
+  valid_593128 = validateParameter(valid_593128, JString, required = false,
                                  default = nil)
-  if valid_603230 != nil:
-    section.add "X-Amz-Signature", valid_603230
-  var valid_603231 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603231 = validateParameter(valid_603231, JString, required = false,
+  if valid_593128 != nil:
+    section.add "X-Amz-Date", valid_593128
+  var valid_593129 = header.getOrDefault("X-Amz-Credential")
+  valid_593129 = validateParameter(valid_593129, JString, required = false,
                                  default = nil)
-  if valid_603231 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603231
-  var valid_603232 = header.getOrDefault("X-Amz-Credential")
-  valid_603232 = validateParameter(valid_603232, JString, required = false,
+  if valid_593129 != nil:
+    section.add "X-Amz-Credential", valid_593129
+  var valid_593130 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593130 = validateParameter(valid_593130, JString, required = false,
                                  default = nil)
-  if valid_603232 != nil:
-    section.add "X-Amz-Credential", valid_603232
+  if valid_593130 != nil:
+    section.add "X-Amz-Security-Token", valid_593130
+  var valid_593131 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593131 = validateParameter(valid_593131, JString, required = false,
+                                 default = nil)
+  if valid_593131 != nil:
+    section.add "X-Amz-Algorithm", valid_593131
+  var valid_593132 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593132 = validateParameter(valid_593132, JString, required = false,
+                                 default = nil)
+  if valid_593132 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593132
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1425,44 +1429,44 @@ proc validate_DescribeKey_603223(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603234: Call_DescribeKey_603222; path: JsonNode; query: JsonNode;
+proc call*(call_593134: Call_DescribeKey_593122; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Provides detailed information about the specified customer master key (CMK).</p> <p>You can use <code>DescribeKey</code> on a predefined AWS alias, that is, an AWS alias with no key ID. When you do, AWS KMS associates the alias with an <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">AWS managed CMK</a> and returns its <code>KeyId</code> and <code>Arn</code> in the response.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p>
   ## 
-  let valid = call_603234.validator(path, query, header, formData, body)
-  let scheme = call_603234.pickScheme
+  let valid = call_593134.validator(path, query, header, formData, body)
+  let scheme = call_593134.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603234.url(scheme.get, call_603234.host, call_603234.base,
-                         call_603234.route, valid.getOrDefault("path"),
+  let url = call_593134.url(scheme.get, call_593134.host, call_593134.base,
+                         call_593134.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603234, url, valid)
+  result = hook(call_593134, url, valid)
 
-proc call*(call_603235: Call_DescribeKey_603222; body: JsonNode): Recallable =
+proc call*(call_593135: Call_DescribeKey_593122; body: JsonNode): Recallable =
   ## describeKey
   ## <p>Provides detailed information about the specified customer master key (CMK).</p> <p>You can use <code>DescribeKey</code> on a predefined AWS alias, that is, an AWS alias with no key ID. When you do, AWS KMS associates the alias with an <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#master_keys">AWS managed CMK</a> and returns its <code>KeyId</code> and <code>Arn</code> in the response.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p>
   ##   body: JObject (required)
-  var body_603236 = newJObject()
+  var body_593136 = newJObject()
   if body != nil:
-    body_603236 = body
-  result = call_603235.call(nil, nil, nil, nil, body_603236)
+    body_593136 = body
+  result = call_593135.call(nil, nil, nil, nil, body_593136)
 
-var describeKey* = Call_DescribeKey_603222(name: "describeKey",
+var describeKey* = Call_DescribeKey_593122(name: "describeKey",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.DescribeKey",
-                                        validator: validate_DescribeKey_603223,
-                                        base: "/", url: url_DescribeKey_603224,
+                                        validator: validate_DescribeKey_593123,
+                                        base: "/", url: url_DescribeKey_593124,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableKey_603237 = ref object of OpenApiRestCall_602466
-proc url_DisableKey_603239(protocol: Scheme; host: string; base: string; route: string;
+  Call_DisableKey_593137 = ref object of OpenApiRestCall_592364
+proc url_DisableKey_593139(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisableKey_603238(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DisableKey_593138(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the state of a customer master key (CMK) to disabled, thereby preventing its use for cryptographic operations. You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about how key state affects the use of a CMK, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects the Use of a Customer Master Key</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -1473,57 +1477,57 @@ proc validate_DisableKey_603238(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603240 = header.getOrDefault("X-Amz-Date")
-  valid_603240 = validateParameter(valid_603240, JString, required = false,
-                                 default = nil)
-  if valid_603240 != nil:
-    section.add "X-Amz-Date", valid_603240
-  var valid_603241 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603241 = validateParameter(valid_603241, JString, required = false,
-                                 default = nil)
-  if valid_603241 != nil:
-    section.add "X-Amz-Security-Token", valid_603241
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603242 = header.getOrDefault("X-Amz-Target")
-  valid_603242 = validateParameter(valid_603242, JString, required = true, default = newJString(
+  var valid_593140 = header.getOrDefault("X-Amz-Target")
+  valid_593140 = validateParameter(valid_593140, JString, required = true, default = newJString(
       "TrentService.DisableKey"))
-  if valid_603242 != nil:
-    section.add "X-Amz-Target", valid_603242
-  var valid_603243 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603243 = validateParameter(valid_603243, JString, required = false,
+  if valid_593140 != nil:
+    section.add "X-Amz-Target", valid_593140
+  var valid_593141 = header.getOrDefault("X-Amz-Signature")
+  valid_593141 = validateParameter(valid_593141, JString, required = false,
                                  default = nil)
-  if valid_603243 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603243
-  var valid_603244 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603244 = validateParameter(valid_603244, JString, required = false,
+  if valid_593141 != nil:
+    section.add "X-Amz-Signature", valid_593141
+  var valid_593142 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593142 = validateParameter(valid_593142, JString, required = false,
                                  default = nil)
-  if valid_603244 != nil:
-    section.add "X-Amz-Algorithm", valid_603244
-  var valid_603245 = header.getOrDefault("X-Amz-Signature")
-  valid_603245 = validateParameter(valid_603245, JString, required = false,
+  if valid_593142 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593142
+  var valid_593143 = header.getOrDefault("X-Amz-Date")
+  valid_593143 = validateParameter(valid_593143, JString, required = false,
                                  default = nil)
-  if valid_603245 != nil:
-    section.add "X-Amz-Signature", valid_603245
-  var valid_603246 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603246 = validateParameter(valid_603246, JString, required = false,
+  if valid_593143 != nil:
+    section.add "X-Amz-Date", valid_593143
+  var valid_593144 = header.getOrDefault("X-Amz-Credential")
+  valid_593144 = validateParameter(valid_593144, JString, required = false,
                                  default = nil)
-  if valid_603246 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603246
-  var valid_603247 = header.getOrDefault("X-Amz-Credential")
-  valid_603247 = validateParameter(valid_603247, JString, required = false,
+  if valid_593144 != nil:
+    section.add "X-Amz-Credential", valid_593144
+  var valid_593145 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593145 = validateParameter(valid_593145, JString, required = false,
                                  default = nil)
-  if valid_603247 != nil:
-    section.add "X-Amz-Credential", valid_603247
+  if valid_593145 != nil:
+    section.add "X-Amz-Security-Token", valid_593145
+  var valid_593146 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593146 = validateParameter(valid_593146, JString, required = false,
+                                 default = nil)
+  if valid_593146 != nil:
+    section.add "X-Amz-Algorithm", valid_593146
+  var valid_593147 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593147 = validateParameter(valid_593147, JString, required = false,
+                                 default = nil)
+  if valid_593147 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593147
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1534,44 +1538,44 @@ proc validate_DisableKey_603238(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603249: Call_DisableKey_603237; path: JsonNode; query: JsonNode;
+proc call*(call_593149: Call_DisableKey_593137; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the state of a customer master key (CMK) to disabled, thereby preventing its use for cryptographic operations. You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about how key state affects the use of a CMK, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects the Use of a Customer Master Key</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603249.validator(path, query, header, formData, body)
-  let scheme = call_603249.pickScheme
+  let valid = call_593149.validator(path, query, header, formData, body)
+  let scheme = call_593149.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603249.url(scheme.get, call_603249.host, call_603249.base,
-                         call_603249.route, valid.getOrDefault("path"),
+  let url = call_593149.url(scheme.get, call_593149.host, call_593149.base,
+                         call_593149.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603249, url, valid)
+  result = hook(call_593149, url, valid)
 
-proc call*(call_603250: Call_DisableKey_603237; body: JsonNode): Recallable =
+proc call*(call_593150: Call_DisableKey_593137; body: JsonNode): Recallable =
   ## disableKey
   ## <p>Sets the state of a customer master key (CMK) to disabled, thereby preventing its use for cryptographic operations. You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about how key state affects the use of a CMK, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects the Use of a Customer Master Key</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603251 = newJObject()
+  var body_593151 = newJObject()
   if body != nil:
-    body_603251 = body
-  result = call_603250.call(nil, nil, nil, nil, body_603251)
+    body_593151 = body
+  result = call_593150.call(nil, nil, nil, nil, body_593151)
 
-var disableKey* = Call_DisableKey_603237(name: "disableKey",
+var disableKey* = Call_DisableKey_593137(name: "disableKey",
                                       meth: HttpMethod.HttpPost,
                                       host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.DisableKey",
-                                      validator: validate_DisableKey_603238,
-                                      base: "/", url: url_DisableKey_603239,
+                                      validator: validate_DisableKey_593138,
+                                      base: "/", url: url_DisableKey_593139,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableKeyRotation_603252 = ref object of OpenApiRestCall_602466
-proc url_DisableKeyRotation_603254(protocol: Scheme; host: string; base: string;
+  Call_DisableKeyRotation_593152 = ref object of OpenApiRestCall_592364
+proc url_DisableKeyRotation_593154(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisableKeyRotation_603253(path: JsonNode; query: JsonNode;
+proc validate_DisableKeyRotation_593153(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Disables <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> for the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
@@ -1583,57 +1587,57 @@ proc validate_DisableKeyRotation_603253(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603255 = header.getOrDefault("X-Amz-Date")
-  valid_603255 = validateParameter(valid_603255, JString, required = false,
-                                 default = nil)
-  if valid_603255 != nil:
-    section.add "X-Amz-Date", valid_603255
-  var valid_603256 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603256 = validateParameter(valid_603256, JString, required = false,
-                                 default = nil)
-  if valid_603256 != nil:
-    section.add "X-Amz-Security-Token", valid_603256
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603257 = header.getOrDefault("X-Amz-Target")
-  valid_603257 = validateParameter(valid_603257, JString, required = true, default = newJString(
+  var valid_593155 = header.getOrDefault("X-Amz-Target")
+  valid_593155 = validateParameter(valid_593155, JString, required = true, default = newJString(
       "TrentService.DisableKeyRotation"))
-  if valid_603257 != nil:
-    section.add "X-Amz-Target", valid_603257
-  var valid_603258 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603258 = validateParameter(valid_603258, JString, required = false,
+  if valid_593155 != nil:
+    section.add "X-Amz-Target", valid_593155
+  var valid_593156 = header.getOrDefault("X-Amz-Signature")
+  valid_593156 = validateParameter(valid_593156, JString, required = false,
                                  default = nil)
-  if valid_603258 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603258
-  var valid_603259 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603259 = validateParameter(valid_603259, JString, required = false,
+  if valid_593156 != nil:
+    section.add "X-Amz-Signature", valid_593156
+  var valid_593157 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593157 = validateParameter(valid_593157, JString, required = false,
                                  default = nil)
-  if valid_603259 != nil:
-    section.add "X-Amz-Algorithm", valid_603259
-  var valid_603260 = header.getOrDefault("X-Amz-Signature")
-  valid_603260 = validateParameter(valid_603260, JString, required = false,
+  if valid_593157 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593157
+  var valid_593158 = header.getOrDefault("X-Amz-Date")
+  valid_593158 = validateParameter(valid_593158, JString, required = false,
                                  default = nil)
-  if valid_603260 != nil:
-    section.add "X-Amz-Signature", valid_603260
-  var valid_603261 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603261 = validateParameter(valid_603261, JString, required = false,
+  if valid_593158 != nil:
+    section.add "X-Amz-Date", valid_593158
+  var valid_593159 = header.getOrDefault("X-Amz-Credential")
+  valid_593159 = validateParameter(valid_593159, JString, required = false,
                                  default = nil)
-  if valid_603261 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603261
-  var valid_603262 = header.getOrDefault("X-Amz-Credential")
-  valid_603262 = validateParameter(valid_603262, JString, required = false,
+  if valid_593159 != nil:
+    section.add "X-Amz-Credential", valid_593159
+  var valid_593160 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593160 = validateParameter(valid_593160, JString, required = false,
                                  default = nil)
-  if valid_603262 != nil:
-    section.add "X-Amz-Credential", valid_603262
+  if valid_593160 != nil:
+    section.add "X-Amz-Security-Token", valid_593160
+  var valid_593161 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593161 = validateParameter(valid_593161, JString, required = false,
+                                 default = nil)
+  if valid_593161 != nil:
+    section.add "X-Amz-Algorithm", valid_593161
+  var valid_593162 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593162 = validateParameter(valid_593162, JString, required = false,
+                                 default = nil)
+  if valid_593162 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593162
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1644,37 +1648,37 @@ proc validate_DisableKeyRotation_603253(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603264: Call_DisableKeyRotation_603252; path: JsonNode;
+proc call*(call_593164: Call_DisableKeyRotation_593152; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Disables <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> for the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603264.validator(path, query, header, formData, body)
-  let scheme = call_603264.pickScheme
+  let valid = call_593164.validator(path, query, header, formData, body)
+  let scheme = call_593164.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603264.url(scheme.get, call_603264.host, call_603264.base,
-                         call_603264.route, valid.getOrDefault("path"),
+  let url = call_593164.url(scheme.get, call_593164.host, call_593164.base,
+                         call_593164.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603264, url, valid)
+  result = hook(call_593164, url, valid)
 
-proc call*(call_603265: Call_DisableKeyRotation_603252; body: JsonNode): Recallable =
+proc call*(call_593165: Call_DisableKeyRotation_593152; body: JsonNode): Recallable =
   ## disableKeyRotation
   ## <p>Disables <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> for the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603266 = newJObject()
+  var body_593166 = newJObject()
   if body != nil:
-    body_603266 = body
-  result = call_603265.call(nil, nil, nil, nil, body_603266)
+    body_593166 = body
+  result = call_593165.call(nil, nil, nil, nil, body_593166)
 
-var disableKeyRotation* = Call_DisableKeyRotation_603252(
+var disableKeyRotation* = Call_DisableKeyRotation_593152(
     name: "disableKeyRotation", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.DisableKeyRotation",
-    validator: validate_DisableKeyRotation_603253, base: "/",
-    url: url_DisableKeyRotation_603254, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisableKeyRotation_593153, base: "/",
+    url: url_DisableKeyRotation_593154, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisconnectCustomKeyStore_603267 = ref object of OpenApiRestCall_602466
-proc url_DisconnectCustomKeyStore_603269(protocol: Scheme; host: string;
+  Call_DisconnectCustomKeyStore_593167 = ref object of OpenApiRestCall_592364
+proc url_DisconnectCustomKeyStore_593169(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1682,7 +1686,7 @@ proc url_DisconnectCustomKeyStore_603269(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisconnectCustomKeyStore_603268(path: JsonNode; query: JsonNode;
+proc validate_DisconnectCustomKeyStore_593168(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Disconnects the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> from its associated AWS CloudHSM cluster. While a custom key store is disconnected, you can manage the custom key store and its customer master keys (CMKs), but you cannot create or use CMKs in the custom key store. You can reconnect the custom key store at any time.</p> <note> <p>While a custom key store is disconnected, all attempts to create customer master keys (CMKs) in the custom key store or to use existing CMKs in cryptographic operations will fail. This action can prevent users from storing and accessing sensitive data.</p> </note> <p/> <p>To find the connection state of a custom key store, use the <a>DescribeCustomKeyStores</a> operation. To reconnect a custom key store, use the <a>ConnectCustomKeyStore</a> operation.</p> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ## 
@@ -1693,57 +1697,57 @@ proc validate_DisconnectCustomKeyStore_603268(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603270 = header.getOrDefault("X-Amz-Date")
-  valid_603270 = validateParameter(valid_603270, JString, required = false,
-                                 default = nil)
-  if valid_603270 != nil:
-    section.add "X-Amz-Date", valid_603270
-  var valid_603271 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603271 = validateParameter(valid_603271, JString, required = false,
-                                 default = nil)
-  if valid_603271 != nil:
-    section.add "X-Amz-Security-Token", valid_603271
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603272 = header.getOrDefault("X-Amz-Target")
-  valid_603272 = validateParameter(valid_603272, JString, required = true, default = newJString(
+  var valid_593170 = header.getOrDefault("X-Amz-Target")
+  valid_593170 = validateParameter(valid_593170, JString, required = true, default = newJString(
       "TrentService.DisconnectCustomKeyStore"))
-  if valid_603272 != nil:
-    section.add "X-Amz-Target", valid_603272
-  var valid_603273 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603273 = validateParameter(valid_603273, JString, required = false,
+  if valid_593170 != nil:
+    section.add "X-Amz-Target", valid_593170
+  var valid_593171 = header.getOrDefault("X-Amz-Signature")
+  valid_593171 = validateParameter(valid_593171, JString, required = false,
                                  default = nil)
-  if valid_603273 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603273
-  var valid_603274 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603274 = validateParameter(valid_603274, JString, required = false,
+  if valid_593171 != nil:
+    section.add "X-Amz-Signature", valid_593171
+  var valid_593172 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593172 = validateParameter(valid_593172, JString, required = false,
                                  default = nil)
-  if valid_603274 != nil:
-    section.add "X-Amz-Algorithm", valid_603274
-  var valid_603275 = header.getOrDefault("X-Amz-Signature")
-  valid_603275 = validateParameter(valid_603275, JString, required = false,
+  if valid_593172 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593172
+  var valid_593173 = header.getOrDefault("X-Amz-Date")
+  valid_593173 = validateParameter(valid_593173, JString, required = false,
                                  default = nil)
-  if valid_603275 != nil:
-    section.add "X-Amz-Signature", valid_603275
-  var valid_603276 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603276 = validateParameter(valid_603276, JString, required = false,
+  if valid_593173 != nil:
+    section.add "X-Amz-Date", valid_593173
+  var valid_593174 = header.getOrDefault("X-Amz-Credential")
+  valid_593174 = validateParameter(valid_593174, JString, required = false,
                                  default = nil)
-  if valid_603276 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603276
-  var valid_603277 = header.getOrDefault("X-Amz-Credential")
-  valid_603277 = validateParameter(valid_603277, JString, required = false,
+  if valid_593174 != nil:
+    section.add "X-Amz-Credential", valid_593174
+  var valid_593175 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593175 = validateParameter(valid_593175, JString, required = false,
                                  default = nil)
-  if valid_603277 != nil:
-    section.add "X-Amz-Credential", valid_603277
+  if valid_593175 != nil:
+    section.add "X-Amz-Security-Token", valid_593175
+  var valid_593176 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593176 = validateParameter(valid_593176, JString, required = false,
+                                 default = nil)
+  if valid_593176 != nil:
+    section.add "X-Amz-Algorithm", valid_593176
+  var valid_593177 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593177 = validateParameter(valid_593177, JString, required = false,
+                                 default = nil)
+  if valid_593177 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593177
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1754,44 +1758,44 @@ proc validate_DisconnectCustomKeyStore_603268(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603279: Call_DisconnectCustomKeyStore_603267; path: JsonNode;
+proc call*(call_593179: Call_DisconnectCustomKeyStore_593167; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Disconnects the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> from its associated AWS CloudHSM cluster. While a custom key store is disconnected, you can manage the custom key store and its customer master keys (CMKs), but you cannot create or use CMKs in the custom key store. You can reconnect the custom key store at any time.</p> <note> <p>While a custom key store is disconnected, all attempts to create customer master keys (CMKs) in the custom key store or to use existing CMKs in cryptographic operations will fail. This action can prevent users from storing and accessing sensitive data.</p> </note> <p/> <p>To find the connection state of a custom key store, use the <a>DescribeCustomKeyStores</a> operation. To reconnect a custom key store, use the <a>ConnectCustomKeyStore</a> operation.</p> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ## 
-  let valid = call_603279.validator(path, query, header, formData, body)
-  let scheme = call_603279.pickScheme
+  let valid = call_593179.validator(path, query, header, formData, body)
+  let scheme = call_593179.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603279.url(scheme.get, call_603279.host, call_603279.base,
-                         call_603279.route, valid.getOrDefault("path"),
+  let url = call_593179.url(scheme.get, call_593179.host, call_593179.base,
+                         call_593179.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603279, url, valid)
+  result = hook(call_593179, url, valid)
 
-proc call*(call_603280: Call_DisconnectCustomKeyStore_603267; body: JsonNode): Recallable =
+proc call*(call_593180: Call_DisconnectCustomKeyStore_593167; body: JsonNode): Recallable =
   ## disconnectCustomKeyStore
   ## <p>Disconnects the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a> from its associated AWS CloudHSM cluster. While a custom key store is disconnected, you can manage the custom key store and its customer master keys (CMKs), but you cannot create or use CMKs in the custom key store. You can reconnect the custom key store at any time.</p> <note> <p>While a custom key store is disconnected, all attempts to create customer master keys (CMKs) in the custom key store or to use existing CMKs in cryptographic operations will fail. This action can prevent users from storing and accessing sensitive data.</p> </note> <p/> <p>To find the connection state of a custom key store, use the <a>DescribeCustomKeyStores</a> operation. To reconnect a custom key store, use the <a>ConnectCustomKeyStore</a> operation.</p> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ##   body: JObject (required)
-  var body_603281 = newJObject()
+  var body_593181 = newJObject()
   if body != nil:
-    body_603281 = body
-  result = call_603280.call(nil, nil, nil, nil, body_603281)
+    body_593181 = body
+  result = call_593180.call(nil, nil, nil, nil, body_593181)
 
-var disconnectCustomKeyStore* = Call_DisconnectCustomKeyStore_603267(
+var disconnectCustomKeyStore* = Call_DisconnectCustomKeyStore_593167(
     name: "disconnectCustomKeyStore", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.DisconnectCustomKeyStore",
-    validator: validate_DisconnectCustomKeyStore_603268, base: "/",
-    url: url_DisconnectCustomKeyStore_603269, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisconnectCustomKeyStore_593168, base: "/",
+    url: url_DisconnectCustomKeyStore_593169, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableKey_603282 = ref object of OpenApiRestCall_602466
-proc url_EnableKey_603284(protocol: Scheme; host: string; base: string; route: string;
+  Call_EnableKey_593182 = ref object of OpenApiRestCall_592364
+proc url_EnableKey_593184(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_EnableKey_603283(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_EnableKey_593183(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the key state of a customer master key (CMK) to enabled. This allows you to use the CMK for cryptographic operations. You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -1802,57 +1806,57 @@ proc validate_EnableKey_603283(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603285 = header.getOrDefault("X-Amz-Date")
-  valid_603285 = validateParameter(valid_603285, JString, required = false,
-                                 default = nil)
-  if valid_603285 != nil:
-    section.add "X-Amz-Date", valid_603285
-  var valid_603286 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603286 = validateParameter(valid_603286, JString, required = false,
-                                 default = nil)
-  if valid_603286 != nil:
-    section.add "X-Amz-Security-Token", valid_603286
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603287 = header.getOrDefault("X-Amz-Target")
-  valid_603287 = validateParameter(valid_603287, JString, required = true,
+  var valid_593185 = header.getOrDefault("X-Amz-Target")
+  valid_593185 = validateParameter(valid_593185, JString, required = true,
                                  default = newJString("TrentService.EnableKey"))
-  if valid_603287 != nil:
-    section.add "X-Amz-Target", valid_603287
-  var valid_603288 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603288 = validateParameter(valid_603288, JString, required = false,
+  if valid_593185 != nil:
+    section.add "X-Amz-Target", valid_593185
+  var valid_593186 = header.getOrDefault("X-Amz-Signature")
+  valid_593186 = validateParameter(valid_593186, JString, required = false,
                                  default = nil)
-  if valid_603288 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603288
-  var valid_603289 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603289 = validateParameter(valid_603289, JString, required = false,
+  if valid_593186 != nil:
+    section.add "X-Amz-Signature", valid_593186
+  var valid_593187 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593187 = validateParameter(valid_593187, JString, required = false,
                                  default = nil)
-  if valid_603289 != nil:
-    section.add "X-Amz-Algorithm", valid_603289
-  var valid_603290 = header.getOrDefault("X-Amz-Signature")
-  valid_603290 = validateParameter(valid_603290, JString, required = false,
+  if valid_593187 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593187
+  var valid_593188 = header.getOrDefault("X-Amz-Date")
+  valid_593188 = validateParameter(valid_593188, JString, required = false,
                                  default = nil)
-  if valid_603290 != nil:
-    section.add "X-Amz-Signature", valid_603290
-  var valid_603291 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603291 = validateParameter(valid_603291, JString, required = false,
+  if valid_593188 != nil:
+    section.add "X-Amz-Date", valid_593188
+  var valid_593189 = header.getOrDefault("X-Amz-Credential")
+  valid_593189 = validateParameter(valid_593189, JString, required = false,
                                  default = nil)
-  if valid_603291 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603291
-  var valid_603292 = header.getOrDefault("X-Amz-Credential")
-  valid_603292 = validateParameter(valid_603292, JString, required = false,
+  if valid_593189 != nil:
+    section.add "X-Amz-Credential", valid_593189
+  var valid_593190 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593190 = validateParameter(valid_593190, JString, required = false,
                                  default = nil)
-  if valid_603292 != nil:
-    section.add "X-Amz-Credential", valid_603292
+  if valid_593190 != nil:
+    section.add "X-Amz-Security-Token", valid_593190
+  var valid_593191 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593191 = validateParameter(valid_593191, JString, required = false,
+                                 default = nil)
+  if valid_593191 != nil:
+    section.add "X-Amz-Algorithm", valid_593191
+  var valid_593192 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593192 = validateParameter(valid_593192, JString, required = false,
+                                 default = nil)
+  if valid_593192 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593192
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1863,43 +1867,43 @@ proc validate_EnableKey_603283(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603294: Call_EnableKey_603282; path: JsonNode; query: JsonNode;
+proc call*(call_593194: Call_EnableKey_593182; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the key state of a customer master key (CMK) to enabled. This allows you to use the CMK for cryptographic operations. You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603294.validator(path, query, header, formData, body)
-  let scheme = call_603294.pickScheme
+  let valid = call_593194.validator(path, query, header, formData, body)
+  let scheme = call_593194.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603294.url(scheme.get, call_603294.host, call_603294.base,
-                         call_603294.route, valid.getOrDefault("path"),
+  let url = call_593194.url(scheme.get, call_593194.host, call_593194.base,
+                         call_593194.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603294, url, valid)
+  result = hook(call_593194, url, valid)
 
-proc call*(call_603295: Call_EnableKey_603282; body: JsonNode): Recallable =
+proc call*(call_593195: Call_EnableKey_593182; body: JsonNode): Recallable =
   ## enableKey
   ## <p>Sets the key state of a customer master key (CMK) to enabled. This allows you to use the CMK for cryptographic operations. You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603296 = newJObject()
+  var body_593196 = newJObject()
   if body != nil:
-    body_603296 = body
-  result = call_603295.call(nil, nil, nil, nil, body_603296)
+    body_593196 = body
+  result = call_593195.call(nil, nil, nil, nil, body_593196)
 
-var enableKey* = Call_EnableKey_603282(name: "enableKey", meth: HttpMethod.HttpPost,
+var enableKey* = Call_EnableKey_593182(name: "enableKey", meth: HttpMethod.HttpPost,
                                     host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.EnableKey",
-                                    validator: validate_EnableKey_603283,
-                                    base: "/", url: url_EnableKey_603284,
+                                    validator: validate_EnableKey_593183,
+                                    base: "/", url: url_EnableKey_593184,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableKeyRotation_603297 = ref object of OpenApiRestCall_602466
-proc url_EnableKeyRotation_603299(protocol: Scheme; host: string; base: string;
+  Call_EnableKeyRotation_593197 = ref object of OpenApiRestCall_592364
+proc url_EnableKeyRotation_593199(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_EnableKeyRotation_603298(path: JsonNode; query: JsonNode;
+proc validate_EnableKeyRotation_593198(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Enables <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> for the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>You cannot enable automatic rotation of CMKs with imported key material or CMKs in a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
@@ -1911,57 +1915,57 @@ proc validate_EnableKeyRotation_603298(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603300 = header.getOrDefault("X-Amz-Date")
-  valid_603300 = validateParameter(valid_603300, JString, required = false,
-                                 default = nil)
-  if valid_603300 != nil:
-    section.add "X-Amz-Date", valid_603300
-  var valid_603301 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603301 = validateParameter(valid_603301, JString, required = false,
-                                 default = nil)
-  if valid_603301 != nil:
-    section.add "X-Amz-Security-Token", valid_603301
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603302 = header.getOrDefault("X-Amz-Target")
-  valid_603302 = validateParameter(valid_603302, JString, required = true, default = newJString(
+  var valid_593200 = header.getOrDefault("X-Amz-Target")
+  valid_593200 = validateParameter(valid_593200, JString, required = true, default = newJString(
       "TrentService.EnableKeyRotation"))
-  if valid_603302 != nil:
-    section.add "X-Amz-Target", valid_603302
-  var valid_603303 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603303 = validateParameter(valid_603303, JString, required = false,
+  if valid_593200 != nil:
+    section.add "X-Amz-Target", valid_593200
+  var valid_593201 = header.getOrDefault("X-Amz-Signature")
+  valid_593201 = validateParameter(valid_593201, JString, required = false,
                                  default = nil)
-  if valid_603303 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603303
-  var valid_603304 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603304 = validateParameter(valid_603304, JString, required = false,
+  if valid_593201 != nil:
+    section.add "X-Amz-Signature", valid_593201
+  var valid_593202 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593202 = validateParameter(valid_593202, JString, required = false,
                                  default = nil)
-  if valid_603304 != nil:
-    section.add "X-Amz-Algorithm", valid_603304
-  var valid_603305 = header.getOrDefault("X-Amz-Signature")
-  valid_603305 = validateParameter(valid_603305, JString, required = false,
+  if valid_593202 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593202
+  var valid_593203 = header.getOrDefault("X-Amz-Date")
+  valid_593203 = validateParameter(valid_593203, JString, required = false,
                                  default = nil)
-  if valid_603305 != nil:
-    section.add "X-Amz-Signature", valid_603305
-  var valid_603306 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603306 = validateParameter(valid_603306, JString, required = false,
+  if valid_593203 != nil:
+    section.add "X-Amz-Date", valid_593203
+  var valid_593204 = header.getOrDefault("X-Amz-Credential")
+  valid_593204 = validateParameter(valid_593204, JString, required = false,
                                  default = nil)
-  if valid_603306 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603306
-  var valid_603307 = header.getOrDefault("X-Amz-Credential")
-  valid_603307 = validateParameter(valid_603307, JString, required = false,
+  if valid_593204 != nil:
+    section.add "X-Amz-Credential", valid_593204
+  var valid_593205 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593205 = validateParameter(valid_593205, JString, required = false,
                                  default = nil)
-  if valid_603307 != nil:
-    section.add "X-Amz-Credential", valid_603307
+  if valid_593205 != nil:
+    section.add "X-Amz-Security-Token", valid_593205
+  var valid_593206 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593206 = validateParameter(valid_593206, JString, required = false,
+                                 default = nil)
+  if valid_593206 != nil:
+    section.add "X-Amz-Algorithm", valid_593206
+  var valid_593207 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593207 = validateParameter(valid_593207, JString, required = false,
+                                 default = nil)
+  if valid_593207 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593207
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1972,43 +1976,43 @@ proc validate_EnableKeyRotation_603298(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603309: Call_EnableKeyRotation_603297; path: JsonNode;
+proc call*(call_593209: Call_EnableKeyRotation_593197; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Enables <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> for the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>You cannot enable automatic rotation of CMKs with imported key material or CMKs in a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603309.validator(path, query, header, formData, body)
-  let scheme = call_603309.pickScheme
+  let valid = call_593209.validator(path, query, header, formData, body)
+  let scheme = call_593209.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603309.url(scheme.get, call_603309.host, call_603309.base,
-                         call_603309.route, valid.getOrDefault("path"),
+  let url = call_593209.url(scheme.get, call_593209.host, call_593209.base,
+                         call_593209.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603309, url, valid)
+  result = hook(call_593209, url, valid)
 
-proc call*(call_603310: Call_EnableKeyRotation_603297; body: JsonNode): Recallable =
+proc call*(call_593210: Call_EnableKeyRotation_593197; body: JsonNode): Recallable =
   ## enableKeyRotation
   ## <p>Enables <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> for the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>You cannot enable automatic rotation of CMKs with imported key material or CMKs in a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603311 = newJObject()
+  var body_593211 = newJObject()
   if body != nil:
-    body_603311 = body
-  result = call_603310.call(nil, nil, nil, nil, body_603311)
+    body_593211 = body
+  result = call_593210.call(nil, nil, nil, nil, body_593211)
 
-var enableKeyRotation* = Call_EnableKeyRotation_603297(name: "enableKeyRotation",
+var enableKeyRotation* = Call_EnableKeyRotation_593197(name: "enableKeyRotation",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.EnableKeyRotation",
-    validator: validate_EnableKeyRotation_603298, base: "/",
-    url: url_EnableKeyRotation_603299, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_EnableKeyRotation_593198, base: "/",
+    url: url_EnableKeyRotation_593199, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_Encrypt_603312 = ref object of OpenApiRestCall_602466
-proc url_Encrypt_603314(protocol: Scheme; host: string; base: string; route: string;
+  Call_Encrypt_593212 = ref object of OpenApiRestCall_592364
+proc url_Encrypt_593214(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_Encrypt_603313(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_Encrypt_593213(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Encrypts plaintext into ciphertext by using a customer master key (CMK). The <code>Encrypt</code> operation has two primary use cases:</p> <ul> <li> <p>You can encrypt up to 4 kilobytes (4096 bytes) of arbitrary data such as an RSA key, a database password, or other sensitive information.</p> </li> <li> <p>You can use the <code>Encrypt</code> operation to move encrypted data from one AWS region to another. In the first region, generate a data key and use the plaintext key to encrypt the data. Then, in the new region, call the <code>Encrypt</code> method on same plaintext data key. Now, you can safely move the encrypted data and encrypted data key to the new region, and decrypt in the new region when necessary.</p> </li> </ul> <p>You don't need use this operation to encrypt a data key within a region. The <a>GenerateDataKey</a> and <a>GenerateDataKeyWithoutPlaintext</a> operations return an encrypted data key.</p> <p>Also, you don't need to use this operation to encrypt data in your application. You can use the plaintext and encrypted data keys that the <code>GenerateDataKey</code> operation returns.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p>
   ## 
@@ -2019,57 +2023,57 @@ proc validate_Encrypt_603313(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603315 = header.getOrDefault("X-Amz-Date")
-  valid_603315 = validateParameter(valid_603315, JString, required = false,
-                                 default = nil)
-  if valid_603315 != nil:
-    section.add "X-Amz-Date", valid_603315
-  var valid_603316 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603316 = validateParameter(valid_603316, JString, required = false,
-                                 default = nil)
-  if valid_603316 != nil:
-    section.add "X-Amz-Security-Token", valid_603316
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603317 = header.getOrDefault("X-Amz-Target")
-  valid_603317 = validateParameter(valid_603317, JString, required = true,
+  var valid_593215 = header.getOrDefault("X-Amz-Target")
+  valid_593215 = validateParameter(valid_593215, JString, required = true,
                                  default = newJString("TrentService.Encrypt"))
-  if valid_603317 != nil:
-    section.add "X-Amz-Target", valid_603317
-  var valid_603318 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603318 = validateParameter(valid_603318, JString, required = false,
+  if valid_593215 != nil:
+    section.add "X-Amz-Target", valid_593215
+  var valid_593216 = header.getOrDefault("X-Amz-Signature")
+  valid_593216 = validateParameter(valid_593216, JString, required = false,
                                  default = nil)
-  if valid_603318 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603318
-  var valid_603319 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603319 = validateParameter(valid_603319, JString, required = false,
+  if valid_593216 != nil:
+    section.add "X-Amz-Signature", valid_593216
+  var valid_593217 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593217 = validateParameter(valid_593217, JString, required = false,
                                  default = nil)
-  if valid_603319 != nil:
-    section.add "X-Amz-Algorithm", valid_603319
-  var valid_603320 = header.getOrDefault("X-Amz-Signature")
-  valid_603320 = validateParameter(valid_603320, JString, required = false,
+  if valid_593217 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593217
+  var valid_593218 = header.getOrDefault("X-Amz-Date")
+  valid_593218 = validateParameter(valid_593218, JString, required = false,
                                  default = nil)
-  if valid_603320 != nil:
-    section.add "X-Amz-Signature", valid_603320
-  var valid_603321 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603321 = validateParameter(valid_603321, JString, required = false,
+  if valid_593218 != nil:
+    section.add "X-Amz-Date", valid_593218
+  var valid_593219 = header.getOrDefault("X-Amz-Credential")
+  valid_593219 = validateParameter(valid_593219, JString, required = false,
                                  default = nil)
-  if valid_603321 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603321
-  var valid_603322 = header.getOrDefault("X-Amz-Credential")
-  valid_603322 = validateParameter(valid_603322, JString, required = false,
+  if valid_593219 != nil:
+    section.add "X-Amz-Credential", valid_593219
+  var valid_593220 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593220 = validateParameter(valid_593220, JString, required = false,
                                  default = nil)
-  if valid_603322 != nil:
-    section.add "X-Amz-Credential", valid_603322
+  if valid_593220 != nil:
+    section.add "X-Amz-Security-Token", valid_593220
+  var valid_593221 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593221 = validateParameter(valid_593221, JString, required = false,
+                                 default = nil)
+  if valid_593221 != nil:
+    section.add "X-Amz-Algorithm", valid_593221
+  var valid_593222 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593222 = validateParameter(valid_593222, JString, required = false,
+                                 default = nil)
+  if valid_593222 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593222
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2080,44 +2084,44 @@ proc validate_Encrypt_603313(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603324: Call_Encrypt_603312; path: JsonNode; query: JsonNode;
+proc call*(call_593224: Call_Encrypt_593212; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Encrypts plaintext into ciphertext by using a customer master key (CMK). The <code>Encrypt</code> operation has two primary use cases:</p> <ul> <li> <p>You can encrypt up to 4 kilobytes (4096 bytes) of arbitrary data such as an RSA key, a database password, or other sensitive information.</p> </li> <li> <p>You can use the <code>Encrypt</code> operation to move encrypted data from one AWS region to another. In the first region, generate a data key and use the plaintext key to encrypt the data. Then, in the new region, call the <code>Encrypt</code> method on same plaintext data key. Now, you can safely move the encrypted data and encrypted data key to the new region, and decrypt in the new region when necessary.</p> </li> </ul> <p>You don't need use this operation to encrypt a data key within a region. The <a>GenerateDataKey</a> and <a>GenerateDataKeyWithoutPlaintext</a> operations return an encrypted data key.</p> <p>Also, you don't need to use this operation to encrypt data in your application. You can use the plaintext and encrypted data keys that the <code>GenerateDataKey</code> operation returns.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p>
   ## 
-  let valid = call_603324.validator(path, query, header, formData, body)
-  let scheme = call_603324.pickScheme
+  let valid = call_593224.validator(path, query, header, formData, body)
+  let scheme = call_593224.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603324.url(scheme.get, call_603324.host, call_603324.base,
-                         call_603324.route, valid.getOrDefault("path"),
+  let url = call_593224.url(scheme.get, call_593224.host, call_593224.base,
+                         call_593224.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603324, url, valid)
+  result = hook(call_593224, url, valid)
 
-proc call*(call_603325: Call_Encrypt_603312; body: JsonNode): Recallable =
+proc call*(call_593225: Call_Encrypt_593212; body: JsonNode): Recallable =
   ## encrypt
   ## <p>Encrypts plaintext into ciphertext by using a customer master key (CMK). The <code>Encrypt</code> operation has two primary use cases:</p> <ul> <li> <p>You can encrypt up to 4 kilobytes (4096 bytes) of arbitrary data such as an RSA key, a database password, or other sensitive information.</p> </li> <li> <p>You can use the <code>Encrypt</code> operation to move encrypted data from one AWS region to another. In the first region, generate a data key and use the plaintext key to encrypt the data. Then, in the new region, call the <code>Encrypt</code> method on same plaintext data key. Now, you can safely move the encrypted data and encrypted data key to the new region, and decrypt in the new region when necessary.</p> </li> </ul> <p>You don't need use this operation to encrypt a data key within a region. The <a>GenerateDataKey</a> and <a>GenerateDataKeyWithoutPlaintext</a> operations return an encrypted data key.</p> <p>Also, you don't need to use this operation to encrypt data in your application. You can use the plaintext and encrypted data keys that the <code>GenerateDataKey</code> operation returns.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p>
   ##   body: JObject (required)
-  var body_603326 = newJObject()
+  var body_593226 = newJObject()
   if body != nil:
-    body_603326 = body
-  result = call_603325.call(nil, nil, nil, nil, body_603326)
+    body_593226 = body
+  result = call_593225.call(nil, nil, nil, nil, body_593226)
 
-var encrypt* = Call_Encrypt_603312(name: "encrypt", meth: HttpMethod.HttpPost,
+var encrypt* = Call_Encrypt_593212(name: "encrypt", meth: HttpMethod.HttpPost,
                                 host: "kms.amazonaws.com",
                                 route: "/#X-Amz-Target=TrentService.Encrypt",
-                                validator: validate_Encrypt_603313, base: "/",
-                                url: url_Encrypt_603314,
+                                validator: validate_Encrypt_593213, base: "/",
+                                url: url_Encrypt_593214,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GenerateDataKey_603327 = ref object of OpenApiRestCall_602466
-proc url_GenerateDataKey_603329(protocol: Scheme; host: string; base: string;
+  Call_GenerateDataKey_593227 = ref object of OpenApiRestCall_592364
+proc url_GenerateDataKey_593229(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GenerateDataKey_603328(path: JsonNode; query: JsonNode;
+proc validate_GenerateDataKey_593228(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Generates a unique data key. This operation returns a plaintext copy of the data key and a copy that is encrypted under a customer master key (CMK) that you specify. You can use the plaintext key to encrypt your data outside of KMS and store the encrypted data key with the encrypted data.</p> <p> <code>GenerateDataKey</code> returns a unique data key for each request. The bytes in the key are not related to the caller or CMK that is used to encrypt the data key.</p> <p>To generate a data key, you need to specify the customer master key (CMK) that will be used to encrypt the data key. You must also specify the length of the data key using either the <code>KeySpec</code> or <code>NumberOfBytes</code> field (but not both). For common key lengths (128-bit and 256-bit symmetric keys), we recommend that you use <code>KeySpec</code>. To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p> <p>You will find the plaintext copy of the data key in the <code>Plaintext</code> field of the response, and the encrypted copy of the data key in the <code>CiphertextBlob</code> field.</p> <p>We recommend that you use the following pattern to encrypt data locally in your application:</p> <ol> <li> <p>Use the <code>GenerateDataKey</code> operation to get a data encryption key.</p> </li> <li> <p>Use the plaintext data key (returned in the <code>Plaintext</code> field of the response) to encrypt data locally, then erase the plaintext data key from memory.</p> </li> <li> <p>Store the encrypted data key (returned in the <code>CiphertextBlob</code> field of the response) alongside the locally encrypted data.</p> </li> </ol> <p>To decrypt data locally:</p> <ol> <li> <p>Use the <a>Decrypt</a> operation to decrypt the encrypted data key. The operation returns a plaintext copy of the data key.</p> </li> <li> <p>Use the plaintext data key to decrypt data locally, then erase the plaintext data key from memory.</p> </li> </ol> <p>To get only an encrypted copy of the data key, use <a>GenerateDataKeyWithoutPlaintext</a>. To get a cryptographically secure random byte string, use <a>GenerateRandom</a>.</p> <p>You can use the optional encryption context to add additional security to your encryption operation. When you specify an <code>EncryptionContext</code> in the <code>GenerateDataKey</code> operation, you must specify the same encryption context (a case-sensitive exact match) in your request to <a>Decrypt</a> the data key. Otherwise, the request to decrypt fails with an <code>InvalidCiphertextException</code>. For more information, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context">Encryption Context</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
@@ -2129,57 +2133,57 @@ proc validate_GenerateDataKey_603328(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603330 = header.getOrDefault("X-Amz-Date")
-  valid_603330 = validateParameter(valid_603330, JString, required = false,
-                                 default = nil)
-  if valid_603330 != nil:
-    section.add "X-Amz-Date", valid_603330
-  var valid_603331 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603331 = validateParameter(valid_603331, JString, required = false,
-                                 default = nil)
-  if valid_603331 != nil:
-    section.add "X-Amz-Security-Token", valid_603331
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603332 = header.getOrDefault("X-Amz-Target")
-  valid_603332 = validateParameter(valid_603332, JString, required = true, default = newJString(
+  var valid_593230 = header.getOrDefault("X-Amz-Target")
+  valid_593230 = validateParameter(valid_593230, JString, required = true, default = newJString(
       "TrentService.GenerateDataKey"))
-  if valid_603332 != nil:
-    section.add "X-Amz-Target", valid_603332
-  var valid_603333 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603333 = validateParameter(valid_603333, JString, required = false,
+  if valid_593230 != nil:
+    section.add "X-Amz-Target", valid_593230
+  var valid_593231 = header.getOrDefault("X-Amz-Signature")
+  valid_593231 = validateParameter(valid_593231, JString, required = false,
                                  default = nil)
-  if valid_603333 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603333
-  var valid_603334 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603334 = validateParameter(valid_603334, JString, required = false,
+  if valid_593231 != nil:
+    section.add "X-Amz-Signature", valid_593231
+  var valid_593232 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593232 = validateParameter(valid_593232, JString, required = false,
                                  default = nil)
-  if valid_603334 != nil:
-    section.add "X-Amz-Algorithm", valid_603334
-  var valid_603335 = header.getOrDefault("X-Amz-Signature")
-  valid_603335 = validateParameter(valid_603335, JString, required = false,
+  if valid_593232 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593232
+  var valid_593233 = header.getOrDefault("X-Amz-Date")
+  valid_593233 = validateParameter(valid_593233, JString, required = false,
                                  default = nil)
-  if valid_603335 != nil:
-    section.add "X-Amz-Signature", valid_603335
-  var valid_603336 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603336 = validateParameter(valid_603336, JString, required = false,
+  if valid_593233 != nil:
+    section.add "X-Amz-Date", valid_593233
+  var valid_593234 = header.getOrDefault("X-Amz-Credential")
+  valid_593234 = validateParameter(valid_593234, JString, required = false,
                                  default = nil)
-  if valid_603336 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603336
-  var valid_603337 = header.getOrDefault("X-Amz-Credential")
-  valid_603337 = validateParameter(valid_603337, JString, required = false,
+  if valid_593234 != nil:
+    section.add "X-Amz-Credential", valid_593234
+  var valid_593235 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593235 = validateParameter(valid_593235, JString, required = false,
                                  default = nil)
-  if valid_603337 != nil:
-    section.add "X-Amz-Credential", valid_603337
+  if valid_593235 != nil:
+    section.add "X-Amz-Security-Token", valid_593235
+  var valid_593236 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593236 = validateParameter(valid_593236, JString, required = false,
+                                 default = nil)
+  if valid_593236 != nil:
+    section.add "X-Amz-Algorithm", valid_593236
+  var valid_593237 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593237 = validateParameter(valid_593237, JString, required = false,
+                                 default = nil)
+  if valid_593237 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593237
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2190,43 +2194,43 @@ proc validate_GenerateDataKey_603328(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603339: Call_GenerateDataKey_603327; path: JsonNode; query: JsonNode;
+proc call*(call_593239: Call_GenerateDataKey_593227; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Generates a unique data key. This operation returns a plaintext copy of the data key and a copy that is encrypted under a customer master key (CMK) that you specify. You can use the plaintext key to encrypt your data outside of KMS and store the encrypted data key with the encrypted data.</p> <p> <code>GenerateDataKey</code> returns a unique data key for each request. The bytes in the key are not related to the caller or CMK that is used to encrypt the data key.</p> <p>To generate a data key, you need to specify the customer master key (CMK) that will be used to encrypt the data key. You must also specify the length of the data key using either the <code>KeySpec</code> or <code>NumberOfBytes</code> field (but not both). For common key lengths (128-bit and 256-bit symmetric keys), we recommend that you use <code>KeySpec</code>. To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p> <p>You will find the plaintext copy of the data key in the <code>Plaintext</code> field of the response, and the encrypted copy of the data key in the <code>CiphertextBlob</code> field.</p> <p>We recommend that you use the following pattern to encrypt data locally in your application:</p> <ol> <li> <p>Use the <code>GenerateDataKey</code> operation to get a data encryption key.</p> </li> <li> <p>Use the plaintext data key (returned in the <code>Plaintext</code> field of the response) to encrypt data locally, then erase the plaintext data key from memory.</p> </li> <li> <p>Store the encrypted data key (returned in the <code>CiphertextBlob</code> field of the response) alongside the locally encrypted data.</p> </li> </ol> <p>To decrypt data locally:</p> <ol> <li> <p>Use the <a>Decrypt</a> operation to decrypt the encrypted data key. The operation returns a plaintext copy of the data key.</p> </li> <li> <p>Use the plaintext data key to decrypt data locally, then erase the plaintext data key from memory.</p> </li> </ol> <p>To get only an encrypted copy of the data key, use <a>GenerateDataKeyWithoutPlaintext</a>. To get a cryptographically secure random byte string, use <a>GenerateRandom</a>.</p> <p>You can use the optional encryption context to add additional security to your encryption operation. When you specify an <code>EncryptionContext</code> in the <code>GenerateDataKey</code> operation, you must specify the same encryption context (a case-sensitive exact match) in your request to <a>Decrypt</a> the data key. Otherwise, the request to decrypt fails with an <code>InvalidCiphertextException</code>. For more information, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context">Encryption Context</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603339.validator(path, query, header, formData, body)
-  let scheme = call_603339.pickScheme
+  let valid = call_593239.validator(path, query, header, formData, body)
+  let scheme = call_593239.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603339.url(scheme.get, call_603339.host, call_603339.base,
-                         call_603339.route, valid.getOrDefault("path"),
+  let url = call_593239.url(scheme.get, call_593239.host, call_593239.base,
+                         call_593239.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603339, url, valid)
+  result = hook(call_593239, url, valid)
 
-proc call*(call_603340: Call_GenerateDataKey_603327; body: JsonNode): Recallable =
+proc call*(call_593240: Call_GenerateDataKey_593227; body: JsonNode): Recallable =
   ## generateDataKey
   ## <p>Generates a unique data key. This operation returns a plaintext copy of the data key and a copy that is encrypted under a customer master key (CMK) that you specify. You can use the plaintext key to encrypt your data outside of KMS and store the encrypted data key with the encrypted data.</p> <p> <code>GenerateDataKey</code> returns a unique data key for each request. The bytes in the key are not related to the caller or CMK that is used to encrypt the data key.</p> <p>To generate a data key, you need to specify the customer master key (CMK) that will be used to encrypt the data key. You must also specify the length of the data key using either the <code>KeySpec</code> or <code>NumberOfBytes</code> field (but not both). For common key lengths (128-bit and 256-bit symmetric keys), we recommend that you use <code>KeySpec</code>. To perform this operation on a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the KeyId parameter.</p> <p>You will find the plaintext copy of the data key in the <code>Plaintext</code> field of the response, and the encrypted copy of the data key in the <code>CiphertextBlob</code> field.</p> <p>We recommend that you use the following pattern to encrypt data locally in your application:</p> <ol> <li> <p>Use the <code>GenerateDataKey</code> operation to get a data encryption key.</p> </li> <li> <p>Use the plaintext data key (returned in the <code>Plaintext</code> field of the response) to encrypt data locally, then erase the plaintext data key from memory.</p> </li> <li> <p>Store the encrypted data key (returned in the <code>CiphertextBlob</code> field of the response) alongside the locally encrypted data.</p> </li> </ol> <p>To decrypt data locally:</p> <ol> <li> <p>Use the <a>Decrypt</a> operation to decrypt the encrypted data key. The operation returns a plaintext copy of the data key.</p> </li> <li> <p>Use the plaintext data key to decrypt data locally, then erase the plaintext data key from memory.</p> </li> </ol> <p>To get only an encrypted copy of the data key, use <a>GenerateDataKeyWithoutPlaintext</a>. To get a cryptographically secure random byte string, use <a>GenerateRandom</a>.</p> <p>You can use the optional encryption context to add additional security to your encryption operation. When you specify an <code>EncryptionContext</code> in the <code>GenerateDataKey</code> operation, you must specify the same encryption context (a case-sensitive exact match) in your request to <a>Decrypt</a> the data key. Otherwise, the request to decrypt fails with an <code>InvalidCiphertextException</code>. For more information, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#encrypt_context">Encryption Context</a> in the <i> <i>AWS Key Management Service Developer Guide</i> </i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603341 = newJObject()
+  var body_593241 = newJObject()
   if body != nil:
-    body_603341 = body
-  result = call_603340.call(nil, nil, nil, nil, body_603341)
+    body_593241 = body
+  result = call_593240.call(nil, nil, nil, nil, body_593241)
 
-var generateDataKey* = Call_GenerateDataKey_603327(name: "generateDataKey",
+var generateDataKey* = Call_GenerateDataKey_593227(name: "generateDataKey",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.GenerateDataKey",
-    validator: validate_GenerateDataKey_603328, base: "/", url: url_GenerateDataKey_603329,
+    validator: validate_GenerateDataKey_593228, base: "/", url: url_GenerateDataKey_593229,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GenerateDataKeyWithoutPlaintext_603342 = ref object of OpenApiRestCall_602466
-proc url_GenerateDataKeyWithoutPlaintext_603344(protocol: Scheme; host: string;
+  Call_GenerateDataKeyWithoutPlaintext_593242 = ref object of OpenApiRestCall_592364
+proc url_GenerateDataKeyWithoutPlaintext_593244(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GenerateDataKeyWithoutPlaintext_603343(path: JsonNode;
+proc validate_GenerateDataKeyWithoutPlaintext_593243(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Generates a unique data key. This operation returns a data key that is encrypted under a customer master key (CMK) that you specify. <code>GenerateDataKeyWithoutPlaintext</code> is identical to <a>GenerateDataKey</a> except that returns only the encrypted copy of the data key.</p> <p>Like <code>GenerateDataKey</code>, <code>GenerateDataKeyWithoutPlaintext</code> returns a unique data key for each request. The bytes in the key are not related to the caller or CMK that is used to encrypt the data key.</p> <p>This operation is useful for systems that need to encrypt data at some point, but not immediately. When you need to encrypt the data, you call the <a>Decrypt</a> operation on the encrypted copy of the key.</p> <p>It's also useful in distributed systems with different levels of trust. For example, you might store encrypted data in containers. One component of your system creates new containers and stores an encrypted data key with each container. Then, a different component puts the data into the containers. That component first decrypts the data key, uses the plaintext data key to encrypt data, puts the encrypted data into the container, and then destroys the plaintext data key. In this system, the component that creates the containers never sees the plaintext data key.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -2237,57 +2241,57 @@ proc validate_GenerateDataKeyWithoutPlaintext_603343(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603345 = header.getOrDefault("X-Amz-Date")
-  valid_603345 = validateParameter(valid_603345, JString, required = false,
-                                 default = nil)
-  if valid_603345 != nil:
-    section.add "X-Amz-Date", valid_603345
-  var valid_603346 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603346 = validateParameter(valid_603346, JString, required = false,
-                                 default = nil)
-  if valid_603346 != nil:
-    section.add "X-Amz-Security-Token", valid_603346
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603347 = header.getOrDefault("X-Amz-Target")
-  valid_603347 = validateParameter(valid_603347, JString, required = true, default = newJString(
+  var valid_593245 = header.getOrDefault("X-Amz-Target")
+  valid_593245 = validateParameter(valid_593245, JString, required = true, default = newJString(
       "TrentService.GenerateDataKeyWithoutPlaintext"))
-  if valid_603347 != nil:
-    section.add "X-Amz-Target", valid_603347
-  var valid_603348 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603348 = validateParameter(valid_603348, JString, required = false,
+  if valid_593245 != nil:
+    section.add "X-Amz-Target", valid_593245
+  var valid_593246 = header.getOrDefault("X-Amz-Signature")
+  valid_593246 = validateParameter(valid_593246, JString, required = false,
                                  default = nil)
-  if valid_603348 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603348
-  var valid_603349 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603349 = validateParameter(valid_603349, JString, required = false,
+  if valid_593246 != nil:
+    section.add "X-Amz-Signature", valid_593246
+  var valid_593247 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593247 = validateParameter(valid_593247, JString, required = false,
                                  default = nil)
-  if valid_603349 != nil:
-    section.add "X-Amz-Algorithm", valid_603349
-  var valid_603350 = header.getOrDefault("X-Amz-Signature")
-  valid_603350 = validateParameter(valid_603350, JString, required = false,
+  if valid_593247 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593247
+  var valid_593248 = header.getOrDefault("X-Amz-Date")
+  valid_593248 = validateParameter(valid_593248, JString, required = false,
                                  default = nil)
-  if valid_603350 != nil:
-    section.add "X-Amz-Signature", valid_603350
-  var valid_603351 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603351 = validateParameter(valid_603351, JString, required = false,
+  if valid_593248 != nil:
+    section.add "X-Amz-Date", valid_593248
+  var valid_593249 = header.getOrDefault("X-Amz-Credential")
+  valid_593249 = validateParameter(valid_593249, JString, required = false,
                                  default = nil)
-  if valid_603351 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603351
-  var valid_603352 = header.getOrDefault("X-Amz-Credential")
-  valid_603352 = validateParameter(valid_603352, JString, required = false,
+  if valid_593249 != nil:
+    section.add "X-Amz-Credential", valid_593249
+  var valid_593250 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593250 = validateParameter(valid_593250, JString, required = false,
                                  default = nil)
-  if valid_603352 != nil:
-    section.add "X-Amz-Credential", valid_603352
+  if valid_593250 != nil:
+    section.add "X-Amz-Security-Token", valid_593250
+  var valid_593251 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593251 = validateParameter(valid_593251, JString, required = false,
+                                 default = nil)
+  if valid_593251 != nil:
+    section.add "X-Amz-Algorithm", valid_593251
+  var valid_593252 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593252 = validateParameter(valid_593252, JString, required = false,
+                                 default = nil)
+  if valid_593252 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593252
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2298,46 +2302,46 @@ proc validate_GenerateDataKeyWithoutPlaintext_603343(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603354: Call_GenerateDataKeyWithoutPlaintext_603342;
+proc call*(call_593254: Call_GenerateDataKeyWithoutPlaintext_593242;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Generates a unique data key. This operation returns a data key that is encrypted under a customer master key (CMK) that you specify. <code>GenerateDataKeyWithoutPlaintext</code> is identical to <a>GenerateDataKey</a> except that returns only the encrypted copy of the data key.</p> <p>Like <code>GenerateDataKey</code>, <code>GenerateDataKeyWithoutPlaintext</code> returns a unique data key for each request. The bytes in the key are not related to the caller or CMK that is used to encrypt the data key.</p> <p>This operation is useful for systems that need to encrypt data at some point, but not immediately. When you need to encrypt the data, you call the <a>Decrypt</a> operation on the encrypted copy of the key.</p> <p>It's also useful in distributed systems with different levels of trust. For example, you might store encrypted data in containers. One component of your system creates new containers and stores an encrypted data key with each container. Then, a different component puts the data into the containers. That component first decrypts the data key, uses the plaintext data key to encrypt data, puts the encrypted data into the container, and then destroys the plaintext data key. In this system, the component that creates the containers never sees the plaintext data key.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603354.validator(path, query, header, formData, body)
-  let scheme = call_603354.pickScheme
+  let valid = call_593254.validator(path, query, header, formData, body)
+  let scheme = call_593254.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603354.url(scheme.get, call_603354.host, call_603354.base,
-                         call_603354.route, valid.getOrDefault("path"),
+  let url = call_593254.url(scheme.get, call_593254.host, call_593254.base,
+                         call_593254.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603354, url, valid)
+  result = hook(call_593254, url, valid)
 
-proc call*(call_603355: Call_GenerateDataKeyWithoutPlaintext_603342; body: JsonNode): Recallable =
+proc call*(call_593255: Call_GenerateDataKeyWithoutPlaintext_593242; body: JsonNode): Recallable =
   ## generateDataKeyWithoutPlaintext
   ## <p>Generates a unique data key. This operation returns a data key that is encrypted under a customer master key (CMK) that you specify. <code>GenerateDataKeyWithoutPlaintext</code> is identical to <a>GenerateDataKey</a> except that returns only the encrypted copy of the data key.</p> <p>Like <code>GenerateDataKey</code>, <code>GenerateDataKeyWithoutPlaintext</code> returns a unique data key for each request. The bytes in the key are not related to the caller or CMK that is used to encrypt the data key.</p> <p>This operation is useful for systems that need to encrypt data at some point, but not immediately. When you need to encrypt the data, you call the <a>Decrypt</a> operation on the encrypted copy of the key.</p> <p>It's also useful in distributed systems with different levels of trust. For example, you might store encrypted data in containers. One component of your system creates new containers and stores an encrypted data key with each container. Then, a different component puts the data into the containers. That component first decrypts the data key, uses the plaintext data key to encrypt data, puts the encrypted data into the container, and then destroys the plaintext data key. In this system, the component that creates the containers never sees the plaintext data key.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603356 = newJObject()
+  var body_593256 = newJObject()
   if body != nil:
-    body_603356 = body
-  result = call_603355.call(nil, nil, nil, nil, body_603356)
+    body_593256 = body
+  result = call_593255.call(nil, nil, nil, nil, body_593256)
 
-var generateDataKeyWithoutPlaintext* = Call_GenerateDataKeyWithoutPlaintext_603342(
+var generateDataKeyWithoutPlaintext* = Call_GenerateDataKeyWithoutPlaintext_593242(
     name: "generateDataKeyWithoutPlaintext", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.GenerateDataKeyWithoutPlaintext",
-    validator: validate_GenerateDataKeyWithoutPlaintext_603343, base: "/",
-    url: url_GenerateDataKeyWithoutPlaintext_603344,
+    validator: validate_GenerateDataKeyWithoutPlaintext_593243, base: "/",
+    url: url_GenerateDataKeyWithoutPlaintext_593244,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GenerateRandom_603357 = ref object of OpenApiRestCall_602466
-proc url_GenerateRandom_603359(protocol: Scheme; host: string; base: string;
+  Call_GenerateRandom_593257 = ref object of OpenApiRestCall_592364
+proc url_GenerateRandom_593259(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GenerateRandom_603358(path: JsonNode; query: JsonNode;
+proc validate_GenerateRandom_593258(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns a random byte string that is cryptographically secure.</p> <p>By default, the random byte string is generated in AWS KMS. To generate the byte string in the AWS CloudHSM cluster that is associated with a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, specify the custom key store ID.</p> <p>For more information about entropy and random number generation, see the <a href="https://d0.awsstatic.com/whitepapers/KMS-Cryptographic-Details.pdf">AWS Key Management Service Cryptographic Details</a> whitepaper.</p>
@@ -2349,57 +2353,57 @@ proc validate_GenerateRandom_603358(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603360 = header.getOrDefault("X-Amz-Date")
-  valid_603360 = validateParameter(valid_603360, JString, required = false,
-                                 default = nil)
-  if valid_603360 != nil:
-    section.add "X-Amz-Date", valid_603360
-  var valid_603361 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603361 = validateParameter(valid_603361, JString, required = false,
-                                 default = nil)
-  if valid_603361 != nil:
-    section.add "X-Amz-Security-Token", valid_603361
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603362 = header.getOrDefault("X-Amz-Target")
-  valid_603362 = validateParameter(valid_603362, JString, required = true, default = newJString(
+  var valid_593260 = header.getOrDefault("X-Amz-Target")
+  valid_593260 = validateParameter(valid_593260, JString, required = true, default = newJString(
       "TrentService.GenerateRandom"))
-  if valid_603362 != nil:
-    section.add "X-Amz-Target", valid_603362
-  var valid_603363 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603363 = validateParameter(valid_603363, JString, required = false,
+  if valid_593260 != nil:
+    section.add "X-Amz-Target", valid_593260
+  var valid_593261 = header.getOrDefault("X-Amz-Signature")
+  valid_593261 = validateParameter(valid_593261, JString, required = false,
                                  default = nil)
-  if valid_603363 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603363
-  var valid_603364 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603364 = validateParameter(valid_603364, JString, required = false,
+  if valid_593261 != nil:
+    section.add "X-Amz-Signature", valid_593261
+  var valid_593262 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593262 = validateParameter(valid_593262, JString, required = false,
                                  default = nil)
-  if valid_603364 != nil:
-    section.add "X-Amz-Algorithm", valid_603364
-  var valid_603365 = header.getOrDefault("X-Amz-Signature")
-  valid_603365 = validateParameter(valid_603365, JString, required = false,
+  if valid_593262 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593262
+  var valid_593263 = header.getOrDefault("X-Amz-Date")
+  valid_593263 = validateParameter(valid_593263, JString, required = false,
                                  default = nil)
-  if valid_603365 != nil:
-    section.add "X-Amz-Signature", valid_603365
-  var valid_603366 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603366 = validateParameter(valid_603366, JString, required = false,
+  if valid_593263 != nil:
+    section.add "X-Amz-Date", valid_593263
+  var valid_593264 = header.getOrDefault("X-Amz-Credential")
+  valid_593264 = validateParameter(valid_593264, JString, required = false,
                                  default = nil)
-  if valid_603366 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603366
-  var valid_603367 = header.getOrDefault("X-Amz-Credential")
-  valid_603367 = validateParameter(valid_603367, JString, required = false,
+  if valid_593264 != nil:
+    section.add "X-Amz-Credential", valid_593264
+  var valid_593265 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593265 = validateParameter(valid_593265, JString, required = false,
                                  default = nil)
-  if valid_603367 != nil:
-    section.add "X-Amz-Credential", valid_603367
+  if valid_593265 != nil:
+    section.add "X-Amz-Security-Token", valid_593265
+  var valid_593266 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593266 = validateParameter(valid_593266, JString, required = false,
+                                 default = nil)
+  if valid_593266 != nil:
+    section.add "X-Amz-Algorithm", valid_593266
+  var valid_593267 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593267 = validateParameter(valid_593267, JString, required = false,
+                                 default = nil)
+  if valid_593267 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593267
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2410,43 +2414,43 @@ proc validate_GenerateRandom_603358(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603369: Call_GenerateRandom_603357; path: JsonNode; query: JsonNode;
+proc call*(call_593269: Call_GenerateRandom_593257; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a random byte string that is cryptographically secure.</p> <p>By default, the random byte string is generated in AWS KMS. To generate the byte string in the AWS CloudHSM cluster that is associated with a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, specify the custom key store ID.</p> <p>For more information about entropy and random number generation, see the <a href="https://d0.awsstatic.com/whitepapers/KMS-Cryptographic-Details.pdf">AWS Key Management Service Cryptographic Details</a> whitepaper.</p>
   ## 
-  let valid = call_603369.validator(path, query, header, formData, body)
-  let scheme = call_603369.pickScheme
+  let valid = call_593269.validator(path, query, header, formData, body)
+  let scheme = call_593269.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603369.url(scheme.get, call_603369.host, call_603369.base,
-                         call_603369.route, valid.getOrDefault("path"),
+  let url = call_593269.url(scheme.get, call_593269.host, call_593269.base,
+                         call_593269.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603369, url, valid)
+  result = hook(call_593269, url, valid)
 
-proc call*(call_603370: Call_GenerateRandom_603357; body: JsonNode): Recallable =
+proc call*(call_593270: Call_GenerateRandom_593257; body: JsonNode): Recallable =
   ## generateRandom
   ## <p>Returns a random byte string that is cryptographically secure.</p> <p>By default, the random byte string is generated in AWS KMS. To generate the byte string in the AWS CloudHSM cluster that is associated with a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, specify the custom key store ID.</p> <p>For more information about entropy and random number generation, see the <a href="https://d0.awsstatic.com/whitepapers/KMS-Cryptographic-Details.pdf">AWS Key Management Service Cryptographic Details</a> whitepaper.</p>
   ##   body: JObject (required)
-  var body_603371 = newJObject()
+  var body_593271 = newJObject()
   if body != nil:
-    body_603371 = body
-  result = call_603370.call(nil, nil, nil, nil, body_603371)
+    body_593271 = body
+  result = call_593270.call(nil, nil, nil, nil, body_593271)
 
-var generateRandom* = Call_GenerateRandom_603357(name: "generateRandom",
+var generateRandom* = Call_GenerateRandom_593257(name: "generateRandom",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.GenerateRandom",
-    validator: validate_GenerateRandom_603358, base: "/", url: url_GenerateRandom_603359,
+    validator: validate_GenerateRandom_593258, base: "/", url: url_GenerateRandom_593259,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetKeyPolicy_603372 = ref object of OpenApiRestCall_602466
-proc url_GetKeyPolicy_603374(protocol: Scheme; host: string; base: string;
+  Call_GetKeyPolicy_593272 = ref object of OpenApiRestCall_592364
+proc url_GetKeyPolicy_593274(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetKeyPolicy_603373(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetKeyPolicy_593273(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a key policy attached to the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.
   ## 
@@ -2457,57 +2461,57 @@ proc validate_GetKeyPolicy_603373(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603375 = header.getOrDefault("X-Amz-Date")
-  valid_603375 = validateParameter(valid_603375, JString, required = false,
-                                 default = nil)
-  if valid_603375 != nil:
-    section.add "X-Amz-Date", valid_603375
-  var valid_603376 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603376 = validateParameter(valid_603376, JString, required = false,
-                                 default = nil)
-  if valid_603376 != nil:
-    section.add "X-Amz-Security-Token", valid_603376
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603377 = header.getOrDefault("X-Amz-Target")
-  valid_603377 = validateParameter(valid_603377, JString, required = true, default = newJString(
+  var valid_593275 = header.getOrDefault("X-Amz-Target")
+  valid_593275 = validateParameter(valid_593275, JString, required = true, default = newJString(
       "TrentService.GetKeyPolicy"))
-  if valid_603377 != nil:
-    section.add "X-Amz-Target", valid_603377
-  var valid_603378 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603378 = validateParameter(valid_603378, JString, required = false,
+  if valid_593275 != nil:
+    section.add "X-Amz-Target", valid_593275
+  var valid_593276 = header.getOrDefault("X-Amz-Signature")
+  valid_593276 = validateParameter(valid_593276, JString, required = false,
                                  default = nil)
-  if valid_603378 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603378
-  var valid_603379 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603379 = validateParameter(valid_603379, JString, required = false,
+  if valid_593276 != nil:
+    section.add "X-Amz-Signature", valid_593276
+  var valid_593277 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593277 = validateParameter(valid_593277, JString, required = false,
                                  default = nil)
-  if valid_603379 != nil:
-    section.add "X-Amz-Algorithm", valid_603379
-  var valid_603380 = header.getOrDefault("X-Amz-Signature")
-  valid_603380 = validateParameter(valid_603380, JString, required = false,
+  if valid_593277 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593277
+  var valid_593278 = header.getOrDefault("X-Amz-Date")
+  valid_593278 = validateParameter(valid_593278, JString, required = false,
                                  default = nil)
-  if valid_603380 != nil:
-    section.add "X-Amz-Signature", valid_603380
-  var valid_603381 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603381 = validateParameter(valid_603381, JString, required = false,
+  if valid_593278 != nil:
+    section.add "X-Amz-Date", valid_593278
+  var valid_593279 = header.getOrDefault("X-Amz-Credential")
+  valid_593279 = validateParameter(valid_593279, JString, required = false,
                                  default = nil)
-  if valid_603381 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603381
-  var valid_603382 = header.getOrDefault("X-Amz-Credential")
-  valid_603382 = validateParameter(valid_603382, JString, required = false,
+  if valid_593279 != nil:
+    section.add "X-Amz-Credential", valid_593279
+  var valid_593280 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593280 = validateParameter(valid_593280, JString, required = false,
                                  default = nil)
-  if valid_603382 != nil:
-    section.add "X-Amz-Credential", valid_603382
+  if valid_593280 != nil:
+    section.add "X-Amz-Security-Token", valid_593280
+  var valid_593281 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593281 = validateParameter(valid_593281, JString, required = false,
+                                 default = nil)
+  if valid_593281 != nil:
+    section.add "X-Amz-Algorithm", valid_593281
+  var valid_593282 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593282 = validateParameter(valid_593282, JString, required = false,
+                                 default = nil)
+  if valid_593282 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593282
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2518,43 +2522,43 @@ proc validate_GetKeyPolicy_603373(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603384: Call_GetKeyPolicy_603372; path: JsonNode; query: JsonNode;
+proc call*(call_593284: Call_GetKeyPolicy_593272; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a key policy attached to the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.
   ## 
-  let valid = call_603384.validator(path, query, header, formData, body)
-  let scheme = call_603384.pickScheme
+  let valid = call_593284.validator(path, query, header, formData, body)
+  let scheme = call_593284.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603384.url(scheme.get, call_603384.host, call_603384.base,
-                         call_603384.route, valid.getOrDefault("path"),
+  let url = call_593284.url(scheme.get, call_593284.host, call_593284.base,
+                         call_593284.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603384, url, valid)
+  result = hook(call_593284, url, valid)
 
-proc call*(call_603385: Call_GetKeyPolicy_603372; body: JsonNode): Recallable =
+proc call*(call_593285: Call_GetKeyPolicy_593272; body: JsonNode): Recallable =
   ## getKeyPolicy
   ## Gets a key policy attached to the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.
   ##   body: JObject (required)
-  var body_603386 = newJObject()
+  var body_593286 = newJObject()
   if body != nil:
-    body_603386 = body
-  result = call_603385.call(nil, nil, nil, nil, body_603386)
+    body_593286 = body
+  result = call_593285.call(nil, nil, nil, nil, body_593286)
 
-var getKeyPolicy* = Call_GetKeyPolicy_603372(name: "getKeyPolicy",
+var getKeyPolicy* = Call_GetKeyPolicy_593272(name: "getKeyPolicy",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.GetKeyPolicy",
-    validator: validate_GetKeyPolicy_603373, base: "/", url: url_GetKeyPolicy_603374,
+    validator: validate_GetKeyPolicy_593273, base: "/", url: url_GetKeyPolicy_593274,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetKeyRotationStatus_603387 = ref object of OpenApiRestCall_602466
-proc url_GetKeyRotationStatus_603389(protocol: Scheme; host: string; base: string;
+  Call_GetKeyRotationStatus_593287 = ref object of OpenApiRestCall_592364
+proc url_GetKeyRotationStatus_593289(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetKeyRotationStatus_603388(path: JsonNode; query: JsonNode;
+proc validate_GetKeyRotationStatus_593288(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets a Boolean value that indicates whether <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> is enabled for the specified customer master key (CMK).</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <ul> <li> <p>Disabled: The key rotation status does not change when you disable a CMK. However, while the CMK is disabled, AWS KMS does not rotate the backing key.</p> </li> <li> <p>Pending deletion: While a CMK is pending deletion, its key rotation status is <code>false</code> and AWS KMS does not rotate the backing key. If you cancel the deletion, the original key rotation status is restored.</p> </li> </ul> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
   ## 
@@ -2565,57 +2569,57 @@ proc validate_GetKeyRotationStatus_603388(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603390 = header.getOrDefault("X-Amz-Date")
-  valid_603390 = validateParameter(valid_603390, JString, required = false,
-                                 default = nil)
-  if valid_603390 != nil:
-    section.add "X-Amz-Date", valid_603390
-  var valid_603391 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603391 = validateParameter(valid_603391, JString, required = false,
-                                 default = nil)
-  if valid_603391 != nil:
-    section.add "X-Amz-Security-Token", valid_603391
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603392 = header.getOrDefault("X-Amz-Target")
-  valid_603392 = validateParameter(valid_603392, JString, required = true, default = newJString(
+  var valid_593290 = header.getOrDefault("X-Amz-Target")
+  valid_593290 = validateParameter(valid_593290, JString, required = true, default = newJString(
       "TrentService.GetKeyRotationStatus"))
-  if valid_603392 != nil:
-    section.add "X-Amz-Target", valid_603392
-  var valid_603393 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603393 = validateParameter(valid_603393, JString, required = false,
+  if valid_593290 != nil:
+    section.add "X-Amz-Target", valid_593290
+  var valid_593291 = header.getOrDefault("X-Amz-Signature")
+  valid_593291 = validateParameter(valid_593291, JString, required = false,
                                  default = nil)
-  if valid_603393 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603393
-  var valid_603394 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603394 = validateParameter(valid_603394, JString, required = false,
+  if valid_593291 != nil:
+    section.add "X-Amz-Signature", valid_593291
+  var valid_593292 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593292 = validateParameter(valid_593292, JString, required = false,
                                  default = nil)
-  if valid_603394 != nil:
-    section.add "X-Amz-Algorithm", valid_603394
-  var valid_603395 = header.getOrDefault("X-Amz-Signature")
-  valid_603395 = validateParameter(valid_603395, JString, required = false,
+  if valid_593292 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593292
+  var valid_593293 = header.getOrDefault("X-Amz-Date")
+  valid_593293 = validateParameter(valid_593293, JString, required = false,
                                  default = nil)
-  if valid_603395 != nil:
-    section.add "X-Amz-Signature", valid_603395
-  var valid_603396 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603396 = validateParameter(valid_603396, JString, required = false,
+  if valid_593293 != nil:
+    section.add "X-Amz-Date", valid_593293
+  var valid_593294 = header.getOrDefault("X-Amz-Credential")
+  valid_593294 = validateParameter(valid_593294, JString, required = false,
                                  default = nil)
-  if valid_603396 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603396
-  var valid_603397 = header.getOrDefault("X-Amz-Credential")
-  valid_603397 = validateParameter(valid_603397, JString, required = false,
+  if valid_593294 != nil:
+    section.add "X-Amz-Credential", valid_593294
+  var valid_593295 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593295 = validateParameter(valid_593295, JString, required = false,
                                  default = nil)
-  if valid_603397 != nil:
-    section.add "X-Amz-Credential", valid_603397
+  if valid_593295 != nil:
+    section.add "X-Amz-Security-Token", valid_593295
+  var valid_593296 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593296 = validateParameter(valid_593296, JString, required = false,
+                                 default = nil)
+  if valid_593296 != nil:
+    section.add "X-Amz-Algorithm", valid_593296
+  var valid_593297 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593297 = validateParameter(valid_593297, JString, required = false,
+                                 default = nil)
+  if valid_593297 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593297
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2626,44 +2630,44 @@ proc validate_GetKeyRotationStatus_603388(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603399: Call_GetKeyRotationStatus_603387; path: JsonNode;
+proc call*(call_593299: Call_GetKeyRotationStatus_593287; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets a Boolean value that indicates whether <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> is enabled for the specified customer master key (CMK).</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <ul> <li> <p>Disabled: The key rotation status does not change when you disable a CMK. However, while the CMK is disabled, AWS KMS does not rotate the backing key.</p> </li> <li> <p>Pending deletion: While a CMK is pending deletion, its key rotation status is <code>false</code> and AWS KMS does not rotate the backing key. If you cancel the deletion, the original key rotation status is restored.</p> </li> </ul> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
   ## 
-  let valid = call_603399.validator(path, query, header, formData, body)
-  let scheme = call_603399.pickScheme
+  let valid = call_593299.validator(path, query, header, formData, body)
+  let scheme = call_593299.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603399.url(scheme.get, call_603399.host, call_603399.base,
-                         call_603399.route, valid.getOrDefault("path"),
+  let url = call_593299.url(scheme.get, call_593299.host, call_593299.base,
+                         call_593299.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603399, url, valid)
+  result = hook(call_593299, url, valid)
 
-proc call*(call_603400: Call_GetKeyRotationStatus_603387; body: JsonNode): Recallable =
+proc call*(call_593300: Call_GetKeyRotationStatus_593287; body: JsonNode): Recallable =
   ## getKeyRotationStatus
   ## <p>Gets a Boolean value that indicates whether <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">automatic rotation of the key material</a> is enabled for the specified customer master key (CMK).</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <ul> <li> <p>Disabled: The key rotation status does not change when you disable a CMK. However, while the CMK is disabled, AWS KMS does not rotate the backing key.</p> </li> <li> <p>Pending deletion: While a CMK is pending deletion, its key rotation status is <code>false</code> and AWS KMS does not rotate the backing key. If you cancel the deletion, the original key rotation status is restored.</p> </li> </ul> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
   ##   body: JObject (required)
-  var body_603401 = newJObject()
+  var body_593301 = newJObject()
   if body != nil:
-    body_603401 = body
-  result = call_603400.call(nil, nil, nil, nil, body_603401)
+    body_593301 = body
+  result = call_593300.call(nil, nil, nil, nil, body_593301)
 
-var getKeyRotationStatus* = Call_GetKeyRotationStatus_603387(
+var getKeyRotationStatus* = Call_GetKeyRotationStatus_593287(
     name: "getKeyRotationStatus", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.GetKeyRotationStatus",
-    validator: validate_GetKeyRotationStatus_603388, base: "/",
-    url: url_GetKeyRotationStatus_603389, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetKeyRotationStatus_593288, base: "/",
+    url: url_GetKeyRotationStatus_593289, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetParametersForImport_603402 = ref object of OpenApiRestCall_602466
-proc url_GetParametersForImport_603404(protocol: Scheme; host: string; base: string;
+  Call_GetParametersForImport_593302 = ref object of OpenApiRestCall_592364
+proc url_GetParametersForImport_593304(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_GetParametersForImport_603403(path: JsonNode; query: JsonNode;
+proc validate_GetParametersForImport_593303(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the items you need in order to import key material into AWS KMS from your existing key management infrastructure. For more information about importing key material into AWS KMS, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>You must specify the key ID of the customer master key (CMK) into which you will import key material. This CMK's <code>Origin</code> must be <code>EXTERNAL</code>. You must also specify the wrapping algorithm and type of wrapping key (public key) that you will use to encrypt the key material. You cannot perform this operation on a CMK in a different AWS account.</p> <p>This operation returns a public key and an import token. Use the public key to encrypt the key material. Store the import token to send with a subsequent <a>ImportKeyMaterial</a> request. The public key and import token from the same response must be used together. These items are valid for 24 hours. When they expire, they cannot be used for a subsequent <a>ImportKeyMaterial</a> request. To get new ones, send another <code>GetParametersForImport</code> request.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -2674,57 +2678,57 @@ proc validate_GetParametersForImport_603403(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603405 = header.getOrDefault("X-Amz-Date")
-  valid_603405 = validateParameter(valid_603405, JString, required = false,
-                                 default = nil)
-  if valid_603405 != nil:
-    section.add "X-Amz-Date", valid_603405
-  var valid_603406 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603406 = validateParameter(valid_603406, JString, required = false,
-                                 default = nil)
-  if valid_603406 != nil:
-    section.add "X-Amz-Security-Token", valid_603406
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603407 = header.getOrDefault("X-Amz-Target")
-  valid_603407 = validateParameter(valid_603407, JString, required = true, default = newJString(
+  var valid_593305 = header.getOrDefault("X-Amz-Target")
+  valid_593305 = validateParameter(valid_593305, JString, required = true, default = newJString(
       "TrentService.GetParametersForImport"))
-  if valid_603407 != nil:
-    section.add "X-Amz-Target", valid_603407
-  var valid_603408 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603408 = validateParameter(valid_603408, JString, required = false,
+  if valid_593305 != nil:
+    section.add "X-Amz-Target", valid_593305
+  var valid_593306 = header.getOrDefault("X-Amz-Signature")
+  valid_593306 = validateParameter(valid_593306, JString, required = false,
                                  default = nil)
-  if valid_603408 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603408
-  var valid_603409 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603409 = validateParameter(valid_603409, JString, required = false,
+  if valid_593306 != nil:
+    section.add "X-Amz-Signature", valid_593306
+  var valid_593307 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593307 = validateParameter(valid_593307, JString, required = false,
                                  default = nil)
-  if valid_603409 != nil:
-    section.add "X-Amz-Algorithm", valid_603409
-  var valid_603410 = header.getOrDefault("X-Amz-Signature")
-  valid_603410 = validateParameter(valid_603410, JString, required = false,
+  if valid_593307 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593307
+  var valid_593308 = header.getOrDefault("X-Amz-Date")
+  valid_593308 = validateParameter(valid_593308, JString, required = false,
                                  default = nil)
-  if valid_603410 != nil:
-    section.add "X-Amz-Signature", valid_603410
-  var valid_603411 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603411 = validateParameter(valid_603411, JString, required = false,
+  if valid_593308 != nil:
+    section.add "X-Amz-Date", valid_593308
+  var valid_593309 = header.getOrDefault("X-Amz-Credential")
+  valid_593309 = validateParameter(valid_593309, JString, required = false,
                                  default = nil)
-  if valid_603411 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603411
-  var valid_603412 = header.getOrDefault("X-Amz-Credential")
-  valid_603412 = validateParameter(valid_603412, JString, required = false,
+  if valid_593309 != nil:
+    section.add "X-Amz-Credential", valid_593309
+  var valid_593310 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593310 = validateParameter(valid_593310, JString, required = false,
                                  default = nil)
-  if valid_603412 != nil:
-    section.add "X-Amz-Credential", valid_603412
+  if valid_593310 != nil:
+    section.add "X-Amz-Security-Token", valid_593310
+  var valid_593311 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593311 = validateParameter(valid_593311, JString, required = false,
+                                 default = nil)
+  if valid_593311 != nil:
+    section.add "X-Amz-Algorithm", valid_593311
+  var valid_593312 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593312 = validateParameter(valid_593312, JString, required = false,
+                                 default = nil)
+  if valid_593312 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593312
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2735,44 +2739,44 @@ proc validate_GetParametersForImport_603403(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603414: Call_GetParametersForImport_603402; path: JsonNode;
+proc call*(call_593314: Call_GetParametersForImport_593302; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the items you need in order to import key material into AWS KMS from your existing key management infrastructure. For more information about importing key material into AWS KMS, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>You must specify the key ID of the customer master key (CMK) into which you will import key material. This CMK's <code>Origin</code> must be <code>EXTERNAL</code>. You must also specify the wrapping algorithm and type of wrapping key (public key) that you will use to encrypt the key material. You cannot perform this operation on a CMK in a different AWS account.</p> <p>This operation returns a public key and an import token. Use the public key to encrypt the key material. Store the import token to send with a subsequent <a>ImportKeyMaterial</a> request. The public key and import token from the same response must be used together. These items are valid for 24 hours. When they expire, they cannot be used for a subsequent <a>ImportKeyMaterial</a> request. To get new ones, send another <code>GetParametersForImport</code> request.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603414.validator(path, query, header, formData, body)
-  let scheme = call_603414.pickScheme
+  let valid = call_593314.validator(path, query, header, formData, body)
+  let scheme = call_593314.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603414.url(scheme.get, call_603414.host, call_603414.base,
-                         call_603414.route, valid.getOrDefault("path"),
+  let url = call_593314.url(scheme.get, call_593314.host, call_593314.base,
+                         call_593314.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603414, url, valid)
+  result = hook(call_593314, url, valid)
 
-proc call*(call_603415: Call_GetParametersForImport_603402; body: JsonNode): Recallable =
+proc call*(call_593315: Call_GetParametersForImport_593302; body: JsonNode): Recallable =
   ## getParametersForImport
   ## <p>Returns the items you need in order to import key material into AWS KMS from your existing key management infrastructure. For more information about importing key material into AWS KMS, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>You must specify the key ID of the customer master key (CMK) into which you will import key material. This CMK's <code>Origin</code> must be <code>EXTERNAL</code>. You must also specify the wrapping algorithm and type of wrapping key (public key) that you will use to encrypt the key material. You cannot perform this operation on a CMK in a different AWS account.</p> <p>This operation returns a public key and an import token. Use the public key to encrypt the key material. Store the import token to send with a subsequent <a>ImportKeyMaterial</a> request. The public key and import token from the same response must be used together. These items are valid for 24 hours. When they expire, they cannot be used for a subsequent <a>ImportKeyMaterial</a> request. To get new ones, send another <code>GetParametersForImport</code> request.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603416 = newJObject()
+  var body_593316 = newJObject()
   if body != nil:
-    body_603416 = body
-  result = call_603415.call(nil, nil, nil, nil, body_603416)
+    body_593316 = body
+  result = call_593315.call(nil, nil, nil, nil, body_593316)
 
-var getParametersForImport* = Call_GetParametersForImport_603402(
+var getParametersForImport* = Call_GetParametersForImport_593302(
     name: "getParametersForImport", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.GetParametersForImport",
-    validator: validate_GetParametersForImport_603403, base: "/",
-    url: url_GetParametersForImport_603404, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetParametersForImport_593303, base: "/",
+    url: url_GetParametersForImport_593304, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ImportKeyMaterial_603417 = ref object of OpenApiRestCall_602466
-proc url_ImportKeyMaterial_603419(protocol: Scheme; host: string; base: string;
+  Call_ImportKeyMaterial_593317 = ref object of OpenApiRestCall_592364
+proc url_ImportKeyMaterial_593319(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ImportKeyMaterial_603418(path: JsonNode; query: JsonNode;
+proc validate_ImportKeyMaterial_593318(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Imports key material into an existing AWS KMS customer master key (CMK) that was created without key material. You cannot perform this operation on a CMK in a different AWS account. For more information about creating CMKs with no key material and then importing key material, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>Before using this operation, call <a>GetParametersForImport</a>. Its response includes a public key and an import token. Use the public key to encrypt the key material. Then, submit the import token from the same <code>GetParametersForImport</code> response.</p> <p>When calling this operation, you must specify the following values:</p> <ul> <li> <p>The key ID or key ARN of a CMK with no key material. Its <code>Origin</code> must be <code>EXTERNAL</code>.</p> <p>To create a CMK with no key material, call <a>CreateKey</a> and set the value of its <code>Origin</code> parameter to <code>EXTERNAL</code>. To get the <code>Origin</code> of a CMK, call <a>DescribeKey</a>.)</p> </li> <li> <p>The encrypted key material. To get the public key to encrypt the key material, call <a>GetParametersForImport</a>.</p> </li> <li> <p>The import token that <a>GetParametersForImport</a> returned. This token and the public key used to encrypt the key material must have come from the same response.</p> </li> <li> <p>Whether the key material expires and if so, when. If you set an expiration date, you can change it only by reimporting the same key material and specifying a new expiration date. If the key material expires, AWS KMS deletes the key material and the CMK becomes unusable. To use the CMK again, you must reimport the same key material.</p> </li> </ul> <p>When this operation is successful, the key state of the CMK changes from <code>PendingImport</code> to <code>Enabled</code>, and you can use the CMK. After you successfully import key material into a CMK, you can reimport the same key material into that CMK, but you cannot import different key material.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
@@ -2784,57 +2788,57 @@ proc validate_ImportKeyMaterial_603418(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603420 = header.getOrDefault("X-Amz-Date")
-  valid_603420 = validateParameter(valid_603420, JString, required = false,
-                                 default = nil)
-  if valid_603420 != nil:
-    section.add "X-Amz-Date", valid_603420
-  var valid_603421 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603421 = validateParameter(valid_603421, JString, required = false,
-                                 default = nil)
-  if valid_603421 != nil:
-    section.add "X-Amz-Security-Token", valid_603421
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603422 = header.getOrDefault("X-Amz-Target")
-  valid_603422 = validateParameter(valid_603422, JString, required = true, default = newJString(
+  var valid_593320 = header.getOrDefault("X-Amz-Target")
+  valid_593320 = validateParameter(valid_593320, JString, required = true, default = newJString(
       "TrentService.ImportKeyMaterial"))
-  if valid_603422 != nil:
-    section.add "X-Amz-Target", valid_603422
-  var valid_603423 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603423 = validateParameter(valid_603423, JString, required = false,
+  if valid_593320 != nil:
+    section.add "X-Amz-Target", valid_593320
+  var valid_593321 = header.getOrDefault("X-Amz-Signature")
+  valid_593321 = validateParameter(valid_593321, JString, required = false,
                                  default = nil)
-  if valid_603423 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603423
-  var valid_603424 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603424 = validateParameter(valid_603424, JString, required = false,
+  if valid_593321 != nil:
+    section.add "X-Amz-Signature", valid_593321
+  var valid_593322 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593322 = validateParameter(valid_593322, JString, required = false,
                                  default = nil)
-  if valid_603424 != nil:
-    section.add "X-Amz-Algorithm", valid_603424
-  var valid_603425 = header.getOrDefault("X-Amz-Signature")
-  valid_603425 = validateParameter(valid_603425, JString, required = false,
+  if valid_593322 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593322
+  var valid_593323 = header.getOrDefault("X-Amz-Date")
+  valid_593323 = validateParameter(valid_593323, JString, required = false,
                                  default = nil)
-  if valid_603425 != nil:
-    section.add "X-Amz-Signature", valid_603425
-  var valid_603426 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603426 = validateParameter(valid_603426, JString, required = false,
+  if valid_593323 != nil:
+    section.add "X-Amz-Date", valid_593323
+  var valid_593324 = header.getOrDefault("X-Amz-Credential")
+  valid_593324 = validateParameter(valid_593324, JString, required = false,
                                  default = nil)
-  if valid_603426 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603426
-  var valid_603427 = header.getOrDefault("X-Amz-Credential")
-  valid_603427 = validateParameter(valid_603427, JString, required = false,
+  if valid_593324 != nil:
+    section.add "X-Amz-Credential", valid_593324
+  var valid_593325 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593325 = validateParameter(valid_593325, JString, required = false,
                                  default = nil)
-  if valid_603427 != nil:
-    section.add "X-Amz-Credential", valid_603427
+  if valid_593325 != nil:
+    section.add "X-Amz-Security-Token", valid_593325
+  var valid_593326 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593326 = validateParameter(valid_593326, JString, required = false,
+                                 default = nil)
+  if valid_593326 != nil:
+    section.add "X-Amz-Algorithm", valid_593326
+  var valid_593327 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593327 = validateParameter(valid_593327, JString, required = false,
+                                 default = nil)
+  if valid_593327 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593327
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2845,43 +2849,43 @@ proc validate_ImportKeyMaterial_603418(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603429: Call_ImportKeyMaterial_603417; path: JsonNode;
+proc call*(call_593329: Call_ImportKeyMaterial_593317; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Imports key material into an existing AWS KMS customer master key (CMK) that was created without key material. You cannot perform this operation on a CMK in a different AWS account. For more information about creating CMKs with no key material and then importing key material, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>Before using this operation, call <a>GetParametersForImport</a>. Its response includes a public key and an import token. Use the public key to encrypt the key material. Then, submit the import token from the same <code>GetParametersForImport</code> response.</p> <p>When calling this operation, you must specify the following values:</p> <ul> <li> <p>The key ID or key ARN of a CMK with no key material. Its <code>Origin</code> must be <code>EXTERNAL</code>.</p> <p>To create a CMK with no key material, call <a>CreateKey</a> and set the value of its <code>Origin</code> parameter to <code>EXTERNAL</code>. To get the <code>Origin</code> of a CMK, call <a>DescribeKey</a>.)</p> </li> <li> <p>The encrypted key material. To get the public key to encrypt the key material, call <a>GetParametersForImport</a>.</p> </li> <li> <p>The import token that <a>GetParametersForImport</a> returned. This token and the public key used to encrypt the key material must have come from the same response.</p> </li> <li> <p>Whether the key material expires and if so, when. If you set an expiration date, you can change it only by reimporting the same key material and specifying a new expiration date. If the key material expires, AWS KMS deletes the key material and the CMK becomes unusable. To use the CMK again, you must reimport the same key material.</p> </li> </ul> <p>When this operation is successful, the key state of the CMK changes from <code>PendingImport</code> to <code>Enabled</code>, and you can use the CMK. After you successfully import key material into a CMK, you can reimport the same key material into that CMK, but you cannot import different key material.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603429.validator(path, query, header, formData, body)
-  let scheme = call_603429.pickScheme
+  let valid = call_593329.validator(path, query, header, formData, body)
+  let scheme = call_593329.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603429.url(scheme.get, call_603429.host, call_603429.base,
-                         call_603429.route, valid.getOrDefault("path"),
+  let url = call_593329.url(scheme.get, call_593329.host, call_593329.base,
+                         call_593329.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603429, url, valid)
+  result = hook(call_593329, url, valid)
 
-proc call*(call_603430: Call_ImportKeyMaterial_603417; body: JsonNode): Recallable =
+proc call*(call_593330: Call_ImportKeyMaterial_593317; body: JsonNode): Recallable =
   ## importKeyMaterial
   ## <p>Imports key material into an existing AWS KMS customer master key (CMK) that was created without key material. You cannot perform this operation on a CMK in a different AWS account. For more information about creating CMKs with no key material and then importing key material, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html">Importing Key Material</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>Before using this operation, call <a>GetParametersForImport</a>. Its response includes a public key and an import token. Use the public key to encrypt the key material. Then, submit the import token from the same <code>GetParametersForImport</code> response.</p> <p>When calling this operation, you must specify the following values:</p> <ul> <li> <p>The key ID or key ARN of a CMK with no key material. Its <code>Origin</code> must be <code>EXTERNAL</code>.</p> <p>To create a CMK with no key material, call <a>CreateKey</a> and set the value of its <code>Origin</code> parameter to <code>EXTERNAL</code>. To get the <code>Origin</code> of a CMK, call <a>DescribeKey</a>.)</p> </li> <li> <p>The encrypted key material. To get the public key to encrypt the key material, call <a>GetParametersForImport</a>.</p> </li> <li> <p>The import token that <a>GetParametersForImport</a> returned. This token and the public key used to encrypt the key material must have come from the same response.</p> </li> <li> <p>Whether the key material expires and if so, when. If you set an expiration date, you can change it only by reimporting the same key material and specifying a new expiration date. If the key material expires, AWS KMS deletes the key material and the CMK becomes unusable. To use the CMK again, you must reimport the same key material.</p> </li> </ul> <p>When this operation is successful, the key state of the CMK changes from <code>PendingImport</code> to <code>Enabled</code>, and you can use the CMK. After you successfully import key material into a CMK, you can reimport the same key material into that CMK, but you cannot import different key material.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603431 = newJObject()
+  var body_593331 = newJObject()
   if body != nil:
-    body_603431 = body
-  result = call_603430.call(nil, nil, nil, nil, body_603431)
+    body_593331 = body
+  result = call_593330.call(nil, nil, nil, nil, body_593331)
 
-var importKeyMaterial* = Call_ImportKeyMaterial_603417(name: "importKeyMaterial",
+var importKeyMaterial* = Call_ImportKeyMaterial_593317(name: "importKeyMaterial",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.ImportKeyMaterial",
-    validator: validate_ImportKeyMaterial_603418, base: "/",
-    url: url_ImportKeyMaterial_603419, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ImportKeyMaterial_593318, base: "/",
+    url: url_ImportKeyMaterial_593319, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAliases_603432 = ref object of OpenApiRestCall_602466
-proc url_ListAliases_603434(protocol: Scheme; host: string; base: string;
+  Call_ListAliases_593332 = ref object of OpenApiRestCall_592364
+proc url_ListAliases_593334(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListAliases_603433(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListAliases_593333(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets a list of aliases in the caller's AWS account and region. You cannot list aliases in other accounts. For more information about aliases, see <a>CreateAlias</a>.</p> <p>By default, the ListAliases command returns all aliases in the account and region. To get only the aliases that point to a particular customer master key (CMK), use the <code>KeyId</code> parameter.</p> <p>The <code>ListAliases</code> response can include aliases that you created and associated with your customer managed CMKs, and aliases that AWS created and associated with AWS managed CMKs in your account. You can recognize AWS aliases because their names have the format <code>aws/&lt;service-name&gt;</code>, such as <code>aws/dynamodb</code>.</p> <p>The response might also include aliases that have no <code>TargetKeyId</code> field. These are predefined aliases that AWS has created but has not yet associated with a CMK. Aliases that AWS creates in your account, including predefined aliases, do not count against your <a href="https://docs.aws.amazon.com/kms/latest/developerguide/limits.html#aliases-limit">AWS KMS aliases limit</a>.</p>
   ## 
@@ -2890,74 +2894,74 @@ proc validate_ListAliases_603433(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603435 = query.getOrDefault("Limit")
-  valid_603435 = validateParameter(valid_603435, JString, required = false,
+  var valid_593335 = query.getOrDefault("Marker")
+  valid_593335 = validateParameter(valid_593335, JString, required = false,
                                  default = nil)
-  if valid_603435 != nil:
-    section.add "Limit", valid_603435
-  var valid_603436 = query.getOrDefault("Marker")
-  valid_603436 = validateParameter(valid_603436, JString, required = false,
+  if valid_593335 != nil:
+    section.add "Marker", valid_593335
+  var valid_593336 = query.getOrDefault("Limit")
+  valid_593336 = validateParameter(valid_593336, JString, required = false,
                                  default = nil)
-  if valid_603436 != nil:
-    section.add "Marker", valid_603436
+  if valid_593336 != nil:
+    section.add "Limit", valid_593336
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603437 = header.getOrDefault("X-Amz-Date")
-  valid_603437 = validateParameter(valid_603437, JString, required = false,
-                                 default = nil)
-  if valid_603437 != nil:
-    section.add "X-Amz-Date", valid_603437
-  var valid_603438 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603438 = validateParameter(valid_603438, JString, required = false,
-                                 default = nil)
-  if valid_603438 != nil:
-    section.add "X-Amz-Security-Token", valid_603438
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603439 = header.getOrDefault("X-Amz-Target")
-  valid_603439 = validateParameter(valid_603439, JString, required = true, default = newJString(
+  var valid_593337 = header.getOrDefault("X-Amz-Target")
+  valid_593337 = validateParameter(valid_593337, JString, required = true, default = newJString(
       "TrentService.ListAliases"))
-  if valid_603439 != nil:
-    section.add "X-Amz-Target", valid_603439
-  var valid_603440 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603440 = validateParameter(valid_603440, JString, required = false,
+  if valid_593337 != nil:
+    section.add "X-Amz-Target", valid_593337
+  var valid_593338 = header.getOrDefault("X-Amz-Signature")
+  valid_593338 = validateParameter(valid_593338, JString, required = false,
                                  default = nil)
-  if valid_603440 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603440
-  var valid_603441 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603441 = validateParameter(valid_603441, JString, required = false,
+  if valid_593338 != nil:
+    section.add "X-Amz-Signature", valid_593338
+  var valid_593339 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593339 = validateParameter(valid_593339, JString, required = false,
                                  default = nil)
-  if valid_603441 != nil:
-    section.add "X-Amz-Algorithm", valid_603441
-  var valid_603442 = header.getOrDefault("X-Amz-Signature")
-  valid_603442 = validateParameter(valid_603442, JString, required = false,
+  if valid_593339 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593339
+  var valid_593340 = header.getOrDefault("X-Amz-Date")
+  valid_593340 = validateParameter(valid_593340, JString, required = false,
                                  default = nil)
-  if valid_603442 != nil:
-    section.add "X-Amz-Signature", valid_603442
-  var valid_603443 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603443 = validateParameter(valid_603443, JString, required = false,
+  if valid_593340 != nil:
+    section.add "X-Amz-Date", valid_593340
+  var valid_593341 = header.getOrDefault("X-Amz-Credential")
+  valid_593341 = validateParameter(valid_593341, JString, required = false,
                                  default = nil)
-  if valid_603443 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603443
-  var valid_603444 = header.getOrDefault("X-Amz-Credential")
-  valid_603444 = validateParameter(valid_603444, JString, required = false,
+  if valid_593341 != nil:
+    section.add "X-Amz-Credential", valid_593341
+  var valid_593342 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593342 = validateParameter(valid_593342, JString, required = false,
                                  default = nil)
-  if valid_603444 != nil:
-    section.add "X-Amz-Credential", valid_603444
+  if valid_593342 != nil:
+    section.add "X-Amz-Security-Token", valid_593342
+  var valid_593343 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593343 = validateParameter(valid_593343, JString, required = false,
+                                 default = nil)
+  if valid_593343 != nil:
+    section.add "X-Amz-Algorithm", valid_593343
+  var valid_593344 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593344 = validateParameter(valid_593344, JString, required = false,
+                                 default = nil)
+  if valid_593344 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593344
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2968,52 +2972,52 @@ proc validate_ListAliases_603433(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603446: Call_ListAliases_603432; path: JsonNode; query: JsonNode;
+proc call*(call_593346: Call_ListAliases_593332; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets a list of aliases in the caller's AWS account and region. You cannot list aliases in other accounts. For more information about aliases, see <a>CreateAlias</a>.</p> <p>By default, the ListAliases command returns all aliases in the account and region. To get only the aliases that point to a particular customer master key (CMK), use the <code>KeyId</code> parameter.</p> <p>The <code>ListAliases</code> response can include aliases that you created and associated with your customer managed CMKs, and aliases that AWS created and associated with AWS managed CMKs in your account. You can recognize AWS aliases because their names have the format <code>aws/&lt;service-name&gt;</code>, such as <code>aws/dynamodb</code>.</p> <p>The response might also include aliases that have no <code>TargetKeyId</code> field. These are predefined aliases that AWS has created but has not yet associated with a CMK. Aliases that AWS creates in your account, including predefined aliases, do not count against your <a href="https://docs.aws.amazon.com/kms/latest/developerguide/limits.html#aliases-limit">AWS KMS aliases limit</a>.</p>
   ## 
-  let valid = call_603446.validator(path, query, header, formData, body)
-  let scheme = call_603446.pickScheme
+  let valid = call_593346.validator(path, query, header, formData, body)
+  let scheme = call_593346.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603446.url(scheme.get, call_603446.host, call_603446.base,
-                         call_603446.route, valid.getOrDefault("path"),
+  let url = call_593346.url(scheme.get, call_593346.host, call_593346.base,
+                         call_593346.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603446, url, valid)
+  result = hook(call_593346, url, valid)
 
-proc call*(call_603447: Call_ListAliases_603432; body: JsonNode; Limit: string = "";
-          Marker: string = ""): Recallable =
+proc call*(call_593347: Call_ListAliases_593332; body: JsonNode; Marker: string = "";
+          Limit: string = ""): Recallable =
   ## listAliases
   ## <p>Gets a list of aliases in the caller's AWS account and region. You cannot list aliases in other accounts. For more information about aliases, see <a>CreateAlias</a>.</p> <p>By default, the ListAliases command returns all aliases in the account and region. To get only the aliases that point to a particular customer master key (CMK), use the <code>KeyId</code> parameter.</p> <p>The <code>ListAliases</code> response can include aliases that you created and associated with your customer managed CMKs, and aliases that AWS created and associated with AWS managed CMKs in your account. You can recognize AWS aliases because their names have the format <code>aws/&lt;service-name&gt;</code>, such as <code>aws/dynamodb</code>.</p> <p>The response might also include aliases that have no <code>TargetKeyId</code> field. These are predefined aliases that AWS has created but has not yet associated with a CMK. Aliases that AWS creates in your account, including predefined aliases, do not count against your <a href="https://docs.aws.amazon.com/kms/latest/developerguide/limits.html#aliases-limit">AWS KMS aliases limit</a>.</p>
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603448 = newJObject()
-  var body_603449 = newJObject()
-  add(query_603448, "Limit", newJString(Limit))
-  add(query_603448, "Marker", newJString(Marker))
+  var query_593348 = newJObject()
+  var body_593349 = newJObject()
+  add(query_593348, "Marker", newJString(Marker))
+  add(query_593348, "Limit", newJString(Limit))
   if body != nil:
-    body_603449 = body
-  result = call_603447.call(nil, query_603448, nil, nil, body_603449)
+    body_593349 = body
+  result = call_593347.call(nil, query_593348, nil, nil, body_593349)
 
-var listAliases* = Call_ListAliases_603432(name: "listAliases",
+var listAliases* = Call_ListAliases_593332(name: "listAliases",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.ListAliases",
-                                        validator: validate_ListAliases_603433,
-                                        base: "/", url: url_ListAliases_603434,
+                                        validator: validate_ListAliases_593333,
+                                        base: "/", url: url_ListAliases_593334,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListGrants_603451 = ref object of OpenApiRestCall_602466
-proc url_ListGrants_603453(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListGrants_593351 = ref object of OpenApiRestCall_592364
+proc url_ListGrants_593353(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListGrants_603452(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListGrants_593352(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets a list of all grants for the specified customer master key (CMK).</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
   ## 
@@ -3022,74 +3026,74 @@ proc validate_ListGrants_603452(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603454 = query.getOrDefault("Limit")
-  valid_603454 = validateParameter(valid_603454, JString, required = false,
+  var valid_593354 = query.getOrDefault("Marker")
+  valid_593354 = validateParameter(valid_593354, JString, required = false,
                                  default = nil)
-  if valid_603454 != nil:
-    section.add "Limit", valid_603454
-  var valid_603455 = query.getOrDefault("Marker")
-  valid_603455 = validateParameter(valid_603455, JString, required = false,
+  if valid_593354 != nil:
+    section.add "Marker", valid_593354
+  var valid_593355 = query.getOrDefault("Limit")
+  valid_593355 = validateParameter(valid_593355, JString, required = false,
                                  default = nil)
-  if valid_603455 != nil:
-    section.add "Marker", valid_603455
+  if valid_593355 != nil:
+    section.add "Limit", valid_593355
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603456 = header.getOrDefault("X-Amz-Date")
-  valid_603456 = validateParameter(valid_603456, JString, required = false,
-                                 default = nil)
-  if valid_603456 != nil:
-    section.add "X-Amz-Date", valid_603456
-  var valid_603457 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603457 = validateParameter(valid_603457, JString, required = false,
-                                 default = nil)
-  if valid_603457 != nil:
-    section.add "X-Amz-Security-Token", valid_603457
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603458 = header.getOrDefault("X-Amz-Target")
-  valid_603458 = validateParameter(valid_603458, JString, required = true, default = newJString(
+  var valid_593356 = header.getOrDefault("X-Amz-Target")
+  valid_593356 = validateParameter(valid_593356, JString, required = true, default = newJString(
       "TrentService.ListGrants"))
-  if valid_603458 != nil:
-    section.add "X-Amz-Target", valid_603458
-  var valid_603459 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603459 = validateParameter(valid_603459, JString, required = false,
+  if valid_593356 != nil:
+    section.add "X-Amz-Target", valid_593356
+  var valid_593357 = header.getOrDefault("X-Amz-Signature")
+  valid_593357 = validateParameter(valid_593357, JString, required = false,
                                  default = nil)
-  if valid_603459 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603459
-  var valid_603460 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603460 = validateParameter(valid_603460, JString, required = false,
+  if valid_593357 != nil:
+    section.add "X-Amz-Signature", valid_593357
+  var valid_593358 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593358 = validateParameter(valid_593358, JString, required = false,
                                  default = nil)
-  if valid_603460 != nil:
-    section.add "X-Amz-Algorithm", valid_603460
-  var valid_603461 = header.getOrDefault("X-Amz-Signature")
-  valid_603461 = validateParameter(valid_603461, JString, required = false,
+  if valid_593358 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593358
+  var valid_593359 = header.getOrDefault("X-Amz-Date")
+  valid_593359 = validateParameter(valid_593359, JString, required = false,
                                  default = nil)
-  if valid_603461 != nil:
-    section.add "X-Amz-Signature", valid_603461
-  var valid_603462 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603462 = validateParameter(valid_603462, JString, required = false,
+  if valid_593359 != nil:
+    section.add "X-Amz-Date", valid_593359
+  var valid_593360 = header.getOrDefault("X-Amz-Credential")
+  valid_593360 = validateParameter(valid_593360, JString, required = false,
                                  default = nil)
-  if valid_603462 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603462
-  var valid_603463 = header.getOrDefault("X-Amz-Credential")
-  valid_603463 = validateParameter(valid_603463, JString, required = false,
+  if valid_593360 != nil:
+    section.add "X-Amz-Credential", valid_593360
+  var valid_593361 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593361 = validateParameter(valid_593361, JString, required = false,
                                  default = nil)
-  if valid_603463 != nil:
-    section.add "X-Amz-Credential", valid_603463
+  if valid_593361 != nil:
+    section.add "X-Amz-Security-Token", valid_593361
+  var valid_593362 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593362 = validateParameter(valid_593362, JString, required = false,
+                                 default = nil)
+  if valid_593362 != nil:
+    section.add "X-Amz-Algorithm", valid_593362
+  var valid_593363 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593363 = validateParameter(valid_593363, JString, required = false,
+                                 default = nil)
+  if valid_593363 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593363
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3100,52 +3104,52 @@ proc validate_ListGrants_603452(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603465: Call_ListGrants_603451; path: JsonNode; query: JsonNode;
+proc call*(call_593365: Call_ListGrants_593351; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets a list of all grants for the specified customer master key (CMK).</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
   ## 
-  let valid = call_603465.validator(path, query, header, formData, body)
-  let scheme = call_603465.pickScheme
+  let valid = call_593365.validator(path, query, header, formData, body)
+  let scheme = call_593365.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603465.url(scheme.get, call_603465.host, call_603465.base,
-                         call_603465.route, valid.getOrDefault("path"),
+  let url = call_593365.url(scheme.get, call_593365.host, call_593365.base,
+                         call_593365.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603465, url, valid)
+  result = hook(call_593365, url, valid)
 
-proc call*(call_603466: Call_ListGrants_603451; body: JsonNode; Limit: string = "";
-          Marker: string = ""): Recallable =
+proc call*(call_593366: Call_ListGrants_593351; body: JsonNode; Marker: string = "";
+          Limit: string = ""): Recallable =
   ## listGrants
   ## <p>Gets a list of all grants for the specified customer master key (CMK).</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603467 = newJObject()
-  var body_603468 = newJObject()
-  add(query_603467, "Limit", newJString(Limit))
-  add(query_603467, "Marker", newJString(Marker))
+  var query_593367 = newJObject()
+  var body_593368 = newJObject()
+  add(query_593367, "Marker", newJString(Marker))
+  add(query_593367, "Limit", newJString(Limit))
   if body != nil:
-    body_603468 = body
-  result = call_603466.call(nil, query_603467, nil, nil, body_603468)
+    body_593368 = body
+  result = call_593366.call(nil, query_593367, nil, nil, body_593368)
 
-var listGrants* = Call_ListGrants_603451(name: "listGrants",
+var listGrants* = Call_ListGrants_593351(name: "listGrants",
                                       meth: HttpMethod.HttpPost,
                                       host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.ListGrants",
-                                      validator: validate_ListGrants_603452,
-                                      base: "/", url: url_ListGrants_603453,
+                                      validator: validate_ListGrants_593352,
+                                      base: "/", url: url_ListGrants_593353,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListKeyPolicies_603469 = ref object of OpenApiRestCall_602466
-proc url_ListKeyPolicies_603471(protocol: Scheme; host: string; base: string;
+  Call_ListKeyPolicies_593369 = ref object of OpenApiRestCall_592364
+proc url_ListKeyPolicies_593371(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListKeyPolicies_603470(path: JsonNode; query: JsonNode;
+proc validate_ListKeyPolicies_593370(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Gets the names of the key policies that are attached to a customer master key (CMK). This operation is designed to get policy names that you can use in a <a>GetKeyPolicy</a> operation. However, the only valid policy name is <code>default</code>. You cannot perform this operation on a CMK in a different AWS account.
@@ -3155,74 +3159,74 @@ proc validate_ListKeyPolicies_603470(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603472 = query.getOrDefault("Limit")
-  valid_603472 = validateParameter(valid_603472, JString, required = false,
+  var valid_593372 = query.getOrDefault("Marker")
+  valid_593372 = validateParameter(valid_593372, JString, required = false,
                                  default = nil)
-  if valid_603472 != nil:
-    section.add "Limit", valid_603472
-  var valid_603473 = query.getOrDefault("Marker")
-  valid_603473 = validateParameter(valid_603473, JString, required = false,
+  if valid_593372 != nil:
+    section.add "Marker", valid_593372
+  var valid_593373 = query.getOrDefault("Limit")
+  valid_593373 = validateParameter(valid_593373, JString, required = false,
                                  default = nil)
-  if valid_603473 != nil:
-    section.add "Marker", valid_603473
+  if valid_593373 != nil:
+    section.add "Limit", valid_593373
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603474 = header.getOrDefault("X-Amz-Date")
-  valid_603474 = validateParameter(valid_603474, JString, required = false,
-                                 default = nil)
-  if valid_603474 != nil:
-    section.add "X-Amz-Date", valid_603474
-  var valid_603475 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603475 = validateParameter(valid_603475, JString, required = false,
-                                 default = nil)
-  if valid_603475 != nil:
-    section.add "X-Amz-Security-Token", valid_603475
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603476 = header.getOrDefault("X-Amz-Target")
-  valid_603476 = validateParameter(valid_603476, JString, required = true, default = newJString(
+  var valid_593374 = header.getOrDefault("X-Amz-Target")
+  valid_593374 = validateParameter(valid_593374, JString, required = true, default = newJString(
       "TrentService.ListKeyPolicies"))
-  if valid_603476 != nil:
-    section.add "X-Amz-Target", valid_603476
-  var valid_603477 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603477 = validateParameter(valid_603477, JString, required = false,
+  if valid_593374 != nil:
+    section.add "X-Amz-Target", valid_593374
+  var valid_593375 = header.getOrDefault("X-Amz-Signature")
+  valid_593375 = validateParameter(valid_593375, JString, required = false,
                                  default = nil)
-  if valid_603477 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603477
-  var valid_603478 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603478 = validateParameter(valid_603478, JString, required = false,
+  if valid_593375 != nil:
+    section.add "X-Amz-Signature", valid_593375
+  var valid_593376 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593376 = validateParameter(valid_593376, JString, required = false,
                                  default = nil)
-  if valid_603478 != nil:
-    section.add "X-Amz-Algorithm", valid_603478
-  var valid_603479 = header.getOrDefault("X-Amz-Signature")
-  valid_603479 = validateParameter(valid_603479, JString, required = false,
+  if valid_593376 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593376
+  var valid_593377 = header.getOrDefault("X-Amz-Date")
+  valid_593377 = validateParameter(valid_593377, JString, required = false,
                                  default = nil)
-  if valid_603479 != nil:
-    section.add "X-Amz-Signature", valid_603479
-  var valid_603480 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603480 = validateParameter(valid_603480, JString, required = false,
+  if valid_593377 != nil:
+    section.add "X-Amz-Date", valid_593377
+  var valid_593378 = header.getOrDefault("X-Amz-Credential")
+  valid_593378 = validateParameter(valid_593378, JString, required = false,
                                  default = nil)
-  if valid_603480 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603480
-  var valid_603481 = header.getOrDefault("X-Amz-Credential")
-  valid_603481 = validateParameter(valid_603481, JString, required = false,
+  if valid_593378 != nil:
+    section.add "X-Amz-Credential", valid_593378
+  var valid_593379 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593379 = validateParameter(valid_593379, JString, required = false,
                                  default = nil)
-  if valid_603481 != nil:
-    section.add "X-Amz-Credential", valid_603481
+  if valid_593379 != nil:
+    section.add "X-Amz-Security-Token", valid_593379
+  var valid_593380 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593380 = validateParameter(valid_593380, JString, required = false,
+                                 default = nil)
+  if valid_593380 != nil:
+    section.add "X-Amz-Algorithm", valid_593380
+  var valid_593381 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593381 = validateParameter(valid_593381, JString, required = false,
+                                 default = nil)
+  if valid_593381 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593381
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3233,51 +3237,51 @@ proc validate_ListKeyPolicies_603470(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603483: Call_ListKeyPolicies_603469; path: JsonNode; query: JsonNode;
+proc call*(call_593383: Call_ListKeyPolicies_593369; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets the names of the key policies that are attached to a customer master key (CMK). This operation is designed to get policy names that you can use in a <a>GetKeyPolicy</a> operation. However, the only valid policy name is <code>default</code>. You cannot perform this operation on a CMK in a different AWS account.
   ## 
-  let valid = call_603483.validator(path, query, header, formData, body)
-  let scheme = call_603483.pickScheme
+  let valid = call_593383.validator(path, query, header, formData, body)
+  let scheme = call_593383.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603483.url(scheme.get, call_603483.host, call_603483.base,
-                         call_603483.route, valid.getOrDefault("path"),
+  let url = call_593383.url(scheme.get, call_593383.host, call_593383.base,
+                         call_593383.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603483, url, valid)
+  result = hook(call_593383, url, valid)
 
-proc call*(call_603484: Call_ListKeyPolicies_603469; body: JsonNode;
-          Limit: string = ""; Marker: string = ""): Recallable =
+proc call*(call_593384: Call_ListKeyPolicies_593369; body: JsonNode;
+          Marker: string = ""; Limit: string = ""): Recallable =
   ## listKeyPolicies
   ## Gets the names of the key policies that are attached to a customer master key (CMK). This operation is designed to get policy names that you can use in a <a>GetKeyPolicy</a> operation. However, the only valid policy name is <code>default</code>. You cannot perform this operation on a CMK in a different AWS account.
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603485 = newJObject()
-  var body_603486 = newJObject()
-  add(query_603485, "Limit", newJString(Limit))
-  add(query_603485, "Marker", newJString(Marker))
+  var query_593385 = newJObject()
+  var body_593386 = newJObject()
+  add(query_593385, "Marker", newJString(Marker))
+  add(query_593385, "Limit", newJString(Limit))
   if body != nil:
-    body_603486 = body
-  result = call_603484.call(nil, query_603485, nil, nil, body_603486)
+    body_593386 = body
+  result = call_593384.call(nil, query_593385, nil, nil, body_593386)
 
-var listKeyPolicies* = Call_ListKeyPolicies_603469(name: "listKeyPolicies",
+var listKeyPolicies* = Call_ListKeyPolicies_593369(name: "listKeyPolicies",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.ListKeyPolicies",
-    validator: validate_ListKeyPolicies_603470, base: "/", url: url_ListKeyPolicies_603471,
+    validator: validate_ListKeyPolicies_593370, base: "/", url: url_ListKeyPolicies_593371,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListKeys_603487 = ref object of OpenApiRestCall_602466
-proc url_ListKeys_603489(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListKeys_593387 = ref object of OpenApiRestCall_592364
+proc url_ListKeys_593389(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListKeys_603488(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListKeys_593388(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of all customer master keys (CMKs) in the caller's AWS account and region.
   ## 
@@ -3286,74 +3290,74 @@ proc validate_ListKeys_603488(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603490 = query.getOrDefault("Limit")
-  valid_603490 = validateParameter(valid_603490, JString, required = false,
+  var valid_593390 = query.getOrDefault("Marker")
+  valid_593390 = validateParameter(valid_593390, JString, required = false,
                                  default = nil)
-  if valid_603490 != nil:
-    section.add "Limit", valid_603490
-  var valid_603491 = query.getOrDefault("Marker")
-  valid_603491 = validateParameter(valid_603491, JString, required = false,
+  if valid_593390 != nil:
+    section.add "Marker", valid_593390
+  var valid_593391 = query.getOrDefault("Limit")
+  valid_593391 = validateParameter(valid_593391, JString, required = false,
                                  default = nil)
-  if valid_603491 != nil:
-    section.add "Marker", valid_603491
+  if valid_593391 != nil:
+    section.add "Limit", valid_593391
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603492 = header.getOrDefault("X-Amz-Date")
-  valid_603492 = validateParameter(valid_603492, JString, required = false,
-                                 default = nil)
-  if valid_603492 != nil:
-    section.add "X-Amz-Date", valid_603492
-  var valid_603493 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603493 = validateParameter(valid_603493, JString, required = false,
-                                 default = nil)
-  if valid_603493 != nil:
-    section.add "X-Amz-Security-Token", valid_603493
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603494 = header.getOrDefault("X-Amz-Target")
-  valid_603494 = validateParameter(valid_603494, JString, required = true,
+  var valid_593392 = header.getOrDefault("X-Amz-Target")
+  valid_593392 = validateParameter(valid_593392, JString, required = true,
                                  default = newJString("TrentService.ListKeys"))
-  if valid_603494 != nil:
-    section.add "X-Amz-Target", valid_603494
-  var valid_603495 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603495 = validateParameter(valid_603495, JString, required = false,
+  if valid_593392 != nil:
+    section.add "X-Amz-Target", valid_593392
+  var valid_593393 = header.getOrDefault("X-Amz-Signature")
+  valid_593393 = validateParameter(valid_593393, JString, required = false,
                                  default = nil)
-  if valid_603495 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603495
-  var valid_603496 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603496 = validateParameter(valid_603496, JString, required = false,
+  if valid_593393 != nil:
+    section.add "X-Amz-Signature", valid_593393
+  var valid_593394 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593394 = validateParameter(valid_593394, JString, required = false,
                                  default = nil)
-  if valid_603496 != nil:
-    section.add "X-Amz-Algorithm", valid_603496
-  var valid_603497 = header.getOrDefault("X-Amz-Signature")
-  valid_603497 = validateParameter(valid_603497, JString, required = false,
+  if valid_593394 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593394
+  var valid_593395 = header.getOrDefault("X-Amz-Date")
+  valid_593395 = validateParameter(valid_593395, JString, required = false,
                                  default = nil)
-  if valid_603497 != nil:
-    section.add "X-Amz-Signature", valid_603497
-  var valid_603498 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603498 = validateParameter(valid_603498, JString, required = false,
+  if valid_593395 != nil:
+    section.add "X-Amz-Date", valid_593395
+  var valid_593396 = header.getOrDefault("X-Amz-Credential")
+  valid_593396 = validateParameter(valid_593396, JString, required = false,
                                  default = nil)
-  if valid_603498 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603498
-  var valid_603499 = header.getOrDefault("X-Amz-Credential")
-  valid_603499 = validateParameter(valid_603499, JString, required = false,
+  if valid_593396 != nil:
+    section.add "X-Amz-Credential", valid_593396
+  var valid_593397 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593397 = validateParameter(valid_593397, JString, required = false,
                                  default = nil)
-  if valid_603499 != nil:
-    section.add "X-Amz-Credential", valid_603499
+  if valid_593397 != nil:
+    section.add "X-Amz-Security-Token", valid_593397
+  var valid_593398 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593398 = validateParameter(valid_593398, JString, required = false,
+                                 default = nil)
+  if valid_593398 != nil:
+    section.add "X-Amz-Algorithm", valid_593398
+  var valid_593399 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593399 = validateParameter(valid_593399, JString, required = false,
+                                 default = nil)
+  if valid_593399 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593399
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3364,51 +3368,51 @@ proc validate_ListKeys_603488(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603501: Call_ListKeys_603487; path: JsonNode; query: JsonNode;
+proc call*(call_593401: Call_ListKeys_593387; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of all customer master keys (CMKs) in the caller's AWS account and region.
   ## 
-  let valid = call_603501.validator(path, query, header, formData, body)
-  let scheme = call_603501.pickScheme
+  let valid = call_593401.validator(path, query, header, formData, body)
+  let scheme = call_593401.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603501.url(scheme.get, call_603501.host, call_603501.base,
-                         call_603501.route, valid.getOrDefault("path"),
+  let url = call_593401.url(scheme.get, call_593401.host, call_593401.base,
+                         call_593401.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603501, url, valid)
+  result = hook(call_593401, url, valid)
 
-proc call*(call_603502: Call_ListKeys_603487; body: JsonNode; Limit: string = "";
-          Marker: string = ""): Recallable =
+proc call*(call_593402: Call_ListKeys_593387; body: JsonNode; Marker: string = "";
+          Limit: string = ""): Recallable =
   ## listKeys
   ## Gets a list of all customer master keys (CMKs) in the caller's AWS account and region.
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603503 = newJObject()
-  var body_603504 = newJObject()
-  add(query_603503, "Limit", newJString(Limit))
-  add(query_603503, "Marker", newJString(Marker))
+  var query_593403 = newJObject()
+  var body_593404 = newJObject()
+  add(query_593403, "Marker", newJString(Marker))
+  add(query_593403, "Limit", newJString(Limit))
   if body != nil:
-    body_603504 = body
-  result = call_603502.call(nil, query_603503, nil, nil, body_603504)
+    body_593404 = body
+  result = call_593402.call(nil, query_593403, nil, nil, body_593404)
 
-var listKeys* = Call_ListKeys_603487(name: "listKeys", meth: HttpMethod.HttpPost,
+var listKeys* = Call_ListKeys_593387(name: "listKeys", meth: HttpMethod.HttpPost,
                                   host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.ListKeys",
-                                  validator: validate_ListKeys_603488, base: "/",
-                                  url: url_ListKeys_603489,
+                                  validator: validate_ListKeys_593388, base: "/",
+                                  url: url_ListKeys_593389,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListResourceTags_603505 = ref object of OpenApiRestCall_602466
-proc url_ListResourceTags_603507(protocol: Scheme; host: string; base: string;
+  Call_ListResourceTags_593405 = ref object of OpenApiRestCall_592364
+proc url_ListResourceTags_593407(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListResourceTags_603506(path: JsonNode; query: JsonNode;
+proc validate_ListResourceTags_593406(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Returns a list of all tags for the specified customer master key (CMK).</p> <p>You cannot perform this operation on a CMK in a different AWS account.</p>
@@ -3420,57 +3424,57 @@ proc validate_ListResourceTags_603506(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603508 = header.getOrDefault("X-Amz-Date")
-  valid_603508 = validateParameter(valid_603508, JString, required = false,
-                                 default = nil)
-  if valid_603508 != nil:
-    section.add "X-Amz-Date", valid_603508
-  var valid_603509 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603509 = validateParameter(valid_603509, JString, required = false,
-                                 default = nil)
-  if valid_603509 != nil:
-    section.add "X-Amz-Security-Token", valid_603509
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603510 = header.getOrDefault("X-Amz-Target")
-  valid_603510 = validateParameter(valid_603510, JString, required = true, default = newJString(
+  var valid_593408 = header.getOrDefault("X-Amz-Target")
+  valid_593408 = validateParameter(valid_593408, JString, required = true, default = newJString(
       "TrentService.ListResourceTags"))
-  if valid_603510 != nil:
-    section.add "X-Amz-Target", valid_603510
-  var valid_603511 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603511 = validateParameter(valid_603511, JString, required = false,
+  if valid_593408 != nil:
+    section.add "X-Amz-Target", valid_593408
+  var valid_593409 = header.getOrDefault("X-Amz-Signature")
+  valid_593409 = validateParameter(valid_593409, JString, required = false,
                                  default = nil)
-  if valid_603511 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603511
-  var valid_603512 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603512 = validateParameter(valid_603512, JString, required = false,
+  if valid_593409 != nil:
+    section.add "X-Amz-Signature", valid_593409
+  var valid_593410 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593410 = validateParameter(valid_593410, JString, required = false,
                                  default = nil)
-  if valid_603512 != nil:
-    section.add "X-Amz-Algorithm", valid_603512
-  var valid_603513 = header.getOrDefault("X-Amz-Signature")
-  valid_603513 = validateParameter(valid_603513, JString, required = false,
+  if valid_593410 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593410
+  var valid_593411 = header.getOrDefault("X-Amz-Date")
+  valid_593411 = validateParameter(valid_593411, JString, required = false,
                                  default = nil)
-  if valid_603513 != nil:
-    section.add "X-Amz-Signature", valid_603513
-  var valid_603514 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603514 = validateParameter(valid_603514, JString, required = false,
+  if valid_593411 != nil:
+    section.add "X-Amz-Date", valid_593411
+  var valid_593412 = header.getOrDefault("X-Amz-Credential")
+  valid_593412 = validateParameter(valid_593412, JString, required = false,
                                  default = nil)
-  if valid_603514 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603514
-  var valid_603515 = header.getOrDefault("X-Amz-Credential")
-  valid_603515 = validateParameter(valid_603515, JString, required = false,
+  if valid_593412 != nil:
+    section.add "X-Amz-Credential", valid_593412
+  var valid_593413 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593413 = validateParameter(valid_593413, JString, required = false,
                                  default = nil)
-  if valid_603515 != nil:
-    section.add "X-Amz-Credential", valid_603515
+  if valid_593413 != nil:
+    section.add "X-Amz-Security-Token", valid_593413
+  var valid_593414 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593414 = validateParameter(valid_593414, JString, required = false,
+                                 default = nil)
+  if valid_593414 != nil:
+    section.add "X-Amz-Algorithm", valid_593414
+  var valid_593415 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593415 = validateParameter(valid_593415, JString, required = false,
+                                 default = nil)
+  if valid_593415 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593415
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3481,43 +3485,43 @@ proc validate_ListResourceTags_603506(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603517: Call_ListResourceTags_603505; path: JsonNode;
+proc call*(call_593417: Call_ListResourceTags_593405; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of all tags for the specified customer master key (CMK).</p> <p>You cannot perform this operation on a CMK in a different AWS account.</p>
   ## 
-  let valid = call_603517.validator(path, query, header, formData, body)
-  let scheme = call_603517.pickScheme
+  let valid = call_593417.validator(path, query, header, formData, body)
+  let scheme = call_593417.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603517.url(scheme.get, call_603517.host, call_603517.base,
-                         call_603517.route, valid.getOrDefault("path"),
+  let url = call_593417.url(scheme.get, call_593417.host, call_593417.base,
+                         call_593417.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603517, url, valid)
+  result = hook(call_593417, url, valid)
 
-proc call*(call_603518: Call_ListResourceTags_603505; body: JsonNode): Recallable =
+proc call*(call_593418: Call_ListResourceTags_593405; body: JsonNode): Recallable =
   ## listResourceTags
   ## <p>Returns a list of all tags for the specified customer master key (CMK).</p> <p>You cannot perform this operation on a CMK in a different AWS account.</p>
   ##   body: JObject (required)
-  var body_603519 = newJObject()
+  var body_593419 = newJObject()
   if body != nil:
-    body_603519 = body
-  result = call_603518.call(nil, nil, nil, nil, body_603519)
+    body_593419 = body
+  result = call_593418.call(nil, nil, nil, nil, body_593419)
 
-var listResourceTags* = Call_ListResourceTags_603505(name: "listResourceTags",
+var listResourceTags* = Call_ListResourceTags_593405(name: "listResourceTags",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.ListResourceTags",
-    validator: validate_ListResourceTags_603506, base: "/",
-    url: url_ListResourceTags_603507, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListResourceTags_593406, base: "/",
+    url: url_ListResourceTags_593407, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRetirableGrants_603520 = ref object of OpenApiRestCall_602466
-proc url_ListRetirableGrants_603522(protocol: Scheme; host: string; base: string;
+  Call_ListRetirableGrants_593420 = ref object of OpenApiRestCall_592364
+proc url_ListRetirableGrants_593422(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListRetirableGrants_603521(path: JsonNode; query: JsonNode;
+proc validate_ListRetirableGrants_593421(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Returns a list of all grants for which the grant's <code>RetiringPrincipal</code> matches the one specified.</p> <p>A typical use is to list all grants that you are able to retire. To retire a grant, use <a>RetireGrant</a>.</p>
@@ -3529,57 +3533,57 @@ proc validate_ListRetirableGrants_603521(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603523 = header.getOrDefault("X-Amz-Date")
-  valid_603523 = validateParameter(valid_603523, JString, required = false,
-                                 default = nil)
-  if valid_603523 != nil:
-    section.add "X-Amz-Date", valid_603523
-  var valid_603524 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603524 = validateParameter(valid_603524, JString, required = false,
-                                 default = nil)
-  if valid_603524 != nil:
-    section.add "X-Amz-Security-Token", valid_603524
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603525 = header.getOrDefault("X-Amz-Target")
-  valid_603525 = validateParameter(valid_603525, JString, required = true, default = newJString(
+  var valid_593423 = header.getOrDefault("X-Amz-Target")
+  valid_593423 = validateParameter(valid_593423, JString, required = true, default = newJString(
       "TrentService.ListRetirableGrants"))
-  if valid_603525 != nil:
-    section.add "X-Amz-Target", valid_603525
-  var valid_603526 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603526 = validateParameter(valid_603526, JString, required = false,
+  if valid_593423 != nil:
+    section.add "X-Amz-Target", valid_593423
+  var valid_593424 = header.getOrDefault("X-Amz-Signature")
+  valid_593424 = validateParameter(valid_593424, JString, required = false,
                                  default = nil)
-  if valid_603526 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603526
-  var valid_603527 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603527 = validateParameter(valid_603527, JString, required = false,
+  if valid_593424 != nil:
+    section.add "X-Amz-Signature", valid_593424
+  var valid_593425 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593425 = validateParameter(valid_593425, JString, required = false,
                                  default = nil)
-  if valid_603527 != nil:
-    section.add "X-Amz-Algorithm", valid_603527
-  var valid_603528 = header.getOrDefault("X-Amz-Signature")
-  valid_603528 = validateParameter(valid_603528, JString, required = false,
+  if valid_593425 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593425
+  var valid_593426 = header.getOrDefault("X-Amz-Date")
+  valid_593426 = validateParameter(valid_593426, JString, required = false,
                                  default = nil)
-  if valid_603528 != nil:
-    section.add "X-Amz-Signature", valid_603528
-  var valid_603529 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603529 = validateParameter(valid_603529, JString, required = false,
+  if valid_593426 != nil:
+    section.add "X-Amz-Date", valid_593426
+  var valid_593427 = header.getOrDefault("X-Amz-Credential")
+  valid_593427 = validateParameter(valid_593427, JString, required = false,
                                  default = nil)
-  if valid_603529 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603529
-  var valid_603530 = header.getOrDefault("X-Amz-Credential")
-  valid_603530 = validateParameter(valid_603530, JString, required = false,
+  if valid_593427 != nil:
+    section.add "X-Amz-Credential", valid_593427
+  var valid_593428 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593428 = validateParameter(valid_593428, JString, required = false,
                                  default = nil)
-  if valid_603530 != nil:
-    section.add "X-Amz-Credential", valid_603530
+  if valid_593428 != nil:
+    section.add "X-Amz-Security-Token", valid_593428
+  var valid_593429 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593429 = validateParameter(valid_593429, JString, required = false,
+                                 default = nil)
+  if valid_593429 != nil:
+    section.add "X-Amz-Algorithm", valid_593429
+  var valid_593430 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593430 = validateParameter(valid_593430, JString, required = false,
+                                 default = nil)
+  if valid_593430 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593430
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3590,44 +3594,44 @@ proc validate_ListRetirableGrants_603521(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603532: Call_ListRetirableGrants_603520; path: JsonNode;
+proc call*(call_593432: Call_ListRetirableGrants_593420; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of all grants for which the grant's <code>RetiringPrincipal</code> matches the one specified.</p> <p>A typical use is to list all grants that you are able to retire. To retire a grant, use <a>RetireGrant</a>.</p>
   ## 
-  let valid = call_603532.validator(path, query, header, formData, body)
-  let scheme = call_603532.pickScheme
+  let valid = call_593432.validator(path, query, header, formData, body)
+  let scheme = call_593432.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603532.url(scheme.get, call_603532.host, call_603532.base,
-                         call_603532.route, valid.getOrDefault("path"),
+  let url = call_593432.url(scheme.get, call_593432.host, call_593432.base,
+                         call_593432.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603532, url, valid)
+  result = hook(call_593432, url, valid)
 
-proc call*(call_603533: Call_ListRetirableGrants_603520; body: JsonNode): Recallable =
+proc call*(call_593433: Call_ListRetirableGrants_593420; body: JsonNode): Recallable =
   ## listRetirableGrants
   ## <p>Returns a list of all grants for which the grant's <code>RetiringPrincipal</code> matches the one specified.</p> <p>A typical use is to list all grants that you are able to retire. To retire a grant, use <a>RetireGrant</a>.</p>
   ##   body: JObject (required)
-  var body_603534 = newJObject()
+  var body_593434 = newJObject()
   if body != nil:
-    body_603534 = body
-  result = call_603533.call(nil, nil, nil, nil, body_603534)
+    body_593434 = body
+  result = call_593433.call(nil, nil, nil, nil, body_593434)
 
-var listRetirableGrants* = Call_ListRetirableGrants_603520(
+var listRetirableGrants* = Call_ListRetirableGrants_593420(
     name: "listRetirableGrants", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.ListRetirableGrants",
-    validator: validate_ListRetirableGrants_603521, base: "/",
-    url: url_ListRetirableGrants_603522, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListRetirableGrants_593421, base: "/",
+    url: url_ListRetirableGrants_593422, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutKeyPolicy_603535 = ref object of OpenApiRestCall_602466
-proc url_PutKeyPolicy_603537(protocol: Scheme; host: string; base: string;
+  Call_PutKeyPolicy_593435 = ref object of OpenApiRestCall_592364
+proc url_PutKeyPolicy_593437(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_PutKeyPolicy_603536(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutKeyPolicy_593436(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Attaches a key policy to the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about key policies, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html">Key Policies</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -3638,57 +3642,57 @@ proc validate_PutKeyPolicy_603536(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603538 = header.getOrDefault("X-Amz-Date")
-  valid_603538 = validateParameter(valid_603538, JString, required = false,
-                                 default = nil)
-  if valid_603538 != nil:
-    section.add "X-Amz-Date", valid_603538
-  var valid_603539 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603539 = validateParameter(valid_603539, JString, required = false,
-                                 default = nil)
-  if valid_603539 != nil:
-    section.add "X-Amz-Security-Token", valid_603539
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603540 = header.getOrDefault("X-Amz-Target")
-  valid_603540 = validateParameter(valid_603540, JString, required = true, default = newJString(
+  var valid_593438 = header.getOrDefault("X-Amz-Target")
+  valid_593438 = validateParameter(valid_593438, JString, required = true, default = newJString(
       "TrentService.PutKeyPolicy"))
-  if valid_603540 != nil:
-    section.add "X-Amz-Target", valid_603540
-  var valid_603541 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603541 = validateParameter(valid_603541, JString, required = false,
+  if valid_593438 != nil:
+    section.add "X-Amz-Target", valid_593438
+  var valid_593439 = header.getOrDefault("X-Amz-Signature")
+  valid_593439 = validateParameter(valid_593439, JString, required = false,
                                  default = nil)
-  if valid_603541 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603541
-  var valid_603542 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603542 = validateParameter(valid_603542, JString, required = false,
+  if valid_593439 != nil:
+    section.add "X-Amz-Signature", valid_593439
+  var valid_593440 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593440 = validateParameter(valid_593440, JString, required = false,
                                  default = nil)
-  if valid_603542 != nil:
-    section.add "X-Amz-Algorithm", valid_603542
-  var valid_603543 = header.getOrDefault("X-Amz-Signature")
-  valid_603543 = validateParameter(valid_603543, JString, required = false,
+  if valid_593440 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593440
+  var valid_593441 = header.getOrDefault("X-Amz-Date")
+  valid_593441 = validateParameter(valid_593441, JString, required = false,
                                  default = nil)
-  if valid_603543 != nil:
-    section.add "X-Amz-Signature", valid_603543
-  var valid_603544 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603544 = validateParameter(valid_603544, JString, required = false,
+  if valid_593441 != nil:
+    section.add "X-Amz-Date", valid_593441
+  var valid_593442 = header.getOrDefault("X-Amz-Credential")
+  valid_593442 = validateParameter(valid_593442, JString, required = false,
                                  default = nil)
-  if valid_603544 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603544
-  var valid_603545 = header.getOrDefault("X-Amz-Credential")
-  valid_603545 = validateParameter(valid_603545, JString, required = false,
+  if valid_593442 != nil:
+    section.add "X-Amz-Credential", valid_593442
+  var valid_593443 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593443 = validateParameter(valid_593443, JString, required = false,
                                  default = nil)
-  if valid_603545 != nil:
-    section.add "X-Amz-Credential", valid_603545
+  if valid_593443 != nil:
+    section.add "X-Amz-Security-Token", valid_593443
+  var valid_593444 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593444 = validateParameter(valid_593444, JString, required = false,
+                                 default = nil)
+  if valid_593444 != nil:
+    section.add "X-Amz-Algorithm", valid_593444
+  var valid_593445 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593445 = validateParameter(valid_593445, JString, required = false,
+                                 default = nil)
+  if valid_593445 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593445
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3699,43 +3703,43 @@ proc validate_PutKeyPolicy_603536(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603547: Call_PutKeyPolicy_603535; path: JsonNode; query: JsonNode;
+proc call*(call_593447: Call_PutKeyPolicy_593435; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Attaches a key policy to the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about key policies, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html">Key Policies</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603547.validator(path, query, header, formData, body)
-  let scheme = call_603547.pickScheme
+  let valid = call_593447.validator(path, query, header, formData, body)
+  let scheme = call_593447.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603547.url(scheme.get, call_603547.host, call_603547.base,
-                         call_603547.route, valid.getOrDefault("path"),
+  let url = call_593447.url(scheme.get, call_593447.host, call_593447.base,
+                         call_593447.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603547, url, valid)
+  result = hook(call_593447, url, valid)
 
-proc call*(call_603548: Call_PutKeyPolicy_603535; body: JsonNode): Recallable =
+proc call*(call_593448: Call_PutKeyPolicy_593435; body: JsonNode): Recallable =
   ## putKeyPolicy
   ## <p>Attaches a key policy to the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about key policies, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html">Key Policies</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603549 = newJObject()
+  var body_593449 = newJObject()
   if body != nil:
-    body_603549 = body
-  result = call_603548.call(nil, nil, nil, nil, body_603549)
+    body_593449 = body
+  result = call_593448.call(nil, nil, nil, nil, body_593449)
 
-var putKeyPolicy* = Call_PutKeyPolicy_603535(name: "putKeyPolicy",
+var putKeyPolicy* = Call_PutKeyPolicy_593435(name: "putKeyPolicy",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.PutKeyPolicy",
-    validator: validate_PutKeyPolicy_603536, base: "/", url: url_PutKeyPolicy_603537,
+    validator: validate_PutKeyPolicy_593436, base: "/", url: url_PutKeyPolicy_593437,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ReEncrypt_603550 = ref object of OpenApiRestCall_602466
-proc url_ReEncrypt_603552(protocol: Scheme; host: string; base: string; route: string;
+  Call_ReEncrypt_593450 = ref object of OpenApiRestCall_592364
+proc url_ReEncrypt_593452(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ReEncrypt_603551(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ReEncrypt_593451(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Encrypts data on the server side with a new customer master key (CMK) without exposing the plaintext of the data on the client side. The data is first decrypted and then reencrypted. You can also use this operation to change the encryption context of a ciphertext. </p> <p>You can reencrypt data using CMKs in different AWS accounts.</p> <p>Unlike other operations, <code>ReEncrypt</code> is authorized twice, once as <code>ReEncryptFrom</code> on the source CMK and once as <code>ReEncryptTo</code> on the destination CMK. We recommend that you include the <code>"kms:ReEncrypt*"</code> permission in your <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html">key policies</a> to permit reencryption from or to the CMK. This permission is automatically included in the key policy when you create a CMK through the console. But you must include it manually when you create a CMK programmatically or when you set a key policy with the <a>PutKeyPolicy</a> operation.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -3746,57 +3750,57 @@ proc validate_ReEncrypt_603551(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603553 = header.getOrDefault("X-Amz-Date")
-  valid_603553 = validateParameter(valid_603553, JString, required = false,
-                                 default = nil)
-  if valid_603553 != nil:
-    section.add "X-Amz-Date", valid_603553
-  var valid_603554 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603554 = validateParameter(valid_603554, JString, required = false,
-                                 default = nil)
-  if valid_603554 != nil:
-    section.add "X-Amz-Security-Token", valid_603554
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603555 = header.getOrDefault("X-Amz-Target")
-  valid_603555 = validateParameter(valid_603555, JString, required = true,
+  var valid_593453 = header.getOrDefault("X-Amz-Target")
+  valid_593453 = validateParameter(valid_593453, JString, required = true,
                                  default = newJString("TrentService.ReEncrypt"))
-  if valid_603555 != nil:
-    section.add "X-Amz-Target", valid_603555
-  var valid_603556 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603556 = validateParameter(valid_603556, JString, required = false,
+  if valid_593453 != nil:
+    section.add "X-Amz-Target", valid_593453
+  var valid_593454 = header.getOrDefault("X-Amz-Signature")
+  valid_593454 = validateParameter(valid_593454, JString, required = false,
                                  default = nil)
-  if valid_603556 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603556
-  var valid_603557 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603557 = validateParameter(valid_603557, JString, required = false,
+  if valid_593454 != nil:
+    section.add "X-Amz-Signature", valid_593454
+  var valid_593455 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593455 = validateParameter(valid_593455, JString, required = false,
                                  default = nil)
-  if valid_603557 != nil:
-    section.add "X-Amz-Algorithm", valid_603557
-  var valid_603558 = header.getOrDefault("X-Amz-Signature")
-  valid_603558 = validateParameter(valid_603558, JString, required = false,
+  if valid_593455 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593455
+  var valid_593456 = header.getOrDefault("X-Amz-Date")
+  valid_593456 = validateParameter(valid_593456, JString, required = false,
                                  default = nil)
-  if valid_603558 != nil:
-    section.add "X-Amz-Signature", valid_603558
-  var valid_603559 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603559 = validateParameter(valid_603559, JString, required = false,
+  if valid_593456 != nil:
+    section.add "X-Amz-Date", valid_593456
+  var valid_593457 = header.getOrDefault("X-Amz-Credential")
+  valid_593457 = validateParameter(valid_593457, JString, required = false,
                                  default = nil)
-  if valid_603559 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603559
-  var valid_603560 = header.getOrDefault("X-Amz-Credential")
-  valid_603560 = validateParameter(valid_603560, JString, required = false,
+  if valid_593457 != nil:
+    section.add "X-Amz-Credential", valid_593457
+  var valid_593458 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593458 = validateParameter(valid_593458, JString, required = false,
                                  default = nil)
-  if valid_603560 != nil:
-    section.add "X-Amz-Credential", valid_603560
+  if valid_593458 != nil:
+    section.add "X-Amz-Security-Token", valid_593458
+  var valid_593459 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593459 = validateParameter(valid_593459, JString, required = false,
+                                 default = nil)
+  if valid_593459 != nil:
+    section.add "X-Amz-Algorithm", valid_593459
+  var valid_593460 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593460 = validateParameter(valid_593460, JString, required = false,
+                                 default = nil)
+  if valid_593460 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593460
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3807,43 +3811,43 @@ proc validate_ReEncrypt_603551(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603562: Call_ReEncrypt_603550; path: JsonNode; query: JsonNode;
+proc call*(call_593462: Call_ReEncrypt_593450; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Encrypts data on the server side with a new customer master key (CMK) without exposing the plaintext of the data on the client side. The data is first decrypted and then reencrypted. You can also use this operation to change the encryption context of a ciphertext. </p> <p>You can reencrypt data using CMKs in different AWS accounts.</p> <p>Unlike other operations, <code>ReEncrypt</code> is authorized twice, once as <code>ReEncryptFrom</code> on the source CMK and once as <code>ReEncryptTo</code> on the destination CMK. We recommend that you include the <code>"kms:ReEncrypt*"</code> permission in your <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html">key policies</a> to permit reencryption from or to the CMK. This permission is automatically included in the key policy when you create a CMK through the console. But you must include it manually when you create a CMK programmatically or when you set a key policy with the <a>PutKeyPolicy</a> operation.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603562.validator(path, query, header, formData, body)
-  let scheme = call_603562.pickScheme
+  let valid = call_593462.validator(path, query, header, formData, body)
+  let scheme = call_593462.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603562.url(scheme.get, call_603562.host, call_603562.base,
-                         call_603562.route, valid.getOrDefault("path"),
+  let url = call_593462.url(scheme.get, call_593462.host, call_593462.base,
+                         call_593462.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603562, url, valid)
+  result = hook(call_593462, url, valid)
 
-proc call*(call_603563: Call_ReEncrypt_603550; body: JsonNode): Recallable =
+proc call*(call_593463: Call_ReEncrypt_593450; body: JsonNode): Recallable =
   ## reEncrypt
   ## <p>Encrypts data on the server side with a new customer master key (CMK) without exposing the plaintext of the data on the client side. The data is first decrypted and then reencrypted. You can also use this operation to change the encryption context of a ciphertext. </p> <p>You can reencrypt data using CMKs in different AWS accounts.</p> <p>Unlike other operations, <code>ReEncrypt</code> is authorized twice, once as <code>ReEncryptFrom</code> on the source CMK and once as <code>ReEncryptTo</code> on the destination CMK. We recommend that you include the <code>"kms:ReEncrypt*"</code> permission in your <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html">key policies</a> to permit reencryption from or to the CMK. This permission is automatically included in the key policy when you create a CMK through the console. But you must include it manually when you create a CMK programmatically or when you set a key policy with the <a>PutKeyPolicy</a> operation.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603564 = newJObject()
+  var body_593464 = newJObject()
   if body != nil:
-    body_603564 = body
-  result = call_603563.call(nil, nil, nil, nil, body_603564)
+    body_593464 = body
+  result = call_593463.call(nil, nil, nil, nil, body_593464)
 
-var reEncrypt* = Call_ReEncrypt_603550(name: "reEncrypt", meth: HttpMethod.HttpPost,
+var reEncrypt* = Call_ReEncrypt_593450(name: "reEncrypt", meth: HttpMethod.HttpPost,
                                     host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.ReEncrypt",
-                                    validator: validate_ReEncrypt_603551,
-                                    base: "/", url: url_ReEncrypt_603552,
+                                    validator: validate_ReEncrypt_593451,
+                                    base: "/", url: url_ReEncrypt_593452,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RetireGrant_603565 = ref object of OpenApiRestCall_602466
-proc url_RetireGrant_603567(protocol: Scheme; host: string; base: string;
+  Call_RetireGrant_593465 = ref object of OpenApiRestCall_592364
+proc url_RetireGrant_593467(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RetireGrant_603566(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RetireGrant_593466(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retires a grant. To clean up, you can retire a grant when you're done using it. You should revoke a grant when you intend to actively deny operations that depend on it. The following are permitted to call this API:</p> <ul> <li> <p>The AWS account (root user) under which the grant was created</p> </li> <li> <p>The <code>RetiringPrincipal</code>, if present in the grant</p> </li> <li> <p>The <code>GranteePrincipal</code>, if <code>RetireGrant</code> is an operation specified in the grant</p> </li> </ul> <p>You must identify the grant to retire by its grant token or by a combination of the grant ID and the Amazon Resource Name (ARN) of the customer master key (CMK). A grant token is a unique variable-length base64-encoded string. A grant ID is a 64 character unique identifier of a grant. The <a>CreateGrant</a> operation returns both.</p>
   ## 
@@ -3854,57 +3858,57 @@ proc validate_RetireGrant_603566(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603568 = header.getOrDefault("X-Amz-Date")
-  valid_603568 = validateParameter(valid_603568, JString, required = false,
-                                 default = nil)
-  if valid_603568 != nil:
-    section.add "X-Amz-Date", valid_603568
-  var valid_603569 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603569 = validateParameter(valid_603569, JString, required = false,
-                                 default = nil)
-  if valid_603569 != nil:
-    section.add "X-Amz-Security-Token", valid_603569
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603570 = header.getOrDefault("X-Amz-Target")
-  valid_603570 = validateParameter(valid_603570, JString, required = true, default = newJString(
+  var valid_593468 = header.getOrDefault("X-Amz-Target")
+  valid_593468 = validateParameter(valid_593468, JString, required = true, default = newJString(
       "TrentService.RetireGrant"))
-  if valid_603570 != nil:
-    section.add "X-Amz-Target", valid_603570
-  var valid_603571 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603571 = validateParameter(valid_603571, JString, required = false,
+  if valid_593468 != nil:
+    section.add "X-Amz-Target", valid_593468
+  var valid_593469 = header.getOrDefault("X-Amz-Signature")
+  valid_593469 = validateParameter(valid_593469, JString, required = false,
                                  default = nil)
-  if valid_603571 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603571
-  var valid_603572 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603572 = validateParameter(valid_603572, JString, required = false,
+  if valid_593469 != nil:
+    section.add "X-Amz-Signature", valid_593469
+  var valid_593470 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593470 = validateParameter(valid_593470, JString, required = false,
                                  default = nil)
-  if valid_603572 != nil:
-    section.add "X-Amz-Algorithm", valid_603572
-  var valid_603573 = header.getOrDefault("X-Amz-Signature")
-  valid_603573 = validateParameter(valid_603573, JString, required = false,
+  if valid_593470 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593470
+  var valid_593471 = header.getOrDefault("X-Amz-Date")
+  valid_593471 = validateParameter(valid_593471, JString, required = false,
                                  default = nil)
-  if valid_603573 != nil:
-    section.add "X-Amz-Signature", valid_603573
-  var valid_603574 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603574 = validateParameter(valid_603574, JString, required = false,
+  if valid_593471 != nil:
+    section.add "X-Amz-Date", valid_593471
+  var valid_593472 = header.getOrDefault("X-Amz-Credential")
+  valid_593472 = validateParameter(valid_593472, JString, required = false,
                                  default = nil)
-  if valid_603574 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603574
-  var valid_603575 = header.getOrDefault("X-Amz-Credential")
-  valid_603575 = validateParameter(valid_603575, JString, required = false,
+  if valid_593472 != nil:
+    section.add "X-Amz-Credential", valid_593472
+  var valid_593473 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593473 = validateParameter(valid_593473, JString, required = false,
                                  default = nil)
-  if valid_603575 != nil:
-    section.add "X-Amz-Credential", valid_603575
+  if valid_593473 != nil:
+    section.add "X-Amz-Security-Token", valid_593473
+  var valid_593474 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593474 = validateParameter(valid_593474, JString, required = false,
+                                 default = nil)
+  if valid_593474 != nil:
+    section.add "X-Amz-Algorithm", valid_593474
+  var valid_593475 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593475 = validateParameter(valid_593475, JString, required = false,
+                                 default = nil)
+  if valid_593475 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593475
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3915,44 +3919,44 @@ proc validate_RetireGrant_603566(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603577: Call_RetireGrant_603565; path: JsonNode; query: JsonNode;
+proc call*(call_593477: Call_RetireGrant_593465; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retires a grant. To clean up, you can retire a grant when you're done using it. You should revoke a grant when you intend to actively deny operations that depend on it. The following are permitted to call this API:</p> <ul> <li> <p>The AWS account (root user) under which the grant was created</p> </li> <li> <p>The <code>RetiringPrincipal</code>, if present in the grant</p> </li> <li> <p>The <code>GranteePrincipal</code>, if <code>RetireGrant</code> is an operation specified in the grant</p> </li> </ul> <p>You must identify the grant to retire by its grant token or by a combination of the grant ID and the Amazon Resource Name (ARN) of the customer master key (CMK). A grant token is a unique variable-length base64-encoded string. A grant ID is a 64 character unique identifier of a grant. The <a>CreateGrant</a> operation returns both.</p>
   ## 
-  let valid = call_603577.validator(path, query, header, formData, body)
-  let scheme = call_603577.pickScheme
+  let valid = call_593477.validator(path, query, header, formData, body)
+  let scheme = call_593477.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603577.url(scheme.get, call_603577.host, call_603577.base,
-                         call_603577.route, valid.getOrDefault("path"),
+  let url = call_593477.url(scheme.get, call_593477.host, call_593477.base,
+                         call_593477.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603577, url, valid)
+  result = hook(call_593477, url, valid)
 
-proc call*(call_603578: Call_RetireGrant_603565; body: JsonNode): Recallable =
+proc call*(call_593478: Call_RetireGrant_593465; body: JsonNode): Recallable =
   ## retireGrant
   ## <p>Retires a grant. To clean up, you can retire a grant when you're done using it. You should revoke a grant when you intend to actively deny operations that depend on it. The following are permitted to call this API:</p> <ul> <li> <p>The AWS account (root user) under which the grant was created</p> </li> <li> <p>The <code>RetiringPrincipal</code>, if present in the grant</p> </li> <li> <p>The <code>GranteePrincipal</code>, if <code>RetireGrant</code> is an operation specified in the grant</p> </li> </ul> <p>You must identify the grant to retire by its grant token or by a combination of the grant ID and the Amazon Resource Name (ARN) of the customer master key (CMK). A grant token is a unique variable-length base64-encoded string. A grant ID is a 64 character unique identifier of a grant. The <a>CreateGrant</a> operation returns both.</p>
   ##   body: JObject (required)
-  var body_603579 = newJObject()
+  var body_593479 = newJObject()
   if body != nil:
-    body_603579 = body
-  result = call_603578.call(nil, nil, nil, nil, body_603579)
+    body_593479 = body
+  result = call_593478.call(nil, nil, nil, nil, body_593479)
 
-var retireGrant* = Call_RetireGrant_603565(name: "retireGrant",
+var retireGrant* = Call_RetireGrant_593465(name: "retireGrant",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.RetireGrant",
-                                        validator: validate_RetireGrant_603566,
-                                        base: "/", url: url_RetireGrant_603567,
+                                        validator: validate_RetireGrant_593466,
+                                        base: "/", url: url_RetireGrant_593467,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RevokeGrant_603580 = ref object of OpenApiRestCall_602466
-proc url_RevokeGrant_603582(protocol: Scheme; host: string; base: string;
+  Call_RevokeGrant_593480 = ref object of OpenApiRestCall_592364
+proc url_RevokeGrant_593482(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RevokeGrant_603581(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RevokeGrant_593481(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Revokes the specified grant for the specified customer master key (CMK). You can revoke a grant to actively deny operations that depend on it.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
   ## 
@@ -3963,57 +3967,57 @@ proc validate_RevokeGrant_603581(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603583 = header.getOrDefault("X-Amz-Date")
-  valid_603583 = validateParameter(valid_603583, JString, required = false,
-                                 default = nil)
-  if valid_603583 != nil:
-    section.add "X-Amz-Date", valid_603583
-  var valid_603584 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603584 = validateParameter(valid_603584, JString, required = false,
-                                 default = nil)
-  if valid_603584 != nil:
-    section.add "X-Amz-Security-Token", valid_603584
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603585 = header.getOrDefault("X-Amz-Target")
-  valid_603585 = validateParameter(valid_603585, JString, required = true, default = newJString(
+  var valid_593483 = header.getOrDefault("X-Amz-Target")
+  valid_593483 = validateParameter(valid_593483, JString, required = true, default = newJString(
       "TrentService.RevokeGrant"))
-  if valid_603585 != nil:
-    section.add "X-Amz-Target", valid_603585
-  var valid_603586 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603586 = validateParameter(valid_603586, JString, required = false,
+  if valid_593483 != nil:
+    section.add "X-Amz-Target", valid_593483
+  var valid_593484 = header.getOrDefault("X-Amz-Signature")
+  valid_593484 = validateParameter(valid_593484, JString, required = false,
                                  default = nil)
-  if valid_603586 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603586
-  var valid_603587 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603587 = validateParameter(valid_603587, JString, required = false,
+  if valid_593484 != nil:
+    section.add "X-Amz-Signature", valid_593484
+  var valid_593485 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593485 = validateParameter(valid_593485, JString, required = false,
                                  default = nil)
-  if valid_603587 != nil:
-    section.add "X-Amz-Algorithm", valid_603587
-  var valid_603588 = header.getOrDefault("X-Amz-Signature")
-  valid_603588 = validateParameter(valid_603588, JString, required = false,
+  if valid_593485 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593485
+  var valid_593486 = header.getOrDefault("X-Amz-Date")
+  valid_593486 = validateParameter(valid_593486, JString, required = false,
                                  default = nil)
-  if valid_603588 != nil:
-    section.add "X-Amz-Signature", valid_603588
-  var valid_603589 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603589 = validateParameter(valid_603589, JString, required = false,
+  if valid_593486 != nil:
+    section.add "X-Amz-Date", valid_593486
+  var valid_593487 = header.getOrDefault("X-Amz-Credential")
+  valid_593487 = validateParameter(valid_593487, JString, required = false,
                                  default = nil)
-  if valid_603589 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603589
-  var valid_603590 = header.getOrDefault("X-Amz-Credential")
-  valid_603590 = validateParameter(valid_603590, JString, required = false,
+  if valid_593487 != nil:
+    section.add "X-Amz-Credential", valid_593487
+  var valid_593488 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593488 = validateParameter(valid_593488, JString, required = false,
                                  default = nil)
-  if valid_603590 != nil:
-    section.add "X-Amz-Credential", valid_603590
+  if valid_593488 != nil:
+    section.add "X-Amz-Security-Token", valid_593488
+  var valid_593489 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593489 = validateParameter(valid_593489, JString, required = false,
+                                 default = nil)
+  if valid_593489 != nil:
+    section.add "X-Amz-Algorithm", valid_593489
+  var valid_593490 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593490 = validateParameter(valid_593490, JString, required = false,
+                                 default = nil)
+  if valid_593490 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593490
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4024,44 +4028,44 @@ proc validate_RevokeGrant_603581(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603592: Call_RevokeGrant_603580; path: JsonNode; query: JsonNode;
+proc call*(call_593492: Call_RevokeGrant_593480; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Revokes the specified grant for the specified customer master key (CMK). You can revoke a grant to actively deny operations that depend on it.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
   ## 
-  let valid = call_603592.validator(path, query, header, formData, body)
-  let scheme = call_603592.pickScheme
+  let valid = call_593492.validator(path, query, header, formData, body)
+  let scheme = call_593492.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603592.url(scheme.get, call_603592.host, call_603592.base,
-                         call_603592.route, valid.getOrDefault("path"),
+  let url = call_593492.url(scheme.get, call_593492.host, call_593492.base,
+                         call_593492.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603592, url, valid)
+  result = hook(call_593492, url, valid)
 
-proc call*(call_603593: Call_RevokeGrant_603580; body: JsonNode): Recallable =
+proc call*(call_593493: Call_RevokeGrant_593480; body: JsonNode): Recallable =
   ## revokeGrant
   ## <p>Revokes the specified grant for the specified customer master key (CMK). You can revoke a grant to actively deny operations that depend on it.</p> <p>To perform this operation on a CMK in a different AWS account, specify the key ARN in the value of the <code>KeyId</code> parameter.</p>
   ##   body: JObject (required)
-  var body_603594 = newJObject()
+  var body_593494 = newJObject()
   if body != nil:
-    body_603594 = body
-  result = call_603593.call(nil, nil, nil, nil, body_603594)
+    body_593494 = body
+  result = call_593493.call(nil, nil, nil, nil, body_593494)
 
-var revokeGrant* = Call_RevokeGrant_603580(name: "revokeGrant",
+var revokeGrant* = Call_RevokeGrant_593480(name: "revokeGrant",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.RevokeGrant",
-                                        validator: validate_RevokeGrant_603581,
-                                        base: "/", url: url_RevokeGrant_603582,
+                                        validator: validate_RevokeGrant_593481,
+                                        base: "/", url: url_RevokeGrant_593482,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ScheduleKeyDeletion_603595 = ref object of OpenApiRestCall_602466
-proc url_ScheduleKeyDeletion_603597(protocol: Scheme; host: string; base: string;
+  Call_ScheduleKeyDeletion_593495 = ref object of OpenApiRestCall_592364
+proc url_ScheduleKeyDeletion_593497(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ScheduleKeyDeletion_603596(path: JsonNode; query: JsonNode;
+proc validate_ScheduleKeyDeletion_593496(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Schedules the deletion of a customer master key (CMK). You may provide a waiting period, specified in days, before deletion occurs. If you do not provide a waiting period, the default period of 30 days is used. When this operation is successful, the key state of the CMK changes to <code>PendingDeletion</code>. Before the waiting period ends, you can use <a>CancelKeyDeletion</a> to cancel the deletion of the CMK. After the waiting period ends, AWS KMS deletes the CMK and all AWS KMS data associated with it, including all aliases that refer to it.</p> <important> <p>Deleting a CMK is a destructive and potentially dangerous operation. When a CMK is deleted, all data that was encrypted under the CMK is unrecoverable. To prevent the use of a CMK without deleting it, use <a>DisableKey</a>.</p> </important> <p>If you schedule deletion of a CMK from a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, when the waiting period expires, <code>ScheduleKeyDeletion</code> deletes the CMK from AWS KMS. Then AWS KMS makes a best effort to delete the key material from the associated AWS CloudHSM cluster. However, you might need to manually <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-orphaned-key">delete the orphaned key material</a> from the cluster and its backups.</p> <p>You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about scheduling a CMK for deletion, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html">Deleting Customer Master Keys</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
@@ -4073,57 +4077,57 @@ proc validate_ScheduleKeyDeletion_603596(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603598 = header.getOrDefault("X-Amz-Date")
-  valid_603598 = validateParameter(valid_603598, JString, required = false,
-                                 default = nil)
-  if valid_603598 != nil:
-    section.add "X-Amz-Date", valid_603598
-  var valid_603599 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603599 = validateParameter(valid_603599, JString, required = false,
-                                 default = nil)
-  if valid_603599 != nil:
-    section.add "X-Amz-Security-Token", valid_603599
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603600 = header.getOrDefault("X-Amz-Target")
-  valid_603600 = validateParameter(valid_603600, JString, required = true, default = newJString(
+  var valid_593498 = header.getOrDefault("X-Amz-Target")
+  valid_593498 = validateParameter(valid_593498, JString, required = true, default = newJString(
       "TrentService.ScheduleKeyDeletion"))
-  if valid_603600 != nil:
-    section.add "X-Amz-Target", valid_603600
-  var valid_603601 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603601 = validateParameter(valid_603601, JString, required = false,
+  if valid_593498 != nil:
+    section.add "X-Amz-Target", valid_593498
+  var valid_593499 = header.getOrDefault("X-Amz-Signature")
+  valid_593499 = validateParameter(valid_593499, JString, required = false,
                                  default = nil)
-  if valid_603601 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603601
-  var valid_603602 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603602 = validateParameter(valid_603602, JString, required = false,
+  if valid_593499 != nil:
+    section.add "X-Amz-Signature", valid_593499
+  var valid_593500 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593500 = validateParameter(valid_593500, JString, required = false,
                                  default = nil)
-  if valid_603602 != nil:
-    section.add "X-Amz-Algorithm", valid_603602
-  var valid_603603 = header.getOrDefault("X-Amz-Signature")
-  valid_603603 = validateParameter(valid_603603, JString, required = false,
+  if valid_593500 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593500
+  var valid_593501 = header.getOrDefault("X-Amz-Date")
+  valid_593501 = validateParameter(valid_593501, JString, required = false,
                                  default = nil)
-  if valid_603603 != nil:
-    section.add "X-Amz-Signature", valid_603603
-  var valid_603604 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603604 = validateParameter(valid_603604, JString, required = false,
+  if valid_593501 != nil:
+    section.add "X-Amz-Date", valid_593501
+  var valid_593502 = header.getOrDefault("X-Amz-Credential")
+  valid_593502 = validateParameter(valid_593502, JString, required = false,
                                  default = nil)
-  if valid_603604 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603604
-  var valid_603605 = header.getOrDefault("X-Amz-Credential")
-  valid_603605 = validateParameter(valid_603605, JString, required = false,
+  if valid_593502 != nil:
+    section.add "X-Amz-Credential", valid_593502
+  var valid_593503 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593503 = validateParameter(valid_593503, JString, required = false,
                                  default = nil)
-  if valid_603605 != nil:
-    section.add "X-Amz-Credential", valid_603605
+  if valid_593503 != nil:
+    section.add "X-Amz-Security-Token", valid_593503
+  var valid_593504 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593504 = validateParameter(valid_593504, JString, required = false,
+                                 default = nil)
+  if valid_593504 != nil:
+    section.add "X-Amz-Algorithm", valid_593504
+  var valid_593505 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593505 = validateParameter(valid_593505, JString, required = false,
+                                 default = nil)
+  if valid_593505 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593505
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4134,44 +4138,44 @@ proc validate_ScheduleKeyDeletion_603596(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603607: Call_ScheduleKeyDeletion_603595; path: JsonNode;
+proc call*(call_593507: Call_ScheduleKeyDeletion_593495; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Schedules the deletion of a customer master key (CMK). You may provide a waiting period, specified in days, before deletion occurs. If you do not provide a waiting period, the default period of 30 days is used. When this operation is successful, the key state of the CMK changes to <code>PendingDeletion</code>. Before the waiting period ends, you can use <a>CancelKeyDeletion</a> to cancel the deletion of the CMK. After the waiting period ends, AWS KMS deletes the CMK and all AWS KMS data associated with it, including all aliases that refer to it.</p> <important> <p>Deleting a CMK is a destructive and potentially dangerous operation. When a CMK is deleted, all data that was encrypted under the CMK is unrecoverable. To prevent the use of a CMK without deleting it, use <a>DisableKey</a>.</p> </important> <p>If you schedule deletion of a CMK from a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, when the waiting period expires, <code>ScheduleKeyDeletion</code> deletes the CMK from AWS KMS. Then AWS KMS makes a best effort to delete the key material from the associated AWS CloudHSM cluster. However, you might need to manually <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-orphaned-key">delete the orphaned key material</a> from the cluster and its backups.</p> <p>You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about scheduling a CMK for deletion, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html">Deleting Customer Master Keys</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603607.validator(path, query, header, formData, body)
-  let scheme = call_603607.pickScheme
+  let valid = call_593507.validator(path, query, header, formData, body)
+  let scheme = call_593507.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603607.url(scheme.get, call_603607.host, call_603607.base,
-                         call_603607.route, valid.getOrDefault("path"),
+  let url = call_593507.url(scheme.get, call_593507.host, call_593507.base,
+                         call_593507.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603607, url, valid)
+  result = hook(call_593507, url, valid)
 
-proc call*(call_603608: Call_ScheduleKeyDeletion_603595; body: JsonNode): Recallable =
+proc call*(call_593508: Call_ScheduleKeyDeletion_593495; body: JsonNode): Recallable =
   ## scheduleKeyDeletion
   ## <p>Schedules the deletion of a customer master key (CMK). You may provide a waiting period, specified in days, before deletion occurs. If you do not provide a waiting period, the default period of 30 days is used. When this operation is successful, the key state of the CMK changes to <code>PendingDeletion</code>. Before the waiting period ends, you can use <a>CancelKeyDeletion</a> to cancel the deletion of the CMK. After the waiting period ends, AWS KMS deletes the CMK and all AWS KMS data associated with it, including all aliases that refer to it.</p> <important> <p>Deleting a CMK is a destructive and potentially dangerous operation. When a CMK is deleted, all data that was encrypted under the CMK is unrecoverable. To prevent the use of a CMK without deleting it, use <a>DisableKey</a>.</p> </important> <p>If you schedule deletion of a CMK from a <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom key store</a>, when the waiting period expires, <code>ScheduleKeyDeletion</code> deletes the CMK from AWS KMS. Then AWS KMS makes a best effort to delete the key material from the associated AWS CloudHSM cluster. However, you might need to manually <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-orphaned-key">delete the orphaned key material</a> from the cluster and its backups.</p> <p>You cannot perform this operation on a CMK in a different AWS account.</p> <p>For more information about scheduling a CMK for deletion, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html">Deleting Customer Master Keys</a> in the <i>AWS Key Management Service Developer Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603609 = newJObject()
+  var body_593509 = newJObject()
   if body != nil:
-    body_603609 = body
-  result = call_603608.call(nil, nil, nil, nil, body_603609)
+    body_593509 = body
+  result = call_593508.call(nil, nil, nil, nil, body_593509)
 
-var scheduleKeyDeletion* = Call_ScheduleKeyDeletion_603595(
+var scheduleKeyDeletion* = Call_ScheduleKeyDeletion_593495(
     name: "scheduleKeyDeletion", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.ScheduleKeyDeletion",
-    validator: validate_ScheduleKeyDeletion_603596, base: "/",
-    url: url_ScheduleKeyDeletion_603597, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ScheduleKeyDeletion_593496, base: "/",
+    url: url_ScheduleKeyDeletion_593497, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_603610 = ref object of OpenApiRestCall_602466
-proc url_TagResource_603612(protocol: Scheme; host: string; base: string;
+  Call_TagResource_593510 = ref object of OpenApiRestCall_592364
+proc url_TagResource_593512(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_TagResource_603611(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_593511(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds or edits tags for a customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>Each tag consists of a tag key and a tag value. Tag keys and tag values are both required, but tag values can be empty (null) strings.</p> <p>You can only use a tag key once for each CMK. If you use the tag key again, AWS KMS replaces the current tag value with the specified value.</p> <p>For information about the rules that apply to tag keys and tag values, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/allocation-tag-restrictions.html">User-Defined Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -4182,57 +4186,57 @@ proc validate_TagResource_603611(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603613 = header.getOrDefault("X-Amz-Date")
-  valid_603613 = validateParameter(valid_603613, JString, required = false,
-                                 default = nil)
-  if valid_603613 != nil:
-    section.add "X-Amz-Date", valid_603613
-  var valid_603614 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603614 = validateParameter(valid_603614, JString, required = false,
-                                 default = nil)
-  if valid_603614 != nil:
-    section.add "X-Amz-Security-Token", valid_603614
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603615 = header.getOrDefault("X-Amz-Target")
-  valid_603615 = validateParameter(valid_603615, JString, required = true, default = newJString(
+  var valid_593513 = header.getOrDefault("X-Amz-Target")
+  valid_593513 = validateParameter(valid_593513, JString, required = true, default = newJString(
       "TrentService.TagResource"))
-  if valid_603615 != nil:
-    section.add "X-Amz-Target", valid_603615
-  var valid_603616 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603616 = validateParameter(valid_603616, JString, required = false,
+  if valid_593513 != nil:
+    section.add "X-Amz-Target", valid_593513
+  var valid_593514 = header.getOrDefault("X-Amz-Signature")
+  valid_593514 = validateParameter(valid_593514, JString, required = false,
                                  default = nil)
-  if valid_603616 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603616
-  var valid_603617 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603617 = validateParameter(valid_603617, JString, required = false,
+  if valid_593514 != nil:
+    section.add "X-Amz-Signature", valid_593514
+  var valid_593515 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593515 = validateParameter(valid_593515, JString, required = false,
                                  default = nil)
-  if valid_603617 != nil:
-    section.add "X-Amz-Algorithm", valid_603617
-  var valid_603618 = header.getOrDefault("X-Amz-Signature")
-  valid_603618 = validateParameter(valid_603618, JString, required = false,
+  if valid_593515 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593515
+  var valid_593516 = header.getOrDefault("X-Amz-Date")
+  valid_593516 = validateParameter(valid_593516, JString, required = false,
                                  default = nil)
-  if valid_603618 != nil:
-    section.add "X-Amz-Signature", valid_603618
-  var valid_603619 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603619 = validateParameter(valid_603619, JString, required = false,
+  if valid_593516 != nil:
+    section.add "X-Amz-Date", valid_593516
+  var valid_593517 = header.getOrDefault("X-Amz-Credential")
+  valid_593517 = validateParameter(valid_593517, JString, required = false,
                                  default = nil)
-  if valid_603619 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603619
-  var valid_603620 = header.getOrDefault("X-Amz-Credential")
-  valid_603620 = validateParameter(valid_603620, JString, required = false,
+  if valid_593517 != nil:
+    section.add "X-Amz-Credential", valid_593517
+  var valid_593518 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593518 = validateParameter(valid_593518, JString, required = false,
                                  default = nil)
-  if valid_603620 != nil:
-    section.add "X-Amz-Credential", valid_603620
+  if valid_593518 != nil:
+    section.add "X-Amz-Security-Token", valid_593518
+  var valid_593519 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593519 = validateParameter(valid_593519, JString, required = false,
+                                 default = nil)
+  if valid_593519 != nil:
+    section.add "X-Amz-Algorithm", valid_593519
+  var valid_593520 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593520 = validateParameter(valid_593520, JString, required = false,
+                                 default = nil)
+  if valid_593520 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593520
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4243,44 +4247,44 @@ proc validate_TagResource_603611(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603622: Call_TagResource_603610; path: JsonNode; query: JsonNode;
+proc call*(call_593522: Call_TagResource_593510; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds or edits tags for a customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>Each tag consists of a tag key and a tag value. Tag keys and tag values are both required, but tag values can be empty (null) strings.</p> <p>You can only use a tag key once for each CMK. If you use the tag key again, AWS KMS replaces the current tag value with the specified value.</p> <p>For information about the rules that apply to tag keys and tag values, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/allocation-tag-restrictions.html">User-Defined Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603622.validator(path, query, header, formData, body)
-  let scheme = call_603622.pickScheme
+  let valid = call_593522.validator(path, query, header, formData, body)
+  let scheme = call_593522.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603622.url(scheme.get, call_603622.host, call_603622.base,
-                         call_603622.route, valid.getOrDefault("path"),
+  let url = call_593522.url(scheme.get, call_593522.host, call_593522.base,
+                         call_593522.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603622, url, valid)
+  result = hook(call_593522, url, valid)
 
-proc call*(call_603623: Call_TagResource_603610; body: JsonNode): Recallable =
+proc call*(call_593523: Call_TagResource_593510; body: JsonNode): Recallable =
   ## tagResource
   ## <p>Adds or edits tags for a customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>Each tag consists of a tag key and a tag value. Tag keys and tag values are both required, but tag values can be empty (null) strings.</p> <p>You can only use a tag key once for each CMK. If you use the tag key again, AWS KMS replaces the current tag value with the specified value.</p> <p>For information about the rules that apply to tag keys and tag values, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/allocation-tag-restrictions.html">User-Defined Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603624 = newJObject()
+  var body_593524 = newJObject()
   if body != nil:
-    body_603624 = body
-  result = call_603623.call(nil, nil, nil, nil, body_603624)
+    body_593524 = body
+  result = call_593523.call(nil, nil, nil, nil, body_593524)
 
-var tagResource* = Call_TagResource_603610(name: "tagResource",
+var tagResource* = Call_TagResource_593510(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.TagResource",
-                                        validator: validate_TagResource_603611,
-                                        base: "/", url: url_TagResource_603612,
+                                        validator: validate_TagResource_593511,
+                                        base: "/", url: url_TagResource_593512,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_603625 = ref object of OpenApiRestCall_602466
-proc url_UntagResource_603627(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_593525 = ref object of OpenApiRestCall_592364
+proc url_UntagResource_593527(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UntagResource_603626(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_593526(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes the specified tags from the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>To remove a tag, specify the tag key. To change the tag value of an existing tag key, use <a>TagResource</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -4291,57 +4295,57 @@ proc validate_UntagResource_603626(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603628 = header.getOrDefault("X-Amz-Date")
-  valid_603628 = validateParameter(valid_603628, JString, required = false,
-                                 default = nil)
-  if valid_603628 != nil:
-    section.add "X-Amz-Date", valid_603628
-  var valid_603629 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603629 = validateParameter(valid_603629, JString, required = false,
-                                 default = nil)
-  if valid_603629 != nil:
-    section.add "X-Amz-Security-Token", valid_603629
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603630 = header.getOrDefault("X-Amz-Target")
-  valid_603630 = validateParameter(valid_603630, JString, required = true, default = newJString(
+  var valid_593528 = header.getOrDefault("X-Amz-Target")
+  valid_593528 = validateParameter(valid_593528, JString, required = true, default = newJString(
       "TrentService.UntagResource"))
-  if valid_603630 != nil:
-    section.add "X-Amz-Target", valid_603630
-  var valid_603631 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603631 = validateParameter(valid_603631, JString, required = false,
+  if valid_593528 != nil:
+    section.add "X-Amz-Target", valid_593528
+  var valid_593529 = header.getOrDefault("X-Amz-Signature")
+  valid_593529 = validateParameter(valid_593529, JString, required = false,
                                  default = nil)
-  if valid_603631 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603631
-  var valid_603632 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603632 = validateParameter(valid_603632, JString, required = false,
+  if valid_593529 != nil:
+    section.add "X-Amz-Signature", valid_593529
+  var valid_593530 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593530 = validateParameter(valid_593530, JString, required = false,
                                  default = nil)
-  if valid_603632 != nil:
-    section.add "X-Amz-Algorithm", valid_603632
-  var valid_603633 = header.getOrDefault("X-Amz-Signature")
-  valid_603633 = validateParameter(valid_603633, JString, required = false,
+  if valid_593530 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593530
+  var valid_593531 = header.getOrDefault("X-Amz-Date")
+  valid_593531 = validateParameter(valid_593531, JString, required = false,
                                  default = nil)
-  if valid_603633 != nil:
-    section.add "X-Amz-Signature", valid_603633
-  var valid_603634 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603634 = validateParameter(valid_603634, JString, required = false,
+  if valid_593531 != nil:
+    section.add "X-Amz-Date", valid_593531
+  var valid_593532 = header.getOrDefault("X-Amz-Credential")
+  valid_593532 = validateParameter(valid_593532, JString, required = false,
                                  default = nil)
-  if valid_603634 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603634
-  var valid_603635 = header.getOrDefault("X-Amz-Credential")
-  valid_603635 = validateParameter(valid_603635, JString, required = false,
+  if valid_593532 != nil:
+    section.add "X-Amz-Credential", valid_593532
+  var valid_593533 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593533 = validateParameter(valid_593533, JString, required = false,
                                  default = nil)
-  if valid_603635 != nil:
-    section.add "X-Amz-Credential", valid_603635
+  if valid_593533 != nil:
+    section.add "X-Amz-Security-Token", valid_593533
+  var valid_593534 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593534 = validateParameter(valid_593534, JString, required = false,
+                                 default = nil)
+  if valid_593534 != nil:
+    section.add "X-Amz-Algorithm", valid_593534
+  var valid_593535 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593535 = validateParameter(valid_593535, JString, required = false,
+                                 default = nil)
+  if valid_593535 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593535
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4352,43 +4356,43 @@ proc validate_UntagResource_603626(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603637: Call_UntagResource_603625; path: JsonNode; query: JsonNode;
+proc call*(call_593537: Call_UntagResource_593525; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes the specified tags from the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>To remove a tag, specify the tag key. To change the tag value of an existing tag key, use <a>TagResource</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603637.validator(path, query, header, formData, body)
-  let scheme = call_603637.pickScheme
+  let valid = call_593537.validator(path, query, header, formData, body)
+  let scheme = call_593537.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603637.url(scheme.get, call_603637.host, call_603637.base,
-                         call_603637.route, valid.getOrDefault("path"),
+  let url = call_593537.url(scheme.get, call_593537.host, call_593537.base,
+                         call_593537.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603637, url, valid)
+  result = hook(call_593537, url, valid)
 
-proc call*(call_603638: Call_UntagResource_603625; body: JsonNode): Recallable =
+proc call*(call_593538: Call_UntagResource_593525; body: JsonNode): Recallable =
   ## untagResource
   ## <p>Removes the specified tags from the specified customer master key (CMK). You cannot perform this operation on a CMK in a different AWS account.</p> <p>To remove a tag, specify the tag key. To change the tag value of an existing tag key, use <a>TagResource</a>.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603639 = newJObject()
+  var body_593539 = newJObject()
   if body != nil:
-    body_603639 = body
-  result = call_603638.call(nil, nil, nil, nil, body_603639)
+    body_593539 = body
+  result = call_593538.call(nil, nil, nil, nil, body_593539)
 
-var untagResource* = Call_UntagResource_603625(name: "untagResource",
+var untagResource* = Call_UntagResource_593525(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.UntagResource",
-    validator: validate_UntagResource_603626, base: "/", url: url_UntagResource_603627,
+    validator: validate_UntagResource_593526, base: "/", url: url_UntagResource_593527,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateAlias_603640 = ref object of OpenApiRestCall_602466
-proc url_UpdateAlias_603642(protocol: Scheme; host: string; base: string;
+  Call_UpdateAlias_593540 = ref object of OpenApiRestCall_592364
+proc url_UpdateAlias_593542(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateAlias_603641(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateAlias_593541(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Associates an existing alias with a different customer master key (CMK). Each CMK can have multiple aliases, but the aliases must be unique within the account and region. You cannot perform this operation on an alias in a different AWS account.</p> <p>This operation works only on existing aliases. To change the alias of a CMK to a new value, use <a>CreateAlias</a> to create a new alias and <a>DeleteAlias</a> to delete the old alias.</p> <p>Because an alias is not a property of a CMK, you can create, update, and delete the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs in the account, use the <a>ListAliases</a> operation. </p> <p>The alias name must begin with <code>alias/</code> followed by a name, such as <code>alias/ExampleAlias</code>. It can contain only alphanumeric characters, forward slashes (/), underscores (_), and dashes (-). The alias name cannot begin with <code>alias/aws/</code>. The <code>alias/aws/</code> prefix is reserved for <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk">AWS managed CMKs</a>. </p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -4399,57 +4403,57 @@ proc validate_UpdateAlias_603641(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603643 = header.getOrDefault("X-Amz-Date")
-  valid_603643 = validateParameter(valid_603643, JString, required = false,
-                                 default = nil)
-  if valid_603643 != nil:
-    section.add "X-Amz-Date", valid_603643
-  var valid_603644 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603644 = validateParameter(valid_603644, JString, required = false,
-                                 default = nil)
-  if valid_603644 != nil:
-    section.add "X-Amz-Security-Token", valid_603644
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603645 = header.getOrDefault("X-Amz-Target")
-  valid_603645 = validateParameter(valid_603645, JString, required = true, default = newJString(
+  var valid_593543 = header.getOrDefault("X-Amz-Target")
+  valid_593543 = validateParameter(valid_593543, JString, required = true, default = newJString(
       "TrentService.UpdateAlias"))
-  if valid_603645 != nil:
-    section.add "X-Amz-Target", valid_603645
-  var valid_603646 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603646 = validateParameter(valid_603646, JString, required = false,
+  if valid_593543 != nil:
+    section.add "X-Amz-Target", valid_593543
+  var valid_593544 = header.getOrDefault("X-Amz-Signature")
+  valid_593544 = validateParameter(valid_593544, JString, required = false,
                                  default = nil)
-  if valid_603646 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603646
-  var valid_603647 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603647 = validateParameter(valid_603647, JString, required = false,
+  if valid_593544 != nil:
+    section.add "X-Amz-Signature", valid_593544
+  var valid_593545 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593545 = validateParameter(valid_593545, JString, required = false,
                                  default = nil)
-  if valid_603647 != nil:
-    section.add "X-Amz-Algorithm", valid_603647
-  var valid_603648 = header.getOrDefault("X-Amz-Signature")
-  valid_603648 = validateParameter(valid_603648, JString, required = false,
+  if valid_593545 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593545
+  var valid_593546 = header.getOrDefault("X-Amz-Date")
+  valid_593546 = validateParameter(valid_593546, JString, required = false,
                                  default = nil)
-  if valid_603648 != nil:
-    section.add "X-Amz-Signature", valid_603648
-  var valid_603649 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603649 = validateParameter(valid_603649, JString, required = false,
+  if valid_593546 != nil:
+    section.add "X-Amz-Date", valid_593546
+  var valid_593547 = header.getOrDefault("X-Amz-Credential")
+  valid_593547 = validateParameter(valid_593547, JString, required = false,
                                  default = nil)
-  if valid_603649 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603649
-  var valid_603650 = header.getOrDefault("X-Amz-Credential")
-  valid_603650 = validateParameter(valid_603650, JString, required = false,
+  if valid_593547 != nil:
+    section.add "X-Amz-Credential", valid_593547
+  var valid_593548 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593548 = validateParameter(valid_593548, JString, required = false,
                                  default = nil)
-  if valid_603650 != nil:
-    section.add "X-Amz-Credential", valid_603650
+  if valid_593548 != nil:
+    section.add "X-Amz-Security-Token", valid_593548
+  var valid_593549 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593549 = validateParameter(valid_593549, JString, required = false,
+                                 default = nil)
+  if valid_593549 != nil:
+    section.add "X-Amz-Algorithm", valid_593549
+  var valid_593550 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593550 = validateParameter(valid_593550, JString, required = false,
+                                 default = nil)
+  if valid_593550 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593550
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4460,44 +4464,44 @@ proc validate_UpdateAlias_603641(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603652: Call_UpdateAlias_603640; path: JsonNode; query: JsonNode;
+proc call*(call_593552: Call_UpdateAlias_593540; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Associates an existing alias with a different customer master key (CMK). Each CMK can have multiple aliases, but the aliases must be unique within the account and region. You cannot perform this operation on an alias in a different AWS account.</p> <p>This operation works only on existing aliases. To change the alias of a CMK to a new value, use <a>CreateAlias</a> to create a new alias and <a>DeleteAlias</a> to delete the old alias.</p> <p>Because an alias is not a property of a CMK, you can create, update, and delete the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs in the account, use the <a>ListAliases</a> operation. </p> <p>The alias name must begin with <code>alias/</code> followed by a name, such as <code>alias/ExampleAlias</code>. It can contain only alphanumeric characters, forward slashes (/), underscores (_), and dashes (-). The alias name cannot begin with <code>alias/aws/</code>. The <code>alias/aws/</code> prefix is reserved for <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk">AWS managed CMKs</a>. </p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603652.validator(path, query, header, formData, body)
-  let scheme = call_603652.pickScheme
+  let valid = call_593552.validator(path, query, header, formData, body)
+  let scheme = call_593552.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603652.url(scheme.get, call_603652.host, call_603652.base,
-                         call_603652.route, valid.getOrDefault("path"),
+  let url = call_593552.url(scheme.get, call_593552.host, call_593552.base,
+                         call_593552.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603652, url, valid)
+  result = hook(call_593552, url, valid)
 
-proc call*(call_603653: Call_UpdateAlias_603640; body: JsonNode): Recallable =
+proc call*(call_593553: Call_UpdateAlias_593540; body: JsonNode): Recallable =
   ## updateAlias
   ## <p>Associates an existing alias with a different customer master key (CMK). Each CMK can have multiple aliases, but the aliases must be unique within the account and region. You cannot perform this operation on an alias in a different AWS account.</p> <p>This operation works only on existing aliases. To change the alias of a CMK to a new value, use <a>CreateAlias</a> to create a new alias and <a>DeleteAlias</a> to delete the old alias.</p> <p>Because an alias is not a property of a CMK, you can create, update, and delete the aliases of a CMK without affecting the CMK. Also, aliases do not appear in the response from the <a>DescribeKey</a> operation. To get the aliases of all CMKs in the account, use the <a>ListAliases</a> operation. </p> <p>The alias name must begin with <code>alias/</code> followed by a name, such as <code>alias/ExampleAlias</code>. It can contain only alphanumeric characters, forward slashes (/), underscores (_), and dashes (-). The alias name cannot begin with <code>alias/aws/</code>. The <code>alias/aws/</code> prefix is reserved for <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#aws-managed-cmk">AWS managed CMKs</a>. </p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603654 = newJObject()
+  var body_593554 = newJObject()
   if body != nil:
-    body_603654 = body
-  result = call_603653.call(nil, nil, nil, nil, body_603654)
+    body_593554 = body
+  result = call_593553.call(nil, nil, nil, nil, body_593554)
 
-var updateAlias* = Call_UpdateAlias_603640(name: "updateAlias",
+var updateAlias* = Call_UpdateAlias_593540(name: "updateAlias",
                                         meth: HttpMethod.HttpPost,
                                         host: "kms.amazonaws.com", route: "/#X-Amz-Target=TrentService.UpdateAlias",
-                                        validator: validate_UpdateAlias_603641,
-                                        base: "/", url: url_UpdateAlias_603642,
+                                        validator: validate_UpdateAlias_593541,
+                                        base: "/", url: url_UpdateAlias_593542,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateCustomKeyStore_603655 = ref object of OpenApiRestCall_602466
-proc url_UpdateCustomKeyStore_603657(protocol: Scheme; host: string; base: string;
+  Call_UpdateCustomKeyStore_593555 = ref object of OpenApiRestCall_592364
+proc url_UpdateCustomKeyStore_593557(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateCustomKeyStore_603656(path: JsonNode; query: JsonNode;
+proc validate_UpdateCustomKeyStore_593556(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Changes the properties of a custom key store. Use the <code>CustomKeyStoreId</code> parameter to identify the custom key store you want to edit. Use the remaining parameters to change the properties of the custom key store.</p> <p>You can only update a custom key store that is disconnected. To disconnect the custom key store, use <a>DisconnectCustomKeyStore</a>. To reconnect the custom key store after the update completes, use <a>ConnectCustomKeyStore</a>. To find the connection state of a custom key store, use the <a>DescribeCustomKeyStores</a> operation.</p> <p>Use the parameters of <code>UpdateCustomKeyStore</code> to edit your keystore settings.</p> <ul> <li> <p>Use the <b>NewCustomKeyStoreName</b> parameter to change the friendly name of the custom key store to the value that you specify.</p> <p> </p> </li> <li> <p>Use the <b>KeyStorePassword</b> parameter tell AWS KMS the current password of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-store-concepts.html#concept-kmsuser"> <code>kmsuser</code> crypto user (CU)</a> in the associated AWS CloudHSM cluster. You can use this parameter to <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-password">fix connection failures</a> that occur when AWS KMS cannot log into the associated cluster because the <code>kmsuser</code> password has changed. This value does not change the password in the AWS CloudHSM cluster.</p> <p> </p> </li> <li> <p>Use the <b>CloudHsmClusterId</b> parameter to associate the custom key store with a different, but related, AWS CloudHSM cluster. You can use this parameter to repair a custom key store if its AWS CloudHSM cluster becomes corrupted or is deleted, or when you need to create or restore a cluster from a backup. </p> </li> </ul> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ## 
@@ -4508,57 +4512,57 @@ proc validate_UpdateCustomKeyStore_603656(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603658 = header.getOrDefault("X-Amz-Date")
-  valid_603658 = validateParameter(valid_603658, JString, required = false,
-                                 default = nil)
-  if valid_603658 != nil:
-    section.add "X-Amz-Date", valid_603658
-  var valid_603659 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603659 = validateParameter(valid_603659, JString, required = false,
-                                 default = nil)
-  if valid_603659 != nil:
-    section.add "X-Amz-Security-Token", valid_603659
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603660 = header.getOrDefault("X-Amz-Target")
-  valid_603660 = validateParameter(valid_603660, JString, required = true, default = newJString(
+  var valid_593558 = header.getOrDefault("X-Amz-Target")
+  valid_593558 = validateParameter(valid_593558, JString, required = true, default = newJString(
       "TrentService.UpdateCustomKeyStore"))
-  if valid_603660 != nil:
-    section.add "X-Amz-Target", valid_603660
-  var valid_603661 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603661 = validateParameter(valid_603661, JString, required = false,
+  if valid_593558 != nil:
+    section.add "X-Amz-Target", valid_593558
+  var valid_593559 = header.getOrDefault("X-Amz-Signature")
+  valid_593559 = validateParameter(valid_593559, JString, required = false,
                                  default = nil)
-  if valid_603661 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603661
-  var valid_603662 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603662 = validateParameter(valid_603662, JString, required = false,
+  if valid_593559 != nil:
+    section.add "X-Amz-Signature", valid_593559
+  var valid_593560 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593560 = validateParameter(valid_593560, JString, required = false,
                                  default = nil)
-  if valid_603662 != nil:
-    section.add "X-Amz-Algorithm", valid_603662
-  var valid_603663 = header.getOrDefault("X-Amz-Signature")
-  valid_603663 = validateParameter(valid_603663, JString, required = false,
+  if valid_593560 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593560
+  var valid_593561 = header.getOrDefault("X-Amz-Date")
+  valid_593561 = validateParameter(valid_593561, JString, required = false,
                                  default = nil)
-  if valid_603663 != nil:
-    section.add "X-Amz-Signature", valid_603663
-  var valid_603664 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603664 = validateParameter(valid_603664, JString, required = false,
+  if valid_593561 != nil:
+    section.add "X-Amz-Date", valid_593561
+  var valid_593562 = header.getOrDefault("X-Amz-Credential")
+  valid_593562 = validateParameter(valid_593562, JString, required = false,
                                  default = nil)
-  if valid_603664 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603664
-  var valid_603665 = header.getOrDefault("X-Amz-Credential")
-  valid_603665 = validateParameter(valid_603665, JString, required = false,
+  if valid_593562 != nil:
+    section.add "X-Amz-Credential", valid_593562
+  var valid_593563 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593563 = validateParameter(valid_593563, JString, required = false,
                                  default = nil)
-  if valid_603665 != nil:
-    section.add "X-Amz-Credential", valid_603665
+  if valid_593563 != nil:
+    section.add "X-Amz-Security-Token", valid_593563
+  var valid_593564 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593564 = validateParameter(valid_593564, JString, required = false,
+                                 default = nil)
+  if valid_593564 != nil:
+    section.add "X-Amz-Algorithm", valid_593564
+  var valid_593565 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593565 = validateParameter(valid_593565, JString, required = false,
+                                 default = nil)
+  if valid_593565 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593565
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4569,44 +4573,44 @@ proc validate_UpdateCustomKeyStore_603656(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603667: Call_UpdateCustomKeyStore_603655; path: JsonNode;
+proc call*(call_593567: Call_UpdateCustomKeyStore_593555; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Changes the properties of a custom key store. Use the <code>CustomKeyStoreId</code> parameter to identify the custom key store you want to edit. Use the remaining parameters to change the properties of the custom key store.</p> <p>You can only update a custom key store that is disconnected. To disconnect the custom key store, use <a>DisconnectCustomKeyStore</a>. To reconnect the custom key store after the update completes, use <a>ConnectCustomKeyStore</a>. To find the connection state of a custom key store, use the <a>DescribeCustomKeyStores</a> operation.</p> <p>Use the parameters of <code>UpdateCustomKeyStore</code> to edit your keystore settings.</p> <ul> <li> <p>Use the <b>NewCustomKeyStoreName</b> parameter to change the friendly name of the custom key store to the value that you specify.</p> <p> </p> </li> <li> <p>Use the <b>KeyStorePassword</b> parameter tell AWS KMS the current password of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-store-concepts.html#concept-kmsuser"> <code>kmsuser</code> crypto user (CU)</a> in the associated AWS CloudHSM cluster. You can use this parameter to <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-password">fix connection failures</a> that occur when AWS KMS cannot log into the associated cluster because the <code>kmsuser</code> password has changed. This value does not change the password in the AWS CloudHSM cluster.</p> <p> </p> </li> <li> <p>Use the <b>CloudHsmClusterId</b> parameter to associate the custom key store with a different, but related, AWS CloudHSM cluster. You can use this parameter to repair a custom key store if its AWS CloudHSM cluster becomes corrupted or is deleted, or when you need to create or restore a cluster from a backup. </p> </li> </ul> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ## 
-  let valid = call_603667.validator(path, query, header, formData, body)
-  let scheme = call_603667.pickScheme
+  let valid = call_593567.validator(path, query, header, formData, body)
+  let scheme = call_593567.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603667.url(scheme.get, call_603667.host, call_603667.base,
-                         call_603667.route, valid.getOrDefault("path"),
+  let url = call_593567.url(scheme.get, call_593567.host, call_593567.base,
+                         call_593567.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603667, url, valid)
+  result = hook(call_593567, url, valid)
 
-proc call*(call_603668: Call_UpdateCustomKeyStore_603655; body: JsonNode): Recallable =
+proc call*(call_593568: Call_UpdateCustomKeyStore_593555; body: JsonNode): Recallable =
   ## updateCustomKeyStore
   ## <p>Changes the properties of a custom key store. Use the <code>CustomKeyStoreId</code> parameter to identify the custom key store you want to edit. Use the remaining parameters to change the properties of the custom key store.</p> <p>You can only update a custom key store that is disconnected. To disconnect the custom key store, use <a>DisconnectCustomKeyStore</a>. To reconnect the custom key store after the update completes, use <a>ConnectCustomKeyStore</a>. To find the connection state of a custom key store, use the <a>DescribeCustomKeyStores</a> operation.</p> <p>Use the parameters of <code>UpdateCustomKeyStore</code> to edit your keystore settings.</p> <ul> <li> <p>Use the <b>NewCustomKeyStoreName</b> parameter to change the friendly name of the custom key store to the value that you specify.</p> <p> </p> </li> <li> <p>Use the <b>KeyStorePassword</b> parameter tell AWS KMS the current password of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-store-concepts.html#concept-kmsuser"> <code>kmsuser</code> crypto user (CU)</a> in the associated AWS CloudHSM cluster. You can use this parameter to <a href="https://docs.aws.amazon.com/kms/latest/developerguide/fix-keystore.html#fix-keystore-password">fix connection failures</a> that occur when AWS KMS cannot log into the associated cluster because the <code>kmsuser</code> password has changed. This value does not change the password in the AWS CloudHSM cluster.</p> <p> </p> </li> <li> <p>Use the <b>CloudHsmClusterId</b> parameter to associate the custom key store with a different, but related, AWS CloudHSM cluster. You can use this parameter to repair a custom key store if its AWS CloudHSM cluster becomes corrupted or is deleted, or when you need to create or restore a cluster from a backup. </p> </li> </ul> <p>If the operation succeeds, it returns a JSON object with no properties.</p> <p>This operation is part of the <a href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">Custom Key Store feature</a> feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single-tenant key store.</p>
   ##   body: JObject (required)
-  var body_603669 = newJObject()
+  var body_593569 = newJObject()
   if body != nil:
-    body_603669 = body
-  result = call_603668.call(nil, nil, nil, nil, body_603669)
+    body_593569 = body
+  result = call_593568.call(nil, nil, nil, nil, body_593569)
 
-var updateCustomKeyStore* = Call_UpdateCustomKeyStore_603655(
+var updateCustomKeyStore* = Call_UpdateCustomKeyStore_593555(
     name: "updateCustomKeyStore", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.UpdateCustomKeyStore",
-    validator: validate_UpdateCustomKeyStore_603656, base: "/",
-    url: url_UpdateCustomKeyStore_603657, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateCustomKeyStore_593556, base: "/",
+    url: url_UpdateCustomKeyStore_593557, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateKeyDescription_603670 = ref object of OpenApiRestCall_602466
-proc url_UpdateKeyDescription_603672(protocol: Scheme; host: string; base: string;
+  Call_UpdateKeyDescription_593570 = ref object of OpenApiRestCall_592364
+proc url_UpdateKeyDescription_593572(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateKeyDescription_603671(path: JsonNode; query: JsonNode;
+proc validate_UpdateKeyDescription_593571(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the description of a customer master key (CMK). To see the description of a CMK, use <a>DescribeKey</a>. </p> <p>You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
@@ -4617,57 +4621,57 @@ proc validate_UpdateKeyDescription_603671(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603673 = header.getOrDefault("X-Amz-Date")
-  valid_603673 = validateParameter(valid_603673, JString, required = false,
-                                 default = nil)
-  if valid_603673 != nil:
-    section.add "X-Amz-Date", valid_603673
-  var valid_603674 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603674 = validateParameter(valid_603674, JString, required = false,
-                                 default = nil)
-  if valid_603674 != nil:
-    section.add "X-Amz-Security-Token", valid_603674
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603675 = header.getOrDefault("X-Amz-Target")
-  valid_603675 = validateParameter(valid_603675, JString, required = true, default = newJString(
+  var valid_593573 = header.getOrDefault("X-Amz-Target")
+  valid_593573 = validateParameter(valid_593573, JString, required = true, default = newJString(
       "TrentService.UpdateKeyDescription"))
-  if valid_603675 != nil:
-    section.add "X-Amz-Target", valid_603675
-  var valid_603676 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603676 = validateParameter(valid_603676, JString, required = false,
+  if valid_593573 != nil:
+    section.add "X-Amz-Target", valid_593573
+  var valid_593574 = header.getOrDefault("X-Amz-Signature")
+  valid_593574 = validateParameter(valid_593574, JString, required = false,
                                  default = nil)
-  if valid_603676 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603676
-  var valid_603677 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603677 = validateParameter(valid_603677, JString, required = false,
+  if valid_593574 != nil:
+    section.add "X-Amz-Signature", valid_593574
+  var valid_593575 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593575 = validateParameter(valid_593575, JString, required = false,
                                  default = nil)
-  if valid_603677 != nil:
-    section.add "X-Amz-Algorithm", valid_603677
-  var valid_603678 = header.getOrDefault("X-Amz-Signature")
-  valid_603678 = validateParameter(valid_603678, JString, required = false,
+  if valid_593575 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593575
+  var valid_593576 = header.getOrDefault("X-Amz-Date")
+  valid_593576 = validateParameter(valid_593576, JString, required = false,
                                  default = nil)
-  if valid_603678 != nil:
-    section.add "X-Amz-Signature", valid_603678
-  var valid_603679 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603679 = validateParameter(valid_603679, JString, required = false,
+  if valid_593576 != nil:
+    section.add "X-Amz-Date", valid_593576
+  var valid_593577 = header.getOrDefault("X-Amz-Credential")
+  valid_593577 = validateParameter(valid_593577, JString, required = false,
                                  default = nil)
-  if valid_603679 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603679
-  var valid_603680 = header.getOrDefault("X-Amz-Credential")
-  valid_603680 = validateParameter(valid_603680, JString, required = false,
+  if valid_593577 != nil:
+    section.add "X-Amz-Credential", valid_593577
+  var valid_593578 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593578 = validateParameter(valid_593578, JString, required = false,
                                  default = nil)
-  if valid_603680 != nil:
-    section.add "X-Amz-Credential", valid_603680
+  if valid_593578 != nil:
+    section.add "X-Amz-Security-Token", valid_593578
+  var valid_593579 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593579 = validateParameter(valid_593579, JString, required = false,
+                                 default = nil)
+  if valid_593579 != nil:
+    section.add "X-Amz-Algorithm", valid_593579
+  var valid_593580 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593580 = validateParameter(valid_593580, JString, required = false,
+                                 default = nil)
+  if valid_593580 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593580
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4678,34 +4682,34 @@ proc validate_UpdateKeyDescription_603671(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603682: Call_UpdateKeyDescription_603670; path: JsonNode;
+proc call*(call_593582: Call_UpdateKeyDescription_593570; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the description of a customer master key (CMK). To see the description of a CMK, use <a>DescribeKey</a>. </p> <p>You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ## 
-  let valid = call_603682.validator(path, query, header, formData, body)
-  let scheme = call_603682.pickScheme
+  let valid = call_593582.validator(path, query, header, formData, body)
+  let scheme = call_593582.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603682.url(scheme.get, call_603682.host, call_603682.base,
-                         call_603682.route, valid.getOrDefault("path"),
+  let url = call_593582.url(scheme.get, call_593582.host, call_593582.base,
+                         call_593582.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603682, url, valid)
+  result = hook(call_593582, url, valid)
 
-proc call*(call_603683: Call_UpdateKeyDescription_603670; body: JsonNode): Recallable =
+proc call*(call_593583: Call_UpdateKeyDescription_593570; body: JsonNode): Recallable =
   ## updateKeyDescription
   ## <p>Updates the description of a customer master key (CMK). To see the description of a CMK, use <a>DescribeKey</a>. </p> <p>You cannot perform this operation on a CMK in a different AWS account.</p> <p>The result of this operation varies with the key state of the CMK. For details, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">How Key State Affects Use of a Customer Master Key</a> in the <i>AWS Key Management Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_603684 = newJObject()
+  var body_593584 = newJObject()
   if body != nil:
-    body_603684 = body
-  result = call_603683.call(nil, nil, nil, nil, body_603684)
+    body_593584 = body
+  result = call_593583.call(nil, nil, nil, nil, body_593584)
 
-var updateKeyDescription* = Call_UpdateKeyDescription_603670(
+var updateKeyDescription* = Call_UpdateKeyDescription_593570(
     name: "updateKeyDescription", meth: HttpMethod.HttpPost,
     host: "kms.amazonaws.com",
     route: "/#X-Amz-Target=TrentService.UpdateKeyDescription",
-    validator: validate_UpdateKeyDescription_603671, base: "/",
-    url: url_UpdateKeyDescription_603672, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateKeyDescription_593571, base: "/",
+    url: url_UpdateKeyDescription_593572, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602457 = ref object of OpenApiRestCall
+  OpenApiRestCall_592355 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602457](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_592355](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602457): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_592355): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -95,9 +95,13 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
     if head notin input:
       return
     let js = input[head]
-    if js.kind notin {JString, JInt, JFloat, JNull, JBool}:
+    case js.kind
+    of JInt, JFloat, JNull, JBool:
+      head = $js
+    of JString:
+      head = js.getStr
+    else:
       return
-    head = $js
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
@@ -143,15 +147,15 @@ const
   awsServiceName = "lambda"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AddEventSource_603053 = ref object of OpenApiRestCall_602457
-proc url_AddEventSource_603055(protocol: Scheme; host: string; base: string;
+  Call_AddEventSource_592953 = ref object of OpenApiRestCall_592355
+proc url_AddEventSource_592955(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AddEventSource_603054(path: JsonNode; query: JsonNode;
+proc validate_AddEventSource_592954(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Identifies a stream as an event source for an AWS Lambda function. It can be either an Amazon Kinesis stream or a Amazon DynamoDB stream. AWS Lambda invokes the specified function when records are posted to the stream.</p> <p>This is the pull model, where AWS Lambda invokes the function. For more information, go to <a href="http://docs.aws.amazon.com/lambda/latest/dg/lambda-introduction.html">AWS Lambda: How it Works</a> in the AWS Lambda Developer Guide.</p> <p>This association between an Amazon Kinesis stream and an AWS Lambda function is called the event source mapping. You provide the configuration information (for example, which stream to read from and which AWS Lambda function to invoke) for the event source mapping in the request body.</p> <p> Each event source, such as a Kinesis stream, can only be associated with one AWS Lambda function. If you call <a>AddEventSource</a> for an event source that is already mapped to another AWS Lambda function, the existing mapping is updated to call the new function instead of the old one. </p> <p>This operation requires permission for the <code>iam:PassRole</code> action for the IAM role. It also requires permission for the <code>lambda:AddEventSource</code> action.</p>
@@ -163,49 +167,49 @@ proc validate_AddEventSource_603054(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603056 = header.getOrDefault("X-Amz-Date")
-  valid_603056 = validateParameter(valid_603056, JString, required = false,
+  var valid_592956 = header.getOrDefault("X-Amz-Signature")
+  valid_592956 = validateParameter(valid_592956, JString, required = false,
                                  default = nil)
-  if valid_603056 != nil:
-    section.add "X-Amz-Date", valid_603056
-  var valid_603057 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603057 = validateParameter(valid_603057, JString, required = false,
+  if valid_592956 != nil:
+    section.add "X-Amz-Signature", valid_592956
+  var valid_592957 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592957 = validateParameter(valid_592957, JString, required = false,
                                  default = nil)
-  if valid_603057 != nil:
-    section.add "X-Amz-Security-Token", valid_603057
-  var valid_603058 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603058 = validateParameter(valid_603058, JString, required = false,
+  if valid_592957 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592957
+  var valid_592958 = header.getOrDefault("X-Amz-Date")
+  valid_592958 = validateParameter(valid_592958, JString, required = false,
                                  default = nil)
-  if valid_603058 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603058
-  var valid_603059 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603059 = validateParameter(valid_603059, JString, required = false,
+  if valid_592958 != nil:
+    section.add "X-Amz-Date", valid_592958
+  var valid_592959 = header.getOrDefault("X-Amz-Credential")
+  valid_592959 = validateParameter(valid_592959, JString, required = false,
                                  default = nil)
-  if valid_603059 != nil:
-    section.add "X-Amz-Algorithm", valid_603059
-  var valid_603060 = header.getOrDefault("X-Amz-Signature")
-  valid_603060 = validateParameter(valid_603060, JString, required = false,
+  if valid_592959 != nil:
+    section.add "X-Amz-Credential", valid_592959
+  var valid_592960 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592960 = validateParameter(valid_592960, JString, required = false,
                                  default = nil)
-  if valid_603060 != nil:
-    section.add "X-Amz-Signature", valid_603060
-  var valid_603061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603061 = validateParameter(valid_603061, JString, required = false,
+  if valid_592960 != nil:
+    section.add "X-Amz-Security-Token", valid_592960
+  var valid_592961 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592961 = validateParameter(valid_592961, JString, required = false,
                                  default = nil)
-  if valid_603061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603061
-  var valid_603062 = header.getOrDefault("X-Amz-Credential")
-  valid_603062 = validateParameter(valid_603062, JString, required = false,
+  if valid_592961 != nil:
+    section.add "X-Amz-Algorithm", valid_592961
+  var valid_592962 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592962 = validateParameter(valid_592962, JString, required = false,
                                  default = nil)
-  if valid_603062 != nil:
-    section.add "X-Amz-Credential", valid_603062
+  if valid_592962 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592962
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -216,43 +220,43 @@ proc validate_AddEventSource_603054(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603064: Call_AddEventSource_603053; path: JsonNode; query: JsonNode;
+proc call*(call_592964: Call_AddEventSource_592953; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Identifies a stream as an event source for an AWS Lambda function. It can be either an Amazon Kinesis stream or a Amazon DynamoDB stream. AWS Lambda invokes the specified function when records are posted to the stream.</p> <p>This is the pull model, where AWS Lambda invokes the function. For more information, go to <a href="http://docs.aws.amazon.com/lambda/latest/dg/lambda-introduction.html">AWS Lambda: How it Works</a> in the AWS Lambda Developer Guide.</p> <p>This association between an Amazon Kinesis stream and an AWS Lambda function is called the event source mapping. You provide the configuration information (for example, which stream to read from and which AWS Lambda function to invoke) for the event source mapping in the request body.</p> <p> Each event source, such as a Kinesis stream, can only be associated with one AWS Lambda function. If you call <a>AddEventSource</a> for an event source that is already mapped to another AWS Lambda function, the existing mapping is updated to call the new function instead of the old one. </p> <p>This operation requires permission for the <code>iam:PassRole</code> action for the IAM role. It also requires permission for the <code>lambda:AddEventSource</code> action.</p>
   ## 
-  let valid = call_603064.validator(path, query, header, formData, body)
-  let scheme = call_603064.pickScheme
+  let valid = call_592964.validator(path, query, header, formData, body)
+  let scheme = call_592964.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603064.url(scheme.get, call_603064.host, call_603064.base,
-                         call_603064.route, valid.getOrDefault("path"),
+  let url = call_592964.url(scheme.get, call_592964.host, call_592964.base,
+                         call_592964.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603064, url, valid)
+  result = hook(call_592964, url, valid)
 
-proc call*(call_603065: Call_AddEventSource_603053; body: JsonNode): Recallable =
+proc call*(call_592965: Call_AddEventSource_592953; body: JsonNode): Recallable =
   ## addEventSource
   ## <p>Identifies a stream as an event source for an AWS Lambda function. It can be either an Amazon Kinesis stream or a Amazon DynamoDB stream. AWS Lambda invokes the specified function when records are posted to the stream.</p> <p>This is the pull model, where AWS Lambda invokes the function. For more information, go to <a href="http://docs.aws.amazon.com/lambda/latest/dg/lambda-introduction.html">AWS Lambda: How it Works</a> in the AWS Lambda Developer Guide.</p> <p>This association between an Amazon Kinesis stream and an AWS Lambda function is called the event source mapping. You provide the configuration information (for example, which stream to read from and which AWS Lambda function to invoke) for the event source mapping in the request body.</p> <p> Each event source, such as a Kinesis stream, can only be associated with one AWS Lambda function. If you call <a>AddEventSource</a> for an event source that is already mapped to another AWS Lambda function, the existing mapping is updated to call the new function instead of the old one. </p> <p>This operation requires permission for the <code>iam:PassRole</code> action for the IAM role. It also requires permission for the <code>lambda:AddEventSource</code> action.</p>
   ##   body: JObject (required)
-  var body_603066 = newJObject()
+  var body_592966 = newJObject()
   if body != nil:
-    body_603066 = body
-  result = call_603065.call(nil, nil, nil, nil, body_603066)
+    body_592966 = body
+  result = call_592965.call(nil, nil, nil, nil, body_592966)
 
-var addEventSource* = Call_AddEventSource_603053(name: "addEventSource",
+var addEventSource* = Call_AddEventSource_592953(name: "addEventSource",
     meth: HttpMethod.HttpPost, host: "lambda.amazonaws.com",
     route: "/2014-11-13/event-source-mappings/",
-    validator: validate_AddEventSource_603054, base: "/", url: url_AddEventSource_603055,
+    validator: validate_AddEventSource_592954, base: "/", url: url_AddEventSource_592955,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListEventSources_602794 = ref object of OpenApiRestCall_602457
-proc url_ListEventSources_602796(protocol: Scheme; host: string; base: string;
+  Call_ListEventSources_592694 = ref object of OpenApiRestCall_592355
+proc url_ListEventSources_592696(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListEventSources_602795(path: JsonNode; query: JsonNode;
+proc validate_ListEventSources_592695(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Returns a list of event source mappings you created using the <code>AddEventSource</code> (see <a>AddEventSource</a>), where you identify a stream as event source. This list does not include Amazon S3 event sources. </p> <p>For each mapping, the API returns configuration information. You can optionally specify filters to retrieve specific event source mappings.</p> <p>This operation requires permission for the <code>lambda:ListEventSources</code> action.</p>
@@ -262,125 +266,125 @@ proc validate_ListEventSources_602795(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   FunctionName: JString
-  ##               : The name of the AWS Lambda function.
   ##   Marker: JString
   ##         : Optional string. An opaque pagination token returned from a previous <code>ListEventSources</code> operation. If present, specifies to continue the list from where the returning call left off. 
-  ##   MaxItems: JInt
-  ##           : Optional integer. Specifies the maximum number of event sources to return in response. This value must be greater than 0.
   ##   EventSource: JString
   ##              : The Amazon Resource Name (ARN) of the Amazon Kinesis stream.
+  ##   FunctionName: JString
+  ##               : The name of the AWS Lambda function.
+  ##   MaxItems: JInt
+  ##           : Optional integer. Specifies the maximum number of event sources to return in response. This value must be greater than 0.
   section = newJObject()
-  var valid_602908 = query.getOrDefault("FunctionName")
-  valid_602908 = validateParameter(valid_602908, JString, required = false,
+  var valid_592808 = query.getOrDefault("Marker")
+  valid_592808 = validateParameter(valid_592808, JString, required = false,
                                  default = nil)
-  if valid_602908 != nil:
-    section.add "FunctionName", valid_602908
-  var valid_602909 = query.getOrDefault("Marker")
-  valid_602909 = validateParameter(valid_602909, JString, required = false,
+  if valid_592808 != nil:
+    section.add "Marker", valid_592808
+  var valid_592809 = query.getOrDefault("EventSource")
+  valid_592809 = validateParameter(valid_592809, JString, required = false,
                                  default = nil)
-  if valid_602909 != nil:
-    section.add "Marker", valid_602909
-  var valid_602910 = query.getOrDefault("MaxItems")
-  valid_602910 = validateParameter(valid_602910, JInt, required = false, default = nil)
-  if valid_602910 != nil:
-    section.add "MaxItems", valid_602910
-  var valid_602911 = query.getOrDefault("EventSource")
-  valid_602911 = validateParameter(valid_602911, JString, required = false,
+  if valid_592809 != nil:
+    section.add "EventSource", valid_592809
+  var valid_592810 = query.getOrDefault("FunctionName")
+  valid_592810 = validateParameter(valid_592810, JString, required = false,
                                  default = nil)
-  if valid_602911 != nil:
-    section.add "EventSource", valid_602911
+  if valid_592810 != nil:
+    section.add "FunctionName", valid_592810
+  var valid_592811 = query.getOrDefault("MaxItems")
+  valid_592811 = validateParameter(valid_592811, JInt, required = false, default = nil)
+  if valid_592811 != nil:
+    section.add "MaxItems", valid_592811
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602912 = header.getOrDefault("X-Amz-Date")
-  valid_602912 = validateParameter(valid_602912, JString, required = false,
+  var valid_592812 = header.getOrDefault("X-Amz-Signature")
+  valid_592812 = validateParameter(valid_592812, JString, required = false,
                                  default = nil)
-  if valid_602912 != nil:
-    section.add "X-Amz-Date", valid_602912
-  var valid_602913 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602913 = validateParameter(valid_602913, JString, required = false,
+  if valid_592812 != nil:
+    section.add "X-Amz-Signature", valid_592812
+  var valid_592813 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592813 = validateParameter(valid_592813, JString, required = false,
                                  default = nil)
-  if valid_602913 != nil:
-    section.add "X-Amz-Security-Token", valid_602913
-  var valid_602914 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602914 = validateParameter(valid_602914, JString, required = false,
+  if valid_592813 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592813
+  var valid_592814 = header.getOrDefault("X-Amz-Date")
+  valid_592814 = validateParameter(valid_592814, JString, required = false,
                                  default = nil)
-  if valid_602914 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602914
-  var valid_602915 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602915 = validateParameter(valid_602915, JString, required = false,
+  if valid_592814 != nil:
+    section.add "X-Amz-Date", valid_592814
+  var valid_592815 = header.getOrDefault("X-Amz-Credential")
+  valid_592815 = validateParameter(valid_592815, JString, required = false,
                                  default = nil)
-  if valid_602915 != nil:
-    section.add "X-Amz-Algorithm", valid_602915
-  var valid_602916 = header.getOrDefault("X-Amz-Signature")
-  valid_602916 = validateParameter(valid_602916, JString, required = false,
+  if valid_592815 != nil:
+    section.add "X-Amz-Credential", valid_592815
+  var valid_592816 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592816 = validateParameter(valid_592816, JString, required = false,
                                  default = nil)
-  if valid_602916 != nil:
-    section.add "X-Amz-Signature", valid_602916
-  var valid_602917 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602917 = validateParameter(valid_602917, JString, required = false,
+  if valid_592816 != nil:
+    section.add "X-Amz-Security-Token", valid_592816
+  var valid_592817 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592817 = validateParameter(valid_592817, JString, required = false,
                                  default = nil)
-  if valid_602917 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602917
-  var valid_602918 = header.getOrDefault("X-Amz-Credential")
-  valid_602918 = validateParameter(valid_602918, JString, required = false,
+  if valid_592817 != nil:
+    section.add "X-Amz-Algorithm", valid_592817
+  var valid_592818 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592818 = validateParameter(valid_592818, JString, required = false,
                                  default = nil)
-  if valid_602918 != nil:
-    section.add "X-Amz-Credential", valid_602918
+  if valid_592818 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592818
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602941: Call_ListEventSources_602794; path: JsonNode;
+proc call*(call_592841: Call_ListEventSources_592694; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of event source mappings you created using the <code>AddEventSource</code> (see <a>AddEventSource</a>), where you identify a stream as event source. This list does not include Amazon S3 event sources. </p> <p>For each mapping, the API returns configuration information. You can optionally specify filters to retrieve specific event source mappings.</p> <p>This operation requires permission for the <code>lambda:ListEventSources</code> action.</p>
   ## 
-  let valid = call_602941.validator(path, query, header, formData, body)
-  let scheme = call_602941.pickScheme
+  let valid = call_592841.validator(path, query, header, formData, body)
+  let scheme = call_592841.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602941.url(scheme.get, call_602941.host, call_602941.base,
-                         call_602941.route, valid.getOrDefault("path"),
+  let url = call_592841.url(scheme.get, call_592841.host, call_592841.base,
+                         call_592841.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_602941, url, valid)
+  result = hook(call_592841, url, valid)
 
-proc call*(call_603012: Call_ListEventSources_602794; FunctionName: string = "";
-          Marker: string = ""; MaxItems: int = 0; EventSource: string = ""): Recallable =
+proc call*(call_592912: Call_ListEventSources_592694; Marker: string = "";
+          EventSource: string = ""; FunctionName: string = ""; MaxItems: int = 0): Recallable =
   ## listEventSources
   ## <p>Returns a list of event source mappings you created using the <code>AddEventSource</code> (see <a>AddEventSource</a>), where you identify a stream as event source. This list does not include Amazon S3 event sources. </p> <p>For each mapping, the API returns configuration information. You can optionally specify filters to retrieve specific event source mappings.</p> <p>This operation requires permission for the <code>lambda:ListEventSources</code> action.</p>
-  ##   FunctionName: string
-  ##               : The name of the AWS Lambda function.
   ##   Marker: string
   ##         : Optional string. An opaque pagination token returned from a previous <code>ListEventSources</code> operation. If present, specifies to continue the list from where the returning call left off. 
-  ##   MaxItems: int
-  ##           : Optional integer. Specifies the maximum number of event sources to return in response. This value must be greater than 0.
   ##   EventSource: string
   ##              : The Amazon Resource Name (ARN) of the Amazon Kinesis stream.
-  var query_603013 = newJObject()
-  add(query_603013, "FunctionName", newJString(FunctionName))
-  add(query_603013, "Marker", newJString(Marker))
-  add(query_603013, "MaxItems", newJInt(MaxItems))
-  add(query_603013, "EventSource", newJString(EventSource))
-  result = call_603012.call(nil, query_603013, nil, nil, nil)
+  ##   FunctionName: string
+  ##               : The name of the AWS Lambda function.
+  ##   MaxItems: int
+  ##           : Optional integer. Specifies the maximum number of event sources to return in response. This value must be greater than 0.
+  var query_592913 = newJObject()
+  add(query_592913, "Marker", newJString(Marker))
+  add(query_592913, "EventSource", newJString(EventSource))
+  add(query_592913, "FunctionName", newJString(FunctionName))
+  add(query_592913, "MaxItems", newJInt(MaxItems))
+  result = call_592912.call(nil, query_592913, nil, nil, nil)
 
-var listEventSources* = Call_ListEventSources_602794(name: "listEventSources",
+var listEventSources* = Call_ListEventSources_592694(name: "listEventSources",
     meth: HttpMethod.HttpGet, host: "lambda.amazonaws.com",
     route: "/2014-11-13/event-source-mappings/",
-    validator: validate_ListEventSources_602795, base: "/",
-    url: url_ListEventSources_602796, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListEventSources_592695, base: "/",
+    url: url_ListEventSources_592696, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetFunction_603067 = ref object of OpenApiRestCall_602457
-proc url_GetFunction_603069(protocol: Scheme; host: string; base: string;
+  Call_GetFunction_592967 = ref object of OpenApiRestCall_592355
+proc url_GetFunction_592969(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -395,7 +399,7 @@ proc url_GetFunction_603069(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetFunction_603068(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetFunction_592968(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the configuration information of the Lambda function and a presigned URL link to the .zip file you uploaded with <a>UploadFunction</a> so you can download the .zip file. Note that the URL is valid for up to 10 minutes. The configuration information is the same information you provided as parameters when uploading the function.</p> <p>This operation requires permission for the <code>lambda:GetFunction</code> action.</p>
   ## 
@@ -407,95 +411,95 @@ proc validate_GetFunction_603068(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FunctionName` field"
-  var valid_603084 = path.getOrDefault("FunctionName")
-  valid_603084 = validateParameter(valid_603084, JString, required = true,
+  var valid_592984 = path.getOrDefault("FunctionName")
+  valid_592984 = validateParameter(valid_592984, JString, required = true,
                                  default = nil)
-  if valid_603084 != nil:
-    section.add "FunctionName", valid_603084
+  if valid_592984 != nil:
+    section.add "FunctionName", valid_592984
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603085 = header.getOrDefault("X-Amz-Date")
-  valid_603085 = validateParameter(valid_603085, JString, required = false,
+  var valid_592985 = header.getOrDefault("X-Amz-Signature")
+  valid_592985 = validateParameter(valid_592985, JString, required = false,
                                  default = nil)
-  if valid_603085 != nil:
-    section.add "X-Amz-Date", valid_603085
-  var valid_603086 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603086 = validateParameter(valid_603086, JString, required = false,
+  if valid_592985 != nil:
+    section.add "X-Amz-Signature", valid_592985
+  var valid_592986 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592986 = validateParameter(valid_592986, JString, required = false,
                                  default = nil)
-  if valid_603086 != nil:
-    section.add "X-Amz-Security-Token", valid_603086
-  var valid_603087 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603087 = validateParameter(valid_603087, JString, required = false,
+  if valid_592986 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592986
+  var valid_592987 = header.getOrDefault("X-Amz-Date")
+  valid_592987 = validateParameter(valid_592987, JString, required = false,
                                  default = nil)
-  if valid_603087 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603087
-  var valid_603088 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603088 = validateParameter(valid_603088, JString, required = false,
+  if valid_592987 != nil:
+    section.add "X-Amz-Date", valid_592987
+  var valid_592988 = header.getOrDefault("X-Amz-Credential")
+  valid_592988 = validateParameter(valid_592988, JString, required = false,
                                  default = nil)
-  if valid_603088 != nil:
-    section.add "X-Amz-Algorithm", valid_603088
-  var valid_603089 = header.getOrDefault("X-Amz-Signature")
-  valid_603089 = validateParameter(valid_603089, JString, required = false,
+  if valid_592988 != nil:
+    section.add "X-Amz-Credential", valid_592988
+  var valid_592989 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592989 = validateParameter(valid_592989, JString, required = false,
                                  default = nil)
-  if valid_603089 != nil:
-    section.add "X-Amz-Signature", valid_603089
-  var valid_603090 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603090 = validateParameter(valid_603090, JString, required = false,
+  if valid_592989 != nil:
+    section.add "X-Amz-Security-Token", valid_592989
+  var valid_592990 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592990 = validateParameter(valid_592990, JString, required = false,
                                  default = nil)
-  if valid_603090 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603090
-  var valid_603091 = header.getOrDefault("X-Amz-Credential")
-  valid_603091 = validateParameter(valid_603091, JString, required = false,
+  if valid_592990 != nil:
+    section.add "X-Amz-Algorithm", valid_592990
+  var valid_592991 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592991 = validateParameter(valid_592991, JString, required = false,
                                  default = nil)
-  if valid_603091 != nil:
-    section.add "X-Amz-Credential", valid_603091
+  if valid_592991 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592991
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603092: Call_GetFunction_603067; path: JsonNode; query: JsonNode;
+proc call*(call_592992: Call_GetFunction_592967; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the configuration information of the Lambda function and a presigned URL link to the .zip file you uploaded with <a>UploadFunction</a> so you can download the .zip file. Note that the URL is valid for up to 10 minutes. The configuration information is the same information you provided as parameters when uploading the function.</p> <p>This operation requires permission for the <code>lambda:GetFunction</code> action.</p>
   ## 
-  let valid = call_603092.validator(path, query, header, formData, body)
-  let scheme = call_603092.pickScheme
+  let valid = call_592992.validator(path, query, header, formData, body)
+  let scheme = call_592992.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603092.url(scheme.get, call_603092.host, call_603092.base,
-                         call_603092.route, valid.getOrDefault("path"),
+  let url = call_592992.url(scheme.get, call_592992.host, call_592992.base,
+                         call_592992.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603092, url, valid)
+  result = hook(call_592992, url, valid)
 
-proc call*(call_603093: Call_GetFunction_603067; FunctionName: string): Recallable =
+proc call*(call_592993: Call_GetFunction_592967; FunctionName: string): Recallable =
   ## getFunction
   ## <p>Returns the configuration information of the Lambda function and a presigned URL link to the .zip file you uploaded with <a>UploadFunction</a> so you can download the .zip file. Note that the URL is valid for up to 10 minutes. The configuration information is the same information you provided as parameters when uploading the function.</p> <p>This operation requires permission for the <code>lambda:GetFunction</code> action.</p>
   ##   FunctionName: string (required)
   ##               : The Lambda function name.
-  var path_603094 = newJObject()
-  add(path_603094, "FunctionName", newJString(FunctionName))
-  result = call_603093.call(path_603094, nil, nil, nil, nil)
+  var path_592994 = newJObject()
+  add(path_592994, "FunctionName", newJString(FunctionName))
+  result = call_592993.call(path_592994, nil, nil, nil, nil)
 
-var getFunction* = Call_GetFunction_603067(name: "getFunction",
+var getFunction* = Call_GetFunction_592967(name: "getFunction",
                                         meth: HttpMethod.HttpGet,
                                         host: "lambda.amazonaws.com", route: "/2014-11-13/functions/{FunctionName}",
-                                        validator: validate_GetFunction_603068,
-                                        base: "/", url: url_GetFunction_603069,
+                                        validator: validate_GetFunction_592968,
+                                        base: "/", url: url_GetFunction_592969,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteFunction_603095 = ref object of OpenApiRestCall_602457
-proc url_DeleteFunction_603097(protocol: Scheme; host: string; base: string;
+  Call_DeleteFunction_592995 = ref object of OpenApiRestCall_592355
+proc url_DeleteFunction_592997(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -510,7 +514,7 @@ proc url_DeleteFunction_603097(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_DeleteFunction_603096(path: JsonNode; query: JsonNode;
+proc validate_DeleteFunction_592996(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Deletes the specified Lambda function code and configuration.</p> <p>This operation requires permission for the <code>lambda:DeleteFunction</code> action.</p>
@@ -523,94 +527,94 @@ proc validate_DeleteFunction_603096(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FunctionName` field"
-  var valid_603098 = path.getOrDefault("FunctionName")
-  valid_603098 = validateParameter(valid_603098, JString, required = true,
+  var valid_592998 = path.getOrDefault("FunctionName")
+  valid_592998 = validateParameter(valid_592998, JString, required = true,
                                  default = nil)
-  if valid_603098 != nil:
-    section.add "FunctionName", valid_603098
+  if valid_592998 != nil:
+    section.add "FunctionName", valid_592998
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603099 = header.getOrDefault("X-Amz-Date")
-  valid_603099 = validateParameter(valid_603099, JString, required = false,
+  var valid_592999 = header.getOrDefault("X-Amz-Signature")
+  valid_592999 = validateParameter(valid_592999, JString, required = false,
                                  default = nil)
-  if valid_603099 != nil:
-    section.add "X-Amz-Date", valid_603099
-  var valid_603100 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603100 = validateParameter(valid_603100, JString, required = false,
+  if valid_592999 != nil:
+    section.add "X-Amz-Signature", valid_592999
+  var valid_593000 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593000 = validateParameter(valid_593000, JString, required = false,
                                  default = nil)
-  if valid_603100 != nil:
-    section.add "X-Amz-Security-Token", valid_603100
-  var valid_603101 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603101 = validateParameter(valid_603101, JString, required = false,
+  if valid_593000 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593000
+  var valid_593001 = header.getOrDefault("X-Amz-Date")
+  valid_593001 = validateParameter(valid_593001, JString, required = false,
                                  default = nil)
-  if valid_603101 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603101
-  var valid_603102 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603102 = validateParameter(valid_603102, JString, required = false,
+  if valid_593001 != nil:
+    section.add "X-Amz-Date", valid_593001
+  var valid_593002 = header.getOrDefault("X-Amz-Credential")
+  valid_593002 = validateParameter(valid_593002, JString, required = false,
                                  default = nil)
-  if valid_603102 != nil:
-    section.add "X-Amz-Algorithm", valid_603102
-  var valid_603103 = header.getOrDefault("X-Amz-Signature")
-  valid_603103 = validateParameter(valid_603103, JString, required = false,
+  if valid_593002 != nil:
+    section.add "X-Amz-Credential", valid_593002
+  var valid_593003 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593003 = validateParameter(valid_593003, JString, required = false,
                                  default = nil)
-  if valid_603103 != nil:
-    section.add "X-Amz-Signature", valid_603103
-  var valid_603104 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603104 = validateParameter(valid_603104, JString, required = false,
+  if valid_593003 != nil:
+    section.add "X-Amz-Security-Token", valid_593003
+  var valid_593004 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593004 = validateParameter(valid_593004, JString, required = false,
                                  default = nil)
-  if valid_603104 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603104
-  var valid_603105 = header.getOrDefault("X-Amz-Credential")
-  valid_603105 = validateParameter(valid_603105, JString, required = false,
+  if valid_593004 != nil:
+    section.add "X-Amz-Algorithm", valid_593004
+  var valid_593005 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593005 = validateParameter(valid_593005, JString, required = false,
                                  default = nil)
-  if valid_603105 != nil:
-    section.add "X-Amz-Credential", valid_603105
+  if valid_593005 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593005
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603106: Call_DeleteFunction_603095; path: JsonNode; query: JsonNode;
+proc call*(call_593006: Call_DeleteFunction_592995; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified Lambda function code and configuration.</p> <p>This operation requires permission for the <code>lambda:DeleteFunction</code> action.</p>
   ## 
-  let valid = call_603106.validator(path, query, header, formData, body)
-  let scheme = call_603106.pickScheme
+  let valid = call_593006.validator(path, query, header, formData, body)
+  let scheme = call_593006.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603106.url(scheme.get, call_603106.host, call_603106.base,
-                         call_603106.route, valid.getOrDefault("path"),
+  let url = call_593006.url(scheme.get, call_593006.host, call_593006.base,
+                         call_593006.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603106, url, valid)
+  result = hook(call_593006, url, valid)
 
-proc call*(call_603107: Call_DeleteFunction_603095; FunctionName: string): Recallable =
+proc call*(call_593007: Call_DeleteFunction_592995; FunctionName: string): Recallable =
   ## deleteFunction
   ## <p>Deletes the specified Lambda function code and configuration.</p> <p>This operation requires permission for the <code>lambda:DeleteFunction</code> action.</p>
   ##   FunctionName: string (required)
   ##               : The Lambda function to delete.
-  var path_603108 = newJObject()
-  add(path_603108, "FunctionName", newJString(FunctionName))
-  result = call_603107.call(path_603108, nil, nil, nil, nil)
+  var path_593008 = newJObject()
+  add(path_593008, "FunctionName", newJString(FunctionName))
+  result = call_593007.call(path_593008, nil, nil, nil, nil)
 
-var deleteFunction* = Call_DeleteFunction_603095(name: "deleteFunction",
+var deleteFunction* = Call_DeleteFunction_592995(name: "deleteFunction",
     meth: HttpMethod.HttpDelete, host: "lambda.amazonaws.com",
     route: "/2014-11-13/functions/{FunctionName}",
-    validator: validate_DeleteFunction_603096, base: "/", url: url_DeleteFunction_603097,
+    validator: validate_DeleteFunction_592996, base: "/", url: url_DeleteFunction_592997,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetEventSource_603109 = ref object of OpenApiRestCall_602457
-proc url_GetEventSource_603111(protocol: Scheme; host: string; base: string;
+  Call_GetEventSource_593009 = ref object of OpenApiRestCall_592355
+proc url_GetEventSource_593011(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -625,7 +629,7 @@ proc url_GetEventSource_603111(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetEventSource_603110(path: JsonNode; query: JsonNode;
+proc validate_GetEventSource_593010(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns configuration information for the specified event source mapping (see <a>AddEventSource</a>).</p> <p>This operation requires permission for the <code>lambda:GetEventSource</code> action.</p>
@@ -637,94 +641,94 @@ proc validate_GetEventSource_603110(path: JsonNode; query: JsonNode;
   ##       : The AWS Lambda assigned ID of the event source mapping.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `UUID` field"
-  var valid_603112 = path.getOrDefault("UUID")
-  valid_603112 = validateParameter(valid_603112, JString, required = true,
+  var valid_593012 = path.getOrDefault("UUID")
+  valid_593012 = validateParameter(valid_593012, JString, required = true,
                                  default = nil)
-  if valid_603112 != nil:
-    section.add "UUID", valid_603112
+  if valid_593012 != nil:
+    section.add "UUID", valid_593012
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603113 = header.getOrDefault("X-Amz-Date")
-  valid_603113 = validateParameter(valid_603113, JString, required = false,
+  var valid_593013 = header.getOrDefault("X-Amz-Signature")
+  valid_593013 = validateParameter(valid_593013, JString, required = false,
                                  default = nil)
-  if valid_603113 != nil:
-    section.add "X-Amz-Date", valid_603113
-  var valid_603114 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603114 = validateParameter(valid_603114, JString, required = false,
+  if valid_593013 != nil:
+    section.add "X-Amz-Signature", valid_593013
+  var valid_593014 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593014 = validateParameter(valid_593014, JString, required = false,
                                  default = nil)
-  if valid_603114 != nil:
-    section.add "X-Amz-Security-Token", valid_603114
-  var valid_603115 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603115 = validateParameter(valid_603115, JString, required = false,
+  if valid_593014 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593014
+  var valid_593015 = header.getOrDefault("X-Amz-Date")
+  valid_593015 = validateParameter(valid_593015, JString, required = false,
                                  default = nil)
-  if valid_603115 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603115
-  var valid_603116 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603116 = validateParameter(valid_603116, JString, required = false,
+  if valid_593015 != nil:
+    section.add "X-Amz-Date", valid_593015
+  var valid_593016 = header.getOrDefault("X-Amz-Credential")
+  valid_593016 = validateParameter(valid_593016, JString, required = false,
                                  default = nil)
-  if valid_603116 != nil:
-    section.add "X-Amz-Algorithm", valid_603116
-  var valid_603117 = header.getOrDefault("X-Amz-Signature")
-  valid_603117 = validateParameter(valid_603117, JString, required = false,
+  if valid_593016 != nil:
+    section.add "X-Amz-Credential", valid_593016
+  var valid_593017 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593017 = validateParameter(valid_593017, JString, required = false,
                                  default = nil)
-  if valid_603117 != nil:
-    section.add "X-Amz-Signature", valid_603117
-  var valid_603118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603118 = validateParameter(valid_603118, JString, required = false,
+  if valid_593017 != nil:
+    section.add "X-Amz-Security-Token", valid_593017
+  var valid_593018 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593018 = validateParameter(valid_593018, JString, required = false,
                                  default = nil)
-  if valid_603118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603118
-  var valid_603119 = header.getOrDefault("X-Amz-Credential")
-  valid_603119 = validateParameter(valid_603119, JString, required = false,
+  if valid_593018 != nil:
+    section.add "X-Amz-Algorithm", valid_593018
+  var valid_593019 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593019 = validateParameter(valid_593019, JString, required = false,
                                  default = nil)
-  if valid_603119 != nil:
-    section.add "X-Amz-Credential", valid_603119
+  if valid_593019 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593019
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603120: Call_GetEventSource_603109; path: JsonNode; query: JsonNode;
+proc call*(call_593020: Call_GetEventSource_593009; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns configuration information for the specified event source mapping (see <a>AddEventSource</a>).</p> <p>This operation requires permission for the <code>lambda:GetEventSource</code> action.</p>
   ## 
-  let valid = call_603120.validator(path, query, header, formData, body)
-  let scheme = call_603120.pickScheme
+  let valid = call_593020.validator(path, query, header, formData, body)
+  let scheme = call_593020.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603120.url(scheme.get, call_603120.host, call_603120.base,
-                         call_603120.route, valid.getOrDefault("path"),
+  let url = call_593020.url(scheme.get, call_593020.host, call_593020.base,
+                         call_593020.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603120, url, valid)
+  result = hook(call_593020, url, valid)
 
-proc call*(call_603121: Call_GetEventSource_603109; UUID: string): Recallable =
+proc call*(call_593021: Call_GetEventSource_593009; UUID: string): Recallable =
   ## getEventSource
   ## <p>Returns configuration information for the specified event source mapping (see <a>AddEventSource</a>).</p> <p>This operation requires permission for the <code>lambda:GetEventSource</code> action.</p>
   ##   UUID: string (required)
   ##       : The AWS Lambda assigned ID of the event source mapping.
-  var path_603122 = newJObject()
-  add(path_603122, "UUID", newJString(UUID))
-  result = call_603121.call(path_603122, nil, nil, nil, nil)
+  var path_593022 = newJObject()
+  add(path_593022, "UUID", newJString(UUID))
+  result = call_593021.call(path_593022, nil, nil, nil, nil)
 
-var getEventSource* = Call_GetEventSource_603109(name: "getEventSource",
+var getEventSource* = Call_GetEventSource_593009(name: "getEventSource",
     meth: HttpMethod.HttpGet, host: "lambda.amazonaws.com",
     route: "/2014-11-13/event-source-mappings/{UUID}",
-    validator: validate_GetEventSource_603110, base: "/", url: url_GetEventSource_603111,
+    validator: validate_GetEventSource_593010, base: "/", url: url_GetEventSource_593011,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RemoveEventSource_603123 = ref object of OpenApiRestCall_602457
-proc url_RemoveEventSource_603125(protocol: Scheme; host: string; base: string;
+  Call_RemoveEventSource_593023 = ref object of OpenApiRestCall_592355
+proc url_RemoveEventSource_593025(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -739,7 +743,7 @@ proc url_RemoveEventSource_603125(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_RemoveEventSource_603124(path: JsonNode; query: JsonNode;
+proc validate_RemoveEventSource_593024(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Removes an event source mapping. This means AWS Lambda will no longer invoke the function for events in the associated source.</p> <p>This operation requires permission for the <code>lambda:RemoveEventSource</code> action.</p>
@@ -751,94 +755,94 @@ proc validate_RemoveEventSource_603124(path: JsonNode; query: JsonNode;
   ##       : The event source mapping ID.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `UUID` field"
-  var valid_603126 = path.getOrDefault("UUID")
-  valid_603126 = validateParameter(valid_603126, JString, required = true,
+  var valid_593026 = path.getOrDefault("UUID")
+  valid_593026 = validateParameter(valid_593026, JString, required = true,
                                  default = nil)
-  if valid_603126 != nil:
-    section.add "UUID", valid_603126
+  if valid_593026 != nil:
+    section.add "UUID", valid_593026
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603127 = header.getOrDefault("X-Amz-Date")
-  valid_603127 = validateParameter(valid_603127, JString, required = false,
+  var valid_593027 = header.getOrDefault("X-Amz-Signature")
+  valid_593027 = validateParameter(valid_593027, JString, required = false,
                                  default = nil)
-  if valid_603127 != nil:
-    section.add "X-Amz-Date", valid_603127
-  var valid_603128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603128 = validateParameter(valid_603128, JString, required = false,
+  if valid_593027 != nil:
+    section.add "X-Amz-Signature", valid_593027
+  var valid_593028 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593028 = validateParameter(valid_593028, JString, required = false,
                                  default = nil)
-  if valid_603128 != nil:
-    section.add "X-Amz-Security-Token", valid_603128
-  var valid_603129 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603129 = validateParameter(valid_603129, JString, required = false,
+  if valid_593028 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593028
+  var valid_593029 = header.getOrDefault("X-Amz-Date")
+  valid_593029 = validateParameter(valid_593029, JString, required = false,
                                  default = nil)
-  if valid_603129 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603129
-  var valid_603130 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603130 = validateParameter(valid_603130, JString, required = false,
+  if valid_593029 != nil:
+    section.add "X-Amz-Date", valid_593029
+  var valid_593030 = header.getOrDefault("X-Amz-Credential")
+  valid_593030 = validateParameter(valid_593030, JString, required = false,
                                  default = nil)
-  if valid_603130 != nil:
-    section.add "X-Amz-Algorithm", valid_603130
-  var valid_603131 = header.getOrDefault("X-Amz-Signature")
-  valid_603131 = validateParameter(valid_603131, JString, required = false,
+  if valid_593030 != nil:
+    section.add "X-Amz-Credential", valid_593030
+  var valid_593031 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593031 = validateParameter(valid_593031, JString, required = false,
                                  default = nil)
-  if valid_603131 != nil:
-    section.add "X-Amz-Signature", valid_603131
-  var valid_603132 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603132 = validateParameter(valid_603132, JString, required = false,
+  if valid_593031 != nil:
+    section.add "X-Amz-Security-Token", valid_593031
+  var valid_593032 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593032 = validateParameter(valid_593032, JString, required = false,
                                  default = nil)
-  if valid_603132 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603132
-  var valid_603133 = header.getOrDefault("X-Amz-Credential")
-  valid_603133 = validateParameter(valid_603133, JString, required = false,
+  if valid_593032 != nil:
+    section.add "X-Amz-Algorithm", valid_593032
+  var valid_593033 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593033 = validateParameter(valid_593033, JString, required = false,
                                  default = nil)
-  if valid_603133 != nil:
-    section.add "X-Amz-Credential", valid_603133
+  if valid_593033 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593033
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603134: Call_RemoveEventSource_603123; path: JsonNode;
+proc call*(call_593034: Call_RemoveEventSource_593023; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes an event source mapping. This means AWS Lambda will no longer invoke the function for events in the associated source.</p> <p>This operation requires permission for the <code>lambda:RemoveEventSource</code> action.</p>
   ## 
-  let valid = call_603134.validator(path, query, header, formData, body)
-  let scheme = call_603134.pickScheme
+  let valid = call_593034.validator(path, query, header, formData, body)
+  let scheme = call_593034.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603134.url(scheme.get, call_603134.host, call_603134.base,
-                         call_603134.route, valid.getOrDefault("path"),
+  let url = call_593034.url(scheme.get, call_593034.host, call_593034.base,
+                         call_593034.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603134, url, valid)
+  result = hook(call_593034, url, valid)
 
-proc call*(call_603135: Call_RemoveEventSource_603123; UUID: string): Recallable =
+proc call*(call_593035: Call_RemoveEventSource_593023; UUID: string): Recallable =
   ## removeEventSource
   ## <p>Removes an event source mapping. This means AWS Lambda will no longer invoke the function for events in the associated source.</p> <p>This operation requires permission for the <code>lambda:RemoveEventSource</code> action.</p>
   ##   UUID: string (required)
   ##       : The event source mapping ID.
-  var path_603136 = newJObject()
-  add(path_603136, "UUID", newJString(UUID))
-  result = call_603135.call(path_603136, nil, nil, nil, nil)
+  var path_593036 = newJObject()
+  add(path_593036, "UUID", newJString(UUID))
+  result = call_593035.call(path_593036, nil, nil, nil, nil)
 
-var removeEventSource* = Call_RemoveEventSource_603123(name: "removeEventSource",
+var removeEventSource* = Call_RemoveEventSource_593023(name: "removeEventSource",
     meth: HttpMethod.HttpDelete, host: "lambda.amazonaws.com",
     route: "/2014-11-13/event-source-mappings/{UUID}",
-    validator: validate_RemoveEventSource_603124, base: "/",
-    url: url_RemoveEventSource_603125, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RemoveEventSource_593024, base: "/",
+    url: url_RemoveEventSource_593025, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateFunctionConfiguration_603151 = ref object of OpenApiRestCall_602457
-proc url_UpdateFunctionConfiguration_603153(protocol: Scheme; host: string;
+  Call_UpdateFunctionConfiguration_593051 = ref object of OpenApiRestCall_592355
+proc url_UpdateFunctionConfiguration_593053(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -854,7 +858,7 @@ proc url_UpdateFunctionConfiguration_603153(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_UpdateFunctionConfiguration_603152(path: JsonNode; query: JsonNode;
+proc validate_UpdateFunctionConfiguration_593052(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the configuration parameters for the specified Lambda function by using the values provided in the request. You provide only the parameters you want to change. This operation must only be used on an existing Lambda function and cannot be used to update the function's code. </p> <p>This operation requires permission for the <code>lambda:UpdateFunctionConfiguration</code> action.</p>
   ## 
@@ -866,148 +870,148 @@ proc validate_UpdateFunctionConfiguration_603152(path: JsonNode; query: JsonNode
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FunctionName` field"
-  var valid_603154 = path.getOrDefault("FunctionName")
-  valid_603154 = validateParameter(valid_603154, JString, required = true,
+  var valid_593054 = path.getOrDefault("FunctionName")
+  valid_593054 = validateParameter(valid_593054, JString, required = true,
                                  default = nil)
-  if valid_603154 != nil:
-    section.add "FunctionName", valid_603154
+  if valid_593054 != nil:
+    section.add "FunctionName", valid_593054
   result.add "path", section
   ## parameters in `query` object:
-  ##   Description: JString
-  ##              : A short user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
   ##   Timeout: JInt
   ##          : The function execution time at which Lambda should terminate the function. Because the execution time has cost implications, we recommend you set this value based on your expected execution time. The default is 3 seconds. 
-  ##   Handler: JString
-  ##          : The function that Lambda calls to begin executing your function. For Node.js, it is the <i>module-name.export</i> value in your function. 
   ##   Role: JString
   ##       : The Amazon Resource Name (ARN) of the IAM role that Lambda will assume when it executes your function. 
+  ##   Description: JString
+  ##              : A short user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
+  ##   Handler: JString
+  ##          : The function that Lambda calls to begin executing your function. For Node.js, it is the <i>module-name.export</i> value in your function. 
   ##   MemorySize: JInt
   ##             : The amount of memory, in MB, your Lambda function is given. Lambda uses this memory size to infer the amount of CPU allocated to your function. Your function use-case determines your CPU and memory requirements. For example, a database operation might need less memory compared to an image processing function. The default value is 128 MB. The value must be a multiple of 64 MB.
   section = newJObject()
-  var valid_603155 = query.getOrDefault("Description")
-  valid_603155 = validateParameter(valid_603155, JString, required = false,
+  var valid_593055 = query.getOrDefault("Timeout")
+  valid_593055 = validateParameter(valid_593055, JInt, required = false, default = nil)
+  if valid_593055 != nil:
+    section.add "Timeout", valid_593055
+  var valid_593056 = query.getOrDefault("Role")
+  valid_593056 = validateParameter(valid_593056, JString, required = false,
                                  default = nil)
-  if valid_603155 != nil:
-    section.add "Description", valid_603155
-  var valid_603156 = query.getOrDefault("Timeout")
-  valid_603156 = validateParameter(valid_603156, JInt, required = false, default = nil)
-  if valid_603156 != nil:
-    section.add "Timeout", valid_603156
-  var valid_603157 = query.getOrDefault("Handler")
-  valid_603157 = validateParameter(valid_603157, JString, required = false,
+  if valid_593056 != nil:
+    section.add "Role", valid_593056
+  var valid_593057 = query.getOrDefault("Description")
+  valid_593057 = validateParameter(valid_593057, JString, required = false,
                                  default = nil)
-  if valid_603157 != nil:
-    section.add "Handler", valid_603157
-  var valid_603158 = query.getOrDefault("Role")
-  valid_603158 = validateParameter(valid_603158, JString, required = false,
+  if valid_593057 != nil:
+    section.add "Description", valid_593057
+  var valid_593058 = query.getOrDefault("Handler")
+  valid_593058 = validateParameter(valid_593058, JString, required = false,
                                  default = nil)
-  if valid_603158 != nil:
-    section.add "Role", valid_603158
-  var valid_603159 = query.getOrDefault("MemorySize")
-  valid_603159 = validateParameter(valid_603159, JInt, required = false, default = nil)
-  if valid_603159 != nil:
-    section.add "MemorySize", valid_603159
+  if valid_593058 != nil:
+    section.add "Handler", valid_593058
+  var valid_593059 = query.getOrDefault("MemorySize")
+  valid_593059 = validateParameter(valid_593059, JInt, required = false, default = nil)
+  if valid_593059 != nil:
+    section.add "MemorySize", valid_593059
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603160 = header.getOrDefault("X-Amz-Date")
-  valid_603160 = validateParameter(valid_603160, JString, required = false,
+  var valid_593060 = header.getOrDefault("X-Amz-Signature")
+  valid_593060 = validateParameter(valid_593060, JString, required = false,
                                  default = nil)
-  if valid_603160 != nil:
-    section.add "X-Amz-Date", valid_603160
-  var valid_603161 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603161 = validateParameter(valid_603161, JString, required = false,
+  if valid_593060 != nil:
+    section.add "X-Amz-Signature", valid_593060
+  var valid_593061 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593061 = validateParameter(valid_593061, JString, required = false,
                                  default = nil)
-  if valid_603161 != nil:
-    section.add "X-Amz-Security-Token", valid_603161
-  var valid_603162 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603162 = validateParameter(valid_603162, JString, required = false,
+  if valid_593061 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593061
+  var valid_593062 = header.getOrDefault("X-Amz-Date")
+  valid_593062 = validateParameter(valid_593062, JString, required = false,
                                  default = nil)
-  if valid_603162 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603162
-  var valid_603163 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603163 = validateParameter(valid_603163, JString, required = false,
+  if valid_593062 != nil:
+    section.add "X-Amz-Date", valid_593062
+  var valid_593063 = header.getOrDefault("X-Amz-Credential")
+  valid_593063 = validateParameter(valid_593063, JString, required = false,
                                  default = nil)
-  if valid_603163 != nil:
-    section.add "X-Amz-Algorithm", valid_603163
-  var valid_603164 = header.getOrDefault("X-Amz-Signature")
-  valid_603164 = validateParameter(valid_603164, JString, required = false,
+  if valid_593063 != nil:
+    section.add "X-Amz-Credential", valid_593063
+  var valid_593064 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593064 = validateParameter(valid_593064, JString, required = false,
                                  default = nil)
-  if valid_603164 != nil:
-    section.add "X-Amz-Signature", valid_603164
-  var valid_603165 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603165 = validateParameter(valid_603165, JString, required = false,
+  if valid_593064 != nil:
+    section.add "X-Amz-Security-Token", valid_593064
+  var valid_593065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593065 = validateParameter(valid_593065, JString, required = false,
                                  default = nil)
-  if valid_603165 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603165
-  var valid_603166 = header.getOrDefault("X-Amz-Credential")
-  valid_603166 = validateParameter(valid_603166, JString, required = false,
+  if valid_593065 != nil:
+    section.add "X-Amz-Algorithm", valid_593065
+  var valid_593066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593066 = validateParameter(valid_593066, JString, required = false,
                                  default = nil)
-  if valid_603166 != nil:
-    section.add "X-Amz-Credential", valid_603166
+  if valid_593066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593066
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603167: Call_UpdateFunctionConfiguration_603151; path: JsonNode;
+proc call*(call_593067: Call_UpdateFunctionConfiguration_593051; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the configuration parameters for the specified Lambda function by using the values provided in the request. You provide only the parameters you want to change. This operation must only be used on an existing Lambda function and cannot be used to update the function's code. </p> <p>This operation requires permission for the <code>lambda:UpdateFunctionConfiguration</code> action.</p>
   ## 
-  let valid = call_603167.validator(path, query, header, formData, body)
-  let scheme = call_603167.pickScheme
+  let valid = call_593067.validator(path, query, header, formData, body)
+  let scheme = call_593067.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603167.url(scheme.get, call_603167.host, call_603167.base,
-                         call_603167.route, valid.getOrDefault("path"),
+  let url = call_593067.url(scheme.get, call_593067.host, call_593067.base,
+                         call_593067.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603167, url, valid)
+  result = hook(call_593067, url, valid)
 
-proc call*(call_603168: Call_UpdateFunctionConfiguration_603151;
-          FunctionName: string; Description: string = ""; Timeout: int = 0;
-          Handler: string = ""; Role: string = ""; MemorySize: int = 0): Recallable =
+proc call*(call_593068: Call_UpdateFunctionConfiguration_593051;
+          FunctionName: string; Timeout: int = 0; Role: string = "";
+          Description: string = ""; Handler: string = ""; MemorySize: int = 0): Recallable =
   ## updateFunctionConfiguration
   ## <p>Updates the configuration parameters for the specified Lambda function by using the values provided in the request. You provide only the parameters you want to change. This operation must only be used on an existing Lambda function and cannot be used to update the function's code. </p> <p>This operation requires permission for the <code>lambda:UpdateFunctionConfiguration</code> action.</p>
-  ##   Description: string
-  ##              : A short user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
   ##   FunctionName: string (required)
   ##               : The name of the Lambda function.
   ##   Timeout: int
   ##          : The function execution time at which Lambda should terminate the function. Because the execution time has cost implications, we recommend you set this value based on your expected execution time. The default is 3 seconds. 
-  ##   Handler: string
-  ##          : The function that Lambda calls to begin executing your function. For Node.js, it is the <i>module-name.export</i> value in your function. 
   ##   Role: string
   ##       : The Amazon Resource Name (ARN) of the IAM role that Lambda will assume when it executes your function. 
+  ##   Description: string
+  ##              : A short user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
+  ##   Handler: string
+  ##          : The function that Lambda calls to begin executing your function. For Node.js, it is the <i>module-name.export</i> value in your function. 
   ##   MemorySize: int
   ##             : The amount of memory, in MB, your Lambda function is given. Lambda uses this memory size to infer the amount of CPU allocated to your function. Your function use-case determines your CPU and memory requirements. For example, a database operation might need less memory compared to an image processing function. The default value is 128 MB. The value must be a multiple of 64 MB.
-  var path_603169 = newJObject()
-  var query_603170 = newJObject()
-  add(query_603170, "Description", newJString(Description))
-  add(path_603169, "FunctionName", newJString(FunctionName))
-  add(query_603170, "Timeout", newJInt(Timeout))
-  add(query_603170, "Handler", newJString(Handler))
-  add(query_603170, "Role", newJString(Role))
-  add(query_603170, "MemorySize", newJInt(MemorySize))
-  result = call_603168.call(path_603169, query_603170, nil, nil, nil)
+  var path_593069 = newJObject()
+  var query_593070 = newJObject()
+  add(path_593069, "FunctionName", newJString(FunctionName))
+  add(query_593070, "Timeout", newJInt(Timeout))
+  add(query_593070, "Role", newJString(Role))
+  add(query_593070, "Description", newJString(Description))
+  add(query_593070, "Handler", newJString(Handler))
+  add(query_593070, "MemorySize", newJInt(MemorySize))
+  result = call_593068.call(path_593069, query_593070, nil, nil, nil)
 
-var updateFunctionConfiguration* = Call_UpdateFunctionConfiguration_603151(
+var updateFunctionConfiguration* = Call_UpdateFunctionConfiguration_593051(
     name: "updateFunctionConfiguration", meth: HttpMethod.HttpPut,
     host: "lambda.amazonaws.com",
     route: "/2014-11-13/functions/{FunctionName}/configuration",
-    validator: validate_UpdateFunctionConfiguration_603152, base: "/",
-    url: url_UpdateFunctionConfiguration_603153,
+    validator: validate_UpdateFunctionConfiguration_593052, base: "/",
+    url: url_UpdateFunctionConfiguration_593053,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetFunctionConfiguration_603137 = ref object of OpenApiRestCall_602457
-proc url_GetFunctionConfiguration_603139(protocol: Scheme; host: string;
+  Call_GetFunctionConfiguration_593037 = ref object of OpenApiRestCall_592355
+proc url_GetFunctionConfiguration_593039(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1024,7 +1028,7 @@ proc url_GetFunctionConfiguration_603139(protocol: Scheme; host: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_GetFunctionConfiguration_603138(path: JsonNode; query: JsonNode;
+proc validate_GetFunctionConfiguration_593038(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the configuration information of the Lambda function. This the same information you provided as parameters when uploading the function by using <a>UploadFunction</a>.</p> <p>This operation requires permission for the <code>lambda:GetFunctionConfiguration</code> operation.</p>
   ## 
@@ -1036,95 +1040,95 @@ proc validate_GetFunctionConfiguration_603138(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FunctionName` field"
-  var valid_603140 = path.getOrDefault("FunctionName")
-  valid_603140 = validateParameter(valid_603140, JString, required = true,
+  var valid_593040 = path.getOrDefault("FunctionName")
+  valid_593040 = validateParameter(valid_593040, JString, required = true,
                                  default = nil)
-  if valid_603140 != nil:
-    section.add "FunctionName", valid_603140
+  if valid_593040 != nil:
+    section.add "FunctionName", valid_593040
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603141 = header.getOrDefault("X-Amz-Date")
-  valid_603141 = validateParameter(valid_603141, JString, required = false,
+  var valid_593041 = header.getOrDefault("X-Amz-Signature")
+  valid_593041 = validateParameter(valid_593041, JString, required = false,
                                  default = nil)
-  if valid_603141 != nil:
-    section.add "X-Amz-Date", valid_603141
-  var valid_603142 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603142 = validateParameter(valid_603142, JString, required = false,
+  if valid_593041 != nil:
+    section.add "X-Amz-Signature", valid_593041
+  var valid_593042 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593042 = validateParameter(valid_593042, JString, required = false,
                                  default = nil)
-  if valid_603142 != nil:
-    section.add "X-Amz-Security-Token", valid_603142
-  var valid_603143 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603143 = validateParameter(valid_603143, JString, required = false,
+  if valid_593042 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593042
+  var valid_593043 = header.getOrDefault("X-Amz-Date")
+  valid_593043 = validateParameter(valid_593043, JString, required = false,
                                  default = nil)
-  if valid_603143 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603143
-  var valid_603144 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603144 = validateParameter(valid_603144, JString, required = false,
+  if valid_593043 != nil:
+    section.add "X-Amz-Date", valid_593043
+  var valid_593044 = header.getOrDefault("X-Amz-Credential")
+  valid_593044 = validateParameter(valid_593044, JString, required = false,
                                  default = nil)
-  if valid_603144 != nil:
-    section.add "X-Amz-Algorithm", valid_603144
-  var valid_603145 = header.getOrDefault("X-Amz-Signature")
-  valid_603145 = validateParameter(valid_603145, JString, required = false,
+  if valid_593044 != nil:
+    section.add "X-Amz-Credential", valid_593044
+  var valid_593045 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593045 = validateParameter(valid_593045, JString, required = false,
                                  default = nil)
-  if valid_603145 != nil:
-    section.add "X-Amz-Signature", valid_603145
-  var valid_603146 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603146 = validateParameter(valid_603146, JString, required = false,
+  if valid_593045 != nil:
+    section.add "X-Amz-Security-Token", valid_593045
+  var valid_593046 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593046 = validateParameter(valid_593046, JString, required = false,
                                  default = nil)
-  if valid_603146 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603146
-  var valid_603147 = header.getOrDefault("X-Amz-Credential")
-  valid_603147 = validateParameter(valid_603147, JString, required = false,
+  if valid_593046 != nil:
+    section.add "X-Amz-Algorithm", valid_593046
+  var valid_593047 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593047 = validateParameter(valid_593047, JString, required = false,
                                  default = nil)
-  if valid_603147 != nil:
-    section.add "X-Amz-Credential", valid_603147
+  if valid_593047 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593047
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603148: Call_GetFunctionConfiguration_603137; path: JsonNode;
+proc call*(call_593048: Call_GetFunctionConfiguration_593037; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the configuration information of the Lambda function. This the same information you provided as parameters when uploading the function by using <a>UploadFunction</a>.</p> <p>This operation requires permission for the <code>lambda:GetFunctionConfiguration</code> operation.</p>
   ## 
-  let valid = call_603148.validator(path, query, header, formData, body)
-  let scheme = call_603148.pickScheme
+  let valid = call_593048.validator(path, query, header, formData, body)
+  let scheme = call_593048.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603148.url(scheme.get, call_603148.host, call_603148.base,
-                         call_603148.route, valid.getOrDefault("path"),
+  let url = call_593048.url(scheme.get, call_593048.host, call_593048.base,
+                         call_593048.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603148, url, valid)
+  result = hook(call_593048, url, valid)
 
-proc call*(call_603149: Call_GetFunctionConfiguration_603137; FunctionName: string): Recallable =
+proc call*(call_593049: Call_GetFunctionConfiguration_593037; FunctionName: string): Recallable =
   ## getFunctionConfiguration
   ## <p>Returns the configuration information of the Lambda function. This the same information you provided as parameters when uploading the function by using <a>UploadFunction</a>.</p> <p>This operation requires permission for the <code>lambda:GetFunctionConfiguration</code> operation.</p>
   ##   FunctionName: string (required)
   ##               : The name of the Lambda function for which you want to retrieve the configuration information.
-  var path_603150 = newJObject()
-  add(path_603150, "FunctionName", newJString(FunctionName))
-  result = call_603149.call(path_603150, nil, nil, nil, nil)
+  var path_593050 = newJObject()
+  add(path_593050, "FunctionName", newJString(FunctionName))
+  result = call_593049.call(path_593050, nil, nil, nil, nil)
 
-var getFunctionConfiguration* = Call_GetFunctionConfiguration_603137(
+var getFunctionConfiguration* = Call_GetFunctionConfiguration_593037(
     name: "getFunctionConfiguration", meth: HttpMethod.HttpGet,
     host: "lambda.amazonaws.com",
     route: "/2014-11-13/functions/{FunctionName}/configuration",
-    validator: validate_GetFunctionConfiguration_603138, base: "/",
-    url: url_GetFunctionConfiguration_603139, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetFunctionConfiguration_593038, base: "/",
+    url: url_GetFunctionConfiguration_593039, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_InvokeAsync_603171 = ref object of OpenApiRestCall_602457
-proc url_InvokeAsync_603173(protocol: Scheme; host: string; base: string;
+  Call_InvokeAsync_593071 = ref object of OpenApiRestCall_592355
+proc url_InvokeAsync_593073(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1140,7 +1144,7 @@ proc url_InvokeAsync_603173(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_InvokeAsync_603172(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_InvokeAsync_593072(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Submits an invocation request to AWS Lambda. Upon receiving the request, Lambda executes the specified function asynchronously. To see the logs generated by the Lambda function execution, see the CloudWatch logs console.</p> <p>This operation requires permission for the <code>lambda:InvokeAsync</code> action.</p>
   ## 
@@ -1152,58 +1156,58 @@ proc validate_InvokeAsync_603172(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FunctionName` field"
-  var valid_603174 = path.getOrDefault("FunctionName")
-  valid_603174 = validateParameter(valid_603174, JString, required = true,
+  var valid_593074 = path.getOrDefault("FunctionName")
+  valid_593074 = validateParameter(valid_593074, JString, required = true,
                                  default = nil)
-  if valid_603174 != nil:
-    section.add "FunctionName", valid_603174
+  if valid_593074 != nil:
+    section.add "FunctionName", valid_593074
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603175 = header.getOrDefault("X-Amz-Date")
-  valid_603175 = validateParameter(valid_603175, JString, required = false,
+  var valid_593075 = header.getOrDefault("X-Amz-Signature")
+  valid_593075 = validateParameter(valid_593075, JString, required = false,
                                  default = nil)
-  if valid_603175 != nil:
-    section.add "X-Amz-Date", valid_603175
-  var valid_603176 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603176 = validateParameter(valid_603176, JString, required = false,
+  if valid_593075 != nil:
+    section.add "X-Amz-Signature", valid_593075
+  var valid_593076 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593076 = validateParameter(valid_593076, JString, required = false,
                                  default = nil)
-  if valid_603176 != nil:
-    section.add "X-Amz-Security-Token", valid_603176
-  var valid_603177 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603177 = validateParameter(valid_603177, JString, required = false,
+  if valid_593076 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593076
+  var valid_593077 = header.getOrDefault("X-Amz-Date")
+  valid_593077 = validateParameter(valid_593077, JString, required = false,
                                  default = nil)
-  if valid_603177 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603177
-  var valid_603178 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603178 = validateParameter(valid_603178, JString, required = false,
+  if valid_593077 != nil:
+    section.add "X-Amz-Date", valid_593077
+  var valid_593078 = header.getOrDefault("X-Amz-Credential")
+  valid_593078 = validateParameter(valid_593078, JString, required = false,
                                  default = nil)
-  if valid_603178 != nil:
-    section.add "X-Amz-Algorithm", valid_603178
-  var valid_603179 = header.getOrDefault("X-Amz-Signature")
-  valid_603179 = validateParameter(valid_603179, JString, required = false,
+  if valid_593078 != nil:
+    section.add "X-Amz-Credential", valid_593078
+  var valid_593079 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593079 = validateParameter(valid_593079, JString, required = false,
                                  default = nil)
-  if valid_603179 != nil:
-    section.add "X-Amz-Signature", valid_603179
-  var valid_603180 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603180 = validateParameter(valid_603180, JString, required = false,
+  if valid_593079 != nil:
+    section.add "X-Amz-Security-Token", valid_593079
+  var valid_593080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593080 = validateParameter(valid_593080, JString, required = false,
                                  default = nil)
-  if valid_603180 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603180
-  var valid_603181 = header.getOrDefault("X-Amz-Credential")
-  valid_603181 = validateParameter(valid_603181, JString, required = false,
+  if valid_593080 != nil:
+    section.add "X-Amz-Algorithm", valid_593080
+  var valid_593081 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593081 = validateParameter(valid_593081, JString, required = false,
                                  default = nil)
-  if valid_603181 != nil:
-    section.add "X-Amz-Credential", valid_603181
+  if valid_593081 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593081
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1214,48 +1218,48 @@ proc validate_InvokeAsync_603172(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603183: Call_InvokeAsync_603171; path: JsonNode; query: JsonNode;
+proc call*(call_593083: Call_InvokeAsync_593071; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Submits an invocation request to AWS Lambda. Upon receiving the request, Lambda executes the specified function asynchronously. To see the logs generated by the Lambda function execution, see the CloudWatch logs console.</p> <p>This operation requires permission for the <code>lambda:InvokeAsync</code> action.</p>
   ## 
-  let valid = call_603183.validator(path, query, header, formData, body)
-  let scheme = call_603183.pickScheme
+  let valid = call_593083.validator(path, query, header, formData, body)
+  let scheme = call_593083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603183.url(scheme.get, call_603183.host, call_603183.base,
-                         call_603183.route, valid.getOrDefault("path"),
+  let url = call_593083.url(scheme.get, call_593083.host, call_593083.base,
+                         call_593083.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603183, url, valid)
+  result = hook(call_593083, url, valid)
 
-proc call*(call_603184: Call_InvokeAsync_603171; FunctionName: string; body: JsonNode): Recallable =
+proc call*(call_593084: Call_InvokeAsync_593071; FunctionName: string; body: JsonNode): Recallable =
   ## invokeAsync
   ## <p>Submits an invocation request to AWS Lambda. Upon receiving the request, Lambda executes the specified function asynchronously. To see the logs generated by the Lambda function execution, see the CloudWatch logs console.</p> <p>This operation requires permission for the <code>lambda:InvokeAsync</code> action.</p>
   ##   FunctionName: string (required)
   ##               : The Lambda function name.
   ##   body: JObject (required)
-  var path_603185 = newJObject()
-  var body_603186 = newJObject()
-  add(path_603185, "FunctionName", newJString(FunctionName))
+  var path_593085 = newJObject()
+  var body_593086 = newJObject()
+  add(path_593085, "FunctionName", newJString(FunctionName))
   if body != nil:
-    body_603186 = body
-  result = call_603184.call(path_603185, nil, nil, nil, body_603186)
+    body_593086 = body
+  result = call_593084.call(path_593085, nil, nil, nil, body_593086)
 
-var invokeAsync* = Call_InvokeAsync_603171(name: "invokeAsync",
+var invokeAsync* = Call_InvokeAsync_593071(name: "invokeAsync",
                                         meth: HttpMethod.HttpPost,
                                         host: "lambda.amazonaws.com", route: "/2014-11-13/functions/{FunctionName}/invoke-async/",
-                                        validator: validate_InvokeAsync_603172,
-                                        base: "/", url: url_InvokeAsync_603173,
+                                        validator: validate_InvokeAsync_593072,
+                                        base: "/", url: url_InvokeAsync_593073,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListFunctions_603187 = ref object of OpenApiRestCall_602457
-proc url_ListFunctions_603189(protocol: Scheme; host: string; base: string;
+  Call_ListFunctions_593087 = ref object of OpenApiRestCall_592355
+proc url_ListFunctions_593089(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListFunctions_603188(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListFunctions_593088(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of your Lambda functions. For each function, the response includes the function configuration information. You must use <a>GetFunction</a> to retrieve the code for your function.</p> <p>This operation requires permission for the <code>lambda:ListFunctions</code> action.</p>
   ## 
@@ -1269,80 +1273,80 @@ proc validate_ListFunctions_603188(path: JsonNode; query: JsonNode; header: Json
   ##   MaxItems: JInt
   ##           : Optional integer. Specifies the maximum number of AWS Lambda functions to return in response. This parameter value must be greater than 0.
   section = newJObject()
-  var valid_603190 = query.getOrDefault("Marker")
-  valid_603190 = validateParameter(valid_603190, JString, required = false,
+  var valid_593090 = query.getOrDefault("Marker")
+  valid_593090 = validateParameter(valid_593090, JString, required = false,
                                  default = nil)
-  if valid_603190 != nil:
-    section.add "Marker", valid_603190
-  var valid_603191 = query.getOrDefault("MaxItems")
-  valid_603191 = validateParameter(valid_603191, JInt, required = false, default = nil)
-  if valid_603191 != nil:
-    section.add "MaxItems", valid_603191
+  if valid_593090 != nil:
+    section.add "Marker", valid_593090
+  var valid_593091 = query.getOrDefault("MaxItems")
+  valid_593091 = validateParameter(valid_593091, JInt, required = false, default = nil)
+  if valid_593091 != nil:
+    section.add "MaxItems", valid_593091
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603192 = header.getOrDefault("X-Amz-Date")
-  valid_603192 = validateParameter(valid_603192, JString, required = false,
+  var valid_593092 = header.getOrDefault("X-Amz-Signature")
+  valid_593092 = validateParameter(valid_593092, JString, required = false,
                                  default = nil)
-  if valid_603192 != nil:
-    section.add "X-Amz-Date", valid_603192
-  var valid_603193 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603193 = validateParameter(valid_603193, JString, required = false,
+  if valid_593092 != nil:
+    section.add "X-Amz-Signature", valid_593092
+  var valid_593093 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593093 = validateParameter(valid_593093, JString, required = false,
                                  default = nil)
-  if valid_603193 != nil:
-    section.add "X-Amz-Security-Token", valid_603193
-  var valid_603194 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603194 = validateParameter(valid_603194, JString, required = false,
+  if valid_593093 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593093
+  var valid_593094 = header.getOrDefault("X-Amz-Date")
+  valid_593094 = validateParameter(valid_593094, JString, required = false,
                                  default = nil)
-  if valid_603194 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603194
-  var valid_603195 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603195 = validateParameter(valid_603195, JString, required = false,
+  if valid_593094 != nil:
+    section.add "X-Amz-Date", valid_593094
+  var valid_593095 = header.getOrDefault("X-Amz-Credential")
+  valid_593095 = validateParameter(valid_593095, JString, required = false,
                                  default = nil)
-  if valid_603195 != nil:
-    section.add "X-Amz-Algorithm", valid_603195
-  var valid_603196 = header.getOrDefault("X-Amz-Signature")
-  valid_603196 = validateParameter(valid_603196, JString, required = false,
+  if valid_593095 != nil:
+    section.add "X-Amz-Credential", valid_593095
+  var valid_593096 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593096 = validateParameter(valid_593096, JString, required = false,
                                  default = nil)
-  if valid_603196 != nil:
-    section.add "X-Amz-Signature", valid_603196
-  var valid_603197 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603197 = validateParameter(valid_603197, JString, required = false,
+  if valid_593096 != nil:
+    section.add "X-Amz-Security-Token", valid_593096
+  var valid_593097 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593097 = validateParameter(valid_593097, JString, required = false,
                                  default = nil)
-  if valid_603197 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603197
-  var valid_603198 = header.getOrDefault("X-Amz-Credential")
-  valid_603198 = validateParameter(valid_603198, JString, required = false,
+  if valid_593097 != nil:
+    section.add "X-Amz-Algorithm", valid_593097
+  var valid_593098 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593098 = validateParameter(valid_593098, JString, required = false,
                                  default = nil)
-  if valid_603198 != nil:
-    section.add "X-Amz-Credential", valid_603198
+  if valid_593098 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593098
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_603199: Call_ListFunctions_603187; path: JsonNode; query: JsonNode;
+proc call*(call_593099: Call_ListFunctions_593087; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of your Lambda functions. For each function, the response includes the function configuration information. You must use <a>GetFunction</a> to retrieve the code for your function.</p> <p>This operation requires permission for the <code>lambda:ListFunctions</code> action.</p>
   ## 
-  let valid = call_603199.validator(path, query, header, formData, body)
-  let scheme = call_603199.pickScheme
+  let valid = call_593099.validator(path, query, header, formData, body)
+  let scheme = call_593099.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603199.url(scheme.get, call_603199.host, call_603199.base,
-                         call_603199.route, valid.getOrDefault("path"),
+  let url = call_593099.url(scheme.get, call_593099.host, call_593099.base,
+                         call_593099.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603199, url, valid)
+  result = hook(call_593099, url, valid)
 
-proc call*(call_603200: Call_ListFunctions_603187; Marker: string = "";
+proc call*(call_593100: Call_ListFunctions_593087; Marker: string = "";
           MaxItems: int = 0): Recallable =
   ## listFunctions
   ## <p>Returns a list of your Lambda functions. For each function, the response includes the function configuration information. You must use <a>GetFunction</a> to retrieve the code for your function.</p> <p>This operation requires permission for the <code>lambda:ListFunctions</code> action.</p>
@@ -1350,18 +1354,18 @@ proc call*(call_603200: Call_ListFunctions_603187; Marker: string = "";
   ##         : Optional string. An opaque pagination token returned from a previous <code>ListFunctions</code> operation. If present, indicates where to continue the listing. 
   ##   MaxItems: int
   ##           : Optional integer. Specifies the maximum number of AWS Lambda functions to return in response. This parameter value must be greater than 0.
-  var query_603201 = newJObject()
-  add(query_603201, "Marker", newJString(Marker))
-  add(query_603201, "MaxItems", newJInt(MaxItems))
-  result = call_603200.call(nil, query_603201, nil, nil, nil)
+  var query_593101 = newJObject()
+  add(query_593101, "Marker", newJString(Marker))
+  add(query_593101, "MaxItems", newJInt(MaxItems))
+  result = call_593100.call(nil, query_593101, nil, nil, nil)
 
-var listFunctions* = Call_ListFunctions_603187(name: "listFunctions",
+var listFunctions* = Call_ListFunctions_593087(name: "listFunctions",
     meth: HttpMethod.HttpGet, host: "lambda.amazonaws.com",
-    route: "/2014-11-13/functions/", validator: validate_ListFunctions_603188,
-    base: "/", url: url_ListFunctions_603189, schemes: {Scheme.Https, Scheme.Http})
+    route: "/2014-11-13/functions/", validator: validate_ListFunctions_593088,
+    base: "/", url: url_ListFunctions_593089, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UploadFunction_603202 = ref object of OpenApiRestCall_602457
-proc url_UploadFunction_603204(protocol: Scheme; host: string; base: string;
+  Call_UploadFunction_593102 = ref object of OpenApiRestCall_592355
+proc url_UploadFunction_593104(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1377,7 +1381,7 @@ proc url_UploadFunction_603204(protocol: Scheme; host: string; base: string;
     raise newException(ValueError, "unable to fully hydrate path")
   result.path = base & hydrated.get
 
-proc validate_UploadFunction_603203(path: JsonNode; query: JsonNode;
+proc validate_UploadFunction_593103(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Creates a new Lambda function or updates an existing function. The function metadata is created from the request parameters, and the code for the function is provided by a .zip file in the request body. If the function name already exists, the existing Lambda function is updated with the new code and metadata. </p> <p>This operation requires permission for the <code>lambda:UploadFunction</code> action.</p>
@@ -1390,107 +1394,107 @@ proc validate_UploadFunction_603203(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FunctionName` field"
-  var valid_603205 = path.getOrDefault("FunctionName")
-  valid_603205 = validateParameter(valid_603205, JString, required = true,
+  var valid_593105 = path.getOrDefault("FunctionName")
+  valid_593105 = validateParameter(valid_593105, JString, required = true,
                                  default = nil)
-  if valid_603205 != nil:
-    section.add "FunctionName", valid_603205
+  if valid_593105 != nil:
+    section.add "FunctionName", valid_593105
   result.add "path", section
   ## parameters in `query` object:
-  ##   Description: JString
-  ##              : A short, user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
-  ##   Runtime: JString (required)
-  ##          : The runtime environment for the Lambda function you are uploading. Currently, Lambda supports only "nodejs" as the runtime.
   ##   Timeout: JInt
   ##          : The function execution time at which Lambda should terminate the function. Because the execution time has cost implications, we recommend you set this value based on your expected execution time. The default is 3 seconds. 
-  ##   Handler: JString (required)
-  ##          : The function that Lambda calls to begin execution. For Node.js, it is the <i>module-name</i>.<i>export</i> value in your function. 
   ##   Role: JString (required)
   ##       : The Amazon Resource Name (ARN) of the IAM role that Lambda assumes when it executes your function to access any other Amazon Web Services (AWS) resources. 
   ##   Mode: JString (required)
   ##       : How the Lambda function will be invoked. Lambda supports only the "event" mode. 
+  ##   Description: JString
+  ##              : A short, user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
+  ##   Handler: JString (required)
+  ##          : The function that Lambda calls to begin execution. For Node.js, it is the <i>module-name</i>.<i>export</i> value in your function. 
   ##   MemorySize: JInt
   ##             : The amount of memory, in MB, your Lambda function is given. Lambda uses this memory size to infer the amount of CPU allocated to your function. Your function use-case determines your CPU and memory requirements. For example, database operation might need less memory compared to image processing function. The default value is 128 MB. The value must be a multiple of 64 MB.
+  ##   Runtime: JString (required)
+  ##          : The runtime environment for the Lambda function you are uploading. Currently, Lambda supports only "nodejs" as the runtime.
   section = newJObject()
-  var valid_603206 = query.getOrDefault("Description")
-  valid_603206 = validateParameter(valid_603206, JString, required = false,
+  var valid_593106 = query.getOrDefault("Timeout")
+  valid_593106 = validateParameter(valid_593106, JInt, required = false, default = nil)
+  if valid_593106 != nil:
+    section.add "Timeout", valid_593106
+  assert query != nil, "query argument is necessary due to required `Role` field"
+  var valid_593107 = query.getOrDefault("Role")
+  valid_593107 = validateParameter(valid_593107, JString, required = true,
                                  default = nil)
-  if valid_603206 != nil:
-    section.add "Description", valid_603206
-  assert query != nil, "query argument is necessary due to required `Runtime` field"
-  var valid_603220 = query.getOrDefault("Runtime")
-  valid_603220 = validateParameter(valid_603220, JString, required = true,
-                                 default = newJString("nodejs"))
-  if valid_603220 != nil:
-    section.add "Runtime", valid_603220
-  var valid_603221 = query.getOrDefault("Timeout")
-  valid_603221 = validateParameter(valid_603221, JInt, required = false, default = nil)
-  if valid_603221 != nil:
-    section.add "Timeout", valid_603221
-  var valid_603222 = query.getOrDefault("Handler")
-  valid_603222 = validateParameter(valid_603222, JString, required = true,
-                                 default = nil)
-  if valid_603222 != nil:
-    section.add "Handler", valid_603222
-  var valid_603223 = query.getOrDefault("Role")
-  valid_603223 = validateParameter(valid_603223, JString, required = true,
-                                 default = nil)
-  if valid_603223 != nil:
-    section.add "Role", valid_603223
-  var valid_603224 = query.getOrDefault("Mode")
-  valid_603224 = validateParameter(valid_603224, JString, required = true,
+  if valid_593107 != nil:
+    section.add "Role", valid_593107
+  var valid_593121 = query.getOrDefault("Mode")
+  valid_593121 = validateParameter(valid_593121, JString, required = true,
                                  default = newJString("event"))
-  if valid_603224 != nil:
-    section.add "Mode", valid_603224
-  var valid_603225 = query.getOrDefault("MemorySize")
-  valid_603225 = validateParameter(valid_603225, JInt, required = false, default = nil)
-  if valid_603225 != nil:
-    section.add "MemorySize", valid_603225
+  if valid_593121 != nil:
+    section.add "Mode", valid_593121
+  var valid_593122 = query.getOrDefault("Description")
+  valid_593122 = validateParameter(valid_593122, JString, required = false,
+                                 default = nil)
+  if valid_593122 != nil:
+    section.add "Description", valid_593122
+  var valid_593123 = query.getOrDefault("Handler")
+  valid_593123 = validateParameter(valid_593123, JString, required = true,
+                                 default = nil)
+  if valid_593123 != nil:
+    section.add "Handler", valid_593123
+  var valid_593124 = query.getOrDefault("MemorySize")
+  valid_593124 = validateParameter(valid_593124, JInt, required = false, default = nil)
+  if valid_593124 != nil:
+    section.add "MemorySize", valid_593124
+  var valid_593125 = query.getOrDefault("Runtime")
+  valid_593125 = validateParameter(valid_593125, JString, required = true,
+                                 default = newJString("nodejs"))
+  if valid_593125 != nil:
+    section.add "Runtime", valid_593125
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603226 = header.getOrDefault("X-Amz-Date")
-  valid_603226 = validateParameter(valid_603226, JString, required = false,
+  var valid_593126 = header.getOrDefault("X-Amz-Signature")
+  valid_593126 = validateParameter(valid_593126, JString, required = false,
                                  default = nil)
-  if valid_603226 != nil:
-    section.add "X-Amz-Date", valid_603226
-  var valid_603227 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603227 = validateParameter(valid_603227, JString, required = false,
+  if valid_593126 != nil:
+    section.add "X-Amz-Signature", valid_593126
+  var valid_593127 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593127 = validateParameter(valid_593127, JString, required = false,
                                  default = nil)
-  if valid_603227 != nil:
-    section.add "X-Amz-Security-Token", valid_603227
-  var valid_603228 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603228 = validateParameter(valid_603228, JString, required = false,
+  if valid_593127 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593127
+  var valid_593128 = header.getOrDefault("X-Amz-Date")
+  valid_593128 = validateParameter(valid_593128, JString, required = false,
                                  default = nil)
-  if valid_603228 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603228
-  var valid_603229 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603229 = validateParameter(valid_603229, JString, required = false,
+  if valid_593128 != nil:
+    section.add "X-Amz-Date", valid_593128
+  var valid_593129 = header.getOrDefault("X-Amz-Credential")
+  valid_593129 = validateParameter(valid_593129, JString, required = false,
                                  default = nil)
-  if valid_603229 != nil:
-    section.add "X-Amz-Algorithm", valid_603229
-  var valid_603230 = header.getOrDefault("X-Amz-Signature")
-  valid_603230 = validateParameter(valid_603230, JString, required = false,
+  if valid_593129 != nil:
+    section.add "X-Amz-Credential", valid_593129
+  var valid_593130 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593130 = validateParameter(valid_593130, JString, required = false,
                                  default = nil)
-  if valid_603230 != nil:
-    section.add "X-Amz-Signature", valid_603230
-  var valid_603231 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603231 = validateParameter(valid_603231, JString, required = false,
+  if valid_593130 != nil:
+    section.add "X-Amz-Security-Token", valid_593130
+  var valid_593131 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593131 = validateParameter(valid_593131, JString, required = false,
                                  default = nil)
-  if valid_603231 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603231
-  var valid_603232 = header.getOrDefault("X-Amz-Credential")
-  valid_603232 = validateParameter(valid_603232, JString, required = false,
+  if valid_593131 != nil:
+    section.add "X-Amz-Algorithm", valid_593131
+  var valid_593132 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593132 = validateParameter(valid_593132, JString, required = false,
                                  default = nil)
-  if valid_603232 != nil:
-    section.add "X-Amz-Credential", valid_603232
+  if valid_593132 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593132
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1501,61 +1505,61 @@ proc validate_UploadFunction_603203(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603234: Call_UploadFunction_603202; path: JsonNode; query: JsonNode;
+proc call*(call_593134: Call_UploadFunction_593102; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new Lambda function or updates an existing function. The function metadata is created from the request parameters, and the code for the function is provided by a .zip file in the request body. If the function name already exists, the existing Lambda function is updated with the new code and metadata. </p> <p>This operation requires permission for the <code>lambda:UploadFunction</code> action.</p>
   ## 
-  let valid = call_603234.validator(path, query, header, formData, body)
-  let scheme = call_603234.pickScheme
+  let valid = call_593134.validator(path, query, header, formData, body)
+  let scheme = call_593134.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603234.url(scheme.get, call_603234.host, call_603234.base,
-                         call_603234.route, valid.getOrDefault("path"),
+  let url = call_593134.url(scheme.get, call_593134.host, call_593134.base,
+                         call_593134.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603234, url, valid)
+  result = hook(call_593134, url, valid)
 
-proc call*(call_603235: Call_UploadFunction_603202; FunctionName: string;
-          Handler: string; Role: string; body: JsonNode; Description: string = "";
-          Runtime: string = "nodejs"; Timeout: int = 0; Mode: string = "event";
-          MemorySize: int = 0): Recallable =
+proc call*(call_593135: Call_UploadFunction_593102; FunctionName: string;
+          Role: string; body: JsonNode; Handler: string; Timeout: int = 0;
+          Mode: string = "event"; Description: string = ""; MemorySize: int = 0;
+          Runtime: string = "nodejs"): Recallable =
   ## uploadFunction
   ## <p>Creates a new Lambda function or updates an existing function. The function metadata is created from the request parameters, and the code for the function is provided by a .zip file in the request body. If the function name already exists, the existing Lambda function is updated with the new code and metadata. </p> <p>This operation requires permission for the <code>lambda:UploadFunction</code> action.</p>
-  ##   Description: string
-  ##              : A short, user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
   ##   FunctionName: string (required)
   ##               : The name you want to assign to the function you are uploading. The function names appear in the console and are returned in the <a>ListFunctions</a> API. Function names are used to specify functions to other AWS Lambda APIs, such as <a>InvokeAsync</a>. 
-  ##   Runtime: string (required)
-  ##          : The runtime environment for the Lambda function you are uploading. Currently, Lambda supports only "nodejs" as the runtime.
   ##   Timeout: int
   ##          : The function execution time at which Lambda should terminate the function. Because the execution time has cost implications, we recommend you set this value based on your expected execution time. The default is 3 seconds. 
-  ##   Handler: string (required)
-  ##          : The function that Lambda calls to begin execution. For Node.js, it is the <i>module-name</i>.<i>export</i> value in your function. 
   ##   Role: string (required)
   ##       : The Amazon Resource Name (ARN) of the IAM role that Lambda assumes when it executes your function to access any other Amazon Web Services (AWS) resources. 
   ##   Mode: string (required)
   ##       : How the Lambda function will be invoked. Lambda supports only the "event" mode. 
+  ##   Description: string
+  ##              : A short, user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
+  ##   body: JObject (required)
+  ##   Handler: string (required)
+  ##          : The function that Lambda calls to begin execution. For Node.js, it is the <i>module-name</i>.<i>export</i> value in your function. 
   ##   MemorySize: int
   ##             : The amount of memory, in MB, your Lambda function is given. Lambda uses this memory size to infer the amount of CPU allocated to your function. Your function use-case determines your CPU and memory requirements. For example, database operation might need less memory compared to image processing function. The default value is 128 MB. The value must be a multiple of 64 MB.
-  ##   body: JObject (required)
-  var path_603236 = newJObject()
-  var query_603237 = newJObject()
-  var body_603238 = newJObject()
-  add(query_603237, "Description", newJString(Description))
-  add(path_603236, "FunctionName", newJString(FunctionName))
-  add(query_603237, "Runtime", newJString(Runtime))
-  add(query_603237, "Timeout", newJInt(Timeout))
-  add(query_603237, "Handler", newJString(Handler))
-  add(query_603237, "Role", newJString(Role))
-  add(query_603237, "Mode", newJString(Mode))
-  add(query_603237, "MemorySize", newJInt(MemorySize))
+  ##   Runtime: string (required)
+  ##          : The runtime environment for the Lambda function you are uploading. Currently, Lambda supports only "nodejs" as the runtime.
+  var path_593136 = newJObject()
+  var query_593137 = newJObject()
+  var body_593138 = newJObject()
+  add(path_593136, "FunctionName", newJString(FunctionName))
+  add(query_593137, "Timeout", newJInt(Timeout))
+  add(query_593137, "Role", newJString(Role))
+  add(query_593137, "Mode", newJString(Mode))
+  add(query_593137, "Description", newJString(Description))
   if body != nil:
-    body_603238 = body
-  result = call_603235.call(path_603236, query_603237, nil, nil, body_603238)
+    body_593138 = body
+  add(query_593137, "Handler", newJString(Handler))
+  add(query_593137, "MemorySize", newJInt(MemorySize))
+  add(query_593137, "Runtime", newJString(Runtime))
+  result = call_593135.call(path_593136, query_593137, nil, nil, body_593138)
 
-var uploadFunction* = Call_UploadFunction_603202(name: "uploadFunction",
+var uploadFunction* = Call_UploadFunction_593102(name: "uploadFunction",
     meth: HttpMethod.HttpPut, host: "lambda.amazonaws.com",
     route: "/2014-11-13/functions/{FunctionName}#Runtime&Role&Handler&Mode",
-    validator: validate_UploadFunction_603203, base: "/", url: url_UploadFunction_603204,
+    validator: validate_UploadFunction_593103, base: "/", url: url_UploadFunction_593104,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

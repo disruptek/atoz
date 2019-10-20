@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_602467 = ref object of OpenApiRestCall
+  OpenApiRestCall_592365 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_602467](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_592365](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_602467): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_592365): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -95,9 +95,13 @@ proc hydratePath(input: JsonNode; segments: seq[PathToken]): Option[string] {.us
     if head notin input:
       return
     let js = input[head]
-    if js.kind notin {JString, JInt, JFloat, JNull, JBool}:
+    case js.kind
+    of JInt, JFloat, JNull, JBool:
+      head = $js
+    of JString:
+      head = js.getStr
+    else:
       return
-    head = $js
   var remainder = input.hydratePath(segments[1 ..^ 1])
   if remainder.isNone:
     return
@@ -130,15 +134,15 @@ const
   awsServiceName = "storagegateway"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_ActivateGateway_602804 = ref object of OpenApiRestCall_602467
-proc url_ActivateGateway_602806(protocol: Scheme; host: string; base: string;
+  Call_ActivateGateway_592704 = ref object of OpenApiRestCall_592365
+proc url_ActivateGateway_592706(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ActivateGateway_602805(path: JsonNode; query: JsonNode;
+proc validate_ActivateGateway_592705(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Activates the gateway you previously deployed on your host. In the activation process, you specify information such as the AWS Region that you want to use for storing snapshots or tapes, the time zone for scheduled snapshots the gateway snapshot schedule window, an activation key, and a name for your gateway. The activation process also associates your gateway with your account; for more information, see <a>UpdateGatewayInformation</a>.</p> <note> <p>You must turn on the gateway VM before you can activate your gateway.</p> </note>
@@ -150,57 +154,57 @@ proc validate_ActivateGateway_602805(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602918 = header.getOrDefault("X-Amz-Date")
-  valid_602918 = validateParameter(valid_602918, JString, required = false,
-                                 default = nil)
-  if valid_602918 != nil:
-    section.add "X-Amz-Date", valid_602918
-  var valid_602919 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602919 = validateParameter(valid_602919, JString, required = false,
-                                 default = nil)
-  if valid_602919 != nil:
-    section.add "X-Amz-Security-Token", valid_602919
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602933 = header.getOrDefault("X-Amz-Target")
-  valid_602933 = validateParameter(valid_602933, JString, required = true, default = newJString(
+  var valid_592831 = header.getOrDefault("X-Amz-Target")
+  valid_592831 = validateParameter(valid_592831, JString, required = true, default = newJString(
       "StorageGateway_20130630.ActivateGateway"))
-  if valid_602933 != nil:
-    section.add "X-Amz-Target", valid_602933
-  var valid_602934 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602934 = validateParameter(valid_602934, JString, required = false,
+  if valid_592831 != nil:
+    section.add "X-Amz-Target", valid_592831
+  var valid_592832 = header.getOrDefault("X-Amz-Signature")
+  valid_592832 = validateParameter(valid_592832, JString, required = false,
                                  default = nil)
-  if valid_602934 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602934
-  var valid_602935 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602935 = validateParameter(valid_602935, JString, required = false,
+  if valid_592832 != nil:
+    section.add "X-Amz-Signature", valid_592832
+  var valid_592833 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592833 = validateParameter(valid_592833, JString, required = false,
                                  default = nil)
-  if valid_602935 != nil:
-    section.add "X-Amz-Algorithm", valid_602935
-  var valid_602936 = header.getOrDefault("X-Amz-Signature")
-  valid_602936 = validateParameter(valid_602936, JString, required = false,
+  if valid_592833 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592833
+  var valid_592834 = header.getOrDefault("X-Amz-Date")
+  valid_592834 = validateParameter(valid_592834, JString, required = false,
                                  default = nil)
-  if valid_602936 != nil:
-    section.add "X-Amz-Signature", valid_602936
-  var valid_602937 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602937 = validateParameter(valid_602937, JString, required = false,
+  if valid_592834 != nil:
+    section.add "X-Amz-Date", valid_592834
+  var valid_592835 = header.getOrDefault("X-Amz-Credential")
+  valid_592835 = validateParameter(valid_592835, JString, required = false,
                                  default = nil)
-  if valid_602937 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602937
-  var valid_602938 = header.getOrDefault("X-Amz-Credential")
-  valid_602938 = validateParameter(valid_602938, JString, required = false,
+  if valid_592835 != nil:
+    section.add "X-Amz-Credential", valid_592835
+  var valid_592836 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592836 = validateParameter(valid_592836, JString, required = false,
                                  default = nil)
-  if valid_602938 != nil:
-    section.add "X-Amz-Credential", valid_602938
+  if valid_592836 != nil:
+    section.add "X-Amz-Security-Token", valid_592836
+  var valid_592837 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592837 = validateParameter(valid_592837, JString, required = false,
+                                 default = nil)
+  if valid_592837 != nil:
+    section.add "X-Amz-Algorithm", valid_592837
+  var valid_592838 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592838 = validateParameter(valid_592838, JString, required = false,
+                                 default = nil)
+  if valid_592838 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592838
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -211,43 +215,43 @@ proc validate_ActivateGateway_602805(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602962: Call_ActivateGateway_602804; path: JsonNode; query: JsonNode;
+proc call*(call_592862: Call_ActivateGateway_592704; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Activates the gateway you previously deployed on your host. In the activation process, you specify information such as the AWS Region that you want to use for storing snapshots or tapes, the time zone for scheduled snapshots the gateway snapshot schedule window, an activation key, and a name for your gateway. The activation process also associates your gateway with your account; for more information, see <a>UpdateGatewayInformation</a>.</p> <note> <p>You must turn on the gateway VM before you can activate your gateway.</p> </note>
   ## 
-  let valid = call_602962.validator(path, query, header, formData, body)
-  let scheme = call_602962.pickScheme
+  let valid = call_592862.validator(path, query, header, formData, body)
+  let scheme = call_592862.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602962.url(scheme.get, call_602962.host, call_602962.base,
-                         call_602962.route, valid.getOrDefault("path"),
+  let url = call_592862.url(scheme.get, call_592862.host, call_592862.base,
+                         call_592862.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_602962, url, valid)
+  result = hook(call_592862, url, valid)
 
-proc call*(call_603033: Call_ActivateGateway_602804; body: JsonNode): Recallable =
+proc call*(call_592933: Call_ActivateGateway_592704; body: JsonNode): Recallable =
   ## activateGateway
   ## <p>Activates the gateway you previously deployed on your host. In the activation process, you specify information such as the AWS Region that you want to use for storing snapshots or tapes, the time zone for scheduled snapshots the gateway snapshot schedule window, an activation key, and a name for your gateway. The activation process also associates your gateway with your account; for more information, see <a>UpdateGatewayInformation</a>.</p> <note> <p>You must turn on the gateway VM before you can activate your gateway.</p> </note>
   ##   body: JObject (required)
-  var body_603034 = newJObject()
+  var body_592934 = newJObject()
   if body != nil:
-    body_603034 = body
-  result = call_603033.call(nil, nil, nil, nil, body_603034)
+    body_592934 = body
+  result = call_592933.call(nil, nil, nil, nil, body_592934)
 
-var activateGateway* = Call_ActivateGateway_602804(name: "activateGateway",
+var activateGateway* = Call_ActivateGateway_592704(name: "activateGateway",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.ActivateGateway",
-    validator: validate_ActivateGateway_602805, base: "/", url: url_ActivateGateway_602806,
+    validator: validate_ActivateGateway_592705, base: "/", url: url_ActivateGateway_592706,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AddCache_603073 = ref object of OpenApiRestCall_602467
-proc url_AddCache_603075(protocol: Scheme; host: string; base: string; route: string;
+  Call_AddCache_592973 = ref object of OpenApiRestCall_592365
+proc url_AddCache_592975(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AddCache_603074(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_AddCache_592974(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Configures one or more gateway local disks as cache for a gateway. This operation is only supported in the cached volume, tape and file gateway type (see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/StorageGatewayConcepts.html">Storage Gateway Concepts</a>).</p> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add cache, and one or more disk IDs that you want to configure as cache.</p>
   ## 
@@ -258,57 +262,57 @@ proc validate_AddCache_603074(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603076 = header.getOrDefault("X-Amz-Date")
-  valid_603076 = validateParameter(valid_603076, JString, required = false,
-                                 default = nil)
-  if valid_603076 != nil:
-    section.add "X-Amz-Date", valid_603076
-  var valid_603077 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603077 = validateParameter(valid_603077, JString, required = false,
-                                 default = nil)
-  if valid_603077 != nil:
-    section.add "X-Amz-Security-Token", valid_603077
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603078 = header.getOrDefault("X-Amz-Target")
-  valid_603078 = validateParameter(valid_603078, JString, required = true, default = newJString(
+  var valid_592976 = header.getOrDefault("X-Amz-Target")
+  valid_592976 = validateParameter(valid_592976, JString, required = true, default = newJString(
       "StorageGateway_20130630.AddCache"))
-  if valid_603078 != nil:
-    section.add "X-Amz-Target", valid_603078
-  var valid_603079 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603079 = validateParameter(valid_603079, JString, required = false,
+  if valid_592976 != nil:
+    section.add "X-Amz-Target", valid_592976
+  var valid_592977 = header.getOrDefault("X-Amz-Signature")
+  valid_592977 = validateParameter(valid_592977, JString, required = false,
                                  default = nil)
-  if valid_603079 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603079
-  var valid_603080 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603080 = validateParameter(valid_603080, JString, required = false,
+  if valid_592977 != nil:
+    section.add "X-Amz-Signature", valid_592977
+  var valid_592978 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592978 = validateParameter(valid_592978, JString, required = false,
                                  default = nil)
-  if valid_603080 != nil:
-    section.add "X-Amz-Algorithm", valid_603080
-  var valid_603081 = header.getOrDefault("X-Amz-Signature")
-  valid_603081 = validateParameter(valid_603081, JString, required = false,
+  if valid_592978 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592978
+  var valid_592979 = header.getOrDefault("X-Amz-Date")
+  valid_592979 = validateParameter(valid_592979, JString, required = false,
                                  default = nil)
-  if valid_603081 != nil:
-    section.add "X-Amz-Signature", valid_603081
-  var valid_603082 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603082 = validateParameter(valid_603082, JString, required = false,
+  if valid_592979 != nil:
+    section.add "X-Amz-Date", valid_592979
+  var valid_592980 = header.getOrDefault("X-Amz-Credential")
+  valid_592980 = validateParameter(valid_592980, JString, required = false,
                                  default = nil)
-  if valid_603082 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603082
-  var valid_603083 = header.getOrDefault("X-Amz-Credential")
-  valid_603083 = validateParameter(valid_603083, JString, required = false,
+  if valid_592980 != nil:
+    section.add "X-Amz-Credential", valid_592980
+  var valid_592981 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592981 = validateParameter(valid_592981, JString, required = false,
                                  default = nil)
-  if valid_603083 != nil:
-    section.add "X-Amz-Credential", valid_603083
+  if valid_592981 != nil:
+    section.add "X-Amz-Security-Token", valid_592981
+  var valid_592982 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592982 = validateParameter(valid_592982, JString, required = false,
+                                 default = nil)
+  if valid_592982 != nil:
+    section.add "X-Amz-Algorithm", valid_592982
+  var valid_592983 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592983 = validateParameter(valid_592983, JString, required = false,
+                                 default = nil)
+  if valid_592983 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592983
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -319,43 +323,43 @@ proc validate_AddCache_603074(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603085: Call_AddCache_603073; path: JsonNode; query: JsonNode;
+proc call*(call_592985: Call_AddCache_592973; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Configures one or more gateway local disks as cache for a gateway. This operation is only supported in the cached volume, tape and file gateway type (see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/StorageGatewayConcepts.html">Storage Gateway Concepts</a>).</p> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add cache, and one or more disk IDs that you want to configure as cache.</p>
   ## 
-  let valid = call_603085.validator(path, query, header, formData, body)
-  let scheme = call_603085.pickScheme
+  let valid = call_592985.validator(path, query, header, formData, body)
+  let scheme = call_592985.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603085.url(scheme.get, call_603085.host, call_603085.base,
-                         call_603085.route, valid.getOrDefault("path"),
+  let url = call_592985.url(scheme.get, call_592985.host, call_592985.base,
+                         call_592985.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603085, url, valid)
+  result = hook(call_592985, url, valid)
 
-proc call*(call_603086: Call_AddCache_603073; body: JsonNode): Recallable =
+proc call*(call_592986: Call_AddCache_592973; body: JsonNode): Recallable =
   ## addCache
   ## <p>Configures one or more gateway local disks as cache for a gateway. This operation is only supported in the cached volume, tape and file gateway type (see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/StorageGatewayConcepts.html">Storage Gateway Concepts</a>).</p> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add cache, and one or more disk IDs that you want to configure as cache.</p>
   ##   body: JObject (required)
-  var body_603087 = newJObject()
+  var body_592987 = newJObject()
   if body != nil:
-    body_603087 = body
-  result = call_603086.call(nil, nil, nil, nil, body_603087)
+    body_592987 = body
+  result = call_592986.call(nil, nil, nil, nil, body_592987)
 
-var addCache* = Call_AddCache_603073(name: "addCache", meth: HttpMethod.HttpPost,
+var addCache* = Call_AddCache_592973(name: "addCache", meth: HttpMethod.HttpPost,
                                   host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.AddCache",
-                                  validator: validate_AddCache_603074, base: "/",
-                                  url: url_AddCache_603075,
+                                  validator: validate_AddCache_592974, base: "/",
+                                  url: url_AddCache_592975,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AddTagsToResource_603088 = ref object of OpenApiRestCall_602467
-proc url_AddTagsToResource_603090(protocol: Scheme; host: string; base: string;
+  Call_AddTagsToResource_592988 = ref object of OpenApiRestCall_592365
+proc url_AddTagsToResource_592990(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AddTagsToResource_603089(path: JsonNode; query: JsonNode;
+proc validate_AddTagsToResource_592989(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Adds one or more tags to the specified resource. You use tags to add metadata to resources, which you can use to categorize these resources. For example, you can categorize resources by purpose, owner, environment, or team. Each tag consists of a key and a value, which you define. You can add tags to the following AWS Storage Gateway resources:</p> <ul> <li> <p>Storage gateways of all types</p> </li> <li> <p>Storage volumes</p> </li> <li> <p>Virtual tapes</p> </li> <li> <p>NFS and SMB file shares</p> </li> </ul> <p>You can create a maximum of 50 tags for each resource. Virtual tapes and storage volumes that are recovered to a new gateway maintain their tags.</p>
@@ -367,57 +371,57 @@ proc validate_AddTagsToResource_603089(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603091 = header.getOrDefault("X-Amz-Date")
-  valid_603091 = validateParameter(valid_603091, JString, required = false,
-                                 default = nil)
-  if valid_603091 != nil:
-    section.add "X-Amz-Date", valid_603091
-  var valid_603092 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603092 = validateParameter(valid_603092, JString, required = false,
-                                 default = nil)
-  if valid_603092 != nil:
-    section.add "X-Amz-Security-Token", valid_603092
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603093 = header.getOrDefault("X-Amz-Target")
-  valid_603093 = validateParameter(valid_603093, JString, required = true, default = newJString(
+  var valid_592991 = header.getOrDefault("X-Amz-Target")
+  valid_592991 = validateParameter(valid_592991, JString, required = true, default = newJString(
       "StorageGateway_20130630.AddTagsToResource"))
-  if valid_603093 != nil:
-    section.add "X-Amz-Target", valid_603093
-  var valid_603094 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603094 = validateParameter(valid_603094, JString, required = false,
+  if valid_592991 != nil:
+    section.add "X-Amz-Target", valid_592991
+  var valid_592992 = header.getOrDefault("X-Amz-Signature")
+  valid_592992 = validateParameter(valid_592992, JString, required = false,
                                  default = nil)
-  if valid_603094 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603094
-  var valid_603095 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603095 = validateParameter(valid_603095, JString, required = false,
+  if valid_592992 != nil:
+    section.add "X-Amz-Signature", valid_592992
+  var valid_592993 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592993 = validateParameter(valid_592993, JString, required = false,
                                  default = nil)
-  if valid_603095 != nil:
-    section.add "X-Amz-Algorithm", valid_603095
-  var valid_603096 = header.getOrDefault("X-Amz-Signature")
-  valid_603096 = validateParameter(valid_603096, JString, required = false,
+  if valid_592993 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592993
+  var valid_592994 = header.getOrDefault("X-Amz-Date")
+  valid_592994 = validateParameter(valid_592994, JString, required = false,
                                  default = nil)
-  if valid_603096 != nil:
-    section.add "X-Amz-Signature", valid_603096
-  var valid_603097 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603097 = validateParameter(valid_603097, JString, required = false,
+  if valid_592994 != nil:
+    section.add "X-Amz-Date", valid_592994
+  var valid_592995 = header.getOrDefault("X-Amz-Credential")
+  valid_592995 = validateParameter(valid_592995, JString, required = false,
                                  default = nil)
-  if valid_603097 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603097
-  var valid_603098 = header.getOrDefault("X-Amz-Credential")
-  valid_603098 = validateParameter(valid_603098, JString, required = false,
+  if valid_592995 != nil:
+    section.add "X-Amz-Credential", valid_592995
+  var valid_592996 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592996 = validateParameter(valid_592996, JString, required = false,
                                  default = nil)
-  if valid_603098 != nil:
-    section.add "X-Amz-Credential", valid_603098
+  if valid_592996 != nil:
+    section.add "X-Amz-Security-Token", valid_592996
+  var valid_592997 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592997 = validateParameter(valid_592997, JString, required = false,
+                                 default = nil)
+  if valid_592997 != nil:
+    section.add "X-Amz-Algorithm", valid_592997
+  var valid_592998 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592998 = validateParameter(valid_592998, JString, required = false,
+                                 default = nil)
+  if valid_592998 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592998
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -428,43 +432,43 @@ proc validate_AddTagsToResource_603089(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603100: Call_AddTagsToResource_603088; path: JsonNode;
+proc call*(call_593000: Call_AddTagsToResource_592988; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds one or more tags to the specified resource. You use tags to add metadata to resources, which you can use to categorize these resources. For example, you can categorize resources by purpose, owner, environment, or team. Each tag consists of a key and a value, which you define. You can add tags to the following AWS Storage Gateway resources:</p> <ul> <li> <p>Storage gateways of all types</p> </li> <li> <p>Storage volumes</p> </li> <li> <p>Virtual tapes</p> </li> <li> <p>NFS and SMB file shares</p> </li> </ul> <p>You can create a maximum of 50 tags for each resource. Virtual tapes and storage volumes that are recovered to a new gateway maintain their tags.</p>
   ## 
-  let valid = call_603100.validator(path, query, header, formData, body)
-  let scheme = call_603100.pickScheme
+  let valid = call_593000.validator(path, query, header, formData, body)
+  let scheme = call_593000.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603100.url(scheme.get, call_603100.host, call_603100.base,
-                         call_603100.route, valid.getOrDefault("path"),
+  let url = call_593000.url(scheme.get, call_593000.host, call_593000.base,
+                         call_593000.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603100, url, valid)
+  result = hook(call_593000, url, valid)
 
-proc call*(call_603101: Call_AddTagsToResource_603088; body: JsonNode): Recallable =
+proc call*(call_593001: Call_AddTagsToResource_592988; body: JsonNode): Recallable =
   ## addTagsToResource
   ## <p>Adds one or more tags to the specified resource. You use tags to add metadata to resources, which you can use to categorize these resources. For example, you can categorize resources by purpose, owner, environment, or team. Each tag consists of a key and a value, which you define. You can add tags to the following AWS Storage Gateway resources:</p> <ul> <li> <p>Storage gateways of all types</p> </li> <li> <p>Storage volumes</p> </li> <li> <p>Virtual tapes</p> </li> <li> <p>NFS and SMB file shares</p> </li> </ul> <p>You can create a maximum of 50 tags for each resource. Virtual tapes and storage volumes that are recovered to a new gateway maintain their tags.</p>
   ##   body: JObject (required)
-  var body_603102 = newJObject()
+  var body_593002 = newJObject()
   if body != nil:
-    body_603102 = body
-  result = call_603101.call(nil, nil, nil, nil, body_603102)
+    body_593002 = body
+  result = call_593001.call(nil, nil, nil, nil, body_593002)
 
-var addTagsToResource* = Call_AddTagsToResource_603088(name: "addTagsToResource",
+var addTagsToResource* = Call_AddTagsToResource_592988(name: "addTagsToResource",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.AddTagsToResource",
-    validator: validate_AddTagsToResource_603089, base: "/",
-    url: url_AddTagsToResource_603090, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AddTagsToResource_592989, base: "/",
+    url: url_AddTagsToResource_592990, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AddUploadBuffer_603103 = ref object of OpenApiRestCall_602467
-proc url_AddUploadBuffer_603105(protocol: Scheme; host: string; base: string;
+  Call_AddUploadBuffer_593003 = ref object of OpenApiRestCall_592365
+proc url_AddUploadBuffer_593005(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AddUploadBuffer_603104(path: JsonNode; query: JsonNode;
+proc validate_AddUploadBuffer_593004(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Configures one or more gateway local disks as upload buffer for a specified gateway. This operation is supported for the stored volume, cached volume and tape gateway types.</p> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add upload buffer, and one or more disk IDs that you want to configure as upload buffer.</p>
@@ -476,57 +480,57 @@ proc validate_AddUploadBuffer_603104(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603106 = header.getOrDefault("X-Amz-Date")
-  valid_603106 = validateParameter(valid_603106, JString, required = false,
-                                 default = nil)
-  if valid_603106 != nil:
-    section.add "X-Amz-Date", valid_603106
-  var valid_603107 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603107 = validateParameter(valid_603107, JString, required = false,
-                                 default = nil)
-  if valid_603107 != nil:
-    section.add "X-Amz-Security-Token", valid_603107
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603108 = header.getOrDefault("X-Amz-Target")
-  valid_603108 = validateParameter(valid_603108, JString, required = true, default = newJString(
+  var valid_593006 = header.getOrDefault("X-Amz-Target")
+  valid_593006 = validateParameter(valid_593006, JString, required = true, default = newJString(
       "StorageGateway_20130630.AddUploadBuffer"))
-  if valid_603108 != nil:
-    section.add "X-Amz-Target", valid_603108
-  var valid_603109 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603109 = validateParameter(valid_603109, JString, required = false,
+  if valid_593006 != nil:
+    section.add "X-Amz-Target", valid_593006
+  var valid_593007 = header.getOrDefault("X-Amz-Signature")
+  valid_593007 = validateParameter(valid_593007, JString, required = false,
                                  default = nil)
-  if valid_603109 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603109
-  var valid_603110 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603110 = validateParameter(valid_603110, JString, required = false,
+  if valid_593007 != nil:
+    section.add "X-Amz-Signature", valid_593007
+  var valid_593008 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593008 = validateParameter(valid_593008, JString, required = false,
                                  default = nil)
-  if valid_603110 != nil:
-    section.add "X-Amz-Algorithm", valid_603110
-  var valid_603111 = header.getOrDefault("X-Amz-Signature")
-  valid_603111 = validateParameter(valid_603111, JString, required = false,
+  if valid_593008 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593008
+  var valid_593009 = header.getOrDefault("X-Amz-Date")
+  valid_593009 = validateParameter(valid_593009, JString, required = false,
                                  default = nil)
-  if valid_603111 != nil:
-    section.add "X-Amz-Signature", valid_603111
-  var valid_603112 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603112 = validateParameter(valid_603112, JString, required = false,
+  if valid_593009 != nil:
+    section.add "X-Amz-Date", valid_593009
+  var valid_593010 = header.getOrDefault("X-Amz-Credential")
+  valid_593010 = validateParameter(valid_593010, JString, required = false,
                                  default = nil)
-  if valid_603112 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603112
-  var valid_603113 = header.getOrDefault("X-Amz-Credential")
-  valid_603113 = validateParameter(valid_603113, JString, required = false,
+  if valid_593010 != nil:
+    section.add "X-Amz-Credential", valid_593010
+  var valid_593011 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593011 = validateParameter(valid_593011, JString, required = false,
                                  default = nil)
-  if valid_603113 != nil:
-    section.add "X-Amz-Credential", valid_603113
+  if valid_593011 != nil:
+    section.add "X-Amz-Security-Token", valid_593011
+  var valid_593012 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593012 = validateParameter(valid_593012, JString, required = false,
+                                 default = nil)
+  if valid_593012 != nil:
+    section.add "X-Amz-Algorithm", valid_593012
+  var valid_593013 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593013 = validateParameter(valid_593013, JString, required = false,
+                                 default = nil)
+  if valid_593013 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593013
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -537,43 +541,43 @@ proc validate_AddUploadBuffer_603104(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603115: Call_AddUploadBuffer_603103; path: JsonNode; query: JsonNode;
+proc call*(call_593015: Call_AddUploadBuffer_593003; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Configures one or more gateway local disks as upload buffer for a specified gateway. This operation is supported for the stored volume, cached volume and tape gateway types.</p> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add upload buffer, and one or more disk IDs that you want to configure as upload buffer.</p>
   ## 
-  let valid = call_603115.validator(path, query, header, formData, body)
-  let scheme = call_603115.pickScheme
+  let valid = call_593015.validator(path, query, header, formData, body)
+  let scheme = call_593015.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603115.url(scheme.get, call_603115.host, call_603115.base,
-                         call_603115.route, valid.getOrDefault("path"),
+  let url = call_593015.url(scheme.get, call_593015.host, call_593015.base,
+                         call_593015.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603115, url, valid)
+  result = hook(call_593015, url, valid)
 
-proc call*(call_603116: Call_AddUploadBuffer_603103; body: JsonNode): Recallable =
+proc call*(call_593016: Call_AddUploadBuffer_593003; body: JsonNode): Recallable =
   ## addUploadBuffer
   ## <p>Configures one or more gateway local disks as upload buffer for a specified gateway. This operation is supported for the stored volume, cached volume and tape gateway types.</p> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add upload buffer, and one or more disk IDs that you want to configure as upload buffer.</p>
   ##   body: JObject (required)
-  var body_603117 = newJObject()
+  var body_593017 = newJObject()
   if body != nil:
-    body_603117 = body
-  result = call_603116.call(nil, nil, nil, nil, body_603117)
+    body_593017 = body
+  result = call_593016.call(nil, nil, nil, nil, body_593017)
 
-var addUploadBuffer* = Call_AddUploadBuffer_603103(name: "addUploadBuffer",
+var addUploadBuffer* = Call_AddUploadBuffer_593003(name: "addUploadBuffer",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.AddUploadBuffer",
-    validator: validate_AddUploadBuffer_603104, base: "/", url: url_AddUploadBuffer_603105,
+    validator: validate_AddUploadBuffer_593004, base: "/", url: url_AddUploadBuffer_593005,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AddWorkingStorage_603118 = ref object of OpenApiRestCall_602467
-proc url_AddWorkingStorage_603120(protocol: Scheme; host: string; base: string;
+  Call_AddWorkingStorage_593018 = ref object of OpenApiRestCall_592365
+proc url_AddWorkingStorage_593020(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AddWorkingStorage_603119(path: JsonNode; query: JsonNode;
+proc validate_AddWorkingStorage_593019(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Configures one or more gateway local disks as working storage for a gateway. This operation is only supported in the stored volume gateway type. This operation is deprecated in cached volume API version 20120630. Use <a>AddUploadBuffer</a> instead.</p> <note> <p>Working storage is also referred to as upload buffer. You can also use the <a>AddUploadBuffer</a> operation to add upload buffer to a stored volume gateway.</p> </note> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add working storage, and one or more disk IDs that you want to configure as working storage.</p>
@@ -585,57 +589,57 @@ proc validate_AddWorkingStorage_603119(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603121 = header.getOrDefault("X-Amz-Date")
-  valid_603121 = validateParameter(valid_603121, JString, required = false,
-                                 default = nil)
-  if valid_603121 != nil:
-    section.add "X-Amz-Date", valid_603121
-  var valid_603122 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603122 = validateParameter(valid_603122, JString, required = false,
-                                 default = nil)
-  if valid_603122 != nil:
-    section.add "X-Amz-Security-Token", valid_603122
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603123 = header.getOrDefault("X-Amz-Target")
-  valid_603123 = validateParameter(valid_603123, JString, required = true, default = newJString(
+  var valid_593021 = header.getOrDefault("X-Amz-Target")
+  valid_593021 = validateParameter(valid_593021, JString, required = true, default = newJString(
       "StorageGateway_20130630.AddWorkingStorage"))
-  if valid_603123 != nil:
-    section.add "X-Amz-Target", valid_603123
-  var valid_603124 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603124 = validateParameter(valid_603124, JString, required = false,
+  if valid_593021 != nil:
+    section.add "X-Amz-Target", valid_593021
+  var valid_593022 = header.getOrDefault("X-Amz-Signature")
+  valid_593022 = validateParameter(valid_593022, JString, required = false,
                                  default = nil)
-  if valid_603124 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603124
-  var valid_603125 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603125 = validateParameter(valid_603125, JString, required = false,
+  if valid_593022 != nil:
+    section.add "X-Amz-Signature", valid_593022
+  var valid_593023 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593023 = validateParameter(valid_593023, JString, required = false,
                                  default = nil)
-  if valid_603125 != nil:
-    section.add "X-Amz-Algorithm", valid_603125
-  var valid_603126 = header.getOrDefault("X-Amz-Signature")
-  valid_603126 = validateParameter(valid_603126, JString, required = false,
+  if valid_593023 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593023
+  var valid_593024 = header.getOrDefault("X-Amz-Date")
+  valid_593024 = validateParameter(valid_593024, JString, required = false,
                                  default = nil)
-  if valid_603126 != nil:
-    section.add "X-Amz-Signature", valid_603126
-  var valid_603127 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603127 = validateParameter(valid_603127, JString, required = false,
+  if valid_593024 != nil:
+    section.add "X-Amz-Date", valid_593024
+  var valid_593025 = header.getOrDefault("X-Amz-Credential")
+  valid_593025 = validateParameter(valid_593025, JString, required = false,
                                  default = nil)
-  if valid_603127 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603127
-  var valid_603128 = header.getOrDefault("X-Amz-Credential")
-  valid_603128 = validateParameter(valid_603128, JString, required = false,
+  if valid_593025 != nil:
+    section.add "X-Amz-Credential", valid_593025
+  var valid_593026 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593026 = validateParameter(valid_593026, JString, required = false,
                                  default = nil)
-  if valid_603128 != nil:
-    section.add "X-Amz-Credential", valid_603128
+  if valid_593026 != nil:
+    section.add "X-Amz-Security-Token", valid_593026
+  var valid_593027 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593027 = validateParameter(valid_593027, JString, required = false,
+                                 default = nil)
+  if valid_593027 != nil:
+    section.add "X-Amz-Algorithm", valid_593027
+  var valid_593028 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593028 = validateParameter(valid_593028, JString, required = false,
+                                 default = nil)
+  if valid_593028 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593028
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -646,43 +650,43 @@ proc validate_AddWorkingStorage_603119(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603130: Call_AddWorkingStorage_603118; path: JsonNode;
+proc call*(call_593030: Call_AddWorkingStorage_593018; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Configures one or more gateway local disks as working storage for a gateway. This operation is only supported in the stored volume gateway type. This operation is deprecated in cached volume API version 20120630. Use <a>AddUploadBuffer</a> instead.</p> <note> <p>Working storage is also referred to as upload buffer. You can also use the <a>AddUploadBuffer</a> operation to add upload buffer to a stored volume gateway.</p> </note> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add working storage, and one or more disk IDs that you want to configure as working storage.</p>
   ## 
-  let valid = call_603130.validator(path, query, header, formData, body)
-  let scheme = call_603130.pickScheme
+  let valid = call_593030.validator(path, query, header, formData, body)
+  let scheme = call_593030.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603130.url(scheme.get, call_603130.host, call_603130.base,
-                         call_603130.route, valid.getOrDefault("path"),
+  let url = call_593030.url(scheme.get, call_593030.host, call_593030.base,
+                         call_593030.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603130, url, valid)
+  result = hook(call_593030, url, valid)
 
-proc call*(call_603131: Call_AddWorkingStorage_603118; body: JsonNode): Recallable =
+proc call*(call_593031: Call_AddWorkingStorage_593018; body: JsonNode): Recallable =
   ## addWorkingStorage
   ## <p>Configures one or more gateway local disks as working storage for a gateway. This operation is only supported in the stored volume gateway type. This operation is deprecated in cached volume API version 20120630. Use <a>AddUploadBuffer</a> instead.</p> <note> <p>Working storage is also referred to as upload buffer. You can also use the <a>AddUploadBuffer</a> operation to add upload buffer to a stored volume gateway.</p> </note> <p>In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add working storage, and one or more disk IDs that you want to configure as working storage.</p>
   ##   body: JObject (required)
-  var body_603132 = newJObject()
+  var body_593032 = newJObject()
   if body != nil:
-    body_603132 = body
-  result = call_603131.call(nil, nil, nil, nil, body_603132)
+    body_593032 = body
+  result = call_593031.call(nil, nil, nil, nil, body_593032)
 
-var addWorkingStorage* = Call_AddWorkingStorage_603118(name: "addWorkingStorage",
+var addWorkingStorage* = Call_AddWorkingStorage_593018(name: "addWorkingStorage",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.AddWorkingStorage",
-    validator: validate_AddWorkingStorage_603119, base: "/",
-    url: url_AddWorkingStorage_603120, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AddWorkingStorage_593019, base: "/",
+    url: url_AddWorkingStorage_593020, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AssignTapePool_603133 = ref object of OpenApiRestCall_602467
-proc url_AssignTapePool_603135(protocol: Scheme; host: string; base: string;
+  Call_AssignTapePool_593033 = ref object of OpenApiRestCall_592365
+proc url_AssignTapePool_593035(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AssignTapePool_603134(path: JsonNode; query: JsonNode;
+proc validate_AssignTapePool_593034(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Assigns a tape to a tape pool for archiving. The tape assigned to a pool is archived in the S3 storage class that is associated with the pool. When you use your backup application to eject the tape, the tape is archived directly into the S3 storage class (Glacier or Deep Archive) that corresponds to the pool.</p> <p>Valid values: "GLACIER", "DEEP_ARCHIVE"</p>
@@ -694,57 +698,57 @@ proc validate_AssignTapePool_603134(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603136 = header.getOrDefault("X-Amz-Date")
-  valid_603136 = validateParameter(valid_603136, JString, required = false,
-                                 default = nil)
-  if valid_603136 != nil:
-    section.add "X-Amz-Date", valid_603136
-  var valid_603137 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603137 = validateParameter(valid_603137, JString, required = false,
-                                 default = nil)
-  if valid_603137 != nil:
-    section.add "X-Amz-Security-Token", valid_603137
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603138 = header.getOrDefault("X-Amz-Target")
-  valid_603138 = validateParameter(valid_603138, JString, required = true, default = newJString(
+  var valid_593036 = header.getOrDefault("X-Amz-Target")
+  valid_593036 = validateParameter(valid_593036, JString, required = true, default = newJString(
       "StorageGateway_20130630.AssignTapePool"))
-  if valid_603138 != nil:
-    section.add "X-Amz-Target", valid_603138
-  var valid_603139 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603139 = validateParameter(valid_603139, JString, required = false,
+  if valid_593036 != nil:
+    section.add "X-Amz-Target", valid_593036
+  var valid_593037 = header.getOrDefault("X-Amz-Signature")
+  valid_593037 = validateParameter(valid_593037, JString, required = false,
                                  default = nil)
-  if valid_603139 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603139
-  var valid_603140 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603140 = validateParameter(valid_603140, JString, required = false,
+  if valid_593037 != nil:
+    section.add "X-Amz-Signature", valid_593037
+  var valid_593038 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593038 = validateParameter(valid_593038, JString, required = false,
                                  default = nil)
-  if valid_603140 != nil:
-    section.add "X-Amz-Algorithm", valid_603140
-  var valid_603141 = header.getOrDefault("X-Amz-Signature")
-  valid_603141 = validateParameter(valid_603141, JString, required = false,
+  if valid_593038 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593038
+  var valid_593039 = header.getOrDefault("X-Amz-Date")
+  valid_593039 = validateParameter(valid_593039, JString, required = false,
                                  default = nil)
-  if valid_603141 != nil:
-    section.add "X-Amz-Signature", valid_603141
-  var valid_603142 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603142 = validateParameter(valid_603142, JString, required = false,
+  if valid_593039 != nil:
+    section.add "X-Amz-Date", valid_593039
+  var valid_593040 = header.getOrDefault("X-Amz-Credential")
+  valid_593040 = validateParameter(valid_593040, JString, required = false,
                                  default = nil)
-  if valid_603142 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603142
-  var valid_603143 = header.getOrDefault("X-Amz-Credential")
-  valid_603143 = validateParameter(valid_603143, JString, required = false,
+  if valid_593040 != nil:
+    section.add "X-Amz-Credential", valid_593040
+  var valid_593041 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593041 = validateParameter(valid_593041, JString, required = false,
                                  default = nil)
-  if valid_603143 != nil:
-    section.add "X-Amz-Credential", valid_603143
+  if valid_593041 != nil:
+    section.add "X-Amz-Security-Token", valid_593041
+  var valid_593042 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593042 = validateParameter(valid_593042, JString, required = false,
+                                 default = nil)
+  if valid_593042 != nil:
+    section.add "X-Amz-Algorithm", valid_593042
+  var valid_593043 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593043 = validateParameter(valid_593043, JString, required = false,
+                                 default = nil)
+  if valid_593043 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593043
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -755,43 +759,43 @@ proc validate_AssignTapePool_603134(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603145: Call_AssignTapePool_603133; path: JsonNode; query: JsonNode;
+proc call*(call_593045: Call_AssignTapePool_593033; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Assigns a tape to a tape pool for archiving. The tape assigned to a pool is archived in the S3 storage class that is associated with the pool. When you use your backup application to eject the tape, the tape is archived directly into the S3 storage class (Glacier or Deep Archive) that corresponds to the pool.</p> <p>Valid values: "GLACIER", "DEEP_ARCHIVE"</p>
   ## 
-  let valid = call_603145.validator(path, query, header, formData, body)
-  let scheme = call_603145.pickScheme
+  let valid = call_593045.validator(path, query, header, formData, body)
+  let scheme = call_593045.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603145.url(scheme.get, call_603145.host, call_603145.base,
-                         call_603145.route, valid.getOrDefault("path"),
+  let url = call_593045.url(scheme.get, call_593045.host, call_593045.base,
+                         call_593045.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603145, url, valid)
+  result = hook(call_593045, url, valid)
 
-proc call*(call_603146: Call_AssignTapePool_603133; body: JsonNode): Recallable =
+proc call*(call_593046: Call_AssignTapePool_593033; body: JsonNode): Recallable =
   ## assignTapePool
   ## <p>Assigns a tape to a tape pool for archiving. The tape assigned to a pool is archived in the S3 storage class that is associated with the pool. When you use your backup application to eject the tape, the tape is archived directly into the S3 storage class (Glacier or Deep Archive) that corresponds to the pool.</p> <p>Valid values: "GLACIER", "DEEP_ARCHIVE"</p>
   ##   body: JObject (required)
-  var body_603147 = newJObject()
+  var body_593047 = newJObject()
   if body != nil:
-    body_603147 = body
-  result = call_603146.call(nil, nil, nil, nil, body_603147)
+    body_593047 = body
+  result = call_593046.call(nil, nil, nil, nil, body_593047)
 
-var assignTapePool* = Call_AssignTapePool_603133(name: "assignTapePool",
+var assignTapePool* = Call_AssignTapePool_593033(name: "assignTapePool",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.AssignTapePool",
-    validator: validate_AssignTapePool_603134, base: "/", url: url_AssignTapePool_603135,
+    validator: validate_AssignTapePool_593034, base: "/", url: url_AssignTapePool_593035,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AttachVolume_603148 = ref object of OpenApiRestCall_602467
-proc url_AttachVolume_603150(protocol: Scheme; host: string; base: string;
+  Call_AttachVolume_593048 = ref object of OpenApiRestCall_592365
+proc url_AttachVolume_593050(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_AttachVolume_603149(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_AttachVolume_593049(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Connects a volume to an iSCSI connection and then attaches the volume to the specified gateway. Detaching and attaching a volume enables you to recover your data from one gateway to a different gateway without creating a snapshot. It also makes it easier to move your volumes from an on-premises gateway to a gateway hosted on an Amazon EC2 instance.
   ## 
@@ -802,57 +806,57 @@ proc validate_AttachVolume_603149(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603151 = header.getOrDefault("X-Amz-Date")
-  valid_603151 = validateParameter(valid_603151, JString, required = false,
-                                 default = nil)
-  if valid_603151 != nil:
-    section.add "X-Amz-Date", valid_603151
-  var valid_603152 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603152 = validateParameter(valid_603152, JString, required = false,
-                                 default = nil)
-  if valid_603152 != nil:
-    section.add "X-Amz-Security-Token", valid_603152
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603153 = header.getOrDefault("X-Amz-Target")
-  valid_603153 = validateParameter(valid_603153, JString, required = true, default = newJString(
+  var valid_593051 = header.getOrDefault("X-Amz-Target")
+  valid_593051 = validateParameter(valid_593051, JString, required = true, default = newJString(
       "StorageGateway_20130630.AttachVolume"))
-  if valid_603153 != nil:
-    section.add "X-Amz-Target", valid_603153
-  var valid_603154 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603154 = validateParameter(valid_603154, JString, required = false,
+  if valid_593051 != nil:
+    section.add "X-Amz-Target", valid_593051
+  var valid_593052 = header.getOrDefault("X-Amz-Signature")
+  valid_593052 = validateParameter(valid_593052, JString, required = false,
                                  default = nil)
-  if valid_603154 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603154
-  var valid_603155 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603155 = validateParameter(valid_603155, JString, required = false,
+  if valid_593052 != nil:
+    section.add "X-Amz-Signature", valid_593052
+  var valid_593053 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593053 = validateParameter(valid_593053, JString, required = false,
                                  default = nil)
-  if valid_603155 != nil:
-    section.add "X-Amz-Algorithm", valid_603155
-  var valid_603156 = header.getOrDefault("X-Amz-Signature")
-  valid_603156 = validateParameter(valid_603156, JString, required = false,
+  if valid_593053 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593053
+  var valid_593054 = header.getOrDefault("X-Amz-Date")
+  valid_593054 = validateParameter(valid_593054, JString, required = false,
                                  default = nil)
-  if valid_603156 != nil:
-    section.add "X-Amz-Signature", valid_603156
-  var valid_603157 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603157 = validateParameter(valid_603157, JString, required = false,
+  if valid_593054 != nil:
+    section.add "X-Amz-Date", valid_593054
+  var valid_593055 = header.getOrDefault("X-Amz-Credential")
+  valid_593055 = validateParameter(valid_593055, JString, required = false,
                                  default = nil)
-  if valid_603157 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603157
-  var valid_603158 = header.getOrDefault("X-Amz-Credential")
-  valid_603158 = validateParameter(valid_603158, JString, required = false,
+  if valid_593055 != nil:
+    section.add "X-Amz-Credential", valid_593055
+  var valid_593056 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593056 = validateParameter(valid_593056, JString, required = false,
                                  default = nil)
-  if valid_603158 != nil:
-    section.add "X-Amz-Credential", valid_603158
+  if valid_593056 != nil:
+    section.add "X-Amz-Security-Token", valid_593056
+  var valid_593057 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593057 = validateParameter(valid_593057, JString, required = false,
+                                 default = nil)
+  if valid_593057 != nil:
+    section.add "X-Amz-Algorithm", valid_593057
+  var valid_593058 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593058 = validateParameter(valid_593058, JString, required = false,
+                                 default = nil)
+  if valid_593058 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593058
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -863,43 +867,43 @@ proc validate_AttachVolume_603149(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603160: Call_AttachVolume_603148; path: JsonNode; query: JsonNode;
+proc call*(call_593060: Call_AttachVolume_593048; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Connects a volume to an iSCSI connection and then attaches the volume to the specified gateway. Detaching and attaching a volume enables you to recover your data from one gateway to a different gateway without creating a snapshot. It also makes it easier to move your volumes from an on-premises gateway to a gateway hosted on an Amazon EC2 instance.
   ## 
-  let valid = call_603160.validator(path, query, header, formData, body)
-  let scheme = call_603160.pickScheme
+  let valid = call_593060.validator(path, query, header, formData, body)
+  let scheme = call_593060.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603160.url(scheme.get, call_603160.host, call_603160.base,
-                         call_603160.route, valid.getOrDefault("path"),
+  let url = call_593060.url(scheme.get, call_593060.host, call_593060.base,
+                         call_593060.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603160, url, valid)
+  result = hook(call_593060, url, valid)
 
-proc call*(call_603161: Call_AttachVolume_603148; body: JsonNode): Recallable =
+proc call*(call_593061: Call_AttachVolume_593048; body: JsonNode): Recallable =
   ## attachVolume
   ## Connects a volume to an iSCSI connection and then attaches the volume to the specified gateway. Detaching and attaching a volume enables you to recover your data from one gateway to a different gateway without creating a snapshot. It also makes it easier to move your volumes from an on-premises gateway to a gateway hosted on an Amazon EC2 instance.
   ##   body: JObject (required)
-  var body_603162 = newJObject()
+  var body_593062 = newJObject()
   if body != nil:
-    body_603162 = body
-  result = call_603161.call(nil, nil, nil, nil, body_603162)
+    body_593062 = body
+  result = call_593061.call(nil, nil, nil, nil, body_593062)
 
-var attachVolume* = Call_AttachVolume_603148(name: "attachVolume",
+var attachVolume* = Call_AttachVolume_593048(name: "attachVolume",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.AttachVolume",
-    validator: validate_AttachVolume_603149, base: "/", url: url_AttachVolume_603150,
+    validator: validate_AttachVolume_593049, base: "/", url: url_AttachVolume_593050,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CancelArchival_603163 = ref object of OpenApiRestCall_602467
-proc url_CancelArchival_603165(protocol: Scheme; host: string; base: string;
+  Call_CancelArchival_593063 = ref object of OpenApiRestCall_592365
+proc url_CancelArchival_593065(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CancelArchival_603164(path: JsonNode; query: JsonNode;
+proc validate_CancelArchival_593064(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Cancels archiving of a virtual tape to the virtual tape shelf (VTS) after the archiving process is initiated. This operation is only supported in the tape gateway type.
@@ -911,57 +915,57 @@ proc validate_CancelArchival_603164(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603166 = header.getOrDefault("X-Amz-Date")
-  valid_603166 = validateParameter(valid_603166, JString, required = false,
-                                 default = nil)
-  if valid_603166 != nil:
-    section.add "X-Amz-Date", valid_603166
-  var valid_603167 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603167 = validateParameter(valid_603167, JString, required = false,
-                                 default = nil)
-  if valid_603167 != nil:
-    section.add "X-Amz-Security-Token", valid_603167
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603168 = header.getOrDefault("X-Amz-Target")
-  valid_603168 = validateParameter(valid_603168, JString, required = true, default = newJString(
+  var valid_593066 = header.getOrDefault("X-Amz-Target")
+  valid_593066 = validateParameter(valid_593066, JString, required = true, default = newJString(
       "StorageGateway_20130630.CancelArchival"))
-  if valid_603168 != nil:
-    section.add "X-Amz-Target", valid_603168
-  var valid_603169 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603169 = validateParameter(valid_603169, JString, required = false,
+  if valid_593066 != nil:
+    section.add "X-Amz-Target", valid_593066
+  var valid_593067 = header.getOrDefault("X-Amz-Signature")
+  valid_593067 = validateParameter(valid_593067, JString, required = false,
                                  default = nil)
-  if valid_603169 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603169
-  var valid_603170 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603170 = validateParameter(valid_603170, JString, required = false,
+  if valid_593067 != nil:
+    section.add "X-Amz-Signature", valid_593067
+  var valid_593068 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593068 = validateParameter(valid_593068, JString, required = false,
                                  default = nil)
-  if valid_603170 != nil:
-    section.add "X-Amz-Algorithm", valid_603170
-  var valid_603171 = header.getOrDefault("X-Amz-Signature")
-  valid_603171 = validateParameter(valid_603171, JString, required = false,
+  if valid_593068 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593068
+  var valid_593069 = header.getOrDefault("X-Amz-Date")
+  valid_593069 = validateParameter(valid_593069, JString, required = false,
                                  default = nil)
-  if valid_603171 != nil:
-    section.add "X-Amz-Signature", valid_603171
-  var valid_603172 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603172 = validateParameter(valid_603172, JString, required = false,
+  if valid_593069 != nil:
+    section.add "X-Amz-Date", valid_593069
+  var valid_593070 = header.getOrDefault("X-Amz-Credential")
+  valid_593070 = validateParameter(valid_593070, JString, required = false,
                                  default = nil)
-  if valid_603172 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603172
-  var valid_603173 = header.getOrDefault("X-Amz-Credential")
-  valid_603173 = validateParameter(valid_603173, JString, required = false,
+  if valid_593070 != nil:
+    section.add "X-Amz-Credential", valid_593070
+  var valid_593071 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593071 = validateParameter(valid_593071, JString, required = false,
                                  default = nil)
-  if valid_603173 != nil:
-    section.add "X-Amz-Credential", valid_603173
+  if valid_593071 != nil:
+    section.add "X-Amz-Security-Token", valid_593071
+  var valid_593072 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593072 = validateParameter(valid_593072, JString, required = false,
+                                 default = nil)
+  if valid_593072 != nil:
+    section.add "X-Amz-Algorithm", valid_593072
+  var valid_593073 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593073 = validateParameter(valid_593073, JString, required = false,
+                                 default = nil)
+  if valid_593073 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593073
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -972,43 +976,43 @@ proc validate_CancelArchival_603164(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603175: Call_CancelArchival_603163; path: JsonNode; query: JsonNode;
+proc call*(call_593075: Call_CancelArchival_593063; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Cancels archiving of a virtual tape to the virtual tape shelf (VTS) after the archiving process is initiated. This operation is only supported in the tape gateway type.
   ## 
-  let valid = call_603175.validator(path, query, header, formData, body)
-  let scheme = call_603175.pickScheme
+  let valid = call_593075.validator(path, query, header, formData, body)
+  let scheme = call_593075.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603175.url(scheme.get, call_603175.host, call_603175.base,
-                         call_603175.route, valid.getOrDefault("path"),
+  let url = call_593075.url(scheme.get, call_593075.host, call_593075.base,
+                         call_593075.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603175, url, valid)
+  result = hook(call_593075, url, valid)
 
-proc call*(call_603176: Call_CancelArchival_603163; body: JsonNode): Recallable =
+proc call*(call_593076: Call_CancelArchival_593063; body: JsonNode): Recallable =
   ## cancelArchival
   ## Cancels archiving of a virtual tape to the virtual tape shelf (VTS) after the archiving process is initiated. This operation is only supported in the tape gateway type.
   ##   body: JObject (required)
-  var body_603177 = newJObject()
+  var body_593077 = newJObject()
   if body != nil:
-    body_603177 = body
-  result = call_603176.call(nil, nil, nil, nil, body_603177)
+    body_593077 = body
+  result = call_593076.call(nil, nil, nil, nil, body_593077)
 
-var cancelArchival* = Call_CancelArchival_603163(name: "cancelArchival",
+var cancelArchival* = Call_CancelArchival_593063(name: "cancelArchival",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.CancelArchival",
-    validator: validate_CancelArchival_603164, base: "/", url: url_CancelArchival_603165,
+    validator: validate_CancelArchival_593064, base: "/", url: url_CancelArchival_593065,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CancelRetrieval_603178 = ref object of OpenApiRestCall_602467
-proc url_CancelRetrieval_603180(protocol: Scheme; host: string; base: string;
+  Call_CancelRetrieval_593078 = ref object of OpenApiRestCall_592365
+proc url_CancelRetrieval_593080(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CancelRetrieval_603179(path: JsonNode; query: JsonNode;
+proc validate_CancelRetrieval_593079(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Cancels retrieval of a virtual tape from the virtual tape shelf (VTS) to a gateway after the retrieval process is initiated. The virtual tape is returned to the VTS. This operation is only supported in the tape gateway type.
@@ -1020,57 +1024,57 @@ proc validate_CancelRetrieval_603179(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603181 = header.getOrDefault("X-Amz-Date")
-  valid_603181 = validateParameter(valid_603181, JString, required = false,
-                                 default = nil)
-  if valid_603181 != nil:
-    section.add "X-Amz-Date", valid_603181
-  var valid_603182 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603182 = validateParameter(valid_603182, JString, required = false,
-                                 default = nil)
-  if valid_603182 != nil:
-    section.add "X-Amz-Security-Token", valid_603182
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603183 = header.getOrDefault("X-Amz-Target")
-  valid_603183 = validateParameter(valid_603183, JString, required = true, default = newJString(
+  var valid_593081 = header.getOrDefault("X-Amz-Target")
+  valid_593081 = validateParameter(valid_593081, JString, required = true, default = newJString(
       "StorageGateway_20130630.CancelRetrieval"))
-  if valid_603183 != nil:
-    section.add "X-Amz-Target", valid_603183
-  var valid_603184 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603184 = validateParameter(valid_603184, JString, required = false,
+  if valid_593081 != nil:
+    section.add "X-Amz-Target", valid_593081
+  var valid_593082 = header.getOrDefault("X-Amz-Signature")
+  valid_593082 = validateParameter(valid_593082, JString, required = false,
                                  default = nil)
-  if valid_603184 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603184
-  var valid_603185 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603185 = validateParameter(valid_603185, JString, required = false,
+  if valid_593082 != nil:
+    section.add "X-Amz-Signature", valid_593082
+  var valid_593083 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593083 = validateParameter(valid_593083, JString, required = false,
                                  default = nil)
-  if valid_603185 != nil:
-    section.add "X-Amz-Algorithm", valid_603185
-  var valid_603186 = header.getOrDefault("X-Amz-Signature")
-  valid_603186 = validateParameter(valid_603186, JString, required = false,
+  if valid_593083 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593083
+  var valid_593084 = header.getOrDefault("X-Amz-Date")
+  valid_593084 = validateParameter(valid_593084, JString, required = false,
                                  default = nil)
-  if valid_603186 != nil:
-    section.add "X-Amz-Signature", valid_603186
-  var valid_603187 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603187 = validateParameter(valid_603187, JString, required = false,
+  if valid_593084 != nil:
+    section.add "X-Amz-Date", valid_593084
+  var valid_593085 = header.getOrDefault("X-Amz-Credential")
+  valid_593085 = validateParameter(valid_593085, JString, required = false,
                                  default = nil)
-  if valid_603187 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603187
-  var valid_603188 = header.getOrDefault("X-Amz-Credential")
-  valid_603188 = validateParameter(valid_603188, JString, required = false,
+  if valid_593085 != nil:
+    section.add "X-Amz-Credential", valid_593085
+  var valid_593086 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593086 = validateParameter(valid_593086, JString, required = false,
                                  default = nil)
-  if valid_603188 != nil:
-    section.add "X-Amz-Credential", valid_603188
+  if valid_593086 != nil:
+    section.add "X-Amz-Security-Token", valid_593086
+  var valid_593087 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593087 = validateParameter(valid_593087, JString, required = false,
+                                 default = nil)
+  if valid_593087 != nil:
+    section.add "X-Amz-Algorithm", valid_593087
+  var valid_593088 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593088 = validateParameter(valid_593088, JString, required = false,
+                                 default = nil)
+  if valid_593088 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593088
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1081,36 +1085,36 @@ proc validate_CancelRetrieval_603179(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603190: Call_CancelRetrieval_603178; path: JsonNode; query: JsonNode;
+proc call*(call_593090: Call_CancelRetrieval_593078; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Cancels retrieval of a virtual tape from the virtual tape shelf (VTS) to a gateway after the retrieval process is initiated. The virtual tape is returned to the VTS. This operation is only supported in the tape gateway type.
   ## 
-  let valid = call_603190.validator(path, query, header, formData, body)
-  let scheme = call_603190.pickScheme
+  let valid = call_593090.validator(path, query, header, formData, body)
+  let scheme = call_593090.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603190.url(scheme.get, call_603190.host, call_603190.base,
-                         call_603190.route, valid.getOrDefault("path"),
+  let url = call_593090.url(scheme.get, call_593090.host, call_593090.base,
+                         call_593090.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603190, url, valid)
+  result = hook(call_593090, url, valid)
 
-proc call*(call_603191: Call_CancelRetrieval_603178; body: JsonNode): Recallable =
+proc call*(call_593091: Call_CancelRetrieval_593078; body: JsonNode): Recallable =
   ## cancelRetrieval
   ## Cancels retrieval of a virtual tape from the virtual tape shelf (VTS) to a gateway after the retrieval process is initiated. The virtual tape is returned to the VTS. This operation is only supported in the tape gateway type.
   ##   body: JObject (required)
-  var body_603192 = newJObject()
+  var body_593092 = newJObject()
   if body != nil:
-    body_603192 = body
-  result = call_603191.call(nil, nil, nil, nil, body_603192)
+    body_593092 = body
+  result = call_593091.call(nil, nil, nil, nil, body_593092)
 
-var cancelRetrieval* = Call_CancelRetrieval_603178(name: "cancelRetrieval",
+var cancelRetrieval* = Call_CancelRetrieval_593078(name: "cancelRetrieval",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.CancelRetrieval",
-    validator: validate_CancelRetrieval_603179, base: "/", url: url_CancelRetrieval_603180,
+    validator: validate_CancelRetrieval_593079, base: "/", url: url_CancelRetrieval_593080,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateCachediSCSIVolume_603193 = ref object of OpenApiRestCall_602467
-proc url_CreateCachediSCSIVolume_603195(protocol: Scheme; host: string; base: string;
+  Call_CreateCachediSCSIVolume_593093 = ref object of OpenApiRestCall_592365
+proc url_CreateCachediSCSIVolume_593095(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1118,7 +1122,7 @@ proc url_CreateCachediSCSIVolume_603195(protocol: Scheme; host: string; base: st
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateCachediSCSIVolume_603194(path: JsonNode; query: JsonNode;
+proc validate_CreateCachediSCSIVolume_593094(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a cached volume on a specified cached volume gateway. This operation is only supported in the cached volume gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create a cached volume. Use the <a>AddCache</a> operation to add cache storage to a gateway. </p> </note> <p>In the request, you must specify the gateway, size of the volume in bytes, the iSCSI target name, an IP address on which to expose the target, and a unique client token. In response, the gateway creates the volume and returns information about it. This information includes the volume Amazon Resource Name (ARN), its size, and the iSCSI target ARN that initiators can use to connect to the volume target.</p> <p>Optionally, you can provide the ARN for an existing volume as the <code>SourceVolumeARN</code> for this cached volume, which creates an exact copy of the existing volume’s latest recovery point. The <code>VolumeSizeInBytes</code> value must be equal to or larger than the size of the copied volume, in bytes.</p>
   ## 
@@ -1129,57 +1133,57 @@ proc validate_CreateCachediSCSIVolume_603194(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603196 = header.getOrDefault("X-Amz-Date")
-  valid_603196 = validateParameter(valid_603196, JString, required = false,
-                                 default = nil)
-  if valid_603196 != nil:
-    section.add "X-Amz-Date", valid_603196
-  var valid_603197 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603197 = validateParameter(valid_603197, JString, required = false,
-                                 default = nil)
-  if valid_603197 != nil:
-    section.add "X-Amz-Security-Token", valid_603197
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603198 = header.getOrDefault("X-Amz-Target")
-  valid_603198 = validateParameter(valid_603198, JString, required = true, default = newJString(
+  var valid_593096 = header.getOrDefault("X-Amz-Target")
+  valid_593096 = validateParameter(valid_593096, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateCachediSCSIVolume"))
-  if valid_603198 != nil:
-    section.add "X-Amz-Target", valid_603198
-  var valid_603199 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603199 = validateParameter(valid_603199, JString, required = false,
+  if valid_593096 != nil:
+    section.add "X-Amz-Target", valid_593096
+  var valid_593097 = header.getOrDefault("X-Amz-Signature")
+  valid_593097 = validateParameter(valid_593097, JString, required = false,
                                  default = nil)
-  if valid_603199 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603199
-  var valid_603200 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603200 = validateParameter(valid_603200, JString, required = false,
+  if valid_593097 != nil:
+    section.add "X-Amz-Signature", valid_593097
+  var valid_593098 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593098 = validateParameter(valid_593098, JString, required = false,
                                  default = nil)
-  if valid_603200 != nil:
-    section.add "X-Amz-Algorithm", valid_603200
-  var valid_603201 = header.getOrDefault("X-Amz-Signature")
-  valid_603201 = validateParameter(valid_603201, JString, required = false,
+  if valid_593098 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593098
+  var valid_593099 = header.getOrDefault("X-Amz-Date")
+  valid_593099 = validateParameter(valid_593099, JString, required = false,
                                  default = nil)
-  if valid_603201 != nil:
-    section.add "X-Amz-Signature", valid_603201
-  var valid_603202 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603202 = validateParameter(valid_603202, JString, required = false,
+  if valid_593099 != nil:
+    section.add "X-Amz-Date", valid_593099
+  var valid_593100 = header.getOrDefault("X-Amz-Credential")
+  valid_593100 = validateParameter(valid_593100, JString, required = false,
                                  default = nil)
-  if valid_603202 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603202
-  var valid_603203 = header.getOrDefault("X-Amz-Credential")
-  valid_603203 = validateParameter(valid_603203, JString, required = false,
+  if valid_593100 != nil:
+    section.add "X-Amz-Credential", valid_593100
+  var valid_593101 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593101 = validateParameter(valid_593101, JString, required = false,
                                  default = nil)
-  if valid_603203 != nil:
-    section.add "X-Amz-Credential", valid_603203
+  if valid_593101 != nil:
+    section.add "X-Amz-Security-Token", valid_593101
+  var valid_593102 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593102 = validateParameter(valid_593102, JString, required = false,
+                                 default = nil)
+  if valid_593102 != nil:
+    section.add "X-Amz-Algorithm", valid_593102
+  var valid_593103 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593103 = validateParameter(valid_593103, JString, required = false,
+                                 default = nil)
+  if valid_593103 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593103
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1190,44 +1194,44 @@ proc validate_CreateCachediSCSIVolume_603194(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603205: Call_CreateCachediSCSIVolume_603193; path: JsonNode;
+proc call*(call_593105: Call_CreateCachediSCSIVolume_593093; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a cached volume on a specified cached volume gateway. This operation is only supported in the cached volume gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create a cached volume. Use the <a>AddCache</a> operation to add cache storage to a gateway. </p> </note> <p>In the request, you must specify the gateway, size of the volume in bytes, the iSCSI target name, an IP address on which to expose the target, and a unique client token. In response, the gateway creates the volume and returns information about it. This information includes the volume Amazon Resource Name (ARN), its size, and the iSCSI target ARN that initiators can use to connect to the volume target.</p> <p>Optionally, you can provide the ARN for an existing volume as the <code>SourceVolumeARN</code> for this cached volume, which creates an exact copy of the existing volume’s latest recovery point. The <code>VolumeSizeInBytes</code> value must be equal to or larger than the size of the copied volume, in bytes.</p>
   ## 
-  let valid = call_603205.validator(path, query, header, formData, body)
-  let scheme = call_603205.pickScheme
+  let valid = call_593105.validator(path, query, header, formData, body)
+  let scheme = call_593105.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603205.url(scheme.get, call_603205.host, call_603205.base,
-                         call_603205.route, valid.getOrDefault("path"),
+  let url = call_593105.url(scheme.get, call_593105.host, call_593105.base,
+                         call_593105.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603205, url, valid)
+  result = hook(call_593105, url, valid)
 
-proc call*(call_603206: Call_CreateCachediSCSIVolume_603193; body: JsonNode): Recallable =
+proc call*(call_593106: Call_CreateCachediSCSIVolume_593093; body: JsonNode): Recallable =
   ## createCachediSCSIVolume
   ## <p>Creates a cached volume on a specified cached volume gateway. This operation is only supported in the cached volume gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create a cached volume. Use the <a>AddCache</a> operation to add cache storage to a gateway. </p> </note> <p>In the request, you must specify the gateway, size of the volume in bytes, the iSCSI target name, an IP address on which to expose the target, and a unique client token. In response, the gateway creates the volume and returns information about it. This information includes the volume Amazon Resource Name (ARN), its size, and the iSCSI target ARN that initiators can use to connect to the volume target.</p> <p>Optionally, you can provide the ARN for an existing volume as the <code>SourceVolumeARN</code> for this cached volume, which creates an exact copy of the existing volume’s latest recovery point. The <code>VolumeSizeInBytes</code> value must be equal to or larger than the size of the copied volume, in bytes.</p>
   ##   body: JObject (required)
-  var body_603207 = newJObject()
+  var body_593107 = newJObject()
   if body != nil:
-    body_603207 = body
-  result = call_603206.call(nil, nil, nil, nil, body_603207)
+    body_593107 = body
+  result = call_593106.call(nil, nil, nil, nil, body_593107)
 
-var createCachediSCSIVolume* = Call_CreateCachediSCSIVolume_603193(
+var createCachediSCSIVolume* = Call_CreateCachediSCSIVolume_593093(
     name: "createCachediSCSIVolume", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.CreateCachediSCSIVolume",
-    validator: validate_CreateCachediSCSIVolume_603194, base: "/",
-    url: url_CreateCachediSCSIVolume_603195, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateCachediSCSIVolume_593094, base: "/",
+    url: url_CreateCachediSCSIVolume_593095, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateNFSFileShare_603208 = ref object of OpenApiRestCall_602467
-proc url_CreateNFSFileShare_603210(protocol: Scheme; host: string; base: string;
+  Call_CreateNFSFileShare_593108 = ref object of OpenApiRestCall_592365
+proc url_CreateNFSFileShare_593110(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateNFSFileShare_603209(path: JsonNode; query: JsonNode;
+proc validate_CreateNFSFileShare_593109(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Creates a Network File System (NFS) file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway exposes file shares using a NFS interface. This operation is only supported for file gateways.</p> <important> <p>File gateway requires AWS Security Token Service (AWS STS) to be activated to enable you create a file share. Make sure AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in the AWS Region, activate it. For information about how to activate AWS STS, see Activating and Deactivating AWS STS in an AWS Region in the AWS Identity and Access Management User Guide. </p> <p>File gateway does not support creating hard or symbolic links on a file share.</p> </important>
@@ -1239,57 +1243,57 @@ proc validate_CreateNFSFileShare_603209(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603211 = header.getOrDefault("X-Amz-Date")
-  valid_603211 = validateParameter(valid_603211, JString, required = false,
-                                 default = nil)
-  if valid_603211 != nil:
-    section.add "X-Amz-Date", valid_603211
-  var valid_603212 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603212 = validateParameter(valid_603212, JString, required = false,
-                                 default = nil)
-  if valid_603212 != nil:
-    section.add "X-Amz-Security-Token", valid_603212
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603213 = header.getOrDefault("X-Amz-Target")
-  valid_603213 = validateParameter(valid_603213, JString, required = true, default = newJString(
+  var valid_593111 = header.getOrDefault("X-Amz-Target")
+  valid_593111 = validateParameter(valid_593111, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateNFSFileShare"))
-  if valid_603213 != nil:
-    section.add "X-Amz-Target", valid_603213
-  var valid_603214 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603214 = validateParameter(valid_603214, JString, required = false,
+  if valid_593111 != nil:
+    section.add "X-Amz-Target", valid_593111
+  var valid_593112 = header.getOrDefault("X-Amz-Signature")
+  valid_593112 = validateParameter(valid_593112, JString, required = false,
                                  default = nil)
-  if valid_603214 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603214
-  var valid_603215 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603215 = validateParameter(valid_603215, JString, required = false,
+  if valid_593112 != nil:
+    section.add "X-Amz-Signature", valid_593112
+  var valid_593113 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593113 = validateParameter(valid_593113, JString, required = false,
                                  default = nil)
-  if valid_603215 != nil:
-    section.add "X-Amz-Algorithm", valid_603215
-  var valid_603216 = header.getOrDefault("X-Amz-Signature")
-  valid_603216 = validateParameter(valid_603216, JString, required = false,
+  if valid_593113 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593113
+  var valid_593114 = header.getOrDefault("X-Amz-Date")
+  valid_593114 = validateParameter(valid_593114, JString, required = false,
                                  default = nil)
-  if valid_603216 != nil:
-    section.add "X-Amz-Signature", valid_603216
-  var valid_603217 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603217 = validateParameter(valid_603217, JString, required = false,
+  if valid_593114 != nil:
+    section.add "X-Amz-Date", valid_593114
+  var valid_593115 = header.getOrDefault("X-Amz-Credential")
+  valid_593115 = validateParameter(valid_593115, JString, required = false,
                                  default = nil)
-  if valid_603217 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603217
-  var valid_603218 = header.getOrDefault("X-Amz-Credential")
-  valid_603218 = validateParameter(valid_603218, JString, required = false,
+  if valid_593115 != nil:
+    section.add "X-Amz-Credential", valid_593115
+  var valid_593116 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593116 = validateParameter(valid_593116, JString, required = false,
                                  default = nil)
-  if valid_603218 != nil:
-    section.add "X-Amz-Credential", valid_603218
+  if valid_593116 != nil:
+    section.add "X-Amz-Security-Token", valid_593116
+  var valid_593117 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593117 = validateParameter(valid_593117, JString, required = false,
+                                 default = nil)
+  if valid_593117 != nil:
+    section.add "X-Amz-Algorithm", valid_593117
+  var valid_593118 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593118 = validateParameter(valid_593118, JString, required = false,
+                                 default = nil)
+  if valid_593118 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593118
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1300,44 +1304,44 @@ proc validate_CreateNFSFileShare_603209(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603220: Call_CreateNFSFileShare_603208; path: JsonNode;
+proc call*(call_593120: Call_CreateNFSFileShare_593108; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a Network File System (NFS) file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway exposes file shares using a NFS interface. This operation is only supported for file gateways.</p> <important> <p>File gateway requires AWS Security Token Service (AWS STS) to be activated to enable you create a file share. Make sure AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in the AWS Region, activate it. For information about how to activate AWS STS, see Activating and Deactivating AWS STS in an AWS Region in the AWS Identity and Access Management User Guide. </p> <p>File gateway does not support creating hard or symbolic links on a file share.</p> </important>
   ## 
-  let valid = call_603220.validator(path, query, header, formData, body)
-  let scheme = call_603220.pickScheme
+  let valid = call_593120.validator(path, query, header, formData, body)
+  let scheme = call_593120.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603220.url(scheme.get, call_603220.host, call_603220.base,
-                         call_603220.route, valid.getOrDefault("path"),
+  let url = call_593120.url(scheme.get, call_593120.host, call_593120.base,
+                         call_593120.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603220, url, valid)
+  result = hook(call_593120, url, valid)
 
-proc call*(call_603221: Call_CreateNFSFileShare_603208; body: JsonNode): Recallable =
+proc call*(call_593121: Call_CreateNFSFileShare_593108; body: JsonNode): Recallable =
   ## createNFSFileShare
   ## <p>Creates a Network File System (NFS) file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway exposes file shares using a NFS interface. This operation is only supported for file gateways.</p> <important> <p>File gateway requires AWS Security Token Service (AWS STS) to be activated to enable you create a file share. Make sure AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in the AWS Region, activate it. For information about how to activate AWS STS, see Activating and Deactivating AWS STS in an AWS Region in the AWS Identity and Access Management User Guide. </p> <p>File gateway does not support creating hard or symbolic links on a file share.</p> </important>
   ##   body: JObject (required)
-  var body_603222 = newJObject()
+  var body_593122 = newJObject()
   if body != nil:
-    body_603222 = body
-  result = call_603221.call(nil, nil, nil, nil, body_603222)
+    body_593122 = body
+  result = call_593121.call(nil, nil, nil, nil, body_593122)
 
-var createNFSFileShare* = Call_CreateNFSFileShare_603208(
+var createNFSFileShare* = Call_CreateNFSFileShare_593108(
     name: "createNFSFileShare", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.CreateNFSFileShare",
-    validator: validate_CreateNFSFileShare_603209, base: "/",
-    url: url_CreateNFSFileShare_603210, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateNFSFileShare_593109, base: "/",
+    url: url_CreateNFSFileShare_593110, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSMBFileShare_603223 = ref object of OpenApiRestCall_602467
-proc url_CreateSMBFileShare_603225(protocol: Scheme; host: string; base: string;
+  Call_CreateSMBFileShare_593123 = ref object of OpenApiRestCall_592365
+proc url_CreateSMBFileShare_593125(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateSMBFileShare_603224(path: JsonNode; query: JsonNode;
+proc validate_CreateSMBFileShare_593124(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Creates a Server Message Block (SMB) file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway expose file shares using a SMB interface. This operation is only supported for file gateways.</p> <important> <p>File gateways require AWS Security Token Service (AWS STS) to be activated to enable you to create a file share. Make sure that AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in this AWS Region, activate it. For information about how to activate AWS STS, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_enable-regions.html">Activating and Deactivating AWS STS in an AWS Region</a> in the <i>AWS Identity and Access Management User Guide.</i> </p> <p>File gateways don't support creating hard or symbolic links on a file share.</p> </important>
@@ -1349,57 +1353,57 @@ proc validate_CreateSMBFileShare_603224(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603226 = header.getOrDefault("X-Amz-Date")
-  valid_603226 = validateParameter(valid_603226, JString, required = false,
-                                 default = nil)
-  if valid_603226 != nil:
-    section.add "X-Amz-Date", valid_603226
-  var valid_603227 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603227 = validateParameter(valid_603227, JString, required = false,
-                                 default = nil)
-  if valid_603227 != nil:
-    section.add "X-Amz-Security-Token", valid_603227
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603228 = header.getOrDefault("X-Amz-Target")
-  valid_603228 = validateParameter(valid_603228, JString, required = true, default = newJString(
+  var valid_593126 = header.getOrDefault("X-Amz-Target")
+  valid_593126 = validateParameter(valid_593126, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateSMBFileShare"))
-  if valid_603228 != nil:
-    section.add "X-Amz-Target", valid_603228
-  var valid_603229 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603229 = validateParameter(valid_603229, JString, required = false,
+  if valid_593126 != nil:
+    section.add "X-Amz-Target", valid_593126
+  var valid_593127 = header.getOrDefault("X-Amz-Signature")
+  valid_593127 = validateParameter(valid_593127, JString, required = false,
                                  default = nil)
-  if valid_603229 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603229
-  var valid_603230 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603230 = validateParameter(valid_603230, JString, required = false,
+  if valid_593127 != nil:
+    section.add "X-Amz-Signature", valid_593127
+  var valid_593128 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593128 = validateParameter(valid_593128, JString, required = false,
                                  default = nil)
-  if valid_603230 != nil:
-    section.add "X-Amz-Algorithm", valid_603230
-  var valid_603231 = header.getOrDefault("X-Amz-Signature")
-  valid_603231 = validateParameter(valid_603231, JString, required = false,
+  if valid_593128 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593128
+  var valid_593129 = header.getOrDefault("X-Amz-Date")
+  valid_593129 = validateParameter(valid_593129, JString, required = false,
                                  default = nil)
-  if valid_603231 != nil:
-    section.add "X-Amz-Signature", valid_603231
-  var valid_603232 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603232 = validateParameter(valid_603232, JString, required = false,
+  if valid_593129 != nil:
+    section.add "X-Amz-Date", valid_593129
+  var valid_593130 = header.getOrDefault("X-Amz-Credential")
+  valid_593130 = validateParameter(valid_593130, JString, required = false,
                                  default = nil)
-  if valid_603232 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603232
-  var valid_603233 = header.getOrDefault("X-Amz-Credential")
-  valid_603233 = validateParameter(valid_603233, JString, required = false,
+  if valid_593130 != nil:
+    section.add "X-Amz-Credential", valid_593130
+  var valid_593131 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593131 = validateParameter(valid_593131, JString, required = false,
                                  default = nil)
-  if valid_603233 != nil:
-    section.add "X-Amz-Credential", valid_603233
+  if valid_593131 != nil:
+    section.add "X-Amz-Security-Token", valid_593131
+  var valid_593132 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593132 = validateParameter(valid_593132, JString, required = false,
+                                 default = nil)
+  if valid_593132 != nil:
+    section.add "X-Amz-Algorithm", valid_593132
+  var valid_593133 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593133 = validateParameter(valid_593133, JString, required = false,
+                                 default = nil)
+  if valid_593133 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593133
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1410,44 +1414,44 @@ proc validate_CreateSMBFileShare_603224(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603235: Call_CreateSMBFileShare_603223; path: JsonNode;
+proc call*(call_593135: Call_CreateSMBFileShare_593123; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a Server Message Block (SMB) file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway expose file shares using a SMB interface. This operation is only supported for file gateways.</p> <important> <p>File gateways require AWS Security Token Service (AWS STS) to be activated to enable you to create a file share. Make sure that AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in this AWS Region, activate it. For information about how to activate AWS STS, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_enable-regions.html">Activating and Deactivating AWS STS in an AWS Region</a> in the <i>AWS Identity and Access Management User Guide.</i> </p> <p>File gateways don't support creating hard or symbolic links on a file share.</p> </important>
   ## 
-  let valid = call_603235.validator(path, query, header, formData, body)
-  let scheme = call_603235.pickScheme
+  let valid = call_593135.validator(path, query, header, formData, body)
+  let scheme = call_593135.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603235.url(scheme.get, call_603235.host, call_603235.base,
-                         call_603235.route, valid.getOrDefault("path"),
+  let url = call_593135.url(scheme.get, call_593135.host, call_593135.base,
+                         call_593135.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603235, url, valid)
+  result = hook(call_593135, url, valid)
 
-proc call*(call_603236: Call_CreateSMBFileShare_603223; body: JsonNode): Recallable =
+proc call*(call_593136: Call_CreateSMBFileShare_593123; body: JsonNode): Recallable =
   ## createSMBFileShare
   ## <p>Creates a Server Message Block (SMB) file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway expose file shares using a SMB interface. This operation is only supported for file gateways.</p> <important> <p>File gateways require AWS Security Token Service (AWS STS) to be activated to enable you to create a file share. Make sure that AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in this AWS Region, activate it. For information about how to activate AWS STS, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_enable-regions.html">Activating and Deactivating AWS STS in an AWS Region</a> in the <i>AWS Identity and Access Management User Guide.</i> </p> <p>File gateways don't support creating hard or symbolic links on a file share.</p> </important>
   ##   body: JObject (required)
-  var body_603237 = newJObject()
+  var body_593137 = newJObject()
   if body != nil:
-    body_603237 = body
-  result = call_603236.call(nil, nil, nil, nil, body_603237)
+    body_593137 = body
+  result = call_593136.call(nil, nil, nil, nil, body_593137)
 
-var createSMBFileShare* = Call_CreateSMBFileShare_603223(
+var createSMBFileShare* = Call_CreateSMBFileShare_593123(
     name: "createSMBFileShare", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.CreateSMBFileShare",
-    validator: validate_CreateSMBFileShare_603224, base: "/",
-    url: url_CreateSMBFileShare_603225, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateSMBFileShare_593124, base: "/",
+    url: url_CreateSMBFileShare_593125, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSnapshot_603238 = ref object of OpenApiRestCall_602467
-proc url_CreateSnapshot_603240(protocol: Scheme; host: string; base: string;
+  Call_CreateSnapshot_593138 = ref object of OpenApiRestCall_592365
+proc url_CreateSnapshot_593140(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateSnapshot_603239(path: JsonNode; query: JsonNode;
+proc validate_CreateSnapshot_593139(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Initiates a snapshot of a volume.</p> <p>AWS Storage Gateway provides the ability to back up point-in-time snapshots of your data to Amazon Simple Storage (S3) for durable off-site recovery, as well as import the data to an Amazon Elastic Block Store (EBS) volume in Amazon Elastic Compute Cloud (EC2). You can take snapshots of your gateway volume on a scheduled or ad hoc basis. This API enables you to take ad-hoc snapshot. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/managing-volumes.html#SchedulingSnapshot">Editing a Snapshot Schedule</a>.</p> <p>In the CreateSnapshot request you identify the volume by providing its Amazon Resource Name (ARN). You must also provide description for the snapshot. When AWS Storage Gateway takes the snapshot of specified volume, the snapshot and description appears in the AWS Storage Gateway Console. In response, AWS Storage Gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot. This operation is only supported in stored and cached volume gateway type.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. For more information, see DescribeSnapshots or DeleteSnapshot in the <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Operations.html">EC2 API reference</a>.</p> </note> <important> <p>Volume and snapshot IDs are changing to a longer length ID format. For more information, see the important note on the <a href="https://docs.aws.amazon.com/storagegateway/latest/APIReference/Welcome.html">Welcome</a> page.</p> </important>
@@ -1459,57 +1463,57 @@ proc validate_CreateSnapshot_603239(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603241 = header.getOrDefault("X-Amz-Date")
-  valid_603241 = validateParameter(valid_603241, JString, required = false,
-                                 default = nil)
-  if valid_603241 != nil:
-    section.add "X-Amz-Date", valid_603241
-  var valid_603242 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603242 = validateParameter(valid_603242, JString, required = false,
-                                 default = nil)
-  if valid_603242 != nil:
-    section.add "X-Amz-Security-Token", valid_603242
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603243 = header.getOrDefault("X-Amz-Target")
-  valid_603243 = validateParameter(valid_603243, JString, required = true, default = newJString(
+  var valid_593141 = header.getOrDefault("X-Amz-Target")
+  valid_593141 = validateParameter(valid_593141, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateSnapshot"))
-  if valid_603243 != nil:
-    section.add "X-Amz-Target", valid_603243
-  var valid_603244 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603244 = validateParameter(valid_603244, JString, required = false,
+  if valid_593141 != nil:
+    section.add "X-Amz-Target", valid_593141
+  var valid_593142 = header.getOrDefault("X-Amz-Signature")
+  valid_593142 = validateParameter(valid_593142, JString, required = false,
                                  default = nil)
-  if valid_603244 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603244
-  var valid_603245 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603245 = validateParameter(valid_603245, JString, required = false,
+  if valid_593142 != nil:
+    section.add "X-Amz-Signature", valid_593142
+  var valid_593143 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593143 = validateParameter(valid_593143, JString, required = false,
                                  default = nil)
-  if valid_603245 != nil:
-    section.add "X-Amz-Algorithm", valid_603245
-  var valid_603246 = header.getOrDefault("X-Amz-Signature")
-  valid_603246 = validateParameter(valid_603246, JString, required = false,
+  if valid_593143 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593143
+  var valid_593144 = header.getOrDefault("X-Amz-Date")
+  valid_593144 = validateParameter(valid_593144, JString, required = false,
                                  default = nil)
-  if valid_603246 != nil:
-    section.add "X-Amz-Signature", valid_603246
-  var valid_603247 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603247 = validateParameter(valid_603247, JString, required = false,
+  if valid_593144 != nil:
+    section.add "X-Amz-Date", valid_593144
+  var valid_593145 = header.getOrDefault("X-Amz-Credential")
+  valid_593145 = validateParameter(valid_593145, JString, required = false,
                                  default = nil)
-  if valid_603247 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603247
-  var valid_603248 = header.getOrDefault("X-Amz-Credential")
-  valid_603248 = validateParameter(valid_603248, JString, required = false,
+  if valid_593145 != nil:
+    section.add "X-Amz-Credential", valid_593145
+  var valid_593146 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593146 = validateParameter(valid_593146, JString, required = false,
                                  default = nil)
-  if valid_603248 != nil:
-    section.add "X-Amz-Credential", valid_603248
+  if valid_593146 != nil:
+    section.add "X-Amz-Security-Token", valid_593146
+  var valid_593147 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593147 = validateParameter(valid_593147, JString, required = false,
+                                 default = nil)
+  if valid_593147 != nil:
+    section.add "X-Amz-Algorithm", valid_593147
+  var valid_593148 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593148 = validateParameter(valid_593148, JString, required = false,
+                                 default = nil)
+  if valid_593148 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593148
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1520,43 +1524,43 @@ proc validate_CreateSnapshot_603239(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603250: Call_CreateSnapshot_603238; path: JsonNode; query: JsonNode;
+proc call*(call_593150: Call_CreateSnapshot_593138; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Initiates a snapshot of a volume.</p> <p>AWS Storage Gateway provides the ability to back up point-in-time snapshots of your data to Amazon Simple Storage (S3) for durable off-site recovery, as well as import the data to an Amazon Elastic Block Store (EBS) volume in Amazon Elastic Compute Cloud (EC2). You can take snapshots of your gateway volume on a scheduled or ad hoc basis. This API enables you to take ad-hoc snapshot. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/managing-volumes.html#SchedulingSnapshot">Editing a Snapshot Schedule</a>.</p> <p>In the CreateSnapshot request you identify the volume by providing its Amazon Resource Name (ARN). You must also provide description for the snapshot. When AWS Storage Gateway takes the snapshot of specified volume, the snapshot and description appears in the AWS Storage Gateway Console. In response, AWS Storage Gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot. This operation is only supported in stored and cached volume gateway type.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. For more information, see DescribeSnapshots or DeleteSnapshot in the <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Operations.html">EC2 API reference</a>.</p> </note> <important> <p>Volume and snapshot IDs are changing to a longer length ID format. For more information, see the important note on the <a href="https://docs.aws.amazon.com/storagegateway/latest/APIReference/Welcome.html">Welcome</a> page.</p> </important>
   ## 
-  let valid = call_603250.validator(path, query, header, formData, body)
-  let scheme = call_603250.pickScheme
+  let valid = call_593150.validator(path, query, header, formData, body)
+  let scheme = call_593150.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603250.url(scheme.get, call_603250.host, call_603250.base,
-                         call_603250.route, valid.getOrDefault("path"),
+  let url = call_593150.url(scheme.get, call_593150.host, call_593150.base,
+                         call_593150.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603250, url, valid)
+  result = hook(call_593150, url, valid)
 
-proc call*(call_603251: Call_CreateSnapshot_603238; body: JsonNode): Recallable =
+proc call*(call_593151: Call_CreateSnapshot_593138; body: JsonNode): Recallable =
   ## createSnapshot
   ## <p>Initiates a snapshot of a volume.</p> <p>AWS Storage Gateway provides the ability to back up point-in-time snapshots of your data to Amazon Simple Storage (S3) for durable off-site recovery, as well as import the data to an Amazon Elastic Block Store (EBS) volume in Amazon Elastic Compute Cloud (EC2). You can take snapshots of your gateway volume on a scheduled or ad hoc basis. This API enables you to take ad-hoc snapshot. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/managing-volumes.html#SchedulingSnapshot">Editing a Snapshot Schedule</a>.</p> <p>In the CreateSnapshot request you identify the volume by providing its Amazon Resource Name (ARN). You must also provide description for the snapshot. When AWS Storage Gateway takes the snapshot of specified volume, the snapshot and description appears in the AWS Storage Gateway Console. In response, AWS Storage Gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot. This operation is only supported in stored and cached volume gateway type.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. For more information, see DescribeSnapshots or DeleteSnapshot in the <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Operations.html">EC2 API reference</a>.</p> </note> <important> <p>Volume and snapshot IDs are changing to a longer length ID format. For more information, see the important note on the <a href="https://docs.aws.amazon.com/storagegateway/latest/APIReference/Welcome.html">Welcome</a> page.</p> </important>
   ##   body: JObject (required)
-  var body_603252 = newJObject()
+  var body_593152 = newJObject()
   if body != nil:
-    body_603252 = body
-  result = call_603251.call(nil, nil, nil, nil, body_603252)
+    body_593152 = body
+  result = call_593151.call(nil, nil, nil, nil, body_593152)
 
-var createSnapshot* = Call_CreateSnapshot_603238(name: "createSnapshot",
+var createSnapshot* = Call_CreateSnapshot_593138(name: "createSnapshot",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.CreateSnapshot",
-    validator: validate_CreateSnapshot_603239, base: "/", url: url_CreateSnapshot_603240,
+    validator: validate_CreateSnapshot_593139, base: "/", url: url_CreateSnapshot_593140,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSnapshotFromVolumeRecoveryPoint_603253 = ref object of OpenApiRestCall_602467
-proc url_CreateSnapshotFromVolumeRecoveryPoint_603255(protocol: Scheme;
+  Call_CreateSnapshotFromVolumeRecoveryPoint_593153 = ref object of OpenApiRestCall_592365
+proc url_CreateSnapshotFromVolumeRecoveryPoint_593155(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateSnapshotFromVolumeRecoveryPoint_603254(path: JsonNode;
+proc validate_CreateSnapshotFromVolumeRecoveryPoint_593154(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Initiates a snapshot of a gateway from a volume recovery point. This operation is only supported in the cached volume gateway type.</p> <p>A volume recovery point is a point in time at which all data of the volume is consistent and from which you can create a snapshot. To get a list of volume recovery point for cached volume gateway, use <a>ListVolumeRecoveryPoints</a>.</p> <p>In the <code>CreateSnapshotFromVolumeRecoveryPoint</code> request, you identify the volume by providing its Amazon Resource Name (ARN). You must also provide a description for the snapshot. When the gateway takes a snapshot of the specified volume, the snapshot and its description appear in the AWS Storage Gateway console. In response, the gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. For more information, in <i>Amazon Elastic Compute Cloud API Reference</i>.</p> </note>
   ## 
@@ -1567,57 +1571,57 @@ proc validate_CreateSnapshotFromVolumeRecoveryPoint_603254(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603256 = header.getOrDefault("X-Amz-Date")
-  valid_603256 = validateParameter(valid_603256, JString, required = false,
-                                 default = nil)
-  if valid_603256 != nil:
-    section.add "X-Amz-Date", valid_603256
-  var valid_603257 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603257 = validateParameter(valid_603257, JString, required = false,
-                                 default = nil)
-  if valid_603257 != nil:
-    section.add "X-Amz-Security-Token", valid_603257
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603258 = header.getOrDefault("X-Amz-Target")
-  valid_603258 = validateParameter(valid_603258, JString, required = true, default = newJString(
+  var valid_593156 = header.getOrDefault("X-Amz-Target")
+  valid_593156 = validateParameter(valid_593156, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateSnapshotFromVolumeRecoveryPoint"))
-  if valid_603258 != nil:
-    section.add "X-Amz-Target", valid_603258
-  var valid_603259 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603259 = validateParameter(valid_603259, JString, required = false,
+  if valid_593156 != nil:
+    section.add "X-Amz-Target", valid_593156
+  var valid_593157 = header.getOrDefault("X-Amz-Signature")
+  valid_593157 = validateParameter(valid_593157, JString, required = false,
                                  default = nil)
-  if valid_603259 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603259
-  var valid_603260 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603260 = validateParameter(valid_603260, JString, required = false,
+  if valid_593157 != nil:
+    section.add "X-Amz-Signature", valid_593157
+  var valid_593158 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593158 = validateParameter(valid_593158, JString, required = false,
                                  default = nil)
-  if valid_603260 != nil:
-    section.add "X-Amz-Algorithm", valid_603260
-  var valid_603261 = header.getOrDefault("X-Amz-Signature")
-  valid_603261 = validateParameter(valid_603261, JString, required = false,
+  if valid_593158 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593158
+  var valid_593159 = header.getOrDefault("X-Amz-Date")
+  valid_593159 = validateParameter(valid_593159, JString, required = false,
                                  default = nil)
-  if valid_603261 != nil:
-    section.add "X-Amz-Signature", valid_603261
-  var valid_603262 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603262 = validateParameter(valid_603262, JString, required = false,
+  if valid_593159 != nil:
+    section.add "X-Amz-Date", valid_593159
+  var valid_593160 = header.getOrDefault("X-Amz-Credential")
+  valid_593160 = validateParameter(valid_593160, JString, required = false,
                                  default = nil)
-  if valid_603262 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603262
-  var valid_603263 = header.getOrDefault("X-Amz-Credential")
-  valid_603263 = validateParameter(valid_603263, JString, required = false,
+  if valid_593160 != nil:
+    section.add "X-Amz-Credential", valid_593160
+  var valid_593161 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593161 = validateParameter(valid_593161, JString, required = false,
                                  default = nil)
-  if valid_603263 != nil:
-    section.add "X-Amz-Credential", valid_603263
+  if valid_593161 != nil:
+    section.add "X-Amz-Security-Token", valid_593161
+  var valid_593162 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593162 = validateParameter(valid_593162, JString, required = false,
+                                 default = nil)
+  if valid_593162 != nil:
+    section.add "X-Amz-Algorithm", valid_593162
+  var valid_593163 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593163 = validateParameter(valid_593163, JString, required = false,
+                                 default = nil)
+  if valid_593163 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593163
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1628,39 +1632,39 @@ proc validate_CreateSnapshotFromVolumeRecoveryPoint_603254(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603265: Call_CreateSnapshotFromVolumeRecoveryPoint_603253;
+proc call*(call_593165: Call_CreateSnapshotFromVolumeRecoveryPoint_593153;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Initiates a snapshot of a gateway from a volume recovery point. This operation is only supported in the cached volume gateway type.</p> <p>A volume recovery point is a point in time at which all data of the volume is consistent and from which you can create a snapshot. To get a list of volume recovery point for cached volume gateway, use <a>ListVolumeRecoveryPoints</a>.</p> <p>In the <code>CreateSnapshotFromVolumeRecoveryPoint</code> request, you identify the volume by providing its Amazon Resource Name (ARN). You must also provide a description for the snapshot. When the gateway takes a snapshot of the specified volume, the snapshot and its description appear in the AWS Storage Gateway console. In response, the gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. For more information, in <i>Amazon Elastic Compute Cloud API Reference</i>.</p> </note>
   ## 
-  let valid = call_603265.validator(path, query, header, formData, body)
-  let scheme = call_603265.pickScheme
+  let valid = call_593165.validator(path, query, header, formData, body)
+  let scheme = call_593165.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603265.url(scheme.get, call_603265.host, call_603265.base,
-                         call_603265.route, valid.getOrDefault("path"),
+  let url = call_593165.url(scheme.get, call_593165.host, call_593165.base,
+                         call_593165.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603265, url, valid)
+  result = hook(call_593165, url, valid)
 
-proc call*(call_603266: Call_CreateSnapshotFromVolumeRecoveryPoint_603253;
+proc call*(call_593166: Call_CreateSnapshotFromVolumeRecoveryPoint_593153;
           body: JsonNode): Recallable =
   ## createSnapshotFromVolumeRecoveryPoint
   ## <p>Initiates a snapshot of a gateway from a volume recovery point. This operation is only supported in the cached volume gateway type.</p> <p>A volume recovery point is a point in time at which all data of the volume is consistent and from which you can create a snapshot. To get a list of volume recovery point for cached volume gateway, use <a>ListVolumeRecoveryPoints</a>.</p> <p>In the <code>CreateSnapshotFromVolumeRecoveryPoint</code> request, you identify the volume by providing its Amazon Resource Name (ARN). You must also provide a description for the snapshot. When the gateway takes a snapshot of the specified volume, the snapshot and its description appear in the AWS Storage Gateway console. In response, the gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. For more information, in <i>Amazon Elastic Compute Cloud API Reference</i>.</p> </note>
   ##   body: JObject (required)
-  var body_603267 = newJObject()
+  var body_593167 = newJObject()
   if body != nil:
-    body_603267 = body
-  result = call_603266.call(nil, nil, nil, nil, body_603267)
+    body_593167 = body
+  result = call_593166.call(nil, nil, nil, nil, body_593167)
 
-var createSnapshotFromVolumeRecoveryPoint* = Call_CreateSnapshotFromVolumeRecoveryPoint_603253(
+var createSnapshotFromVolumeRecoveryPoint* = Call_CreateSnapshotFromVolumeRecoveryPoint_593153(
     name: "createSnapshotFromVolumeRecoveryPoint", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.CreateSnapshotFromVolumeRecoveryPoint",
-    validator: validate_CreateSnapshotFromVolumeRecoveryPoint_603254, base: "/",
-    url: url_CreateSnapshotFromVolumeRecoveryPoint_603255,
+    validator: validate_CreateSnapshotFromVolumeRecoveryPoint_593154, base: "/",
+    url: url_CreateSnapshotFromVolumeRecoveryPoint_593155,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateStorediSCSIVolume_603268 = ref object of OpenApiRestCall_602467
-proc url_CreateStorediSCSIVolume_603270(protocol: Scheme; host: string; base: string;
+  Call_CreateStorediSCSIVolume_593168 = ref object of OpenApiRestCall_592365
+proc url_CreateStorediSCSIVolume_593170(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1668,7 +1672,7 @@ proc url_CreateStorediSCSIVolume_603270(protocol: Scheme; host: string; base: st
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateStorediSCSIVolume_603269(path: JsonNode; query: JsonNode;
+proc validate_CreateStorediSCSIVolume_593169(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a volume on a specified gateway. This operation is only supported in the stored volume gateway type.</p> <p>The size of the volume to create is inferred from the disk size. You can choose to preserve existing data on the disk, create volume from an existing snapshot, or create an empty volume. If you choose to create an empty gateway volume, then any existing data on the disk is erased.</p> <p>In the request you must specify the gateway and the disk information on which you are creating the volume. In response, the gateway creates the volume and returns volume information such as the volume Amazon Resource Name (ARN), its size, and the iSCSI target ARN that initiators can use to connect to the volume target.</p>
   ## 
@@ -1679,57 +1683,57 @@ proc validate_CreateStorediSCSIVolume_603269(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603271 = header.getOrDefault("X-Amz-Date")
-  valid_603271 = validateParameter(valid_603271, JString, required = false,
-                                 default = nil)
-  if valid_603271 != nil:
-    section.add "X-Amz-Date", valid_603271
-  var valid_603272 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603272 = validateParameter(valid_603272, JString, required = false,
-                                 default = nil)
-  if valid_603272 != nil:
-    section.add "X-Amz-Security-Token", valid_603272
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603273 = header.getOrDefault("X-Amz-Target")
-  valid_603273 = validateParameter(valid_603273, JString, required = true, default = newJString(
+  var valid_593171 = header.getOrDefault("X-Amz-Target")
+  valid_593171 = validateParameter(valid_593171, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateStorediSCSIVolume"))
-  if valid_603273 != nil:
-    section.add "X-Amz-Target", valid_603273
-  var valid_603274 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603274 = validateParameter(valid_603274, JString, required = false,
+  if valid_593171 != nil:
+    section.add "X-Amz-Target", valid_593171
+  var valid_593172 = header.getOrDefault("X-Amz-Signature")
+  valid_593172 = validateParameter(valid_593172, JString, required = false,
                                  default = nil)
-  if valid_603274 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603274
-  var valid_603275 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603275 = validateParameter(valid_603275, JString, required = false,
+  if valid_593172 != nil:
+    section.add "X-Amz-Signature", valid_593172
+  var valid_593173 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593173 = validateParameter(valid_593173, JString, required = false,
                                  default = nil)
-  if valid_603275 != nil:
-    section.add "X-Amz-Algorithm", valid_603275
-  var valid_603276 = header.getOrDefault("X-Amz-Signature")
-  valid_603276 = validateParameter(valid_603276, JString, required = false,
+  if valid_593173 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593173
+  var valid_593174 = header.getOrDefault("X-Amz-Date")
+  valid_593174 = validateParameter(valid_593174, JString, required = false,
                                  default = nil)
-  if valid_603276 != nil:
-    section.add "X-Amz-Signature", valid_603276
-  var valid_603277 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603277 = validateParameter(valid_603277, JString, required = false,
+  if valid_593174 != nil:
+    section.add "X-Amz-Date", valid_593174
+  var valid_593175 = header.getOrDefault("X-Amz-Credential")
+  valid_593175 = validateParameter(valid_593175, JString, required = false,
                                  default = nil)
-  if valid_603277 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603277
-  var valid_603278 = header.getOrDefault("X-Amz-Credential")
-  valid_603278 = validateParameter(valid_603278, JString, required = false,
+  if valid_593175 != nil:
+    section.add "X-Amz-Credential", valid_593175
+  var valid_593176 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593176 = validateParameter(valid_593176, JString, required = false,
                                  default = nil)
-  if valid_603278 != nil:
-    section.add "X-Amz-Credential", valid_603278
+  if valid_593176 != nil:
+    section.add "X-Amz-Security-Token", valid_593176
+  var valid_593177 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593177 = validateParameter(valid_593177, JString, required = false,
+                                 default = nil)
+  if valid_593177 != nil:
+    section.add "X-Amz-Algorithm", valid_593177
+  var valid_593178 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593178 = validateParameter(valid_593178, JString, required = false,
+                                 default = nil)
+  if valid_593178 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593178
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1740,44 +1744,44 @@ proc validate_CreateStorediSCSIVolume_603269(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603280: Call_CreateStorediSCSIVolume_603268; path: JsonNode;
+proc call*(call_593180: Call_CreateStorediSCSIVolume_593168; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a volume on a specified gateway. This operation is only supported in the stored volume gateway type.</p> <p>The size of the volume to create is inferred from the disk size. You can choose to preserve existing data on the disk, create volume from an existing snapshot, or create an empty volume. If you choose to create an empty gateway volume, then any existing data on the disk is erased.</p> <p>In the request you must specify the gateway and the disk information on which you are creating the volume. In response, the gateway creates the volume and returns volume information such as the volume Amazon Resource Name (ARN), its size, and the iSCSI target ARN that initiators can use to connect to the volume target.</p>
   ## 
-  let valid = call_603280.validator(path, query, header, formData, body)
-  let scheme = call_603280.pickScheme
+  let valid = call_593180.validator(path, query, header, formData, body)
+  let scheme = call_593180.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603280.url(scheme.get, call_603280.host, call_603280.base,
-                         call_603280.route, valid.getOrDefault("path"),
+  let url = call_593180.url(scheme.get, call_593180.host, call_593180.base,
+                         call_593180.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603280, url, valid)
+  result = hook(call_593180, url, valid)
 
-proc call*(call_603281: Call_CreateStorediSCSIVolume_603268; body: JsonNode): Recallable =
+proc call*(call_593181: Call_CreateStorediSCSIVolume_593168; body: JsonNode): Recallable =
   ## createStorediSCSIVolume
   ## <p>Creates a volume on a specified gateway. This operation is only supported in the stored volume gateway type.</p> <p>The size of the volume to create is inferred from the disk size. You can choose to preserve existing data on the disk, create volume from an existing snapshot, or create an empty volume. If you choose to create an empty gateway volume, then any existing data on the disk is erased.</p> <p>In the request you must specify the gateway and the disk information on which you are creating the volume. In response, the gateway creates the volume and returns volume information such as the volume Amazon Resource Name (ARN), its size, and the iSCSI target ARN that initiators can use to connect to the volume target.</p>
   ##   body: JObject (required)
-  var body_603282 = newJObject()
+  var body_593182 = newJObject()
   if body != nil:
-    body_603282 = body
-  result = call_603281.call(nil, nil, nil, nil, body_603282)
+    body_593182 = body
+  result = call_593181.call(nil, nil, nil, nil, body_593182)
 
-var createStorediSCSIVolume* = Call_CreateStorediSCSIVolume_603268(
+var createStorediSCSIVolume* = Call_CreateStorediSCSIVolume_593168(
     name: "createStorediSCSIVolume", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.CreateStorediSCSIVolume",
-    validator: validate_CreateStorediSCSIVolume_603269, base: "/",
-    url: url_CreateStorediSCSIVolume_603270, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateStorediSCSIVolume_593169, base: "/",
+    url: url_CreateStorediSCSIVolume_593170, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTapeWithBarcode_603283 = ref object of OpenApiRestCall_602467
-proc url_CreateTapeWithBarcode_603285(protocol: Scheme; host: string; base: string;
+  Call_CreateTapeWithBarcode_593183 = ref object of OpenApiRestCall_592365
+proc url_CreateTapeWithBarcode_593185(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateTapeWithBarcode_603284(path: JsonNode; query: JsonNode;
+proc validate_CreateTapeWithBarcode_593184(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a virtual tape by using your own barcode. You write data to the virtual tape and then archive the tape. A barcode is unique and can not be reused if it has already been used on a tape . This applies to barcodes used on deleted tapes. This operation is only supported in the tape gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create a virtual tape. Use the <a>AddCache</a> operation to add cache storage to a gateway.</p> </note>
   ## 
@@ -1788,57 +1792,57 @@ proc validate_CreateTapeWithBarcode_603284(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603286 = header.getOrDefault("X-Amz-Date")
-  valid_603286 = validateParameter(valid_603286, JString, required = false,
-                                 default = nil)
-  if valid_603286 != nil:
-    section.add "X-Amz-Date", valid_603286
-  var valid_603287 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603287 = validateParameter(valid_603287, JString, required = false,
-                                 default = nil)
-  if valid_603287 != nil:
-    section.add "X-Amz-Security-Token", valid_603287
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603288 = header.getOrDefault("X-Amz-Target")
-  valid_603288 = validateParameter(valid_603288, JString, required = true, default = newJString(
+  var valid_593186 = header.getOrDefault("X-Amz-Target")
+  valid_593186 = validateParameter(valid_593186, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateTapeWithBarcode"))
-  if valid_603288 != nil:
-    section.add "X-Amz-Target", valid_603288
-  var valid_603289 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603289 = validateParameter(valid_603289, JString, required = false,
+  if valid_593186 != nil:
+    section.add "X-Amz-Target", valid_593186
+  var valid_593187 = header.getOrDefault("X-Amz-Signature")
+  valid_593187 = validateParameter(valid_593187, JString, required = false,
                                  default = nil)
-  if valid_603289 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603289
-  var valid_603290 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603290 = validateParameter(valid_603290, JString, required = false,
+  if valid_593187 != nil:
+    section.add "X-Amz-Signature", valid_593187
+  var valid_593188 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593188 = validateParameter(valid_593188, JString, required = false,
                                  default = nil)
-  if valid_603290 != nil:
-    section.add "X-Amz-Algorithm", valid_603290
-  var valid_603291 = header.getOrDefault("X-Amz-Signature")
-  valid_603291 = validateParameter(valid_603291, JString, required = false,
+  if valid_593188 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593188
+  var valid_593189 = header.getOrDefault("X-Amz-Date")
+  valid_593189 = validateParameter(valid_593189, JString, required = false,
                                  default = nil)
-  if valid_603291 != nil:
-    section.add "X-Amz-Signature", valid_603291
-  var valid_603292 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603292 = validateParameter(valid_603292, JString, required = false,
+  if valid_593189 != nil:
+    section.add "X-Amz-Date", valid_593189
+  var valid_593190 = header.getOrDefault("X-Amz-Credential")
+  valid_593190 = validateParameter(valid_593190, JString, required = false,
                                  default = nil)
-  if valid_603292 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603292
-  var valid_603293 = header.getOrDefault("X-Amz-Credential")
-  valid_603293 = validateParameter(valid_603293, JString, required = false,
+  if valid_593190 != nil:
+    section.add "X-Amz-Credential", valid_593190
+  var valid_593191 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593191 = validateParameter(valid_593191, JString, required = false,
                                  default = nil)
-  if valid_603293 != nil:
-    section.add "X-Amz-Credential", valid_603293
+  if valid_593191 != nil:
+    section.add "X-Amz-Security-Token", valid_593191
+  var valid_593192 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593192 = validateParameter(valid_593192, JString, required = false,
+                                 default = nil)
+  if valid_593192 != nil:
+    section.add "X-Amz-Algorithm", valid_593192
+  var valid_593193 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593193 = validateParameter(valid_593193, JString, required = false,
+                                 default = nil)
+  if valid_593193 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593193
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1849,44 +1853,44 @@ proc validate_CreateTapeWithBarcode_603284(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603295: Call_CreateTapeWithBarcode_603283; path: JsonNode;
+proc call*(call_593195: Call_CreateTapeWithBarcode_593183; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a virtual tape by using your own barcode. You write data to the virtual tape and then archive the tape. A barcode is unique and can not be reused if it has already been used on a tape . This applies to barcodes used on deleted tapes. This operation is only supported in the tape gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create a virtual tape. Use the <a>AddCache</a> operation to add cache storage to a gateway.</p> </note>
   ## 
-  let valid = call_603295.validator(path, query, header, formData, body)
-  let scheme = call_603295.pickScheme
+  let valid = call_593195.validator(path, query, header, formData, body)
+  let scheme = call_593195.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603295.url(scheme.get, call_603295.host, call_603295.base,
-                         call_603295.route, valid.getOrDefault("path"),
+  let url = call_593195.url(scheme.get, call_593195.host, call_593195.base,
+                         call_593195.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603295, url, valid)
+  result = hook(call_593195, url, valid)
 
-proc call*(call_603296: Call_CreateTapeWithBarcode_603283; body: JsonNode): Recallable =
+proc call*(call_593196: Call_CreateTapeWithBarcode_593183; body: JsonNode): Recallable =
   ## createTapeWithBarcode
   ## <p>Creates a virtual tape by using your own barcode. You write data to the virtual tape and then archive the tape. A barcode is unique and can not be reused if it has already been used on a tape . This applies to barcodes used on deleted tapes. This operation is only supported in the tape gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create a virtual tape. Use the <a>AddCache</a> operation to add cache storage to a gateway.</p> </note>
   ##   body: JObject (required)
-  var body_603297 = newJObject()
+  var body_593197 = newJObject()
   if body != nil:
-    body_603297 = body
-  result = call_603296.call(nil, nil, nil, nil, body_603297)
+    body_593197 = body
+  result = call_593196.call(nil, nil, nil, nil, body_593197)
 
-var createTapeWithBarcode* = Call_CreateTapeWithBarcode_603283(
+var createTapeWithBarcode* = Call_CreateTapeWithBarcode_593183(
     name: "createTapeWithBarcode", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.CreateTapeWithBarcode",
-    validator: validate_CreateTapeWithBarcode_603284, base: "/",
-    url: url_CreateTapeWithBarcode_603285, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateTapeWithBarcode_593184, base: "/",
+    url: url_CreateTapeWithBarcode_593185, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTapes_603298 = ref object of OpenApiRestCall_602467
-proc url_CreateTapes_603300(protocol: Scheme; host: string; base: string;
+  Call_CreateTapes_593198 = ref object of OpenApiRestCall_592365
+proc url_CreateTapes_593200(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateTapes_603299(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateTapes_593199(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates one or more virtual tapes. You write data to the virtual tapes and then archive the tapes. This operation is only supported in the tape gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create virtual tapes. Use the <a>AddCache</a> operation to add cache storage to a gateway. </p> </note>
   ## 
@@ -1897,57 +1901,57 @@ proc validate_CreateTapes_603299(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603301 = header.getOrDefault("X-Amz-Date")
-  valid_603301 = validateParameter(valid_603301, JString, required = false,
-                                 default = nil)
-  if valid_603301 != nil:
-    section.add "X-Amz-Date", valid_603301
-  var valid_603302 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603302 = validateParameter(valid_603302, JString, required = false,
-                                 default = nil)
-  if valid_603302 != nil:
-    section.add "X-Amz-Security-Token", valid_603302
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603303 = header.getOrDefault("X-Amz-Target")
-  valid_603303 = validateParameter(valid_603303, JString, required = true, default = newJString(
+  var valid_593201 = header.getOrDefault("X-Amz-Target")
+  valid_593201 = validateParameter(valid_593201, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateTapes"))
-  if valid_603303 != nil:
-    section.add "X-Amz-Target", valid_603303
-  var valid_603304 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603304 = validateParameter(valid_603304, JString, required = false,
+  if valid_593201 != nil:
+    section.add "X-Amz-Target", valid_593201
+  var valid_593202 = header.getOrDefault("X-Amz-Signature")
+  valid_593202 = validateParameter(valid_593202, JString, required = false,
                                  default = nil)
-  if valid_603304 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603304
-  var valid_603305 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603305 = validateParameter(valid_603305, JString, required = false,
+  if valid_593202 != nil:
+    section.add "X-Amz-Signature", valid_593202
+  var valid_593203 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593203 = validateParameter(valid_593203, JString, required = false,
                                  default = nil)
-  if valid_603305 != nil:
-    section.add "X-Amz-Algorithm", valid_603305
-  var valid_603306 = header.getOrDefault("X-Amz-Signature")
-  valid_603306 = validateParameter(valid_603306, JString, required = false,
+  if valid_593203 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593203
+  var valid_593204 = header.getOrDefault("X-Amz-Date")
+  valid_593204 = validateParameter(valid_593204, JString, required = false,
                                  default = nil)
-  if valid_603306 != nil:
-    section.add "X-Amz-Signature", valid_603306
-  var valid_603307 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603307 = validateParameter(valid_603307, JString, required = false,
+  if valid_593204 != nil:
+    section.add "X-Amz-Date", valid_593204
+  var valid_593205 = header.getOrDefault("X-Amz-Credential")
+  valid_593205 = validateParameter(valid_593205, JString, required = false,
                                  default = nil)
-  if valid_603307 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603307
-  var valid_603308 = header.getOrDefault("X-Amz-Credential")
-  valid_603308 = validateParameter(valid_603308, JString, required = false,
+  if valid_593205 != nil:
+    section.add "X-Amz-Credential", valid_593205
+  var valid_593206 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593206 = validateParameter(valid_593206, JString, required = false,
                                  default = nil)
-  if valid_603308 != nil:
-    section.add "X-Amz-Credential", valid_603308
+  if valid_593206 != nil:
+    section.add "X-Amz-Security-Token", valid_593206
+  var valid_593207 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593207 = validateParameter(valid_593207, JString, required = false,
+                                 default = nil)
+  if valid_593207 != nil:
+    section.add "X-Amz-Algorithm", valid_593207
+  var valid_593208 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593208 = validateParameter(valid_593208, JString, required = false,
+                                 default = nil)
+  if valid_593208 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593208
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1958,37 +1962,37 @@ proc validate_CreateTapes_603299(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603310: Call_CreateTapes_603298; path: JsonNode; query: JsonNode;
+proc call*(call_593210: Call_CreateTapes_593198; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates one or more virtual tapes. You write data to the virtual tapes and then archive the tapes. This operation is only supported in the tape gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create virtual tapes. Use the <a>AddCache</a> operation to add cache storage to a gateway. </p> </note>
   ## 
-  let valid = call_603310.validator(path, query, header, formData, body)
-  let scheme = call_603310.pickScheme
+  let valid = call_593210.validator(path, query, header, formData, body)
+  let scheme = call_593210.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603310.url(scheme.get, call_603310.host, call_603310.base,
-                         call_603310.route, valid.getOrDefault("path"),
+  let url = call_593210.url(scheme.get, call_593210.host, call_593210.base,
+                         call_593210.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603310, url, valid)
+  result = hook(call_593210, url, valid)
 
-proc call*(call_603311: Call_CreateTapes_603298; body: JsonNode): Recallable =
+proc call*(call_593211: Call_CreateTapes_593198; body: JsonNode): Recallable =
   ## createTapes
   ## <p>Creates one or more virtual tapes. You write data to the virtual tapes and then archive the tapes. This operation is only supported in the tape gateway type.</p> <note> <p>Cache storage must be allocated to the gateway before you can create virtual tapes. Use the <a>AddCache</a> operation to add cache storage to a gateway. </p> </note>
   ##   body: JObject (required)
-  var body_603312 = newJObject()
+  var body_593212 = newJObject()
   if body != nil:
-    body_603312 = body
-  result = call_603311.call(nil, nil, nil, nil, body_603312)
+    body_593212 = body
+  result = call_593211.call(nil, nil, nil, nil, body_593212)
 
-var createTapes* = Call_CreateTapes_603298(name: "createTapes",
+var createTapes* = Call_CreateTapes_593198(name: "createTapes",
                                         meth: HttpMethod.HttpPost,
                                         host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.CreateTapes",
-                                        validator: validate_CreateTapes_603299,
-                                        base: "/", url: url_CreateTapes_603300,
+                                        validator: validate_CreateTapes_593199,
+                                        base: "/", url: url_CreateTapes_593200,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBandwidthRateLimit_603313 = ref object of OpenApiRestCall_602467
-proc url_DeleteBandwidthRateLimit_603315(protocol: Scheme; host: string;
+  Call_DeleteBandwidthRateLimit_593213 = ref object of OpenApiRestCall_592365
+proc url_DeleteBandwidthRateLimit_593215(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1996,7 +2000,7 @@ proc url_DeleteBandwidthRateLimit_603315(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteBandwidthRateLimit_603314(path: JsonNode; query: JsonNode;
+proc validate_DeleteBandwidthRateLimit_593214(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the bandwidth rate limits of a gateway. You can delete either the upload and download bandwidth rate limit, or you can delete both. If you delete only one of the limits, the other limit remains unchanged. To specify which gateway to work with, use the Amazon Resource Name (ARN) of the gateway in your request.
   ## 
@@ -2007,57 +2011,57 @@ proc validate_DeleteBandwidthRateLimit_603314(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603316 = header.getOrDefault("X-Amz-Date")
-  valid_603316 = validateParameter(valid_603316, JString, required = false,
-                                 default = nil)
-  if valid_603316 != nil:
-    section.add "X-Amz-Date", valid_603316
-  var valid_603317 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603317 = validateParameter(valid_603317, JString, required = false,
-                                 default = nil)
-  if valid_603317 != nil:
-    section.add "X-Amz-Security-Token", valid_603317
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603318 = header.getOrDefault("X-Amz-Target")
-  valid_603318 = validateParameter(valid_603318, JString, required = true, default = newJString(
+  var valid_593216 = header.getOrDefault("X-Amz-Target")
+  valid_593216 = validateParameter(valid_593216, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteBandwidthRateLimit"))
-  if valid_603318 != nil:
-    section.add "X-Amz-Target", valid_603318
-  var valid_603319 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603319 = validateParameter(valid_603319, JString, required = false,
+  if valid_593216 != nil:
+    section.add "X-Amz-Target", valid_593216
+  var valid_593217 = header.getOrDefault("X-Amz-Signature")
+  valid_593217 = validateParameter(valid_593217, JString, required = false,
                                  default = nil)
-  if valid_603319 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603319
-  var valid_603320 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603320 = validateParameter(valid_603320, JString, required = false,
+  if valid_593217 != nil:
+    section.add "X-Amz-Signature", valid_593217
+  var valid_593218 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593218 = validateParameter(valid_593218, JString, required = false,
                                  default = nil)
-  if valid_603320 != nil:
-    section.add "X-Amz-Algorithm", valid_603320
-  var valid_603321 = header.getOrDefault("X-Amz-Signature")
-  valid_603321 = validateParameter(valid_603321, JString, required = false,
+  if valid_593218 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593218
+  var valid_593219 = header.getOrDefault("X-Amz-Date")
+  valid_593219 = validateParameter(valid_593219, JString, required = false,
                                  default = nil)
-  if valid_603321 != nil:
-    section.add "X-Amz-Signature", valid_603321
-  var valid_603322 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603322 = validateParameter(valid_603322, JString, required = false,
+  if valid_593219 != nil:
+    section.add "X-Amz-Date", valid_593219
+  var valid_593220 = header.getOrDefault("X-Amz-Credential")
+  valid_593220 = validateParameter(valid_593220, JString, required = false,
                                  default = nil)
-  if valid_603322 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603322
-  var valid_603323 = header.getOrDefault("X-Amz-Credential")
-  valid_603323 = validateParameter(valid_603323, JString, required = false,
+  if valid_593220 != nil:
+    section.add "X-Amz-Credential", valid_593220
+  var valid_593221 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593221 = validateParameter(valid_593221, JString, required = false,
                                  default = nil)
-  if valid_603323 != nil:
-    section.add "X-Amz-Credential", valid_603323
+  if valid_593221 != nil:
+    section.add "X-Amz-Security-Token", valid_593221
+  var valid_593222 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593222 = validateParameter(valid_593222, JString, required = false,
+                                 default = nil)
+  if valid_593222 != nil:
+    section.add "X-Amz-Algorithm", valid_593222
+  var valid_593223 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593223 = validateParameter(valid_593223, JString, required = false,
+                                 default = nil)
+  if valid_593223 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593223
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2068,44 +2072,44 @@ proc validate_DeleteBandwidthRateLimit_603314(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603325: Call_DeleteBandwidthRateLimit_603313; path: JsonNode;
+proc call*(call_593225: Call_DeleteBandwidthRateLimit_593213; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the bandwidth rate limits of a gateway. You can delete either the upload and download bandwidth rate limit, or you can delete both. If you delete only one of the limits, the other limit remains unchanged. To specify which gateway to work with, use the Amazon Resource Name (ARN) of the gateway in your request.
   ## 
-  let valid = call_603325.validator(path, query, header, formData, body)
-  let scheme = call_603325.pickScheme
+  let valid = call_593225.validator(path, query, header, formData, body)
+  let scheme = call_593225.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603325.url(scheme.get, call_603325.host, call_603325.base,
-                         call_603325.route, valid.getOrDefault("path"),
+  let url = call_593225.url(scheme.get, call_593225.host, call_593225.base,
+                         call_593225.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603325, url, valid)
+  result = hook(call_593225, url, valid)
 
-proc call*(call_603326: Call_DeleteBandwidthRateLimit_603313; body: JsonNode): Recallable =
+proc call*(call_593226: Call_DeleteBandwidthRateLimit_593213; body: JsonNode): Recallable =
   ## deleteBandwidthRateLimit
   ## Deletes the bandwidth rate limits of a gateway. You can delete either the upload and download bandwidth rate limit, or you can delete both. If you delete only one of the limits, the other limit remains unchanged. To specify which gateway to work with, use the Amazon Resource Name (ARN) of the gateway in your request.
   ##   body: JObject (required)
-  var body_603327 = newJObject()
+  var body_593227 = newJObject()
   if body != nil:
-    body_603327 = body
-  result = call_603326.call(nil, nil, nil, nil, body_603327)
+    body_593227 = body
+  result = call_593226.call(nil, nil, nil, nil, body_593227)
 
-var deleteBandwidthRateLimit* = Call_DeleteBandwidthRateLimit_603313(
+var deleteBandwidthRateLimit* = Call_DeleteBandwidthRateLimit_593213(
     name: "deleteBandwidthRateLimit", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DeleteBandwidthRateLimit",
-    validator: validate_DeleteBandwidthRateLimit_603314, base: "/",
-    url: url_DeleteBandwidthRateLimit_603315, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBandwidthRateLimit_593214, base: "/",
+    url: url_DeleteBandwidthRateLimit_593215, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteChapCredentials_603328 = ref object of OpenApiRestCall_602467
-proc url_DeleteChapCredentials_603330(protocol: Scheme; host: string; base: string;
+  Call_DeleteChapCredentials_593228 = ref object of OpenApiRestCall_592365
+proc url_DeleteChapCredentials_593230(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteChapCredentials_603329(path: JsonNode; query: JsonNode;
+proc validate_DeleteChapCredentials_593229(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes Challenge-Handshake Authentication Protocol (CHAP) credentials for a specified iSCSI target and initiator pair.
   ## 
@@ -2116,57 +2120,57 @@ proc validate_DeleteChapCredentials_603329(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603331 = header.getOrDefault("X-Amz-Date")
-  valid_603331 = validateParameter(valid_603331, JString, required = false,
-                                 default = nil)
-  if valid_603331 != nil:
-    section.add "X-Amz-Date", valid_603331
-  var valid_603332 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603332 = validateParameter(valid_603332, JString, required = false,
-                                 default = nil)
-  if valid_603332 != nil:
-    section.add "X-Amz-Security-Token", valid_603332
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603333 = header.getOrDefault("X-Amz-Target")
-  valid_603333 = validateParameter(valid_603333, JString, required = true, default = newJString(
+  var valid_593231 = header.getOrDefault("X-Amz-Target")
+  valid_593231 = validateParameter(valid_593231, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteChapCredentials"))
-  if valid_603333 != nil:
-    section.add "X-Amz-Target", valid_603333
-  var valid_603334 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603334 = validateParameter(valid_603334, JString, required = false,
+  if valid_593231 != nil:
+    section.add "X-Amz-Target", valid_593231
+  var valid_593232 = header.getOrDefault("X-Amz-Signature")
+  valid_593232 = validateParameter(valid_593232, JString, required = false,
                                  default = nil)
-  if valid_603334 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603334
-  var valid_603335 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603335 = validateParameter(valid_603335, JString, required = false,
+  if valid_593232 != nil:
+    section.add "X-Amz-Signature", valid_593232
+  var valid_593233 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593233 = validateParameter(valid_593233, JString, required = false,
                                  default = nil)
-  if valid_603335 != nil:
-    section.add "X-Amz-Algorithm", valid_603335
-  var valid_603336 = header.getOrDefault("X-Amz-Signature")
-  valid_603336 = validateParameter(valid_603336, JString, required = false,
+  if valid_593233 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593233
+  var valid_593234 = header.getOrDefault("X-Amz-Date")
+  valid_593234 = validateParameter(valid_593234, JString, required = false,
                                  default = nil)
-  if valid_603336 != nil:
-    section.add "X-Amz-Signature", valid_603336
-  var valid_603337 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603337 = validateParameter(valid_603337, JString, required = false,
+  if valid_593234 != nil:
+    section.add "X-Amz-Date", valid_593234
+  var valid_593235 = header.getOrDefault("X-Amz-Credential")
+  valid_593235 = validateParameter(valid_593235, JString, required = false,
                                  default = nil)
-  if valid_603337 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603337
-  var valid_603338 = header.getOrDefault("X-Amz-Credential")
-  valid_603338 = validateParameter(valid_603338, JString, required = false,
+  if valid_593235 != nil:
+    section.add "X-Amz-Credential", valid_593235
+  var valid_593236 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593236 = validateParameter(valid_593236, JString, required = false,
                                  default = nil)
-  if valid_603338 != nil:
-    section.add "X-Amz-Credential", valid_603338
+  if valid_593236 != nil:
+    section.add "X-Amz-Security-Token", valid_593236
+  var valid_593237 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593237 = validateParameter(valid_593237, JString, required = false,
+                                 default = nil)
+  if valid_593237 != nil:
+    section.add "X-Amz-Algorithm", valid_593237
+  var valid_593238 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593238 = validateParameter(valid_593238, JString, required = false,
+                                 default = nil)
+  if valid_593238 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593238
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2177,44 +2181,44 @@ proc validate_DeleteChapCredentials_603329(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603340: Call_DeleteChapCredentials_603328; path: JsonNode;
+proc call*(call_593240: Call_DeleteChapCredentials_593228; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes Challenge-Handshake Authentication Protocol (CHAP) credentials for a specified iSCSI target and initiator pair.
   ## 
-  let valid = call_603340.validator(path, query, header, formData, body)
-  let scheme = call_603340.pickScheme
+  let valid = call_593240.validator(path, query, header, formData, body)
+  let scheme = call_593240.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603340.url(scheme.get, call_603340.host, call_603340.base,
-                         call_603340.route, valid.getOrDefault("path"),
+  let url = call_593240.url(scheme.get, call_593240.host, call_593240.base,
+                         call_593240.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603340, url, valid)
+  result = hook(call_593240, url, valid)
 
-proc call*(call_603341: Call_DeleteChapCredentials_603328; body: JsonNode): Recallable =
+proc call*(call_593241: Call_DeleteChapCredentials_593228; body: JsonNode): Recallable =
   ## deleteChapCredentials
   ## Deletes Challenge-Handshake Authentication Protocol (CHAP) credentials for a specified iSCSI target and initiator pair.
   ##   body: JObject (required)
-  var body_603342 = newJObject()
+  var body_593242 = newJObject()
   if body != nil:
-    body_603342 = body
-  result = call_603341.call(nil, nil, nil, nil, body_603342)
+    body_593242 = body
+  result = call_593241.call(nil, nil, nil, nil, body_593242)
 
-var deleteChapCredentials* = Call_DeleteChapCredentials_603328(
+var deleteChapCredentials* = Call_DeleteChapCredentials_593228(
     name: "deleteChapCredentials", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DeleteChapCredentials",
-    validator: validate_DeleteChapCredentials_603329, base: "/",
-    url: url_DeleteChapCredentials_603330, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteChapCredentials_593229, base: "/",
+    url: url_DeleteChapCredentials_593230, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteFileShare_603343 = ref object of OpenApiRestCall_602467
-proc url_DeleteFileShare_603345(protocol: Scheme; host: string; base: string;
+  Call_DeleteFileShare_593243 = ref object of OpenApiRestCall_592365
+proc url_DeleteFileShare_593245(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteFileShare_603344(path: JsonNode; query: JsonNode;
+proc validate_DeleteFileShare_593244(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Deletes a file share from a file gateway. This operation is only supported for file gateways.
@@ -2226,57 +2230,57 @@ proc validate_DeleteFileShare_603344(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603346 = header.getOrDefault("X-Amz-Date")
-  valid_603346 = validateParameter(valid_603346, JString, required = false,
-                                 default = nil)
-  if valid_603346 != nil:
-    section.add "X-Amz-Date", valid_603346
-  var valid_603347 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603347 = validateParameter(valid_603347, JString, required = false,
-                                 default = nil)
-  if valid_603347 != nil:
-    section.add "X-Amz-Security-Token", valid_603347
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603348 = header.getOrDefault("X-Amz-Target")
-  valid_603348 = validateParameter(valid_603348, JString, required = true, default = newJString(
+  var valid_593246 = header.getOrDefault("X-Amz-Target")
+  valid_593246 = validateParameter(valid_593246, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteFileShare"))
-  if valid_603348 != nil:
-    section.add "X-Amz-Target", valid_603348
-  var valid_603349 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603349 = validateParameter(valid_603349, JString, required = false,
+  if valid_593246 != nil:
+    section.add "X-Amz-Target", valid_593246
+  var valid_593247 = header.getOrDefault("X-Amz-Signature")
+  valid_593247 = validateParameter(valid_593247, JString, required = false,
                                  default = nil)
-  if valid_603349 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603349
-  var valid_603350 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603350 = validateParameter(valid_603350, JString, required = false,
+  if valid_593247 != nil:
+    section.add "X-Amz-Signature", valid_593247
+  var valid_593248 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593248 = validateParameter(valid_593248, JString, required = false,
                                  default = nil)
-  if valid_603350 != nil:
-    section.add "X-Amz-Algorithm", valid_603350
-  var valid_603351 = header.getOrDefault("X-Amz-Signature")
-  valid_603351 = validateParameter(valid_603351, JString, required = false,
+  if valid_593248 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593248
+  var valid_593249 = header.getOrDefault("X-Amz-Date")
+  valid_593249 = validateParameter(valid_593249, JString, required = false,
                                  default = nil)
-  if valid_603351 != nil:
-    section.add "X-Amz-Signature", valid_603351
-  var valid_603352 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603352 = validateParameter(valid_603352, JString, required = false,
+  if valid_593249 != nil:
+    section.add "X-Amz-Date", valid_593249
+  var valid_593250 = header.getOrDefault("X-Amz-Credential")
+  valid_593250 = validateParameter(valid_593250, JString, required = false,
                                  default = nil)
-  if valid_603352 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603352
-  var valid_603353 = header.getOrDefault("X-Amz-Credential")
-  valid_603353 = validateParameter(valid_603353, JString, required = false,
+  if valid_593250 != nil:
+    section.add "X-Amz-Credential", valid_593250
+  var valid_593251 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593251 = validateParameter(valid_593251, JString, required = false,
                                  default = nil)
-  if valid_603353 != nil:
-    section.add "X-Amz-Credential", valid_603353
+  if valid_593251 != nil:
+    section.add "X-Amz-Security-Token", valid_593251
+  var valid_593252 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593252 = validateParameter(valid_593252, JString, required = false,
+                                 default = nil)
+  if valid_593252 != nil:
+    section.add "X-Amz-Algorithm", valid_593252
+  var valid_593253 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593253 = validateParameter(valid_593253, JString, required = false,
+                                 default = nil)
+  if valid_593253 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593253
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2287,43 +2291,43 @@ proc validate_DeleteFileShare_603344(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603355: Call_DeleteFileShare_603343; path: JsonNode; query: JsonNode;
+proc call*(call_593255: Call_DeleteFileShare_593243; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a file share from a file gateway. This operation is only supported for file gateways.
   ## 
-  let valid = call_603355.validator(path, query, header, formData, body)
-  let scheme = call_603355.pickScheme
+  let valid = call_593255.validator(path, query, header, formData, body)
+  let scheme = call_593255.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603355.url(scheme.get, call_603355.host, call_603355.base,
-                         call_603355.route, valid.getOrDefault("path"),
+  let url = call_593255.url(scheme.get, call_593255.host, call_593255.base,
+                         call_593255.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603355, url, valid)
+  result = hook(call_593255, url, valid)
 
-proc call*(call_603356: Call_DeleteFileShare_603343; body: JsonNode): Recallable =
+proc call*(call_593256: Call_DeleteFileShare_593243; body: JsonNode): Recallable =
   ## deleteFileShare
   ## Deletes a file share from a file gateway. This operation is only supported for file gateways.
   ##   body: JObject (required)
-  var body_603357 = newJObject()
+  var body_593257 = newJObject()
   if body != nil:
-    body_603357 = body
-  result = call_603356.call(nil, nil, nil, nil, body_603357)
+    body_593257 = body
+  result = call_593256.call(nil, nil, nil, nil, body_593257)
 
-var deleteFileShare* = Call_DeleteFileShare_603343(name: "deleteFileShare",
+var deleteFileShare* = Call_DeleteFileShare_593243(name: "deleteFileShare",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DeleteFileShare",
-    validator: validate_DeleteFileShare_603344, base: "/", url: url_DeleteFileShare_603345,
+    validator: validate_DeleteFileShare_593244, base: "/", url: url_DeleteFileShare_593245,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteGateway_603358 = ref object of OpenApiRestCall_602467
-proc url_DeleteGateway_603360(protocol: Scheme; host: string; base: string;
+  Call_DeleteGateway_593258 = ref object of OpenApiRestCall_592365
+proc url_DeleteGateway_593260(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteGateway_603359(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteGateway_593259(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a gateway. To specify which gateway to delete, use the Amazon Resource Name (ARN) of the gateway in your request. The operation deletes the gateway; however, it does not delete the gateway virtual machine (VM) from your host computer.</p> <p>After you delete a gateway, you cannot reactivate it. Completed snapshots of the gateway volumes are not deleted upon deleting the gateway, however, pending snapshots will not complete. After you delete a gateway, your next step is to remove it from your environment.</p> <important> <p>You no longer pay software charges after the gateway is deleted; however, your existing Amazon EBS snapshots persist and you will continue to be billed for these snapshots. You can choose to remove all remaining Amazon EBS snapshots by canceling your Amazon EC2 subscription.  If you prefer not to cancel your Amazon EC2 subscription, you can delete your snapshots using the Amazon EC2 console. For more information, see the <a href="http://aws.amazon.com/storagegateway"> AWS Storage Gateway Detail Page</a>. </p> </important>
   ## 
@@ -2334,57 +2338,57 @@ proc validate_DeleteGateway_603359(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603361 = header.getOrDefault("X-Amz-Date")
-  valid_603361 = validateParameter(valid_603361, JString, required = false,
-                                 default = nil)
-  if valid_603361 != nil:
-    section.add "X-Amz-Date", valid_603361
-  var valid_603362 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603362 = validateParameter(valid_603362, JString, required = false,
-                                 default = nil)
-  if valid_603362 != nil:
-    section.add "X-Amz-Security-Token", valid_603362
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603363 = header.getOrDefault("X-Amz-Target")
-  valid_603363 = validateParameter(valid_603363, JString, required = true, default = newJString(
+  var valid_593261 = header.getOrDefault("X-Amz-Target")
+  valid_593261 = validateParameter(valid_593261, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteGateway"))
-  if valid_603363 != nil:
-    section.add "X-Amz-Target", valid_603363
-  var valid_603364 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603364 = validateParameter(valid_603364, JString, required = false,
+  if valid_593261 != nil:
+    section.add "X-Amz-Target", valid_593261
+  var valid_593262 = header.getOrDefault("X-Amz-Signature")
+  valid_593262 = validateParameter(valid_593262, JString, required = false,
                                  default = nil)
-  if valid_603364 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603364
-  var valid_603365 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603365 = validateParameter(valid_603365, JString, required = false,
+  if valid_593262 != nil:
+    section.add "X-Amz-Signature", valid_593262
+  var valid_593263 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593263 = validateParameter(valid_593263, JString, required = false,
                                  default = nil)
-  if valid_603365 != nil:
-    section.add "X-Amz-Algorithm", valid_603365
-  var valid_603366 = header.getOrDefault("X-Amz-Signature")
-  valid_603366 = validateParameter(valid_603366, JString, required = false,
+  if valid_593263 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593263
+  var valid_593264 = header.getOrDefault("X-Amz-Date")
+  valid_593264 = validateParameter(valid_593264, JString, required = false,
                                  default = nil)
-  if valid_603366 != nil:
-    section.add "X-Amz-Signature", valid_603366
-  var valid_603367 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603367 = validateParameter(valid_603367, JString, required = false,
+  if valid_593264 != nil:
+    section.add "X-Amz-Date", valid_593264
+  var valid_593265 = header.getOrDefault("X-Amz-Credential")
+  valid_593265 = validateParameter(valid_593265, JString, required = false,
                                  default = nil)
-  if valid_603367 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603367
-  var valid_603368 = header.getOrDefault("X-Amz-Credential")
-  valid_603368 = validateParameter(valid_603368, JString, required = false,
+  if valid_593265 != nil:
+    section.add "X-Amz-Credential", valid_593265
+  var valid_593266 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593266 = validateParameter(valid_593266, JString, required = false,
                                  default = nil)
-  if valid_603368 != nil:
-    section.add "X-Amz-Credential", valid_603368
+  if valid_593266 != nil:
+    section.add "X-Amz-Security-Token", valid_593266
+  var valid_593267 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593267 = validateParameter(valid_593267, JString, required = false,
+                                 default = nil)
+  if valid_593267 != nil:
+    section.add "X-Amz-Algorithm", valid_593267
+  var valid_593268 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593268 = validateParameter(valid_593268, JString, required = false,
+                                 default = nil)
+  if valid_593268 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593268
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2395,43 +2399,43 @@ proc validate_DeleteGateway_603359(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603370: Call_DeleteGateway_603358; path: JsonNode; query: JsonNode;
+proc call*(call_593270: Call_DeleteGateway_593258; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a gateway. To specify which gateway to delete, use the Amazon Resource Name (ARN) of the gateway in your request. The operation deletes the gateway; however, it does not delete the gateway virtual machine (VM) from your host computer.</p> <p>After you delete a gateway, you cannot reactivate it. Completed snapshots of the gateway volumes are not deleted upon deleting the gateway, however, pending snapshots will not complete. After you delete a gateway, your next step is to remove it from your environment.</p> <important> <p>You no longer pay software charges after the gateway is deleted; however, your existing Amazon EBS snapshots persist and you will continue to be billed for these snapshots. You can choose to remove all remaining Amazon EBS snapshots by canceling your Amazon EC2 subscription.  If you prefer not to cancel your Amazon EC2 subscription, you can delete your snapshots using the Amazon EC2 console. For more information, see the <a href="http://aws.amazon.com/storagegateway"> AWS Storage Gateway Detail Page</a>. </p> </important>
   ## 
-  let valid = call_603370.validator(path, query, header, formData, body)
-  let scheme = call_603370.pickScheme
+  let valid = call_593270.validator(path, query, header, formData, body)
+  let scheme = call_593270.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603370.url(scheme.get, call_603370.host, call_603370.base,
-                         call_603370.route, valid.getOrDefault("path"),
+  let url = call_593270.url(scheme.get, call_593270.host, call_593270.base,
+                         call_593270.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603370, url, valid)
+  result = hook(call_593270, url, valid)
 
-proc call*(call_603371: Call_DeleteGateway_603358; body: JsonNode): Recallable =
+proc call*(call_593271: Call_DeleteGateway_593258; body: JsonNode): Recallable =
   ## deleteGateway
   ## <p>Deletes a gateway. To specify which gateway to delete, use the Amazon Resource Name (ARN) of the gateway in your request. The operation deletes the gateway; however, it does not delete the gateway virtual machine (VM) from your host computer.</p> <p>After you delete a gateway, you cannot reactivate it. Completed snapshots of the gateway volumes are not deleted upon deleting the gateway, however, pending snapshots will not complete. After you delete a gateway, your next step is to remove it from your environment.</p> <important> <p>You no longer pay software charges after the gateway is deleted; however, your existing Amazon EBS snapshots persist and you will continue to be billed for these snapshots. You can choose to remove all remaining Amazon EBS snapshots by canceling your Amazon EC2 subscription.  If you prefer not to cancel your Amazon EC2 subscription, you can delete your snapshots using the Amazon EC2 console. For more information, see the <a href="http://aws.amazon.com/storagegateway"> AWS Storage Gateway Detail Page</a>. </p> </important>
   ##   body: JObject (required)
-  var body_603372 = newJObject()
+  var body_593272 = newJObject()
   if body != nil:
-    body_603372 = body
-  result = call_603371.call(nil, nil, nil, nil, body_603372)
+    body_593272 = body
+  result = call_593271.call(nil, nil, nil, nil, body_593272)
 
-var deleteGateway* = Call_DeleteGateway_603358(name: "deleteGateway",
+var deleteGateway* = Call_DeleteGateway_593258(name: "deleteGateway",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DeleteGateway",
-    validator: validate_DeleteGateway_603359, base: "/", url: url_DeleteGateway_603360,
+    validator: validate_DeleteGateway_593259, base: "/", url: url_DeleteGateway_593260,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSnapshotSchedule_603373 = ref object of OpenApiRestCall_602467
-proc url_DeleteSnapshotSchedule_603375(protocol: Scheme; host: string; base: string;
+  Call_DeleteSnapshotSchedule_593273 = ref object of OpenApiRestCall_592365
+proc url_DeleteSnapshotSchedule_593275(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteSnapshotSchedule_603374(path: JsonNode; query: JsonNode;
+proc validate_DeleteSnapshotSchedule_593274(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a snapshot of a volume.</p> <p>You can take snapshots of your gateway volumes on a scheduled or ad hoc basis. This API action enables you to delete a snapshot schedule for a volume. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/WorkingWithSnapshots.html">Working with Snapshots</a>. In the <code>DeleteSnapshotSchedule</code> request, you identify the volume by providing its Amazon Resource Name (ARN). This operation is only supported in stored and cached volume gateway types.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. in <i>Amazon Elastic Compute Cloud API Reference</i>.</p> </note>
   ## 
@@ -2442,57 +2446,57 @@ proc validate_DeleteSnapshotSchedule_603374(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603376 = header.getOrDefault("X-Amz-Date")
-  valid_603376 = validateParameter(valid_603376, JString, required = false,
-                                 default = nil)
-  if valid_603376 != nil:
-    section.add "X-Amz-Date", valid_603376
-  var valid_603377 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603377 = validateParameter(valid_603377, JString, required = false,
-                                 default = nil)
-  if valid_603377 != nil:
-    section.add "X-Amz-Security-Token", valid_603377
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603378 = header.getOrDefault("X-Amz-Target")
-  valid_603378 = validateParameter(valid_603378, JString, required = true, default = newJString(
+  var valid_593276 = header.getOrDefault("X-Amz-Target")
+  valid_593276 = validateParameter(valid_593276, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteSnapshotSchedule"))
-  if valid_603378 != nil:
-    section.add "X-Amz-Target", valid_603378
-  var valid_603379 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603379 = validateParameter(valid_603379, JString, required = false,
+  if valid_593276 != nil:
+    section.add "X-Amz-Target", valid_593276
+  var valid_593277 = header.getOrDefault("X-Amz-Signature")
+  valid_593277 = validateParameter(valid_593277, JString, required = false,
                                  default = nil)
-  if valid_603379 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603379
-  var valid_603380 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603380 = validateParameter(valid_603380, JString, required = false,
+  if valid_593277 != nil:
+    section.add "X-Amz-Signature", valid_593277
+  var valid_593278 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593278 = validateParameter(valid_593278, JString, required = false,
                                  default = nil)
-  if valid_603380 != nil:
-    section.add "X-Amz-Algorithm", valid_603380
-  var valid_603381 = header.getOrDefault("X-Amz-Signature")
-  valid_603381 = validateParameter(valid_603381, JString, required = false,
+  if valid_593278 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593278
+  var valid_593279 = header.getOrDefault("X-Amz-Date")
+  valid_593279 = validateParameter(valid_593279, JString, required = false,
                                  default = nil)
-  if valid_603381 != nil:
-    section.add "X-Amz-Signature", valid_603381
-  var valid_603382 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603382 = validateParameter(valid_603382, JString, required = false,
+  if valid_593279 != nil:
+    section.add "X-Amz-Date", valid_593279
+  var valid_593280 = header.getOrDefault("X-Amz-Credential")
+  valid_593280 = validateParameter(valid_593280, JString, required = false,
                                  default = nil)
-  if valid_603382 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603382
-  var valid_603383 = header.getOrDefault("X-Amz-Credential")
-  valid_603383 = validateParameter(valid_603383, JString, required = false,
+  if valid_593280 != nil:
+    section.add "X-Amz-Credential", valid_593280
+  var valid_593281 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593281 = validateParameter(valid_593281, JString, required = false,
                                  default = nil)
-  if valid_603383 != nil:
-    section.add "X-Amz-Credential", valid_603383
+  if valid_593281 != nil:
+    section.add "X-Amz-Security-Token", valid_593281
+  var valid_593282 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593282 = validateParameter(valid_593282, JString, required = false,
+                                 default = nil)
+  if valid_593282 != nil:
+    section.add "X-Amz-Algorithm", valid_593282
+  var valid_593283 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593283 = validateParameter(valid_593283, JString, required = false,
+                                 default = nil)
+  if valid_593283 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593283
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2503,44 +2507,44 @@ proc validate_DeleteSnapshotSchedule_603374(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603385: Call_DeleteSnapshotSchedule_603373; path: JsonNode;
+proc call*(call_593285: Call_DeleteSnapshotSchedule_593273; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a snapshot of a volume.</p> <p>You can take snapshots of your gateway volumes on a scheduled or ad hoc basis. This API action enables you to delete a snapshot schedule for a volume. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/WorkingWithSnapshots.html">Working with Snapshots</a>. In the <code>DeleteSnapshotSchedule</code> request, you identify the volume by providing its Amazon Resource Name (ARN). This operation is only supported in stored and cached volume gateway types.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. in <i>Amazon Elastic Compute Cloud API Reference</i>.</p> </note>
   ## 
-  let valid = call_603385.validator(path, query, header, formData, body)
-  let scheme = call_603385.pickScheme
+  let valid = call_593285.validator(path, query, header, formData, body)
+  let scheme = call_593285.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603385.url(scheme.get, call_603385.host, call_603385.base,
-                         call_603385.route, valid.getOrDefault("path"),
+  let url = call_593285.url(scheme.get, call_593285.host, call_593285.base,
+                         call_593285.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603385, url, valid)
+  result = hook(call_593285, url, valid)
 
-proc call*(call_603386: Call_DeleteSnapshotSchedule_603373; body: JsonNode): Recallable =
+proc call*(call_593286: Call_DeleteSnapshotSchedule_593273; body: JsonNode): Recallable =
   ## deleteSnapshotSchedule
   ## <p>Deletes a snapshot of a volume.</p> <p>You can take snapshots of your gateway volumes on a scheduled or ad hoc basis. This API action enables you to delete a snapshot schedule for a volume. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/WorkingWithSnapshots.html">Working with Snapshots</a>. In the <code>DeleteSnapshotSchedule</code> request, you identify the volume by providing its Amazon Resource Name (ARN). This operation is only supported in stored and cached volume gateway types.</p> <note> <p>To list or delete a snapshot, you must use the Amazon EC2 API. in <i>Amazon Elastic Compute Cloud API Reference</i>.</p> </note>
   ##   body: JObject (required)
-  var body_603387 = newJObject()
+  var body_593287 = newJObject()
   if body != nil:
-    body_603387 = body
-  result = call_603386.call(nil, nil, nil, nil, body_603387)
+    body_593287 = body
+  result = call_593286.call(nil, nil, nil, nil, body_593287)
 
-var deleteSnapshotSchedule* = Call_DeleteSnapshotSchedule_603373(
+var deleteSnapshotSchedule* = Call_DeleteSnapshotSchedule_593273(
     name: "deleteSnapshotSchedule", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DeleteSnapshotSchedule",
-    validator: validate_DeleteSnapshotSchedule_603374, base: "/",
-    url: url_DeleteSnapshotSchedule_603375, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteSnapshotSchedule_593274, base: "/",
+    url: url_DeleteSnapshotSchedule_593275, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTape_603388 = ref object of OpenApiRestCall_602467
-proc url_DeleteTape_603390(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteTape_593288 = ref object of OpenApiRestCall_592365
+proc url_DeleteTape_593290(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteTape_603389(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteTape_593289(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified virtual tape. This operation is only supported in the tape gateway type.
   ## 
@@ -2551,57 +2555,57 @@ proc validate_DeleteTape_603389(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603391 = header.getOrDefault("X-Amz-Date")
-  valid_603391 = validateParameter(valid_603391, JString, required = false,
-                                 default = nil)
-  if valid_603391 != nil:
-    section.add "X-Amz-Date", valid_603391
-  var valid_603392 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603392 = validateParameter(valid_603392, JString, required = false,
-                                 default = nil)
-  if valid_603392 != nil:
-    section.add "X-Amz-Security-Token", valid_603392
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603393 = header.getOrDefault("X-Amz-Target")
-  valid_603393 = validateParameter(valid_603393, JString, required = true, default = newJString(
+  var valid_593291 = header.getOrDefault("X-Amz-Target")
+  valid_593291 = validateParameter(valid_593291, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteTape"))
-  if valid_603393 != nil:
-    section.add "X-Amz-Target", valid_603393
-  var valid_603394 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603394 = validateParameter(valid_603394, JString, required = false,
+  if valid_593291 != nil:
+    section.add "X-Amz-Target", valid_593291
+  var valid_593292 = header.getOrDefault("X-Amz-Signature")
+  valid_593292 = validateParameter(valid_593292, JString, required = false,
                                  default = nil)
-  if valid_603394 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603394
-  var valid_603395 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603395 = validateParameter(valid_603395, JString, required = false,
+  if valid_593292 != nil:
+    section.add "X-Amz-Signature", valid_593292
+  var valid_593293 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593293 = validateParameter(valid_593293, JString, required = false,
                                  default = nil)
-  if valid_603395 != nil:
-    section.add "X-Amz-Algorithm", valid_603395
-  var valid_603396 = header.getOrDefault("X-Amz-Signature")
-  valid_603396 = validateParameter(valid_603396, JString, required = false,
+  if valid_593293 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593293
+  var valid_593294 = header.getOrDefault("X-Amz-Date")
+  valid_593294 = validateParameter(valid_593294, JString, required = false,
                                  default = nil)
-  if valid_603396 != nil:
-    section.add "X-Amz-Signature", valid_603396
-  var valid_603397 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603397 = validateParameter(valid_603397, JString, required = false,
+  if valid_593294 != nil:
+    section.add "X-Amz-Date", valid_593294
+  var valid_593295 = header.getOrDefault("X-Amz-Credential")
+  valid_593295 = validateParameter(valid_593295, JString, required = false,
                                  default = nil)
-  if valid_603397 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603397
-  var valid_603398 = header.getOrDefault("X-Amz-Credential")
-  valid_603398 = validateParameter(valid_603398, JString, required = false,
+  if valid_593295 != nil:
+    section.add "X-Amz-Credential", valid_593295
+  var valid_593296 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593296 = validateParameter(valid_593296, JString, required = false,
                                  default = nil)
-  if valid_603398 != nil:
-    section.add "X-Amz-Credential", valid_603398
+  if valid_593296 != nil:
+    section.add "X-Amz-Security-Token", valid_593296
+  var valid_593297 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593297 = validateParameter(valid_593297, JString, required = false,
+                                 default = nil)
+  if valid_593297 != nil:
+    section.add "X-Amz-Algorithm", valid_593297
+  var valid_593298 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593298 = validateParameter(valid_593298, JString, required = false,
+                                 default = nil)
+  if valid_593298 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593298
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2612,44 +2616,44 @@ proc validate_DeleteTape_603389(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603400: Call_DeleteTape_603388; path: JsonNode; query: JsonNode;
+proc call*(call_593300: Call_DeleteTape_593288; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified virtual tape. This operation is only supported in the tape gateway type.
   ## 
-  let valid = call_603400.validator(path, query, header, formData, body)
-  let scheme = call_603400.pickScheme
+  let valid = call_593300.validator(path, query, header, formData, body)
+  let scheme = call_593300.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603400.url(scheme.get, call_603400.host, call_603400.base,
-                         call_603400.route, valid.getOrDefault("path"),
+  let url = call_593300.url(scheme.get, call_593300.host, call_593300.base,
+                         call_593300.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603400, url, valid)
+  result = hook(call_593300, url, valid)
 
-proc call*(call_603401: Call_DeleteTape_603388; body: JsonNode): Recallable =
+proc call*(call_593301: Call_DeleteTape_593288; body: JsonNode): Recallable =
   ## deleteTape
   ## Deletes the specified virtual tape. This operation is only supported in the tape gateway type.
   ##   body: JObject (required)
-  var body_603402 = newJObject()
+  var body_593302 = newJObject()
   if body != nil:
-    body_603402 = body
-  result = call_603401.call(nil, nil, nil, nil, body_603402)
+    body_593302 = body
+  result = call_593301.call(nil, nil, nil, nil, body_593302)
 
-var deleteTape* = Call_DeleteTape_603388(name: "deleteTape",
+var deleteTape* = Call_DeleteTape_593288(name: "deleteTape",
                                       meth: HttpMethod.HttpPost,
                                       host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.DeleteTape",
-                                      validator: validate_DeleteTape_603389,
-                                      base: "/", url: url_DeleteTape_603390,
+                                      validator: validate_DeleteTape_593289,
+                                      base: "/", url: url_DeleteTape_593290,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTapeArchive_603403 = ref object of OpenApiRestCall_602467
-proc url_DeleteTapeArchive_603405(protocol: Scheme; host: string; base: string;
+  Call_DeleteTapeArchive_593303 = ref object of OpenApiRestCall_592365
+proc url_DeleteTapeArchive_593305(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteTapeArchive_603404(path: JsonNode; query: JsonNode;
+proc validate_DeleteTapeArchive_593304(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Deletes the specified virtual tape from the virtual tape shelf (VTS). This operation is only supported in the tape gateway type.
@@ -2661,57 +2665,57 @@ proc validate_DeleteTapeArchive_603404(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603406 = header.getOrDefault("X-Amz-Date")
-  valid_603406 = validateParameter(valid_603406, JString, required = false,
-                                 default = nil)
-  if valid_603406 != nil:
-    section.add "X-Amz-Date", valid_603406
-  var valid_603407 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603407 = validateParameter(valid_603407, JString, required = false,
-                                 default = nil)
-  if valid_603407 != nil:
-    section.add "X-Amz-Security-Token", valid_603407
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603408 = header.getOrDefault("X-Amz-Target")
-  valid_603408 = validateParameter(valid_603408, JString, required = true, default = newJString(
+  var valid_593306 = header.getOrDefault("X-Amz-Target")
+  valid_593306 = validateParameter(valid_593306, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteTapeArchive"))
-  if valid_603408 != nil:
-    section.add "X-Amz-Target", valid_603408
-  var valid_603409 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603409 = validateParameter(valid_603409, JString, required = false,
+  if valid_593306 != nil:
+    section.add "X-Amz-Target", valid_593306
+  var valid_593307 = header.getOrDefault("X-Amz-Signature")
+  valid_593307 = validateParameter(valid_593307, JString, required = false,
                                  default = nil)
-  if valid_603409 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603409
-  var valid_603410 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603410 = validateParameter(valid_603410, JString, required = false,
+  if valid_593307 != nil:
+    section.add "X-Amz-Signature", valid_593307
+  var valid_593308 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593308 = validateParameter(valid_593308, JString, required = false,
                                  default = nil)
-  if valid_603410 != nil:
-    section.add "X-Amz-Algorithm", valid_603410
-  var valid_603411 = header.getOrDefault("X-Amz-Signature")
-  valid_603411 = validateParameter(valid_603411, JString, required = false,
+  if valid_593308 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593308
+  var valid_593309 = header.getOrDefault("X-Amz-Date")
+  valid_593309 = validateParameter(valid_593309, JString, required = false,
                                  default = nil)
-  if valid_603411 != nil:
-    section.add "X-Amz-Signature", valid_603411
-  var valid_603412 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603412 = validateParameter(valid_603412, JString, required = false,
+  if valid_593309 != nil:
+    section.add "X-Amz-Date", valid_593309
+  var valid_593310 = header.getOrDefault("X-Amz-Credential")
+  valid_593310 = validateParameter(valid_593310, JString, required = false,
                                  default = nil)
-  if valid_603412 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603412
-  var valid_603413 = header.getOrDefault("X-Amz-Credential")
-  valid_603413 = validateParameter(valid_603413, JString, required = false,
+  if valid_593310 != nil:
+    section.add "X-Amz-Credential", valid_593310
+  var valid_593311 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593311 = validateParameter(valid_593311, JString, required = false,
                                  default = nil)
-  if valid_603413 != nil:
-    section.add "X-Amz-Credential", valid_603413
+  if valid_593311 != nil:
+    section.add "X-Amz-Security-Token", valid_593311
+  var valid_593312 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593312 = validateParameter(valid_593312, JString, required = false,
+                                 default = nil)
+  if valid_593312 != nil:
+    section.add "X-Amz-Algorithm", valid_593312
+  var valid_593313 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593313 = validateParameter(valid_593313, JString, required = false,
+                                 default = nil)
+  if valid_593313 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593313
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2722,43 +2726,43 @@ proc validate_DeleteTapeArchive_603404(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603415: Call_DeleteTapeArchive_603403; path: JsonNode;
+proc call*(call_593315: Call_DeleteTapeArchive_593303; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified virtual tape from the virtual tape shelf (VTS). This operation is only supported in the tape gateway type.
   ## 
-  let valid = call_603415.validator(path, query, header, formData, body)
-  let scheme = call_603415.pickScheme
+  let valid = call_593315.validator(path, query, header, formData, body)
+  let scheme = call_593315.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603415.url(scheme.get, call_603415.host, call_603415.base,
-                         call_603415.route, valid.getOrDefault("path"),
+  let url = call_593315.url(scheme.get, call_593315.host, call_593315.base,
+                         call_593315.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603415, url, valid)
+  result = hook(call_593315, url, valid)
 
-proc call*(call_603416: Call_DeleteTapeArchive_603403; body: JsonNode): Recallable =
+proc call*(call_593316: Call_DeleteTapeArchive_593303; body: JsonNode): Recallable =
   ## deleteTapeArchive
   ## Deletes the specified virtual tape from the virtual tape shelf (VTS). This operation is only supported in the tape gateway type.
   ##   body: JObject (required)
-  var body_603417 = newJObject()
+  var body_593317 = newJObject()
   if body != nil:
-    body_603417 = body
-  result = call_603416.call(nil, nil, nil, nil, body_603417)
+    body_593317 = body
+  result = call_593316.call(nil, nil, nil, nil, body_593317)
 
-var deleteTapeArchive* = Call_DeleteTapeArchive_603403(name: "deleteTapeArchive",
+var deleteTapeArchive* = Call_DeleteTapeArchive_593303(name: "deleteTapeArchive",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DeleteTapeArchive",
-    validator: validate_DeleteTapeArchive_603404, base: "/",
-    url: url_DeleteTapeArchive_603405, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteTapeArchive_593304, base: "/",
+    url: url_DeleteTapeArchive_593305, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteVolume_603418 = ref object of OpenApiRestCall_602467
-proc url_DeleteVolume_603420(protocol: Scheme; host: string; base: string;
+  Call_DeleteVolume_593318 = ref object of OpenApiRestCall_592365
+proc url_DeleteVolume_593320(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteVolume_603419(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteVolume_593319(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified storage volume that you previously created using the <a>CreateCachediSCSIVolume</a> or <a>CreateStorediSCSIVolume</a> API. This operation is only supported in the cached volume and stored volume types. For stored volume gateways, the local disk that was configured as the storage volume is not deleted. You can reuse the local disk to create another storage volume. </p> <p>Before you delete a volume, make sure there are no iSCSI connections to the volume you are deleting. You should also make sure there is no snapshot in progress. You can use the Amazon Elastic Compute Cloud (Amazon EC2) API to query snapshots on the volume you are deleting and check the snapshot status. For more information, go to <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/ApiReference-query-DescribeSnapshots.html">DescribeSnapshots</a> in the <i>Amazon Elastic Compute Cloud API Reference</i>.</p> <p>In the request, you must provide the Amazon Resource Name (ARN) of the storage volume you want to delete.</p>
   ## 
@@ -2769,57 +2773,57 @@ proc validate_DeleteVolume_603419(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603421 = header.getOrDefault("X-Amz-Date")
-  valid_603421 = validateParameter(valid_603421, JString, required = false,
-                                 default = nil)
-  if valid_603421 != nil:
-    section.add "X-Amz-Date", valid_603421
-  var valid_603422 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603422 = validateParameter(valid_603422, JString, required = false,
-                                 default = nil)
-  if valid_603422 != nil:
-    section.add "X-Amz-Security-Token", valid_603422
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603423 = header.getOrDefault("X-Amz-Target")
-  valid_603423 = validateParameter(valid_603423, JString, required = true, default = newJString(
+  var valid_593321 = header.getOrDefault("X-Amz-Target")
+  valid_593321 = validateParameter(valid_593321, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteVolume"))
-  if valid_603423 != nil:
-    section.add "X-Amz-Target", valid_603423
-  var valid_603424 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603424 = validateParameter(valid_603424, JString, required = false,
+  if valid_593321 != nil:
+    section.add "X-Amz-Target", valid_593321
+  var valid_593322 = header.getOrDefault("X-Amz-Signature")
+  valid_593322 = validateParameter(valid_593322, JString, required = false,
                                  default = nil)
-  if valid_603424 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603424
-  var valid_603425 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603425 = validateParameter(valid_603425, JString, required = false,
+  if valid_593322 != nil:
+    section.add "X-Amz-Signature", valid_593322
+  var valid_593323 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593323 = validateParameter(valid_593323, JString, required = false,
                                  default = nil)
-  if valid_603425 != nil:
-    section.add "X-Amz-Algorithm", valid_603425
-  var valid_603426 = header.getOrDefault("X-Amz-Signature")
-  valid_603426 = validateParameter(valid_603426, JString, required = false,
+  if valid_593323 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593323
+  var valid_593324 = header.getOrDefault("X-Amz-Date")
+  valid_593324 = validateParameter(valid_593324, JString, required = false,
                                  default = nil)
-  if valid_603426 != nil:
-    section.add "X-Amz-Signature", valid_603426
-  var valid_603427 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603427 = validateParameter(valid_603427, JString, required = false,
+  if valid_593324 != nil:
+    section.add "X-Amz-Date", valid_593324
+  var valid_593325 = header.getOrDefault("X-Amz-Credential")
+  valid_593325 = validateParameter(valid_593325, JString, required = false,
                                  default = nil)
-  if valid_603427 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603427
-  var valid_603428 = header.getOrDefault("X-Amz-Credential")
-  valid_603428 = validateParameter(valid_603428, JString, required = false,
+  if valid_593325 != nil:
+    section.add "X-Amz-Credential", valid_593325
+  var valid_593326 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593326 = validateParameter(valid_593326, JString, required = false,
                                  default = nil)
-  if valid_603428 != nil:
-    section.add "X-Amz-Credential", valid_603428
+  if valid_593326 != nil:
+    section.add "X-Amz-Security-Token", valid_593326
+  var valid_593327 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593327 = validateParameter(valid_593327, JString, required = false,
+                                 default = nil)
+  if valid_593327 != nil:
+    section.add "X-Amz-Algorithm", valid_593327
+  var valid_593328 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593328 = validateParameter(valid_593328, JString, required = false,
+                                 default = nil)
+  if valid_593328 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593328
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2830,43 +2834,43 @@ proc validate_DeleteVolume_603419(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603430: Call_DeleteVolume_603418; path: JsonNode; query: JsonNode;
+proc call*(call_593330: Call_DeleteVolume_593318; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified storage volume that you previously created using the <a>CreateCachediSCSIVolume</a> or <a>CreateStorediSCSIVolume</a> API. This operation is only supported in the cached volume and stored volume types. For stored volume gateways, the local disk that was configured as the storage volume is not deleted. You can reuse the local disk to create another storage volume. </p> <p>Before you delete a volume, make sure there are no iSCSI connections to the volume you are deleting. You should also make sure there is no snapshot in progress. You can use the Amazon Elastic Compute Cloud (Amazon EC2) API to query snapshots on the volume you are deleting and check the snapshot status. For more information, go to <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/ApiReference-query-DescribeSnapshots.html">DescribeSnapshots</a> in the <i>Amazon Elastic Compute Cloud API Reference</i>.</p> <p>In the request, you must provide the Amazon Resource Name (ARN) of the storage volume you want to delete.</p>
   ## 
-  let valid = call_603430.validator(path, query, header, formData, body)
-  let scheme = call_603430.pickScheme
+  let valid = call_593330.validator(path, query, header, formData, body)
+  let scheme = call_593330.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603430.url(scheme.get, call_603430.host, call_603430.base,
-                         call_603430.route, valid.getOrDefault("path"),
+  let url = call_593330.url(scheme.get, call_593330.host, call_593330.base,
+                         call_593330.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603430, url, valid)
+  result = hook(call_593330, url, valid)
 
-proc call*(call_603431: Call_DeleteVolume_603418; body: JsonNode): Recallable =
+proc call*(call_593331: Call_DeleteVolume_593318; body: JsonNode): Recallable =
   ## deleteVolume
   ## <p>Deletes the specified storage volume that you previously created using the <a>CreateCachediSCSIVolume</a> or <a>CreateStorediSCSIVolume</a> API. This operation is only supported in the cached volume and stored volume types. For stored volume gateways, the local disk that was configured as the storage volume is not deleted. You can reuse the local disk to create another storage volume. </p> <p>Before you delete a volume, make sure there are no iSCSI connections to the volume you are deleting. You should also make sure there is no snapshot in progress. You can use the Amazon Elastic Compute Cloud (Amazon EC2) API to query snapshots on the volume you are deleting and check the snapshot status. For more information, go to <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/ApiReference-query-DescribeSnapshots.html">DescribeSnapshots</a> in the <i>Amazon Elastic Compute Cloud API Reference</i>.</p> <p>In the request, you must provide the Amazon Resource Name (ARN) of the storage volume you want to delete.</p>
   ##   body: JObject (required)
-  var body_603432 = newJObject()
+  var body_593332 = newJObject()
   if body != nil:
-    body_603432 = body
-  result = call_603431.call(nil, nil, nil, nil, body_603432)
+    body_593332 = body
+  result = call_593331.call(nil, nil, nil, nil, body_593332)
 
-var deleteVolume* = Call_DeleteVolume_603418(name: "deleteVolume",
+var deleteVolume* = Call_DeleteVolume_593318(name: "deleteVolume",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DeleteVolume",
-    validator: validate_DeleteVolume_603419, base: "/", url: url_DeleteVolume_603420,
+    validator: validate_DeleteVolume_593319, base: "/", url: url_DeleteVolume_593320,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeBandwidthRateLimit_603433 = ref object of OpenApiRestCall_602467
-proc url_DescribeBandwidthRateLimit_603435(protocol: Scheme; host: string;
+  Call_DescribeBandwidthRateLimit_593333 = ref object of OpenApiRestCall_592365
+proc url_DescribeBandwidthRateLimit_593335(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeBandwidthRateLimit_603434(path: JsonNode; query: JsonNode;
+proc validate_DescribeBandwidthRateLimit_593334(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the bandwidth rate limits of a gateway. By default, these limits are not set, which means no bandwidth rate limiting is in effect.</p> <p>This operation only returns a value for a bandwidth rate limit only if the limit is set. If no limits are set for the gateway, then this operation returns only the gateway ARN in the response body. To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ## 
@@ -2877,57 +2881,57 @@ proc validate_DescribeBandwidthRateLimit_603434(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603436 = header.getOrDefault("X-Amz-Date")
-  valid_603436 = validateParameter(valid_603436, JString, required = false,
-                                 default = nil)
-  if valid_603436 != nil:
-    section.add "X-Amz-Date", valid_603436
-  var valid_603437 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603437 = validateParameter(valid_603437, JString, required = false,
-                                 default = nil)
-  if valid_603437 != nil:
-    section.add "X-Amz-Security-Token", valid_603437
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603438 = header.getOrDefault("X-Amz-Target")
-  valid_603438 = validateParameter(valid_603438, JString, required = true, default = newJString(
+  var valid_593336 = header.getOrDefault("X-Amz-Target")
+  valid_593336 = validateParameter(valid_593336, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeBandwidthRateLimit"))
-  if valid_603438 != nil:
-    section.add "X-Amz-Target", valid_603438
-  var valid_603439 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603439 = validateParameter(valid_603439, JString, required = false,
+  if valid_593336 != nil:
+    section.add "X-Amz-Target", valid_593336
+  var valid_593337 = header.getOrDefault("X-Amz-Signature")
+  valid_593337 = validateParameter(valid_593337, JString, required = false,
                                  default = nil)
-  if valid_603439 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603439
-  var valid_603440 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603440 = validateParameter(valid_603440, JString, required = false,
+  if valid_593337 != nil:
+    section.add "X-Amz-Signature", valid_593337
+  var valid_593338 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593338 = validateParameter(valid_593338, JString, required = false,
                                  default = nil)
-  if valid_603440 != nil:
-    section.add "X-Amz-Algorithm", valid_603440
-  var valid_603441 = header.getOrDefault("X-Amz-Signature")
-  valid_603441 = validateParameter(valid_603441, JString, required = false,
+  if valid_593338 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593338
+  var valid_593339 = header.getOrDefault("X-Amz-Date")
+  valid_593339 = validateParameter(valid_593339, JString, required = false,
                                  default = nil)
-  if valid_603441 != nil:
-    section.add "X-Amz-Signature", valid_603441
-  var valid_603442 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603442 = validateParameter(valid_603442, JString, required = false,
+  if valid_593339 != nil:
+    section.add "X-Amz-Date", valid_593339
+  var valid_593340 = header.getOrDefault("X-Amz-Credential")
+  valid_593340 = validateParameter(valid_593340, JString, required = false,
                                  default = nil)
-  if valid_603442 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603442
-  var valid_603443 = header.getOrDefault("X-Amz-Credential")
-  valid_603443 = validateParameter(valid_603443, JString, required = false,
+  if valid_593340 != nil:
+    section.add "X-Amz-Credential", valid_593340
+  var valid_593341 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593341 = validateParameter(valid_593341, JString, required = false,
                                  default = nil)
-  if valid_603443 != nil:
-    section.add "X-Amz-Credential", valid_603443
+  if valid_593341 != nil:
+    section.add "X-Amz-Security-Token", valid_593341
+  var valid_593342 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593342 = validateParameter(valid_593342, JString, required = false,
+                                 default = nil)
+  if valid_593342 != nil:
+    section.add "X-Amz-Algorithm", valid_593342
+  var valid_593343 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593343 = validateParameter(valid_593343, JString, required = false,
+                                 default = nil)
+  if valid_593343 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593343
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2938,45 +2942,45 @@ proc validate_DescribeBandwidthRateLimit_603434(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603445: Call_DescribeBandwidthRateLimit_603433; path: JsonNode;
+proc call*(call_593345: Call_DescribeBandwidthRateLimit_593333; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the bandwidth rate limits of a gateway. By default, these limits are not set, which means no bandwidth rate limiting is in effect.</p> <p>This operation only returns a value for a bandwidth rate limit only if the limit is set. If no limits are set for the gateway, then this operation returns only the gateway ARN in the response body. To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ## 
-  let valid = call_603445.validator(path, query, header, formData, body)
-  let scheme = call_603445.pickScheme
+  let valid = call_593345.validator(path, query, header, formData, body)
+  let scheme = call_593345.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603445.url(scheme.get, call_603445.host, call_603445.base,
-                         call_603445.route, valid.getOrDefault("path"),
+  let url = call_593345.url(scheme.get, call_593345.host, call_593345.base,
+                         call_593345.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603445, url, valid)
+  result = hook(call_593345, url, valid)
 
-proc call*(call_603446: Call_DescribeBandwidthRateLimit_603433; body: JsonNode): Recallable =
+proc call*(call_593346: Call_DescribeBandwidthRateLimit_593333; body: JsonNode): Recallable =
   ## describeBandwidthRateLimit
   ## <p>Returns the bandwidth rate limits of a gateway. By default, these limits are not set, which means no bandwidth rate limiting is in effect.</p> <p>This operation only returns a value for a bandwidth rate limit only if the limit is set. If no limits are set for the gateway, then this operation returns only the gateway ARN in the response body. To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ##   body: JObject (required)
-  var body_603447 = newJObject()
+  var body_593347 = newJObject()
   if body != nil:
-    body_603447 = body
-  result = call_603446.call(nil, nil, nil, nil, body_603447)
+    body_593347 = body
+  result = call_593346.call(nil, nil, nil, nil, body_593347)
 
-var describeBandwidthRateLimit* = Call_DescribeBandwidthRateLimit_603433(
+var describeBandwidthRateLimit* = Call_DescribeBandwidthRateLimit_593333(
     name: "describeBandwidthRateLimit", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeBandwidthRateLimit",
-    validator: validate_DescribeBandwidthRateLimit_603434, base: "/",
-    url: url_DescribeBandwidthRateLimit_603435,
+    validator: validate_DescribeBandwidthRateLimit_593334, base: "/",
+    url: url_DescribeBandwidthRateLimit_593335,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCache_603448 = ref object of OpenApiRestCall_602467
-proc url_DescribeCache_603450(protocol: Scheme; host: string; base: string;
+  Call_DescribeCache_593348 = ref object of OpenApiRestCall_592365
+proc url_DescribeCache_593350(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeCache_603449(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeCache_593349(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about the cache of a gateway. This operation is only supported in the cached volume, tape and file gateway types.</p> <p>The response includes disk IDs that are configured as cache, and it includes the amount of cache allocated and used.</p>
   ## 
@@ -2987,57 +2991,57 @@ proc validate_DescribeCache_603449(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603451 = header.getOrDefault("X-Amz-Date")
-  valid_603451 = validateParameter(valid_603451, JString, required = false,
-                                 default = nil)
-  if valid_603451 != nil:
-    section.add "X-Amz-Date", valid_603451
-  var valid_603452 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603452 = validateParameter(valid_603452, JString, required = false,
-                                 default = nil)
-  if valid_603452 != nil:
-    section.add "X-Amz-Security-Token", valid_603452
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603453 = header.getOrDefault("X-Amz-Target")
-  valid_603453 = validateParameter(valid_603453, JString, required = true, default = newJString(
+  var valid_593351 = header.getOrDefault("X-Amz-Target")
+  valid_593351 = validateParameter(valid_593351, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeCache"))
-  if valid_603453 != nil:
-    section.add "X-Amz-Target", valid_603453
-  var valid_603454 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603454 = validateParameter(valid_603454, JString, required = false,
+  if valid_593351 != nil:
+    section.add "X-Amz-Target", valid_593351
+  var valid_593352 = header.getOrDefault("X-Amz-Signature")
+  valid_593352 = validateParameter(valid_593352, JString, required = false,
                                  default = nil)
-  if valid_603454 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603454
-  var valid_603455 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603455 = validateParameter(valid_603455, JString, required = false,
+  if valid_593352 != nil:
+    section.add "X-Amz-Signature", valid_593352
+  var valid_593353 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593353 = validateParameter(valid_593353, JString, required = false,
                                  default = nil)
-  if valid_603455 != nil:
-    section.add "X-Amz-Algorithm", valid_603455
-  var valid_603456 = header.getOrDefault("X-Amz-Signature")
-  valid_603456 = validateParameter(valid_603456, JString, required = false,
+  if valid_593353 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593353
+  var valid_593354 = header.getOrDefault("X-Amz-Date")
+  valid_593354 = validateParameter(valid_593354, JString, required = false,
                                  default = nil)
-  if valid_603456 != nil:
-    section.add "X-Amz-Signature", valid_603456
-  var valid_603457 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603457 = validateParameter(valid_603457, JString, required = false,
+  if valid_593354 != nil:
+    section.add "X-Amz-Date", valid_593354
+  var valid_593355 = header.getOrDefault("X-Amz-Credential")
+  valid_593355 = validateParameter(valid_593355, JString, required = false,
                                  default = nil)
-  if valid_603457 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603457
-  var valid_603458 = header.getOrDefault("X-Amz-Credential")
-  valid_603458 = validateParameter(valid_603458, JString, required = false,
+  if valid_593355 != nil:
+    section.add "X-Amz-Credential", valid_593355
+  var valid_593356 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593356 = validateParameter(valid_593356, JString, required = false,
                                  default = nil)
-  if valid_603458 != nil:
-    section.add "X-Amz-Credential", valid_603458
+  if valid_593356 != nil:
+    section.add "X-Amz-Security-Token", valid_593356
+  var valid_593357 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593357 = validateParameter(valid_593357, JString, required = false,
+                                 default = nil)
+  if valid_593357 != nil:
+    section.add "X-Amz-Algorithm", valid_593357
+  var valid_593358 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593358 = validateParameter(valid_593358, JString, required = false,
+                                 default = nil)
+  if valid_593358 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593358
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3048,43 +3052,43 @@ proc validate_DescribeCache_603449(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603460: Call_DescribeCache_603448; path: JsonNode; query: JsonNode;
+proc call*(call_593360: Call_DescribeCache_593348; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the cache of a gateway. This operation is only supported in the cached volume, tape and file gateway types.</p> <p>The response includes disk IDs that are configured as cache, and it includes the amount of cache allocated and used.</p>
   ## 
-  let valid = call_603460.validator(path, query, header, formData, body)
-  let scheme = call_603460.pickScheme
+  let valid = call_593360.validator(path, query, header, formData, body)
+  let scheme = call_593360.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603460.url(scheme.get, call_603460.host, call_603460.base,
-                         call_603460.route, valid.getOrDefault("path"),
+  let url = call_593360.url(scheme.get, call_593360.host, call_593360.base,
+                         call_593360.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603460, url, valid)
+  result = hook(call_593360, url, valid)
 
-proc call*(call_603461: Call_DescribeCache_603448; body: JsonNode): Recallable =
+proc call*(call_593361: Call_DescribeCache_593348; body: JsonNode): Recallable =
   ## describeCache
   ## <p>Returns information about the cache of a gateway. This operation is only supported in the cached volume, tape and file gateway types.</p> <p>The response includes disk IDs that are configured as cache, and it includes the amount of cache allocated and used.</p>
   ##   body: JObject (required)
-  var body_603462 = newJObject()
+  var body_593362 = newJObject()
   if body != nil:
-    body_603462 = body
-  result = call_603461.call(nil, nil, nil, nil, body_603462)
+    body_593362 = body
+  result = call_593361.call(nil, nil, nil, nil, body_593362)
 
-var describeCache* = Call_DescribeCache_603448(name: "describeCache",
+var describeCache* = Call_DescribeCache_593348(name: "describeCache",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeCache",
-    validator: validate_DescribeCache_603449, base: "/", url: url_DescribeCache_603450,
+    validator: validate_DescribeCache_593349, base: "/", url: url_DescribeCache_593350,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCachediSCSIVolumes_603463 = ref object of OpenApiRestCall_602467
-proc url_DescribeCachediSCSIVolumes_603465(protocol: Scheme; host: string;
+  Call_DescribeCachediSCSIVolumes_593363 = ref object of OpenApiRestCall_592365
+proc url_DescribeCachediSCSIVolumes_593365(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeCachediSCSIVolumes_603464(path: JsonNode; query: JsonNode;
+proc validate_DescribeCachediSCSIVolumes_593364(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a description of the gateway volumes specified in the request. This operation is only supported in the cached volume gateway types.</p> <p>The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume Amazon Resource Name (ARN).</p>
   ## 
@@ -3095,57 +3099,57 @@ proc validate_DescribeCachediSCSIVolumes_603464(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603466 = header.getOrDefault("X-Amz-Date")
-  valid_603466 = validateParameter(valid_603466, JString, required = false,
-                                 default = nil)
-  if valid_603466 != nil:
-    section.add "X-Amz-Date", valid_603466
-  var valid_603467 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603467 = validateParameter(valid_603467, JString, required = false,
-                                 default = nil)
-  if valid_603467 != nil:
-    section.add "X-Amz-Security-Token", valid_603467
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603468 = header.getOrDefault("X-Amz-Target")
-  valid_603468 = validateParameter(valid_603468, JString, required = true, default = newJString(
+  var valid_593366 = header.getOrDefault("X-Amz-Target")
+  valid_593366 = validateParameter(valid_593366, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeCachediSCSIVolumes"))
-  if valid_603468 != nil:
-    section.add "X-Amz-Target", valid_603468
-  var valid_603469 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603469 = validateParameter(valid_603469, JString, required = false,
+  if valid_593366 != nil:
+    section.add "X-Amz-Target", valid_593366
+  var valid_593367 = header.getOrDefault("X-Amz-Signature")
+  valid_593367 = validateParameter(valid_593367, JString, required = false,
                                  default = nil)
-  if valid_603469 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603469
-  var valid_603470 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603470 = validateParameter(valid_603470, JString, required = false,
+  if valid_593367 != nil:
+    section.add "X-Amz-Signature", valid_593367
+  var valid_593368 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593368 = validateParameter(valid_593368, JString, required = false,
                                  default = nil)
-  if valid_603470 != nil:
-    section.add "X-Amz-Algorithm", valid_603470
-  var valid_603471 = header.getOrDefault("X-Amz-Signature")
-  valid_603471 = validateParameter(valid_603471, JString, required = false,
+  if valid_593368 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593368
+  var valid_593369 = header.getOrDefault("X-Amz-Date")
+  valid_593369 = validateParameter(valid_593369, JString, required = false,
                                  default = nil)
-  if valid_603471 != nil:
-    section.add "X-Amz-Signature", valid_603471
-  var valid_603472 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603472 = validateParameter(valid_603472, JString, required = false,
+  if valid_593369 != nil:
+    section.add "X-Amz-Date", valid_593369
+  var valid_593370 = header.getOrDefault("X-Amz-Credential")
+  valid_593370 = validateParameter(valid_593370, JString, required = false,
                                  default = nil)
-  if valid_603472 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603472
-  var valid_603473 = header.getOrDefault("X-Amz-Credential")
-  valid_603473 = validateParameter(valid_603473, JString, required = false,
+  if valid_593370 != nil:
+    section.add "X-Amz-Credential", valid_593370
+  var valid_593371 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593371 = validateParameter(valid_593371, JString, required = false,
                                  default = nil)
-  if valid_603473 != nil:
-    section.add "X-Amz-Credential", valid_603473
+  if valid_593371 != nil:
+    section.add "X-Amz-Security-Token", valid_593371
+  var valid_593372 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593372 = validateParameter(valid_593372, JString, required = false,
+                                 default = nil)
+  if valid_593372 != nil:
+    section.add "X-Amz-Algorithm", valid_593372
+  var valid_593373 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593373 = validateParameter(valid_593373, JString, required = false,
+                                 default = nil)
+  if valid_593373 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593373
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3156,38 +3160,38 @@ proc validate_DescribeCachediSCSIVolumes_603464(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603475: Call_DescribeCachediSCSIVolumes_603463; path: JsonNode;
+proc call*(call_593375: Call_DescribeCachediSCSIVolumes_593363; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a description of the gateway volumes specified in the request. This operation is only supported in the cached volume gateway types.</p> <p>The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume Amazon Resource Name (ARN).</p>
   ## 
-  let valid = call_603475.validator(path, query, header, formData, body)
-  let scheme = call_603475.pickScheme
+  let valid = call_593375.validator(path, query, header, formData, body)
+  let scheme = call_593375.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603475.url(scheme.get, call_603475.host, call_603475.base,
-                         call_603475.route, valid.getOrDefault("path"),
+  let url = call_593375.url(scheme.get, call_593375.host, call_593375.base,
+                         call_593375.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603475, url, valid)
+  result = hook(call_593375, url, valid)
 
-proc call*(call_603476: Call_DescribeCachediSCSIVolumes_603463; body: JsonNode): Recallable =
+proc call*(call_593376: Call_DescribeCachediSCSIVolumes_593363; body: JsonNode): Recallable =
   ## describeCachediSCSIVolumes
   ## <p>Returns a description of the gateway volumes specified in the request. This operation is only supported in the cached volume gateway types.</p> <p>The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume Amazon Resource Name (ARN).</p>
   ##   body: JObject (required)
-  var body_603477 = newJObject()
+  var body_593377 = newJObject()
   if body != nil:
-    body_603477 = body
-  result = call_603476.call(nil, nil, nil, nil, body_603477)
+    body_593377 = body
+  result = call_593376.call(nil, nil, nil, nil, body_593377)
 
-var describeCachediSCSIVolumes* = Call_DescribeCachediSCSIVolumes_603463(
+var describeCachediSCSIVolumes* = Call_DescribeCachediSCSIVolumes_593363(
     name: "describeCachediSCSIVolumes", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeCachediSCSIVolumes",
-    validator: validate_DescribeCachediSCSIVolumes_603464, base: "/",
-    url: url_DescribeCachediSCSIVolumes_603465,
+    validator: validate_DescribeCachediSCSIVolumes_593364, base: "/",
+    url: url_DescribeCachediSCSIVolumes_593365,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeChapCredentials_603478 = ref object of OpenApiRestCall_602467
-proc url_DescribeChapCredentials_603480(protocol: Scheme; host: string; base: string;
+  Call_DescribeChapCredentials_593378 = ref object of OpenApiRestCall_592365
+proc url_DescribeChapCredentials_593380(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -3195,7 +3199,7 @@ proc url_DescribeChapCredentials_603480(protocol: Scheme; host: string; base: st
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeChapCredentials_603479(path: JsonNode; query: JsonNode;
+proc validate_DescribeChapCredentials_593379(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of Challenge-Handshake Authentication Protocol (CHAP) credentials information for a specified iSCSI target, one for each target-initiator pair.
   ## 
@@ -3206,57 +3210,57 @@ proc validate_DescribeChapCredentials_603479(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603481 = header.getOrDefault("X-Amz-Date")
-  valid_603481 = validateParameter(valid_603481, JString, required = false,
-                                 default = nil)
-  if valid_603481 != nil:
-    section.add "X-Amz-Date", valid_603481
-  var valid_603482 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603482 = validateParameter(valid_603482, JString, required = false,
-                                 default = nil)
-  if valid_603482 != nil:
-    section.add "X-Amz-Security-Token", valid_603482
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603483 = header.getOrDefault("X-Amz-Target")
-  valid_603483 = validateParameter(valid_603483, JString, required = true, default = newJString(
+  var valid_593381 = header.getOrDefault("X-Amz-Target")
+  valid_593381 = validateParameter(valid_593381, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeChapCredentials"))
-  if valid_603483 != nil:
-    section.add "X-Amz-Target", valid_603483
-  var valid_603484 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603484 = validateParameter(valid_603484, JString, required = false,
+  if valid_593381 != nil:
+    section.add "X-Amz-Target", valid_593381
+  var valid_593382 = header.getOrDefault("X-Amz-Signature")
+  valid_593382 = validateParameter(valid_593382, JString, required = false,
                                  default = nil)
-  if valid_603484 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603484
-  var valid_603485 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603485 = validateParameter(valid_603485, JString, required = false,
+  if valid_593382 != nil:
+    section.add "X-Amz-Signature", valid_593382
+  var valid_593383 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593383 = validateParameter(valid_593383, JString, required = false,
                                  default = nil)
-  if valid_603485 != nil:
-    section.add "X-Amz-Algorithm", valid_603485
-  var valid_603486 = header.getOrDefault("X-Amz-Signature")
-  valid_603486 = validateParameter(valid_603486, JString, required = false,
+  if valid_593383 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593383
+  var valid_593384 = header.getOrDefault("X-Amz-Date")
+  valid_593384 = validateParameter(valid_593384, JString, required = false,
                                  default = nil)
-  if valid_603486 != nil:
-    section.add "X-Amz-Signature", valid_603486
-  var valid_603487 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603487 = validateParameter(valid_603487, JString, required = false,
+  if valid_593384 != nil:
+    section.add "X-Amz-Date", valid_593384
+  var valid_593385 = header.getOrDefault("X-Amz-Credential")
+  valid_593385 = validateParameter(valid_593385, JString, required = false,
                                  default = nil)
-  if valid_603487 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603487
-  var valid_603488 = header.getOrDefault("X-Amz-Credential")
-  valid_603488 = validateParameter(valid_603488, JString, required = false,
+  if valid_593385 != nil:
+    section.add "X-Amz-Credential", valid_593385
+  var valid_593386 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593386 = validateParameter(valid_593386, JString, required = false,
                                  default = nil)
-  if valid_603488 != nil:
-    section.add "X-Amz-Credential", valid_603488
+  if valid_593386 != nil:
+    section.add "X-Amz-Security-Token", valid_593386
+  var valid_593387 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593387 = validateParameter(valid_593387, JString, required = false,
+                                 default = nil)
+  if valid_593387 != nil:
+    section.add "X-Amz-Algorithm", valid_593387
+  var valid_593388 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593388 = validateParameter(valid_593388, JString, required = false,
+                                 default = nil)
+  if valid_593388 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593388
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3267,44 +3271,44 @@ proc validate_DescribeChapCredentials_603479(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603490: Call_DescribeChapCredentials_603478; path: JsonNode;
+proc call*(call_593390: Call_DescribeChapCredentials_593378; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of Challenge-Handshake Authentication Protocol (CHAP) credentials information for a specified iSCSI target, one for each target-initiator pair.
   ## 
-  let valid = call_603490.validator(path, query, header, formData, body)
-  let scheme = call_603490.pickScheme
+  let valid = call_593390.validator(path, query, header, formData, body)
+  let scheme = call_593390.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603490.url(scheme.get, call_603490.host, call_603490.base,
-                         call_603490.route, valid.getOrDefault("path"),
+  let url = call_593390.url(scheme.get, call_593390.host, call_593390.base,
+                         call_593390.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603490, url, valid)
+  result = hook(call_593390, url, valid)
 
-proc call*(call_603491: Call_DescribeChapCredentials_603478; body: JsonNode): Recallable =
+proc call*(call_593391: Call_DescribeChapCredentials_593378; body: JsonNode): Recallable =
   ## describeChapCredentials
   ## Returns an array of Challenge-Handshake Authentication Protocol (CHAP) credentials information for a specified iSCSI target, one for each target-initiator pair.
   ##   body: JObject (required)
-  var body_603492 = newJObject()
+  var body_593392 = newJObject()
   if body != nil:
-    body_603492 = body
-  result = call_603491.call(nil, nil, nil, nil, body_603492)
+    body_593392 = body
+  result = call_593391.call(nil, nil, nil, nil, body_593392)
 
-var describeChapCredentials* = Call_DescribeChapCredentials_603478(
+var describeChapCredentials* = Call_DescribeChapCredentials_593378(
     name: "describeChapCredentials", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeChapCredentials",
-    validator: validate_DescribeChapCredentials_603479, base: "/",
-    url: url_DescribeChapCredentials_603480, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeChapCredentials_593379, base: "/",
+    url: url_DescribeChapCredentials_593380, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeGatewayInformation_603493 = ref object of OpenApiRestCall_602467
-proc url_DescribeGatewayInformation_603495(protocol: Scheme; host: string;
+  Call_DescribeGatewayInformation_593393 = ref object of OpenApiRestCall_592365
+proc url_DescribeGatewayInformation_593395(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeGatewayInformation_603494(path: JsonNode; query: JsonNode;
+proc validate_DescribeGatewayInformation_593394(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns metadata about a gateway such as its name, network interfaces, configured time zone, and the state (whether the gateway is running or not). To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.
   ## 
@@ -3315,57 +3319,57 @@ proc validate_DescribeGatewayInformation_603494(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603496 = header.getOrDefault("X-Amz-Date")
-  valid_603496 = validateParameter(valid_603496, JString, required = false,
-                                 default = nil)
-  if valid_603496 != nil:
-    section.add "X-Amz-Date", valid_603496
-  var valid_603497 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603497 = validateParameter(valid_603497, JString, required = false,
-                                 default = nil)
-  if valid_603497 != nil:
-    section.add "X-Amz-Security-Token", valid_603497
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603498 = header.getOrDefault("X-Amz-Target")
-  valid_603498 = validateParameter(valid_603498, JString, required = true, default = newJString(
+  var valid_593396 = header.getOrDefault("X-Amz-Target")
+  valid_593396 = validateParameter(valid_593396, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeGatewayInformation"))
-  if valid_603498 != nil:
-    section.add "X-Amz-Target", valid_603498
-  var valid_603499 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603499 = validateParameter(valid_603499, JString, required = false,
+  if valid_593396 != nil:
+    section.add "X-Amz-Target", valid_593396
+  var valid_593397 = header.getOrDefault("X-Amz-Signature")
+  valid_593397 = validateParameter(valid_593397, JString, required = false,
                                  default = nil)
-  if valid_603499 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603499
-  var valid_603500 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603500 = validateParameter(valid_603500, JString, required = false,
+  if valid_593397 != nil:
+    section.add "X-Amz-Signature", valid_593397
+  var valid_593398 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593398 = validateParameter(valid_593398, JString, required = false,
                                  default = nil)
-  if valid_603500 != nil:
-    section.add "X-Amz-Algorithm", valid_603500
-  var valid_603501 = header.getOrDefault("X-Amz-Signature")
-  valid_603501 = validateParameter(valid_603501, JString, required = false,
+  if valid_593398 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593398
+  var valid_593399 = header.getOrDefault("X-Amz-Date")
+  valid_593399 = validateParameter(valid_593399, JString, required = false,
                                  default = nil)
-  if valid_603501 != nil:
-    section.add "X-Amz-Signature", valid_603501
-  var valid_603502 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603502 = validateParameter(valid_603502, JString, required = false,
+  if valid_593399 != nil:
+    section.add "X-Amz-Date", valid_593399
+  var valid_593400 = header.getOrDefault("X-Amz-Credential")
+  valid_593400 = validateParameter(valid_593400, JString, required = false,
                                  default = nil)
-  if valid_603502 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603502
-  var valid_603503 = header.getOrDefault("X-Amz-Credential")
-  valid_603503 = validateParameter(valid_603503, JString, required = false,
+  if valid_593400 != nil:
+    section.add "X-Amz-Credential", valid_593400
+  var valid_593401 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593401 = validateParameter(valid_593401, JString, required = false,
                                  default = nil)
-  if valid_603503 != nil:
-    section.add "X-Amz-Credential", valid_603503
+  if valid_593401 != nil:
+    section.add "X-Amz-Security-Token", valid_593401
+  var valid_593402 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593402 = validateParameter(valid_593402, JString, required = false,
+                                 default = nil)
+  if valid_593402 != nil:
+    section.add "X-Amz-Algorithm", valid_593402
+  var valid_593403 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593403 = validateParameter(valid_593403, JString, required = false,
+                                 default = nil)
+  if valid_593403 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593403
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3376,45 +3380,45 @@ proc validate_DescribeGatewayInformation_603494(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603505: Call_DescribeGatewayInformation_603493; path: JsonNode;
+proc call*(call_593405: Call_DescribeGatewayInformation_593393; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns metadata about a gateway such as its name, network interfaces, configured time zone, and the state (whether the gateway is running or not). To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.
   ## 
-  let valid = call_603505.validator(path, query, header, formData, body)
-  let scheme = call_603505.pickScheme
+  let valid = call_593405.validator(path, query, header, formData, body)
+  let scheme = call_593405.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603505.url(scheme.get, call_603505.host, call_603505.base,
-                         call_603505.route, valid.getOrDefault("path"),
+  let url = call_593405.url(scheme.get, call_593405.host, call_593405.base,
+                         call_593405.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603505, url, valid)
+  result = hook(call_593405, url, valid)
 
-proc call*(call_603506: Call_DescribeGatewayInformation_603493; body: JsonNode): Recallable =
+proc call*(call_593406: Call_DescribeGatewayInformation_593393; body: JsonNode): Recallable =
   ## describeGatewayInformation
   ## Returns metadata about a gateway such as its name, network interfaces, configured time zone, and the state (whether the gateway is running or not). To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.
   ##   body: JObject (required)
-  var body_603507 = newJObject()
+  var body_593407 = newJObject()
   if body != nil:
-    body_603507 = body
-  result = call_603506.call(nil, nil, nil, nil, body_603507)
+    body_593407 = body
+  result = call_593406.call(nil, nil, nil, nil, body_593407)
 
-var describeGatewayInformation* = Call_DescribeGatewayInformation_603493(
+var describeGatewayInformation* = Call_DescribeGatewayInformation_593393(
     name: "describeGatewayInformation", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeGatewayInformation",
-    validator: validate_DescribeGatewayInformation_603494, base: "/",
-    url: url_DescribeGatewayInformation_603495,
+    validator: validate_DescribeGatewayInformation_593394, base: "/",
+    url: url_DescribeGatewayInformation_593395,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeMaintenanceStartTime_603508 = ref object of OpenApiRestCall_602467
-proc url_DescribeMaintenanceStartTime_603510(protocol: Scheme; host: string;
+  Call_DescribeMaintenanceStartTime_593408 = ref object of OpenApiRestCall_592365
+proc url_DescribeMaintenanceStartTime_593410(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeMaintenanceStartTime_603509(path: JsonNode; query: JsonNode;
+proc validate_DescribeMaintenanceStartTime_593409(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns your gateway's weekly maintenance start time including the day and time of the week. Note that values are in terms of the gateway's time zone.
   ## 
@@ -3425,57 +3429,57 @@ proc validate_DescribeMaintenanceStartTime_603509(path: JsonNode; query: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603511 = header.getOrDefault("X-Amz-Date")
-  valid_603511 = validateParameter(valid_603511, JString, required = false,
-                                 default = nil)
-  if valid_603511 != nil:
-    section.add "X-Amz-Date", valid_603511
-  var valid_603512 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603512 = validateParameter(valid_603512, JString, required = false,
-                                 default = nil)
-  if valid_603512 != nil:
-    section.add "X-Amz-Security-Token", valid_603512
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603513 = header.getOrDefault("X-Amz-Target")
-  valid_603513 = validateParameter(valid_603513, JString, required = true, default = newJString(
+  var valid_593411 = header.getOrDefault("X-Amz-Target")
+  valid_593411 = validateParameter(valid_593411, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeMaintenanceStartTime"))
-  if valid_603513 != nil:
-    section.add "X-Amz-Target", valid_603513
-  var valid_603514 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603514 = validateParameter(valid_603514, JString, required = false,
+  if valid_593411 != nil:
+    section.add "X-Amz-Target", valid_593411
+  var valid_593412 = header.getOrDefault("X-Amz-Signature")
+  valid_593412 = validateParameter(valid_593412, JString, required = false,
                                  default = nil)
-  if valid_603514 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603514
-  var valid_603515 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603515 = validateParameter(valid_603515, JString, required = false,
+  if valid_593412 != nil:
+    section.add "X-Amz-Signature", valid_593412
+  var valid_593413 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593413 = validateParameter(valid_593413, JString, required = false,
                                  default = nil)
-  if valid_603515 != nil:
-    section.add "X-Amz-Algorithm", valid_603515
-  var valid_603516 = header.getOrDefault("X-Amz-Signature")
-  valid_603516 = validateParameter(valid_603516, JString, required = false,
+  if valid_593413 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593413
+  var valid_593414 = header.getOrDefault("X-Amz-Date")
+  valid_593414 = validateParameter(valid_593414, JString, required = false,
                                  default = nil)
-  if valid_603516 != nil:
-    section.add "X-Amz-Signature", valid_603516
-  var valid_603517 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603517 = validateParameter(valid_603517, JString, required = false,
+  if valid_593414 != nil:
+    section.add "X-Amz-Date", valid_593414
+  var valid_593415 = header.getOrDefault("X-Amz-Credential")
+  valid_593415 = validateParameter(valid_593415, JString, required = false,
                                  default = nil)
-  if valid_603517 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603517
-  var valid_603518 = header.getOrDefault("X-Amz-Credential")
-  valid_603518 = validateParameter(valid_603518, JString, required = false,
+  if valid_593415 != nil:
+    section.add "X-Amz-Credential", valid_593415
+  var valid_593416 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593416 = validateParameter(valid_593416, JString, required = false,
                                  default = nil)
-  if valid_603518 != nil:
-    section.add "X-Amz-Credential", valid_603518
+  if valid_593416 != nil:
+    section.add "X-Amz-Security-Token", valid_593416
+  var valid_593417 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593417 = validateParameter(valid_593417, JString, required = false,
+                                 default = nil)
+  if valid_593417 != nil:
+    section.add "X-Amz-Algorithm", valid_593417
+  var valid_593418 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593418 = validateParameter(valid_593418, JString, required = false,
+                                 default = nil)
+  if valid_593418 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593418
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3486,44 +3490,44 @@ proc validate_DescribeMaintenanceStartTime_603509(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603520: Call_DescribeMaintenanceStartTime_603508; path: JsonNode;
+proc call*(call_593420: Call_DescribeMaintenanceStartTime_593408; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns your gateway's weekly maintenance start time including the day and time of the week. Note that values are in terms of the gateway's time zone.
   ## 
-  let valid = call_603520.validator(path, query, header, formData, body)
-  let scheme = call_603520.pickScheme
+  let valid = call_593420.validator(path, query, header, formData, body)
+  let scheme = call_593420.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603520.url(scheme.get, call_603520.host, call_603520.base,
-                         call_603520.route, valid.getOrDefault("path"),
+  let url = call_593420.url(scheme.get, call_593420.host, call_593420.base,
+                         call_593420.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603520, url, valid)
+  result = hook(call_593420, url, valid)
 
-proc call*(call_603521: Call_DescribeMaintenanceStartTime_603508; body: JsonNode): Recallable =
+proc call*(call_593421: Call_DescribeMaintenanceStartTime_593408; body: JsonNode): Recallable =
   ## describeMaintenanceStartTime
   ## Returns your gateway's weekly maintenance start time including the day and time of the week. Note that values are in terms of the gateway's time zone.
   ##   body: JObject (required)
-  var body_603522 = newJObject()
+  var body_593422 = newJObject()
   if body != nil:
-    body_603522 = body
-  result = call_603521.call(nil, nil, nil, nil, body_603522)
+    body_593422 = body
+  result = call_593421.call(nil, nil, nil, nil, body_593422)
 
-var describeMaintenanceStartTime* = Call_DescribeMaintenanceStartTime_603508(
+var describeMaintenanceStartTime* = Call_DescribeMaintenanceStartTime_593408(
     name: "describeMaintenanceStartTime", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.DescribeMaintenanceStartTime",
-    validator: validate_DescribeMaintenanceStartTime_603509, base: "/",
-    url: url_DescribeMaintenanceStartTime_603510,
+    validator: validate_DescribeMaintenanceStartTime_593409, base: "/",
+    url: url_DescribeMaintenanceStartTime_593410,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeNFSFileShares_603523 = ref object of OpenApiRestCall_602467
-proc url_DescribeNFSFileShares_603525(protocol: Scheme; host: string; base: string;
+  Call_DescribeNFSFileShares_593423 = ref object of OpenApiRestCall_592365
+proc url_DescribeNFSFileShares_593425(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeNFSFileShares_603524(path: JsonNode; query: JsonNode;
+proc validate_DescribeNFSFileShares_593424(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a description for one or more Network File System (NFS) file shares from a file gateway. This operation is only supported for file gateways.
   ## 
@@ -3534,57 +3538,57 @@ proc validate_DescribeNFSFileShares_603524(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603526 = header.getOrDefault("X-Amz-Date")
-  valid_603526 = validateParameter(valid_603526, JString, required = false,
-                                 default = nil)
-  if valid_603526 != nil:
-    section.add "X-Amz-Date", valid_603526
-  var valid_603527 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603527 = validateParameter(valid_603527, JString, required = false,
-                                 default = nil)
-  if valid_603527 != nil:
-    section.add "X-Amz-Security-Token", valid_603527
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603528 = header.getOrDefault("X-Amz-Target")
-  valid_603528 = validateParameter(valid_603528, JString, required = true, default = newJString(
+  var valid_593426 = header.getOrDefault("X-Amz-Target")
+  valid_593426 = validateParameter(valid_593426, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeNFSFileShares"))
-  if valid_603528 != nil:
-    section.add "X-Amz-Target", valid_603528
-  var valid_603529 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603529 = validateParameter(valid_603529, JString, required = false,
+  if valid_593426 != nil:
+    section.add "X-Amz-Target", valid_593426
+  var valid_593427 = header.getOrDefault("X-Amz-Signature")
+  valid_593427 = validateParameter(valid_593427, JString, required = false,
                                  default = nil)
-  if valid_603529 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603529
-  var valid_603530 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603530 = validateParameter(valid_603530, JString, required = false,
+  if valid_593427 != nil:
+    section.add "X-Amz-Signature", valid_593427
+  var valid_593428 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593428 = validateParameter(valid_593428, JString, required = false,
                                  default = nil)
-  if valid_603530 != nil:
-    section.add "X-Amz-Algorithm", valid_603530
-  var valid_603531 = header.getOrDefault("X-Amz-Signature")
-  valid_603531 = validateParameter(valid_603531, JString, required = false,
+  if valid_593428 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593428
+  var valid_593429 = header.getOrDefault("X-Amz-Date")
+  valid_593429 = validateParameter(valid_593429, JString, required = false,
                                  default = nil)
-  if valid_603531 != nil:
-    section.add "X-Amz-Signature", valid_603531
-  var valid_603532 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603532 = validateParameter(valid_603532, JString, required = false,
+  if valid_593429 != nil:
+    section.add "X-Amz-Date", valid_593429
+  var valid_593430 = header.getOrDefault("X-Amz-Credential")
+  valid_593430 = validateParameter(valid_593430, JString, required = false,
                                  default = nil)
-  if valid_603532 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603532
-  var valid_603533 = header.getOrDefault("X-Amz-Credential")
-  valid_603533 = validateParameter(valid_603533, JString, required = false,
+  if valid_593430 != nil:
+    section.add "X-Amz-Credential", valid_593430
+  var valid_593431 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593431 = validateParameter(valid_593431, JString, required = false,
                                  default = nil)
-  if valid_603533 != nil:
-    section.add "X-Amz-Credential", valid_603533
+  if valid_593431 != nil:
+    section.add "X-Amz-Security-Token", valid_593431
+  var valid_593432 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593432 = validateParameter(valid_593432, JString, required = false,
+                                 default = nil)
+  if valid_593432 != nil:
+    section.add "X-Amz-Algorithm", valid_593432
+  var valid_593433 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593433 = validateParameter(valid_593433, JString, required = false,
+                                 default = nil)
+  if valid_593433 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593433
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3595,44 +3599,44 @@ proc validate_DescribeNFSFileShares_603524(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603535: Call_DescribeNFSFileShares_603523; path: JsonNode;
+proc call*(call_593435: Call_DescribeNFSFileShares_593423; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a description for one or more Network File System (NFS) file shares from a file gateway. This operation is only supported for file gateways.
   ## 
-  let valid = call_603535.validator(path, query, header, formData, body)
-  let scheme = call_603535.pickScheme
+  let valid = call_593435.validator(path, query, header, formData, body)
+  let scheme = call_593435.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603535.url(scheme.get, call_603535.host, call_603535.base,
-                         call_603535.route, valid.getOrDefault("path"),
+  let url = call_593435.url(scheme.get, call_593435.host, call_593435.base,
+                         call_593435.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603535, url, valid)
+  result = hook(call_593435, url, valid)
 
-proc call*(call_603536: Call_DescribeNFSFileShares_603523; body: JsonNode): Recallable =
+proc call*(call_593436: Call_DescribeNFSFileShares_593423; body: JsonNode): Recallable =
   ## describeNFSFileShares
   ## Gets a description for one or more Network File System (NFS) file shares from a file gateway. This operation is only supported for file gateways.
   ##   body: JObject (required)
-  var body_603537 = newJObject()
+  var body_593437 = newJObject()
   if body != nil:
-    body_603537 = body
-  result = call_603536.call(nil, nil, nil, nil, body_603537)
+    body_593437 = body
+  result = call_593436.call(nil, nil, nil, nil, body_593437)
 
-var describeNFSFileShares* = Call_DescribeNFSFileShares_603523(
+var describeNFSFileShares* = Call_DescribeNFSFileShares_593423(
     name: "describeNFSFileShares", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeNFSFileShares",
-    validator: validate_DescribeNFSFileShares_603524, base: "/",
-    url: url_DescribeNFSFileShares_603525, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeNFSFileShares_593424, base: "/",
+    url: url_DescribeNFSFileShares_593425, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSMBFileShares_603538 = ref object of OpenApiRestCall_602467
-proc url_DescribeSMBFileShares_603540(protocol: Scheme; host: string; base: string;
+  Call_DescribeSMBFileShares_593438 = ref object of OpenApiRestCall_592365
+proc url_DescribeSMBFileShares_593440(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeSMBFileShares_603539(path: JsonNode; query: JsonNode;
+proc validate_DescribeSMBFileShares_593439(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a description for one or more Server Message Block (SMB) file shares from a file gateway. This operation is only supported for file gateways.
   ## 
@@ -3643,57 +3647,57 @@ proc validate_DescribeSMBFileShares_603539(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603541 = header.getOrDefault("X-Amz-Date")
-  valid_603541 = validateParameter(valid_603541, JString, required = false,
-                                 default = nil)
-  if valid_603541 != nil:
-    section.add "X-Amz-Date", valid_603541
-  var valid_603542 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603542 = validateParameter(valid_603542, JString, required = false,
-                                 default = nil)
-  if valid_603542 != nil:
-    section.add "X-Amz-Security-Token", valid_603542
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603543 = header.getOrDefault("X-Amz-Target")
-  valid_603543 = validateParameter(valid_603543, JString, required = true, default = newJString(
+  var valid_593441 = header.getOrDefault("X-Amz-Target")
+  valid_593441 = validateParameter(valid_593441, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeSMBFileShares"))
-  if valid_603543 != nil:
-    section.add "X-Amz-Target", valid_603543
-  var valid_603544 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603544 = validateParameter(valid_603544, JString, required = false,
+  if valid_593441 != nil:
+    section.add "X-Amz-Target", valid_593441
+  var valid_593442 = header.getOrDefault("X-Amz-Signature")
+  valid_593442 = validateParameter(valid_593442, JString, required = false,
                                  default = nil)
-  if valid_603544 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603544
-  var valid_603545 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603545 = validateParameter(valid_603545, JString, required = false,
+  if valid_593442 != nil:
+    section.add "X-Amz-Signature", valid_593442
+  var valid_593443 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593443 = validateParameter(valid_593443, JString, required = false,
                                  default = nil)
-  if valid_603545 != nil:
-    section.add "X-Amz-Algorithm", valid_603545
-  var valid_603546 = header.getOrDefault("X-Amz-Signature")
-  valid_603546 = validateParameter(valid_603546, JString, required = false,
+  if valid_593443 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593443
+  var valid_593444 = header.getOrDefault("X-Amz-Date")
+  valid_593444 = validateParameter(valid_593444, JString, required = false,
                                  default = nil)
-  if valid_603546 != nil:
-    section.add "X-Amz-Signature", valid_603546
-  var valid_603547 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603547 = validateParameter(valid_603547, JString, required = false,
+  if valid_593444 != nil:
+    section.add "X-Amz-Date", valid_593444
+  var valid_593445 = header.getOrDefault("X-Amz-Credential")
+  valid_593445 = validateParameter(valid_593445, JString, required = false,
                                  default = nil)
-  if valid_603547 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603547
-  var valid_603548 = header.getOrDefault("X-Amz-Credential")
-  valid_603548 = validateParameter(valid_603548, JString, required = false,
+  if valid_593445 != nil:
+    section.add "X-Amz-Credential", valid_593445
+  var valid_593446 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593446 = validateParameter(valid_593446, JString, required = false,
                                  default = nil)
-  if valid_603548 != nil:
-    section.add "X-Amz-Credential", valid_603548
+  if valid_593446 != nil:
+    section.add "X-Amz-Security-Token", valid_593446
+  var valid_593447 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593447 = validateParameter(valid_593447, JString, required = false,
+                                 default = nil)
+  if valid_593447 != nil:
+    section.add "X-Amz-Algorithm", valid_593447
+  var valid_593448 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593448 = validateParameter(valid_593448, JString, required = false,
+                                 default = nil)
+  if valid_593448 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593448
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3704,44 +3708,44 @@ proc validate_DescribeSMBFileShares_603539(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603550: Call_DescribeSMBFileShares_603538; path: JsonNode;
+proc call*(call_593450: Call_DescribeSMBFileShares_593438; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a description for one or more Server Message Block (SMB) file shares from a file gateway. This operation is only supported for file gateways.
   ## 
-  let valid = call_603550.validator(path, query, header, formData, body)
-  let scheme = call_603550.pickScheme
+  let valid = call_593450.validator(path, query, header, formData, body)
+  let scheme = call_593450.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603550.url(scheme.get, call_603550.host, call_603550.base,
-                         call_603550.route, valid.getOrDefault("path"),
+  let url = call_593450.url(scheme.get, call_593450.host, call_593450.base,
+                         call_593450.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603550, url, valid)
+  result = hook(call_593450, url, valid)
 
-proc call*(call_603551: Call_DescribeSMBFileShares_603538; body: JsonNode): Recallable =
+proc call*(call_593451: Call_DescribeSMBFileShares_593438; body: JsonNode): Recallable =
   ## describeSMBFileShares
   ## Gets a description for one or more Server Message Block (SMB) file shares from a file gateway. This operation is only supported for file gateways.
   ##   body: JObject (required)
-  var body_603552 = newJObject()
+  var body_593452 = newJObject()
   if body != nil:
-    body_603552 = body
-  result = call_603551.call(nil, nil, nil, nil, body_603552)
+    body_593452 = body
+  result = call_593451.call(nil, nil, nil, nil, body_593452)
 
-var describeSMBFileShares* = Call_DescribeSMBFileShares_603538(
+var describeSMBFileShares* = Call_DescribeSMBFileShares_593438(
     name: "describeSMBFileShares", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeSMBFileShares",
-    validator: validate_DescribeSMBFileShares_603539, base: "/",
-    url: url_DescribeSMBFileShares_603540, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeSMBFileShares_593439, base: "/",
+    url: url_DescribeSMBFileShares_593440, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSMBSettings_603553 = ref object of OpenApiRestCall_602467
-proc url_DescribeSMBSettings_603555(protocol: Scheme; host: string; base: string;
+  Call_DescribeSMBSettings_593453 = ref object of OpenApiRestCall_592365
+proc url_DescribeSMBSettings_593455(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeSMBSettings_603554(path: JsonNode; query: JsonNode;
+proc validate_DescribeSMBSettings_593454(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Gets a description of a Server Message Block (SMB) file share settings from a file gateway. This operation is only supported for file gateways.
@@ -3753,57 +3757,57 @@ proc validate_DescribeSMBSettings_603554(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603556 = header.getOrDefault("X-Amz-Date")
-  valid_603556 = validateParameter(valid_603556, JString, required = false,
-                                 default = nil)
-  if valid_603556 != nil:
-    section.add "X-Amz-Date", valid_603556
-  var valid_603557 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603557 = validateParameter(valid_603557, JString, required = false,
-                                 default = nil)
-  if valid_603557 != nil:
-    section.add "X-Amz-Security-Token", valid_603557
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603558 = header.getOrDefault("X-Amz-Target")
-  valid_603558 = validateParameter(valid_603558, JString, required = true, default = newJString(
+  var valid_593456 = header.getOrDefault("X-Amz-Target")
+  valid_593456 = validateParameter(valid_593456, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeSMBSettings"))
-  if valid_603558 != nil:
-    section.add "X-Amz-Target", valid_603558
-  var valid_603559 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603559 = validateParameter(valid_603559, JString, required = false,
+  if valid_593456 != nil:
+    section.add "X-Amz-Target", valid_593456
+  var valid_593457 = header.getOrDefault("X-Amz-Signature")
+  valid_593457 = validateParameter(valid_593457, JString, required = false,
                                  default = nil)
-  if valid_603559 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603559
-  var valid_603560 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603560 = validateParameter(valid_603560, JString, required = false,
+  if valid_593457 != nil:
+    section.add "X-Amz-Signature", valid_593457
+  var valid_593458 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593458 = validateParameter(valid_593458, JString, required = false,
                                  default = nil)
-  if valid_603560 != nil:
-    section.add "X-Amz-Algorithm", valid_603560
-  var valid_603561 = header.getOrDefault("X-Amz-Signature")
-  valid_603561 = validateParameter(valid_603561, JString, required = false,
+  if valid_593458 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593458
+  var valid_593459 = header.getOrDefault("X-Amz-Date")
+  valid_593459 = validateParameter(valid_593459, JString, required = false,
                                  default = nil)
-  if valid_603561 != nil:
-    section.add "X-Amz-Signature", valid_603561
-  var valid_603562 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603562 = validateParameter(valid_603562, JString, required = false,
+  if valid_593459 != nil:
+    section.add "X-Amz-Date", valid_593459
+  var valid_593460 = header.getOrDefault("X-Amz-Credential")
+  valid_593460 = validateParameter(valid_593460, JString, required = false,
                                  default = nil)
-  if valid_603562 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603562
-  var valid_603563 = header.getOrDefault("X-Amz-Credential")
-  valid_603563 = validateParameter(valid_603563, JString, required = false,
+  if valid_593460 != nil:
+    section.add "X-Amz-Credential", valid_593460
+  var valid_593461 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593461 = validateParameter(valid_593461, JString, required = false,
                                  default = nil)
-  if valid_603563 != nil:
-    section.add "X-Amz-Credential", valid_603563
+  if valid_593461 != nil:
+    section.add "X-Amz-Security-Token", valid_593461
+  var valid_593462 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593462 = validateParameter(valid_593462, JString, required = false,
+                                 default = nil)
+  if valid_593462 != nil:
+    section.add "X-Amz-Algorithm", valid_593462
+  var valid_593463 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593463 = validateParameter(valid_593463, JString, required = false,
+                                 default = nil)
+  if valid_593463 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593463
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3814,37 +3818,37 @@ proc validate_DescribeSMBSettings_603554(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603565: Call_DescribeSMBSettings_603553; path: JsonNode;
+proc call*(call_593465: Call_DescribeSMBSettings_593453; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a description of a Server Message Block (SMB) file share settings from a file gateway. This operation is only supported for file gateways.
   ## 
-  let valid = call_603565.validator(path, query, header, formData, body)
-  let scheme = call_603565.pickScheme
+  let valid = call_593465.validator(path, query, header, formData, body)
+  let scheme = call_593465.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603565.url(scheme.get, call_603565.host, call_603565.base,
-                         call_603565.route, valid.getOrDefault("path"),
+  let url = call_593465.url(scheme.get, call_593465.host, call_593465.base,
+                         call_593465.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603565, url, valid)
+  result = hook(call_593465, url, valid)
 
-proc call*(call_603566: Call_DescribeSMBSettings_603553; body: JsonNode): Recallable =
+proc call*(call_593466: Call_DescribeSMBSettings_593453; body: JsonNode): Recallable =
   ## describeSMBSettings
   ## Gets a description of a Server Message Block (SMB) file share settings from a file gateway. This operation is only supported for file gateways.
   ##   body: JObject (required)
-  var body_603567 = newJObject()
+  var body_593467 = newJObject()
   if body != nil:
-    body_603567 = body
-  result = call_603566.call(nil, nil, nil, nil, body_603567)
+    body_593467 = body
+  result = call_593466.call(nil, nil, nil, nil, body_593467)
 
-var describeSMBSettings* = Call_DescribeSMBSettings_603553(
+var describeSMBSettings* = Call_DescribeSMBSettings_593453(
     name: "describeSMBSettings", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeSMBSettings",
-    validator: validate_DescribeSMBSettings_603554, base: "/",
-    url: url_DescribeSMBSettings_603555, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeSMBSettings_593454, base: "/",
+    url: url_DescribeSMBSettings_593455, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSnapshotSchedule_603568 = ref object of OpenApiRestCall_602467
-proc url_DescribeSnapshotSchedule_603570(protocol: Scheme; host: string;
+  Call_DescribeSnapshotSchedule_593468 = ref object of OpenApiRestCall_592365
+proc url_DescribeSnapshotSchedule_593470(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -3852,7 +3856,7 @@ proc url_DescribeSnapshotSchedule_603570(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeSnapshotSchedule_603569(path: JsonNode; query: JsonNode;
+proc validate_DescribeSnapshotSchedule_593469(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the snapshot schedule for the specified gateway volume. The snapshot schedule information includes intervals at which snapshots are automatically initiated on the volume. This operation is only supported in the cached volume and stored volume types.
   ## 
@@ -3863,57 +3867,57 @@ proc validate_DescribeSnapshotSchedule_603569(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603571 = header.getOrDefault("X-Amz-Date")
-  valid_603571 = validateParameter(valid_603571, JString, required = false,
-                                 default = nil)
-  if valid_603571 != nil:
-    section.add "X-Amz-Date", valid_603571
-  var valid_603572 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603572 = validateParameter(valid_603572, JString, required = false,
-                                 default = nil)
-  if valid_603572 != nil:
-    section.add "X-Amz-Security-Token", valid_603572
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603573 = header.getOrDefault("X-Amz-Target")
-  valid_603573 = validateParameter(valid_603573, JString, required = true, default = newJString(
+  var valid_593471 = header.getOrDefault("X-Amz-Target")
+  valid_593471 = validateParameter(valid_593471, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeSnapshotSchedule"))
-  if valid_603573 != nil:
-    section.add "X-Amz-Target", valid_603573
-  var valid_603574 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603574 = validateParameter(valid_603574, JString, required = false,
+  if valid_593471 != nil:
+    section.add "X-Amz-Target", valid_593471
+  var valid_593472 = header.getOrDefault("X-Amz-Signature")
+  valid_593472 = validateParameter(valid_593472, JString, required = false,
                                  default = nil)
-  if valid_603574 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603574
-  var valid_603575 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603575 = validateParameter(valid_603575, JString, required = false,
+  if valid_593472 != nil:
+    section.add "X-Amz-Signature", valid_593472
+  var valid_593473 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593473 = validateParameter(valid_593473, JString, required = false,
                                  default = nil)
-  if valid_603575 != nil:
-    section.add "X-Amz-Algorithm", valid_603575
-  var valid_603576 = header.getOrDefault("X-Amz-Signature")
-  valid_603576 = validateParameter(valid_603576, JString, required = false,
+  if valid_593473 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593473
+  var valid_593474 = header.getOrDefault("X-Amz-Date")
+  valid_593474 = validateParameter(valid_593474, JString, required = false,
                                  default = nil)
-  if valid_603576 != nil:
-    section.add "X-Amz-Signature", valid_603576
-  var valid_603577 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603577 = validateParameter(valid_603577, JString, required = false,
+  if valid_593474 != nil:
+    section.add "X-Amz-Date", valid_593474
+  var valid_593475 = header.getOrDefault("X-Amz-Credential")
+  valid_593475 = validateParameter(valid_593475, JString, required = false,
                                  default = nil)
-  if valid_603577 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603577
-  var valid_603578 = header.getOrDefault("X-Amz-Credential")
-  valid_603578 = validateParameter(valid_603578, JString, required = false,
+  if valid_593475 != nil:
+    section.add "X-Amz-Credential", valid_593475
+  var valid_593476 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593476 = validateParameter(valid_593476, JString, required = false,
                                  default = nil)
-  if valid_603578 != nil:
-    section.add "X-Amz-Credential", valid_603578
+  if valid_593476 != nil:
+    section.add "X-Amz-Security-Token", valid_593476
+  var valid_593477 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593477 = validateParameter(valid_593477, JString, required = false,
+                                 default = nil)
+  if valid_593477 != nil:
+    section.add "X-Amz-Algorithm", valid_593477
+  var valid_593478 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593478 = validateParameter(valid_593478, JString, required = false,
+                                 default = nil)
+  if valid_593478 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593478
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3924,44 +3928,44 @@ proc validate_DescribeSnapshotSchedule_603569(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603580: Call_DescribeSnapshotSchedule_603568; path: JsonNode;
+proc call*(call_593480: Call_DescribeSnapshotSchedule_593468; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the snapshot schedule for the specified gateway volume. The snapshot schedule information includes intervals at which snapshots are automatically initiated on the volume. This operation is only supported in the cached volume and stored volume types.
   ## 
-  let valid = call_603580.validator(path, query, header, formData, body)
-  let scheme = call_603580.pickScheme
+  let valid = call_593480.validator(path, query, header, formData, body)
+  let scheme = call_593480.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603580.url(scheme.get, call_603580.host, call_603580.base,
-                         call_603580.route, valid.getOrDefault("path"),
+  let url = call_593480.url(scheme.get, call_593480.host, call_593480.base,
+                         call_593480.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603580, url, valid)
+  result = hook(call_593480, url, valid)
 
-proc call*(call_603581: Call_DescribeSnapshotSchedule_603568; body: JsonNode): Recallable =
+proc call*(call_593481: Call_DescribeSnapshotSchedule_593468; body: JsonNode): Recallable =
   ## describeSnapshotSchedule
   ## Describes the snapshot schedule for the specified gateway volume. The snapshot schedule information includes intervals at which snapshots are automatically initiated on the volume. This operation is only supported in the cached volume and stored volume types.
   ##   body: JObject (required)
-  var body_603582 = newJObject()
+  var body_593482 = newJObject()
   if body != nil:
-    body_603582 = body
-  result = call_603581.call(nil, nil, nil, nil, body_603582)
+    body_593482 = body
+  result = call_593481.call(nil, nil, nil, nil, body_593482)
 
-var describeSnapshotSchedule* = Call_DescribeSnapshotSchedule_603568(
+var describeSnapshotSchedule* = Call_DescribeSnapshotSchedule_593468(
     name: "describeSnapshotSchedule", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeSnapshotSchedule",
-    validator: validate_DescribeSnapshotSchedule_603569, base: "/",
-    url: url_DescribeSnapshotSchedule_603570, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeSnapshotSchedule_593469, base: "/",
+    url: url_DescribeSnapshotSchedule_593470, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStorediSCSIVolumes_603583 = ref object of OpenApiRestCall_602467
-proc url_DescribeStorediSCSIVolumes_603585(protocol: Scheme; host: string;
+  Call_DescribeStorediSCSIVolumes_593483 = ref object of OpenApiRestCall_592365
+proc url_DescribeStorediSCSIVolumes_593485(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeStorediSCSIVolumes_603584(path: JsonNode; query: JsonNode;
+proc validate_DescribeStorediSCSIVolumes_593484(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the description of the gateway volumes specified in the request. The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume ARNs. This operation is only supported in stored volume gateway type.
   ## 
@@ -3972,57 +3976,57 @@ proc validate_DescribeStorediSCSIVolumes_603584(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603586 = header.getOrDefault("X-Amz-Date")
-  valid_603586 = validateParameter(valid_603586, JString, required = false,
-                                 default = nil)
-  if valid_603586 != nil:
-    section.add "X-Amz-Date", valid_603586
-  var valid_603587 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603587 = validateParameter(valid_603587, JString, required = false,
-                                 default = nil)
-  if valid_603587 != nil:
-    section.add "X-Amz-Security-Token", valid_603587
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603588 = header.getOrDefault("X-Amz-Target")
-  valid_603588 = validateParameter(valid_603588, JString, required = true, default = newJString(
+  var valid_593486 = header.getOrDefault("X-Amz-Target")
+  valid_593486 = validateParameter(valid_593486, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeStorediSCSIVolumes"))
-  if valid_603588 != nil:
-    section.add "X-Amz-Target", valid_603588
-  var valid_603589 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603589 = validateParameter(valid_603589, JString, required = false,
+  if valid_593486 != nil:
+    section.add "X-Amz-Target", valid_593486
+  var valid_593487 = header.getOrDefault("X-Amz-Signature")
+  valid_593487 = validateParameter(valid_593487, JString, required = false,
                                  default = nil)
-  if valid_603589 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603589
-  var valid_603590 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603590 = validateParameter(valid_603590, JString, required = false,
+  if valid_593487 != nil:
+    section.add "X-Amz-Signature", valid_593487
+  var valid_593488 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593488 = validateParameter(valid_593488, JString, required = false,
                                  default = nil)
-  if valid_603590 != nil:
-    section.add "X-Amz-Algorithm", valid_603590
-  var valid_603591 = header.getOrDefault("X-Amz-Signature")
-  valid_603591 = validateParameter(valid_603591, JString, required = false,
+  if valid_593488 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593488
+  var valid_593489 = header.getOrDefault("X-Amz-Date")
+  valid_593489 = validateParameter(valid_593489, JString, required = false,
                                  default = nil)
-  if valid_603591 != nil:
-    section.add "X-Amz-Signature", valid_603591
-  var valid_603592 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603592 = validateParameter(valid_603592, JString, required = false,
+  if valid_593489 != nil:
+    section.add "X-Amz-Date", valid_593489
+  var valid_593490 = header.getOrDefault("X-Amz-Credential")
+  valid_593490 = validateParameter(valid_593490, JString, required = false,
                                  default = nil)
-  if valid_603592 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603592
-  var valid_603593 = header.getOrDefault("X-Amz-Credential")
-  valid_603593 = validateParameter(valid_603593, JString, required = false,
+  if valid_593490 != nil:
+    section.add "X-Amz-Credential", valid_593490
+  var valid_593491 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593491 = validateParameter(valid_593491, JString, required = false,
                                  default = nil)
-  if valid_603593 != nil:
-    section.add "X-Amz-Credential", valid_603593
+  if valid_593491 != nil:
+    section.add "X-Amz-Security-Token", valid_593491
+  var valid_593492 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593492 = validateParameter(valid_593492, JString, required = false,
+                                 default = nil)
+  if valid_593492 != nil:
+    section.add "X-Amz-Algorithm", valid_593492
+  var valid_593493 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593493 = validateParameter(valid_593493, JString, required = false,
+                                 default = nil)
+  if valid_593493 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593493
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4033,45 +4037,45 @@ proc validate_DescribeStorediSCSIVolumes_603584(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603595: Call_DescribeStorediSCSIVolumes_603583; path: JsonNode;
+proc call*(call_593495: Call_DescribeStorediSCSIVolumes_593483; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the description of the gateway volumes specified in the request. The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume ARNs. This operation is only supported in stored volume gateway type.
   ## 
-  let valid = call_603595.validator(path, query, header, formData, body)
-  let scheme = call_603595.pickScheme
+  let valid = call_593495.validator(path, query, header, formData, body)
+  let scheme = call_593495.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603595.url(scheme.get, call_603595.host, call_603595.base,
-                         call_603595.route, valid.getOrDefault("path"),
+  let url = call_593495.url(scheme.get, call_593495.host, call_593495.base,
+                         call_593495.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603595, url, valid)
+  result = hook(call_593495, url, valid)
 
-proc call*(call_603596: Call_DescribeStorediSCSIVolumes_603583; body: JsonNode): Recallable =
+proc call*(call_593496: Call_DescribeStorediSCSIVolumes_593483; body: JsonNode): Recallable =
   ## describeStorediSCSIVolumes
   ## Returns the description of the gateway volumes specified in the request. The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume ARNs. This operation is only supported in stored volume gateway type.
   ##   body: JObject (required)
-  var body_603597 = newJObject()
+  var body_593497 = newJObject()
   if body != nil:
-    body_603597 = body
-  result = call_603596.call(nil, nil, nil, nil, body_603597)
+    body_593497 = body
+  result = call_593496.call(nil, nil, nil, nil, body_593497)
 
-var describeStorediSCSIVolumes* = Call_DescribeStorediSCSIVolumes_603583(
+var describeStorediSCSIVolumes* = Call_DescribeStorediSCSIVolumes_593483(
     name: "describeStorediSCSIVolumes", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeStorediSCSIVolumes",
-    validator: validate_DescribeStorediSCSIVolumes_603584, base: "/",
-    url: url_DescribeStorediSCSIVolumes_603585,
+    validator: validate_DescribeStorediSCSIVolumes_593484, base: "/",
+    url: url_DescribeStorediSCSIVolumes_593485,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTapeArchives_603598 = ref object of OpenApiRestCall_602467
-proc url_DescribeTapeArchives_603600(protocol: Scheme; host: string; base: string;
+  Call_DescribeTapeArchives_593498 = ref object of OpenApiRestCall_592365
+proc url_DescribeTapeArchives_593500(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeTapeArchives_603599(path: JsonNode; query: JsonNode;
+proc validate_DescribeTapeArchives_593499(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a description of specified virtual tapes in the virtual tape shelf (VTS). This operation is only supported in the tape gateway type.</p> <p>If a specific <code>TapeARN</code> is not specified, AWS Storage Gateway returns a description of all virtual tapes found in the VTS associated with your account.</p>
   ## 
@@ -4080,74 +4084,74 @@ proc validate_DescribeTapeArchives_603599(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603601 = query.getOrDefault("Limit")
-  valid_603601 = validateParameter(valid_603601, JString, required = false,
+  var valid_593501 = query.getOrDefault("Marker")
+  valid_593501 = validateParameter(valid_593501, JString, required = false,
                                  default = nil)
-  if valid_603601 != nil:
-    section.add "Limit", valid_603601
-  var valid_603602 = query.getOrDefault("Marker")
-  valid_603602 = validateParameter(valid_603602, JString, required = false,
+  if valid_593501 != nil:
+    section.add "Marker", valid_593501
+  var valid_593502 = query.getOrDefault("Limit")
+  valid_593502 = validateParameter(valid_593502, JString, required = false,
                                  default = nil)
-  if valid_603602 != nil:
-    section.add "Marker", valid_603602
+  if valid_593502 != nil:
+    section.add "Limit", valid_593502
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603603 = header.getOrDefault("X-Amz-Date")
-  valid_603603 = validateParameter(valid_603603, JString, required = false,
-                                 default = nil)
-  if valid_603603 != nil:
-    section.add "X-Amz-Date", valid_603603
-  var valid_603604 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603604 = validateParameter(valid_603604, JString, required = false,
-                                 default = nil)
-  if valid_603604 != nil:
-    section.add "X-Amz-Security-Token", valid_603604
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603605 = header.getOrDefault("X-Amz-Target")
-  valid_603605 = validateParameter(valid_603605, JString, required = true, default = newJString(
+  var valid_593503 = header.getOrDefault("X-Amz-Target")
+  valid_593503 = validateParameter(valid_593503, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeTapeArchives"))
-  if valid_603605 != nil:
-    section.add "X-Amz-Target", valid_603605
-  var valid_603606 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603606 = validateParameter(valid_603606, JString, required = false,
+  if valid_593503 != nil:
+    section.add "X-Amz-Target", valid_593503
+  var valid_593504 = header.getOrDefault("X-Amz-Signature")
+  valid_593504 = validateParameter(valid_593504, JString, required = false,
                                  default = nil)
-  if valid_603606 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603606
-  var valid_603607 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603607 = validateParameter(valid_603607, JString, required = false,
+  if valid_593504 != nil:
+    section.add "X-Amz-Signature", valid_593504
+  var valid_593505 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593505 = validateParameter(valid_593505, JString, required = false,
                                  default = nil)
-  if valid_603607 != nil:
-    section.add "X-Amz-Algorithm", valid_603607
-  var valid_603608 = header.getOrDefault("X-Amz-Signature")
-  valid_603608 = validateParameter(valid_603608, JString, required = false,
+  if valid_593505 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593505
+  var valid_593506 = header.getOrDefault("X-Amz-Date")
+  valid_593506 = validateParameter(valid_593506, JString, required = false,
                                  default = nil)
-  if valid_603608 != nil:
-    section.add "X-Amz-Signature", valid_603608
-  var valid_603609 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603609 = validateParameter(valid_603609, JString, required = false,
+  if valid_593506 != nil:
+    section.add "X-Amz-Date", valid_593506
+  var valid_593507 = header.getOrDefault("X-Amz-Credential")
+  valid_593507 = validateParameter(valid_593507, JString, required = false,
                                  default = nil)
-  if valid_603609 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603609
-  var valid_603610 = header.getOrDefault("X-Amz-Credential")
-  valid_603610 = validateParameter(valid_603610, JString, required = false,
+  if valid_593507 != nil:
+    section.add "X-Amz-Credential", valid_593507
+  var valid_593508 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593508 = validateParameter(valid_593508, JString, required = false,
                                  default = nil)
-  if valid_603610 != nil:
-    section.add "X-Amz-Credential", valid_603610
+  if valid_593508 != nil:
+    section.add "X-Amz-Security-Token", valid_593508
+  var valid_593509 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593509 = validateParameter(valid_593509, JString, required = false,
+                                 default = nil)
+  if valid_593509 != nil:
+    section.add "X-Amz-Algorithm", valid_593509
+  var valid_593510 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593510 = validateParameter(valid_593510, JString, required = false,
+                                 default = nil)
+  if valid_593510 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593510
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4158,52 +4162,52 @@ proc validate_DescribeTapeArchives_603599(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603612: Call_DescribeTapeArchives_603598; path: JsonNode;
+proc call*(call_593512: Call_DescribeTapeArchives_593498; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a description of specified virtual tapes in the virtual tape shelf (VTS). This operation is only supported in the tape gateway type.</p> <p>If a specific <code>TapeARN</code> is not specified, AWS Storage Gateway returns a description of all virtual tapes found in the VTS associated with your account.</p>
   ## 
-  let valid = call_603612.validator(path, query, header, formData, body)
-  let scheme = call_603612.pickScheme
+  let valid = call_593512.validator(path, query, header, formData, body)
+  let scheme = call_593512.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603612.url(scheme.get, call_603612.host, call_603612.base,
-                         call_603612.route, valid.getOrDefault("path"),
+  let url = call_593512.url(scheme.get, call_593512.host, call_593512.base,
+                         call_593512.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603612, url, valid)
+  result = hook(call_593512, url, valid)
 
-proc call*(call_603613: Call_DescribeTapeArchives_603598; body: JsonNode;
-          Limit: string = ""; Marker: string = ""): Recallable =
+proc call*(call_593513: Call_DescribeTapeArchives_593498; body: JsonNode;
+          Marker: string = ""; Limit: string = ""): Recallable =
   ## describeTapeArchives
   ## <p>Returns a description of specified virtual tapes in the virtual tape shelf (VTS). This operation is only supported in the tape gateway type.</p> <p>If a specific <code>TapeARN</code> is not specified, AWS Storage Gateway returns a description of all virtual tapes found in the VTS associated with your account.</p>
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603614 = newJObject()
-  var body_603615 = newJObject()
-  add(query_603614, "Limit", newJString(Limit))
-  add(query_603614, "Marker", newJString(Marker))
+  var query_593514 = newJObject()
+  var body_593515 = newJObject()
+  add(query_593514, "Marker", newJString(Marker))
+  add(query_593514, "Limit", newJString(Limit))
   if body != nil:
-    body_603615 = body
-  result = call_603613.call(nil, query_603614, nil, nil, body_603615)
+    body_593515 = body
+  result = call_593513.call(nil, query_593514, nil, nil, body_593515)
 
-var describeTapeArchives* = Call_DescribeTapeArchives_603598(
+var describeTapeArchives* = Call_DescribeTapeArchives_593498(
     name: "describeTapeArchives", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeTapeArchives",
-    validator: validate_DescribeTapeArchives_603599, base: "/",
-    url: url_DescribeTapeArchives_603600, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeTapeArchives_593499, base: "/",
+    url: url_DescribeTapeArchives_593500, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTapeRecoveryPoints_603617 = ref object of OpenApiRestCall_602467
-proc url_DescribeTapeRecoveryPoints_603619(protocol: Scheme; host: string;
+  Call_DescribeTapeRecoveryPoints_593517 = ref object of OpenApiRestCall_592365
+proc url_DescribeTapeRecoveryPoints_593519(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeTapeRecoveryPoints_603618(path: JsonNode; query: JsonNode;
+proc validate_DescribeTapeRecoveryPoints_593518(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of virtual tape recovery points that are available for the specified tape gateway.</p> <p>A recovery point is a point-in-time view of a virtual tape at which all the data on the virtual tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway. This operation is only supported in the tape gateway type.</p>
   ## 
@@ -4212,74 +4216,74 @@ proc validate_DescribeTapeRecoveryPoints_603618(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603620 = query.getOrDefault("Limit")
-  valid_603620 = validateParameter(valid_603620, JString, required = false,
+  var valid_593520 = query.getOrDefault("Marker")
+  valid_593520 = validateParameter(valid_593520, JString, required = false,
                                  default = nil)
-  if valid_603620 != nil:
-    section.add "Limit", valid_603620
-  var valid_603621 = query.getOrDefault("Marker")
-  valid_603621 = validateParameter(valid_603621, JString, required = false,
+  if valid_593520 != nil:
+    section.add "Marker", valid_593520
+  var valid_593521 = query.getOrDefault("Limit")
+  valid_593521 = validateParameter(valid_593521, JString, required = false,
                                  default = nil)
-  if valid_603621 != nil:
-    section.add "Marker", valid_603621
+  if valid_593521 != nil:
+    section.add "Limit", valid_593521
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603622 = header.getOrDefault("X-Amz-Date")
-  valid_603622 = validateParameter(valid_603622, JString, required = false,
-                                 default = nil)
-  if valid_603622 != nil:
-    section.add "X-Amz-Date", valid_603622
-  var valid_603623 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603623 = validateParameter(valid_603623, JString, required = false,
-                                 default = nil)
-  if valid_603623 != nil:
-    section.add "X-Amz-Security-Token", valid_603623
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603624 = header.getOrDefault("X-Amz-Target")
-  valid_603624 = validateParameter(valid_603624, JString, required = true, default = newJString(
+  var valid_593522 = header.getOrDefault("X-Amz-Target")
+  valid_593522 = validateParameter(valid_593522, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeTapeRecoveryPoints"))
-  if valid_603624 != nil:
-    section.add "X-Amz-Target", valid_603624
-  var valid_603625 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603625 = validateParameter(valid_603625, JString, required = false,
+  if valid_593522 != nil:
+    section.add "X-Amz-Target", valid_593522
+  var valid_593523 = header.getOrDefault("X-Amz-Signature")
+  valid_593523 = validateParameter(valid_593523, JString, required = false,
                                  default = nil)
-  if valid_603625 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603625
-  var valid_603626 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603626 = validateParameter(valid_603626, JString, required = false,
+  if valid_593523 != nil:
+    section.add "X-Amz-Signature", valid_593523
+  var valid_593524 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593524 = validateParameter(valid_593524, JString, required = false,
                                  default = nil)
-  if valid_603626 != nil:
-    section.add "X-Amz-Algorithm", valid_603626
-  var valid_603627 = header.getOrDefault("X-Amz-Signature")
-  valid_603627 = validateParameter(valid_603627, JString, required = false,
+  if valid_593524 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593524
+  var valid_593525 = header.getOrDefault("X-Amz-Date")
+  valid_593525 = validateParameter(valid_593525, JString, required = false,
                                  default = nil)
-  if valid_603627 != nil:
-    section.add "X-Amz-Signature", valid_603627
-  var valid_603628 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603628 = validateParameter(valid_603628, JString, required = false,
+  if valid_593525 != nil:
+    section.add "X-Amz-Date", valid_593525
+  var valid_593526 = header.getOrDefault("X-Amz-Credential")
+  valid_593526 = validateParameter(valid_593526, JString, required = false,
                                  default = nil)
-  if valid_603628 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603628
-  var valid_603629 = header.getOrDefault("X-Amz-Credential")
-  valid_603629 = validateParameter(valid_603629, JString, required = false,
+  if valid_593526 != nil:
+    section.add "X-Amz-Credential", valid_593526
+  var valid_593527 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593527 = validateParameter(valid_593527, JString, required = false,
                                  default = nil)
-  if valid_603629 != nil:
-    section.add "X-Amz-Credential", valid_603629
+  if valid_593527 != nil:
+    section.add "X-Amz-Security-Token", valid_593527
+  var valid_593528 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593528 = validateParameter(valid_593528, JString, required = false,
+                                 default = nil)
+  if valid_593528 != nil:
+    section.add "X-Amz-Algorithm", valid_593528
+  var valid_593529 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593529 = validateParameter(valid_593529, JString, required = false,
+                                 default = nil)
+  if valid_593529 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593529
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4290,53 +4294,53 @@ proc validate_DescribeTapeRecoveryPoints_603618(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603631: Call_DescribeTapeRecoveryPoints_603617; path: JsonNode;
+proc call*(call_593531: Call_DescribeTapeRecoveryPoints_593517; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of virtual tape recovery points that are available for the specified tape gateway.</p> <p>A recovery point is a point-in-time view of a virtual tape at which all the data on the virtual tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway. This operation is only supported in the tape gateway type.</p>
   ## 
-  let valid = call_603631.validator(path, query, header, formData, body)
-  let scheme = call_603631.pickScheme
+  let valid = call_593531.validator(path, query, header, formData, body)
+  let scheme = call_593531.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603631.url(scheme.get, call_603631.host, call_603631.base,
-                         call_603631.route, valid.getOrDefault("path"),
+  let url = call_593531.url(scheme.get, call_593531.host, call_593531.base,
+                         call_593531.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603631, url, valid)
+  result = hook(call_593531, url, valid)
 
-proc call*(call_603632: Call_DescribeTapeRecoveryPoints_603617; body: JsonNode;
-          Limit: string = ""; Marker: string = ""): Recallable =
+proc call*(call_593532: Call_DescribeTapeRecoveryPoints_593517; body: JsonNode;
+          Marker: string = ""; Limit: string = ""): Recallable =
   ## describeTapeRecoveryPoints
   ## <p>Returns a list of virtual tape recovery points that are available for the specified tape gateway.</p> <p>A recovery point is a point-in-time view of a virtual tape at which all the data on the virtual tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway. This operation is only supported in the tape gateway type.</p>
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603633 = newJObject()
-  var body_603634 = newJObject()
-  add(query_603633, "Limit", newJString(Limit))
-  add(query_603633, "Marker", newJString(Marker))
+  var query_593533 = newJObject()
+  var body_593534 = newJObject()
+  add(query_593533, "Marker", newJString(Marker))
+  add(query_593533, "Limit", newJString(Limit))
   if body != nil:
-    body_603634 = body
-  result = call_603632.call(nil, query_603633, nil, nil, body_603634)
+    body_593534 = body
+  result = call_593532.call(nil, query_593533, nil, nil, body_593534)
 
-var describeTapeRecoveryPoints* = Call_DescribeTapeRecoveryPoints_603617(
+var describeTapeRecoveryPoints* = Call_DescribeTapeRecoveryPoints_593517(
     name: "describeTapeRecoveryPoints", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeTapeRecoveryPoints",
-    validator: validate_DescribeTapeRecoveryPoints_603618, base: "/",
-    url: url_DescribeTapeRecoveryPoints_603619,
+    validator: validate_DescribeTapeRecoveryPoints_593518, base: "/",
+    url: url_DescribeTapeRecoveryPoints_593519,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTapes_603635 = ref object of OpenApiRestCall_602467
-proc url_DescribeTapes_603637(protocol: Scheme; host: string; base: string;
+  Call_DescribeTapes_593535 = ref object of OpenApiRestCall_592365
+proc url_DescribeTapes_593537(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeTapes_603636(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeTapes_593536(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a description of the specified Amazon Resource Name (ARN) of virtual tapes. If a <code>TapeARN</code> is not specified, returns a description of all virtual tapes associated with the specified gateway. This operation is only supported in the tape gateway type.
   ## 
@@ -4345,74 +4349,74 @@ proc validate_DescribeTapes_603636(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603638 = query.getOrDefault("Limit")
-  valid_603638 = validateParameter(valid_603638, JString, required = false,
+  var valid_593538 = query.getOrDefault("Marker")
+  valid_593538 = validateParameter(valid_593538, JString, required = false,
                                  default = nil)
-  if valid_603638 != nil:
-    section.add "Limit", valid_603638
-  var valid_603639 = query.getOrDefault("Marker")
-  valid_603639 = validateParameter(valid_603639, JString, required = false,
+  if valid_593538 != nil:
+    section.add "Marker", valid_593538
+  var valid_593539 = query.getOrDefault("Limit")
+  valid_593539 = validateParameter(valid_593539, JString, required = false,
                                  default = nil)
-  if valid_603639 != nil:
-    section.add "Marker", valid_603639
+  if valid_593539 != nil:
+    section.add "Limit", valid_593539
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603640 = header.getOrDefault("X-Amz-Date")
-  valid_603640 = validateParameter(valid_603640, JString, required = false,
-                                 default = nil)
-  if valid_603640 != nil:
-    section.add "X-Amz-Date", valid_603640
-  var valid_603641 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603641 = validateParameter(valid_603641, JString, required = false,
-                                 default = nil)
-  if valid_603641 != nil:
-    section.add "X-Amz-Security-Token", valid_603641
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603642 = header.getOrDefault("X-Amz-Target")
-  valid_603642 = validateParameter(valid_603642, JString, required = true, default = newJString(
+  var valid_593540 = header.getOrDefault("X-Amz-Target")
+  valid_593540 = validateParameter(valid_593540, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeTapes"))
-  if valid_603642 != nil:
-    section.add "X-Amz-Target", valid_603642
-  var valid_603643 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603643 = validateParameter(valid_603643, JString, required = false,
+  if valid_593540 != nil:
+    section.add "X-Amz-Target", valid_593540
+  var valid_593541 = header.getOrDefault("X-Amz-Signature")
+  valid_593541 = validateParameter(valid_593541, JString, required = false,
                                  default = nil)
-  if valid_603643 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603643
-  var valid_603644 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603644 = validateParameter(valid_603644, JString, required = false,
+  if valid_593541 != nil:
+    section.add "X-Amz-Signature", valid_593541
+  var valid_593542 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593542 = validateParameter(valid_593542, JString, required = false,
                                  default = nil)
-  if valid_603644 != nil:
-    section.add "X-Amz-Algorithm", valid_603644
-  var valid_603645 = header.getOrDefault("X-Amz-Signature")
-  valid_603645 = validateParameter(valid_603645, JString, required = false,
+  if valid_593542 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593542
+  var valid_593543 = header.getOrDefault("X-Amz-Date")
+  valid_593543 = validateParameter(valid_593543, JString, required = false,
                                  default = nil)
-  if valid_603645 != nil:
-    section.add "X-Amz-Signature", valid_603645
-  var valid_603646 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603646 = validateParameter(valid_603646, JString, required = false,
+  if valid_593543 != nil:
+    section.add "X-Amz-Date", valid_593543
+  var valid_593544 = header.getOrDefault("X-Amz-Credential")
+  valid_593544 = validateParameter(valid_593544, JString, required = false,
                                  default = nil)
-  if valid_603646 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603646
-  var valid_603647 = header.getOrDefault("X-Amz-Credential")
-  valid_603647 = validateParameter(valid_603647, JString, required = false,
+  if valid_593544 != nil:
+    section.add "X-Amz-Credential", valid_593544
+  var valid_593545 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593545 = validateParameter(valid_593545, JString, required = false,
                                  default = nil)
-  if valid_603647 != nil:
-    section.add "X-Amz-Credential", valid_603647
+  if valid_593545 != nil:
+    section.add "X-Amz-Security-Token", valid_593545
+  var valid_593546 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593546 = validateParameter(valid_593546, JString, required = false,
+                                 default = nil)
+  if valid_593546 != nil:
+    section.add "X-Amz-Algorithm", valid_593546
+  var valid_593547 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593547 = validateParameter(valid_593547, JString, required = false,
+                                 default = nil)
+  if valid_593547 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593547
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4423,51 +4427,51 @@ proc validate_DescribeTapes_603636(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_603649: Call_DescribeTapes_603635; path: JsonNode; query: JsonNode;
+proc call*(call_593549: Call_DescribeTapes_593535; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a description of the specified Amazon Resource Name (ARN) of virtual tapes. If a <code>TapeARN</code> is not specified, returns a description of all virtual tapes associated with the specified gateway. This operation is only supported in the tape gateway type.
   ## 
-  let valid = call_603649.validator(path, query, header, formData, body)
-  let scheme = call_603649.pickScheme
+  let valid = call_593549.validator(path, query, header, formData, body)
+  let scheme = call_593549.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603649.url(scheme.get, call_603649.host, call_603649.base,
-                         call_603649.route, valid.getOrDefault("path"),
+  let url = call_593549.url(scheme.get, call_593549.host, call_593549.base,
+                         call_593549.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603649, url, valid)
+  result = hook(call_593549, url, valid)
 
-proc call*(call_603650: Call_DescribeTapes_603635; body: JsonNode;
-          Limit: string = ""; Marker: string = ""): Recallable =
+proc call*(call_593550: Call_DescribeTapes_593535; body: JsonNode;
+          Marker: string = ""; Limit: string = ""): Recallable =
   ## describeTapes
   ## Returns a description of the specified Amazon Resource Name (ARN) of virtual tapes. If a <code>TapeARN</code> is not specified, returns a description of all virtual tapes associated with the specified gateway. This operation is only supported in the tape gateway type.
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603651 = newJObject()
-  var body_603652 = newJObject()
-  add(query_603651, "Limit", newJString(Limit))
-  add(query_603651, "Marker", newJString(Marker))
+  var query_593551 = newJObject()
+  var body_593552 = newJObject()
+  add(query_593551, "Marker", newJString(Marker))
+  add(query_593551, "Limit", newJString(Limit))
   if body != nil:
-    body_603652 = body
-  result = call_603650.call(nil, query_603651, nil, nil, body_603652)
+    body_593552 = body
+  result = call_593550.call(nil, query_593551, nil, nil, body_593552)
 
-var describeTapes* = Call_DescribeTapes_603635(name: "describeTapes",
+var describeTapes* = Call_DescribeTapes_593535(name: "describeTapes",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeTapes",
-    validator: validate_DescribeTapes_603636, base: "/", url: url_DescribeTapes_603637,
+    validator: validate_DescribeTapes_593536, base: "/", url: url_DescribeTapes_593537,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeUploadBuffer_603653 = ref object of OpenApiRestCall_602467
-proc url_DescribeUploadBuffer_603655(protocol: Scheme; host: string; base: string;
+  Call_DescribeUploadBuffer_593553 = ref object of OpenApiRestCall_592365
+proc url_DescribeUploadBuffer_593555(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeUploadBuffer_603654(path: JsonNode; query: JsonNode;
+proc validate_DescribeUploadBuffer_593554(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about the upload buffer of a gateway. This operation is supported for the stored volume, cached volume and tape gateway types.</p> <p>The response includes disk IDs that are configured as upload buffer space, and it includes the amount of upload buffer space allocated and used.</p>
   ## 
@@ -4478,57 +4482,57 @@ proc validate_DescribeUploadBuffer_603654(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603656 = header.getOrDefault("X-Amz-Date")
-  valid_603656 = validateParameter(valid_603656, JString, required = false,
-                                 default = nil)
-  if valid_603656 != nil:
-    section.add "X-Amz-Date", valid_603656
-  var valid_603657 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603657 = validateParameter(valid_603657, JString, required = false,
-                                 default = nil)
-  if valid_603657 != nil:
-    section.add "X-Amz-Security-Token", valid_603657
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603658 = header.getOrDefault("X-Amz-Target")
-  valid_603658 = validateParameter(valid_603658, JString, required = true, default = newJString(
+  var valid_593556 = header.getOrDefault("X-Amz-Target")
+  valid_593556 = validateParameter(valid_593556, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeUploadBuffer"))
-  if valid_603658 != nil:
-    section.add "X-Amz-Target", valid_603658
-  var valid_603659 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603659 = validateParameter(valid_603659, JString, required = false,
+  if valid_593556 != nil:
+    section.add "X-Amz-Target", valid_593556
+  var valid_593557 = header.getOrDefault("X-Amz-Signature")
+  valid_593557 = validateParameter(valid_593557, JString, required = false,
                                  default = nil)
-  if valid_603659 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603659
-  var valid_603660 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603660 = validateParameter(valid_603660, JString, required = false,
+  if valid_593557 != nil:
+    section.add "X-Amz-Signature", valid_593557
+  var valid_593558 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593558 = validateParameter(valid_593558, JString, required = false,
                                  default = nil)
-  if valid_603660 != nil:
-    section.add "X-Amz-Algorithm", valid_603660
-  var valid_603661 = header.getOrDefault("X-Amz-Signature")
-  valid_603661 = validateParameter(valid_603661, JString, required = false,
+  if valid_593558 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593558
+  var valid_593559 = header.getOrDefault("X-Amz-Date")
+  valid_593559 = validateParameter(valid_593559, JString, required = false,
                                  default = nil)
-  if valid_603661 != nil:
-    section.add "X-Amz-Signature", valid_603661
-  var valid_603662 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603662 = validateParameter(valid_603662, JString, required = false,
+  if valid_593559 != nil:
+    section.add "X-Amz-Date", valid_593559
+  var valid_593560 = header.getOrDefault("X-Amz-Credential")
+  valid_593560 = validateParameter(valid_593560, JString, required = false,
                                  default = nil)
-  if valid_603662 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603662
-  var valid_603663 = header.getOrDefault("X-Amz-Credential")
-  valid_603663 = validateParameter(valid_603663, JString, required = false,
+  if valid_593560 != nil:
+    section.add "X-Amz-Credential", valid_593560
+  var valid_593561 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593561 = validateParameter(valid_593561, JString, required = false,
                                  default = nil)
-  if valid_603663 != nil:
-    section.add "X-Amz-Credential", valid_603663
+  if valid_593561 != nil:
+    section.add "X-Amz-Security-Token", valid_593561
+  var valid_593562 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593562 = validateParameter(valid_593562, JString, required = false,
+                                 default = nil)
+  if valid_593562 != nil:
+    section.add "X-Amz-Algorithm", valid_593562
+  var valid_593563 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593563 = validateParameter(valid_593563, JString, required = false,
+                                 default = nil)
+  if valid_593563 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593563
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4539,44 +4543,44 @@ proc validate_DescribeUploadBuffer_603654(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603665: Call_DescribeUploadBuffer_603653; path: JsonNode;
+proc call*(call_593565: Call_DescribeUploadBuffer_593553; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the upload buffer of a gateway. This operation is supported for the stored volume, cached volume and tape gateway types.</p> <p>The response includes disk IDs that are configured as upload buffer space, and it includes the amount of upload buffer space allocated and used.</p>
   ## 
-  let valid = call_603665.validator(path, query, header, formData, body)
-  let scheme = call_603665.pickScheme
+  let valid = call_593565.validator(path, query, header, formData, body)
+  let scheme = call_593565.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603665.url(scheme.get, call_603665.host, call_603665.base,
-                         call_603665.route, valid.getOrDefault("path"),
+  let url = call_593565.url(scheme.get, call_593565.host, call_593565.base,
+                         call_593565.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603665, url, valid)
+  result = hook(call_593565, url, valid)
 
-proc call*(call_603666: Call_DescribeUploadBuffer_603653; body: JsonNode): Recallable =
+proc call*(call_593566: Call_DescribeUploadBuffer_593553; body: JsonNode): Recallable =
   ## describeUploadBuffer
   ## <p>Returns information about the upload buffer of a gateway. This operation is supported for the stored volume, cached volume and tape gateway types.</p> <p>The response includes disk IDs that are configured as upload buffer space, and it includes the amount of upload buffer space allocated and used.</p>
   ##   body: JObject (required)
-  var body_603667 = newJObject()
+  var body_593567 = newJObject()
   if body != nil:
-    body_603667 = body
-  result = call_603666.call(nil, nil, nil, nil, body_603667)
+    body_593567 = body
+  result = call_593566.call(nil, nil, nil, nil, body_593567)
 
-var describeUploadBuffer* = Call_DescribeUploadBuffer_603653(
+var describeUploadBuffer* = Call_DescribeUploadBuffer_593553(
     name: "describeUploadBuffer", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeUploadBuffer",
-    validator: validate_DescribeUploadBuffer_603654, base: "/",
-    url: url_DescribeUploadBuffer_603655, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeUploadBuffer_593554, base: "/",
+    url: url_DescribeUploadBuffer_593555, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeVTLDevices_603668 = ref object of OpenApiRestCall_602467
-proc url_DescribeVTLDevices_603670(protocol: Scheme; host: string; base: string;
+  Call_DescribeVTLDevices_593568 = ref object of OpenApiRestCall_592365
+proc url_DescribeVTLDevices_593570(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeVTLDevices_603669(path: JsonNode; query: JsonNode;
+proc validate_DescribeVTLDevices_593569(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Returns a description of virtual tape library (VTL) devices for the specified tape gateway. In the response, AWS Storage Gateway returns VTL device information.</p> <p>This operation is only supported in the tape gateway type.</p>
@@ -4586,74 +4590,74 @@ proc validate_DescribeVTLDevices_603669(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603671 = query.getOrDefault("Limit")
-  valid_603671 = validateParameter(valid_603671, JString, required = false,
+  var valid_593571 = query.getOrDefault("Marker")
+  valid_593571 = validateParameter(valid_593571, JString, required = false,
                                  default = nil)
-  if valid_603671 != nil:
-    section.add "Limit", valid_603671
-  var valid_603672 = query.getOrDefault("Marker")
-  valid_603672 = validateParameter(valid_603672, JString, required = false,
+  if valid_593571 != nil:
+    section.add "Marker", valid_593571
+  var valid_593572 = query.getOrDefault("Limit")
+  valid_593572 = validateParameter(valid_593572, JString, required = false,
                                  default = nil)
-  if valid_603672 != nil:
-    section.add "Marker", valid_603672
+  if valid_593572 != nil:
+    section.add "Limit", valid_593572
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603673 = header.getOrDefault("X-Amz-Date")
-  valid_603673 = validateParameter(valid_603673, JString, required = false,
-                                 default = nil)
-  if valid_603673 != nil:
-    section.add "X-Amz-Date", valid_603673
-  var valid_603674 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603674 = validateParameter(valid_603674, JString, required = false,
-                                 default = nil)
-  if valid_603674 != nil:
-    section.add "X-Amz-Security-Token", valid_603674
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603675 = header.getOrDefault("X-Amz-Target")
-  valid_603675 = validateParameter(valid_603675, JString, required = true, default = newJString(
+  var valid_593573 = header.getOrDefault("X-Amz-Target")
+  valid_593573 = validateParameter(valid_593573, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeVTLDevices"))
-  if valid_603675 != nil:
-    section.add "X-Amz-Target", valid_603675
-  var valid_603676 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603676 = validateParameter(valid_603676, JString, required = false,
+  if valid_593573 != nil:
+    section.add "X-Amz-Target", valid_593573
+  var valid_593574 = header.getOrDefault("X-Amz-Signature")
+  valid_593574 = validateParameter(valid_593574, JString, required = false,
                                  default = nil)
-  if valid_603676 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603676
-  var valid_603677 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603677 = validateParameter(valid_603677, JString, required = false,
+  if valid_593574 != nil:
+    section.add "X-Amz-Signature", valid_593574
+  var valid_593575 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593575 = validateParameter(valid_593575, JString, required = false,
                                  default = nil)
-  if valid_603677 != nil:
-    section.add "X-Amz-Algorithm", valid_603677
-  var valid_603678 = header.getOrDefault("X-Amz-Signature")
-  valid_603678 = validateParameter(valid_603678, JString, required = false,
+  if valid_593575 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593575
+  var valid_593576 = header.getOrDefault("X-Amz-Date")
+  valid_593576 = validateParameter(valid_593576, JString, required = false,
                                  default = nil)
-  if valid_603678 != nil:
-    section.add "X-Amz-Signature", valid_603678
-  var valid_603679 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603679 = validateParameter(valid_603679, JString, required = false,
+  if valid_593576 != nil:
+    section.add "X-Amz-Date", valid_593576
+  var valid_593577 = header.getOrDefault("X-Amz-Credential")
+  valid_593577 = validateParameter(valid_593577, JString, required = false,
                                  default = nil)
-  if valid_603679 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603679
-  var valid_603680 = header.getOrDefault("X-Amz-Credential")
-  valid_603680 = validateParameter(valid_603680, JString, required = false,
+  if valid_593577 != nil:
+    section.add "X-Amz-Credential", valid_593577
+  var valid_593578 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593578 = validateParameter(valid_593578, JString, required = false,
                                  default = nil)
-  if valid_603680 != nil:
-    section.add "X-Amz-Credential", valid_603680
+  if valid_593578 != nil:
+    section.add "X-Amz-Security-Token", valid_593578
+  var valid_593579 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593579 = validateParameter(valid_593579, JString, required = false,
+                                 default = nil)
+  if valid_593579 != nil:
+    section.add "X-Amz-Algorithm", valid_593579
+  var valid_593580 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593580 = validateParameter(valid_593580, JString, required = false,
+                                 default = nil)
+  if valid_593580 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593580
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4664,52 +4668,52 @@ proc validate_DescribeVTLDevices_603669(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603682: Call_DescribeVTLDevices_603668; path: JsonNode;
+proc call*(call_593582: Call_DescribeVTLDevices_593568; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a description of virtual tape library (VTL) devices for the specified tape gateway. In the response, AWS Storage Gateway returns VTL device information.</p> <p>This operation is only supported in the tape gateway type.</p>
   ## 
-  let valid = call_603682.validator(path, query, header, formData, body)
-  let scheme = call_603682.pickScheme
+  let valid = call_593582.validator(path, query, header, formData, body)
+  let scheme = call_593582.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603682.url(scheme.get, call_603682.host, call_603682.base,
-                         call_603682.route, valid.getOrDefault("path"),
+  let url = call_593582.url(scheme.get, call_593582.host, call_593582.base,
+                         call_593582.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603682, url, valid)
+  result = hook(call_593582, url, valid)
 
-proc call*(call_603683: Call_DescribeVTLDevices_603668; body: JsonNode;
-          Limit: string = ""; Marker: string = ""): Recallable =
+proc call*(call_593583: Call_DescribeVTLDevices_593568; body: JsonNode;
+          Marker: string = ""; Limit: string = ""): Recallable =
   ## describeVTLDevices
   ## <p>Returns a description of virtual tape library (VTL) devices for the specified tape gateway. In the response, AWS Storage Gateway returns VTL device information.</p> <p>This operation is only supported in the tape gateway type.</p>
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603684 = newJObject()
-  var body_603685 = newJObject()
-  add(query_603684, "Limit", newJString(Limit))
-  add(query_603684, "Marker", newJString(Marker))
+  var query_593584 = newJObject()
+  var body_593585 = newJObject()
+  add(query_593584, "Marker", newJString(Marker))
+  add(query_593584, "Limit", newJString(Limit))
   if body != nil:
-    body_603685 = body
-  result = call_603683.call(nil, query_603684, nil, nil, body_603685)
+    body_593585 = body
+  result = call_593583.call(nil, query_593584, nil, nil, body_593585)
 
-var describeVTLDevices* = Call_DescribeVTLDevices_603668(
+var describeVTLDevices* = Call_DescribeVTLDevices_593568(
     name: "describeVTLDevices", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeVTLDevices",
-    validator: validate_DescribeVTLDevices_603669, base: "/",
-    url: url_DescribeVTLDevices_603670, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeVTLDevices_593569, base: "/",
+    url: url_DescribeVTLDevices_593570, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkingStorage_603686 = ref object of OpenApiRestCall_602467
-proc url_DescribeWorkingStorage_603688(protocol: Scheme; host: string; base: string;
+  Call_DescribeWorkingStorage_593586 = ref object of OpenApiRestCall_592365
+proc url_DescribeWorkingStorage_593588(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeWorkingStorage_603687(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkingStorage_593587(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about the working storage of a gateway. This operation is only supported in the stored volumes gateway type. This operation is deprecated in cached volumes API version (20120630). Use DescribeUploadBuffer instead.</p> <note> <p>Working storage is also referred to as upload buffer. You can also use the DescribeUploadBuffer operation to add upload buffer to a stored volume gateway.</p> </note> <p>The response includes disk IDs that are configured as working storage, and it includes the amount of working storage allocated and used.</p>
   ## 
@@ -4720,57 +4724,57 @@ proc validate_DescribeWorkingStorage_603687(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603689 = header.getOrDefault("X-Amz-Date")
-  valid_603689 = validateParameter(valid_603689, JString, required = false,
-                                 default = nil)
-  if valid_603689 != nil:
-    section.add "X-Amz-Date", valid_603689
-  var valid_603690 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603690 = validateParameter(valid_603690, JString, required = false,
-                                 default = nil)
-  if valid_603690 != nil:
-    section.add "X-Amz-Security-Token", valid_603690
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603691 = header.getOrDefault("X-Amz-Target")
-  valid_603691 = validateParameter(valid_603691, JString, required = true, default = newJString(
+  var valid_593589 = header.getOrDefault("X-Amz-Target")
+  valid_593589 = validateParameter(valid_593589, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeWorkingStorage"))
-  if valid_603691 != nil:
-    section.add "X-Amz-Target", valid_603691
-  var valid_603692 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603692 = validateParameter(valid_603692, JString, required = false,
+  if valid_593589 != nil:
+    section.add "X-Amz-Target", valid_593589
+  var valid_593590 = header.getOrDefault("X-Amz-Signature")
+  valid_593590 = validateParameter(valid_593590, JString, required = false,
                                  default = nil)
-  if valid_603692 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603692
-  var valid_603693 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603693 = validateParameter(valid_603693, JString, required = false,
+  if valid_593590 != nil:
+    section.add "X-Amz-Signature", valid_593590
+  var valid_593591 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593591 = validateParameter(valid_593591, JString, required = false,
                                  default = nil)
-  if valid_603693 != nil:
-    section.add "X-Amz-Algorithm", valid_603693
-  var valid_603694 = header.getOrDefault("X-Amz-Signature")
-  valid_603694 = validateParameter(valid_603694, JString, required = false,
+  if valid_593591 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593591
+  var valid_593592 = header.getOrDefault("X-Amz-Date")
+  valid_593592 = validateParameter(valid_593592, JString, required = false,
                                  default = nil)
-  if valid_603694 != nil:
-    section.add "X-Amz-Signature", valid_603694
-  var valid_603695 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603695 = validateParameter(valid_603695, JString, required = false,
+  if valid_593592 != nil:
+    section.add "X-Amz-Date", valid_593592
+  var valid_593593 = header.getOrDefault("X-Amz-Credential")
+  valid_593593 = validateParameter(valid_593593, JString, required = false,
                                  default = nil)
-  if valid_603695 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603695
-  var valid_603696 = header.getOrDefault("X-Amz-Credential")
-  valid_603696 = validateParameter(valid_603696, JString, required = false,
+  if valid_593593 != nil:
+    section.add "X-Amz-Credential", valid_593593
+  var valid_593594 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593594 = validateParameter(valid_593594, JString, required = false,
                                  default = nil)
-  if valid_603696 != nil:
-    section.add "X-Amz-Credential", valid_603696
+  if valid_593594 != nil:
+    section.add "X-Amz-Security-Token", valid_593594
+  var valid_593595 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593595 = validateParameter(valid_593595, JString, required = false,
+                                 default = nil)
+  if valid_593595 != nil:
+    section.add "X-Amz-Algorithm", valid_593595
+  var valid_593596 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593596 = validateParameter(valid_593596, JString, required = false,
+                                 default = nil)
+  if valid_593596 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593596
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4781,44 +4785,44 @@ proc validate_DescribeWorkingStorage_603687(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603698: Call_DescribeWorkingStorage_603686; path: JsonNode;
+proc call*(call_593598: Call_DescribeWorkingStorage_593586; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the working storage of a gateway. This operation is only supported in the stored volumes gateway type. This operation is deprecated in cached volumes API version (20120630). Use DescribeUploadBuffer instead.</p> <note> <p>Working storage is also referred to as upload buffer. You can also use the DescribeUploadBuffer operation to add upload buffer to a stored volume gateway.</p> </note> <p>The response includes disk IDs that are configured as working storage, and it includes the amount of working storage allocated and used.</p>
   ## 
-  let valid = call_603698.validator(path, query, header, formData, body)
-  let scheme = call_603698.pickScheme
+  let valid = call_593598.validator(path, query, header, formData, body)
+  let scheme = call_593598.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603698.url(scheme.get, call_603698.host, call_603698.base,
-                         call_603698.route, valid.getOrDefault("path"),
+  let url = call_593598.url(scheme.get, call_593598.host, call_593598.base,
+                         call_593598.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603698, url, valid)
+  result = hook(call_593598, url, valid)
 
-proc call*(call_603699: Call_DescribeWorkingStorage_603686; body: JsonNode): Recallable =
+proc call*(call_593599: Call_DescribeWorkingStorage_593586; body: JsonNode): Recallable =
   ## describeWorkingStorage
   ## <p>Returns information about the working storage of a gateway. This operation is only supported in the stored volumes gateway type. This operation is deprecated in cached volumes API version (20120630). Use DescribeUploadBuffer instead.</p> <note> <p>Working storage is also referred to as upload buffer. You can also use the DescribeUploadBuffer operation to add upload buffer to a stored volume gateway.</p> </note> <p>The response includes disk IDs that are configured as working storage, and it includes the amount of working storage allocated and used.</p>
   ##   body: JObject (required)
-  var body_603700 = newJObject()
+  var body_593600 = newJObject()
   if body != nil:
-    body_603700 = body
-  result = call_603699.call(nil, nil, nil, nil, body_603700)
+    body_593600 = body
+  result = call_593599.call(nil, nil, nil, nil, body_593600)
 
-var describeWorkingStorage* = Call_DescribeWorkingStorage_603686(
+var describeWorkingStorage* = Call_DescribeWorkingStorage_593586(
     name: "describeWorkingStorage", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DescribeWorkingStorage",
-    validator: validate_DescribeWorkingStorage_603687, base: "/",
-    url: url_DescribeWorkingStorage_603688, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeWorkingStorage_593587, base: "/",
+    url: url_DescribeWorkingStorage_593588, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetachVolume_603701 = ref object of OpenApiRestCall_602467
-proc url_DetachVolume_603703(protocol: Scheme; host: string; base: string;
+  Call_DetachVolume_593601 = ref object of OpenApiRestCall_592365
+proc url_DetachVolume_593603(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DetachVolume_603702(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DetachVolume_593602(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Disconnects a volume from an iSCSI connection and then detaches the volume from the specified gateway. Detaching and attaching a volume enables you to recover your data from one gateway to a different gateway without creating a snapshot. It also makes it easier to move your volumes from an on-premises gateway to a gateway hosted on an Amazon EC2 instance.
   ## 
@@ -4829,57 +4833,57 @@ proc validate_DetachVolume_603702(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603704 = header.getOrDefault("X-Amz-Date")
-  valid_603704 = validateParameter(valid_603704, JString, required = false,
-                                 default = nil)
-  if valid_603704 != nil:
-    section.add "X-Amz-Date", valid_603704
-  var valid_603705 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603705 = validateParameter(valid_603705, JString, required = false,
-                                 default = nil)
-  if valid_603705 != nil:
-    section.add "X-Amz-Security-Token", valid_603705
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603706 = header.getOrDefault("X-Amz-Target")
-  valid_603706 = validateParameter(valid_603706, JString, required = true, default = newJString(
+  var valid_593604 = header.getOrDefault("X-Amz-Target")
+  valid_593604 = validateParameter(valid_593604, JString, required = true, default = newJString(
       "StorageGateway_20130630.DetachVolume"))
-  if valid_603706 != nil:
-    section.add "X-Amz-Target", valid_603706
-  var valid_603707 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603707 = validateParameter(valid_603707, JString, required = false,
+  if valid_593604 != nil:
+    section.add "X-Amz-Target", valid_593604
+  var valid_593605 = header.getOrDefault("X-Amz-Signature")
+  valid_593605 = validateParameter(valid_593605, JString, required = false,
                                  default = nil)
-  if valid_603707 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603707
-  var valid_603708 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603708 = validateParameter(valid_603708, JString, required = false,
+  if valid_593605 != nil:
+    section.add "X-Amz-Signature", valid_593605
+  var valid_593606 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593606 = validateParameter(valid_593606, JString, required = false,
                                  default = nil)
-  if valid_603708 != nil:
-    section.add "X-Amz-Algorithm", valid_603708
-  var valid_603709 = header.getOrDefault("X-Amz-Signature")
-  valid_603709 = validateParameter(valid_603709, JString, required = false,
+  if valid_593606 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593606
+  var valid_593607 = header.getOrDefault("X-Amz-Date")
+  valid_593607 = validateParameter(valid_593607, JString, required = false,
                                  default = nil)
-  if valid_603709 != nil:
-    section.add "X-Amz-Signature", valid_603709
-  var valid_603710 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603710 = validateParameter(valid_603710, JString, required = false,
+  if valid_593607 != nil:
+    section.add "X-Amz-Date", valid_593607
+  var valid_593608 = header.getOrDefault("X-Amz-Credential")
+  valid_593608 = validateParameter(valid_593608, JString, required = false,
                                  default = nil)
-  if valid_603710 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603710
-  var valid_603711 = header.getOrDefault("X-Amz-Credential")
-  valid_603711 = validateParameter(valid_603711, JString, required = false,
+  if valid_593608 != nil:
+    section.add "X-Amz-Credential", valid_593608
+  var valid_593609 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593609 = validateParameter(valid_593609, JString, required = false,
                                  default = nil)
-  if valid_603711 != nil:
-    section.add "X-Amz-Credential", valid_603711
+  if valid_593609 != nil:
+    section.add "X-Amz-Security-Token", valid_593609
+  var valid_593610 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593610 = validateParameter(valid_593610, JString, required = false,
+                                 default = nil)
+  if valid_593610 != nil:
+    section.add "X-Amz-Algorithm", valid_593610
+  var valid_593611 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593611 = validateParameter(valid_593611, JString, required = false,
+                                 default = nil)
+  if valid_593611 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593611
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4890,43 +4894,43 @@ proc validate_DetachVolume_603702(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603713: Call_DetachVolume_603701; path: JsonNode; query: JsonNode;
+proc call*(call_593613: Call_DetachVolume_593601; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Disconnects a volume from an iSCSI connection and then detaches the volume from the specified gateway. Detaching and attaching a volume enables you to recover your data from one gateway to a different gateway without creating a snapshot. It also makes it easier to move your volumes from an on-premises gateway to a gateway hosted on an Amazon EC2 instance.
   ## 
-  let valid = call_603713.validator(path, query, header, formData, body)
-  let scheme = call_603713.pickScheme
+  let valid = call_593613.validator(path, query, header, formData, body)
+  let scheme = call_593613.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603713.url(scheme.get, call_603713.host, call_603713.base,
-                         call_603713.route, valid.getOrDefault("path"),
+  let url = call_593613.url(scheme.get, call_593613.host, call_593613.base,
+                         call_593613.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603713, url, valid)
+  result = hook(call_593613, url, valid)
 
-proc call*(call_603714: Call_DetachVolume_603701; body: JsonNode): Recallable =
+proc call*(call_593614: Call_DetachVolume_593601; body: JsonNode): Recallable =
   ## detachVolume
   ## Disconnects a volume from an iSCSI connection and then detaches the volume from the specified gateway. Detaching and attaching a volume enables you to recover your data from one gateway to a different gateway without creating a snapshot. It also makes it easier to move your volumes from an on-premises gateway to a gateway hosted on an Amazon EC2 instance.
   ##   body: JObject (required)
-  var body_603715 = newJObject()
+  var body_593615 = newJObject()
   if body != nil:
-    body_603715 = body
-  result = call_603714.call(nil, nil, nil, nil, body_603715)
+    body_593615 = body
+  result = call_593614.call(nil, nil, nil, nil, body_593615)
 
-var detachVolume* = Call_DetachVolume_603701(name: "detachVolume",
+var detachVolume* = Call_DetachVolume_593601(name: "detachVolume",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DetachVolume",
-    validator: validate_DetachVolume_603702, base: "/", url: url_DetachVolume_603703,
+    validator: validate_DetachVolume_593602, base: "/", url: url_DetachVolume_593603,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableGateway_603716 = ref object of OpenApiRestCall_602467
-proc url_DisableGateway_603718(protocol: Scheme; host: string; base: string;
+  Call_DisableGateway_593616 = ref object of OpenApiRestCall_592365
+proc url_DisableGateway_593618(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DisableGateway_603717(path: JsonNode; query: JsonNode;
+proc validate_DisableGateway_593617(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Disables a tape gateway when the gateway is no longer functioning. For example, if your gateway VM is damaged, you can disable the gateway so you can recover virtual tapes.</p> <p>Use this operation for a tape gateway that is not reachable or not functioning. This operation is only supported in the tape gateway type.</p> <important> <p>Once a gateway is disabled it cannot be enabled.</p> </important>
@@ -4938,57 +4942,57 @@ proc validate_DisableGateway_603717(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603719 = header.getOrDefault("X-Amz-Date")
-  valid_603719 = validateParameter(valid_603719, JString, required = false,
-                                 default = nil)
-  if valid_603719 != nil:
-    section.add "X-Amz-Date", valid_603719
-  var valid_603720 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603720 = validateParameter(valid_603720, JString, required = false,
-                                 default = nil)
-  if valid_603720 != nil:
-    section.add "X-Amz-Security-Token", valid_603720
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603721 = header.getOrDefault("X-Amz-Target")
-  valid_603721 = validateParameter(valid_603721, JString, required = true, default = newJString(
+  var valid_593619 = header.getOrDefault("X-Amz-Target")
+  valid_593619 = validateParameter(valid_593619, JString, required = true, default = newJString(
       "StorageGateway_20130630.DisableGateway"))
-  if valid_603721 != nil:
-    section.add "X-Amz-Target", valid_603721
-  var valid_603722 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603722 = validateParameter(valid_603722, JString, required = false,
+  if valid_593619 != nil:
+    section.add "X-Amz-Target", valid_593619
+  var valid_593620 = header.getOrDefault("X-Amz-Signature")
+  valid_593620 = validateParameter(valid_593620, JString, required = false,
                                  default = nil)
-  if valid_603722 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603722
-  var valid_603723 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603723 = validateParameter(valid_603723, JString, required = false,
+  if valid_593620 != nil:
+    section.add "X-Amz-Signature", valid_593620
+  var valid_593621 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593621 = validateParameter(valid_593621, JString, required = false,
                                  default = nil)
-  if valid_603723 != nil:
-    section.add "X-Amz-Algorithm", valid_603723
-  var valid_603724 = header.getOrDefault("X-Amz-Signature")
-  valid_603724 = validateParameter(valid_603724, JString, required = false,
+  if valid_593621 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593621
+  var valid_593622 = header.getOrDefault("X-Amz-Date")
+  valid_593622 = validateParameter(valid_593622, JString, required = false,
                                  default = nil)
-  if valid_603724 != nil:
-    section.add "X-Amz-Signature", valid_603724
-  var valid_603725 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603725 = validateParameter(valid_603725, JString, required = false,
+  if valid_593622 != nil:
+    section.add "X-Amz-Date", valid_593622
+  var valid_593623 = header.getOrDefault("X-Amz-Credential")
+  valid_593623 = validateParameter(valid_593623, JString, required = false,
                                  default = nil)
-  if valid_603725 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603725
-  var valid_603726 = header.getOrDefault("X-Amz-Credential")
-  valid_603726 = validateParameter(valid_603726, JString, required = false,
+  if valid_593623 != nil:
+    section.add "X-Amz-Credential", valid_593623
+  var valid_593624 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593624 = validateParameter(valid_593624, JString, required = false,
                                  default = nil)
-  if valid_603726 != nil:
-    section.add "X-Amz-Credential", valid_603726
+  if valid_593624 != nil:
+    section.add "X-Amz-Security-Token", valid_593624
+  var valid_593625 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593625 = validateParameter(valid_593625, JString, required = false,
+                                 default = nil)
+  if valid_593625 != nil:
+    section.add "X-Amz-Algorithm", valid_593625
+  var valid_593626 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593626 = validateParameter(valid_593626, JString, required = false,
+                                 default = nil)
+  if valid_593626 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593626
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4999,43 +5003,43 @@ proc validate_DisableGateway_603717(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603728: Call_DisableGateway_603716; path: JsonNode; query: JsonNode;
+proc call*(call_593628: Call_DisableGateway_593616; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Disables a tape gateway when the gateway is no longer functioning. For example, if your gateway VM is damaged, you can disable the gateway so you can recover virtual tapes.</p> <p>Use this operation for a tape gateway that is not reachable or not functioning. This operation is only supported in the tape gateway type.</p> <important> <p>Once a gateway is disabled it cannot be enabled.</p> </important>
   ## 
-  let valid = call_603728.validator(path, query, header, formData, body)
-  let scheme = call_603728.pickScheme
+  let valid = call_593628.validator(path, query, header, formData, body)
+  let scheme = call_593628.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603728.url(scheme.get, call_603728.host, call_603728.base,
-                         call_603728.route, valid.getOrDefault("path"),
+  let url = call_593628.url(scheme.get, call_593628.host, call_593628.base,
+                         call_593628.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603728, url, valid)
+  result = hook(call_593628, url, valid)
 
-proc call*(call_603729: Call_DisableGateway_603716; body: JsonNode): Recallable =
+proc call*(call_593629: Call_DisableGateway_593616; body: JsonNode): Recallable =
   ## disableGateway
   ## <p>Disables a tape gateway when the gateway is no longer functioning. For example, if your gateway VM is damaged, you can disable the gateway so you can recover virtual tapes.</p> <p>Use this operation for a tape gateway that is not reachable or not functioning. This operation is only supported in the tape gateway type.</p> <important> <p>Once a gateway is disabled it cannot be enabled.</p> </important>
   ##   body: JObject (required)
-  var body_603730 = newJObject()
+  var body_593630 = newJObject()
   if body != nil:
-    body_603730 = body
-  result = call_603729.call(nil, nil, nil, nil, body_603730)
+    body_593630 = body
+  result = call_593629.call(nil, nil, nil, nil, body_593630)
 
-var disableGateway* = Call_DisableGateway_603716(name: "disableGateway",
+var disableGateway* = Call_DisableGateway_593616(name: "disableGateway",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.DisableGateway",
-    validator: validate_DisableGateway_603717, base: "/", url: url_DisableGateway_603718,
+    validator: validate_DisableGateway_593617, base: "/", url: url_DisableGateway_593618,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_JoinDomain_603731 = ref object of OpenApiRestCall_602467
-proc url_JoinDomain_603733(protocol: Scheme; host: string; base: string; route: string;
+  Call_JoinDomain_593631 = ref object of OpenApiRestCall_592365
+proc url_JoinDomain_593633(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_JoinDomain_603732(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_JoinDomain_593632(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds a file gateway to an Active Directory domain. This operation is only supported for file gateways that support the SMB file protocol.
   ## 
@@ -5046,57 +5050,57 @@ proc validate_JoinDomain_603732(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603734 = header.getOrDefault("X-Amz-Date")
-  valid_603734 = validateParameter(valid_603734, JString, required = false,
-                                 default = nil)
-  if valid_603734 != nil:
-    section.add "X-Amz-Date", valid_603734
-  var valid_603735 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603735 = validateParameter(valid_603735, JString, required = false,
-                                 default = nil)
-  if valid_603735 != nil:
-    section.add "X-Amz-Security-Token", valid_603735
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603736 = header.getOrDefault("X-Amz-Target")
-  valid_603736 = validateParameter(valid_603736, JString, required = true, default = newJString(
+  var valid_593634 = header.getOrDefault("X-Amz-Target")
+  valid_593634 = validateParameter(valid_593634, JString, required = true, default = newJString(
       "StorageGateway_20130630.JoinDomain"))
-  if valid_603736 != nil:
-    section.add "X-Amz-Target", valid_603736
-  var valid_603737 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603737 = validateParameter(valid_603737, JString, required = false,
+  if valid_593634 != nil:
+    section.add "X-Amz-Target", valid_593634
+  var valid_593635 = header.getOrDefault("X-Amz-Signature")
+  valid_593635 = validateParameter(valid_593635, JString, required = false,
                                  default = nil)
-  if valid_603737 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603737
-  var valid_603738 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603738 = validateParameter(valid_603738, JString, required = false,
+  if valid_593635 != nil:
+    section.add "X-Amz-Signature", valid_593635
+  var valid_593636 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593636 = validateParameter(valid_593636, JString, required = false,
                                  default = nil)
-  if valid_603738 != nil:
-    section.add "X-Amz-Algorithm", valid_603738
-  var valid_603739 = header.getOrDefault("X-Amz-Signature")
-  valid_603739 = validateParameter(valid_603739, JString, required = false,
+  if valid_593636 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593636
+  var valid_593637 = header.getOrDefault("X-Amz-Date")
+  valid_593637 = validateParameter(valid_593637, JString, required = false,
                                  default = nil)
-  if valid_603739 != nil:
-    section.add "X-Amz-Signature", valid_603739
-  var valid_603740 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603740 = validateParameter(valid_603740, JString, required = false,
+  if valid_593637 != nil:
+    section.add "X-Amz-Date", valid_593637
+  var valid_593638 = header.getOrDefault("X-Amz-Credential")
+  valid_593638 = validateParameter(valid_593638, JString, required = false,
                                  default = nil)
-  if valid_603740 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603740
-  var valid_603741 = header.getOrDefault("X-Amz-Credential")
-  valid_603741 = validateParameter(valid_603741, JString, required = false,
+  if valid_593638 != nil:
+    section.add "X-Amz-Credential", valid_593638
+  var valid_593639 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593639 = validateParameter(valid_593639, JString, required = false,
                                  default = nil)
-  if valid_603741 != nil:
-    section.add "X-Amz-Credential", valid_603741
+  if valid_593639 != nil:
+    section.add "X-Amz-Security-Token", valid_593639
+  var valid_593640 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593640 = validateParameter(valid_593640, JString, required = false,
+                                 default = nil)
+  if valid_593640 != nil:
+    section.add "X-Amz-Algorithm", valid_593640
+  var valid_593641 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593641 = validateParameter(valid_593641, JString, required = false,
+                                 default = nil)
+  if valid_593641 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593641
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5107,44 +5111,44 @@ proc validate_JoinDomain_603732(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603743: Call_JoinDomain_603731; path: JsonNode; query: JsonNode;
+proc call*(call_593643: Call_JoinDomain_593631; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds a file gateway to an Active Directory domain. This operation is only supported for file gateways that support the SMB file protocol.
   ## 
-  let valid = call_603743.validator(path, query, header, formData, body)
-  let scheme = call_603743.pickScheme
+  let valid = call_593643.validator(path, query, header, formData, body)
+  let scheme = call_593643.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603743.url(scheme.get, call_603743.host, call_603743.base,
-                         call_603743.route, valid.getOrDefault("path"),
+  let url = call_593643.url(scheme.get, call_593643.host, call_593643.base,
+                         call_593643.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603743, url, valid)
+  result = hook(call_593643, url, valid)
 
-proc call*(call_603744: Call_JoinDomain_603731; body: JsonNode): Recallable =
+proc call*(call_593644: Call_JoinDomain_593631; body: JsonNode): Recallable =
   ## joinDomain
   ## Adds a file gateway to an Active Directory domain. This operation is only supported for file gateways that support the SMB file protocol.
   ##   body: JObject (required)
-  var body_603745 = newJObject()
+  var body_593645 = newJObject()
   if body != nil:
-    body_603745 = body
-  result = call_603744.call(nil, nil, nil, nil, body_603745)
+    body_593645 = body
+  result = call_593644.call(nil, nil, nil, nil, body_593645)
 
-var joinDomain* = Call_JoinDomain_603731(name: "joinDomain",
+var joinDomain* = Call_JoinDomain_593631(name: "joinDomain",
                                       meth: HttpMethod.HttpPost,
                                       host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.JoinDomain",
-                                      validator: validate_JoinDomain_603732,
-                                      base: "/", url: url_JoinDomain_603733,
+                                      validator: validate_JoinDomain_593632,
+                                      base: "/", url: url_JoinDomain_593633,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListFileShares_603746 = ref object of OpenApiRestCall_602467
-proc url_ListFileShares_603748(protocol: Scheme; host: string; base: string;
+  Call_ListFileShares_593646 = ref object of OpenApiRestCall_592365
+proc url_ListFileShares_593648(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListFileShares_603747(path: JsonNode; query: JsonNode;
+proc validate_ListFileShares_593647(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Gets a list of the file shares for a specific file gateway, or the list of file shares that belong to the calling user account. This operation is only supported for file gateways.
@@ -5154,74 +5158,74 @@ proc validate_ListFileShares_603747(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603749 = query.getOrDefault("Limit")
-  valid_603749 = validateParameter(valid_603749, JString, required = false,
+  var valid_593649 = query.getOrDefault("Marker")
+  valid_593649 = validateParameter(valid_593649, JString, required = false,
                                  default = nil)
-  if valid_603749 != nil:
-    section.add "Limit", valid_603749
-  var valid_603750 = query.getOrDefault("Marker")
-  valid_603750 = validateParameter(valid_603750, JString, required = false,
+  if valid_593649 != nil:
+    section.add "Marker", valid_593649
+  var valid_593650 = query.getOrDefault("Limit")
+  valid_593650 = validateParameter(valid_593650, JString, required = false,
                                  default = nil)
-  if valid_603750 != nil:
-    section.add "Marker", valid_603750
+  if valid_593650 != nil:
+    section.add "Limit", valid_593650
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603751 = header.getOrDefault("X-Amz-Date")
-  valid_603751 = validateParameter(valid_603751, JString, required = false,
-                                 default = nil)
-  if valid_603751 != nil:
-    section.add "X-Amz-Date", valid_603751
-  var valid_603752 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603752 = validateParameter(valid_603752, JString, required = false,
-                                 default = nil)
-  if valid_603752 != nil:
-    section.add "X-Amz-Security-Token", valid_603752
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603753 = header.getOrDefault("X-Amz-Target")
-  valid_603753 = validateParameter(valid_603753, JString, required = true, default = newJString(
+  var valid_593651 = header.getOrDefault("X-Amz-Target")
+  valid_593651 = validateParameter(valid_593651, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListFileShares"))
-  if valid_603753 != nil:
-    section.add "X-Amz-Target", valid_603753
-  var valid_603754 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603754 = validateParameter(valid_603754, JString, required = false,
+  if valid_593651 != nil:
+    section.add "X-Amz-Target", valid_593651
+  var valid_593652 = header.getOrDefault("X-Amz-Signature")
+  valid_593652 = validateParameter(valid_593652, JString, required = false,
                                  default = nil)
-  if valid_603754 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603754
-  var valid_603755 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603755 = validateParameter(valid_603755, JString, required = false,
+  if valid_593652 != nil:
+    section.add "X-Amz-Signature", valid_593652
+  var valid_593653 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593653 = validateParameter(valid_593653, JString, required = false,
                                  default = nil)
-  if valid_603755 != nil:
-    section.add "X-Amz-Algorithm", valid_603755
-  var valid_603756 = header.getOrDefault("X-Amz-Signature")
-  valid_603756 = validateParameter(valid_603756, JString, required = false,
+  if valid_593653 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593653
+  var valid_593654 = header.getOrDefault("X-Amz-Date")
+  valid_593654 = validateParameter(valid_593654, JString, required = false,
                                  default = nil)
-  if valid_603756 != nil:
-    section.add "X-Amz-Signature", valid_603756
-  var valid_603757 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603757 = validateParameter(valid_603757, JString, required = false,
+  if valid_593654 != nil:
+    section.add "X-Amz-Date", valid_593654
+  var valid_593655 = header.getOrDefault("X-Amz-Credential")
+  valid_593655 = validateParameter(valid_593655, JString, required = false,
                                  default = nil)
-  if valid_603757 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603757
-  var valid_603758 = header.getOrDefault("X-Amz-Credential")
-  valid_603758 = validateParameter(valid_603758, JString, required = false,
+  if valid_593655 != nil:
+    section.add "X-Amz-Credential", valid_593655
+  var valid_593656 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593656 = validateParameter(valid_593656, JString, required = false,
                                  default = nil)
-  if valid_603758 != nil:
-    section.add "X-Amz-Credential", valid_603758
+  if valid_593656 != nil:
+    section.add "X-Amz-Security-Token", valid_593656
+  var valid_593657 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593657 = validateParameter(valid_593657, JString, required = false,
+                                 default = nil)
+  if valid_593657 != nil:
+    section.add "X-Amz-Algorithm", valid_593657
+  var valid_593658 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593658 = validateParameter(valid_593658, JString, required = false,
+                                 default = nil)
+  if valid_593658 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593658
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5232,51 +5236,51 @@ proc validate_ListFileShares_603747(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603760: Call_ListFileShares_603746; path: JsonNode; query: JsonNode;
+proc call*(call_593660: Call_ListFileShares_593646; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of the file shares for a specific file gateway, or the list of file shares that belong to the calling user account. This operation is only supported for file gateways.
   ## 
-  let valid = call_603760.validator(path, query, header, formData, body)
-  let scheme = call_603760.pickScheme
+  let valid = call_593660.validator(path, query, header, formData, body)
+  let scheme = call_593660.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603760.url(scheme.get, call_603760.host, call_603760.base,
-                         call_603760.route, valid.getOrDefault("path"),
+  let url = call_593660.url(scheme.get, call_593660.host, call_593660.base,
+                         call_593660.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603760, url, valid)
+  result = hook(call_593660, url, valid)
 
-proc call*(call_603761: Call_ListFileShares_603746; body: JsonNode;
-          Limit: string = ""; Marker: string = ""): Recallable =
+proc call*(call_593661: Call_ListFileShares_593646; body: JsonNode;
+          Marker: string = ""; Limit: string = ""): Recallable =
   ## listFileShares
   ## Gets a list of the file shares for a specific file gateway, or the list of file shares that belong to the calling user account. This operation is only supported for file gateways.
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603762 = newJObject()
-  var body_603763 = newJObject()
-  add(query_603762, "Limit", newJString(Limit))
-  add(query_603762, "Marker", newJString(Marker))
+  var query_593662 = newJObject()
+  var body_593663 = newJObject()
+  add(query_593662, "Marker", newJString(Marker))
+  add(query_593662, "Limit", newJString(Limit))
   if body != nil:
-    body_603763 = body
-  result = call_603761.call(nil, query_603762, nil, nil, body_603763)
+    body_593663 = body
+  result = call_593661.call(nil, query_593662, nil, nil, body_593663)
 
-var listFileShares* = Call_ListFileShares_603746(name: "listFileShares",
+var listFileShares* = Call_ListFileShares_593646(name: "listFileShares",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.ListFileShares",
-    validator: validate_ListFileShares_603747, base: "/", url: url_ListFileShares_603748,
+    validator: validate_ListFileShares_593647, base: "/", url: url_ListFileShares_593648,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListGateways_603764 = ref object of OpenApiRestCall_602467
-proc url_ListGateways_603766(protocol: Scheme; host: string; base: string;
+  Call_ListGateways_593664 = ref object of OpenApiRestCall_592365
+proc url_ListGateways_593666(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListGateways_603765(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListGateways_593665(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists gateways owned by an AWS account in an AWS Region specified in the request. The returned list is ordered by gateway Amazon Resource Name (ARN).</p> <p>By default, the operation returns a maximum of 100 gateways. This operation supports pagination that allows you to optionally reduce the number of gateways returned in a response.</p> <p>If you have more gateways than are returned in a response (that is, the response returns only a truncated list of your gateways), the response contains a marker that you can specify in your next request to fetch the next page of gateways.</p>
   ## 
@@ -5285,74 +5289,74 @@ proc validate_ListGateways_603765(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603767 = query.getOrDefault("Limit")
-  valid_603767 = validateParameter(valid_603767, JString, required = false,
+  var valid_593667 = query.getOrDefault("Marker")
+  valid_593667 = validateParameter(valid_593667, JString, required = false,
                                  default = nil)
-  if valid_603767 != nil:
-    section.add "Limit", valid_603767
-  var valid_603768 = query.getOrDefault("Marker")
-  valid_603768 = validateParameter(valid_603768, JString, required = false,
+  if valid_593667 != nil:
+    section.add "Marker", valid_593667
+  var valid_593668 = query.getOrDefault("Limit")
+  valid_593668 = validateParameter(valid_593668, JString, required = false,
                                  default = nil)
-  if valid_603768 != nil:
-    section.add "Marker", valid_603768
+  if valid_593668 != nil:
+    section.add "Limit", valid_593668
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603769 = header.getOrDefault("X-Amz-Date")
-  valid_603769 = validateParameter(valid_603769, JString, required = false,
-                                 default = nil)
-  if valid_603769 != nil:
-    section.add "X-Amz-Date", valid_603769
-  var valid_603770 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603770 = validateParameter(valid_603770, JString, required = false,
-                                 default = nil)
-  if valid_603770 != nil:
-    section.add "X-Amz-Security-Token", valid_603770
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603771 = header.getOrDefault("X-Amz-Target")
-  valid_603771 = validateParameter(valid_603771, JString, required = true, default = newJString(
+  var valid_593669 = header.getOrDefault("X-Amz-Target")
+  valid_593669 = validateParameter(valid_593669, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListGateways"))
-  if valid_603771 != nil:
-    section.add "X-Amz-Target", valid_603771
-  var valid_603772 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603772 = validateParameter(valid_603772, JString, required = false,
+  if valid_593669 != nil:
+    section.add "X-Amz-Target", valid_593669
+  var valid_593670 = header.getOrDefault("X-Amz-Signature")
+  valid_593670 = validateParameter(valid_593670, JString, required = false,
                                  default = nil)
-  if valid_603772 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603772
-  var valid_603773 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603773 = validateParameter(valid_603773, JString, required = false,
+  if valid_593670 != nil:
+    section.add "X-Amz-Signature", valid_593670
+  var valid_593671 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593671 = validateParameter(valid_593671, JString, required = false,
                                  default = nil)
-  if valid_603773 != nil:
-    section.add "X-Amz-Algorithm", valid_603773
-  var valid_603774 = header.getOrDefault("X-Amz-Signature")
-  valid_603774 = validateParameter(valid_603774, JString, required = false,
+  if valid_593671 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593671
+  var valid_593672 = header.getOrDefault("X-Amz-Date")
+  valid_593672 = validateParameter(valid_593672, JString, required = false,
                                  default = nil)
-  if valid_603774 != nil:
-    section.add "X-Amz-Signature", valid_603774
-  var valid_603775 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603775 = validateParameter(valid_603775, JString, required = false,
+  if valid_593672 != nil:
+    section.add "X-Amz-Date", valid_593672
+  var valid_593673 = header.getOrDefault("X-Amz-Credential")
+  valid_593673 = validateParameter(valid_593673, JString, required = false,
                                  default = nil)
-  if valid_603775 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603775
-  var valid_603776 = header.getOrDefault("X-Amz-Credential")
-  valid_603776 = validateParameter(valid_603776, JString, required = false,
+  if valid_593673 != nil:
+    section.add "X-Amz-Credential", valid_593673
+  var valid_593674 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593674 = validateParameter(valid_593674, JString, required = false,
                                  default = nil)
-  if valid_603776 != nil:
-    section.add "X-Amz-Credential", valid_603776
+  if valid_593674 != nil:
+    section.add "X-Amz-Security-Token", valid_593674
+  var valid_593675 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593675 = validateParameter(valid_593675, JString, required = false,
+                                 default = nil)
+  if valid_593675 != nil:
+    section.add "X-Amz-Algorithm", valid_593675
+  var valid_593676 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593676 = validateParameter(valid_593676, JString, required = false,
+                                 default = nil)
+  if valid_593676 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593676
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5363,51 +5367,51 @@ proc validate_ListGateways_603765(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603778: Call_ListGateways_603764; path: JsonNode; query: JsonNode;
+proc call*(call_593678: Call_ListGateways_593664; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists gateways owned by an AWS account in an AWS Region specified in the request. The returned list is ordered by gateway Amazon Resource Name (ARN).</p> <p>By default, the operation returns a maximum of 100 gateways. This operation supports pagination that allows you to optionally reduce the number of gateways returned in a response.</p> <p>If you have more gateways than are returned in a response (that is, the response returns only a truncated list of your gateways), the response contains a marker that you can specify in your next request to fetch the next page of gateways.</p>
   ## 
-  let valid = call_603778.validator(path, query, header, formData, body)
-  let scheme = call_603778.pickScheme
+  let valid = call_593678.validator(path, query, header, formData, body)
+  let scheme = call_593678.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603778.url(scheme.get, call_603778.host, call_603778.base,
-                         call_603778.route, valid.getOrDefault("path"),
+  let url = call_593678.url(scheme.get, call_593678.host, call_593678.base,
+                         call_593678.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603778, url, valid)
+  result = hook(call_593678, url, valid)
 
-proc call*(call_603779: Call_ListGateways_603764; body: JsonNode; Limit: string = "";
-          Marker: string = ""): Recallable =
+proc call*(call_593679: Call_ListGateways_593664; body: JsonNode;
+          Marker: string = ""; Limit: string = ""): Recallable =
   ## listGateways
   ## <p>Lists gateways owned by an AWS account in an AWS Region specified in the request. The returned list is ordered by gateway Amazon Resource Name (ARN).</p> <p>By default, the operation returns a maximum of 100 gateways. This operation supports pagination that allows you to optionally reduce the number of gateways returned in a response.</p> <p>If you have more gateways than are returned in a response (that is, the response returns only a truncated list of your gateways), the response contains a marker that you can specify in your next request to fetch the next page of gateways.</p>
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603780 = newJObject()
-  var body_603781 = newJObject()
-  add(query_603780, "Limit", newJString(Limit))
-  add(query_603780, "Marker", newJString(Marker))
+  var query_593680 = newJObject()
+  var body_593681 = newJObject()
+  add(query_593680, "Marker", newJString(Marker))
+  add(query_593680, "Limit", newJString(Limit))
   if body != nil:
-    body_603781 = body
-  result = call_603779.call(nil, query_603780, nil, nil, body_603781)
+    body_593681 = body
+  result = call_593679.call(nil, query_593680, nil, nil, body_593681)
 
-var listGateways* = Call_ListGateways_603764(name: "listGateways",
+var listGateways* = Call_ListGateways_593664(name: "listGateways",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.ListGateways",
-    validator: validate_ListGateways_603765, base: "/", url: url_ListGateways_603766,
+    validator: validate_ListGateways_593665, base: "/", url: url_ListGateways_593666,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListLocalDisks_603782 = ref object of OpenApiRestCall_602467
-proc url_ListLocalDisks_603784(protocol: Scheme; host: string; base: string;
+  Call_ListLocalDisks_593682 = ref object of OpenApiRestCall_592365
+proc url_ListLocalDisks_593684(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListLocalDisks_603783(path: JsonNode; query: JsonNode;
+proc validate_ListLocalDisks_593683(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns a list of the gateway's local disks. To specify which gateway to describe, you use the Amazon Resource Name (ARN) of the gateway in the body of the request.</p> <p>The request returns a list of all disks, specifying which are configured as working storage, cache storage, or stored volume or not configured at all. The response includes a <code>DiskStatus</code> field. This field can have a value of present (the disk is available to use), missing (the disk is no longer connected to the gateway), or mismatch (the disk node is occupied by a disk that has incorrect metadata or the disk content is corrupted).</p>
@@ -5419,57 +5423,57 @@ proc validate_ListLocalDisks_603783(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603785 = header.getOrDefault("X-Amz-Date")
-  valid_603785 = validateParameter(valid_603785, JString, required = false,
-                                 default = nil)
-  if valid_603785 != nil:
-    section.add "X-Amz-Date", valid_603785
-  var valid_603786 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603786 = validateParameter(valid_603786, JString, required = false,
-                                 default = nil)
-  if valid_603786 != nil:
-    section.add "X-Amz-Security-Token", valid_603786
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603787 = header.getOrDefault("X-Amz-Target")
-  valid_603787 = validateParameter(valid_603787, JString, required = true, default = newJString(
+  var valid_593685 = header.getOrDefault("X-Amz-Target")
+  valid_593685 = validateParameter(valid_593685, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListLocalDisks"))
-  if valid_603787 != nil:
-    section.add "X-Amz-Target", valid_603787
-  var valid_603788 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603788 = validateParameter(valid_603788, JString, required = false,
+  if valid_593685 != nil:
+    section.add "X-Amz-Target", valid_593685
+  var valid_593686 = header.getOrDefault("X-Amz-Signature")
+  valid_593686 = validateParameter(valid_593686, JString, required = false,
                                  default = nil)
-  if valid_603788 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603788
-  var valid_603789 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603789 = validateParameter(valid_603789, JString, required = false,
+  if valid_593686 != nil:
+    section.add "X-Amz-Signature", valid_593686
+  var valid_593687 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593687 = validateParameter(valid_593687, JString, required = false,
                                  default = nil)
-  if valid_603789 != nil:
-    section.add "X-Amz-Algorithm", valid_603789
-  var valid_603790 = header.getOrDefault("X-Amz-Signature")
-  valid_603790 = validateParameter(valid_603790, JString, required = false,
+  if valid_593687 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593687
+  var valid_593688 = header.getOrDefault("X-Amz-Date")
+  valid_593688 = validateParameter(valid_593688, JString, required = false,
                                  default = nil)
-  if valid_603790 != nil:
-    section.add "X-Amz-Signature", valid_603790
-  var valid_603791 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603791 = validateParameter(valid_603791, JString, required = false,
+  if valid_593688 != nil:
+    section.add "X-Amz-Date", valid_593688
+  var valid_593689 = header.getOrDefault("X-Amz-Credential")
+  valid_593689 = validateParameter(valid_593689, JString, required = false,
                                  default = nil)
-  if valid_603791 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603791
-  var valid_603792 = header.getOrDefault("X-Amz-Credential")
-  valid_603792 = validateParameter(valid_603792, JString, required = false,
+  if valid_593689 != nil:
+    section.add "X-Amz-Credential", valid_593689
+  var valid_593690 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593690 = validateParameter(valid_593690, JString, required = false,
                                  default = nil)
-  if valid_603792 != nil:
-    section.add "X-Amz-Credential", valid_603792
+  if valid_593690 != nil:
+    section.add "X-Amz-Security-Token", valid_593690
+  var valid_593691 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593691 = validateParameter(valid_593691, JString, required = false,
+                                 default = nil)
+  if valid_593691 != nil:
+    section.add "X-Amz-Algorithm", valid_593691
+  var valid_593692 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593692 = validateParameter(valid_593692, JString, required = false,
+                                 default = nil)
+  if valid_593692 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593692
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5480,43 +5484,43 @@ proc validate_ListLocalDisks_603783(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603794: Call_ListLocalDisks_603782; path: JsonNode; query: JsonNode;
+proc call*(call_593694: Call_ListLocalDisks_593682; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of the gateway's local disks. To specify which gateway to describe, you use the Amazon Resource Name (ARN) of the gateway in the body of the request.</p> <p>The request returns a list of all disks, specifying which are configured as working storage, cache storage, or stored volume or not configured at all. The response includes a <code>DiskStatus</code> field. This field can have a value of present (the disk is available to use), missing (the disk is no longer connected to the gateway), or mismatch (the disk node is occupied by a disk that has incorrect metadata or the disk content is corrupted).</p>
   ## 
-  let valid = call_603794.validator(path, query, header, formData, body)
-  let scheme = call_603794.pickScheme
+  let valid = call_593694.validator(path, query, header, formData, body)
+  let scheme = call_593694.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603794.url(scheme.get, call_603794.host, call_603794.base,
-                         call_603794.route, valid.getOrDefault("path"),
+  let url = call_593694.url(scheme.get, call_593694.host, call_593694.base,
+                         call_593694.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603794, url, valid)
+  result = hook(call_593694, url, valid)
 
-proc call*(call_603795: Call_ListLocalDisks_603782; body: JsonNode): Recallable =
+proc call*(call_593695: Call_ListLocalDisks_593682; body: JsonNode): Recallable =
   ## listLocalDisks
   ## <p>Returns a list of the gateway's local disks. To specify which gateway to describe, you use the Amazon Resource Name (ARN) of the gateway in the body of the request.</p> <p>The request returns a list of all disks, specifying which are configured as working storage, cache storage, or stored volume or not configured at all. The response includes a <code>DiskStatus</code> field. This field can have a value of present (the disk is available to use), missing (the disk is no longer connected to the gateway), or mismatch (the disk node is occupied by a disk that has incorrect metadata or the disk content is corrupted).</p>
   ##   body: JObject (required)
-  var body_603796 = newJObject()
+  var body_593696 = newJObject()
   if body != nil:
-    body_603796 = body
-  result = call_603795.call(nil, nil, nil, nil, body_603796)
+    body_593696 = body
+  result = call_593695.call(nil, nil, nil, nil, body_593696)
 
-var listLocalDisks* = Call_ListLocalDisks_603782(name: "listLocalDisks",
+var listLocalDisks* = Call_ListLocalDisks_593682(name: "listLocalDisks",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.ListLocalDisks",
-    validator: validate_ListLocalDisks_603783, base: "/", url: url_ListLocalDisks_603784,
+    validator: validate_ListLocalDisks_593683, base: "/", url: url_ListLocalDisks_593684,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_603797 = ref object of OpenApiRestCall_602467
-proc url_ListTagsForResource_603799(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_593697 = ref object of OpenApiRestCall_592365
+proc url_ListTagsForResource_593699(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListTagsForResource_603798(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_593698(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lists the tags that have been added to the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway type.
@@ -5526,74 +5530,74 @@ proc validate_ListTagsForResource_603798(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603800 = query.getOrDefault("Limit")
-  valid_603800 = validateParameter(valid_603800, JString, required = false,
+  var valid_593700 = query.getOrDefault("Marker")
+  valid_593700 = validateParameter(valid_593700, JString, required = false,
                                  default = nil)
-  if valid_603800 != nil:
-    section.add "Limit", valid_603800
-  var valid_603801 = query.getOrDefault("Marker")
-  valid_603801 = validateParameter(valid_603801, JString, required = false,
+  if valid_593700 != nil:
+    section.add "Marker", valid_593700
+  var valid_593701 = query.getOrDefault("Limit")
+  valid_593701 = validateParameter(valid_593701, JString, required = false,
                                  default = nil)
-  if valid_603801 != nil:
-    section.add "Marker", valid_603801
+  if valid_593701 != nil:
+    section.add "Limit", valid_593701
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603802 = header.getOrDefault("X-Amz-Date")
-  valid_603802 = validateParameter(valid_603802, JString, required = false,
-                                 default = nil)
-  if valid_603802 != nil:
-    section.add "X-Amz-Date", valid_603802
-  var valid_603803 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603803 = validateParameter(valid_603803, JString, required = false,
-                                 default = nil)
-  if valid_603803 != nil:
-    section.add "X-Amz-Security-Token", valid_603803
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603804 = header.getOrDefault("X-Amz-Target")
-  valid_603804 = validateParameter(valid_603804, JString, required = true, default = newJString(
+  var valid_593702 = header.getOrDefault("X-Amz-Target")
+  valid_593702 = validateParameter(valid_593702, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListTagsForResource"))
-  if valid_603804 != nil:
-    section.add "X-Amz-Target", valid_603804
-  var valid_603805 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603805 = validateParameter(valid_603805, JString, required = false,
+  if valid_593702 != nil:
+    section.add "X-Amz-Target", valid_593702
+  var valid_593703 = header.getOrDefault("X-Amz-Signature")
+  valid_593703 = validateParameter(valid_593703, JString, required = false,
                                  default = nil)
-  if valid_603805 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603805
-  var valid_603806 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603806 = validateParameter(valid_603806, JString, required = false,
+  if valid_593703 != nil:
+    section.add "X-Amz-Signature", valid_593703
+  var valid_593704 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593704 = validateParameter(valid_593704, JString, required = false,
                                  default = nil)
-  if valid_603806 != nil:
-    section.add "X-Amz-Algorithm", valid_603806
-  var valid_603807 = header.getOrDefault("X-Amz-Signature")
-  valid_603807 = validateParameter(valid_603807, JString, required = false,
+  if valid_593704 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593704
+  var valid_593705 = header.getOrDefault("X-Amz-Date")
+  valid_593705 = validateParameter(valid_593705, JString, required = false,
                                  default = nil)
-  if valid_603807 != nil:
-    section.add "X-Amz-Signature", valid_603807
-  var valid_603808 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603808 = validateParameter(valid_603808, JString, required = false,
+  if valid_593705 != nil:
+    section.add "X-Amz-Date", valid_593705
+  var valid_593706 = header.getOrDefault("X-Amz-Credential")
+  valid_593706 = validateParameter(valid_593706, JString, required = false,
                                  default = nil)
-  if valid_603808 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603808
-  var valid_603809 = header.getOrDefault("X-Amz-Credential")
-  valid_603809 = validateParameter(valid_603809, JString, required = false,
+  if valid_593706 != nil:
+    section.add "X-Amz-Credential", valid_593706
+  var valid_593707 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593707 = validateParameter(valid_593707, JString, required = false,
                                  default = nil)
-  if valid_603809 != nil:
-    section.add "X-Amz-Credential", valid_603809
+  if valid_593707 != nil:
+    section.add "X-Amz-Security-Token", valid_593707
+  var valid_593708 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593708 = validateParameter(valid_593708, JString, required = false,
+                                 default = nil)
+  if valid_593708 != nil:
+    section.add "X-Amz-Algorithm", valid_593708
+  var valid_593709 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593709 = validateParameter(valid_593709, JString, required = false,
+                                 default = nil)
+  if valid_593709 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593709
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5604,52 +5608,52 @@ proc validate_ListTagsForResource_603798(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603811: Call_ListTagsForResource_603797; path: JsonNode;
+proc call*(call_593711: Call_ListTagsForResource_593697; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the tags that have been added to the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway type.
   ## 
-  let valid = call_603811.validator(path, query, header, formData, body)
-  let scheme = call_603811.pickScheme
+  let valid = call_593711.validator(path, query, header, formData, body)
+  let scheme = call_593711.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603811.url(scheme.get, call_603811.host, call_603811.base,
-                         call_603811.route, valid.getOrDefault("path"),
+  let url = call_593711.url(scheme.get, call_593711.host, call_593711.base,
+                         call_593711.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603811, url, valid)
+  result = hook(call_593711, url, valid)
 
-proc call*(call_603812: Call_ListTagsForResource_603797; body: JsonNode;
-          Limit: string = ""; Marker: string = ""): Recallable =
+proc call*(call_593712: Call_ListTagsForResource_593697; body: JsonNode;
+          Marker: string = ""; Limit: string = ""): Recallable =
   ## listTagsForResource
   ## Lists the tags that have been added to the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway type.
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603813 = newJObject()
-  var body_603814 = newJObject()
-  add(query_603813, "Limit", newJString(Limit))
-  add(query_603813, "Marker", newJString(Marker))
+  var query_593713 = newJObject()
+  var body_593714 = newJObject()
+  add(query_593713, "Marker", newJString(Marker))
+  add(query_593713, "Limit", newJString(Limit))
   if body != nil:
-    body_603814 = body
-  result = call_603812.call(nil, query_603813, nil, nil, body_603814)
+    body_593714 = body
+  result = call_593712.call(nil, query_593713, nil, nil, body_593714)
 
-var listTagsForResource* = Call_ListTagsForResource_603797(
+var listTagsForResource* = Call_ListTagsForResource_593697(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.ListTagsForResource",
-    validator: validate_ListTagsForResource_603798, base: "/",
-    url: url_ListTagsForResource_603799, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_593698, base: "/",
+    url: url_ListTagsForResource_593699, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTapes_603815 = ref object of OpenApiRestCall_602467
-proc url_ListTapes_603817(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTapes_593715 = ref object of OpenApiRestCall_592365
+proc url_ListTapes_593717(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListTapes_603816(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTapes_593716(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists virtual tapes in your virtual tape library (VTL) and your virtual tape shelf (VTS). You specify the tapes to list by specifying one or more tape Amazon Resource Names (ARNs). If you don't specify a tape ARN, the operation lists all virtual tapes in both your VTL and VTS.</p> <p>This operation supports pagination. By default, the operation returns a maximum of up to 100 tapes. You can optionally specify the <code>Limit</code> parameter in the body to limit the number of tapes in the response. If the number of tapes returned in the response is truncated, the response includes a <code>Marker</code> element that you can use in your subsequent request to retrieve the next set of tapes. This operation is only supported in the tape gateway type.</p>
   ## 
@@ -5658,74 +5662,74 @@ proc validate_ListTapes_603816(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603818 = query.getOrDefault("Limit")
-  valid_603818 = validateParameter(valid_603818, JString, required = false,
+  var valid_593718 = query.getOrDefault("Marker")
+  valid_593718 = validateParameter(valid_593718, JString, required = false,
                                  default = nil)
-  if valid_603818 != nil:
-    section.add "Limit", valid_603818
-  var valid_603819 = query.getOrDefault("Marker")
-  valid_603819 = validateParameter(valid_603819, JString, required = false,
+  if valid_593718 != nil:
+    section.add "Marker", valid_593718
+  var valid_593719 = query.getOrDefault("Limit")
+  valid_593719 = validateParameter(valid_593719, JString, required = false,
                                  default = nil)
-  if valid_603819 != nil:
-    section.add "Marker", valid_603819
+  if valid_593719 != nil:
+    section.add "Limit", valid_593719
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603820 = header.getOrDefault("X-Amz-Date")
-  valid_603820 = validateParameter(valid_603820, JString, required = false,
-                                 default = nil)
-  if valid_603820 != nil:
-    section.add "X-Amz-Date", valid_603820
-  var valid_603821 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603821 = validateParameter(valid_603821, JString, required = false,
-                                 default = nil)
-  if valid_603821 != nil:
-    section.add "X-Amz-Security-Token", valid_603821
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603822 = header.getOrDefault("X-Amz-Target")
-  valid_603822 = validateParameter(valid_603822, JString, required = true, default = newJString(
+  var valid_593720 = header.getOrDefault("X-Amz-Target")
+  valid_593720 = validateParameter(valid_593720, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListTapes"))
-  if valid_603822 != nil:
-    section.add "X-Amz-Target", valid_603822
-  var valid_603823 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603823 = validateParameter(valid_603823, JString, required = false,
+  if valid_593720 != nil:
+    section.add "X-Amz-Target", valid_593720
+  var valid_593721 = header.getOrDefault("X-Amz-Signature")
+  valid_593721 = validateParameter(valid_593721, JString, required = false,
                                  default = nil)
-  if valid_603823 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603823
-  var valid_603824 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603824 = validateParameter(valid_603824, JString, required = false,
+  if valid_593721 != nil:
+    section.add "X-Amz-Signature", valid_593721
+  var valid_593722 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593722 = validateParameter(valid_593722, JString, required = false,
                                  default = nil)
-  if valid_603824 != nil:
-    section.add "X-Amz-Algorithm", valid_603824
-  var valid_603825 = header.getOrDefault("X-Amz-Signature")
-  valid_603825 = validateParameter(valid_603825, JString, required = false,
+  if valid_593722 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593722
+  var valid_593723 = header.getOrDefault("X-Amz-Date")
+  valid_593723 = validateParameter(valid_593723, JString, required = false,
                                  default = nil)
-  if valid_603825 != nil:
-    section.add "X-Amz-Signature", valid_603825
-  var valid_603826 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603826 = validateParameter(valid_603826, JString, required = false,
+  if valid_593723 != nil:
+    section.add "X-Amz-Date", valid_593723
+  var valid_593724 = header.getOrDefault("X-Amz-Credential")
+  valid_593724 = validateParameter(valid_593724, JString, required = false,
                                  default = nil)
-  if valid_603826 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603826
-  var valid_603827 = header.getOrDefault("X-Amz-Credential")
-  valid_603827 = validateParameter(valid_603827, JString, required = false,
+  if valid_593724 != nil:
+    section.add "X-Amz-Credential", valid_593724
+  var valid_593725 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593725 = validateParameter(valid_593725, JString, required = false,
                                  default = nil)
-  if valid_603827 != nil:
-    section.add "X-Amz-Credential", valid_603827
+  if valid_593725 != nil:
+    section.add "X-Amz-Security-Token", valid_593725
+  var valid_593726 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593726 = validateParameter(valid_593726, JString, required = false,
+                                 default = nil)
+  if valid_593726 != nil:
+    section.add "X-Amz-Algorithm", valid_593726
+  var valid_593727 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593727 = validateParameter(valid_593727, JString, required = false,
+                                 default = nil)
+  if valid_593727 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593727
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5736,51 +5740,51 @@ proc validate_ListTapes_603816(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_603829: Call_ListTapes_603815; path: JsonNode; query: JsonNode;
+proc call*(call_593729: Call_ListTapes_593715; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists virtual tapes in your virtual tape library (VTL) and your virtual tape shelf (VTS). You specify the tapes to list by specifying one or more tape Amazon Resource Names (ARNs). If you don't specify a tape ARN, the operation lists all virtual tapes in both your VTL and VTS.</p> <p>This operation supports pagination. By default, the operation returns a maximum of up to 100 tapes. You can optionally specify the <code>Limit</code> parameter in the body to limit the number of tapes in the response. If the number of tapes returned in the response is truncated, the response includes a <code>Marker</code> element that you can use in your subsequent request to retrieve the next set of tapes. This operation is only supported in the tape gateway type.</p>
   ## 
-  let valid = call_603829.validator(path, query, header, formData, body)
-  let scheme = call_603829.pickScheme
+  let valid = call_593729.validator(path, query, header, formData, body)
+  let scheme = call_593729.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603829.url(scheme.get, call_603829.host, call_603829.base,
-                         call_603829.route, valid.getOrDefault("path"),
+  let url = call_593729.url(scheme.get, call_593729.host, call_593729.base,
+                         call_593729.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603829, url, valid)
+  result = hook(call_593729, url, valid)
 
-proc call*(call_603830: Call_ListTapes_603815; body: JsonNode; Limit: string = "";
-          Marker: string = ""): Recallable =
+proc call*(call_593730: Call_ListTapes_593715; body: JsonNode; Marker: string = "";
+          Limit: string = ""): Recallable =
   ## listTapes
   ## <p>Lists virtual tapes in your virtual tape library (VTL) and your virtual tape shelf (VTS). You specify the tapes to list by specifying one or more tape Amazon Resource Names (ARNs). If you don't specify a tape ARN, the operation lists all virtual tapes in both your VTL and VTS.</p> <p>This operation supports pagination. By default, the operation returns a maximum of up to 100 tapes. You can optionally specify the <code>Limit</code> parameter in the body to limit the number of tapes in the response. If the number of tapes returned in the response is truncated, the response includes a <code>Marker</code> element that you can use in your subsequent request to retrieve the next set of tapes. This operation is only supported in the tape gateway type.</p>
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603831 = newJObject()
-  var body_603832 = newJObject()
-  add(query_603831, "Limit", newJString(Limit))
-  add(query_603831, "Marker", newJString(Marker))
+  var query_593731 = newJObject()
+  var body_593732 = newJObject()
+  add(query_593731, "Marker", newJString(Marker))
+  add(query_593731, "Limit", newJString(Limit))
   if body != nil:
-    body_603832 = body
-  result = call_603830.call(nil, query_603831, nil, nil, body_603832)
+    body_593732 = body
+  result = call_593730.call(nil, query_593731, nil, nil, body_593732)
 
-var listTapes* = Call_ListTapes_603815(name: "listTapes", meth: HttpMethod.HttpPost,
+var listTapes* = Call_ListTapes_593715(name: "listTapes", meth: HttpMethod.HttpPost,
                                     host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.ListTapes",
-                                    validator: validate_ListTapes_603816,
-                                    base: "/", url: url_ListTapes_603817,
+                                    validator: validate_ListTapes_593716,
+                                    base: "/", url: url_ListTapes_593717,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListVolumeInitiators_603833 = ref object of OpenApiRestCall_602467
-proc url_ListVolumeInitiators_603835(protocol: Scheme; host: string; base: string;
+  Call_ListVolumeInitiators_593733 = ref object of OpenApiRestCall_592365
+proc url_ListVolumeInitiators_593735(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListVolumeInitiators_603834(path: JsonNode; query: JsonNode;
+proc validate_ListVolumeInitiators_593734(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists iSCSI initiators that are connected to a volume. You can use this operation to determine whether a volume is being used or not. This operation is only supported in the cached volume and stored volume gateway types.
   ## 
@@ -5791,57 +5795,57 @@ proc validate_ListVolumeInitiators_603834(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603836 = header.getOrDefault("X-Amz-Date")
-  valid_603836 = validateParameter(valid_603836, JString, required = false,
-                                 default = nil)
-  if valid_603836 != nil:
-    section.add "X-Amz-Date", valid_603836
-  var valid_603837 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603837 = validateParameter(valid_603837, JString, required = false,
-                                 default = nil)
-  if valid_603837 != nil:
-    section.add "X-Amz-Security-Token", valid_603837
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603838 = header.getOrDefault("X-Amz-Target")
-  valid_603838 = validateParameter(valid_603838, JString, required = true, default = newJString(
+  var valid_593736 = header.getOrDefault("X-Amz-Target")
+  valid_593736 = validateParameter(valid_593736, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListVolumeInitiators"))
-  if valid_603838 != nil:
-    section.add "X-Amz-Target", valid_603838
-  var valid_603839 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603839 = validateParameter(valid_603839, JString, required = false,
+  if valid_593736 != nil:
+    section.add "X-Amz-Target", valid_593736
+  var valid_593737 = header.getOrDefault("X-Amz-Signature")
+  valid_593737 = validateParameter(valid_593737, JString, required = false,
                                  default = nil)
-  if valid_603839 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603839
-  var valid_603840 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603840 = validateParameter(valid_603840, JString, required = false,
+  if valid_593737 != nil:
+    section.add "X-Amz-Signature", valid_593737
+  var valid_593738 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593738 = validateParameter(valid_593738, JString, required = false,
                                  default = nil)
-  if valid_603840 != nil:
-    section.add "X-Amz-Algorithm", valid_603840
-  var valid_603841 = header.getOrDefault("X-Amz-Signature")
-  valid_603841 = validateParameter(valid_603841, JString, required = false,
+  if valid_593738 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593738
+  var valid_593739 = header.getOrDefault("X-Amz-Date")
+  valid_593739 = validateParameter(valid_593739, JString, required = false,
                                  default = nil)
-  if valid_603841 != nil:
-    section.add "X-Amz-Signature", valid_603841
-  var valid_603842 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603842 = validateParameter(valid_603842, JString, required = false,
+  if valid_593739 != nil:
+    section.add "X-Amz-Date", valid_593739
+  var valid_593740 = header.getOrDefault("X-Amz-Credential")
+  valid_593740 = validateParameter(valid_593740, JString, required = false,
                                  default = nil)
-  if valid_603842 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603842
-  var valid_603843 = header.getOrDefault("X-Amz-Credential")
-  valid_603843 = validateParameter(valid_603843, JString, required = false,
+  if valid_593740 != nil:
+    section.add "X-Amz-Credential", valid_593740
+  var valid_593741 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593741 = validateParameter(valid_593741, JString, required = false,
                                  default = nil)
-  if valid_603843 != nil:
-    section.add "X-Amz-Credential", valid_603843
+  if valid_593741 != nil:
+    section.add "X-Amz-Security-Token", valid_593741
+  var valid_593742 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593742 = validateParameter(valid_593742, JString, required = false,
+                                 default = nil)
+  if valid_593742 != nil:
+    section.add "X-Amz-Algorithm", valid_593742
+  var valid_593743 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593743 = validateParameter(valid_593743, JString, required = false,
+                                 default = nil)
+  if valid_593743 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593743
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5852,37 +5856,37 @@ proc validate_ListVolumeInitiators_603834(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603845: Call_ListVolumeInitiators_603833; path: JsonNode;
+proc call*(call_593745: Call_ListVolumeInitiators_593733; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists iSCSI initiators that are connected to a volume. You can use this operation to determine whether a volume is being used or not. This operation is only supported in the cached volume and stored volume gateway types.
   ## 
-  let valid = call_603845.validator(path, query, header, formData, body)
-  let scheme = call_603845.pickScheme
+  let valid = call_593745.validator(path, query, header, formData, body)
+  let scheme = call_593745.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603845.url(scheme.get, call_603845.host, call_603845.base,
-                         call_603845.route, valid.getOrDefault("path"),
+  let url = call_593745.url(scheme.get, call_593745.host, call_593745.base,
+                         call_593745.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603845, url, valid)
+  result = hook(call_593745, url, valid)
 
-proc call*(call_603846: Call_ListVolumeInitiators_603833; body: JsonNode): Recallable =
+proc call*(call_593746: Call_ListVolumeInitiators_593733; body: JsonNode): Recallable =
   ## listVolumeInitiators
   ## Lists iSCSI initiators that are connected to a volume. You can use this operation to determine whether a volume is being used or not. This operation is only supported in the cached volume and stored volume gateway types.
   ##   body: JObject (required)
-  var body_603847 = newJObject()
+  var body_593747 = newJObject()
   if body != nil:
-    body_603847 = body
-  result = call_603846.call(nil, nil, nil, nil, body_603847)
+    body_593747 = body
+  result = call_593746.call(nil, nil, nil, nil, body_593747)
 
-var listVolumeInitiators* = Call_ListVolumeInitiators_603833(
+var listVolumeInitiators* = Call_ListVolumeInitiators_593733(
     name: "listVolumeInitiators", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.ListVolumeInitiators",
-    validator: validate_ListVolumeInitiators_603834, base: "/",
-    url: url_ListVolumeInitiators_603835, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListVolumeInitiators_593734, base: "/",
+    url: url_ListVolumeInitiators_593735, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListVolumeRecoveryPoints_603848 = ref object of OpenApiRestCall_602467
-proc url_ListVolumeRecoveryPoints_603850(protocol: Scheme; host: string;
+  Call_ListVolumeRecoveryPoints_593748 = ref object of OpenApiRestCall_592365
+proc url_ListVolumeRecoveryPoints_593750(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -5890,7 +5894,7 @@ proc url_ListVolumeRecoveryPoints_603850(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListVolumeRecoveryPoints_603849(path: JsonNode; query: JsonNode;
+proc validate_ListVolumeRecoveryPoints_593749(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the recovery points for a specified gateway. This operation is only supported in the cached volume gateway type.</p> <p>Each cache volume has one recovery point. A volume recovery point is a point in time at which all data of the volume is consistent and from which you can create a snapshot or clone a new cached volume from a source volume. To create a snapshot from a volume recovery point use the <a>CreateSnapshotFromVolumeRecoveryPoint</a> operation.</p>
   ## 
@@ -5901,57 +5905,57 @@ proc validate_ListVolumeRecoveryPoints_603849(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603851 = header.getOrDefault("X-Amz-Date")
-  valid_603851 = validateParameter(valid_603851, JString, required = false,
-                                 default = nil)
-  if valid_603851 != nil:
-    section.add "X-Amz-Date", valid_603851
-  var valid_603852 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603852 = validateParameter(valid_603852, JString, required = false,
-                                 default = nil)
-  if valid_603852 != nil:
-    section.add "X-Amz-Security-Token", valid_603852
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603853 = header.getOrDefault("X-Amz-Target")
-  valid_603853 = validateParameter(valid_603853, JString, required = true, default = newJString(
+  var valid_593751 = header.getOrDefault("X-Amz-Target")
+  valid_593751 = validateParameter(valid_593751, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListVolumeRecoveryPoints"))
-  if valid_603853 != nil:
-    section.add "X-Amz-Target", valid_603853
-  var valid_603854 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603854 = validateParameter(valid_603854, JString, required = false,
+  if valid_593751 != nil:
+    section.add "X-Amz-Target", valid_593751
+  var valid_593752 = header.getOrDefault("X-Amz-Signature")
+  valid_593752 = validateParameter(valid_593752, JString, required = false,
                                  default = nil)
-  if valid_603854 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603854
-  var valid_603855 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603855 = validateParameter(valid_603855, JString, required = false,
+  if valid_593752 != nil:
+    section.add "X-Amz-Signature", valid_593752
+  var valid_593753 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593753 = validateParameter(valid_593753, JString, required = false,
                                  default = nil)
-  if valid_603855 != nil:
-    section.add "X-Amz-Algorithm", valid_603855
-  var valid_603856 = header.getOrDefault("X-Amz-Signature")
-  valid_603856 = validateParameter(valid_603856, JString, required = false,
+  if valid_593753 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593753
+  var valid_593754 = header.getOrDefault("X-Amz-Date")
+  valid_593754 = validateParameter(valid_593754, JString, required = false,
                                  default = nil)
-  if valid_603856 != nil:
-    section.add "X-Amz-Signature", valid_603856
-  var valid_603857 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603857 = validateParameter(valid_603857, JString, required = false,
+  if valid_593754 != nil:
+    section.add "X-Amz-Date", valid_593754
+  var valid_593755 = header.getOrDefault("X-Amz-Credential")
+  valid_593755 = validateParameter(valid_593755, JString, required = false,
                                  default = nil)
-  if valid_603857 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603857
-  var valid_603858 = header.getOrDefault("X-Amz-Credential")
-  valid_603858 = validateParameter(valid_603858, JString, required = false,
+  if valid_593755 != nil:
+    section.add "X-Amz-Credential", valid_593755
+  var valid_593756 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593756 = validateParameter(valid_593756, JString, required = false,
                                  default = nil)
-  if valid_603858 != nil:
-    section.add "X-Amz-Credential", valid_603858
+  if valid_593756 != nil:
+    section.add "X-Amz-Security-Token", valid_593756
+  var valid_593757 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593757 = validateParameter(valid_593757, JString, required = false,
+                                 default = nil)
+  if valid_593757 != nil:
+    section.add "X-Amz-Algorithm", valid_593757
+  var valid_593758 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593758 = validateParameter(valid_593758, JString, required = false,
+                                 default = nil)
+  if valid_593758 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593758
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5962,44 +5966,44 @@ proc validate_ListVolumeRecoveryPoints_603849(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603860: Call_ListVolumeRecoveryPoints_603848; path: JsonNode;
+proc call*(call_593760: Call_ListVolumeRecoveryPoints_593748; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the recovery points for a specified gateway. This operation is only supported in the cached volume gateway type.</p> <p>Each cache volume has one recovery point. A volume recovery point is a point in time at which all data of the volume is consistent and from which you can create a snapshot or clone a new cached volume from a source volume. To create a snapshot from a volume recovery point use the <a>CreateSnapshotFromVolumeRecoveryPoint</a> operation.</p>
   ## 
-  let valid = call_603860.validator(path, query, header, formData, body)
-  let scheme = call_603860.pickScheme
+  let valid = call_593760.validator(path, query, header, formData, body)
+  let scheme = call_593760.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603860.url(scheme.get, call_603860.host, call_603860.base,
-                         call_603860.route, valid.getOrDefault("path"),
+  let url = call_593760.url(scheme.get, call_593760.host, call_593760.base,
+                         call_593760.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603860, url, valid)
+  result = hook(call_593760, url, valid)
 
-proc call*(call_603861: Call_ListVolumeRecoveryPoints_603848; body: JsonNode): Recallable =
+proc call*(call_593761: Call_ListVolumeRecoveryPoints_593748; body: JsonNode): Recallable =
   ## listVolumeRecoveryPoints
   ## <p>Lists the recovery points for a specified gateway. This operation is only supported in the cached volume gateway type.</p> <p>Each cache volume has one recovery point. A volume recovery point is a point in time at which all data of the volume is consistent and from which you can create a snapshot or clone a new cached volume from a source volume. To create a snapshot from a volume recovery point use the <a>CreateSnapshotFromVolumeRecoveryPoint</a> operation.</p>
   ##   body: JObject (required)
-  var body_603862 = newJObject()
+  var body_593762 = newJObject()
   if body != nil:
-    body_603862 = body
-  result = call_603861.call(nil, nil, nil, nil, body_603862)
+    body_593762 = body
+  result = call_593761.call(nil, nil, nil, nil, body_593762)
 
-var listVolumeRecoveryPoints* = Call_ListVolumeRecoveryPoints_603848(
+var listVolumeRecoveryPoints* = Call_ListVolumeRecoveryPoints_593748(
     name: "listVolumeRecoveryPoints", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.ListVolumeRecoveryPoints",
-    validator: validate_ListVolumeRecoveryPoints_603849, base: "/",
-    url: url_ListVolumeRecoveryPoints_603850, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListVolumeRecoveryPoints_593749, base: "/",
+    url: url_ListVolumeRecoveryPoints_593750, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListVolumes_603863 = ref object of OpenApiRestCall_602467
-proc url_ListVolumes_603865(protocol: Scheme; host: string; base: string;
+  Call_ListVolumes_593763 = ref object of OpenApiRestCall_592365
+proc url_ListVolumes_593765(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListVolumes_603864(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListVolumes_593764(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the iSCSI stored volumes of a gateway. Results are sorted by volume ARN. The response includes only the volume ARNs. If you want additional volume information, use the <a>DescribeStorediSCSIVolumes</a> or the <a>DescribeCachediSCSIVolumes</a> API.</p> <p>The operation supports pagination. By default, the operation returns a maximum of up to 100 volumes. You can optionally specify the <code>Limit</code> field in the body to limit the number of volumes in the response. If the number of volumes returned in the response is truncated, the response includes a Marker field. You can use this Marker value in your subsequent request to retrieve the next set of volumes. This operation is only supported in the cached volume and stored volume gateway types.</p>
   ## 
@@ -6008,74 +6012,74 @@ proc validate_ListVolumes_603864(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
   ##   Marker: JString
   ##         : Pagination token
+  ##   Limit: JString
+  ##        : Pagination limit
   section = newJObject()
-  var valid_603866 = query.getOrDefault("Limit")
-  valid_603866 = validateParameter(valid_603866, JString, required = false,
+  var valid_593766 = query.getOrDefault("Marker")
+  valid_593766 = validateParameter(valid_593766, JString, required = false,
                                  default = nil)
-  if valid_603866 != nil:
-    section.add "Limit", valid_603866
-  var valid_603867 = query.getOrDefault("Marker")
-  valid_603867 = validateParameter(valid_603867, JString, required = false,
+  if valid_593766 != nil:
+    section.add "Marker", valid_593766
+  var valid_593767 = query.getOrDefault("Limit")
+  valid_593767 = validateParameter(valid_593767, JString, required = false,
                                  default = nil)
-  if valid_603867 != nil:
-    section.add "Marker", valid_603867
+  if valid_593767 != nil:
+    section.add "Limit", valid_593767
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603868 = header.getOrDefault("X-Amz-Date")
-  valid_603868 = validateParameter(valid_603868, JString, required = false,
-                                 default = nil)
-  if valid_603868 != nil:
-    section.add "X-Amz-Date", valid_603868
-  var valid_603869 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603869 = validateParameter(valid_603869, JString, required = false,
-                                 default = nil)
-  if valid_603869 != nil:
-    section.add "X-Amz-Security-Token", valid_603869
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603870 = header.getOrDefault("X-Amz-Target")
-  valid_603870 = validateParameter(valid_603870, JString, required = true, default = newJString(
+  var valid_593768 = header.getOrDefault("X-Amz-Target")
+  valid_593768 = validateParameter(valid_593768, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListVolumes"))
-  if valid_603870 != nil:
-    section.add "X-Amz-Target", valid_603870
-  var valid_603871 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603871 = validateParameter(valid_603871, JString, required = false,
+  if valid_593768 != nil:
+    section.add "X-Amz-Target", valid_593768
+  var valid_593769 = header.getOrDefault("X-Amz-Signature")
+  valid_593769 = validateParameter(valid_593769, JString, required = false,
                                  default = nil)
-  if valid_603871 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603871
-  var valid_603872 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603872 = validateParameter(valid_603872, JString, required = false,
+  if valid_593769 != nil:
+    section.add "X-Amz-Signature", valid_593769
+  var valid_593770 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593770 = validateParameter(valid_593770, JString, required = false,
                                  default = nil)
-  if valid_603872 != nil:
-    section.add "X-Amz-Algorithm", valid_603872
-  var valid_603873 = header.getOrDefault("X-Amz-Signature")
-  valid_603873 = validateParameter(valid_603873, JString, required = false,
+  if valid_593770 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593770
+  var valid_593771 = header.getOrDefault("X-Amz-Date")
+  valid_593771 = validateParameter(valid_593771, JString, required = false,
                                  default = nil)
-  if valid_603873 != nil:
-    section.add "X-Amz-Signature", valid_603873
-  var valid_603874 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603874 = validateParameter(valid_603874, JString, required = false,
+  if valid_593771 != nil:
+    section.add "X-Amz-Date", valid_593771
+  var valid_593772 = header.getOrDefault("X-Amz-Credential")
+  valid_593772 = validateParameter(valid_593772, JString, required = false,
                                  default = nil)
-  if valid_603874 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603874
-  var valid_603875 = header.getOrDefault("X-Amz-Credential")
-  valid_603875 = validateParameter(valid_603875, JString, required = false,
+  if valid_593772 != nil:
+    section.add "X-Amz-Credential", valid_593772
+  var valid_593773 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593773 = validateParameter(valid_593773, JString, required = false,
                                  default = nil)
-  if valid_603875 != nil:
-    section.add "X-Amz-Credential", valid_603875
+  if valid_593773 != nil:
+    section.add "X-Amz-Security-Token", valid_593773
+  var valid_593774 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593774 = validateParameter(valid_593774, JString, required = false,
+                                 default = nil)
+  if valid_593774 != nil:
+    section.add "X-Amz-Algorithm", valid_593774
+  var valid_593775 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593775 = validateParameter(valid_593775, JString, required = false,
+                                 default = nil)
+  if valid_593775 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593775
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6086,52 +6090,52 @@ proc validate_ListVolumes_603864(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_603877: Call_ListVolumes_603863; path: JsonNode; query: JsonNode;
+proc call*(call_593777: Call_ListVolumes_593763; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the iSCSI stored volumes of a gateway. Results are sorted by volume ARN. The response includes only the volume ARNs. If you want additional volume information, use the <a>DescribeStorediSCSIVolumes</a> or the <a>DescribeCachediSCSIVolumes</a> API.</p> <p>The operation supports pagination. By default, the operation returns a maximum of up to 100 volumes. You can optionally specify the <code>Limit</code> field in the body to limit the number of volumes in the response. If the number of volumes returned in the response is truncated, the response includes a Marker field. You can use this Marker value in your subsequent request to retrieve the next set of volumes. This operation is only supported in the cached volume and stored volume gateway types.</p>
   ## 
-  let valid = call_603877.validator(path, query, header, formData, body)
-  let scheme = call_603877.pickScheme
+  let valid = call_593777.validator(path, query, header, formData, body)
+  let scheme = call_593777.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603877.url(scheme.get, call_603877.host, call_603877.base,
-                         call_603877.route, valid.getOrDefault("path"),
+  let url = call_593777.url(scheme.get, call_593777.host, call_593777.base,
+                         call_593777.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603877, url, valid)
+  result = hook(call_593777, url, valid)
 
-proc call*(call_603878: Call_ListVolumes_603863; body: JsonNode; Limit: string = "";
-          Marker: string = ""): Recallable =
+proc call*(call_593778: Call_ListVolumes_593763; body: JsonNode; Marker: string = "";
+          Limit: string = ""): Recallable =
   ## listVolumes
   ## <p>Lists the iSCSI stored volumes of a gateway. Results are sorted by volume ARN. The response includes only the volume ARNs. If you want additional volume information, use the <a>DescribeStorediSCSIVolumes</a> or the <a>DescribeCachediSCSIVolumes</a> API.</p> <p>The operation supports pagination. By default, the operation returns a maximum of up to 100 volumes. You can optionally specify the <code>Limit</code> field in the body to limit the number of volumes in the response. If the number of volumes returned in the response is truncated, the response includes a Marker field. You can use this Marker value in your subsequent request to retrieve the next set of volumes. This operation is only supported in the cached volume and stored volume gateway types.</p>
-  ##   Limit: string
-  ##        : Pagination limit
   ##   Marker: string
   ##         : Pagination token
+  ##   Limit: string
+  ##        : Pagination limit
   ##   body: JObject (required)
-  var query_603879 = newJObject()
-  var body_603880 = newJObject()
-  add(query_603879, "Limit", newJString(Limit))
-  add(query_603879, "Marker", newJString(Marker))
+  var query_593779 = newJObject()
+  var body_593780 = newJObject()
+  add(query_593779, "Marker", newJString(Marker))
+  add(query_593779, "Limit", newJString(Limit))
   if body != nil:
-    body_603880 = body
-  result = call_603878.call(nil, query_603879, nil, nil, body_603880)
+    body_593780 = body
+  result = call_593778.call(nil, query_593779, nil, nil, body_593780)
 
-var listVolumes* = Call_ListVolumes_603863(name: "listVolumes",
+var listVolumes* = Call_ListVolumes_593763(name: "listVolumes",
                                         meth: HttpMethod.HttpPost,
                                         host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.ListVolumes",
-                                        validator: validate_ListVolumes_603864,
-                                        base: "/", url: url_ListVolumes_603865,
+                                        validator: validate_ListVolumes_593764,
+                                        base: "/", url: url_ListVolumes_593765,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_NotifyWhenUploaded_603881 = ref object of OpenApiRestCall_602467
-proc url_NotifyWhenUploaded_603883(protocol: Scheme; host: string; base: string;
+  Call_NotifyWhenUploaded_593781 = ref object of OpenApiRestCall_592365
+proc url_NotifyWhenUploaded_593783(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_NotifyWhenUploaded_603882(path: JsonNode; query: JsonNode;
+proc validate_NotifyWhenUploaded_593782(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Sends you notification through CloudWatch Events when all files written to your file share have been uploaded to Amazon S3.</p> <p>AWS Storage Gateway can send a notification through Amazon CloudWatch Events when all files written to your file share up to that point in time have been uploaded to Amazon S3. These files include files written to the file share up to the time that you make a request for notification. When the upload is done, Storage Gateway sends you notification through an Amazon CloudWatch Event. You can configure CloudWatch Events to send the notification through event targets such as Amazon SNS or AWS Lambda function. This operation is only supported for file gateways.</p> <p>For more information, see Getting File Upload Notification in the Storage Gateway User Guide (https://docs.aws.amazon.com/storagegateway/latest/userguide/monitoring-file-gateway.html#get-upload-notification). </p>
@@ -6143,57 +6147,57 @@ proc validate_NotifyWhenUploaded_603882(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603884 = header.getOrDefault("X-Amz-Date")
-  valid_603884 = validateParameter(valid_603884, JString, required = false,
-                                 default = nil)
-  if valid_603884 != nil:
-    section.add "X-Amz-Date", valid_603884
-  var valid_603885 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603885 = validateParameter(valid_603885, JString, required = false,
-                                 default = nil)
-  if valid_603885 != nil:
-    section.add "X-Amz-Security-Token", valid_603885
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603886 = header.getOrDefault("X-Amz-Target")
-  valid_603886 = validateParameter(valid_603886, JString, required = true, default = newJString(
+  var valid_593784 = header.getOrDefault("X-Amz-Target")
+  valid_593784 = validateParameter(valid_593784, JString, required = true, default = newJString(
       "StorageGateway_20130630.NotifyWhenUploaded"))
-  if valid_603886 != nil:
-    section.add "X-Amz-Target", valid_603886
-  var valid_603887 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603887 = validateParameter(valid_603887, JString, required = false,
+  if valid_593784 != nil:
+    section.add "X-Amz-Target", valid_593784
+  var valid_593785 = header.getOrDefault("X-Amz-Signature")
+  valid_593785 = validateParameter(valid_593785, JString, required = false,
                                  default = nil)
-  if valid_603887 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603887
-  var valid_603888 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603888 = validateParameter(valid_603888, JString, required = false,
+  if valid_593785 != nil:
+    section.add "X-Amz-Signature", valid_593785
+  var valid_593786 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593786 = validateParameter(valid_593786, JString, required = false,
                                  default = nil)
-  if valid_603888 != nil:
-    section.add "X-Amz-Algorithm", valid_603888
-  var valid_603889 = header.getOrDefault("X-Amz-Signature")
-  valid_603889 = validateParameter(valid_603889, JString, required = false,
+  if valid_593786 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593786
+  var valid_593787 = header.getOrDefault("X-Amz-Date")
+  valid_593787 = validateParameter(valid_593787, JString, required = false,
                                  default = nil)
-  if valid_603889 != nil:
-    section.add "X-Amz-Signature", valid_603889
-  var valid_603890 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603890 = validateParameter(valid_603890, JString, required = false,
+  if valid_593787 != nil:
+    section.add "X-Amz-Date", valid_593787
+  var valid_593788 = header.getOrDefault("X-Amz-Credential")
+  valid_593788 = validateParameter(valid_593788, JString, required = false,
                                  default = nil)
-  if valid_603890 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603890
-  var valid_603891 = header.getOrDefault("X-Amz-Credential")
-  valid_603891 = validateParameter(valid_603891, JString, required = false,
+  if valid_593788 != nil:
+    section.add "X-Amz-Credential", valid_593788
+  var valid_593789 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593789 = validateParameter(valid_593789, JString, required = false,
                                  default = nil)
-  if valid_603891 != nil:
-    section.add "X-Amz-Credential", valid_603891
+  if valid_593789 != nil:
+    section.add "X-Amz-Security-Token", valid_593789
+  var valid_593790 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593790 = validateParameter(valid_593790, JString, required = false,
+                                 default = nil)
+  if valid_593790 != nil:
+    section.add "X-Amz-Algorithm", valid_593790
+  var valid_593791 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593791 = validateParameter(valid_593791, JString, required = false,
+                                 default = nil)
+  if valid_593791 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593791
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6204,44 +6208,44 @@ proc validate_NotifyWhenUploaded_603882(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603893: Call_NotifyWhenUploaded_603881; path: JsonNode;
+proc call*(call_593793: Call_NotifyWhenUploaded_593781; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sends you notification through CloudWatch Events when all files written to your file share have been uploaded to Amazon S3.</p> <p>AWS Storage Gateway can send a notification through Amazon CloudWatch Events when all files written to your file share up to that point in time have been uploaded to Amazon S3. These files include files written to the file share up to the time that you make a request for notification. When the upload is done, Storage Gateway sends you notification through an Amazon CloudWatch Event. You can configure CloudWatch Events to send the notification through event targets such as Amazon SNS or AWS Lambda function. This operation is only supported for file gateways.</p> <p>For more information, see Getting File Upload Notification in the Storage Gateway User Guide (https://docs.aws.amazon.com/storagegateway/latest/userguide/monitoring-file-gateway.html#get-upload-notification). </p>
   ## 
-  let valid = call_603893.validator(path, query, header, formData, body)
-  let scheme = call_603893.pickScheme
+  let valid = call_593793.validator(path, query, header, formData, body)
+  let scheme = call_593793.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603893.url(scheme.get, call_603893.host, call_603893.base,
-                         call_603893.route, valid.getOrDefault("path"),
+  let url = call_593793.url(scheme.get, call_593793.host, call_593793.base,
+                         call_593793.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603893, url, valid)
+  result = hook(call_593793, url, valid)
 
-proc call*(call_603894: Call_NotifyWhenUploaded_603881; body: JsonNode): Recallable =
+proc call*(call_593794: Call_NotifyWhenUploaded_593781; body: JsonNode): Recallable =
   ## notifyWhenUploaded
   ## <p>Sends you notification through CloudWatch Events when all files written to your file share have been uploaded to Amazon S3.</p> <p>AWS Storage Gateway can send a notification through Amazon CloudWatch Events when all files written to your file share up to that point in time have been uploaded to Amazon S3. These files include files written to the file share up to the time that you make a request for notification. When the upload is done, Storage Gateway sends you notification through an Amazon CloudWatch Event. You can configure CloudWatch Events to send the notification through event targets such as Amazon SNS or AWS Lambda function. This operation is only supported for file gateways.</p> <p>For more information, see Getting File Upload Notification in the Storage Gateway User Guide (https://docs.aws.amazon.com/storagegateway/latest/userguide/monitoring-file-gateway.html#get-upload-notification). </p>
   ##   body: JObject (required)
-  var body_603895 = newJObject()
+  var body_593795 = newJObject()
   if body != nil:
-    body_603895 = body
-  result = call_603894.call(nil, nil, nil, nil, body_603895)
+    body_593795 = body
+  result = call_593794.call(nil, nil, nil, nil, body_593795)
 
-var notifyWhenUploaded* = Call_NotifyWhenUploaded_603881(
+var notifyWhenUploaded* = Call_NotifyWhenUploaded_593781(
     name: "notifyWhenUploaded", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.NotifyWhenUploaded",
-    validator: validate_NotifyWhenUploaded_603882, base: "/",
-    url: url_NotifyWhenUploaded_603883, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_NotifyWhenUploaded_593782, base: "/",
+    url: url_NotifyWhenUploaded_593783, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RefreshCache_603896 = ref object of OpenApiRestCall_602467
-proc url_RefreshCache_603898(protocol: Scheme; host: string; base: string;
+  Call_RefreshCache_593796 = ref object of OpenApiRestCall_592365
+proc url_RefreshCache_593798(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RefreshCache_603897(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RefreshCache_593797(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Refreshes the cache for the specified file share. This operation finds objects in the Amazon S3 bucket that were added, removed or replaced since the gateway last listed the bucket's contents and cached the results. This operation is only supported in the file gateway type. You can subscribe to be notified through an Amazon CloudWatch event when your RefreshCache operation completes. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/monitoring-file-gateway.html#get-notification">Getting Notified About File Operations</a>.</p> <p>When this API is called, it only initiates the refresh operation. When the API call completes and returns a success code, it doesn't necessarily mean that the file refresh has completed. You should use the refresh-complete notification to determine that the operation has completed before you check for new files on the gateway file share. You can subscribe to be notified through an CloudWatch event when your <code>RefreshCache</code> operation completes. </p>
   ## 
@@ -6252,57 +6256,57 @@ proc validate_RefreshCache_603897(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603899 = header.getOrDefault("X-Amz-Date")
-  valid_603899 = validateParameter(valid_603899, JString, required = false,
-                                 default = nil)
-  if valid_603899 != nil:
-    section.add "X-Amz-Date", valid_603899
-  var valid_603900 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603900 = validateParameter(valid_603900, JString, required = false,
-                                 default = nil)
-  if valid_603900 != nil:
-    section.add "X-Amz-Security-Token", valid_603900
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603901 = header.getOrDefault("X-Amz-Target")
-  valid_603901 = validateParameter(valid_603901, JString, required = true, default = newJString(
+  var valid_593799 = header.getOrDefault("X-Amz-Target")
+  valid_593799 = validateParameter(valid_593799, JString, required = true, default = newJString(
       "StorageGateway_20130630.RefreshCache"))
-  if valid_603901 != nil:
-    section.add "X-Amz-Target", valid_603901
-  var valid_603902 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603902 = validateParameter(valid_603902, JString, required = false,
+  if valid_593799 != nil:
+    section.add "X-Amz-Target", valid_593799
+  var valid_593800 = header.getOrDefault("X-Amz-Signature")
+  valid_593800 = validateParameter(valid_593800, JString, required = false,
                                  default = nil)
-  if valid_603902 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603902
-  var valid_603903 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603903 = validateParameter(valid_603903, JString, required = false,
+  if valid_593800 != nil:
+    section.add "X-Amz-Signature", valid_593800
+  var valid_593801 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593801 = validateParameter(valid_593801, JString, required = false,
                                  default = nil)
-  if valid_603903 != nil:
-    section.add "X-Amz-Algorithm", valid_603903
-  var valid_603904 = header.getOrDefault("X-Amz-Signature")
-  valid_603904 = validateParameter(valid_603904, JString, required = false,
+  if valid_593801 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593801
+  var valid_593802 = header.getOrDefault("X-Amz-Date")
+  valid_593802 = validateParameter(valid_593802, JString, required = false,
                                  default = nil)
-  if valid_603904 != nil:
-    section.add "X-Amz-Signature", valid_603904
-  var valid_603905 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603905 = validateParameter(valid_603905, JString, required = false,
+  if valid_593802 != nil:
+    section.add "X-Amz-Date", valid_593802
+  var valid_593803 = header.getOrDefault("X-Amz-Credential")
+  valid_593803 = validateParameter(valid_593803, JString, required = false,
                                  default = nil)
-  if valid_603905 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603905
-  var valid_603906 = header.getOrDefault("X-Amz-Credential")
-  valid_603906 = validateParameter(valid_603906, JString, required = false,
+  if valid_593803 != nil:
+    section.add "X-Amz-Credential", valid_593803
+  var valid_593804 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593804 = validateParameter(valid_593804, JString, required = false,
                                  default = nil)
-  if valid_603906 != nil:
-    section.add "X-Amz-Credential", valid_603906
+  if valid_593804 != nil:
+    section.add "X-Amz-Security-Token", valid_593804
+  var valid_593805 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593805 = validateParameter(valid_593805, JString, required = false,
+                                 default = nil)
+  if valid_593805 != nil:
+    section.add "X-Amz-Algorithm", valid_593805
+  var valid_593806 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593806 = validateParameter(valid_593806, JString, required = false,
+                                 default = nil)
+  if valid_593806 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593806
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6313,43 +6317,43 @@ proc validate_RefreshCache_603897(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_603908: Call_RefreshCache_603896; path: JsonNode; query: JsonNode;
+proc call*(call_593808: Call_RefreshCache_593796; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Refreshes the cache for the specified file share. This operation finds objects in the Amazon S3 bucket that were added, removed or replaced since the gateway last listed the bucket's contents and cached the results. This operation is only supported in the file gateway type. You can subscribe to be notified through an Amazon CloudWatch event when your RefreshCache operation completes. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/monitoring-file-gateway.html#get-notification">Getting Notified About File Operations</a>.</p> <p>When this API is called, it only initiates the refresh operation. When the API call completes and returns a success code, it doesn't necessarily mean that the file refresh has completed. You should use the refresh-complete notification to determine that the operation has completed before you check for new files on the gateway file share. You can subscribe to be notified through an CloudWatch event when your <code>RefreshCache</code> operation completes. </p>
   ## 
-  let valid = call_603908.validator(path, query, header, formData, body)
-  let scheme = call_603908.pickScheme
+  let valid = call_593808.validator(path, query, header, formData, body)
+  let scheme = call_593808.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603908.url(scheme.get, call_603908.host, call_603908.base,
-                         call_603908.route, valid.getOrDefault("path"),
+  let url = call_593808.url(scheme.get, call_593808.host, call_593808.base,
+                         call_593808.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603908, url, valid)
+  result = hook(call_593808, url, valid)
 
-proc call*(call_603909: Call_RefreshCache_603896; body: JsonNode): Recallable =
+proc call*(call_593809: Call_RefreshCache_593796; body: JsonNode): Recallable =
   ## refreshCache
   ## <p>Refreshes the cache for the specified file share. This operation finds objects in the Amazon S3 bucket that were added, removed or replaced since the gateway last listed the bucket's contents and cached the results. This operation is only supported in the file gateway type. You can subscribe to be notified through an Amazon CloudWatch event when your RefreshCache operation completes. For more information, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/monitoring-file-gateway.html#get-notification">Getting Notified About File Operations</a>.</p> <p>When this API is called, it only initiates the refresh operation. When the API call completes and returns a success code, it doesn't necessarily mean that the file refresh has completed. You should use the refresh-complete notification to determine that the operation has completed before you check for new files on the gateway file share. You can subscribe to be notified through an CloudWatch event when your <code>RefreshCache</code> operation completes. </p>
   ##   body: JObject (required)
-  var body_603910 = newJObject()
+  var body_593810 = newJObject()
   if body != nil:
-    body_603910 = body
-  result = call_603909.call(nil, nil, nil, nil, body_603910)
+    body_593810 = body
+  result = call_593809.call(nil, nil, nil, nil, body_593810)
 
-var refreshCache* = Call_RefreshCache_603896(name: "refreshCache",
+var refreshCache* = Call_RefreshCache_593796(name: "refreshCache",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.RefreshCache",
-    validator: validate_RefreshCache_603897, base: "/", url: url_RefreshCache_603898,
+    validator: validate_RefreshCache_593797, base: "/", url: url_RefreshCache_593798,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RemoveTagsFromResource_603911 = ref object of OpenApiRestCall_602467
-proc url_RemoveTagsFromResource_603913(protocol: Scheme; host: string; base: string;
+  Call_RemoveTagsFromResource_593811 = ref object of OpenApiRestCall_592365
+proc url_RemoveTagsFromResource_593813(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RemoveTagsFromResource_603912(path: JsonNode; query: JsonNode;
+proc validate_RemoveTagsFromResource_593812(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes one or more tags from the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway types.
   ## 
@@ -6360,57 +6364,57 @@ proc validate_RemoveTagsFromResource_603912(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603914 = header.getOrDefault("X-Amz-Date")
-  valid_603914 = validateParameter(valid_603914, JString, required = false,
-                                 default = nil)
-  if valid_603914 != nil:
-    section.add "X-Amz-Date", valid_603914
-  var valid_603915 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603915 = validateParameter(valid_603915, JString, required = false,
-                                 default = nil)
-  if valid_603915 != nil:
-    section.add "X-Amz-Security-Token", valid_603915
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603916 = header.getOrDefault("X-Amz-Target")
-  valid_603916 = validateParameter(valid_603916, JString, required = true, default = newJString(
+  var valid_593814 = header.getOrDefault("X-Amz-Target")
+  valid_593814 = validateParameter(valid_593814, JString, required = true, default = newJString(
       "StorageGateway_20130630.RemoveTagsFromResource"))
-  if valid_603916 != nil:
-    section.add "X-Amz-Target", valid_603916
-  var valid_603917 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603917 = validateParameter(valid_603917, JString, required = false,
+  if valid_593814 != nil:
+    section.add "X-Amz-Target", valid_593814
+  var valid_593815 = header.getOrDefault("X-Amz-Signature")
+  valid_593815 = validateParameter(valid_593815, JString, required = false,
                                  default = nil)
-  if valid_603917 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603917
-  var valid_603918 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603918 = validateParameter(valid_603918, JString, required = false,
+  if valid_593815 != nil:
+    section.add "X-Amz-Signature", valid_593815
+  var valid_593816 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593816 = validateParameter(valid_593816, JString, required = false,
                                  default = nil)
-  if valid_603918 != nil:
-    section.add "X-Amz-Algorithm", valid_603918
-  var valid_603919 = header.getOrDefault("X-Amz-Signature")
-  valid_603919 = validateParameter(valid_603919, JString, required = false,
+  if valid_593816 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593816
+  var valid_593817 = header.getOrDefault("X-Amz-Date")
+  valid_593817 = validateParameter(valid_593817, JString, required = false,
                                  default = nil)
-  if valid_603919 != nil:
-    section.add "X-Amz-Signature", valid_603919
-  var valid_603920 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603920 = validateParameter(valid_603920, JString, required = false,
+  if valid_593817 != nil:
+    section.add "X-Amz-Date", valid_593817
+  var valid_593818 = header.getOrDefault("X-Amz-Credential")
+  valid_593818 = validateParameter(valid_593818, JString, required = false,
                                  default = nil)
-  if valid_603920 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603920
-  var valid_603921 = header.getOrDefault("X-Amz-Credential")
-  valid_603921 = validateParameter(valid_603921, JString, required = false,
+  if valid_593818 != nil:
+    section.add "X-Amz-Credential", valid_593818
+  var valid_593819 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593819 = validateParameter(valid_593819, JString, required = false,
                                  default = nil)
-  if valid_603921 != nil:
-    section.add "X-Amz-Credential", valid_603921
+  if valid_593819 != nil:
+    section.add "X-Amz-Security-Token", valid_593819
+  var valid_593820 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593820 = validateParameter(valid_593820, JString, required = false,
+                                 default = nil)
+  if valid_593820 != nil:
+    section.add "X-Amz-Algorithm", valid_593820
+  var valid_593821 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593821 = validateParameter(valid_593821, JString, required = false,
+                                 default = nil)
+  if valid_593821 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593821
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6421,44 +6425,44 @@ proc validate_RemoveTagsFromResource_603912(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603923: Call_RemoveTagsFromResource_603911; path: JsonNode;
+proc call*(call_593823: Call_RemoveTagsFromResource_593811; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes one or more tags from the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway types.
   ## 
-  let valid = call_603923.validator(path, query, header, formData, body)
-  let scheme = call_603923.pickScheme
+  let valid = call_593823.validator(path, query, header, formData, body)
+  let scheme = call_593823.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603923.url(scheme.get, call_603923.host, call_603923.base,
-                         call_603923.route, valid.getOrDefault("path"),
+  let url = call_593823.url(scheme.get, call_593823.host, call_593823.base,
+                         call_593823.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603923, url, valid)
+  result = hook(call_593823, url, valid)
 
-proc call*(call_603924: Call_RemoveTagsFromResource_603911; body: JsonNode): Recallable =
+proc call*(call_593824: Call_RemoveTagsFromResource_593811; body: JsonNode): Recallable =
   ## removeTagsFromResource
   ## Removes one or more tags from the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway types.
   ##   body: JObject (required)
-  var body_603925 = newJObject()
+  var body_593825 = newJObject()
   if body != nil:
-    body_603925 = body
-  result = call_603924.call(nil, nil, nil, nil, body_603925)
+    body_593825 = body
+  result = call_593824.call(nil, nil, nil, nil, body_593825)
 
-var removeTagsFromResource* = Call_RemoveTagsFromResource_603911(
+var removeTagsFromResource* = Call_RemoveTagsFromResource_593811(
     name: "removeTagsFromResource", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.RemoveTagsFromResource",
-    validator: validate_RemoveTagsFromResource_603912, base: "/",
-    url: url_RemoveTagsFromResource_603913, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RemoveTagsFromResource_593812, base: "/",
+    url: url_RemoveTagsFromResource_593813, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ResetCache_603926 = ref object of OpenApiRestCall_602467
-proc url_ResetCache_603928(protocol: Scheme; host: string; base: string; route: string;
+  Call_ResetCache_593826 = ref object of OpenApiRestCall_592365
+proc url_ResetCache_593828(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ResetCache_603927(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ResetCache_593827(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Resets all cache disks that have encountered a error and makes the disks available for reconfiguration as cache storage. If your cache disk encounters a error, the gateway prevents read and write operations on virtual tapes in the gateway. For example, an error can occur when a disk is corrupted or removed from the gateway. When a cache is reset, the gateway loses its cache storage. At this point you can reconfigure the disks as cache disks. This operation is only supported in the cached volume and tape types.</p> <important> <p>If the cache disk you are resetting contains data that has not been uploaded to Amazon S3 yet, that data can be lost. After you reset cache disks, there will be no configured cache disks left in the gateway, so you must configure at least one new cache disk for your gateway to function properly.</p> </important>
   ## 
@@ -6469,57 +6473,57 @@ proc validate_ResetCache_603927(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603929 = header.getOrDefault("X-Amz-Date")
-  valid_603929 = validateParameter(valid_603929, JString, required = false,
-                                 default = nil)
-  if valid_603929 != nil:
-    section.add "X-Amz-Date", valid_603929
-  var valid_603930 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603930 = validateParameter(valid_603930, JString, required = false,
-                                 default = nil)
-  if valid_603930 != nil:
-    section.add "X-Amz-Security-Token", valid_603930
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603931 = header.getOrDefault("X-Amz-Target")
-  valid_603931 = validateParameter(valid_603931, JString, required = true, default = newJString(
+  var valid_593829 = header.getOrDefault("X-Amz-Target")
+  valid_593829 = validateParameter(valid_593829, JString, required = true, default = newJString(
       "StorageGateway_20130630.ResetCache"))
-  if valid_603931 != nil:
-    section.add "X-Amz-Target", valid_603931
-  var valid_603932 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603932 = validateParameter(valid_603932, JString, required = false,
+  if valid_593829 != nil:
+    section.add "X-Amz-Target", valid_593829
+  var valid_593830 = header.getOrDefault("X-Amz-Signature")
+  valid_593830 = validateParameter(valid_593830, JString, required = false,
                                  default = nil)
-  if valid_603932 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603932
-  var valid_603933 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603933 = validateParameter(valid_603933, JString, required = false,
+  if valid_593830 != nil:
+    section.add "X-Amz-Signature", valid_593830
+  var valid_593831 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593831 = validateParameter(valid_593831, JString, required = false,
                                  default = nil)
-  if valid_603933 != nil:
-    section.add "X-Amz-Algorithm", valid_603933
-  var valid_603934 = header.getOrDefault("X-Amz-Signature")
-  valid_603934 = validateParameter(valid_603934, JString, required = false,
+  if valid_593831 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593831
+  var valid_593832 = header.getOrDefault("X-Amz-Date")
+  valid_593832 = validateParameter(valid_593832, JString, required = false,
                                  default = nil)
-  if valid_603934 != nil:
-    section.add "X-Amz-Signature", valid_603934
-  var valid_603935 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603935 = validateParameter(valid_603935, JString, required = false,
+  if valid_593832 != nil:
+    section.add "X-Amz-Date", valid_593832
+  var valid_593833 = header.getOrDefault("X-Amz-Credential")
+  valid_593833 = validateParameter(valid_593833, JString, required = false,
                                  default = nil)
-  if valid_603935 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603935
-  var valid_603936 = header.getOrDefault("X-Amz-Credential")
-  valid_603936 = validateParameter(valid_603936, JString, required = false,
+  if valid_593833 != nil:
+    section.add "X-Amz-Credential", valid_593833
+  var valid_593834 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593834 = validateParameter(valid_593834, JString, required = false,
                                  default = nil)
-  if valid_603936 != nil:
-    section.add "X-Amz-Credential", valid_603936
+  if valid_593834 != nil:
+    section.add "X-Amz-Security-Token", valid_593834
+  var valid_593835 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593835 = validateParameter(valid_593835, JString, required = false,
+                                 default = nil)
+  if valid_593835 != nil:
+    section.add "X-Amz-Algorithm", valid_593835
+  var valid_593836 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593836 = validateParameter(valid_593836, JString, required = false,
+                                 default = nil)
+  if valid_593836 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593836
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6530,44 +6534,44 @@ proc validate_ResetCache_603927(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_603938: Call_ResetCache_603926; path: JsonNode; query: JsonNode;
+proc call*(call_593838: Call_ResetCache_593826; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Resets all cache disks that have encountered a error and makes the disks available for reconfiguration as cache storage. If your cache disk encounters a error, the gateway prevents read and write operations on virtual tapes in the gateway. For example, an error can occur when a disk is corrupted or removed from the gateway. When a cache is reset, the gateway loses its cache storage. At this point you can reconfigure the disks as cache disks. This operation is only supported in the cached volume and tape types.</p> <important> <p>If the cache disk you are resetting contains data that has not been uploaded to Amazon S3 yet, that data can be lost. After you reset cache disks, there will be no configured cache disks left in the gateway, so you must configure at least one new cache disk for your gateway to function properly.</p> </important>
   ## 
-  let valid = call_603938.validator(path, query, header, formData, body)
-  let scheme = call_603938.pickScheme
+  let valid = call_593838.validator(path, query, header, formData, body)
+  let scheme = call_593838.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603938.url(scheme.get, call_603938.host, call_603938.base,
-                         call_603938.route, valid.getOrDefault("path"),
+  let url = call_593838.url(scheme.get, call_593838.host, call_593838.base,
+                         call_593838.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603938, url, valid)
+  result = hook(call_593838, url, valid)
 
-proc call*(call_603939: Call_ResetCache_603926; body: JsonNode): Recallable =
+proc call*(call_593839: Call_ResetCache_593826; body: JsonNode): Recallable =
   ## resetCache
   ## <p>Resets all cache disks that have encountered a error and makes the disks available for reconfiguration as cache storage. If your cache disk encounters a error, the gateway prevents read and write operations on virtual tapes in the gateway. For example, an error can occur when a disk is corrupted or removed from the gateway. When a cache is reset, the gateway loses its cache storage. At this point you can reconfigure the disks as cache disks. This operation is only supported in the cached volume and tape types.</p> <important> <p>If the cache disk you are resetting contains data that has not been uploaded to Amazon S3 yet, that data can be lost. After you reset cache disks, there will be no configured cache disks left in the gateway, so you must configure at least one new cache disk for your gateway to function properly.</p> </important>
   ##   body: JObject (required)
-  var body_603940 = newJObject()
+  var body_593840 = newJObject()
   if body != nil:
-    body_603940 = body
-  result = call_603939.call(nil, nil, nil, nil, body_603940)
+    body_593840 = body
+  result = call_593839.call(nil, nil, nil, nil, body_593840)
 
-var resetCache* = Call_ResetCache_603926(name: "resetCache",
+var resetCache* = Call_ResetCache_593826(name: "resetCache",
                                       meth: HttpMethod.HttpPost,
                                       host: "storagegateway.amazonaws.com", route: "/#X-Amz-Target=StorageGateway_20130630.ResetCache",
-                                      validator: validate_ResetCache_603927,
-                                      base: "/", url: url_ResetCache_603928,
+                                      validator: validate_ResetCache_593827,
+                                      base: "/", url: url_ResetCache_593828,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RetrieveTapeArchive_603941 = ref object of OpenApiRestCall_602467
-proc url_RetrieveTapeArchive_603943(protocol: Scheme; host: string; base: string;
+  Call_RetrieveTapeArchive_593841 = ref object of OpenApiRestCall_592365
+proc url_RetrieveTapeArchive_593843(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RetrieveTapeArchive_603942(path: JsonNode; query: JsonNode;
+proc validate_RetrieveTapeArchive_593842(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Retrieves an archived virtual tape from the virtual tape shelf (VTS) to a tape gateway. Virtual tapes archived in the VTS are not associated with any gateway. However after a tape is retrieved, it is associated with a gateway, even though it is also listed in the VTS, that is, archive. This operation is only supported in the tape gateway type.</p> <p>Once a tape is successfully retrieved to a gateway, it cannot be retrieved again to another gateway. You must archive the tape again before you can retrieve it to another gateway. This operation is only supported in the tape gateway type.</p>
@@ -6579,57 +6583,57 @@ proc validate_RetrieveTapeArchive_603942(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603944 = header.getOrDefault("X-Amz-Date")
-  valid_603944 = validateParameter(valid_603944, JString, required = false,
-                                 default = nil)
-  if valid_603944 != nil:
-    section.add "X-Amz-Date", valid_603944
-  var valid_603945 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603945 = validateParameter(valid_603945, JString, required = false,
-                                 default = nil)
-  if valid_603945 != nil:
-    section.add "X-Amz-Security-Token", valid_603945
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603946 = header.getOrDefault("X-Amz-Target")
-  valid_603946 = validateParameter(valid_603946, JString, required = true, default = newJString(
+  var valid_593844 = header.getOrDefault("X-Amz-Target")
+  valid_593844 = validateParameter(valid_593844, JString, required = true, default = newJString(
       "StorageGateway_20130630.RetrieveTapeArchive"))
-  if valid_603946 != nil:
-    section.add "X-Amz-Target", valid_603946
-  var valid_603947 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603947 = validateParameter(valid_603947, JString, required = false,
+  if valid_593844 != nil:
+    section.add "X-Amz-Target", valid_593844
+  var valid_593845 = header.getOrDefault("X-Amz-Signature")
+  valid_593845 = validateParameter(valid_593845, JString, required = false,
                                  default = nil)
-  if valid_603947 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603947
-  var valid_603948 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603948 = validateParameter(valid_603948, JString, required = false,
+  if valid_593845 != nil:
+    section.add "X-Amz-Signature", valid_593845
+  var valid_593846 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593846 = validateParameter(valid_593846, JString, required = false,
                                  default = nil)
-  if valid_603948 != nil:
-    section.add "X-Amz-Algorithm", valid_603948
-  var valid_603949 = header.getOrDefault("X-Amz-Signature")
-  valid_603949 = validateParameter(valid_603949, JString, required = false,
+  if valid_593846 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593846
+  var valid_593847 = header.getOrDefault("X-Amz-Date")
+  valid_593847 = validateParameter(valid_593847, JString, required = false,
                                  default = nil)
-  if valid_603949 != nil:
-    section.add "X-Amz-Signature", valid_603949
-  var valid_603950 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603950 = validateParameter(valid_603950, JString, required = false,
+  if valid_593847 != nil:
+    section.add "X-Amz-Date", valid_593847
+  var valid_593848 = header.getOrDefault("X-Amz-Credential")
+  valid_593848 = validateParameter(valid_593848, JString, required = false,
                                  default = nil)
-  if valid_603950 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603950
-  var valid_603951 = header.getOrDefault("X-Amz-Credential")
-  valid_603951 = validateParameter(valid_603951, JString, required = false,
+  if valid_593848 != nil:
+    section.add "X-Amz-Credential", valid_593848
+  var valid_593849 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593849 = validateParameter(valid_593849, JString, required = false,
                                  default = nil)
-  if valid_603951 != nil:
-    section.add "X-Amz-Credential", valid_603951
+  if valid_593849 != nil:
+    section.add "X-Amz-Security-Token", valid_593849
+  var valid_593850 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593850 = validateParameter(valid_593850, JString, required = false,
+                                 default = nil)
+  if valid_593850 != nil:
+    section.add "X-Amz-Algorithm", valid_593850
+  var valid_593851 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593851 = validateParameter(valid_593851, JString, required = false,
+                                 default = nil)
+  if valid_593851 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593851
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6640,44 +6644,44 @@ proc validate_RetrieveTapeArchive_603942(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603953: Call_RetrieveTapeArchive_603941; path: JsonNode;
+proc call*(call_593853: Call_RetrieveTapeArchive_593841; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves an archived virtual tape from the virtual tape shelf (VTS) to a tape gateway. Virtual tapes archived in the VTS are not associated with any gateway. However after a tape is retrieved, it is associated with a gateway, even though it is also listed in the VTS, that is, archive. This operation is only supported in the tape gateway type.</p> <p>Once a tape is successfully retrieved to a gateway, it cannot be retrieved again to another gateway. You must archive the tape again before you can retrieve it to another gateway. This operation is only supported in the tape gateway type.</p>
   ## 
-  let valid = call_603953.validator(path, query, header, formData, body)
-  let scheme = call_603953.pickScheme
+  let valid = call_593853.validator(path, query, header, formData, body)
+  let scheme = call_593853.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603953.url(scheme.get, call_603953.host, call_603953.base,
-                         call_603953.route, valid.getOrDefault("path"),
+  let url = call_593853.url(scheme.get, call_593853.host, call_593853.base,
+                         call_593853.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603953, url, valid)
+  result = hook(call_593853, url, valid)
 
-proc call*(call_603954: Call_RetrieveTapeArchive_603941; body: JsonNode): Recallable =
+proc call*(call_593854: Call_RetrieveTapeArchive_593841; body: JsonNode): Recallable =
   ## retrieveTapeArchive
   ## <p>Retrieves an archived virtual tape from the virtual tape shelf (VTS) to a tape gateway. Virtual tapes archived in the VTS are not associated with any gateway. However after a tape is retrieved, it is associated with a gateway, even though it is also listed in the VTS, that is, archive. This operation is only supported in the tape gateway type.</p> <p>Once a tape is successfully retrieved to a gateway, it cannot be retrieved again to another gateway. You must archive the tape again before you can retrieve it to another gateway. This operation is only supported in the tape gateway type.</p>
   ##   body: JObject (required)
-  var body_603955 = newJObject()
+  var body_593855 = newJObject()
   if body != nil:
-    body_603955 = body
-  result = call_603954.call(nil, nil, nil, nil, body_603955)
+    body_593855 = body
+  result = call_593854.call(nil, nil, nil, nil, body_593855)
 
-var retrieveTapeArchive* = Call_RetrieveTapeArchive_603941(
+var retrieveTapeArchive* = Call_RetrieveTapeArchive_593841(
     name: "retrieveTapeArchive", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.RetrieveTapeArchive",
-    validator: validate_RetrieveTapeArchive_603942, base: "/",
-    url: url_RetrieveTapeArchive_603943, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RetrieveTapeArchive_593842, base: "/",
+    url: url_RetrieveTapeArchive_593843, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RetrieveTapeRecoveryPoint_603956 = ref object of OpenApiRestCall_602467
-proc url_RetrieveTapeRecoveryPoint_603958(protocol: Scheme; host: string;
+  Call_RetrieveTapeRecoveryPoint_593856 = ref object of OpenApiRestCall_592365
+proc url_RetrieveTapeRecoveryPoint_593858(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_RetrieveTapeRecoveryPoint_603957(path: JsonNode; query: JsonNode;
+proc validate_RetrieveTapeRecoveryPoint_593857(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves the recovery point for the specified virtual tape. This operation is only supported in the tape gateway type.</p> <p>A recovery point is a point in time view of a virtual tape at which all the data on the tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway.</p> <note> <p>The virtual tape can be retrieved to only one gateway. The retrieved tape is read-only. The virtual tape can be retrieved to only a tape gateway. There is no charge for retrieving recovery points.</p> </note>
   ## 
@@ -6688,57 +6692,57 @@ proc validate_RetrieveTapeRecoveryPoint_603957(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603959 = header.getOrDefault("X-Amz-Date")
-  valid_603959 = validateParameter(valid_603959, JString, required = false,
-                                 default = nil)
-  if valid_603959 != nil:
-    section.add "X-Amz-Date", valid_603959
-  var valid_603960 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603960 = validateParameter(valid_603960, JString, required = false,
-                                 default = nil)
-  if valid_603960 != nil:
-    section.add "X-Amz-Security-Token", valid_603960
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603961 = header.getOrDefault("X-Amz-Target")
-  valid_603961 = validateParameter(valid_603961, JString, required = true, default = newJString(
+  var valid_593859 = header.getOrDefault("X-Amz-Target")
+  valid_593859 = validateParameter(valid_593859, JString, required = true, default = newJString(
       "StorageGateway_20130630.RetrieveTapeRecoveryPoint"))
-  if valid_603961 != nil:
-    section.add "X-Amz-Target", valid_603961
-  var valid_603962 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603962 = validateParameter(valid_603962, JString, required = false,
+  if valid_593859 != nil:
+    section.add "X-Amz-Target", valid_593859
+  var valid_593860 = header.getOrDefault("X-Amz-Signature")
+  valid_593860 = validateParameter(valid_593860, JString, required = false,
                                  default = nil)
-  if valid_603962 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603962
-  var valid_603963 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603963 = validateParameter(valid_603963, JString, required = false,
+  if valid_593860 != nil:
+    section.add "X-Amz-Signature", valid_593860
+  var valid_593861 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593861 = validateParameter(valid_593861, JString, required = false,
                                  default = nil)
-  if valid_603963 != nil:
-    section.add "X-Amz-Algorithm", valid_603963
-  var valid_603964 = header.getOrDefault("X-Amz-Signature")
-  valid_603964 = validateParameter(valid_603964, JString, required = false,
+  if valid_593861 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593861
+  var valid_593862 = header.getOrDefault("X-Amz-Date")
+  valid_593862 = validateParameter(valid_593862, JString, required = false,
                                  default = nil)
-  if valid_603964 != nil:
-    section.add "X-Amz-Signature", valid_603964
-  var valid_603965 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603965 = validateParameter(valid_603965, JString, required = false,
+  if valid_593862 != nil:
+    section.add "X-Amz-Date", valid_593862
+  var valid_593863 = header.getOrDefault("X-Amz-Credential")
+  valid_593863 = validateParameter(valid_593863, JString, required = false,
                                  default = nil)
-  if valid_603965 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603965
-  var valid_603966 = header.getOrDefault("X-Amz-Credential")
-  valid_603966 = validateParameter(valid_603966, JString, required = false,
+  if valid_593863 != nil:
+    section.add "X-Amz-Credential", valid_593863
+  var valid_593864 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593864 = validateParameter(valid_593864, JString, required = false,
                                  default = nil)
-  if valid_603966 != nil:
-    section.add "X-Amz-Credential", valid_603966
+  if valid_593864 != nil:
+    section.add "X-Amz-Security-Token", valid_593864
+  var valid_593865 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593865 = validateParameter(valid_593865, JString, required = false,
+                                 default = nil)
+  if valid_593865 != nil:
+    section.add "X-Amz-Algorithm", valid_593865
+  var valid_593866 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593866 = validateParameter(valid_593866, JString, required = false,
+                                 default = nil)
+  if valid_593866 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593866
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6749,38 +6753,38 @@ proc validate_RetrieveTapeRecoveryPoint_603957(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603968: Call_RetrieveTapeRecoveryPoint_603956; path: JsonNode;
+proc call*(call_593868: Call_RetrieveTapeRecoveryPoint_593856; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves the recovery point for the specified virtual tape. This operation is only supported in the tape gateway type.</p> <p>A recovery point is a point in time view of a virtual tape at which all the data on the tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway.</p> <note> <p>The virtual tape can be retrieved to only one gateway. The retrieved tape is read-only. The virtual tape can be retrieved to only a tape gateway. There is no charge for retrieving recovery points.</p> </note>
   ## 
-  let valid = call_603968.validator(path, query, header, formData, body)
-  let scheme = call_603968.pickScheme
+  let valid = call_593868.validator(path, query, header, formData, body)
+  let scheme = call_593868.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603968.url(scheme.get, call_603968.host, call_603968.base,
-                         call_603968.route, valid.getOrDefault("path"),
+  let url = call_593868.url(scheme.get, call_593868.host, call_593868.base,
+                         call_593868.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603968, url, valid)
+  result = hook(call_593868, url, valid)
 
-proc call*(call_603969: Call_RetrieveTapeRecoveryPoint_603956; body: JsonNode): Recallable =
+proc call*(call_593869: Call_RetrieveTapeRecoveryPoint_593856; body: JsonNode): Recallable =
   ## retrieveTapeRecoveryPoint
   ## <p>Retrieves the recovery point for the specified virtual tape. This operation is only supported in the tape gateway type.</p> <p>A recovery point is a point in time view of a virtual tape at which all the data on the tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway.</p> <note> <p>The virtual tape can be retrieved to only one gateway. The retrieved tape is read-only. The virtual tape can be retrieved to only a tape gateway. There is no charge for retrieving recovery points.</p> </note>
   ##   body: JObject (required)
-  var body_603970 = newJObject()
+  var body_593870 = newJObject()
   if body != nil:
-    body_603970 = body
-  result = call_603969.call(nil, nil, nil, nil, body_603970)
+    body_593870 = body
+  result = call_593869.call(nil, nil, nil, nil, body_593870)
 
-var retrieveTapeRecoveryPoint* = Call_RetrieveTapeRecoveryPoint_603956(
+var retrieveTapeRecoveryPoint* = Call_RetrieveTapeRecoveryPoint_593856(
     name: "retrieveTapeRecoveryPoint", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.RetrieveTapeRecoveryPoint",
-    validator: validate_RetrieveTapeRecoveryPoint_603957, base: "/",
-    url: url_RetrieveTapeRecoveryPoint_603958,
+    validator: validate_RetrieveTapeRecoveryPoint_593857, base: "/",
+    url: url_RetrieveTapeRecoveryPoint_593858,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SetLocalConsolePassword_603971 = ref object of OpenApiRestCall_602467
-proc url_SetLocalConsolePassword_603973(protocol: Scheme; host: string; base: string;
+  Call_SetLocalConsolePassword_593871 = ref object of OpenApiRestCall_592365
+proc url_SetLocalConsolePassword_593873(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -6788,7 +6792,7 @@ proc url_SetLocalConsolePassword_603973(protocol: Scheme; host: string; base: st
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_SetLocalConsolePassword_603972(path: JsonNode; query: JsonNode;
+proc validate_SetLocalConsolePassword_593872(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Sets the password for your VM local console. When you log in to the local console for the first time, you log in to the VM with the default credentials. We recommend that you set a new password. You don't need to know the default password to set a new password.
   ## 
@@ -6799,57 +6803,57 @@ proc validate_SetLocalConsolePassword_603972(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603974 = header.getOrDefault("X-Amz-Date")
-  valid_603974 = validateParameter(valid_603974, JString, required = false,
-                                 default = nil)
-  if valid_603974 != nil:
-    section.add "X-Amz-Date", valid_603974
-  var valid_603975 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603975 = validateParameter(valid_603975, JString, required = false,
-                                 default = nil)
-  if valid_603975 != nil:
-    section.add "X-Amz-Security-Token", valid_603975
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603976 = header.getOrDefault("X-Amz-Target")
-  valid_603976 = validateParameter(valid_603976, JString, required = true, default = newJString(
+  var valid_593874 = header.getOrDefault("X-Amz-Target")
+  valid_593874 = validateParameter(valid_593874, JString, required = true, default = newJString(
       "StorageGateway_20130630.SetLocalConsolePassword"))
-  if valid_603976 != nil:
-    section.add "X-Amz-Target", valid_603976
-  var valid_603977 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603977 = validateParameter(valid_603977, JString, required = false,
+  if valid_593874 != nil:
+    section.add "X-Amz-Target", valid_593874
+  var valid_593875 = header.getOrDefault("X-Amz-Signature")
+  valid_593875 = validateParameter(valid_593875, JString, required = false,
                                  default = nil)
-  if valid_603977 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603977
-  var valid_603978 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603978 = validateParameter(valid_603978, JString, required = false,
+  if valid_593875 != nil:
+    section.add "X-Amz-Signature", valid_593875
+  var valid_593876 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593876 = validateParameter(valid_593876, JString, required = false,
                                  default = nil)
-  if valid_603978 != nil:
-    section.add "X-Amz-Algorithm", valid_603978
-  var valid_603979 = header.getOrDefault("X-Amz-Signature")
-  valid_603979 = validateParameter(valid_603979, JString, required = false,
+  if valid_593876 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593876
+  var valid_593877 = header.getOrDefault("X-Amz-Date")
+  valid_593877 = validateParameter(valid_593877, JString, required = false,
                                  default = nil)
-  if valid_603979 != nil:
-    section.add "X-Amz-Signature", valid_603979
-  var valid_603980 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603980 = validateParameter(valid_603980, JString, required = false,
+  if valid_593877 != nil:
+    section.add "X-Amz-Date", valid_593877
+  var valid_593878 = header.getOrDefault("X-Amz-Credential")
+  valid_593878 = validateParameter(valid_593878, JString, required = false,
                                  default = nil)
-  if valid_603980 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603980
-  var valid_603981 = header.getOrDefault("X-Amz-Credential")
-  valid_603981 = validateParameter(valid_603981, JString, required = false,
+  if valid_593878 != nil:
+    section.add "X-Amz-Credential", valid_593878
+  var valid_593879 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593879 = validateParameter(valid_593879, JString, required = false,
                                  default = nil)
-  if valid_603981 != nil:
-    section.add "X-Amz-Credential", valid_603981
+  if valid_593879 != nil:
+    section.add "X-Amz-Security-Token", valid_593879
+  var valid_593880 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593880 = validateParameter(valid_593880, JString, required = false,
+                                 default = nil)
+  if valid_593880 != nil:
+    section.add "X-Amz-Algorithm", valid_593880
+  var valid_593881 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593881 = validateParameter(valid_593881, JString, required = false,
+                                 default = nil)
+  if valid_593881 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593881
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6860,44 +6864,44 @@ proc validate_SetLocalConsolePassword_603972(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603983: Call_SetLocalConsolePassword_603971; path: JsonNode;
+proc call*(call_593883: Call_SetLocalConsolePassword_593871; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets the password for your VM local console. When you log in to the local console for the first time, you log in to the VM with the default credentials. We recommend that you set a new password. You don't need to know the default password to set a new password.
   ## 
-  let valid = call_603983.validator(path, query, header, formData, body)
-  let scheme = call_603983.pickScheme
+  let valid = call_593883.validator(path, query, header, formData, body)
+  let scheme = call_593883.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603983.url(scheme.get, call_603983.host, call_603983.base,
-                         call_603983.route, valid.getOrDefault("path"),
+  let url = call_593883.url(scheme.get, call_593883.host, call_593883.base,
+                         call_593883.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603983, url, valid)
+  result = hook(call_593883, url, valid)
 
-proc call*(call_603984: Call_SetLocalConsolePassword_603971; body: JsonNode): Recallable =
+proc call*(call_593884: Call_SetLocalConsolePassword_593871; body: JsonNode): Recallable =
   ## setLocalConsolePassword
   ## Sets the password for your VM local console. When you log in to the local console for the first time, you log in to the VM with the default credentials. We recommend that you set a new password. You don't need to know the default password to set a new password.
   ##   body: JObject (required)
-  var body_603985 = newJObject()
+  var body_593885 = newJObject()
   if body != nil:
-    body_603985 = body
-  result = call_603984.call(nil, nil, nil, nil, body_603985)
+    body_593885 = body
+  result = call_593884.call(nil, nil, nil, nil, body_593885)
 
-var setLocalConsolePassword* = Call_SetLocalConsolePassword_603971(
+var setLocalConsolePassword* = Call_SetLocalConsolePassword_593871(
     name: "setLocalConsolePassword", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.SetLocalConsolePassword",
-    validator: validate_SetLocalConsolePassword_603972, base: "/",
-    url: url_SetLocalConsolePassword_603973, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SetLocalConsolePassword_593872, base: "/",
+    url: url_SetLocalConsolePassword_593873, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SetSMBGuestPassword_603986 = ref object of OpenApiRestCall_602467
-proc url_SetSMBGuestPassword_603988(protocol: Scheme; host: string; base: string;
+  Call_SetSMBGuestPassword_593886 = ref object of OpenApiRestCall_592365
+proc url_SetSMBGuestPassword_593888(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_SetSMBGuestPassword_603987(path: JsonNode; query: JsonNode;
+proc validate_SetSMBGuestPassword_593887(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Sets the password for the guest user <code>smbguest</code>. The <code>smbguest</code> user is the user when the authentication method for the file share is set to <code>GuestAccess</code>.
@@ -6909,57 +6913,57 @@ proc validate_SetSMBGuestPassword_603987(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_603989 = header.getOrDefault("X-Amz-Date")
-  valid_603989 = validateParameter(valid_603989, JString, required = false,
-                                 default = nil)
-  if valid_603989 != nil:
-    section.add "X-Amz-Date", valid_603989
-  var valid_603990 = header.getOrDefault("X-Amz-Security-Token")
-  valid_603990 = validateParameter(valid_603990, JString, required = false,
-                                 default = nil)
-  if valid_603990 != nil:
-    section.add "X-Amz-Security-Token", valid_603990
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_603991 = header.getOrDefault("X-Amz-Target")
-  valid_603991 = validateParameter(valid_603991, JString, required = true, default = newJString(
+  var valid_593889 = header.getOrDefault("X-Amz-Target")
+  valid_593889 = validateParameter(valid_593889, JString, required = true, default = newJString(
       "StorageGateway_20130630.SetSMBGuestPassword"))
-  if valid_603991 != nil:
-    section.add "X-Amz-Target", valid_603991
-  var valid_603992 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_603992 = validateParameter(valid_603992, JString, required = false,
+  if valid_593889 != nil:
+    section.add "X-Amz-Target", valid_593889
+  var valid_593890 = header.getOrDefault("X-Amz-Signature")
+  valid_593890 = validateParameter(valid_593890, JString, required = false,
                                  default = nil)
-  if valid_603992 != nil:
-    section.add "X-Amz-Content-Sha256", valid_603992
-  var valid_603993 = header.getOrDefault("X-Amz-Algorithm")
-  valid_603993 = validateParameter(valid_603993, JString, required = false,
+  if valid_593890 != nil:
+    section.add "X-Amz-Signature", valid_593890
+  var valid_593891 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593891 = validateParameter(valid_593891, JString, required = false,
                                  default = nil)
-  if valid_603993 != nil:
-    section.add "X-Amz-Algorithm", valid_603993
-  var valid_603994 = header.getOrDefault("X-Amz-Signature")
-  valid_603994 = validateParameter(valid_603994, JString, required = false,
+  if valid_593891 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593891
+  var valid_593892 = header.getOrDefault("X-Amz-Date")
+  valid_593892 = validateParameter(valid_593892, JString, required = false,
                                  default = nil)
-  if valid_603994 != nil:
-    section.add "X-Amz-Signature", valid_603994
-  var valid_603995 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_603995 = validateParameter(valid_603995, JString, required = false,
+  if valid_593892 != nil:
+    section.add "X-Amz-Date", valid_593892
+  var valid_593893 = header.getOrDefault("X-Amz-Credential")
+  valid_593893 = validateParameter(valid_593893, JString, required = false,
                                  default = nil)
-  if valid_603995 != nil:
-    section.add "X-Amz-SignedHeaders", valid_603995
-  var valid_603996 = header.getOrDefault("X-Amz-Credential")
-  valid_603996 = validateParameter(valid_603996, JString, required = false,
+  if valid_593893 != nil:
+    section.add "X-Amz-Credential", valid_593893
+  var valid_593894 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593894 = validateParameter(valid_593894, JString, required = false,
                                  default = nil)
-  if valid_603996 != nil:
-    section.add "X-Amz-Credential", valid_603996
+  if valid_593894 != nil:
+    section.add "X-Amz-Security-Token", valid_593894
+  var valid_593895 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593895 = validateParameter(valid_593895, JString, required = false,
+                                 default = nil)
+  if valid_593895 != nil:
+    section.add "X-Amz-Algorithm", valid_593895
+  var valid_593896 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593896 = validateParameter(valid_593896, JString, required = false,
+                                 default = nil)
+  if valid_593896 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593896
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6970,44 +6974,44 @@ proc validate_SetSMBGuestPassword_603987(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_603998: Call_SetSMBGuestPassword_603986; path: JsonNode;
+proc call*(call_593898: Call_SetSMBGuestPassword_593886; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sets the password for the guest user <code>smbguest</code>. The <code>smbguest</code> user is the user when the authentication method for the file share is set to <code>GuestAccess</code>.
   ## 
-  let valid = call_603998.validator(path, query, header, formData, body)
-  let scheme = call_603998.pickScheme
+  let valid = call_593898.validator(path, query, header, formData, body)
+  let scheme = call_593898.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_603998.url(scheme.get, call_603998.host, call_603998.base,
-                         call_603998.route, valid.getOrDefault("path"),
+  let url = call_593898.url(scheme.get, call_593898.host, call_593898.base,
+                         call_593898.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_603998, url, valid)
+  result = hook(call_593898, url, valid)
 
-proc call*(call_603999: Call_SetSMBGuestPassword_603986; body: JsonNode): Recallable =
+proc call*(call_593899: Call_SetSMBGuestPassword_593886; body: JsonNode): Recallable =
   ## setSMBGuestPassword
   ## Sets the password for the guest user <code>smbguest</code>. The <code>smbguest</code> user is the user when the authentication method for the file share is set to <code>GuestAccess</code>.
   ##   body: JObject (required)
-  var body_604000 = newJObject()
+  var body_593900 = newJObject()
   if body != nil:
-    body_604000 = body
-  result = call_603999.call(nil, nil, nil, nil, body_604000)
+    body_593900 = body
+  result = call_593899.call(nil, nil, nil, nil, body_593900)
 
-var setSMBGuestPassword* = Call_SetSMBGuestPassword_603986(
+var setSMBGuestPassword* = Call_SetSMBGuestPassword_593886(
     name: "setSMBGuestPassword", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.SetSMBGuestPassword",
-    validator: validate_SetSMBGuestPassword_603987, base: "/",
-    url: url_SetSMBGuestPassword_603988, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SetSMBGuestPassword_593887, base: "/",
+    url: url_SetSMBGuestPassword_593888, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ShutdownGateway_604001 = ref object of OpenApiRestCall_602467
-proc url_ShutdownGateway_604003(protocol: Scheme; host: string; base: string;
+  Call_ShutdownGateway_593901 = ref object of OpenApiRestCall_592365
+proc url_ShutdownGateway_593903(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ShutdownGateway_604002(path: JsonNode; query: JsonNode;
+proc validate_ShutdownGateway_593902(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Shuts down a gateway. To specify which gateway to shut down, use the Amazon Resource Name (ARN) of the gateway in the body of your request.</p> <p>The operation shuts down the gateway service component running in the gateway's virtual machine (VM) and not the host VM.</p> <note> <p>If you want to shut down the VM, it is recommended that you first shut down the gateway component in the VM to avoid unpredictable conditions.</p> </note> <p>After the gateway is shutdown, you cannot call any other API except <a>StartGateway</a>, <a>DescribeGatewayInformation</a>, and <a>ListGateways</a>. For more information, see <a>ActivateGateway</a>. Your applications cannot read from or write to the gateway's storage volumes, and there are no snapshots taken.</p> <note> <p>When you make a shutdown request, you will get a <code>200 OK</code> success response immediately. However, it might take some time for the gateway to shut down. You can call the <a>DescribeGatewayInformation</a> API to check the status. For more information, see <a>ActivateGateway</a>.</p> </note> <p>If do not intend to use the gateway again, you must delete the gateway (using <a>DeleteGateway</a>) to no longer pay software charges associated with the gateway.</p>
@@ -7019,57 +7023,57 @@ proc validate_ShutdownGateway_604002(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604004 = header.getOrDefault("X-Amz-Date")
-  valid_604004 = validateParameter(valid_604004, JString, required = false,
-                                 default = nil)
-  if valid_604004 != nil:
-    section.add "X-Amz-Date", valid_604004
-  var valid_604005 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604005 = validateParameter(valid_604005, JString, required = false,
-                                 default = nil)
-  if valid_604005 != nil:
-    section.add "X-Amz-Security-Token", valid_604005
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604006 = header.getOrDefault("X-Amz-Target")
-  valid_604006 = validateParameter(valid_604006, JString, required = true, default = newJString(
+  var valid_593904 = header.getOrDefault("X-Amz-Target")
+  valid_593904 = validateParameter(valid_593904, JString, required = true, default = newJString(
       "StorageGateway_20130630.ShutdownGateway"))
-  if valid_604006 != nil:
-    section.add "X-Amz-Target", valid_604006
-  var valid_604007 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604007 = validateParameter(valid_604007, JString, required = false,
+  if valid_593904 != nil:
+    section.add "X-Amz-Target", valid_593904
+  var valid_593905 = header.getOrDefault("X-Amz-Signature")
+  valid_593905 = validateParameter(valid_593905, JString, required = false,
                                  default = nil)
-  if valid_604007 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604007
-  var valid_604008 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604008 = validateParameter(valid_604008, JString, required = false,
+  if valid_593905 != nil:
+    section.add "X-Amz-Signature", valid_593905
+  var valid_593906 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593906 = validateParameter(valid_593906, JString, required = false,
                                  default = nil)
-  if valid_604008 != nil:
-    section.add "X-Amz-Algorithm", valid_604008
-  var valid_604009 = header.getOrDefault("X-Amz-Signature")
-  valid_604009 = validateParameter(valid_604009, JString, required = false,
+  if valid_593906 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593906
+  var valid_593907 = header.getOrDefault("X-Amz-Date")
+  valid_593907 = validateParameter(valid_593907, JString, required = false,
                                  default = nil)
-  if valid_604009 != nil:
-    section.add "X-Amz-Signature", valid_604009
-  var valid_604010 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604010 = validateParameter(valid_604010, JString, required = false,
+  if valid_593907 != nil:
+    section.add "X-Amz-Date", valid_593907
+  var valid_593908 = header.getOrDefault("X-Amz-Credential")
+  valid_593908 = validateParameter(valid_593908, JString, required = false,
                                  default = nil)
-  if valid_604010 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604010
-  var valid_604011 = header.getOrDefault("X-Amz-Credential")
-  valid_604011 = validateParameter(valid_604011, JString, required = false,
+  if valid_593908 != nil:
+    section.add "X-Amz-Credential", valid_593908
+  var valid_593909 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593909 = validateParameter(valid_593909, JString, required = false,
                                  default = nil)
-  if valid_604011 != nil:
-    section.add "X-Amz-Credential", valid_604011
+  if valid_593909 != nil:
+    section.add "X-Amz-Security-Token", valid_593909
+  var valid_593910 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593910 = validateParameter(valid_593910, JString, required = false,
+                                 default = nil)
+  if valid_593910 != nil:
+    section.add "X-Amz-Algorithm", valid_593910
+  var valid_593911 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593911 = validateParameter(valid_593911, JString, required = false,
+                                 default = nil)
+  if valid_593911 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593911
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7080,43 +7084,43 @@ proc validate_ShutdownGateway_604002(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604013: Call_ShutdownGateway_604001; path: JsonNode; query: JsonNode;
+proc call*(call_593913: Call_ShutdownGateway_593901; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Shuts down a gateway. To specify which gateway to shut down, use the Amazon Resource Name (ARN) of the gateway in the body of your request.</p> <p>The operation shuts down the gateway service component running in the gateway's virtual machine (VM) and not the host VM.</p> <note> <p>If you want to shut down the VM, it is recommended that you first shut down the gateway component in the VM to avoid unpredictable conditions.</p> </note> <p>After the gateway is shutdown, you cannot call any other API except <a>StartGateway</a>, <a>DescribeGatewayInformation</a>, and <a>ListGateways</a>. For more information, see <a>ActivateGateway</a>. Your applications cannot read from or write to the gateway's storage volumes, and there are no snapshots taken.</p> <note> <p>When you make a shutdown request, you will get a <code>200 OK</code> success response immediately. However, it might take some time for the gateway to shut down. You can call the <a>DescribeGatewayInformation</a> API to check the status. For more information, see <a>ActivateGateway</a>.</p> </note> <p>If do not intend to use the gateway again, you must delete the gateway (using <a>DeleteGateway</a>) to no longer pay software charges associated with the gateway.</p>
   ## 
-  let valid = call_604013.validator(path, query, header, formData, body)
-  let scheme = call_604013.pickScheme
+  let valid = call_593913.validator(path, query, header, formData, body)
+  let scheme = call_593913.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604013.url(scheme.get, call_604013.host, call_604013.base,
-                         call_604013.route, valid.getOrDefault("path"),
+  let url = call_593913.url(scheme.get, call_593913.host, call_593913.base,
+                         call_593913.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604013, url, valid)
+  result = hook(call_593913, url, valid)
 
-proc call*(call_604014: Call_ShutdownGateway_604001; body: JsonNode): Recallable =
+proc call*(call_593914: Call_ShutdownGateway_593901; body: JsonNode): Recallable =
   ## shutdownGateway
   ## <p>Shuts down a gateway. To specify which gateway to shut down, use the Amazon Resource Name (ARN) of the gateway in the body of your request.</p> <p>The operation shuts down the gateway service component running in the gateway's virtual machine (VM) and not the host VM.</p> <note> <p>If you want to shut down the VM, it is recommended that you first shut down the gateway component in the VM to avoid unpredictable conditions.</p> </note> <p>After the gateway is shutdown, you cannot call any other API except <a>StartGateway</a>, <a>DescribeGatewayInformation</a>, and <a>ListGateways</a>. For more information, see <a>ActivateGateway</a>. Your applications cannot read from or write to the gateway's storage volumes, and there are no snapshots taken.</p> <note> <p>When you make a shutdown request, you will get a <code>200 OK</code> success response immediately. However, it might take some time for the gateway to shut down. You can call the <a>DescribeGatewayInformation</a> API to check the status. For more information, see <a>ActivateGateway</a>.</p> </note> <p>If do not intend to use the gateway again, you must delete the gateway (using <a>DeleteGateway</a>) to no longer pay software charges associated with the gateway.</p>
   ##   body: JObject (required)
-  var body_604015 = newJObject()
+  var body_593915 = newJObject()
   if body != nil:
-    body_604015 = body
-  result = call_604014.call(nil, nil, nil, nil, body_604015)
+    body_593915 = body
+  result = call_593914.call(nil, nil, nil, nil, body_593915)
 
-var shutdownGateway* = Call_ShutdownGateway_604001(name: "shutdownGateway",
+var shutdownGateway* = Call_ShutdownGateway_593901(name: "shutdownGateway",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.ShutdownGateway",
-    validator: validate_ShutdownGateway_604002, base: "/", url: url_ShutdownGateway_604003,
+    validator: validate_ShutdownGateway_593902, base: "/", url: url_ShutdownGateway_593903,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartGateway_604016 = ref object of OpenApiRestCall_602467
-proc url_StartGateway_604018(protocol: Scheme; host: string; base: string;
+  Call_StartGateway_593916 = ref object of OpenApiRestCall_592365
+proc url_StartGateway_593918(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_StartGateway_604017(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StartGateway_593917(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts a gateway that you previously shut down (see <a>ShutdownGateway</a>). After the gateway starts, you can then make other API calls, your applications can read from or write to the gateway's storage volumes and you will be able to take snapshot backups.</p> <note> <p>When you make a request, you will get a 200 OK success response immediately. However, it might take some time for the gateway to be ready. You should call <a>DescribeGatewayInformation</a> and check the status before making any additional API calls. For more information, see <a>ActivateGateway</a>.</p> </note> <p>To specify which gateway to start, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ## 
@@ -7127,57 +7131,57 @@ proc validate_StartGateway_604017(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604019 = header.getOrDefault("X-Amz-Date")
-  valid_604019 = validateParameter(valid_604019, JString, required = false,
-                                 default = nil)
-  if valid_604019 != nil:
-    section.add "X-Amz-Date", valid_604019
-  var valid_604020 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604020 = validateParameter(valid_604020, JString, required = false,
-                                 default = nil)
-  if valid_604020 != nil:
-    section.add "X-Amz-Security-Token", valid_604020
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604021 = header.getOrDefault("X-Amz-Target")
-  valid_604021 = validateParameter(valid_604021, JString, required = true, default = newJString(
+  var valid_593919 = header.getOrDefault("X-Amz-Target")
+  valid_593919 = validateParameter(valid_593919, JString, required = true, default = newJString(
       "StorageGateway_20130630.StartGateway"))
-  if valid_604021 != nil:
-    section.add "X-Amz-Target", valid_604021
-  var valid_604022 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604022 = validateParameter(valid_604022, JString, required = false,
+  if valid_593919 != nil:
+    section.add "X-Amz-Target", valid_593919
+  var valid_593920 = header.getOrDefault("X-Amz-Signature")
+  valid_593920 = validateParameter(valid_593920, JString, required = false,
                                  default = nil)
-  if valid_604022 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604022
-  var valid_604023 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604023 = validateParameter(valid_604023, JString, required = false,
+  if valid_593920 != nil:
+    section.add "X-Amz-Signature", valid_593920
+  var valid_593921 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593921 = validateParameter(valid_593921, JString, required = false,
                                  default = nil)
-  if valid_604023 != nil:
-    section.add "X-Amz-Algorithm", valid_604023
-  var valid_604024 = header.getOrDefault("X-Amz-Signature")
-  valid_604024 = validateParameter(valid_604024, JString, required = false,
+  if valid_593921 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593921
+  var valid_593922 = header.getOrDefault("X-Amz-Date")
+  valid_593922 = validateParameter(valid_593922, JString, required = false,
                                  default = nil)
-  if valid_604024 != nil:
-    section.add "X-Amz-Signature", valid_604024
-  var valid_604025 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604025 = validateParameter(valid_604025, JString, required = false,
+  if valid_593922 != nil:
+    section.add "X-Amz-Date", valid_593922
+  var valid_593923 = header.getOrDefault("X-Amz-Credential")
+  valid_593923 = validateParameter(valid_593923, JString, required = false,
                                  default = nil)
-  if valid_604025 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604025
-  var valid_604026 = header.getOrDefault("X-Amz-Credential")
-  valid_604026 = validateParameter(valid_604026, JString, required = false,
+  if valid_593923 != nil:
+    section.add "X-Amz-Credential", valid_593923
+  var valid_593924 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593924 = validateParameter(valid_593924, JString, required = false,
                                  default = nil)
-  if valid_604026 != nil:
-    section.add "X-Amz-Credential", valid_604026
+  if valid_593924 != nil:
+    section.add "X-Amz-Security-Token", valid_593924
+  var valid_593925 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593925 = validateParameter(valid_593925, JString, required = false,
+                                 default = nil)
+  if valid_593925 != nil:
+    section.add "X-Amz-Algorithm", valid_593925
+  var valid_593926 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593926 = validateParameter(valid_593926, JString, required = false,
+                                 default = nil)
+  if valid_593926 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593926
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7188,36 +7192,36 @@ proc validate_StartGateway_604017(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_604028: Call_StartGateway_604016; path: JsonNode; query: JsonNode;
+proc call*(call_593928: Call_StartGateway_593916; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts a gateway that you previously shut down (see <a>ShutdownGateway</a>). After the gateway starts, you can then make other API calls, your applications can read from or write to the gateway's storage volumes and you will be able to take snapshot backups.</p> <note> <p>When you make a request, you will get a 200 OK success response immediately. However, it might take some time for the gateway to be ready. You should call <a>DescribeGatewayInformation</a> and check the status before making any additional API calls. For more information, see <a>ActivateGateway</a>.</p> </note> <p>To specify which gateway to start, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ## 
-  let valid = call_604028.validator(path, query, header, formData, body)
-  let scheme = call_604028.pickScheme
+  let valid = call_593928.validator(path, query, header, formData, body)
+  let scheme = call_593928.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604028.url(scheme.get, call_604028.host, call_604028.base,
-                         call_604028.route, valid.getOrDefault("path"),
+  let url = call_593928.url(scheme.get, call_593928.host, call_593928.base,
+                         call_593928.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604028, url, valid)
+  result = hook(call_593928, url, valid)
 
-proc call*(call_604029: Call_StartGateway_604016; body: JsonNode): Recallable =
+proc call*(call_593929: Call_StartGateway_593916; body: JsonNode): Recallable =
   ## startGateway
   ## <p>Starts a gateway that you previously shut down (see <a>ShutdownGateway</a>). After the gateway starts, you can then make other API calls, your applications can read from or write to the gateway's storage volumes and you will be able to take snapshot backups.</p> <note> <p>When you make a request, you will get a 200 OK success response immediately. However, it might take some time for the gateway to be ready. You should call <a>DescribeGatewayInformation</a> and check the status before making any additional API calls. For more information, see <a>ActivateGateway</a>.</p> </note> <p>To specify which gateway to start, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ##   body: JObject (required)
-  var body_604030 = newJObject()
+  var body_593930 = newJObject()
   if body != nil:
-    body_604030 = body
-  result = call_604029.call(nil, nil, nil, nil, body_604030)
+    body_593930 = body
+  result = call_593929.call(nil, nil, nil, nil, body_593930)
 
-var startGateway* = Call_StartGateway_604016(name: "startGateway",
+var startGateway* = Call_StartGateway_593916(name: "startGateway",
     meth: HttpMethod.HttpPost, host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.StartGateway",
-    validator: validate_StartGateway_604017, base: "/", url: url_StartGateway_604018,
+    validator: validate_StartGateway_593917, base: "/", url: url_StartGateway_593918,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateBandwidthRateLimit_604031 = ref object of OpenApiRestCall_602467
-proc url_UpdateBandwidthRateLimit_604033(protocol: Scheme; host: string;
+  Call_UpdateBandwidthRateLimit_593931 = ref object of OpenApiRestCall_592365
+proc url_UpdateBandwidthRateLimit_593933(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -7225,7 +7229,7 @@ proc url_UpdateBandwidthRateLimit_604033(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateBandwidthRateLimit_604032(path: JsonNode; query: JsonNode;
+proc validate_UpdateBandwidthRateLimit_593932(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the bandwidth rate limits of a gateway. You can update both the upload and download bandwidth rate limit or specify only one of the two. If you don't set a bandwidth rate limit, the existing rate limit remains.</p> <p>By default, a gateway's bandwidth rate limits are not set. If you don't set any limit, the gateway does not have any limitations on its bandwidth usage and could potentially use the maximum available bandwidth.</p> <p>To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ## 
@@ -7236,57 +7240,57 @@ proc validate_UpdateBandwidthRateLimit_604032(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604034 = header.getOrDefault("X-Amz-Date")
-  valid_604034 = validateParameter(valid_604034, JString, required = false,
-                                 default = nil)
-  if valid_604034 != nil:
-    section.add "X-Amz-Date", valid_604034
-  var valid_604035 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604035 = validateParameter(valid_604035, JString, required = false,
-                                 default = nil)
-  if valid_604035 != nil:
-    section.add "X-Amz-Security-Token", valid_604035
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604036 = header.getOrDefault("X-Amz-Target")
-  valid_604036 = validateParameter(valid_604036, JString, required = true, default = newJString(
+  var valid_593934 = header.getOrDefault("X-Amz-Target")
+  valid_593934 = validateParameter(valid_593934, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateBandwidthRateLimit"))
-  if valid_604036 != nil:
-    section.add "X-Amz-Target", valid_604036
-  var valid_604037 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604037 = validateParameter(valid_604037, JString, required = false,
+  if valid_593934 != nil:
+    section.add "X-Amz-Target", valid_593934
+  var valid_593935 = header.getOrDefault("X-Amz-Signature")
+  valid_593935 = validateParameter(valid_593935, JString, required = false,
                                  default = nil)
-  if valid_604037 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604037
-  var valid_604038 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604038 = validateParameter(valid_604038, JString, required = false,
+  if valid_593935 != nil:
+    section.add "X-Amz-Signature", valid_593935
+  var valid_593936 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593936 = validateParameter(valid_593936, JString, required = false,
                                  default = nil)
-  if valid_604038 != nil:
-    section.add "X-Amz-Algorithm", valid_604038
-  var valid_604039 = header.getOrDefault("X-Amz-Signature")
-  valid_604039 = validateParameter(valid_604039, JString, required = false,
+  if valid_593936 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593936
+  var valid_593937 = header.getOrDefault("X-Amz-Date")
+  valid_593937 = validateParameter(valid_593937, JString, required = false,
                                  default = nil)
-  if valid_604039 != nil:
-    section.add "X-Amz-Signature", valid_604039
-  var valid_604040 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604040 = validateParameter(valid_604040, JString, required = false,
+  if valid_593937 != nil:
+    section.add "X-Amz-Date", valid_593937
+  var valid_593938 = header.getOrDefault("X-Amz-Credential")
+  valid_593938 = validateParameter(valid_593938, JString, required = false,
                                  default = nil)
-  if valid_604040 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604040
-  var valid_604041 = header.getOrDefault("X-Amz-Credential")
-  valid_604041 = validateParameter(valid_604041, JString, required = false,
+  if valid_593938 != nil:
+    section.add "X-Amz-Credential", valid_593938
+  var valid_593939 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593939 = validateParameter(valid_593939, JString, required = false,
                                  default = nil)
-  if valid_604041 != nil:
-    section.add "X-Amz-Credential", valid_604041
+  if valid_593939 != nil:
+    section.add "X-Amz-Security-Token", valid_593939
+  var valid_593940 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593940 = validateParameter(valid_593940, JString, required = false,
+                                 default = nil)
+  if valid_593940 != nil:
+    section.add "X-Amz-Algorithm", valid_593940
+  var valid_593941 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593941 = validateParameter(valid_593941, JString, required = false,
+                                 default = nil)
+  if valid_593941 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593941
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7297,44 +7301,44 @@ proc validate_UpdateBandwidthRateLimit_604032(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604043: Call_UpdateBandwidthRateLimit_604031; path: JsonNode;
+proc call*(call_593943: Call_UpdateBandwidthRateLimit_593931; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the bandwidth rate limits of a gateway. You can update both the upload and download bandwidth rate limit or specify only one of the two. If you don't set a bandwidth rate limit, the existing rate limit remains.</p> <p>By default, a gateway's bandwidth rate limits are not set. If you don't set any limit, the gateway does not have any limitations on its bandwidth usage and could potentially use the maximum available bandwidth.</p> <p>To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ## 
-  let valid = call_604043.validator(path, query, header, formData, body)
-  let scheme = call_604043.pickScheme
+  let valid = call_593943.validator(path, query, header, formData, body)
+  let scheme = call_593943.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604043.url(scheme.get, call_604043.host, call_604043.base,
-                         call_604043.route, valid.getOrDefault("path"),
+  let url = call_593943.url(scheme.get, call_593943.host, call_593943.base,
+                         call_593943.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604043, url, valid)
+  result = hook(call_593943, url, valid)
 
-proc call*(call_604044: Call_UpdateBandwidthRateLimit_604031; body: JsonNode): Recallable =
+proc call*(call_593944: Call_UpdateBandwidthRateLimit_593931; body: JsonNode): Recallable =
   ## updateBandwidthRateLimit
   ## <p>Updates the bandwidth rate limits of a gateway. You can update both the upload and download bandwidth rate limit or specify only one of the two. If you don't set a bandwidth rate limit, the existing rate limit remains.</p> <p>By default, a gateway's bandwidth rate limits are not set. If you don't set any limit, the gateway does not have any limitations on its bandwidth usage and could potentially use the maximum available bandwidth.</p> <p>To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.</p>
   ##   body: JObject (required)
-  var body_604045 = newJObject()
+  var body_593945 = newJObject()
   if body != nil:
-    body_604045 = body
-  result = call_604044.call(nil, nil, nil, nil, body_604045)
+    body_593945 = body
+  result = call_593944.call(nil, nil, nil, nil, body_593945)
 
-var updateBandwidthRateLimit* = Call_UpdateBandwidthRateLimit_604031(
+var updateBandwidthRateLimit* = Call_UpdateBandwidthRateLimit_593931(
     name: "updateBandwidthRateLimit", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateBandwidthRateLimit",
-    validator: validate_UpdateBandwidthRateLimit_604032, base: "/",
-    url: url_UpdateBandwidthRateLimit_604033, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateBandwidthRateLimit_593932, base: "/",
+    url: url_UpdateBandwidthRateLimit_593933, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateChapCredentials_604046 = ref object of OpenApiRestCall_602467
-proc url_UpdateChapCredentials_604048(protocol: Scheme; host: string; base: string;
+  Call_UpdateChapCredentials_593946 = ref object of OpenApiRestCall_592365
+proc url_UpdateChapCredentials_593948(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateChapCredentials_604047(path: JsonNode; query: JsonNode;
+proc validate_UpdateChapCredentials_593947(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the Challenge-Handshake Authentication Protocol (CHAP) credentials for a specified iSCSI target. By default, a gateway does not have CHAP enabled; however, for added security, you might use it.</p> <important> <p>When you update CHAP credentials, all existing connections on the target are closed and initiators must reconnect with the new credentials.</p> </important>
   ## 
@@ -7345,57 +7349,57 @@ proc validate_UpdateChapCredentials_604047(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604049 = header.getOrDefault("X-Amz-Date")
-  valid_604049 = validateParameter(valid_604049, JString, required = false,
-                                 default = nil)
-  if valid_604049 != nil:
-    section.add "X-Amz-Date", valid_604049
-  var valid_604050 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604050 = validateParameter(valid_604050, JString, required = false,
-                                 default = nil)
-  if valid_604050 != nil:
-    section.add "X-Amz-Security-Token", valid_604050
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604051 = header.getOrDefault("X-Amz-Target")
-  valid_604051 = validateParameter(valid_604051, JString, required = true, default = newJString(
+  var valid_593949 = header.getOrDefault("X-Amz-Target")
+  valid_593949 = validateParameter(valid_593949, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateChapCredentials"))
-  if valid_604051 != nil:
-    section.add "X-Amz-Target", valid_604051
-  var valid_604052 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604052 = validateParameter(valid_604052, JString, required = false,
+  if valid_593949 != nil:
+    section.add "X-Amz-Target", valid_593949
+  var valid_593950 = header.getOrDefault("X-Amz-Signature")
+  valid_593950 = validateParameter(valid_593950, JString, required = false,
                                  default = nil)
-  if valid_604052 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604052
-  var valid_604053 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604053 = validateParameter(valid_604053, JString, required = false,
+  if valid_593950 != nil:
+    section.add "X-Amz-Signature", valid_593950
+  var valid_593951 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593951 = validateParameter(valid_593951, JString, required = false,
                                  default = nil)
-  if valid_604053 != nil:
-    section.add "X-Amz-Algorithm", valid_604053
-  var valid_604054 = header.getOrDefault("X-Amz-Signature")
-  valid_604054 = validateParameter(valid_604054, JString, required = false,
+  if valid_593951 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593951
+  var valid_593952 = header.getOrDefault("X-Amz-Date")
+  valid_593952 = validateParameter(valid_593952, JString, required = false,
                                  default = nil)
-  if valid_604054 != nil:
-    section.add "X-Amz-Signature", valid_604054
-  var valid_604055 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604055 = validateParameter(valid_604055, JString, required = false,
+  if valid_593952 != nil:
+    section.add "X-Amz-Date", valid_593952
+  var valid_593953 = header.getOrDefault("X-Amz-Credential")
+  valid_593953 = validateParameter(valid_593953, JString, required = false,
                                  default = nil)
-  if valid_604055 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604055
-  var valid_604056 = header.getOrDefault("X-Amz-Credential")
-  valid_604056 = validateParameter(valid_604056, JString, required = false,
+  if valid_593953 != nil:
+    section.add "X-Amz-Credential", valid_593953
+  var valid_593954 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593954 = validateParameter(valid_593954, JString, required = false,
                                  default = nil)
-  if valid_604056 != nil:
-    section.add "X-Amz-Credential", valid_604056
+  if valid_593954 != nil:
+    section.add "X-Amz-Security-Token", valid_593954
+  var valid_593955 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593955 = validateParameter(valid_593955, JString, required = false,
+                                 default = nil)
+  if valid_593955 != nil:
+    section.add "X-Amz-Algorithm", valid_593955
+  var valid_593956 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593956 = validateParameter(valid_593956, JString, required = false,
+                                 default = nil)
+  if valid_593956 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593956
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7406,37 +7410,37 @@ proc validate_UpdateChapCredentials_604047(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604058: Call_UpdateChapCredentials_604046; path: JsonNode;
+proc call*(call_593958: Call_UpdateChapCredentials_593946; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the Challenge-Handshake Authentication Protocol (CHAP) credentials for a specified iSCSI target. By default, a gateway does not have CHAP enabled; however, for added security, you might use it.</p> <important> <p>When you update CHAP credentials, all existing connections on the target are closed and initiators must reconnect with the new credentials.</p> </important>
   ## 
-  let valid = call_604058.validator(path, query, header, formData, body)
-  let scheme = call_604058.pickScheme
+  let valid = call_593958.validator(path, query, header, formData, body)
+  let scheme = call_593958.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604058.url(scheme.get, call_604058.host, call_604058.base,
-                         call_604058.route, valid.getOrDefault("path"),
+  let url = call_593958.url(scheme.get, call_593958.host, call_593958.base,
+                         call_593958.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604058, url, valid)
+  result = hook(call_593958, url, valid)
 
-proc call*(call_604059: Call_UpdateChapCredentials_604046; body: JsonNode): Recallable =
+proc call*(call_593959: Call_UpdateChapCredentials_593946; body: JsonNode): Recallable =
   ## updateChapCredentials
   ## <p>Updates the Challenge-Handshake Authentication Protocol (CHAP) credentials for a specified iSCSI target. By default, a gateway does not have CHAP enabled; however, for added security, you might use it.</p> <important> <p>When you update CHAP credentials, all existing connections on the target are closed and initiators must reconnect with the new credentials.</p> </important>
   ##   body: JObject (required)
-  var body_604060 = newJObject()
+  var body_593960 = newJObject()
   if body != nil:
-    body_604060 = body
-  result = call_604059.call(nil, nil, nil, nil, body_604060)
+    body_593960 = body
+  result = call_593959.call(nil, nil, nil, nil, body_593960)
 
-var updateChapCredentials* = Call_UpdateChapCredentials_604046(
+var updateChapCredentials* = Call_UpdateChapCredentials_593946(
     name: "updateChapCredentials", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateChapCredentials",
-    validator: validate_UpdateChapCredentials_604047, base: "/",
-    url: url_UpdateChapCredentials_604048, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateChapCredentials_593947, base: "/",
+    url: url_UpdateChapCredentials_593948, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateGatewayInformation_604061 = ref object of OpenApiRestCall_602467
-proc url_UpdateGatewayInformation_604063(protocol: Scheme; host: string;
+  Call_UpdateGatewayInformation_593961 = ref object of OpenApiRestCall_592365
+proc url_UpdateGatewayInformation_593963(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -7444,7 +7448,7 @@ proc url_UpdateGatewayInformation_604063(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateGatewayInformation_604062(path: JsonNode; query: JsonNode;
+proc validate_UpdateGatewayInformation_593962(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates a gateway's metadata, which includes the gateway's name and time zone. To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.</p> <note> <p>For Gateways activated after September 2, 2015, the gateway's ARN contains the gateway ID rather than the gateway name. However, changing the name of the gateway has no effect on the gateway's ARN.</p> </note>
   ## 
@@ -7455,57 +7459,57 @@ proc validate_UpdateGatewayInformation_604062(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604064 = header.getOrDefault("X-Amz-Date")
-  valid_604064 = validateParameter(valid_604064, JString, required = false,
-                                 default = nil)
-  if valid_604064 != nil:
-    section.add "X-Amz-Date", valid_604064
-  var valid_604065 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604065 = validateParameter(valid_604065, JString, required = false,
-                                 default = nil)
-  if valid_604065 != nil:
-    section.add "X-Amz-Security-Token", valid_604065
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604066 = header.getOrDefault("X-Amz-Target")
-  valid_604066 = validateParameter(valid_604066, JString, required = true, default = newJString(
+  var valid_593964 = header.getOrDefault("X-Amz-Target")
+  valid_593964 = validateParameter(valid_593964, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateGatewayInformation"))
-  if valid_604066 != nil:
-    section.add "X-Amz-Target", valid_604066
-  var valid_604067 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604067 = validateParameter(valid_604067, JString, required = false,
+  if valid_593964 != nil:
+    section.add "X-Amz-Target", valid_593964
+  var valid_593965 = header.getOrDefault("X-Amz-Signature")
+  valid_593965 = validateParameter(valid_593965, JString, required = false,
                                  default = nil)
-  if valid_604067 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604067
-  var valid_604068 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604068 = validateParameter(valid_604068, JString, required = false,
+  if valid_593965 != nil:
+    section.add "X-Amz-Signature", valid_593965
+  var valid_593966 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593966 = validateParameter(valid_593966, JString, required = false,
                                  default = nil)
-  if valid_604068 != nil:
-    section.add "X-Amz-Algorithm", valid_604068
-  var valid_604069 = header.getOrDefault("X-Amz-Signature")
-  valid_604069 = validateParameter(valid_604069, JString, required = false,
+  if valid_593966 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593966
+  var valid_593967 = header.getOrDefault("X-Amz-Date")
+  valid_593967 = validateParameter(valid_593967, JString, required = false,
                                  default = nil)
-  if valid_604069 != nil:
-    section.add "X-Amz-Signature", valid_604069
-  var valid_604070 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604070 = validateParameter(valid_604070, JString, required = false,
+  if valid_593967 != nil:
+    section.add "X-Amz-Date", valid_593967
+  var valid_593968 = header.getOrDefault("X-Amz-Credential")
+  valid_593968 = validateParameter(valid_593968, JString, required = false,
                                  default = nil)
-  if valid_604070 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604070
-  var valid_604071 = header.getOrDefault("X-Amz-Credential")
-  valid_604071 = validateParameter(valid_604071, JString, required = false,
+  if valid_593968 != nil:
+    section.add "X-Amz-Credential", valid_593968
+  var valid_593969 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593969 = validateParameter(valid_593969, JString, required = false,
                                  default = nil)
-  if valid_604071 != nil:
-    section.add "X-Amz-Credential", valid_604071
+  if valid_593969 != nil:
+    section.add "X-Amz-Security-Token", valid_593969
+  var valid_593970 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593970 = validateParameter(valid_593970, JString, required = false,
+                                 default = nil)
+  if valid_593970 != nil:
+    section.add "X-Amz-Algorithm", valid_593970
+  var valid_593971 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593971 = validateParameter(valid_593971, JString, required = false,
+                                 default = nil)
+  if valid_593971 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593971
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7516,37 +7520,37 @@ proc validate_UpdateGatewayInformation_604062(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604073: Call_UpdateGatewayInformation_604061; path: JsonNode;
+proc call*(call_593973: Call_UpdateGatewayInformation_593961; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a gateway's metadata, which includes the gateway's name and time zone. To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.</p> <note> <p>For Gateways activated after September 2, 2015, the gateway's ARN contains the gateway ID rather than the gateway name. However, changing the name of the gateway has no effect on the gateway's ARN.</p> </note>
   ## 
-  let valid = call_604073.validator(path, query, header, formData, body)
-  let scheme = call_604073.pickScheme
+  let valid = call_593973.validator(path, query, header, formData, body)
+  let scheme = call_593973.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604073.url(scheme.get, call_604073.host, call_604073.base,
-                         call_604073.route, valid.getOrDefault("path"),
+  let url = call_593973.url(scheme.get, call_593973.host, call_593973.base,
+                         call_593973.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604073, url, valid)
+  result = hook(call_593973, url, valid)
 
-proc call*(call_604074: Call_UpdateGatewayInformation_604061; body: JsonNode): Recallable =
+proc call*(call_593974: Call_UpdateGatewayInformation_593961; body: JsonNode): Recallable =
   ## updateGatewayInformation
   ## <p>Updates a gateway's metadata, which includes the gateway's name and time zone. To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.</p> <note> <p>For Gateways activated after September 2, 2015, the gateway's ARN contains the gateway ID rather than the gateway name. However, changing the name of the gateway has no effect on the gateway's ARN.</p> </note>
   ##   body: JObject (required)
-  var body_604075 = newJObject()
+  var body_593975 = newJObject()
   if body != nil:
-    body_604075 = body
-  result = call_604074.call(nil, nil, nil, nil, body_604075)
+    body_593975 = body
+  result = call_593974.call(nil, nil, nil, nil, body_593975)
 
-var updateGatewayInformation* = Call_UpdateGatewayInformation_604061(
+var updateGatewayInformation* = Call_UpdateGatewayInformation_593961(
     name: "updateGatewayInformation", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateGatewayInformation",
-    validator: validate_UpdateGatewayInformation_604062, base: "/",
-    url: url_UpdateGatewayInformation_604063, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateGatewayInformation_593962, base: "/",
+    url: url_UpdateGatewayInformation_593963, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateGatewaySoftwareNow_604076 = ref object of OpenApiRestCall_602467
-proc url_UpdateGatewaySoftwareNow_604078(protocol: Scheme; host: string;
+  Call_UpdateGatewaySoftwareNow_593976 = ref object of OpenApiRestCall_592365
+proc url_UpdateGatewaySoftwareNow_593978(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -7554,7 +7558,7 @@ proc url_UpdateGatewaySoftwareNow_604078(protocol: Scheme; host: string;
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateGatewaySoftwareNow_604077(path: JsonNode; query: JsonNode;
+proc validate_UpdateGatewaySoftwareNow_593977(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the gateway virtual machine (VM) software. The request immediately triggers the software update.</p> <note> <p>When you make this request, you get a <code>200 OK</code> success response immediately. However, it might take some time for the update to complete. You can call <a>DescribeGatewayInformation</a> to verify the gateway is in the <code>STATE_RUNNING</code> state.</p> </note> <important> <p>A software update forces a system restart of your gateway. You can minimize the chance of any disruption to your applications by increasing your iSCSI Initiators' timeouts. For more information about increasing iSCSI Initiator timeouts for Windows and Linux, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/ConfiguringiSCSIClientInitiatorWindowsClient.html#CustomizeWindowsiSCSISettings">Customizing Your Windows iSCSI Settings</a> and <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/ConfiguringiSCSIClientInitiatorRedHatClient.html#CustomizeLinuxiSCSISettings">Customizing Your Linux iSCSI Settings</a>, respectively.</p> </important>
   ## 
@@ -7565,57 +7569,57 @@ proc validate_UpdateGatewaySoftwareNow_604077(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604079 = header.getOrDefault("X-Amz-Date")
-  valid_604079 = validateParameter(valid_604079, JString, required = false,
-                                 default = nil)
-  if valid_604079 != nil:
-    section.add "X-Amz-Date", valid_604079
-  var valid_604080 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604080 = validateParameter(valid_604080, JString, required = false,
-                                 default = nil)
-  if valid_604080 != nil:
-    section.add "X-Amz-Security-Token", valid_604080
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604081 = header.getOrDefault("X-Amz-Target")
-  valid_604081 = validateParameter(valid_604081, JString, required = true, default = newJString(
+  var valid_593979 = header.getOrDefault("X-Amz-Target")
+  valid_593979 = validateParameter(valid_593979, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateGatewaySoftwareNow"))
-  if valid_604081 != nil:
-    section.add "X-Amz-Target", valid_604081
-  var valid_604082 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604082 = validateParameter(valid_604082, JString, required = false,
+  if valid_593979 != nil:
+    section.add "X-Amz-Target", valid_593979
+  var valid_593980 = header.getOrDefault("X-Amz-Signature")
+  valid_593980 = validateParameter(valid_593980, JString, required = false,
                                  default = nil)
-  if valid_604082 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604082
-  var valid_604083 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604083 = validateParameter(valid_604083, JString, required = false,
+  if valid_593980 != nil:
+    section.add "X-Amz-Signature", valid_593980
+  var valid_593981 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593981 = validateParameter(valid_593981, JString, required = false,
                                  default = nil)
-  if valid_604083 != nil:
-    section.add "X-Amz-Algorithm", valid_604083
-  var valid_604084 = header.getOrDefault("X-Amz-Signature")
-  valid_604084 = validateParameter(valid_604084, JString, required = false,
+  if valid_593981 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593981
+  var valid_593982 = header.getOrDefault("X-Amz-Date")
+  valid_593982 = validateParameter(valid_593982, JString, required = false,
                                  default = nil)
-  if valid_604084 != nil:
-    section.add "X-Amz-Signature", valid_604084
-  var valid_604085 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604085 = validateParameter(valid_604085, JString, required = false,
+  if valid_593982 != nil:
+    section.add "X-Amz-Date", valid_593982
+  var valid_593983 = header.getOrDefault("X-Amz-Credential")
+  valid_593983 = validateParameter(valid_593983, JString, required = false,
                                  default = nil)
-  if valid_604085 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604085
-  var valid_604086 = header.getOrDefault("X-Amz-Credential")
-  valid_604086 = validateParameter(valid_604086, JString, required = false,
+  if valid_593983 != nil:
+    section.add "X-Amz-Credential", valid_593983
+  var valid_593984 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593984 = validateParameter(valid_593984, JString, required = false,
                                  default = nil)
-  if valid_604086 != nil:
-    section.add "X-Amz-Credential", valid_604086
+  if valid_593984 != nil:
+    section.add "X-Amz-Security-Token", valid_593984
+  var valid_593985 = header.getOrDefault("X-Amz-Algorithm")
+  valid_593985 = validateParameter(valid_593985, JString, required = false,
+                                 default = nil)
+  if valid_593985 != nil:
+    section.add "X-Amz-Algorithm", valid_593985
+  var valid_593986 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_593986 = validateParameter(valid_593986, JString, required = false,
+                                 default = nil)
+  if valid_593986 != nil:
+    section.add "X-Amz-SignedHeaders", valid_593986
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7626,44 +7630,44 @@ proc validate_UpdateGatewaySoftwareNow_604077(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604088: Call_UpdateGatewaySoftwareNow_604076; path: JsonNode;
+proc call*(call_593988: Call_UpdateGatewaySoftwareNow_593976; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the gateway virtual machine (VM) software. The request immediately triggers the software update.</p> <note> <p>When you make this request, you get a <code>200 OK</code> success response immediately. However, it might take some time for the update to complete. You can call <a>DescribeGatewayInformation</a> to verify the gateway is in the <code>STATE_RUNNING</code> state.</p> </note> <important> <p>A software update forces a system restart of your gateway. You can minimize the chance of any disruption to your applications by increasing your iSCSI Initiators' timeouts. For more information about increasing iSCSI Initiator timeouts for Windows and Linux, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/ConfiguringiSCSIClientInitiatorWindowsClient.html#CustomizeWindowsiSCSISettings">Customizing Your Windows iSCSI Settings</a> and <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/ConfiguringiSCSIClientInitiatorRedHatClient.html#CustomizeLinuxiSCSISettings">Customizing Your Linux iSCSI Settings</a>, respectively.</p> </important>
   ## 
-  let valid = call_604088.validator(path, query, header, formData, body)
-  let scheme = call_604088.pickScheme
+  let valid = call_593988.validator(path, query, header, formData, body)
+  let scheme = call_593988.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604088.url(scheme.get, call_604088.host, call_604088.base,
-                         call_604088.route, valid.getOrDefault("path"),
+  let url = call_593988.url(scheme.get, call_593988.host, call_593988.base,
+                         call_593988.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604088, url, valid)
+  result = hook(call_593988, url, valid)
 
-proc call*(call_604089: Call_UpdateGatewaySoftwareNow_604076; body: JsonNode): Recallable =
+proc call*(call_593989: Call_UpdateGatewaySoftwareNow_593976; body: JsonNode): Recallable =
   ## updateGatewaySoftwareNow
   ## <p>Updates the gateway virtual machine (VM) software. The request immediately triggers the software update.</p> <note> <p>When you make this request, you get a <code>200 OK</code> success response immediately. However, it might take some time for the update to complete. You can call <a>DescribeGatewayInformation</a> to verify the gateway is in the <code>STATE_RUNNING</code> state.</p> </note> <important> <p>A software update forces a system restart of your gateway. You can minimize the chance of any disruption to your applications by increasing your iSCSI Initiators' timeouts. For more information about increasing iSCSI Initiator timeouts for Windows and Linux, see <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/ConfiguringiSCSIClientInitiatorWindowsClient.html#CustomizeWindowsiSCSISettings">Customizing Your Windows iSCSI Settings</a> and <a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/ConfiguringiSCSIClientInitiatorRedHatClient.html#CustomizeLinuxiSCSISettings">Customizing Your Linux iSCSI Settings</a>, respectively.</p> </important>
   ##   body: JObject (required)
-  var body_604090 = newJObject()
+  var body_593990 = newJObject()
   if body != nil:
-    body_604090 = body
-  result = call_604089.call(nil, nil, nil, nil, body_604090)
+    body_593990 = body
+  result = call_593989.call(nil, nil, nil, nil, body_593990)
 
-var updateGatewaySoftwareNow* = Call_UpdateGatewaySoftwareNow_604076(
+var updateGatewaySoftwareNow* = Call_UpdateGatewaySoftwareNow_593976(
     name: "updateGatewaySoftwareNow", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateGatewaySoftwareNow",
-    validator: validate_UpdateGatewaySoftwareNow_604077, base: "/",
-    url: url_UpdateGatewaySoftwareNow_604078, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateGatewaySoftwareNow_593977, base: "/",
+    url: url_UpdateGatewaySoftwareNow_593978, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateMaintenanceStartTime_604091 = ref object of OpenApiRestCall_602467
-proc url_UpdateMaintenanceStartTime_604093(protocol: Scheme; host: string;
+  Call_UpdateMaintenanceStartTime_593991 = ref object of OpenApiRestCall_592365
+proc url_UpdateMaintenanceStartTime_593993(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateMaintenanceStartTime_604092(path: JsonNode; query: JsonNode;
+proc validate_UpdateMaintenanceStartTime_593992(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates a gateway's weekly maintenance start time information, including day and time of the week. The maintenance time is the time in your gateway's time zone.
   ## 
@@ -7674,57 +7678,57 @@ proc validate_UpdateMaintenanceStartTime_604092(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604094 = header.getOrDefault("X-Amz-Date")
-  valid_604094 = validateParameter(valid_604094, JString, required = false,
-                                 default = nil)
-  if valid_604094 != nil:
-    section.add "X-Amz-Date", valid_604094
-  var valid_604095 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604095 = validateParameter(valid_604095, JString, required = false,
-                                 default = nil)
-  if valid_604095 != nil:
-    section.add "X-Amz-Security-Token", valid_604095
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604096 = header.getOrDefault("X-Amz-Target")
-  valid_604096 = validateParameter(valid_604096, JString, required = true, default = newJString(
+  var valid_593994 = header.getOrDefault("X-Amz-Target")
+  valid_593994 = validateParameter(valid_593994, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateMaintenanceStartTime"))
-  if valid_604096 != nil:
-    section.add "X-Amz-Target", valid_604096
-  var valid_604097 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604097 = validateParameter(valid_604097, JString, required = false,
+  if valid_593994 != nil:
+    section.add "X-Amz-Target", valid_593994
+  var valid_593995 = header.getOrDefault("X-Amz-Signature")
+  valid_593995 = validateParameter(valid_593995, JString, required = false,
                                  default = nil)
-  if valid_604097 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604097
-  var valid_604098 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604098 = validateParameter(valid_604098, JString, required = false,
+  if valid_593995 != nil:
+    section.add "X-Amz-Signature", valid_593995
+  var valid_593996 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_593996 = validateParameter(valid_593996, JString, required = false,
                                  default = nil)
-  if valid_604098 != nil:
-    section.add "X-Amz-Algorithm", valid_604098
-  var valid_604099 = header.getOrDefault("X-Amz-Signature")
-  valid_604099 = validateParameter(valid_604099, JString, required = false,
+  if valid_593996 != nil:
+    section.add "X-Amz-Content-Sha256", valid_593996
+  var valid_593997 = header.getOrDefault("X-Amz-Date")
+  valid_593997 = validateParameter(valid_593997, JString, required = false,
                                  default = nil)
-  if valid_604099 != nil:
-    section.add "X-Amz-Signature", valid_604099
-  var valid_604100 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604100 = validateParameter(valid_604100, JString, required = false,
+  if valid_593997 != nil:
+    section.add "X-Amz-Date", valid_593997
+  var valid_593998 = header.getOrDefault("X-Amz-Credential")
+  valid_593998 = validateParameter(valid_593998, JString, required = false,
                                  default = nil)
-  if valid_604100 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604100
-  var valid_604101 = header.getOrDefault("X-Amz-Credential")
-  valid_604101 = validateParameter(valid_604101, JString, required = false,
+  if valid_593998 != nil:
+    section.add "X-Amz-Credential", valid_593998
+  var valid_593999 = header.getOrDefault("X-Amz-Security-Token")
+  valid_593999 = validateParameter(valid_593999, JString, required = false,
                                  default = nil)
-  if valid_604101 != nil:
-    section.add "X-Amz-Credential", valid_604101
+  if valid_593999 != nil:
+    section.add "X-Amz-Security-Token", valid_593999
+  var valid_594000 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594000 = validateParameter(valid_594000, JString, required = false,
+                                 default = nil)
+  if valid_594000 != nil:
+    section.add "X-Amz-Algorithm", valid_594000
+  var valid_594001 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594001 = validateParameter(valid_594001, JString, required = false,
+                                 default = nil)
+  if valid_594001 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594001
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7735,45 +7739,45 @@ proc validate_UpdateMaintenanceStartTime_604092(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604103: Call_UpdateMaintenanceStartTime_604091; path: JsonNode;
+proc call*(call_594003: Call_UpdateMaintenanceStartTime_593991; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates a gateway's weekly maintenance start time information, including day and time of the week. The maintenance time is the time in your gateway's time zone.
   ## 
-  let valid = call_604103.validator(path, query, header, formData, body)
-  let scheme = call_604103.pickScheme
+  let valid = call_594003.validator(path, query, header, formData, body)
+  let scheme = call_594003.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604103.url(scheme.get, call_604103.host, call_604103.base,
-                         call_604103.route, valid.getOrDefault("path"),
+  let url = call_594003.url(scheme.get, call_594003.host, call_594003.base,
+                         call_594003.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604103, url, valid)
+  result = hook(call_594003, url, valid)
 
-proc call*(call_604104: Call_UpdateMaintenanceStartTime_604091; body: JsonNode): Recallable =
+proc call*(call_594004: Call_UpdateMaintenanceStartTime_593991; body: JsonNode): Recallable =
   ## updateMaintenanceStartTime
   ## Updates a gateway's weekly maintenance start time information, including day and time of the week. The maintenance time is the time in your gateway's time zone.
   ##   body: JObject (required)
-  var body_604105 = newJObject()
+  var body_594005 = newJObject()
   if body != nil:
-    body_604105 = body
-  result = call_604104.call(nil, nil, nil, nil, body_604105)
+    body_594005 = body
+  result = call_594004.call(nil, nil, nil, nil, body_594005)
 
-var updateMaintenanceStartTime* = Call_UpdateMaintenanceStartTime_604091(
+var updateMaintenanceStartTime* = Call_UpdateMaintenanceStartTime_593991(
     name: "updateMaintenanceStartTime", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateMaintenanceStartTime",
-    validator: validate_UpdateMaintenanceStartTime_604092, base: "/",
-    url: url_UpdateMaintenanceStartTime_604093,
+    validator: validate_UpdateMaintenanceStartTime_593992, base: "/",
+    url: url_UpdateMaintenanceStartTime_593993,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateNFSFileShare_604106 = ref object of OpenApiRestCall_602467
-proc url_UpdateNFSFileShare_604108(protocol: Scheme; host: string; base: string;
+  Call_UpdateNFSFileShare_594006 = ref object of OpenApiRestCall_592365
+proc url_UpdateNFSFileShare_594008(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateNFSFileShare_604107(path: JsonNode; query: JsonNode;
+proc validate_UpdateNFSFileShare_594007(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Updates a Network File System (NFS) file share. This operation is only supported in the file gateway type.</p> <note> <p>To leave a file share field unchanged, set the corresponding input field to null.</p> </note> <p>Updates the following file share setting:</p> <ul> <li> <p>Default storage class for your S3 bucket</p> </li> <li> <p>Metadata defaults for your S3 bucket</p> </li> <li> <p>Allowed NFS clients for your file share</p> </li> <li> <p>Squash settings</p> </li> <li> <p>Write status of your file share</p> </li> </ul> <note> <p>To leave a file share field unchanged, set the corresponding input field to null. This operation is only supported in file gateways.</p> </note>
@@ -7785,57 +7789,57 @@ proc validate_UpdateNFSFileShare_604107(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604109 = header.getOrDefault("X-Amz-Date")
-  valid_604109 = validateParameter(valid_604109, JString, required = false,
-                                 default = nil)
-  if valid_604109 != nil:
-    section.add "X-Amz-Date", valid_604109
-  var valid_604110 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604110 = validateParameter(valid_604110, JString, required = false,
-                                 default = nil)
-  if valid_604110 != nil:
-    section.add "X-Amz-Security-Token", valid_604110
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604111 = header.getOrDefault("X-Amz-Target")
-  valid_604111 = validateParameter(valid_604111, JString, required = true, default = newJString(
+  var valid_594009 = header.getOrDefault("X-Amz-Target")
+  valid_594009 = validateParameter(valid_594009, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateNFSFileShare"))
-  if valid_604111 != nil:
-    section.add "X-Amz-Target", valid_604111
-  var valid_604112 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604112 = validateParameter(valid_604112, JString, required = false,
+  if valid_594009 != nil:
+    section.add "X-Amz-Target", valid_594009
+  var valid_594010 = header.getOrDefault("X-Amz-Signature")
+  valid_594010 = validateParameter(valid_594010, JString, required = false,
                                  default = nil)
-  if valid_604112 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604112
-  var valid_604113 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604113 = validateParameter(valid_604113, JString, required = false,
+  if valid_594010 != nil:
+    section.add "X-Amz-Signature", valid_594010
+  var valid_594011 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594011 = validateParameter(valid_594011, JString, required = false,
                                  default = nil)
-  if valid_604113 != nil:
-    section.add "X-Amz-Algorithm", valid_604113
-  var valid_604114 = header.getOrDefault("X-Amz-Signature")
-  valid_604114 = validateParameter(valid_604114, JString, required = false,
+  if valid_594011 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594011
+  var valid_594012 = header.getOrDefault("X-Amz-Date")
+  valid_594012 = validateParameter(valid_594012, JString, required = false,
                                  default = nil)
-  if valid_604114 != nil:
-    section.add "X-Amz-Signature", valid_604114
-  var valid_604115 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604115 = validateParameter(valid_604115, JString, required = false,
+  if valid_594012 != nil:
+    section.add "X-Amz-Date", valid_594012
+  var valid_594013 = header.getOrDefault("X-Amz-Credential")
+  valid_594013 = validateParameter(valid_594013, JString, required = false,
                                  default = nil)
-  if valid_604115 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604115
-  var valid_604116 = header.getOrDefault("X-Amz-Credential")
-  valid_604116 = validateParameter(valid_604116, JString, required = false,
+  if valid_594013 != nil:
+    section.add "X-Amz-Credential", valid_594013
+  var valid_594014 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594014 = validateParameter(valid_594014, JString, required = false,
                                  default = nil)
-  if valid_604116 != nil:
-    section.add "X-Amz-Credential", valid_604116
+  if valid_594014 != nil:
+    section.add "X-Amz-Security-Token", valid_594014
+  var valid_594015 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594015 = validateParameter(valid_594015, JString, required = false,
+                                 default = nil)
+  if valid_594015 != nil:
+    section.add "X-Amz-Algorithm", valid_594015
+  var valid_594016 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594016 = validateParameter(valid_594016, JString, required = false,
+                                 default = nil)
+  if valid_594016 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594016
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7846,44 +7850,44 @@ proc validate_UpdateNFSFileShare_604107(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604118: Call_UpdateNFSFileShare_604106; path: JsonNode;
+proc call*(call_594018: Call_UpdateNFSFileShare_594006; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a Network File System (NFS) file share. This operation is only supported in the file gateway type.</p> <note> <p>To leave a file share field unchanged, set the corresponding input field to null.</p> </note> <p>Updates the following file share setting:</p> <ul> <li> <p>Default storage class for your S3 bucket</p> </li> <li> <p>Metadata defaults for your S3 bucket</p> </li> <li> <p>Allowed NFS clients for your file share</p> </li> <li> <p>Squash settings</p> </li> <li> <p>Write status of your file share</p> </li> </ul> <note> <p>To leave a file share field unchanged, set the corresponding input field to null. This operation is only supported in file gateways.</p> </note>
   ## 
-  let valid = call_604118.validator(path, query, header, formData, body)
-  let scheme = call_604118.pickScheme
+  let valid = call_594018.validator(path, query, header, formData, body)
+  let scheme = call_594018.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604118.url(scheme.get, call_604118.host, call_604118.base,
-                         call_604118.route, valid.getOrDefault("path"),
+  let url = call_594018.url(scheme.get, call_594018.host, call_594018.base,
+                         call_594018.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604118, url, valid)
+  result = hook(call_594018, url, valid)
 
-proc call*(call_604119: Call_UpdateNFSFileShare_604106; body: JsonNode): Recallable =
+proc call*(call_594019: Call_UpdateNFSFileShare_594006; body: JsonNode): Recallable =
   ## updateNFSFileShare
   ## <p>Updates a Network File System (NFS) file share. This operation is only supported in the file gateway type.</p> <note> <p>To leave a file share field unchanged, set the corresponding input field to null.</p> </note> <p>Updates the following file share setting:</p> <ul> <li> <p>Default storage class for your S3 bucket</p> </li> <li> <p>Metadata defaults for your S3 bucket</p> </li> <li> <p>Allowed NFS clients for your file share</p> </li> <li> <p>Squash settings</p> </li> <li> <p>Write status of your file share</p> </li> </ul> <note> <p>To leave a file share field unchanged, set the corresponding input field to null. This operation is only supported in file gateways.</p> </note>
   ##   body: JObject (required)
-  var body_604120 = newJObject()
+  var body_594020 = newJObject()
   if body != nil:
-    body_604120 = body
-  result = call_604119.call(nil, nil, nil, nil, body_604120)
+    body_594020 = body
+  result = call_594019.call(nil, nil, nil, nil, body_594020)
 
-var updateNFSFileShare* = Call_UpdateNFSFileShare_604106(
+var updateNFSFileShare* = Call_UpdateNFSFileShare_594006(
     name: "updateNFSFileShare", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateNFSFileShare",
-    validator: validate_UpdateNFSFileShare_604107, base: "/",
-    url: url_UpdateNFSFileShare_604108, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateNFSFileShare_594007, base: "/",
+    url: url_UpdateNFSFileShare_594008, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSMBFileShare_604121 = ref object of OpenApiRestCall_602467
-proc url_UpdateSMBFileShare_604123(protocol: Scheme; host: string; base: string;
+  Call_UpdateSMBFileShare_594021 = ref object of OpenApiRestCall_592365
+proc url_UpdateSMBFileShare_594023(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateSMBFileShare_604122(path: JsonNode; query: JsonNode;
+proc validate_UpdateSMBFileShare_594022(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Updates a Server Message Block (SMB) file share.</p> <note> <p>To leave a file share field unchanged, set the corresponding input field to null. This operation is only supported for file gateways.</p> </note> <important> <p>File gateways require AWS Security Token Service (AWS STS) to be activated to enable you to create a file share. Make sure that AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in this AWS Region, activate it. For information about how to activate AWS STS, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_enable-regions.html">Activating and Deactivating AWS STS in an AWS Region</a> in the <i>AWS Identity and Access Management User Guide.</i> </p> <p>File gateways don't support creating hard or symbolic links on a file share.</p> </important>
@@ -7895,57 +7899,57 @@ proc validate_UpdateSMBFileShare_604122(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604124 = header.getOrDefault("X-Amz-Date")
-  valid_604124 = validateParameter(valid_604124, JString, required = false,
-                                 default = nil)
-  if valid_604124 != nil:
-    section.add "X-Amz-Date", valid_604124
-  var valid_604125 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604125 = validateParameter(valid_604125, JString, required = false,
-                                 default = nil)
-  if valid_604125 != nil:
-    section.add "X-Amz-Security-Token", valid_604125
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604126 = header.getOrDefault("X-Amz-Target")
-  valid_604126 = validateParameter(valid_604126, JString, required = true, default = newJString(
+  var valid_594024 = header.getOrDefault("X-Amz-Target")
+  valid_594024 = validateParameter(valid_594024, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateSMBFileShare"))
-  if valid_604126 != nil:
-    section.add "X-Amz-Target", valid_604126
-  var valid_604127 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604127 = validateParameter(valid_604127, JString, required = false,
+  if valid_594024 != nil:
+    section.add "X-Amz-Target", valid_594024
+  var valid_594025 = header.getOrDefault("X-Amz-Signature")
+  valid_594025 = validateParameter(valid_594025, JString, required = false,
                                  default = nil)
-  if valid_604127 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604127
-  var valid_604128 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604128 = validateParameter(valid_604128, JString, required = false,
+  if valid_594025 != nil:
+    section.add "X-Amz-Signature", valid_594025
+  var valid_594026 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594026 = validateParameter(valid_594026, JString, required = false,
                                  default = nil)
-  if valid_604128 != nil:
-    section.add "X-Amz-Algorithm", valid_604128
-  var valid_604129 = header.getOrDefault("X-Amz-Signature")
-  valid_604129 = validateParameter(valid_604129, JString, required = false,
+  if valid_594026 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594026
+  var valid_594027 = header.getOrDefault("X-Amz-Date")
+  valid_594027 = validateParameter(valid_594027, JString, required = false,
                                  default = nil)
-  if valid_604129 != nil:
-    section.add "X-Amz-Signature", valid_604129
-  var valid_604130 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604130 = validateParameter(valid_604130, JString, required = false,
+  if valid_594027 != nil:
+    section.add "X-Amz-Date", valid_594027
+  var valid_594028 = header.getOrDefault("X-Amz-Credential")
+  valid_594028 = validateParameter(valid_594028, JString, required = false,
                                  default = nil)
-  if valid_604130 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604130
-  var valid_604131 = header.getOrDefault("X-Amz-Credential")
-  valid_604131 = validateParameter(valid_604131, JString, required = false,
+  if valid_594028 != nil:
+    section.add "X-Amz-Credential", valid_594028
+  var valid_594029 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594029 = validateParameter(valid_594029, JString, required = false,
                                  default = nil)
-  if valid_604131 != nil:
-    section.add "X-Amz-Credential", valid_604131
+  if valid_594029 != nil:
+    section.add "X-Amz-Security-Token", valid_594029
+  var valid_594030 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594030 = validateParameter(valid_594030, JString, required = false,
+                                 default = nil)
+  if valid_594030 != nil:
+    section.add "X-Amz-Algorithm", valid_594030
+  var valid_594031 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594031 = validateParameter(valid_594031, JString, required = false,
+                                 default = nil)
+  if valid_594031 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594031
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7956,44 +7960,44 @@ proc validate_UpdateSMBFileShare_604122(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604133: Call_UpdateSMBFileShare_604121; path: JsonNode;
+proc call*(call_594033: Call_UpdateSMBFileShare_594021; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a Server Message Block (SMB) file share.</p> <note> <p>To leave a file share field unchanged, set the corresponding input field to null. This operation is only supported for file gateways.</p> </note> <important> <p>File gateways require AWS Security Token Service (AWS STS) to be activated to enable you to create a file share. Make sure that AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in this AWS Region, activate it. For information about how to activate AWS STS, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_enable-regions.html">Activating and Deactivating AWS STS in an AWS Region</a> in the <i>AWS Identity and Access Management User Guide.</i> </p> <p>File gateways don't support creating hard or symbolic links on a file share.</p> </important>
   ## 
-  let valid = call_604133.validator(path, query, header, formData, body)
-  let scheme = call_604133.pickScheme
+  let valid = call_594033.validator(path, query, header, formData, body)
+  let scheme = call_594033.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604133.url(scheme.get, call_604133.host, call_604133.base,
-                         call_604133.route, valid.getOrDefault("path"),
+  let url = call_594033.url(scheme.get, call_594033.host, call_594033.base,
+                         call_594033.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604133, url, valid)
+  result = hook(call_594033, url, valid)
 
-proc call*(call_604134: Call_UpdateSMBFileShare_604121; body: JsonNode): Recallable =
+proc call*(call_594034: Call_UpdateSMBFileShare_594021; body: JsonNode): Recallable =
   ## updateSMBFileShare
   ## <p>Updates a Server Message Block (SMB) file share.</p> <note> <p>To leave a file share field unchanged, set the corresponding input field to null. This operation is only supported for file gateways.</p> </note> <important> <p>File gateways require AWS Security Token Service (AWS STS) to be activated to enable you to create a file share. Make sure that AWS STS is activated in the AWS Region you are creating your file gateway in. If AWS STS is not activated in this AWS Region, activate it. For information about how to activate AWS STS, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_enable-regions.html">Activating and Deactivating AWS STS in an AWS Region</a> in the <i>AWS Identity and Access Management User Guide.</i> </p> <p>File gateways don't support creating hard or symbolic links on a file share.</p> </important>
   ##   body: JObject (required)
-  var body_604135 = newJObject()
+  var body_594035 = newJObject()
   if body != nil:
-    body_604135 = body
-  result = call_604134.call(nil, nil, nil, nil, body_604135)
+    body_594035 = body
+  result = call_594034.call(nil, nil, nil, nil, body_594035)
 
-var updateSMBFileShare* = Call_UpdateSMBFileShare_604121(
+var updateSMBFileShare* = Call_UpdateSMBFileShare_594021(
     name: "updateSMBFileShare", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateSMBFileShare",
-    validator: validate_UpdateSMBFileShare_604122, base: "/",
-    url: url_UpdateSMBFileShare_604123, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateSMBFileShare_594022, base: "/",
+    url: url_UpdateSMBFileShare_594023, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSMBSecurityStrategy_604136 = ref object of OpenApiRestCall_602467
-proc url_UpdateSMBSecurityStrategy_604138(protocol: Scheme; host: string;
+  Call_UpdateSMBSecurityStrategy_594036 = ref object of OpenApiRestCall_592365
+proc url_UpdateSMBSecurityStrategy_594038(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateSMBSecurityStrategy_604137(path: JsonNode; query: JsonNode;
+proc validate_UpdateSMBSecurityStrategy_594037(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the SMB security strategy on a file gateway. This action is only supported in file gateways.</p> <note> <p>This API is called Security level in the User Guide.</p> <p>A higher security level can affect performance of the gateway.</p> </note>
   ## 
@@ -8004,57 +8008,57 @@ proc validate_UpdateSMBSecurityStrategy_604137(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604139 = header.getOrDefault("X-Amz-Date")
-  valid_604139 = validateParameter(valid_604139, JString, required = false,
-                                 default = nil)
-  if valid_604139 != nil:
-    section.add "X-Amz-Date", valid_604139
-  var valid_604140 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604140 = validateParameter(valid_604140, JString, required = false,
-                                 default = nil)
-  if valid_604140 != nil:
-    section.add "X-Amz-Security-Token", valid_604140
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604141 = header.getOrDefault("X-Amz-Target")
-  valid_604141 = validateParameter(valid_604141, JString, required = true, default = newJString(
+  var valid_594039 = header.getOrDefault("X-Amz-Target")
+  valid_594039 = validateParameter(valid_594039, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateSMBSecurityStrategy"))
-  if valid_604141 != nil:
-    section.add "X-Amz-Target", valid_604141
-  var valid_604142 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604142 = validateParameter(valid_604142, JString, required = false,
+  if valid_594039 != nil:
+    section.add "X-Amz-Target", valid_594039
+  var valid_594040 = header.getOrDefault("X-Amz-Signature")
+  valid_594040 = validateParameter(valid_594040, JString, required = false,
                                  default = nil)
-  if valid_604142 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604142
-  var valid_604143 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604143 = validateParameter(valid_604143, JString, required = false,
+  if valid_594040 != nil:
+    section.add "X-Amz-Signature", valid_594040
+  var valid_594041 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594041 = validateParameter(valid_594041, JString, required = false,
                                  default = nil)
-  if valid_604143 != nil:
-    section.add "X-Amz-Algorithm", valid_604143
-  var valid_604144 = header.getOrDefault("X-Amz-Signature")
-  valid_604144 = validateParameter(valid_604144, JString, required = false,
+  if valid_594041 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594041
+  var valid_594042 = header.getOrDefault("X-Amz-Date")
+  valid_594042 = validateParameter(valid_594042, JString, required = false,
                                  default = nil)
-  if valid_604144 != nil:
-    section.add "X-Amz-Signature", valid_604144
-  var valid_604145 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604145 = validateParameter(valid_604145, JString, required = false,
+  if valid_594042 != nil:
+    section.add "X-Amz-Date", valid_594042
+  var valid_594043 = header.getOrDefault("X-Amz-Credential")
+  valid_594043 = validateParameter(valid_594043, JString, required = false,
                                  default = nil)
-  if valid_604145 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604145
-  var valid_604146 = header.getOrDefault("X-Amz-Credential")
-  valid_604146 = validateParameter(valid_604146, JString, required = false,
+  if valid_594043 != nil:
+    section.add "X-Amz-Credential", valid_594043
+  var valid_594044 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594044 = validateParameter(valid_594044, JString, required = false,
                                  default = nil)
-  if valid_604146 != nil:
-    section.add "X-Amz-Credential", valid_604146
+  if valid_594044 != nil:
+    section.add "X-Amz-Security-Token", valid_594044
+  var valid_594045 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594045 = validateParameter(valid_594045, JString, required = false,
+                                 default = nil)
+  if valid_594045 != nil:
+    section.add "X-Amz-Algorithm", valid_594045
+  var valid_594046 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594046 = validateParameter(valid_594046, JString, required = false,
+                                 default = nil)
+  if valid_594046 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594046
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8065,45 +8069,45 @@ proc validate_UpdateSMBSecurityStrategy_604137(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604148: Call_UpdateSMBSecurityStrategy_604136; path: JsonNode;
+proc call*(call_594048: Call_UpdateSMBSecurityStrategy_594036; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the SMB security strategy on a file gateway. This action is only supported in file gateways.</p> <note> <p>This API is called Security level in the User Guide.</p> <p>A higher security level can affect performance of the gateway.</p> </note>
   ## 
-  let valid = call_604148.validator(path, query, header, formData, body)
-  let scheme = call_604148.pickScheme
+  let valid = call_594048.validator(path, query, header, formData, body)
+  let scheme = call_594048.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604148.url(scheme.get, call_604148.host, call_604148.base,
-                         call_604148.route, valid.getOrDefault("path"),
+  let url = call_594048.url(scheme.get, call_594048.host, call_594048.base,
+                         call_594048.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604148, url, valid)
+  result = hook(call_594048, url, valid)
 
-proc call*(call_604149: Call_UpdateSMBSecurityStrategy_604136; body: JsonNode): Recallable =
+proc call*(call_594049: Call_UpdateSMBSecurityStrategy_594036; body: JsonNode): Recallable =
   ## updateSMBSecurityStrategy
   ## <p>Updates the SMB security strategy on a file gateway. This action is only supported in file gateways.</p> <note> <p>This API is called Security level in the User Guide.</p> <p>A higher security level can affect performance of the gateway.</p> </note>
   ##   body: JObject (required)
-  var body_604150 = newJObject()
+  var body_594050 = newJObject()
   if body != nil:
-    body_604150 = body
-  result = call_604149.call(nil, nil, nil, nil, body_604150)
+    body_594050 = body
+  result = call_594049.call(nil, nil, nil, nil, body_594050)
 
-var updateSMBSecurityStrategy* = Call_UpdateSMBSecurityStrategy_604136(
+var updateSMBSecurityStrategy* = Call_UpdateSMBSecurityStrategy_594036(
     name: "updateSMBSecurityStrategy", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateSMBSecurityStrategy",
-    validator: validate_UpdateSMBSecurityStrategy_604137, base: "/",
-    url: url_UpdateSMBSecurityStrategy_604138,
+    validator: validate_UpdateSMBSecurityStrategy_594037, base: "/",
+    url: url_UpdateSMBSecurityStrategy_594038,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSnapshotSchedule_604151 = ref object of OpenApiRestCall_602467
-proc url_UpdateSnapshotSchedule_604153(protocol: Scheme; host: string; base: string;
+  Call_UpdateSnapshotSchedule_594051 = ref object of OpenApiRestCall_592365
+proc url_UpdateSnapshotSchedule_594053(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateSnapshotSchedule_604152(path: JsonNode; query: JsonNode;
+proc validate_UpdateSnapshotSchedule_594052(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates a snapshot schedule configured for a gateway volume. This operation is only supported in the cached volume and stored volume gateway types.</p> <p>The default snapshot schedule for volume is once every 24 hours, starting at the creation time of the volume. You can use this API to change the snapshot schedule configured for the volume.</p> <p>In the request you must identify the gateway volume whose snapshot schedule you want to update, and the schedule information, including when you want the snapshot to begin on a day and the frequency (in hours) of snapshots.</p>
   ## 
@@ -8114,57 +8118,57 @@ proc validate_UpdateSnapshotSchedule_604152(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604154 = header.getOrDefault("X-Amz-Date")
-  valid_604154 = validateParameter(valid_604154, JString, required = false,
-                                 default = nil)
-  if valid_604154 != nil:
-    section.add "X-Amz-Date", valid_604154
-  var valid_604155 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604155 = validateParameter(valid_604155, JString, required = false,
-                                 default = nil)
-  if valid_604155 != nil:
-    section.add "X-Amz-Security-Token", valid_604155
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604156 = header.getOrDefault("X-Amz-Target")
-  valid_604156 = validateParameter(valid_604156, JString, required = true, default = newJString(
+  var valid_594054 = header.getOrDefault("X-Amz-Target")
+  valid_594054 = validateParameter(valid_594054, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateSnapshotSchedule"))
-  if valid_604156 != nil:
-    section.add "X-Amz-Target", valid_604156
-  var valid_604157 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604157 = validateParameter(valid_604157, JString, required = false,
+  if valid_594054 != nil:
+    section.add "X-Amz-Target", valid_594054
+  var valid_594055 = header.getOrDefault("X-Amz-Signature")
+  valid_594055 = validateParameter(valid_594055, JString, required = false,
                                  default = nil)
-  if valid_604157 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604157
-  var valid_604158 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604158 = validateParameter(valid_604158, JString, required = false,
+  if valid_594055 != nil:
+    section.add "X-Amz-Signature", valid_594055
+  var valid_594056 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594056 = validateParameter(valid_594056, JString, required = false,
                                  default = nil)
-  if valid_604158 != nil:
-    section.add "X-Amz-Algorithm", valid_604158
-  var valid_604159 = header.getOrDefault("X-Amz-Signature")
-  valid_604159 = validateParameter(valid_604159, JString, required = false,
+  if valid_594056 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594056
+  var valid_594057 = header.getOrDefault("X-Amz-Date")
+  valid_594057 = validateParameter(valid_594057, JString, required = false,
                                  default = nil)
-  if valid_604159 != nil:
-    section.add "X-Amz-Signature", valid_604159
-  var valid_604160 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604160 = validateParameter(valid_604160, JString, required = false,
+  if valid_594057 != nil:
+    section.add "X-Amz-Date", valid_594057
+  var valid_594058 = header.getOrDefault("X-Amz-Credential")
+  valid_594058 = validateParameter(valid_594058, JString, required = false,
                                  default = nil)
-  if valid_604160 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604160
-  var valid_604161 = header.getOrDefault("X-Amz-Credential")
-  valid_604161 = validateParameter(valid_604161, JString, required = false,
+  if valid_594058 != nil:
+    section.add "X-Amz-Credential", valid_594058
+  var valid_594059 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594059 = validateParameter(valid_594059, JString, required = false,
                                  default = nil)
-  if valid_604161 != nil:
-    section.add "X-Amz-Credential", valid_604161
+  if valid_594059 != nil:
+    section.add "X-Amz-Security-Token", valid_594059
+  var valid_594060 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594060 = validateParameter(valid_594060, JString, required = false,
+                                 default = nil)
+  if valid_594060 != nil:
+    section.add "X-Amz-Algorithm", valid_594060
+  var valid_594061 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594061 = validateParameter(valid_594061, JString, required = false,
+                                 default = nil)
+  if valid_594061 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594061
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8175,44 +8179,44 @@ proc validate_UpdateSnapshotSchedule_604152(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604163: Call_UpdateSnapshotSchedule_604151; path: JsonNode;
+proc call*(call_594063: Call_UpdateSnapshotSchedule_594051; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a snapshot schedule configured for a gateway volume. This operation is only supported in the cached volume and stored volume gateway types.</p> <p>The default snapshot schedule for volume is once every 24 hours, starting at the creation time of the volume. You can use this API to change the snapshot schedule configured for the volume.</p> <p>In the request you must identify the gateway volume whose snapshot schedule you want to update, and the schedule information, including when you want the snapshot to begin on a day and the frequency (in hours) of snapshots.</p>
   ## 
-  let valid = call_604163.validator(path, query, header, formData, body)
-  let scheme = call_604163.pickScheme
+  let valid = call_594063.validator(path, query, header, formData, body)
+  let scheme = call_594063.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604163.url(scheme.get, call_604163.host, call_604163.base,
-                         call_604163.route, valid.getOrDefault("path"),
+  let url = call_594063.url(scheme.get, call_594063.host, call_594063.base,
+                         call_594063.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604163, url, valid)
+  result = hook(call_594063, url, valid)
 
-proc call*(call_604164: Call_UpdateSnapshotSchedule_604151; body: JsonNode): Recallable =
+proc call*(call_594064: Call_UpdateSnapshotSchedule_594051; body: JsonNode): Recallable =
   ## updateSnapshotSchedule
   ## <p>Updates a snapshot schedule configured for a gateway volume. This operation is only supported in the cached volume and stored volume gateway types.</p> <p>The default snapshot schedule for volume is once every 24 hours, starting at the creation time of the volume. You can use this API to change the snapshot schedule configured for the volume.</p> <p>In the request you must identify the gateway volume whose snapshot schedule you want to update, and the schedule information, including when you want the snapshot to begin on a day and the frequency (in hours) of snapshots.</p>
   ##   body: JObject (required)
-  var body_604165 = newJObject()
+  var body_594065 = newJObject()
   if body != nil:
-    body_604165 = body
-  result = call_604164.call(nil, nil, nil, nil, body_604165)
+    body_594065 = body
+  result = call_594064.call(nil, nil, nil, nil, body_594065)
 
-var updateSnapshotSchedule* = Call_UpdateSnapshotSchedule_604151(
+var updateSnapshotSchedule* = Call_UpdateSnapshotSchedule_594051(
     name: "updateSnapshotSchedule", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateSnapshotSchedule",
-    validator: validate_UpdateSnapshotSchedule_604152, base: "/",
-    url: url_UpdateSnapshotSchedule_604153, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateSnapshotSchedule_594052, base: "/",
+    url: url_UpdateSnapshotSchedule_594053, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateVTLDeviceType_604166 = ref object of OpenApiRestCall_602467
-proc url_UpdateVTLDeviceType_604168(protocol: Scheme; host: string; base: string;
+  Call_UpdateVTLDeviceType_594066 = ref object of OpenApiRestCall_592365
+proc url_UpdateVTLDeviceType_594068(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateVTLDeviceType_604167(path: JsonNode; query: JsonNode;
+proc validate_UpdateVTLDeviceType_594067(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Updates the type of medium changer in a tape gateway. When you activate a tape gateway, you select a medium changer type for the tape gateway. This operation enables you to select a different type of medium changer after a tape gateway is activated. This operation is only supported in the tape gateway type.
@@ -8224,57 +8228,57 @@ proc validate_UpdateVTLDeviceType_604167(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604169 = header.getOrDefault("X-Amz-Date")
-  valid_604169 = validateParameter(valid_604169, JString, required = false,
-                                 default = nil)
-  if valid_604169 != nil:
-    section.add "X-Amz-Date", valid_604169
-  var valid_604170 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604170 = validateParameter(valid_604170, JString, required = false,
-                                 default = nil)
-  if valid_604170 != nil:
-    section.add "X-Amz-Security-Token", valid_604170
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_604171 = header.getOrDefault("X-Amz-Target")
-  valid_604171 = validateParameter(valid_604171, JString, required = true, default = newJString(
+  var valid_594069 = header.getOrDefault("X-Amz-Target")
+  valid_594069 = validateParameter(valid_594069, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateVTLDeviceType"))
-  if valid_604171 != nil:
-    section.add "X-Amz-Target", valid_604171
-  var valid_604172 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604172 = validateParameter(valid_604172, JString, required = false,
+  if valid_594069 != nil:
+    section.add "X-Amz-Target", valid_594069
+  var valid_594070 = header.getOrDefault("X-Amz-Signature")
+  valid_594070 = validateParameter(valid_594070, JString, required = false,
                                  default = nil)
-  if valid_604172 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604172
-  var valid_604173 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604173 = validateParameter(valid_604173, JString, required = false,
+  if valid_594070 != nil:
+    section.add "X-Amz-Signature", valid_594070
+  var valid_594071 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_594071 = validateParameter(valid_594071, JString, required = false,
                                  default = nil)
-  if valid_604173 != nil:
-    section.add "X-Amz-Algorithm", valid_604173
-  var valid_604174 = header.getOrDefault("X-Amz-Signature")
-  valid_604174 = validateParameter(valid_604174, JString, required = false,
+  if valid_594071 != nil:
+    section.add "X-Amz-Content-Sha256", valid_594071
+  var valid_594072 = header.getOrDefault("X-Amz-Date")
+  valid_594072 = validateParameter(valid_594072, JString, required = false,
                                  default = nil)
-  if valid_604174 != nil:
-    section.add "X-Amz-Signature", valid_604174
-  var valid_604175 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604175 = validateParameter(valid_604175, JString, required = false,
+  if valid_594072 != nil:
+    section.add "X-Amz-Date", valid_594072
+  var valid_594073 = header.getOrDefault("X-Amz-Credential")
+  valid_594073 = validateParameter(valid_594073, JString, required = false,
                                  default = nil)
-  if valid_604175 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604175
-  var valid_604176 = header.getOrDefault("X-Amz-Credential")
-  valid_604176 = validateParameter(valid_604176, JString, required = false,
+  if valid_594073 != nil:
+    section.add "X-Amz-Credential", valid_594073
+  var valid_594074 = header.getOrDefault("X-Amz-Security-Token")
+  valid_594074 = validateParameter(valid_594074, JString, required = false,
                                  default = nil)
-  if valid_604176 != nil:
-    section.add "X-Amz-Credential", valid_604176
+  if valid_594074 != nil:
+    section.add "X-Amz-Security-Token", valid_594074
+  var valid_594075 = header.getOrDefault("X-Amz-Algorithm")
+  valid_594075 = validateParameter(valid_594075, JString, required = false,
+                                 default = nil)
+  if valid_594075 != nil:
+    section.add "X-Amz-Algorithm", valid_594075
+  var valid_594076 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_594076 = validateParameter(valid_594076, JString, required = false,
+                                 default = nil)
+  if valid_594076 != nil:
+    section.add "X-Amz-SignedHeaders", valid_594076
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8285,34 +8289,34 @@ proc validate_UpdateVTLDeviceType_604167(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604178: Call_UpdateVTLDeviceType_604166; path: JsonNode;
+proc call*(call_594078: Call_UpdateVTLDeviceType_594066; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the type of medium changer in a tape gateway. When you activate a tape gateway, you select a medium changer type for the tape gateway. This operation enables you to select a different type of medium changer after a tape gateway is activated. This operation is only supported in the tape gateway type.
   ## 
-  let valid = call_604178.validator(path, query, header, formData, body)
-  let scheme = call_604178.pickScheme
+  let valid = call_594078.validator(path, query, header, formData, body)
+  let scheme = call_594078.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604178.url(scheme.get, call_604178.host, call_604178.base,
-                         call_604178.route, valid.getOrDefault("path"),
+  let url = call_594078.url(scheme.get, call_594078.host, call_594078.base,
+                         call_594078.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_604178, url, valid)
+  result = hook(call_594078, url, valid)
 
-proc call*(call_604179: Call_UpdateVTLDeviceType_604166; body: JsonNode): Recallable =
+proc call*(call_594079: Call_UpdateVTLDeviceType_594066; body: JsonNode): Recallable =
   ## updateVTLDeviceType
   ## Updates the type of medium changer in a tape gateway. When you activate a tape gateway, you select a medium changer type for the tape gateway. This operation enables you to select a different type of medium changer after a tape gateway is activated. This operation is only supported in the tape gateway type.
   ##   body: JObject (required)
-  var body_604180 = newJObject()
+  var body_594080 = newJObject()
   if body != nil:
-    body_604180 = body
-  result = call_604179.call(nil, nil, nil, nil, body_604180)
+    body_594080 = body
+  result = call_594079.call(nil, nil, nil, nil, body_594080)
 
-var updateVTLDeviceType* = Call_UpdateVTLDeviceType_604166(
+var updateVTLDeviceType* = Call_UpdateVTLDeviceType_594066(
     name: "updateVTLDeviceType", meth: HttpMethod.HttpPost,
     host: "storagegateway.amazonaws.com",
     route: "/#X-Amz-Target=StorageGateway_20130630.UpdateVTLDeviceType",
-    validator: validate_UpdateVTLDeviceType_604167, base: "/",
-    url: url_UpdateVTLDeviceType_604168, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateVTLDeviceType_594067, base: "/",
+    url: url_UpdateVTLDeviceType_594068, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
