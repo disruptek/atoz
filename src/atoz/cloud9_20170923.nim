@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_592364 = ref object of OpenApiRestCall
+  OpenApiRestCall_591364 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_592364](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_591364](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_592364): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_591364): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -147,15 +147,15 @@ const
   awsServiceName = "cloud9"
 method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateEnvironmentEC2_592703 = ref object of OpenApiRestCall_592364
-proc url_CreateEnvironmentEC2_592705(protocol: Scheme; host: string; base: string;
+  Call_CreateEnvironmentEC2_591703 = ref object of OpenApiRestCall_591364
+proc url_CreateEnvironmentEC2_591705(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateEnvironmentEC2_592704(path: JsonNode; query: JsonNode;
+proc validate_CreateEnvironmentEC2_591704(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates an AWS Cloud9 development environment, launches an Amazon Elastic Compute Cloud (Amazon EC2) instance, and then connects from the instance to the environment.
   ## 
@@ -177,46 +177,46 @@ proc validate_CreateEnvironmentEC2_592704(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_592830 = header.getOrDefault("X-Amz-Target")
-  valid_592830 = validateParameter(valid_592830, JString, required = true, default = newJString(
+  var valid_591830 = header.getOrDefault("X-Amz-Target")
+  valid_591830 = validateParameter(valid_591830, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.CreateEnvironmentEC2"))
-  if valid_592830 != nil:
-    section.add "X-Amz-Target", valid_592830
-  var valid_592831 = header.getOrDefault("X-Amz-Signature")
-  valid_592831 = validateParameter(valid_592831, JString, required = false,
+  if valid_591830 != nil:
+    section.add "X-Amz-Target", valid_591830
+  var valid_591831 = header.getOrDefault("X-Amz-Signature")
+  valid_591831 = validateParameter(valid_591831, JString, required = false,
                                  default = nil)
-  if valid_592831 != nil:
-    section.add "X-Amz-Signature", valid_592831
-  var valid_592832 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592832 = validateParameter(valid_592832, JString, required = false,
+  if valid_591831 != nil:
+    section.add "X-Amz-Signature", valid_591831
+  var valid_591832 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_591832 = validateParameter(valid_591832, JString, required = false,
                                  default = nil)
-  if valid_592832 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592832
-  var valid_592833 = header.getOrDefault("X-Amz-Date")
-  valid_592833 = validateParameter(valid_592833, JString, required = false,
+  if valid_591832 != nil:
+    section.add "X-Amz-Content-Sha256", valid_591832
+  var valid_591833 = header.getOrDefault("X-Amz-Date")
+  valid_591833 = validateParameter(valid_591833, JString, required = false,
                                  default = nil)
-  if valid_592833 != nil:
-    section.add "X-Amz-Date", valid_592833
-  var valid_592834 = header.getOrDefault("X-Amz-Credential")
-  valid_592834 = validateParameter(valid_592834, JString, required = false,
+  if valid_591833 != nil:
+    section.add "X-Amz-Date", valid_591833
+  var valid_591834 = header.getOrDefault("X-Amz-Credential")
+  valid_591834 = validateParameter(valid_591834, JString, required = false,
                                  default = nil)
-  if valid_592834 != nil:
-    section.add "X-Amz-Credential", valid_592834
-  var valid_592835 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592835 = validateParameter(valid_592835, JString, required = false,
+  if valid_591834 != nil:
+    section.add "X-Amz-Credential", valid_591834
+  var valid_591835 = header.getOrDefault("X-Amz-Security-Token")
+  valid_591835 = validateParameter(valid_591835, JString, required = false,
                                  default = nil)
-  if valid_592835 != nil:
-    section.add "X-Amz-Security-Token", valid_592835
-  var valid_592836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592836 = validateParameter(valid_592836, JString, required = false,
+  if valid_591835 != nil:
+    section.add "X-Amz-Security-Token", valid_591835
+  var valid_591836 = header.getOrDefault("X-Amz-Algorithm")
+  valid_591836 = validateParameter(valid_591836, JString, required = false,
                                  default = nil)
-  if valid_592836 != nil:
-    section.add "X-Amz-Algorithm", valid_592836
-  var valid_592837 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592837 = validateParameter(valid_592837, JString, required = false,
+  if valid_591836 != nil:
+    section.add "X-Amz-Algorithm", valid_591836
+  var valid_591837 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_591837 = validateParameter(valid_591837, JString, required = false,
                                  default = nil)
-  if valid_592837 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592837
+  if valid_591837 != nil:
+    section.add "X-Amz-SignedHeaders", valid_591837
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -227,43 +227,43 @@ proc validate_CreateEnvironmentEC2_592704(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_592861: Call_CreateEnvironmentEC2_592703; path: JsonNode;
+proc call*(call_591861: Call_CreateEnvironmentEC2_591703; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates an AWS Cloud9 development environment, launches an Amazon Elastic Compute Cloud (Amazon EC2) instance, and then connects from the instance to the environment.
   ## 
-  let valid = call_592861.validator(path, query, header, formData, body)
-  let scheme = call_592861.pickScheme
+  let valid = call_591861.validator(path, query, header, formData, body)
+  let scheme = call_591861.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592861.url(scheme.get, call_592861.host, call_592861.base,
-                         call_592861.route, valid.getOrDefault("path"),
+  let url = call_591861.url(scheme.get, call_591861.host, call_591861.base,
+                         call_591861.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592861, url, valid)
+  result = hook(call_591861, url, valid)
 
-proc call*(call_592932: Call_CreateEnvironmentEC2_592703; body: JsonNode): Recallable =
+proc call*(call_591932: Call_CreateEnvironmentEC2_591703; body: JsonNode): Recallable =
   ## createEnvironmentEC2
   ## Creates an AWS Cloud9 development environment, launches an Amazon Elastic Compute Cloud (Amazon EC2) instance, and then connects from the instance to the environment.
   ##   body: JObject (required)
-  var body_592933 = newJObject()
+  var body_591933 = newJObject()
   if body != nil:
-    body_592933 = body
-  result = call_592932.call(nil, nil, nil, nil, body_592933)
+    body_591933 = body
+  result = call_591932.call(nil, nil, nil, nil, body_591933)
 
-var createEnvironmentEC2* = Call_CreateEnvironmentEC2_592703(
+var createEnvironmentEC2* = Call_CreateEnvironmentEC2_591703(
     name: "createEnvironmentEC2", meth: HttpMethod.HttpPost,
     host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.CreateEnvironmentEC2",
-    validator: validate_CreateEnvironmentEC2_592704, base: "/",
-    url: url_CreateEnvironmentEC2_592705, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateEnvironmentEC2_591704, base: "/",
+    url: url_CreateEnvironmentEC2_591705, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateEnvironmentMembership_592972 = ref object of OpenApiRestCall_592364
-proc url_CreateEnvironmentMembership_592974(protocol: Scheme; host: string;
+  Call_CreateEnvironmentMembership_591972 = ref object of OpenApiRestCall_591364
+proc url_CreateEnvironmentMembership_591974(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_CreateEnvironmentMembership_592973(path: JsonNode; query: JsonNode;
+proc validate_CreateEnvironmentMembership_591973(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds an environment member to an AWS Cloud9 development environment.
   ## 
@@ -285,46 +285,46 @@ proc validate_CreateEnvironmentMembership_592973(path: JsonNode; query: JsonNode
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_592975 = header.getOrDefault("X-Amz-Target")
-  valid_592975 = validateParameter(valid_592975, JString, required = true, default = newJString(
+  var valid_591975 = header.getOrDefault("X-Amz-Target")
+  valid_591975 = validateParameter(valid_591975, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.CreateEnvironmentMembership"))
-  if valid_592975 != nil:
-    section.add "X-Amz-Target", valid_592975
-  var valid_592976 = header.getOrDefault("X-Amz-Signature")
-  valid_592976 = validateParameter(valid_592976, JString, required = false,
+  if valid_591975 != nil:
+    section.add "X-Amz-Target", valid_591975
+  var valid_591976 = header.getOrDefault("X-Amz-Signature")
+  valid_591976 = validateParameter(valid_591976, JString, required = false,
                                  default = nil)
-  if valid_592976 != nil:
-    section.add "X-Amz-Signature", valid_592976
-  var valid_592977 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592977 = validateParameter(valid_592977, JString, required = false,
+  if valid_591976 != nil:
+    section.add "X-Amz-Signature", valid_591976
+  var valid_591977 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_591977 = validateParameter(valid_591977, JString, required = false,
                                  default = nil)
-  if valid_592977 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592977
-  var valid_592978 = header.getOrDefault("X-Amz-Date")
-  valid_592978 = validateParameter(valid_592978, JString, required = false,
+  if valid_591977 != nil:
+    section.add "X-Amz-Content-Sha256", valid_591977
+  var valid_591978 = header.getOrDefault("X-Amz-Date")
+  valid_591978 = validateParameter(valid_591978, JString, required = false,
                                  default = nil)
-  if valid_592978 != nil:
-    section.add "X-Amz-Date", valid_592978
-  var valid_592979 = header.getOrDefault("X-Amz-Credential")
-  valid_592979 = validateParameter(valid_592979, JString, required = false,
+  if valid_591978 != nil:
+    section.add "X-Amz-Date", valid_591978
+  var valid_591979 = header.getOrDefault("X-Amz-Credential")
+  valid_591979 = validateParameter(valid_591979, JString, required = false,
                                  default = nil)
-  if valid_592979 != nil:
-    section.add "X-Amz-Credential", valid_592979
-  var valid_592980 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592980 = validateParameter(valid_592980, JString, required = false,
+  if valid_591979 != nil:
+    section.add "X-Amz-Credential", valid_591979
+  var valid_591980 = header.getOrDefault("X-Amz-Security-Token")
+  valid_591980 = validateParameter(valid_591980, JString, required = false,
                                  default = nil)
-  if valid_592980 != nil:
-    section.add "X-Amz-Security-Token", valid_592980
-  var valid_592981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592981 = validateParameter(valid_592981, JString, required = false,
+  if valid_591980 != nil:
+    section.add "X-Amz-Security-Token", valid_591980
+  var valid_591981 = header.getOrDefault("X-Amz-Algorithm")
+  valid_591981 = validateParameter(valid_591981, JString, required = false,
                                  default = nil)
-  if valid_592981 != nil:
-    section.add "X-Amz-Algorithm", valid_592981
-  var valid_592982 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592982 = validateParameter(valid_592982, JString, required = false,
+  if valid_591981 != nil:
+    section.add "X-Amz-Algorithm", valid_591981
+  var valid_591982 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_591982 = validateParameter(valid_591982, JString, required = false,
                                  default = nil)
-  if valid_592982 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592982
+  if valid_591982 != nil:
+    section.add "X-Amz-SignedHeaders", valid_591982
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -335,44 +335,44 @@ proc validate_CreateEnvironmentMembership_592973(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_592984: Call_CreateEnvironmentMembership_592972; path: JsonNode;
+proc call*(call_591984: Call_CreateEnvironmentMembership_591972; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds an environment member to an AWS Cloud9 development environment.
   ## 
-  let valid = call_592984.validator(path, query, header, formData, body)
-  let scheme = call_592984.pickScheme
+  let valid = call_591984.validator(path, query, header, formData, body)
+  let scheme = call_591984.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592984.url(scheme.get, call_592984.host, call_592984.base,
-                         call_592984.route, valid.getOrDefault("path"),
+  let url = call_591984.url(scheme.get, call_591984.host, call_591984.base,
+                         call_591984.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592984, url, valid)
+  result = hook(call_591984, url, valid)
 
-proc call*(call_592985: Call_CreateEnvironmentMembership_592972; body: JsonNode): Recallable =
+proc call*(call_591985: Call_CreateEnvironmentMembership_591972; body: JsonNode): Recallable =
   ## createEnvironmentMembership
   ## Adds an environment member to an AWS Cloud9 development environment.
   ##   body: JObject (required)
-  var body_592986 = newJObject()
+  var body_591986 = newJObject()
   if body != nil:
-    body_592986 = body
-  result = call_592985.call(nil, nil, nil, nil, body_592986)
+    body_591986 = body
+  result = call_591985.call(nil, nil, nil, nil, body_591986)
 
-var createEnvironmentMembership* = Call_CreateEnvironmentMembership_592972(
+var createEnvironmentMembership* = Call_CreateEnvironmentMembership_591972(
     name: "createEnvironmentMembership", meth: HttpMethod.HttpPost,
     host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.CreateEnvironmentMembership",
-    validator: validate_CreateEnvironmentMembership_592973, base: "/",
-    url: url_CreateEnvironmentMembership_592974,
+    validator: validate_CreateEnvironmentMembership_591973, base: "/",
+    url: url_CreateEnvironmentMembership_591974,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteEnvironment_592987 = ref object of OpenApiRestCall_592364
-proc url_DeleteEnvironment_592989(protocol: Scheme; host: string; base: string;
+  Call_DeleteEnvironment_591987 = ref object of OpenApiRestCall_591364
+proc url_DeleteEnvironment_591989(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteEnvironment_592988(path: JsonNode; query: JsonNode;
+proc validate_DeleteEnvironment_591988(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Deletes an AWS Cloud9 development environment. If an Amazon EC2 instance is connected to the environment, also terminates the instance.
@@ -395,46 +395,46 @@ proc validate_DeleteEnvironment_592988(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_592990 = header.getOrDefault("X-Amz-Target")
-  valid_592990 = validateParameter(valid_592990, JString, required = true, default = newJString(
+  var valid_591990 = header.getOrDefault("X-Amz-Target")
+  valid_591990 = validateParameter(valid_591990, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DeleteEnvironment"))
-  if valid_592990 != nil:
-    section.add "X-Amz-Target", valid_592990
-  var valid_592991 = header.getOrDefault("X-Amz-Signature")
-  valid_592991 = validateParameter(valid_592991, JString, required = false,
+  if valid_591990 != nil:
+    section.add "X-Amz-Target", valid_591990
+  var valid_591991 = header.getOrDefault("X-Amz-Signature")
+  valid_591991 = validateParameter(valid_591991, JString, required = false,
                                  default = nil)
-  if valid_592991 != nil:
-    section.add "X-Amz-Signature", valid_592991
-  var valid_592992 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592992 = validateParameter(valid_592992, JString, required = false,
+  if valid_591991 != nil:
+    section.add "X-Amz-Signature", valid_591991
+  var valid_591992 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_591992 = validateParameter(valid_591992, JString, required = false,
                                  default = nil)
-  if valid_592992 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592992
-  var valid_592993 = header.getOrDefault("X-Amz-Date")
-  valid_592993 = validateParameter(valid_592993, JString, required = false,
+  if valid_591992 != nil:
+    section.add "X-Amz-Content-Sha256", valid_591992
+  var valid_591993 = header.getOrDefault("X-Amz-Date")
+  valid_591993 = validateParameter(valid_591993, JString, required = false,
                                  default = nil)
-  if valid_592993 != nil:
-    section.add "X-Amz-Date", valid_592993
-  var valid_592994 = header.getOrDefault("X-Amz-Credential")
-  valid_592994 = validateParameter(valid_592994, JString, required = false,
+  if valid_591993 != nil:
+    section.add "X-Amz-Date", valid_591993
+  var valid_591994 = header.getOrDefault("X-Amz-Credential")
+  valid_591994 = validateParameter(valid_591994, JString, required = false,
                                  default = nil)
-  if valid_592994 != nil:
-    section.add "X-Amz-Credential", valid_592994
-  var valid_592995 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592995 = validateParameter(valid_592995, JString, required = false,
+  if valid_591994 != nil:
+    section.add "X-Amz-Credential", valid_591994
+  var valid_591995 = header.getOrDefault("X-Amz-Security-Token")
+  valid_591995 = validateParameter(valid_591995, JString, required = false,
                                  default = nil)
-  if valid_592995 != nil:
-    section.add "X-Amz-Security-Token", valid_592995
-  var valid_592996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592996 = validateParameter(valid_592996, JString, required = false,
+  if valid_591995 != nil:
+    section.add "X-Amz-Security-Token", valid_591995
+  var valid_591996 = header.getOrDefault("X-Amz-Algorithm")
+  valid_591996 = validateParameter(valid_591996, JString, required = false,
                                  default = nil)
-  if valid_592996 != nil:
-    section.add "X-Amz-Algorithm", valid_592996
-  var valid_592997 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592997 = validateParameter(valid_592997, JString, required = false,
+  if valid_591996 != nil:
+    section.add "X-Amz-Algorithm", valid_591996
+  var valid_591997 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_591997 = validateParameter(valid_591997, JString, required = false,
                                  default = nil)
-  if valid_592997 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592997
+  if valid_591997 != nil:
+    section.add "X-Amz-SignedHeaders", valid_591997
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -445,42 +445,42 @@ proc validate_DeleteEnvironment_592988(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_592999: Call_DeleteEnvironment_592987; path: JsonNode;
+proc call*(call_591999: Call_DeleteEnvironment_591987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes an AWS Cloud9 development environment. If an Amazon EC2 instance is connected to the environment, also terminates the instance.
   ## 
-  let valid = call_592999.validator(path, query, header, formData, body)
-  let scheme = call_592999.pickScheme
+  let valid = call_591999.validator(path, query, header, formData, body)
+  let scheme = call_591999.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592999.url(scheme.get, call_592999.host, call_592999.base,
-                         call_592999.route, valid.getOrDefault("path"),
+  let url = call_591999.url(scheme.get, call_591999.host, call_591999.base,
+                         call_591999.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592999, url, valid)
+  result = hook(call_591999, url, valid)
 
-proc call*(call_593000: Call_DeleteEnvironment_592987; body: JsonNode): Recallable =
+proc call*(call_592000: Call_DeleteEnvironment_591987; body: JsonNode): Recallable =
   ## deleteEnvironment
   ## Deletes an AWS Cloud9 development environment. If an Amazon EC2 instance is connected to the environment, also terminates the instance.
   ##   body: JObject (required)
-  var body_593001 = newJObject()
+  var body_592001 = newJObject()
   if body != nil:
-    body_593001 = body
-  result = call_593000.call(nil, nil, nil, nil, body_593001)
+    body_592001 = body
+  result = call_592000.call(nil, nil, nil, nil, body_592001)
 
-var deleteEnvironment* = Call_DeleteEnvironment_592987(name: "deleteEnvironment",
+var deleteEnvironment* = Call_DeleteEnvironment_591987(name: "deleteEnvironment",
     meth: HttpMethod.HttpPost, host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.DeleteEnvironment",
-    validator: validate_DeleteEnvironment_592988, base: "/",
-    url: url_DeleteEnvironment_592989, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteEnvironment_591988, base: "/",
+    url: url_DeleteEnvironment_591989, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteEnvironmentMembership_593002 = ref object of OpenApiRestCall_592364
-proc url_DeleteEnvironmentMembership_593004(protocol: Scheme; host: string;
+  Call_DeleteEnvironmentMembership_592002 = ref object of OpenApiRestCall_591364
+proc url_DeleteEnvironmentMembership_592004(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DeleteEnvironmentMembership_593003(path: JsonNode; query: JsonNode;
+proc validate_DeleteEnvironmentMembership_592003(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes an environment member from an AWS Cloud9 development environment.
   ## 
@@ -502,46 +502,46 @@ proc validate_DeleteEnvironmentMembership_593003(path: JsonNode; query: JsonNode
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593005 = header.getOrDefault("X-Amz-Target")
-  valid_593005 = validateParameter(valid_593005, JString, required = true, default = newJString(
+  var valid_592005 = header.getOrDefault("X-Amz-Target")
+  valid_592005 = validateParameter(valid_592005, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DeleteEnvironmentMembership"))
-  if valid_593005 != nil:
-    section.add "X-Amz-Target", valid_593005
-  var valid_593006 = header.getOrDefault("X-Amz-Signature")
-  valid_593006 = validateParameter(valid_593006, JString, required = false,
+  if valid_592005 != nil:
+    section.add "X-Amz-Target", valid_592005
+  var valid_592006 = header.getOrDefault("X-Amz-Signature")
+  valid_592006 = validateParameter(valid_592006, JString, required = false,
                                  default = nil)
-  if valid_593006 != nil:
-    section.add "X-Amz-Signature", valid_593006
-  var valid_593007 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593007 = validateParameter(valid_593007, JString, required = false,
+  if valid_592006 != nil:
+    section.add "X-Amz-Signature", valid_592006
+  var valid_592007 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592007 = validateParameter(valid_592007, JString, required = false,
                                  default = nil)
-  if valid_593007 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593007
-  var valid_593008 = header.getOrDefault("X-Amz-Date")
-  valid_593008 = validateParameter(valid_593008, JString, required = false,
+  if valid_592007 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592007
+  var valid_592008 = header.getOrDefault("X-Amz-Date")
+  valid_592008 = validateParameter(valid_592008, JString, required = false,
                                  default = nil)
-  if valid_593008 != nil:
-    section.add "X-Amz-Date", valid_593008
-  var valid_593009 = header.getOrDefault("X-Amz-Credential")
-  valid_593009 = validateParameter(valid_593009, JString, required = false,
+  if valid_592008 != nil:
+    section.add "X-Amz-Date", valid_592008
+  var valid_592009 = header.getOrDefault("X-Amz-Credential")
+  valid_592009 = validateParameter(valid_592009, JString, required = false,
                                  default = nil)
-  if valid_593009 != nil:
-    section.add "X-Amz-Credential", valid_593009
-  var valid_593010 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593010 = validateParameter(valid_593010, JString, required = false,
+  if valid_592009 != nil:
+    section.add "X-Amz-Credential", valid_592009
+  var valid_592010 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592010 = validateParameter(valid_592010, JString, required = false,
                                  default = nil)
-  if valid_593010 != nil:
-    section.add "X-Amz-Security-Token", valid_593010
-  var valid_593011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593011 = validateParameter(valid_593011, JString, required = false,
+  if valid_592010 != nil:
+    section.add "X-Amz-Security-Token", valid_592010
+  var valid_592011 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592011 = validateParameter(valid_592011, JString, required = false,
                                  default = nil)
-  if valid_593011 != nil:
-    section.add "X-Amz-Algorithm", valid_593011
-  var valid_593012 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593012 = validateParameter(valid_593012, JString, required = false,
+  if valid_592011 != nil:
+    section.add "X-Amz-Algorithm", valid_592011
+  var valid_592012 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592012 = validateParameter(valid_592012, JString, required = false,
                                  default = nil)
-  if valid_593012 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593012
+  if valid_592012 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592012
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -552,44 +552,44 @@ proc validate_DeleteEnvironmentMembership_593003(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_593014: Call_DeleteEnvironmentMembership_593002; path: JsonNode;
+proc call*(call_592014: Call_DeleteEnvironmentMembership_592002; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes an environment member from an AWS Cloud9 development environment.
   ## 
-  let valid = call_593014.validator(path, query, header, formData, body)
-  let scheme = call_593014.pickScheme
+  let valid = call_592014.validator(path, query, header, formData, body)
+  let scheme = call_592014.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593014.url(scheme.get, call_593014.host, call_593014.base,
-                         call_593014.route, valid.getOrDefault("path"),
+  let url = call_592014.url(scheme.get, call_592014.host, call_592014.base,
+                         call_592014.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593014, url, valid)
+  result = hook(call_592014, url, valid)
 
-proc call*(call_593015: Call_DeleteEnvironmentMembership_593002; body: JsonNode): Recallable =
+proc call*(call_592015: Call_DeleteEnvironmentMembership_592002; body: JsonNode): Recallable =
   ## deleteEnvironmentMembership
   ## Deletes an environment member from an AWS Cloud9 development environment.
   ##   body: JObject (required)
-  var body_593016 = newJObject()
+  var body_592016 = newJObject()
   if body != nil:
-    body_593016 = body
-  result = call_593015.call(nil, nil, nil, nil, body_593016)
+    body_592016 = body
+  result = call_592015.call(nil, nil, nil, nil, body_592016)
 
-var deleteEnvironmentMembership* = Call_DeleteEnvironmentMembership_593002(
+var deleteEnvironmentMembership* = Call_DeleteEnvironmentMembership_592002(
     name: "deleteEnvironmentMembership", meth: HttpMethod.HttpPost,
     host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.DeleteEnvironmentMembership",
-    validator: validate_DeleteEnvironmentMembership_593003, base: "/",
-    url: url_DeleteEnvironmentMembership_593004,
+    validator: validate_DeleteEnvironmentMembership_592003, base: "/",
+    url: url_DeleteEnvironmentMembership_592004,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEnvironmentMemberships_593017 = ref object of OpenApiRestCall_592364
-proc url_DescribeEnvironmentMemberships_593019(protocol: Scheme; host: string;
+  Call_DescribeEnvironmentMemberships_592017 = ref object of OpenApiRestCall_591364
+proc url_DescribeEnvironmentMemberships_592019(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeEnvironmentMemberships_593018(path: JsonNode;
+proc validate_DescribeEnvironmentMemberships_592018(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets information about environment members for an AWS Cloud9 development environment.
   ## 
@@ -603,16 +603,16 @@ proc validate_DescribeEnvironmentMemberships_593018(path: JsonNode;
   ##   maxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_593020 = query.getOrDefault("nextToken")
-  valid_593020 = validateParameter(valid_593020, JString, required = false,
+  var valid_592020 = query.getOrDefault("nextToken")
+  valid_592020 = validateParameter(valid_592020, JString, required = false,
                                  default = nil)
-  if valid_593020 != nil:
-    section.add "nextToken", valid_593020
-  var valid_593021 = query.getOrDefault("maxResults")
-  valid_593021 = validateParameter(valid_593021, JString, required = false,
+  if valid_592020 != nil:
+    section.add "nextToken", valid_592020
+  var valid_592021 = query.getOrDefault("maxResults")
+  valid_592021 = validateParameter(valid_592021, JString, required = false,
                                  default = nil)
-  if valid_593021 != nil:
-    section.add "maxResults", valid_593021
+  if valid_592021 != nil:
+    section.add "maxResults", valid_592021
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -626,46 +626,46 @@ proc validate_DescribeEnvironmentMemberships_593018(path: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593022 = header.getOrDefault("X-Amz-Target")
-  valid_593022 = validateParameter(valid_593022, JString, required = true, default = newJString(
+  var valid_592022 = header.getOrDefault("X-Amz-Target")
+  valid_592022 = validateParameter(valid_592022, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DescribeEnvironmentMemberships"))
-  if valid_593022 != nil:
-    section.add "X-Amz-Target", valid_593022
-  var valid_593023 = header.getOrDefault("X-Amz-Signature")
-  valid_593023 = validateParameter(valid_593023, JString, required = false,
+  if valid_592022 != nil:
+    section.add "X-Amz-Target", valid_592022
+  var valid_592023 = header.getOrDefault("X-Amz-Signature")
+  valid_592023 = validateParameter(valid_592023, JString, required = false,
                                  default = nil)
-  if valid_593023 != nil:
-    section.add "X-Amz-Signature", valid_593023
-  var valid_593024 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593024 = validateParameter(valid_593024, JString, required = false,
+  if valid_592023 != nil:
+    section.add "X-Amz-Signature", valid_592023
+  var valid_592024 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592024 = validateParameter(valid_592024, JString, required = false,
                                  default = nil)
-  if valid_593024 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593024
-  var valid_593025 = header.getOrDefault("X-Amz-Date")
-  valid_593025 = validateParameter(valid_593025, JString, required = false,
+  if valid_592024 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592024
+  var valid_592025 = header.getOrDefault("X-Amz-Date")
+  valid_592025 = validateParameter(valid_592025, JString, required = false,
                                  default = nil)
-  if valid_593025 != nil:
-    section.add "X-Amz-Date", valid_593025
-  var valid_593026 = header.getOrDefault("X-Amz-Credential")
-  valid_593026 = validateParameter(valid_593026, JString, required = false,
+  if valid_592025 != nil:
+    section.add "X-Amz-Date", valid_592025
+  var valid_592026 = header.getOrDefault("X-Amz-Credential")
+  valid_592026 = validateParameter(valid_592026, JString, required = false,
                                  default = nil)
-  if valid_593026 != nil:
-    section.add "X-Amz-Credential", valid_593026
-  var valid_593027 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593027 = validateParameter(valid_593027, JString, required = false,
+  if valid_592026 != nil:
+    section.add "X-Amz-Credential", valid_592026
+  var valid_592027 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592027 = validateParameter(valid_592027, JString, required = false,
                                  default = nil)
-  if valid_593027 != nil:
-    section.add "X-Amz-Security-Token", valid_593027
-  var valid_593028 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593028 = validateParameter(valid_593028, JString, required = false,
+  if valid_592027 != nil:
+    section.add "X-Amz-Security-Token", valid_592027
+  var valid_592028 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592028 = validateParameter(valid_592028, JString, required = false,
                                  default = nil)
-  if valid_593028 != nil:
-    section.add "X-Amz-Algorithm", valid_593028
-  var valid_593029 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593029 = validateParameter(valid_593029, JString, required = false,
+  if valid_592028 != nil:
+    section.add "X-Amz-Algorithm", valid_592028
+  var valid_592029 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592029 = validateParameter(valid_592029, JString, required = false,
                                  default = nil)
-  if valid_593029 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593029
+  if valid_592029 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592029
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -676,20 +676,20 @@ proc validate_DescribeEnvironmentMemberships_593018(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593031: Call_DescribeEnvironmentMemberships_593017; path: JsonNode;
+proc call*(call_592031: Call_DescribeEnvironmentMemberships_592017; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about environment members for an AWS Cloud9 development environment.
   ## 
-  let valid = call_593031.validator(path, query, header, formData, body)
-  let scheme = call_593031.pickScheme
+  let valid = call_592031.validator(path, query, header, formData, body)
+  let scheme = call_592031.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593031.url(scheme.get, call_593031.host, call_593031.base,
-                         call_593031.route, valid.getOrDefault("path"),
+  let url = call_592031.url(scheme.get, call_592031.host, call_592031.base,
+                         call_592031.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593031, url, valid)
+  result = hook(call_592031, url, valid)
 
-proc call*(call_593032: Call_DescribeEnvironmentMemberships_593017; body: JsonNode;
+proc call*(call_592032: Call_DescribeEnvironmentMemberships_592017; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## describeEnvironmentMemberships
   ## Gets information about environment members for an AWS Cloud9 development environment.
@@ -698,30 +698,30 @@ proc call*(call_593032: Call_DescribeEnvironmentMemberships_593017; body: JsonNo
   ##   body: JObject (required)
   ##   maxResults: string
   ##             : Pagination limit
-  var query_593033 = newJObject()
-  var body_593034 = newJObject()
-  add(query_593033, "nextToken", newJString(nextToken))
+  var query_592033 = newJObject()
+  var body_592034 = newJObject()
+  add(query_592033, "nextToken", newJString(nextToken))
   if body != nil:
-    body_593034 = body
-  add(query_593033, "maxResults", newJString(maxResults))
-  result = call_593032.call(nil, query_593033, nil, nil, body_593034)
+    body_592034 = body
+  add(query_592033, "maxResults", newJString(maxResults))
+  result = call_592032.call(nil, query_592033, nil, nil, body_592034)
 
-var describeEnvironmentMemberships* = Call_DescribeEnvironmentMemberships_593017(
+var describeEnvironmentMemberships* = Call_DescribeEnvironmentMemberships_592017(
     name: "describeEnvironmentMemberships", meth: HttpMethod.HttpPost,
     host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.DescribeEnvironmentMemberships",
-    validator: validate_DescribeEnvironmentMemberships_593018, base: "/",
-    url: url_DescribeEnvironmentMemberships_593019,
+    validator: validate_DescribeEnvironmentMemberships_592018, base: "/",
+    url: url_DescribeEnvironmentMemberships_592019,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEnvironmentStatus_593036 = ref object of OpenApiRestCall_592364
-proc url_DescribeEnvironmentStatus_593038(protocol: Scheme; host: string;
+  Call_DescribeEnvironmentStatus_592036 = ref object of OpenApiRestCall_591364
+proc url_DescribeEnvironmentStatus_592038(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeEnvironmentStatus_593037(path: JsonNode; query: JsonNode;
+proc validate_DescribeEnvironmentStatus_592037(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets status information for an AWS Cloud9 development environment.
   ## 
@@ -743,46 +743,46 @@ proc validate_DescribeEnvironmentStatus_593037(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593039 = header.getOrDefault("X-Amz-Target")
-  valid_593039 = validateParameter(valid_593039, JString, required = true, default = newJString(
+  var valid_592039 = header.getOrDefault("X-Amz-Target")
+  valid_592039 = validateParameter(valid_592039, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DescribeEnvironmentStatus"))
-  if valid_593039 != nil:
-    section.add "X-Amz-Target", valid_593039
-  var valid_593040 = header.getOrDefault("X-Amz-Signature")
-  valid_593040 = validateParameter(valid_593040, JString, required = false,
+  if valid_592039 != nil:
+    section.add "X-Amz-Target", valid_592039
+  var valid_592040 = header.getOrDefault("X-Amz-Signature")
+  valid_592040 = validateParameter(valid_592040, JString, required = false,
                                  default = nil)
-  if valid_593040 != nil:
-    section.add "X-Amz-Signature", valid_593040
-  var valid_593041 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593041 = validateParameter(valid_593041, JString, required = false,
+  if valid_592040 != nil:
+    section.add "X-Amz-Signature", valid_592040
+  var valid_592041 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592041 = validateParameter(valid_592041, JString, required = false,
                                  default = nil)
-  if valid_593041 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593041
-  var valid_593042 = header.getOrDefault("X-Amz-Date")
-  valid_593042 = validateParameter(valid_593042, JString, required = false,
+  if valid_592041 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592041
+  var valid_592042 = header.getOrDefault("X-Amz-Date")
+  valid_592042 = validateParameter(valid_592042, JString, required = false,
                                  default = nil)
-  if valid_593042 != nil:
-    section.add "X-Amz-Date", valid_593042
-  var valid_593043 = header.getOrDefault("X-Amz-Credential")
-  valid_593043 = validateParameter(valid_593043, JString, required = false,
+  if valid_592042 != nil:
+    section.add "X-Amz-Date", valid_592042
+  var valid_592043 = header.getOrDefault("X-Amz-Credential")
+  valid_592043 = validateParameter(valid_592043, JString, required = false,
                                  default = nil)
-  if valid_593043 != nil:
-    section.add "X-Amz-Credential", valid_593043
-  var valid_593044 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593044 = validateParameter(valid_593044, JString, required = false,
+  if valid_592043 != nil:
+    section.add "X-Amz-Credential", valid_592043
+  var valid_592044 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592044 = validateParameter(valid_592044, JString, required = false,
                                  default = nil)
-  if valid_593044 != nil:
-    section.add "X-Amz-Security-Token", valid_593044
-  var valid_593045 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593045 = validateParameter(valid_593045, JString, required = false,
+  if valid_592044 != nil:
+    section.add "X-Amz-Security-Token", valid_592044
+  var valid_592045 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592045 = validateParameter(valid_592045, JString, required = false,
                                  default = nil)
-  if valid_593045 != nil:
-    section.add "X-Amz-Algorithm", valid_593045
-  var valid_593046 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593046 = validateParameter(valid_593046, JString, required = false,
+  if valid_592045 != nil:
+    section.add "X-Amz-Algorithm", valid_592045
+  var valid_592046 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592046 = validateParameter(valid_592046, JString, required = false,
                                  default = nil)
-  if valid_593046 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593046
+  if valid_592046 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592046
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -793,44 +793,44 @@ proc validate_DescribeEnvironmentStatus_593037(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593048: Call_DescribeEnvironmentStatus_593036; path: JsonNode;
+proc call*(call_592048: Call_DescribeEnvironmentStatus_592036; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets status information for an AWS Cloud9 development environment.
   ## 
-  let valid = call_593048.validator(path, query, header, formData, body)
-  let scheme = call_593048.pickScheme
+  let valid = call_592048.validator(path, query, header, formData, body)
+  let scheme = call_592048.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593048.url(scheme.get, call_593048.host, call_593048.base,
-                         call_593048.route, valid.getOrDefault("path"),
+  let url = call_592048.url(scheme.get, call_592048.host, call_592048.base,
+                         call_592048.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593048, url, valid)
+  result = hook(call_592048, url, valid)
 
-proc call*(call_593049: Call_DescribeEnvironmentStatus_593036; body: JsonNode): Recallable =
+proc call*(call_592049: Call_DescribeEnvironmentStatus_592036; body: JsonNode): Recallable =
   ## describeEnvironmentStatus
   ## Gets status information for an AWS Cloud9 development environment.
   ##   body: JObject (required)
-  var body_593050 = newJObject()
+  var body_592050 = newJObject()
   if body != nil:
-    body_593050 = body
-  result = call_593049.call(nil, nil, nil, nil, body_593050)
+    body_592050 = body
+  result = call_592049.call(nil, nil, nil, nil, body_592050)
 
-var describeEnvironmentStatus* = Call_DescribeEnvironmentStatus_593036(
+var describeEnvironmentStatus* = Call_DescribeEnvironmentStatus_592036(
     name: "describeEnvironmentStatus", meth: HttpMethod.HttpPost,
     host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.DescribeEnvironmentStatus",
-    validator: validate_DescribeEnvironmentStatus_593037, base: "/",
-    url: url_DescribeEnvironmentStatus_593038,
+    validator: validate_DescribeEnvironmentStatus_592037, base: "/",
+    url: url_DescribeEnvironmentStatus_592038,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEnvironments_593051 = ref object of OpenApiRestCall_592364
-proc url_DescribeEnvironments_593053(protocol: Scheme; host: string; base: string;
+  Call_DescribeEnvironments_592051 = ref object of OpenApiRestCall_591364
+proc url_DescribeEnvironments_592053(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_DescribeEnvironments_593052(path: JsonNode; query: JsonNode;
+proc validate_DescribeEnvironments_592052(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets information about AWS Cloud9 development environments.
   ## 
@@ -852,46 +852,46 @@ proc validate_DescribeEnvironments_593052(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593054 = header.getOrDefault("X-Amz-Target")
-  valid_593054 = validateParameter(valid_593054, JString, required = true, default = newJString(
+  var valid_592054 = header.getOrDefault("X-Amz-Target")
+  valid_592054 = validateParameter(valid_592054, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DescribeEnvironments"))
-  if valid_593054 != nil:
-    section.add "X-Amz-Target", valid_593054
-  var valid_593055 = header.getOrDefault("X-Amz-Signature")
-  valid_593055 = validateParameter(valid_593055, JString, required = false,
+  if valid_592054 != nil:
+    section.add "X-Amz-Target", valid_592054
+  var valid_592055 = header.getOrDefault("X-Amz-Signature")
+  valid_592055 = validateParameter(valid_592055, JString, required = false,
                                  default = nil)
-  if valid_593055 != nil:
-    section.add "X-Amz-Signature", valid_593055
-  var valid_593056 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593056 = validateParameter(valid_593056, JString, required = false,
+  if valid_592055 != nil:
+    section.add "X-Amz-Signature", valid_592055
+  var valid_592056 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592056 = validateParameter(valid_592056, JString, required = false,
                                  default = nil)
-  if valid_593056 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593056
-  var valid_593057 = header.getOrDefault("X-Amz-Date")
-  valid_593057 = validateParameter(valid_593057, JString, required = false,
+  if valid_592056 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592056
+  var valid_592057 = header.getOrDefault("X-Amz-Date")
+  valid_592057 = validateParameter(valid_592057, JString, required = false,
                                  default = nil)
-  if valid_593057 != nil:
-    section.add "X-Amz-Date", valid_593057
-  var valid_593058 = header.getOrDefault("X-Amz-Credential")
-  valid_593058 = validateParameter(valid_593058, JString, required = false,
+  if valid_592057 != nil:
+    section.add "X-Amz-Date", valid_592057
+  var valid_592058 = header.getOrDefault("X-Amz-Credential")
+  valid_592058 = validateParameter(valid_592058, JString, required = false,
                                  default = nil)
-  if valid_593058 != nil:
-    section.add "X-Amz-Credential", valid_593058
-  var valid_593059 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593059 = validateParameter(valid_593059, JString, required = false,
+  if valid_592058 != nil:
+    section.add "X-Amz-Credential", valid_592058
+  var valid_592059 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592059 = validateParameter(valid_592059, JString, required = false,
                                  default = nil)
-  if valid_593059 != nil:
-    section.add "X-Amz-Security-Token", valid_593059
-  var valid_593060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593060 = validateParameter(valid_593060, JString, required = false,
+  if valid_592059 != nil:
+    section.add "X-Amz-Security-Token", valid_592059
+  var valid_592060 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592060 = validateParameter(valid_592060, JString, required = false,
                                  default = nil)
-  if valid_593060 != nil:
-    section.add "X-Amz-Algorithm", valid_593060
-  var valid_593061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593061 = validateParameter(valid_593061, JString, required = false,
+  if valid_592060 != nil:
+    section.add "X-Amz-Algorithm", valid_592060
+  var valid_592061 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592061 = validateParameter(valid_592061, JString, required = false,
                                  default = nil)
-  if valid_593061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593061
+  if valid_592061 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592061
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -902,43 +902,43 @@ proc validate_DescribeEnvironments_593052(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593063: Call_DescribeEnvironments_593051; path: JsonNode;
+proc call*(call_592063: Call_DescribeEnvironments_592051; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about AWS Cloud9 development environments.
   ## 
-  let valid = call_593063.validator(path, query, header, formData, body)
-  let scheme = call_593063.pickScheme
+  let valid = call_592063.validator(path, query, header, formData, body)
+  let scheme = call_592063.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593063.url(scheme.get, call_593063.host, call_593063.base,
-                         call_593063.route, valid.getOrDefault("path"),
+  let url = call_592063.url(scheme.get, call_592063.host, call_592063.base,
+                         call_592063.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593063, url, valid)
+  result = hook(call_592063, url, valid)
 
-proc call*(call_593064: Call_DescribeEnvironments_593051; body: JsonNode): Recallable =
+proc call*(call_592064: Call_DescribeEnvironments_592051; body: JsonNode): Recallable =
   ## describeEnvironments
   ## Gets information about AWS Cloud9 development environments.
   ##   body: JObject (required)
-  var body_593065 = newJObject()
+  var body_592065 = newJObject()
   if body != nil:
-    body_593065 = body
-  result = call_593064.call(nil, nil, nil, nil, body_593065)
+    body_592065 = body
+  result = call_592064.call(nil, nil, nil, nil, body_592065)
 
-var describeEnvironments* = Call_DescribeEnvironments_593051(
+var describeEnvironments* = Call_DescribeEnvironments_592051(
     name: "describeEnvironments", meth: HttpMethod.HttpPost,
     host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.DescribeEnvironments",
-    validator: validate_DescribeEnvironments_593052, base: "/",
-    url: url_DescribeEnvironments_593053, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeEnvironments_592052, base: "/",
+    url: url_DescribeEnvironments_592053, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListEnvironments_593066 = ref object of OpenApiRestCall_592364
-proc url_ListEnvironments_593068(protocol: Scheme; host: string; base: string;
+  Call_ListEnvironments_592066 = ref object of OpenApiRestCall_591364
+proc url_ListEnvironments_592068(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_ListEnvironments_593067(path: JsonNode; query: JsonNode;
+proc validate_ListEnvironments_592067(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Gets a list of AWS Cloud9 development environment identifiers.
@@ -953,16 +953,16 @@ proc validate_ListEnvironments_593067(path: JsonNode; query: JsonNode;
   ##   maxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_593069 = query.getOrDefault("nextToken")
-  valid_593069 = validateParameter(valid_593069, JString, required = false,
+  var valid_592069 = query.getOrDefault("nextToken")
+  valid_592069 = validateParameter(valid_592069, JString, required = false,
                                  default = nil)
-  if valid_593069 != nil:
-    section.add "nextToken", valid_593069
-  var valid_593070 = query.getOrDefault("maxResults")
-  valid_593070 = validateParameter(valid_593070, JString, required = false,
+  if valid_592069 != nil:
+    section.add "nextToken", valid_592069
+  var valid_592070 = query.getOrDefault("maxResults")
+  valid_592070 = validateParameter(valid_592070, JString, required = false,
                                  default = nil)
-  if valid_593070 != nil:
-    section.add "maxResults", valid_593070
+  if valid_592070 != nil:
+    section.add "maxResults", valid_592070
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -976,46 +976,46 @@ proc validate_ListEnvironments_593067(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593071 = header.getOrDefault("X-Amz-Target")
-  valid_593071 = validateParameter(valid_593071, JString, required = true, default = newJString(
+  var valid_592071 = header.getOrDefault("X-Amz-Target")
+  valid_592071 = validateParameter(valid_592071, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.ListEnvironments"))
-  if valid_593071 != nil:
-    section.add "X-Amz-Target", valid_593071
-  var valid_593072 = header.getOrDefault("X-Amz-Signature")
-  valid_593072 = validateParameter(valid_593072, JString, required = false,
+  if valid_592071 != nil:
+    section.add "X-Amz-Target", valid_592071
+  var valid_592072 = header.getOrDefault("X-Amz-Signature")
+  valid_592072 = validateParameter(valid_592072, JString, required = false,
                                  default = nil)
-  if valid_593072 != nil:
-    section.add "X-Amz-Signature", valid_593072
-  var valid_593073 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593073 = validateParameter(valid_593073, JString, required = false,
+  if valid_592072 != nil:
+    section.add "X-Amz-Signature", valid_592072
+  var valid_592073 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592073 = validateParameter(valid_592073, JString, required = false,
                                  default = nil)
-  if valid_593073 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593073
-  var valid_593074 = header.getOrDefault("X-Amz-Date")
-  valid_593074 = validateParameter(valid_593074, JString, required = false,
+  if valid_592073 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592073
+  var valid_592074 = header.getOrDefault("X-Amz-Date")
+  valid_592074 = validateParameter(valid_592074, JString, required = false,
                                  default = nil)
-  if valid_593074 != nil:
-    section.add "X-Amz-Date", valid_593074
-  var valid_593075 = header.getOrDefault("X-Amz-Credential")
-  valid_593075 = validateParameter(valid_593075, JString, required = false,
+  if valid_592074 != nil:
+    section.add "X-Amz-Date", valid_592074
+  var valid_592075 = header.getOrDefault("X-Amz-Credential")
+  valid_592075 = validateParameter(valid_592075, JString, required = false,
                                  default = nil)
-  if valid_593075 != nil:
-    section.add "X-Amz-Credential", valid_593075
-  var valid_593076 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593076 = validateParameter(valid_593076, JString, required = false,
+  if valid_592075 != nil:
+    section.add "X-Amz-Credential", valid_592075
+  var valid_592076 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592076 = validateParameter(valid_592076, JString, required = false,
                                  default = nil)
-  if valid_593076 != nil:
-    section.add "X-Amz-Security-Token", valid_593076
-  var valid_593077 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593077 = validateParameter(valid_593077, JString, required = false,
+  if valid_592076 != nil:
+    section.add "X-Amz-Security-Token", valid_592076
+  var valid_592077 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592077 = validateParameter(valid_592077, JString, required = false,
                                  default = nil)
-  if valid_593077 != nil:
-    section.add "X-Amz-Algorithm", valid_593077
-  var valid_593078 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593078 = validateParameter(valid_593078, JString, required = false,
+  if valid_592077 != nil:
+    section.add "X-Amz-Algorithm", valid_592077
+  var valid_592078 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592078 = validateParameter(valid_592078, JString, required = false,
                                  default = nil)
-  if valid_593078 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593078
+  if valid_592078 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592078
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1026,20 +1026,20 @@ proc validate_ListEnvironments_593067(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593080: Call_ListEnvironments_593066; path: JsonNode;
+proc call*(call_592080: Call_ListEnvironments_592066; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of AWS Cloud9 development environment identifiers.
   ## 
-  let valid = call_593080.validator(path, query, header, formData, body)
-  let scheme = call_593080.pickScheme
+  let valid = call_592080.validator(path, query, header, formData, body)
+  let scheme = call_592080.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593080.url(scheme.get, call_593080.host, call_593080.base,
-                         call_593080.route, valid.getOrDefault("path"),
+  let url = call_592080.url(scheme.get, call_592080.host, call_592080.base,
+                         call_592080.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593080, url, valid)
+  result = hook(call_592080, url, valid)
 
-proc call*(call_593081: Call_ListEnvironments_593066; body: JsonNode;
+proc call*(call_592081: Call_ListEnvironments_592066; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listEnvironments
   ## Gets a list of AWS Cloud9 development environment identifiers.
@@ -1048,28 +1048,28 @@ proc call*(call_593081: Call_ListEnvironments_593066; body: JsonNode;
   ##   body: JObject (required)
   ##   maxResults: string
   ##             : Pagination limit
-  var query_593082 = newJObject()
-  var body_593083 = newJObject()
-  add(query_593082, "nextToken", newJString(nextToken))
+  var query_592082 = newJObject()
+  var body_592083 = newJObject()
+  add(query_592082, "nextToken", newJString(nextToken))
   if body != nil:
-    body_593083 = body
-  add(query_593082, "maxResults", newJString(maxResults))
-  result = call_593081.call(nil, query_593082, nil, nil, body_593083)
+    body_592083 = body
+  add(query_592082, "maxResults", newJString(maxResults))
+  result = call_592081.call(nil, query_592082, nil, nil, body_592083)
 
-var listEnvironments* = Call_ListEnvironments_593066(name: "listEnvironments",
+var listEnvironments* = Call_ListEnvironments_592066(name: "listEnvironments",
     meth: HttpMethod.HttpPost, host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.ListEnvironments",
-    validator: validate_ListEnvironments_593067, base: "/",
-    url: url_ListEnvironments_593068, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListEnvironments_592067, base: "/",
+    url: url_ListEnvironments_592068, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateEnvironment_593084 = ref object of OpenApiRestCall_592364
-proc url_UpdateEnvironment_593086(protocol: Scheme; host: string; base: string;
+  Call_UpdateEnvironment_592084 = ref object of OpenApiRestCall_591364
+proc url_UpdateEnvironment_592086(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateEnvironment_593085(path: JsonNode; query: JsonNode;
+proc validate_UpdateEnvironment_592085(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Changes the settings of an existing AWS Cloud9 development environment.
@@ -1092,46 +1092,46 @@ proc validate_UpdateEnvironment_593085(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593087 = header.getOrDefault("X-Amz-Target")
-  valid_593087 = validateParameter(valid_593087, JString, required = true, default = newJString(
+  var valid_592087 = header.getOrDefault("X-Amz-Target")
+  valid_592087 = validateParameter(valid_592087, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.UpdateEnvironment"))
-  if valid_593087 != nil:
-    section.add "X-Amz-Target", valid_593087
-  var valid_593088 = header.getOrDefault("X-Amz-Signature")
-  valid_593088 = validateParameter(valid_593088, JString, required = false,
+  if valid_592087 != nil:
+    section.add "X-Amz-Target", valid_592087
+  var valid_592088 = header.getOrDefault("X-Amz-Signature")
+  valid_592088 = validateParameter(valid_592088, JString, required = false,
                                  default = nil)
-  if valid_593088 != nil:
-    section.add "X-Amz-Signature", valid_593088
-  var valid_593089 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593089 = validateParameter(valid_593089, JString, required = false,
+  if valid_592088 != nil:
+    section.add "X-Amz-Signature", valid_592088
+  var valid_592089 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592089 = validateParameter(valid_592089, JString, required = false,
                                  default = nil)
-  if valid_593089 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593089
-  var valid_593090 = header.getOrDefault("X-Amz-Date")
-  valid_593090 = validateParameter(valid_593090, JString, required = false,
+  if valid_592089 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592089
+  var valid_592090 = header.getOrDefault("X-Amz-Date")
+  valid_592090 = validateParameter(valid_592090, JString, required = false,
                                  default = nil)
-  if valid_593090 != nil:
-    section.add "X-Amz-Date", valid_593090
-  var valid_593091 = header.getOrDefault("X-Amz-Credential")
-  valid_593091 = validateParameter(valid_593091, JString, required = false,
+  if valid_592090 != nil:
+    section.add "X-Amz-Date", valid_592090
+  var valid_592091 = header.getOrDefault("X-Amz-Credential")
+  valid_592091 = validateParameter(valid_592091, JString, required = false,
                                  default = nil)
-  if valid_593091 != nil:
-    section.add "X-Amz-Credential", valid_593091
-  var valid_593092 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593092 = validateParameter(valid_593092, JString, required = false,
+  if valid_592091 != nil:
+    section.add "X-Amz-Credential", valid_592091
+  var valid_592092 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592092 = validateParameter(valid_592092, JString, required = false,
                                  default = nil)
-  if valid_593092 != nil:
-    section.add "X-Amz-Security-Token", valid_593092
-  var valid_593093 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593093 = validateParameter(valid_593093, JString, required = false,
+  if valid_592092 != nil:
+    section.add "X-Amz-Security-Token", valid_592092
+  var valid_592093 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592093 = validateParameter(valid_592093, JString, required = false,
                                  default = nil)
-  if valid_593093 != nil:
-    section.add "X-Amz-Algorithm", valid_593093
-  var valid_593094 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593094 = validateParameter(valid_593094, JString, required = false,
+  if valid_592093 != nil:
+    section.add "X-Amz-Algorithm", valid_592093
+  var valid_592094 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592094 = validateParameter(valid_592094, JString, required = false,
                                  default = nil)
-  if valid_593094 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593094
+  if valid_592094 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592094
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1142,42 +1142,42 @@ proc validate_UpdateEnvironment_593085(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593096: Call_UpdateEnvironment_593084; path: JsonNode;
+proc call*(call_592096: Call_UpdateEnvironment_592084; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Changes the settings of an existing AWS Cloud9 development environment.
   ## 
-  let valid = call_593096.validator(path, query, header, formData, body)
-  let scheme = call_593096.pickScheme
+  let valid = call_592096.validator(path, query, header, formData, body)
+  let scheme = call_592096.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593096.url(scheme.get, call_593096.host, call_593096.base,
-                         call_593096.route, valid.getOrDefault("path"),
+  let url = call_592096.url(scheme.get, call_592096.host, call_592096.base,
+                         call_592096.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593096, url, valid)
+  result = hook(call_592096, url, valid)
 
-proc call*(call_593097: Call_UpdateEnvironment_593084; body: JsonNode): Recallable =
+proc call*(call_592097: Call_UpdateEnvironment_592084; body: JsonNode): Recallable =
   ## updateEnvironment
   ## Changes the settings of an existing AWS Cloud9 development environment.
   ##   body: JObject (required)
-  var body_593098 = newJObject()
+  var body_592098 = newJObject()
   if body != nil:
-    body_593098 = body
-  result = call_593097.call(nil, nil, nil, nil, body_593098)
+    body_592098 = body
+  result = call_592097.call(nil, nil, nil, nil, body_592098)
 
-var updateEnvironment* = Call_UpdateEnvironment_593084(name: "updateEnvironment",
+var updateEnvironment* = Call_UpdateEnvironment_592084(name: "updateEnvironment",
     meth: HttpMethod.HttpPost, host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.UpdateEnvironment",
-    validator: validate_UpdateEnvironment_593085, base: "/",
-    url: url_UpdateEnvironment_593086, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateEnvironment_592085, base: "/",
+    url: url_UpdateEnvironment_592086, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateEnvironmentMembership_593099 = ref object of OpenApiRestCall_592364
-proc url_UpdateEnvironmentMembership_593101(protocol: Scheme; host: string;
+  Call_UpdateEnvironmentMembership_592099 = ref object of OpenApiRestCall_591364
+proc url_UpdateEnvironmentMembership_592101(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   result.path = base & route
 
-proc validate_UpdateEnvironmentMembership_593100(path: JsonNode; query: JsonNode;
+proc validate_UpdateEnvironmentMembership_592100(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
   ## 
@@ -1199,46 +1199,46 @@ proc validate_UpdateEnvironmentMembership_593100(path: JsonNode; query: JsonNode
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593102 = header.getOrDefault("X-Amz-Target")
-  valid_593102 = validateParameter(valid_593102, JString, required = true, default = newJString(
+  var valid_592102 = header.getOrDefault("X-Amz-Target")
+  valid_592102 = validateParameter(valid_592102, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.UpdateEnvironmentMembership"))
-  if valid_593102 != nil:
-    section.add "X-Amz-Target", valid_593102
-  var valid_593103 = header.getOrDefault("X-Amz-Signature")
-  valid_593103 = validateParameter(valid_593103, JString, required = false,
+  if valid_592102 != nil:
+    section.add "X-Amz-Target", valid_592102
+  var valid_592103 = header.getOrDefault("X-Amz-Signature")
+  valid_592103 = validateParameter(valid_592103, JString, required = false,
                                  default = nil)
-  if valid_593103 != nil:
-    section.add "X-Amz-Signature", valid_593103
-  var valid_593104 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593104 = validateParameter(valid_593104, JString, required = false,
+  if valid_592103 != nil:
+    section.add "X-Amz-Signature", valid_592103
+  var valid_592104 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_592104 = validateParameter(valid_592104, JString, required = false,
                                  default = nil)
-  if valid_593104 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593104
-  var valid_593105 = header.getOrDefault("X-Amz-Date")
-  valid_593105 = validateParameter(valid_593105, JString, required = false,
+  if valid_592104 != nil:
+    section.add "X-Amz-Content-Sha256", valid_592104
+  var valid_592105 = header.getOrDefault("X-Amz-Date")
+  valid_592105 = validateParameter(valid_592105, JString, required = false,
                                  default = nil)
-  if valid_593105 != nil:
-    section.add "X-Amz-Date", valid_593105
-  var valid_593106 = header.getOrDefault("X-Amz-Credential")
-  valid_593106 = validateParameter(valid_593106, JString, required = false,
+  if valid_592105 != nil:
+    section.add "X-Amz-Date", valid_592105
+  var valid_592106 = header.getOrDefault("X-Amz-Credential")
+  valid_592106 = validateParameter(valid_592106, JString, required = false,
                                  default = nil)
-  if valid_593106 != nil:
-    section.add "X-Amz-Credential", valid_593106
-  var valid_593107 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593107 = validateParameter(valid_593107, JString, required = false,
+  if valid_592106 != nil:
+    section.add "X-Amz-Credential", valid_592106
+  var valid_592107 = header.getOrDefault("X-Amz-Security-Token")
+  valid_592107 = validateParameter(valid_592107, JString, required = false,
                                  default = nil)
-  if valid_593107 != nil:
-    section.add "X-Amz-Security-Token", valid_593107
-  var valid_593108 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593108 = validateParameter(valid_593108, JString, required = false,
+  if valid_592107 != nil:
+    section.add "X-Amz-Security-Token", valid_592107
+  var valid_592108 = header.getOrDefault("X-Amz-Algorithm")
+  valid_592108 = validateParameter(valid_592108, JString, required = false,
                                  default = nil)
-  if valid_593108 != nil:
-    section.add "X-Amz-Algorithm", valid_593108
-  var valid_593109 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593109 = validateParameter(valid_593109, JString, required = false,
+  if valid_592108 != nil:
+    section.add "X-Amz-Algorithm", valid_592108
+  var valid_592109 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_592109 = validateParameter(valid_592109, JString, required = false,
                                  default = nil)
-  if valid_593109 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593109
+  if valid_592109 != nil:
+    section.add "X-Amz-SignedHeaders", valid_592109
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1249,33 +1249,33 @@ proc validate_UpdateEnvironmentMembership_593100(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_593111: Call_UpdateEnvironmentMembership_593099; path: JsonNode;
+proc call*(call_592111: Call_UpdateEnvironmentMembership_592099; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
   ## 
-  let valid = call_593111.validator(path, query, header, formData, body)
-  let scheme = call_593111.pickScheme
+  let valid = call_592111.validator(path, query, header, formData, body)
+  let scheme = call_592111.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593111.url(scheme.get, call_593111.host, call_593111.base,
-                         call_593111.route, valid.getOrDefault("path"),
+  let url = call_592111.url(scheme.get, call_592111.host, call_592111.base,
+                         call_592111.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593111, url, valid)
+  result = hook(call_592111, url, valid)
 
-proc call*(call_593112: Call_UpdateEnvironmentMembership_593099; body: JsonNode): Recallable =
+proc call*(call_592112: Call_UpdateEnvironmentMembership_592099; body: JsonNode): Recallable =
   ## updateEnvironmentMembership
   ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
   ##   body: JObject (required)
-  var body_593113 = newJObject()
+  var body_592113 = newJObject()
   if body != nil:
-    body_593113 = body
-  result = call_593112.call(nil, nil, nil, nil, body_593113)
+    body_592113 = body
+  result = call_592112.call(nil, nil, nil, nil, body_592113)
 
-var updateEnvironmentMembership* = Call_UpdateEnvironmentMembership_593099(
+var updateEnvironmentMembership* = Call_UpdateEnvironmentMembership_592099(
     name: "updateEnvironmentMembership", meth: HttpMethod.HttpPost,
     host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.UpdateEnvironmentMembership",
-    validator: validate_UpdateEnvironmentMembership_593100, base: "/",
-    url: url_UpdateEnvironmentMembership_593101,
+    validator: validate_UpdateEnvironmentMembership_592100, base: "/",
+    url: url_UpdateEnvironmentMembership_592101,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
