@@ -3,7 +3,7 @@ Amazon Web Services (AWS) APIs in Nim
 
 ## Supported APIs
 
-[Sadly, only the 192 most popular AWS APIs are supported at this time.](https://github.com/disruptek/atoz/tree/master/src/atoz) :cry:
+[Sadly, only the 197 most popular AWS APIs are supported at this time.](https://github.com/disruptek/atoz/tree/master/src/atoz) :cry:
 
 ## Example
 
