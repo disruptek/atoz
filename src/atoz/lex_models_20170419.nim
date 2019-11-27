@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Lex Model Building Service
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_592365 = ref object of OpenApiRestCall
+  OpenApiRestCall_599369 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_592365](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_599369](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_592365): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_599369): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -142,10 +142,10 @@ const
       "ca-central-1": "models.lex.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "lex-models"
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateBotVersion_592704 = ref object of OpenApiRestCall_592365
-proc url_CreateBotVersion_592706(protocol: Scheme; host: string; base: string;
+  Call_CreateBotVersion_599706 = ref object of OpenApiRestCall_599369
+proc url_CreateBotVersion_599708(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -159,9 +159,14 @@ proc url_CreateBotVersion_592706(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_CreateBotVersion_592705(path: JsonNode; query: JsonNode;
+proc validate_CreateBotVersion_599707(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates a new version of the bot based on the <code>$LATEST</code> version. If the <code>$LATEST</code> version of this resource hasn't changed since you created the last version, Amazon Lex doesn't create a new version. It returns the last created version.</p> <note> <p>You can update only the <code>$LATEST</code> version of the bot. You can't update the numbered versions that you create with the <code>CreateBotVersion</code> operation.</p> </note> <p> When you create the first version of a bot, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p> This operation requires permission for the <code>lex:CreateBotVersion</code> action. </p>
@@ -173,58 +178,58 @@ proc validate_CreateBotVersion_592705(path: JsonNode; query: JsonNode;
   ##       : The name of the bot that you want to create a new version of. The name is case sensitive. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_592832 = path.getOrDefault("name")
-  valid_592832 = validateParameter(valid_592832, JString, required = true,
+  var valid_599834 = path.getOrDefault("name")
+  valid_599834 = validateParameter(valid_599834, JString, required = true,
                                  default = nil)
-  if valid_592832 != nil:
-    section.add "name", valid_592832
+  if valid_599834 != nil:
+    section.add "name", valid_599834
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_592833 = header.getOrDefault("X-Amz-Signature")
-  valid_592833 = validateParameter(valid_592833, JString, required = false,
+  var valid_599835 = header.getOrDefault("X-Amz-Date")
+  valid_599835 = validateParameter(valid_599835, JString, required = false,
                                  default = nil)
-  if valid_592833 != nil:
-    section.add "X-Amz-Signature", valid_592833
-  var valid_592834 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592834 = validateParameter(valid_592834, JString, required = false,
+  if valid_599835 != nil:
+    section.add "X-Amz-Date", valid_599835
+  var valid_599836 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599836 = validateParameter(valid_599836, JString, required = false,
                                  default = nil)
-  if valid_592834 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592834
-  var valid_592835 = header.getOrDefault("X-Amz-Date")
-  valid_592835 = validateParameter(valid_592835, JString, required = false,
+  if valid_599836 != nil:
+    section.add "X-Amz-Security-Token", valid_599836
+  var valid_599837 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599837 = validateParameter(valid_599837, JString, required = false,
                                  default = nil)
-  if valid_592835 != nil:
-    section.add "X-Amz-Date", valid_592835
-  var valid_592836 = header.getOrDefault("X-Amz-Credential")
-  valid_592836 = validateParameter(valid_592836, JString, required = false,
+  if valid_599837 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599837
+  var valid_599838 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599838 = validateParameter(valid_599838, JString, required = false,
                                  default = nil)
-  if valid_592836 != nil:
-    section.add "X-Amz-Credential", valid_592836
-  var valid_592837 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592837 = validateParameter(valid_592837, JString, required = false,
+  if valid_599838 != nil:
+    section.add "X-Amz-Algorithm", valid_599838
+  var valid_599839 = header.getOrDefault("X-Amz-Signature")
+  valid_599839 = validateParameter(valid_599839, JString, required = false,
                                  default = nil)
-  if valid_592837 != nil:
-    section.add "X-Amz-Security-Token", valid_592837
-  var valid_592838 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592838 = validateParameter(valid_592838, JString, required = false,
+  if valid_599839 != nil:
+    section.add "X-Amz-Signature", valid_599839
+  var valid_599840 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599840 = validateParameter(valid_599840, JString, required = false,
                                  default = nil)
-  if valid_592838 != nil:
-    section.add "X-Amz-Algorithm", valid_592838
-  var valid_592839 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592839 = validateParameter(valid_592839, JString, required = false,
+  if valid_599840 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599840
+  var valid_599841 = header.getOrDefault("X-Amz-Credential")
+  valid_599841 = validateParameter(valid_599841, JString, required = false,
                                  default = nil)
-  if valid_592839 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592839
+  if valid_599841 != nil:
+    section.add "X-Amz-Credential", valid_599841
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -235,40 +240,40 @@ proc validate_CreateBotVersion_592705(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_592863: Call_CreateBotVersion_592704; path: JsonNode;
+proc call*(call_599865: Call_CreateBotVersion_599706; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new version of the bot based on the <code>$LATEST</code> version. If the <code>$LATEST</code> version of this resource hasn't changed since you created the last version, Amazon Lex doesn't create a new version. It returns the last created version.</p> <note> <p>You can update only the <code>$LATEST</code> version of the bot. You can't update the numbered versions that you create with the <code>CreateBotVersion</code> operation.</p> </note> <p> When you create the first version of a bot, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p> This operation requires permission for the <code>lex:CreateBotVersion</code> action. </p>
   ## 
-  let valid = call_592863.validator(path, query, header, formData, body)
-  let scheme = call_592863.pickScheme
+  let valid = call_599865.validator(path, query, header, formData, body)
+  let scheme = call_599865.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592863.url(scheme.get, call_592863.host, call_592863.base,
-                         call_592863.route, valid.getOrDefault("path"),
+  let url = call_599865.url(scheme.get, call_599865.host, call_599865.base,
+                         call_599865.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592863, url, valid)
+  result = atozHook(call_599865, url, valid)
 
-proc call*(call_592934: Call_CreateBotVersion_592704; name: string; body: JsonNode): Recallable =
+proc call*(call_599936: Call_CreateBotVersion_599706; name: string; body: JsonNode): Recallable =
   ## createBotVersion
   ## <p>Creates a new version of the bot based on the <code>$LATEST</code> version. If the <code>$LATEST</code> version of this resource hasn't changed since you created the last version, Amazon Lex doesn't create a new version. It returns the last created version.</p> <note> <p>You can update only the <code>$LATEST</code> version of the bot. You can't update the numbered versions that you create with the <code>CreateBotVersion</code> operation.</p> </note> <p> When you create the first version of a bot, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p> This operation requires permission for the <code>lex:CreateBotVersion</code> action. </p>
   ##   name: string (required)
   ##       : The name of the bot that you want to create a new version of. The name is case sensitive. 
   ##   body: JObject (required)
-  var path_592935 = newJObject()
-  var body_592937 = newJObject()
-  add(path_592935, "name", newJString(name))
+  var path_599937 = newJObject()
+  var body_599939 = newJObject()
+  add(path_599937, "name", newJString(name))
   if body != nil:
-    body_592937 = body
-  result = call_592934.call(path_592935, nil, nil, nil, body_592937)
+    body_599939 = body
+  result = call_599936.call(path_599937, nil, nil, nil, body_599939)
 
-var createBotVersion* = Call_CreateBotVersion_592704(name: "createBotVersion",
+var createBotVersion* = Call_CreateBotVersion_599706(name: "createBotVersion",
     meth: HttpMethod.HttpPost, host: "models.lex.amazonaws.com",
-    route: "/bots/{name}/versions", validator: validate_CreateBotVersion_592705,
-    base: "/", url: url_CreateBotVersion_592706,
+    route: "/bots/{name}/versions", validator: validate_CreateBotVersion_599707,
+    base: "/", url: url_CreateBotVersion_599708,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateIntentVersion_592976 = ref object of OpenApiRestCall_592365
-proc url_CreateIntentVersion_592978(protocol: Scheme; host: string; base: string;
+  Call_CreateIntentVersion_599978 = ref object of OpenApiRestCall_599369
+proc url_CreateIntentVersion_599980(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -282,9 +287,14 @@ proc url_CreateIntentVersion_592978(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_CreateIntentVersion_592977(path: JsonNode; query: JsonNode;
+proc validate_CreateIntentVersion_599979(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Creates a new version of an intent based on the <code>$LATEST</code> version of the intent. If the <code>$LATEST</code> version of this intent hasn't changed since you last updated it, Amazon Lex doesn't create a new version. It returns the last version you created.</p> <note> <p>You can update only the <code>$LATEST</code> version of the intent. You can't update the numbered versions that you create with the <code>CreateIntentVersion</code> operation.</p> </note> <p> When you create a version of an intent, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p>This operation requires permissions to perform the <code>lex:CreateIntentVersion</code> action. </p>
@@ -296,58 +306,58 @@ proc validate_CreateIntentVersion_592977(path: JsonNode; query: JsonNode;
   ##       : The name of the intent that you want to create a new version of. The name is case sensitive. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_592979 = path.getOrDefault("name")
-  valid_592979 = validateParameter(valid_592979, JString, required = true,
+  var valid_599981 = path.getOrDefault("name")
+  valid_599981 = validateParameter(valid_599981, JString, required = true,
                                  default = nil)
-  if valid_592979 != nil:
-    section.add "name", valid_592979
+  if valid_599981 != nil:
+    section.add "name", valid_599981
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_592980 = header.getOrDefault("X-Amz-Signature")
-  valid_592980 = validateParameter(valid_592980, JString, required = false,
+  var valid_599982 = header.getOrDefault("X-Amz-Date")
+  valid_599982 = validateParameter(valid_599982, JString, required = false,
                                  default = nil)
-  if valid_592980 != nil:
-    section.add "X-Amz-Signature", valid_592980
-  var valid_592981 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592981 = validateParameter(valid_592981, JString, required = false,
+  if valid_599982 != nil:
+    section.add "X-Amz-Date", valid_599982
+  var valid_599983 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599983 = validateParameter(valid_599983, JString, required = false,
                                  default = nil)
-  if valid_592981 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592981
-  var valid_592982 = header.getOrDefault("X-Amz-Date")
-  valid_592982 = validateParameter(valid_592982, JString, required = false,
+  if valid_599983 != nil:
+    section.add "X-Amz-Security-Token", valid_599983
+  var valid_599984 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599984 = validateParameter(valid_599984, JString, required = false,
                                  default = nil)
-  if valid_592982 != nil:
-    section.add "X-Amz-Date", valid_592982
-  var valid_592983 = header.getOrDefault("X-Amz-Credential")
-  valid_592983 = validateParameter(valid_592983, JString, required = false,
+  if valid_599984 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599984
+  var valid_599985 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599985 = validateParameter(valid_599985, JString, required = false,
                                  default = nil)
-  if valid_592983 != nil:
-    section.add "X-Amz-Credential", valid_592983
-  var valid_592984 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592984 = validateParameter(valid_592984, JString, required = false,
+  if valid_599985 != nil:
+    section.add "X-Amz-Algorithm", valid_599985
+  var valid_599986 = header.getOrDefault("X-Amz-Signature")
+  valid_599986 = validateParameter(valid_599986, JString, required = false,
                                  default = nil)
-  if valid_592984 != nil:
-    section.add "X-Amz-Security-Token", valid_592984
-  var valid_592985 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592985 = validateParameter(valid_592985, JString, required = false,
+  if valid_599986 != nil:
+    section.add "X-Amz-Signature", valid_599986
+  var valid_599987 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599987 = validateParameter(valid_599987, JString, required = false,
                                  default = nil)
-  if valid_592985 != nil:
-    section.add "X-Amz-Algorithm", valid_592985
-  var valid_592986 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592986 = validateParameter(valid_592986, JString, required = false,
+  if valid_599987 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599987
+  var valid_599988 = header.getOrDefault("X-Amz-Credential")
+  valid_599988 = validateParameter(valid_599988, JString, required = false,
                                  default = nil)
-  if valid_592986 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592986
+  if valid_599988 != nil:
+    section.add "X-Amz-Credential", valid_599988
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -358,40 +368,40 @@ proc validate_CreateIntentVersion_592977(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_592988: Call_CreateIntentVersion_592976; path: JsonNode;
+proc call*(call_599990: Call_CreateIntentVersion_599978; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new version of an intent based on the <code>$LATEST</code> version of the intent. If the <code>$LATEST</code> version of this intent hasn't changed since you last updated it, Amazon Lex doesn't create a new version. It returns the last version you created.</p> <note> <p>You can update only the <code>$LATEST</code> version of the intent. You can't update the numbered versions that you create with the <code>CreateIntentVersion</code> operation.</p> </note> <p> When you create a version of an intent, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p>This operation requires permissions to perform the <code>lex:CreateIntentVersion</code> action. </p>
   ## 
-  let valid = call_592988.validator(path, query, header, formData, body)
-  let scheme = call_592988.pickScheme
+  let valid = call_599990.validator(path, query, header, formData, body)
+  let scheme = call_599990.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592988.url(scheme.get, call_592988.host, call_592988.base,
-                         call_592988.route, valid.getOrDefault("path"),
+  let url = call_599990.url(scheme.get, call_599990.host, call_599990.base,
+                         call_599990.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592988, url, valid)
+  result = atozHook(call_599990, url, valid)
 
-proc call*(call_592989: Call_CreateIntentVersion_592976; name: string; body: JsonNode): Recallable =
+proc call*(call_599991: Call_CreateIntentVersion_599978; name: string; body: JsonNode): Recallable =
   ## createIntentVersion
   ## <p>Creates a new version of an intent based on the <code>$LATEST</code> version of the intent. If the <code>$LATEST</code> version of this intent hasn't changed since you last updated it, Amazon Lex doesn't create a new version. It returns the last version you created.</p> <note> <p>You can update only the <code>$LATEST</code> version of the intent. You can't update the numbered versions that you create with the <code>CreateIntentVersion</code> operation.</p> </note> <p> When you create a version of an intent, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p>This operation requires permissions to perform the <code>lex:CreateIntentVersion</code> action. </p>
   ##   name: string (required)
   ##       : The name of the intent that you want to create a new version of. The name is case sensitive. 
   ##   body: JObject (required)
-  var path_592990 = newJObject()
-  var body_592991 = newJObject()
-  add(path_592990, "name", newJString(name))
+  var path_599992 = newJObject()
+  var body_599993 = newJObject()
+  add(path_599992, "name", newJString(name))
   if body != nil:
-    body_592991 = body
-  result = call_592989.call(path_592990, nil, nil, nil, body_592991)
+    body_599993 = body
+  result = call_599991.call(path_599992, nil, nil, nil, body_599993)
 
-var createIntentVersion* = Call_CreateIntentVersion_592976(
+var createIntentVersion* = Call_CreateIntentVersion_599978(
     name: "createIntentVersion", meth: HttpMethod.HttpPost,
     host: "models.lex.amazonaws.com", route: "/intents/{name}/versions",
-    validator: validate_CreateIntentVersion_592977, base: "/",
-    url: url_CreateIntentVersion_592978, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateIntentVersion_599979, base: "/",
+    url: url_CreateIntentVersion_599980, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSlotTypeVersion_592992 = ref object of OpenApiRestCall_592365
-proc url_CreateSlotTypeVersion_592994(protocol: Scheme; host: string; base: string;
+  Call_CreateSlotTypeVersion_599994 = ref object of OpenApiRestCall_599369
+proc url_CreateSlotTypeVersion_599996(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -405,9 +415,14 @@ proc url_CreateSlotTypeVersion_592994(protocol: Scheme; host: string; base: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_CreateSlotTypeVersion_592993(path: JsonNode; query: JsonNode;
+proc validate_CreateSlotTypeVersion_599995(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new version of a slot type based on the <code>$LATEST</code> version of the specified slot type. If the <code>$LATEST</code> version of this resource has not changed since the last version that you created, Amazon Lex doesn't create a new version. It returns the last version that you created. </p> <note> <p>You can update only the <code>$LATEST</code> version of a slot type. You can't update the numbered versions that you create with the <code>CreateSlotTypeVersion</code> operation.</p> </note> <p>When you create a version of a slot type, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p>This operation requires permissions for the <code>lex:CreateSlotTypeVersion</code> action.</p>
   ## 
@@ -418,58 +433,58 @@ proc validate_CreateSlotTypeVersion_592993(path: JsonNode; query: JsonNode;
   ##       : The name of the slot type that you want to create a new version for. The name is case sensitive. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_592995 = path.getOrDefault("name")
-  valid_592995 = validateParameter(valid_592995, JString, required = true,
+  var valid_599997 = path.getOrDefault("name")
+  valid_599997 = validateParameter(valid_599997, JString, required = true,
                                  default = nil)
-  if valid_592995 != nil:
-    section.add "name", valid_592995
+  if valid_599997 != nil:
+    section.add "name", valid_599997
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_592996 = header.getOrDefault("X-Amz-Signature")
-  valid_592996 = validateParameter(valid_592996, JString, required = false,
+  var valid_599998 = header.getOrDefault("X-Amz-Date")
+  valid_599998 = validateParameter(valid_599998, JString, required = false,
                                  default = nil)
-  if valid_592996 != nil:
-    section.add "X-Amz-Signature", valid_592996
-  var valid_592997 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592997 = validateParameter(valid_592997, JString, required = false,
+  if valid_599998 != nil:
+    section.add "X-Amz-Date", valid_599998
+  var valid_599999 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599999 = validateParameter(valid_599999, JString, required = false,
                                  default = nil)
-  if valid_592997 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592997
-  var valid_592998 = header.getOrDefault("X-Amz-Date")
-  valid_592998 = validateParameter(valid_592998, JString, required = false,
+  if valid_599999 != nil:
+    section.add "X-Amz-Security-Token", valid_599999
+  var valid_600000 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600000 = validateParameter(valid_600000, JString, required = false,
                                  default = nil)
-  if valid_592998 != nil:
-    section.add "X-Amz-Date", valid_592998
-  var valid_592999 = header.getOrDefault("X-Amz-Credential")
-  valid_592999 = validateParameter(valid_592999, JString, required = false,
+  if valid_600000 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600000
+  var valid_600001 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600001 = validateParameter(valid_600001, JString, required = false,
                                  default = nil)
-  if valid_592999 != nil:
-    section.add "X-Amz-Credential", valid_592999
-  var valid_593000 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593000 = validateParameter(valid_593000, JString, required = false,
+  if valid_600001 != nil:
+    section.add "X-Amz-Algorithm", valid_600001
+  var valid_600002 = header.getOrDefault("X-Amz-Signature")
+  valid_600002 = validateParameter(valid_600002, JString, required = false,
                                  default = nil)
-  if valid_593000 != nil:
-    section.add "X-Amz-Security-Token", valid_593000
-  var valid_593001 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593001 = validateParameter(valid_593001, JString, required = false,
+  if valid_600002 != nil:
+    section.add "X-Amz-Signature", valid_600002
+  var valid_600003 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600003 = validateParameter(valid_600003, JString, required = false,
                                  default = nil)
-  if valid_593001 != nil:
-    section.add "X-Amz-Algorithm", valid_593001
-  var valid_593002 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593002 = validateParameter(valid_593002, JString, required = false,
+  if valid_600003 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600003
+  var valid_600004 = header.getOrDefault("X-Amz-Credential")
+  valid_600004 = validateParameter(valid_600004, JString, required = false,
                                  default = nil)
-  if valid_593002 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593002
+  if valid_600004 != nil:
+    section.add "X-Amz-Credential", valid_600004
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -480,41 +495,41 @@ proc validate_CreateSlotTypeVersion_592993(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593004: Call_CreateSlotTypeVersion_592992; path: JsonNode;
+proc call*(call_600006: Call_CreateSlotTypeVersion_599994; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new version of a slot type based on the <code>$LATEST</code> version of the specified slot type. If the <code>$LATEST</code> version of this resource has not changed since the last version that you created, Amazon Lex doesn't create a new version. It returns the last version that you created. </p> <note> <p>You can update only the <code>$LATEST</code> version of a slot type. You can't update the numbered versions that you create with the <code>CreateSlotTypeVersion</code> operation.</p> </note> <p>When you create a version of a slot type, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p>This operation requires permissions for the <code>lex:CreateSlotTypeVersion</code> action.</p>
   ## 
-  let valid = call_593004.validator(path, query, header, formData, body)
-  let scheme = call_593004.pickScheme
+  let valid = call_600006.validator(path, query, header, formData, body)
+  let scheme = call_600006.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593004.url(scheme.get, call_593004.host, call_593004.base,
-                         call_593004.route, valid.getOrDefault("path"),
+  let url = call_600006.url(scheme.get, call_600006.host, call_600006.base,
+                         call_600006.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593004, url, valid)
+  result = atozHook(call_600006, url, valid)
 
-proc call*(call_593005: Call_CreateSlotTypeVersion_592992; name: string;
+proc call*(call_600007: Call_CreateSlotTypeVersion_599994; name: string;
           body: JsonNode): Recallable =
   ## createSlotTypeVersion
   ## <p>Creates a new version of a slot type based on the <code>$LATEST</code> version of the specified slot type. If the <code>$LATEST</code> version of this resource has not changed since the last version that you created, Amazon Lex doesn't create a new version. It returns the last version that you created. </p> <note> <p>You can update only the <code>$LATEST</code> version of a slot type. You can't update the numbered versions that you create with the <code>CreateSlotTypeVersion</code> operation.</p> </note> <p>When you create a version of a slot type, Amazon Lex sets the version to 1. Subsequent versions increment by 1. For more information, see <a>versioning-intro</a>. </p> <p>This operation requires permissions for the <code>lex:CreateSlotTypeVersion</code> action.</p>
   ##   name: string (required)
   ##       : The name of the slot type that you want to create a new version for. The name is case sensitive. 
   ##   body: JObject (required)
-  var path_593006 = newJObject()
-  var body_593007 = newJObject()
-  add(path_593006, "name", newJString(name))
+  var path_600008 = newJObject()
+  var body_600009 = newJObject()
+  add(path_600008, "name", newJString(name))
   if body != nil:
-    body_593007 = body
-  result = call_593005.call(path_593006, nil, nil, nil, body_593007)
+    body_600009 = body
+  result = call_600007.call(path_600008, nil, nil, nil, body_600009)
 
-var createSlotTypeVersion* = Call_CreateSlotTypeVersion_592992(
+var createSlotTypeVersion* = Call_CreateSlotTypeVersion_599994(
     name: "createSlotTypeVersion", meth: HttpMethod.HttpPost,
     host: "models.lex.amazonaws.com", route: "/slottypes/{name}/versions",
-    validator: validate_CreateSlotTypeVersion_592993, base: "/",
-    url: url_CreateSlotTypeVersion_592994, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateSlotTypeVersion_599995, base: "/",
+    url: url_CreateSlotTypeVersion_599996, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBot_593008 = ref object of OpenApiRestCall_592365
-proc url_DeleteBot_593010(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteBot_600010 = ref object of OpenApiRestCall_599369
+proc url_DeleteBot_600012(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -527,11 +542,16 @@ proc url_DeleteBot_593010(protocol: Scheme; host: string; base: string; route: s
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteBot_593009(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteBot_600011(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Deletes all versions of the bot, including the <code>$LATEST</code> version. To delete a specific version of the bot, use the <a>DeleteBotVersion</a> operation.</p> <p>If a bot has an alias, you can't delete it. Instead, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the alias that refers to the bot. To remove the reference to the bot, delete the alias. If you get the same exception again, delete the referring alias until the <code>DeleteBot</code> operation is successful.</p> <p>This operation requires permissions for the <code>lex:DeleteBot</code> action.</p>
+  ## <p>Deletes all versions of the bot, including the <code>$LATEST</code> version. To delete a specific version of the bot, use the <a>DeleteBotVersion</a> operation. The <code>DeleteBot</code> operation doesn't immediately remove the bot schema. Instead, it is marked for deletion and removed later.</p> <p>Amazon Lex stores utterances indefinitely for improving the ability of your bot to respond to user inputs. These utterances are not removed when the bot is deleted. To remove the utterances, use the <a>DeleteUtterances</a> operation.</p> <p>If a bot has an alias, you can't delete it. Instead, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the alias that refers to the bot. To remove the reference to the bot, delete the alias. If you get the same exception again, delete the referring alias until the <code>DeleteBot</code> operation is successful.</p> <p>This operation requires permissions for the <code>lex:DeleteBot</code> action.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -540,96 +560,96 @@ proc validate_DeleteBot_593009(path: JsonNode; query: JsonNode; header: JsonNode
   ##       : The name of the bot. The name is case sensitive. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593011 = path.getOrDefault("name")
-  valid_593011 = validateParameter(valid_593011, JString, required = true,
+  var valid_600013 = path.getOrDefault("name")
+  valid_600013 = validateParameter(valid_600013, JString, required = true,
                                  default = nil)
-  if valid_593011 != nil:
-    section.add "name", valid_593011
+  if valid_600013 != nil:
+    section.add "name", valid_600013
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593012 = header.getOrDefault("X-Amz-Signature")
-  valid_593012 = validateParameter(valid_593012, JString, required = false,
+  var valid_600014 = header.getOrDefault("X-Amz-Date")
+  valid_600014 = validateParameter(valid_600014, JString, required = false,
                                  default = nil)
-  if valid_593012 != nil:
-    section.add "X-Amz-Signature", valid_593012
-  var valid_593013 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593013 = validateParameter(valid_593013, JString, required = false,
+  if valid_600014 != nil:
+    section.add "X-Amz-Date", valid_600014
+  var valid_600015 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600015 = validateParameter(valid_600015, JString, required = false,
                                  default = nil)
-  if valid_593013 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593013
-  var valid_593014 = header.getOrDefault("X-Amz-Date")
-  valid_593014 = validateParameter(valid_593014, JString, required = false,
+  if valid_600015 != nil:
+    section.add "X-Amz-Security-Token", valid_600015
+  var valid_600016 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600016 = validateParameter(valid_600016, JString, required = false,
                                  default = nil)
-  if valid_593014 != nil:
-    section.add "X-Amz-Date", valid_593014
-  var valid_593015 = header.getOrDefault("X-Amz-Credential")
-  valid_593015 = validateParameter(valid_593015, JString, required = false,
+  if valid_600016 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600016
+  var valid_600017 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600017 = validateParameter(valid_600017, JString, required = false,
                                  default = nil)
-  if valid_593015 != nil:
-    section.add "X-Amz-Credential", valid_593015
-  var valid_593016 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593016 = validateParameter(valid_593016, JString, required = false,
+  if valid_600017 != nil:
+    section.add "X-Amz-Algorithm", valid_600017
+  var valid_600018 = header.getOrDefault("X-Amz-Signature")
+  valid_600018 = validateParameter(valid_600018, JString, required = false,
                                  default = nil)
-  if valid_593016 != nil:
-    section.add "X-Amz-Security-Token", valid_593016
-  var valid_593017 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593017 = validateParameter(valid_593017, JString, required = false,
+  if valid_600018 != nil:
+    section.add "X-Amz-Signature", valid_600018
+  var valid_600019 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600019 = validateParameter(valid_600019, JString, required = false,
                                  default = nil)
-  if valid_593017 != nil:
-    section.add "X-Amz-Algorithm", valid_593017
-  var valid_593018 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593018 = validateParameter(valid_593018, JString, required = false,
+  if valid_600019 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600019
+  var valid_600020 = header.getOrDefault("X-Amz-Credential")
+  valid_600020 = validateParameter(valid_600020, JString, required = false,
                                  default = nil)
-  if valid_593018 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593018
+  if valid_600020 != nil:
+    section.add "X-Amz-Credential", valid_600020
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593019: Call_DeleteBot_593008; path: JsonNode; query: JsonNode;
+proc call*(call_600021: Call_DeleteBot_600010; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes all versions of the bot, including the <code>$LATEST</code> version. To delete a specific version of the bot, use the <a>DeleteBotVersion</a> operation.</p> <p>If a bot has an alias, you can't delete it. Instead, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the alias that refers to the bot. To remove the reference to the bot, delete the alias. If you get the same exception again, delete the referring alias until the <code>DeleteBot</code> operation is successful.</p> <p>This operation requires permissions for the <code>lex:DeleteBot</code> action.</p>
+  ## <p>Deletes all versions of the bot, including the <code>$LATEST</code> version. To delete a specific version of the bot, use the <a>DeleteBotVersion</a> operation. The <code>DeleteBot</code> operation doesn't immediately remove the bot schema. Instead, it is marked for deletion and removed later.</p> <p>Amazon Lex stores utterances indefinitely for improving the ability of your bot to respond to user inputs. These utterances are not removed when the bot is deleted. To remove the utterances, use the <a>DeleteUtterances</a> operation.</p> <p>If a bot has an alias, you can't delete it. Instead, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the alias that refers to the bot. To remove the reference to the bot, delete the alias. If you get the same exception again, delete the referring alias until the <code>DeleteBot</code> operation is successful.</p> <p>This operation requires permissions for the <code>lex:DeleteBot</code> action.</p>
   ## 
-  let valid = call_593019.validator(path, query, header, formData, body)
-  let scheme = call_593019.pickScheme
+  let valid = call_600021.validator(path, query, header, formData, body)
+  let scheme = call_600021.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593019.url(scheme.get, call_593019.host, call_593019.base,
-                         call_593019.route, valid.getOrDefault("path"),
+  let url = call_600021.url(scheme.get, call_600021.host, call_600021.base,
+                         call_600021.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593019, url, valid)
+  result = atozHook(call_600021, url, valid)
 
-proc call*(call_593020: Call_DeleteBot_593008; name: string): Recallable =
+proc call*(call_600022: Call_DeleteBot_600010; name: string): Recallable =
   ## deleteBot
-  ## <p>Deletes all versions of the bot, including the <code>$LATEST</code> version. To delete a specific version of the bot, use the <a>DeleteBotVersion</a> operation.</p> <p>If a bot has an alias, you can't delete it. Instead, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the alias that refers to the bot. To remove the reference to the bot, delete the alias. If you get the same exception again, delete the referring alias until the <code>DeleteBot</code> operation is successful.</p> <p>This operation requires permissions for the <code>lex:DeleteBot</code> action.</p>
+  ## <p>Deletes all versions of the bot, including the <code>$LATEST</code> version. To delete a specific version of the bot, use the <a>DeleteBotVersion</a> operation. The <code>DeleteBot</code> operation doesn't immediately remove the bot schema. Instead, it is marked for deletion and removed later.</p> <p>Amazon Lex stores utterances indefinitely for improving the ability of your bot to respond to user inputs. These utterances are not removed when the bot is deleted. To remove the utterances, use the <a>DeleteUtterances</a> operation.</p> <p>If a bot has an alias, you can't delete it. Instead, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the alias that refers to the bot. To remove the reference to the bot, delete the alias. If you get the same exception again, delete the referring alias until the <code>DeleteBot</code> operation is successful.</p> <p>This operation requires permissions for the <code>lex:DeleteBot</code> action.</p>
   ##   name: string (required)
   ##       : The name of the bot. The name is case sensitive. 
-  var path_593021 = newJObject()
-  add(path_593021, "name", newJString(name))
-  result = call_593020.call(path_593021, nil, nil, nil, nil)
+  var path_600023 = newJObject()
+  add(path_600023, "name", newJString(name))
+  result = call_600022.call(path_600023, nil, nil, nil, nil)
 
-var deleteBot* = Call_DeleteBot_593008(name: "deleteBot",
+var deleteBot* = Call_DeleteBot_600010(name: "deleteBot",
                                     meth: HttpMethod.HttpDelete,
                                     host: "models.lex.amazonaws.com",
                                     route: "/bots/{name}",
-                                    validator: validate_DeleteBot_593009,
-                                    base: "/", url: url_DeleteBot_593010,
+                                    validator: validate_DeleteBot_600011,
+                                    base: "/", url: url_DeleteBot_600012,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBotAlias_593037 = ref object of OpenApiRestCall_592365
-proc url_PutBotAlias_593039(protocol: Scheme; host: string; base: string;
+  Call_PutBotAlias_600039 = ref object of OpenApiRestCall_599369
+proc url_PutBotAlias_600041(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -645,78 +665,83 @@ proc url_PutBotAlias_593039(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_PutBotAlias_593038(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutBotAlias_600040(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an alias for the specified version of the bot or replaces an alias for the specified bot. To change the version of the bot that the alias points to, replace the alias. For more information about aliases, see <a>versioning-aliases</a>.</p> <p>This operation requires permissions for the <code>lex:PutBotAlias</code> action. </p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   botName: JString (required)
-  ##          : The name of the bot.
   ##   name: JString (required)
   ##       : The name of the alias. The name is <i>not</i> case sensitive.
+  ##   botName: JString (required)
+  ##          : The name of the bot.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_593040 = path.getOrDefault("botName")
-  valid_593040 = validateParameter(valid_593040, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600042 = path.getOrDefault("name")
+  valid_600042 = validateParameter(valid_600042, JString, required = true,
                                  default = nil)
-  if valid_593040 != nil:
-    section.add "botName", valid_593040
-  var valid_593041 = path.getOrDefault("name")
-  valid_593041 = validateParameter(valid_593041, JString, required = true,
+  if valid_600042 != nil:
+    section.add "name", valid_600042
+  var valid_600043 = path.getOrDefault("botName")
+  valid_600043 = validateParameter(valid_600043, JString, required = true,
                                  default = nil)
-  if valid_593041 != nil:
-    section.add "name", valid_593041
+  if valid_600043 != nil:
+    section.add "botName", valid_600043
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593042 = header.getOrDefault("X-Amz-Signature")
-  valid_593042 = validateParameter(valid_593042, JString, required = false,
+  var valid_600044 = header.getOrDefault("X-Amz-Date")
+  valid_600044 = validateParameter(valid_600044, JString, required = false,
                                  default = nil)
-  if valid_593042 != nil:
-    section.add "X-Amz-Signature", valid_593042
-  var valid_593043 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593043 = validateParameter(valid_593043, JString, required = false,
+  if valid_600044 != nil:
+    section.add "X-Amz-Date", valid_600044
+  var valid_600045 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600045 = validateParameter(valid_600045, JString, required = false,
                                  default = nil)
-  if valid_593043 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593043
-  var valid_593044 = header.getOrDefault("X-Amz-Date")
-  valid_593044 = validateParameter(valid_593044, JString, required = false,
+  if valid_600045 != nil:
+    section.add "X-Amz-Security-Token", valid_600045
+  var valid_600046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600046 = validateParameter(valid_600046, JString, required = false,
                                  default = nil)
-  if valid_593044 != nil:
-    section.add "X-Amz-Date", valid_593044
-  var valid_593045 = header.getOrDefault("X-Amz-Credential")
-  valid_593045 = validateParameter(valid_593045, JString, required = false,
+  if valid_600046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600046
+  var valid_600047 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600047 = validateParameter(valid_600047, JString, required = false,
                                  default = nil)
-  if valid_593045 != nil:
-    section.add "X-Amz-Credential", valid_593045
-  var valid_593046 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593046 = validateParameter(valid_593046, JString, required = false,
+  if valid_600047 != nil:
+    section.add "X-Amz-Algorithm", valid_600047
+  var valid_600048 = header.getOrDefault("X-Amz-Signature")
+  valid_600048 = validateParameter(valid_600048, JString, required = false,
                                  default = nil)
-  if valid_593046 != nil:
-    section.add "X-Amz-Security-Token", valid_593046
-  var valid_593047 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593047 = validateParameter(valid_593047, JString, required = false,
+  if valid_600048 != nil:
+    section.add "X-Amz-Signature", valid_600048
+  var valid_600049 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600049 = validateParameter(valid_600049, JString, required = false,
                                  default = nil)
-  if valid_593047 != nil:
-    section.add "X-Amz-Algorithm", valid_593047
-  var valid_593048 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593048 = validateParameter(valid_593048, JString, required = false,
+  if valid_600049 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600049
+  var valid_600050 = header.getOrDefault("X-Amz-Credential")
+  valid_600050 = validateParameter(valid_600050, JString, required = false,
                                  default = nil)
-  if valid_593048 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593048
+  if valid_600050 != nil:
+    section.add "X-Amz-Credential", valid_600050
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -727,45 +752,45 @@ proc validate_PutBotAlias_593038(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_593050: Call_PutBotAlias_593037; path: JsonNode; query: JsonNode;
+proc call*(call_600052: Call_PutBotAlias_600039; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an alias for the specified version of the bot or replaces an alias for the specified bot. To change the version of the bot that the alias points to, replace the alias. For more information about aliases, see <a>versioning-aliases</a>.</p> <p>This operation requires permissions for the <code>lex:PutBotAlias</code> action. </p>
   ## 
-  let valid = call_593050.validator(path, query, header, formData, body)
-  let scheme = call_593050.pickScheme
+  let valid = call_600052.validator(path, query, header, formData, body)
+  let scheme = call_600052.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593050.url(scheme.get, call_593050.host, call_593050.base,
-                         call_593050.route, valid.getOrDefault("path"),
+  let url = call_600052.url(scheme.get, call_600052.host, call_600052.base,
+                         call_600052.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593050, url, valid)
+  result = atozHook(call_600052, url, valid)
 
-proc call*(call_593051: Call_PutBotAlias_593037; botName: string; name: string;
+proc call*(call_600053: Call_PutBotAlias_600039; name: string; botName: string;
           body: JsonNode): Recallable =
   ## putBotAlias
   ## <p>Creates an alias for the specified version of the bot or replaces an alias for the specified bot. To change the version of the bot that the alias points to, replace the alias. For more information about aliases, see <a>versioning-aliases</a>.</p> <p>This operation requires permissions for the <code>lex:PutBotAlias</code> action. </p>
-  ##   botName: string (required)
-  ##          : The name of the bot.
   ##   name: string (required)
   ##       : The name of the alias. The name is <i>not</i> case sensitive.
+  ##   botName: string (required)
+  ##          : The name of the bot.
   ##   body: JObject (required)
-  var path_593052 = newJObject()
-  var body_593053 = newJObject()
-  add(path_593052, "botName", newJString(botName))
-  add(path_593052, "name", newJString(name))
+  var path_600054 = newJObject()
+  var body_600055 = newJObject()
+  add(path_600054, "name", newJString(name))
+  add(path_600054, "botName", newJString(botName))
   if body != nil:
-    body_593053 = body
-  result = call_593051.call(path_593052, nil, nil, nil, body_593053)
+    body_600055 = body
+  result = call_600053.call(path_600054, nil, nil, nil, body_600055)
 
-var putBotAlias* = Call_PutBotAlias_593037(name: "putBotAlias",
+var putBotAlias* = Call_PutBotAlias_600039(name: "putBotAlias",
                                         meth: HttpMethod.HttpPut,
                                         host: "models.lex.amazonaws.com", route: "/bots/{botName}/aliases/{name}",
-                                        validator: validate_PutBotAlias_593038,
-                                        base: "/", url: url_PutBotAlias_593039,
+                                        validator: validate_PutBotAlias_600040,
+                                        base: "/", url: url_PutBotAlias_600041,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBotAlias_593022 = ref object of OpenApiRestCall_592365
-proc url_GetBotAlias_593024(protocol: Scheme; host: string; base: string;
+  Call_GetBotAlias_600024 = ref object of OpenApiRestCall_599369
+proc url_GetBotAlias_600026(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -781,118 +806,123 @@ proc url_GetBotAlias_593024(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetBotAlias_593023(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetBotAlias_600025(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about an Amazon Lex bot alias. For more information about aliases, see <a>versioning-aliases</a>.</p> <p>This operation requires permissions for the <code>lex:GetBotAlias</code> action.</p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   botName: JString (required)
-  ##          : The name of the bot.
   ##   name: JString (required)
   ##       : The name of the bot alias. The name is case sensitive.
+  ##   botName: JString (required)
+  ##          : The name of the bot.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_593025 = path.getOrDefault("botName")
-  valid_593025 = validateParameter(valid_593025, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600027 = path.getOrDefault("name")
+  valid_600027 = validateParameter(valid_600027, JString, required = true,
                                  default = nil)
-  if valid_593025 != nil:
-    section.add "botName", valid_593025
-  var valid_593026 = path.getOrDefault("name")
-  valid_593026 = validateParameter(valid_593026, JString, required = true,
+  if valid_600027 != nil:
+    section.add "name", valid_600027
+  var valid_600028 = path.getOrDefault("botName")
+  valid_600028 = validateParameter(valid_600028, JString, required = true,
                                  default = nil)
-  if valid_593026 != nil:
-    section.add "name", valid_593026
+  if valid_600028 != nil:
+    section.add "botName", valid_600028
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593027 = header.getOrDefault("X-Amz-Signature")
-  valid_593027 = validateParameter(valid_593027, JString, required = false,
+  var valid_600029 = header.getOrDefault("X-Amz-Date")
+  valid_600029 = validateParameter(valid_600029, JString, required = false,
                                  default = nil)
-  if valid_593027 != nil:
-    section.add "X-Amz-Signature", valid_593027
-  var valid_593028 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593028 = validateParameter(valid_593028, JString, required = false,
+  if valid_600029 != nil:
+    section.add "X-Amz-Date", valid_600029
+  var valid_600030 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600030 = validateParameter(valid_600030, JString, required = false,
                                  default = nil)
-  if valid_593028 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593028
-  var valid_593029 = header.getOrDefault("X-Amz-Date")
-  valid_593029 = validateParameter(valid_593029, JString, required = false,
+  if valid_600030 != nil:
+    section.add "X-Amz-Security-Token", valid_600030
+  var valid_600031 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600031 = validateParameter(valid_600031, JString, required = false,
                                  default = nil)
-  if valid_593029 != nil:
-    section.add "X-Amz-Date", valid_593029
-  var valid_593030 = header.getOrDefault("X-Amz-Credential")
-  valid_593030 = validateParameter(valid_593030, JString, required = false,
+  if valid_600031 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600031
+  var valid_600032 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600032 = validateParameter(valid_600032, JString, required = false,
                                  default = nil)
-  if valid_593030 != nil:
-    section.add "X-Amz-Credential", valid_593030
-  var valid_593031 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593031 = validateParameter(valid_593031, JString, required = false,
+  if valid_600032 != nil:
+    section.add "X-Amz-Algorithm", valid_600032
+  var valid_600033 = header.getOrDefault("X-Amz-Signature")
+  valid_600033 = validateParameter(valid_600033, JString, required = false,
                                  default = nil)
-  if valid_593031 != nil:
-    section.add "X-Amz-Security-Token", valid_593031
-  var valid_593032 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593032 = validateParameter(valid_593032, JString, required = false,
+  if valid_600033 != nil:
+    section.add "X-Amz-Signature", valid_600033
+  var valid_600034 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600034 = validateParameter(valid_600034, JString, required = false,
                                  default = nil)
-  if valid_593032 != nil:
-    section.add "X-Amz-Algorithm", valid_593032
-  var valid_593033 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593033 = validateParameter(valid_593033, JString, required = false,
+  if valid_600034 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600034
+  var valid_600035 = header.getOrDefault("X-Amz-Credential")
+  valid_600035 = validateParameter(valid_600035, JString, required = false,
                                  default = nil)
-  if valid_593033 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593033
+  if valid_600035 != nil:
+    section.add "X-Amz-Credential", valid_600035
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593034: Call_GetBotAlias_593022; path: JsonNode; query: JsonNode;
+proc call*(call_600036: Call_GetBotAlias_600024; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about an Amazon Lex bot alias. For more information about aliases, see <a>versioning-aliases</a>.</p> <p>This operation requires permissions for the <code>lex:GetBotAlias</code> action.</p>
   ## 
-  let valid = call_593034.validator(path, query, header, formData, body)
-  let scheme = call_593034.pickScheme
+  let valid = call_600036.validator(path, query, header, formData, body)
+  let scheme = call_600036.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593034.url(scheme.get, call_593034.host, call_593034.base,
-                         call_593034.route, valid.getOrDefault("path"),
+  let url = call_600036.url(scheme.get, call_600036.host, call_600036.base,
+                         call_600036.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593034, url, valid)
+  result = atozHook(call_600036, url, valid)
 
-proc call*(call_593035: Call_GetBotAlias_593022; botName: string; name: string): Recallable =
+proc call*(call_600037: Call_GetBotAlias_600024; name: string; botName: string): Recallable =
   ## getBotAlias
   ## <p>Returns information about an Amazon Lex bot alias. For more information about aliases, see <a>versioning-aliases</a>.</p> <p>This operation requires permissions for the <code>lex:GetBotAlias</code> action.</p>
-  ##   botName: string (required)
-  ##          : The name of the bot.
   ##   name: string (required)
   ##       : The name of the bot alias. The name is case sensitive.
-  var path_593036 = newJObject()
-  add(path_593036, "botName", newJString(botName))
-  add(path_593036, "name", newJString(name))
-  result = call_593035.call(path_593036, nil, nil, nil, nil)
+  ##   botName: string (required)
+  ##          : The name of the bot.
+  var path_600038 = newJObject()
+  add(path_600038, "name", newJString(name))
+  add(path_600038, "botName", newJString(botName))
+  result = call_600037.call(path_600038, nil, nil, nil, nil)
 
-var getBotAlias* = Call_GetBotAlias_593022(name: "getBotAlias",
+var getBotAlias* = Call_GetBotAlias_600024(name: "getBotAlias",
                                         meth: HttpMethod.HttpGet,
                                         host: "models.lex.amazonaws.com", route: "/bots/{botName}/aliases/{name}",
-                                        validator: validate_GetBotAlias_593023,
-                                        base: "/", url: url_GetBotAlias_593024,
+                                        validator: validate_GetBotAlias_600025,
+                                        base: "/", url: url_GetBotAlias_600026,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBotAlias_593054 = ref object of OpenApiRestCall_592365
-proc url_DeleteBotAlias_593056(protocol: Scheme; host: string; base: string;
+  Call_DeleteBotAlias_600056 = ref object of OpenApiRestCall_599369
+proc url_DeleteBotAlias_600058(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -908,9 +938,14 @@ proc url_DeleteBotAlias_593056(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteBotAlias_593055(path: JsonNode; query: JsonNode;
+proc validate_DeleteBotAlias_600057(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Deletes an alias for the specified bot. </p> <p>You can't delete an alias that is used in the association between a bot and a messaging channel. If an alias is used in a channel association, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the channel association that refers to the bot. You can remove the reference to the alias by deleting the channel association. If you get the same exception again, delete the referring association until the <code>DeleteBotAlias</code> operation is successful.</p>
@@ -918,107 +953,107 @@ proc validate_DeleteBotAlias_593055(path: JsonNode; query: JsonNode;
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   botName: JString (required)
-  ##          : The name of the bot that the alias points to.
   ##   name: JString (required)
   ##       : The name of the alias to delete. The name is case sensitive. 
+  ##   botName: JString (required)
+  ##          : The name of the bot that the alias points to.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_593057 = path.getOrDefault("botName")
-  valid_593057 = validateParameter(valid_593057, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600059 = path.getOrDefault("name")
+  valid_600059 = validateParameter(valid_600059, JString, required = true,
                                  default = nil)
-  if valid_593057 != nil:
-    section.add "botName", valid_593057
-  var valid_593058 = path.getOrDefault("name")
-  valid_593058 = validateParameter(valid_593058, JString, required = true,
+  if valid_600059 != nil:
+    section.add "name", valid_600059
+  var valid_600060 = path.getOrDefault("botName")
+  valid_600060 = validateParameter(valid_600060, JString, required = true,
                                  default = nil)
-  if valid_593058 != nil:
-    section.add "name", valid_593058
+  if valid_600060 != nil:
+    section.add "botName", valid_600060
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593059 = header.getOrDefault("X-Amz-Signature")
-  valid_593059 = validateParameter(valid_593059, JString, required = false,
+  var valid_600061 = header.getOrDefault("X-Amz-Date")
+  valid_600061 = validateParameter(valid_600061, JString, required = false,
                                  default = nil)
-  if valid_593059 != nil:
-    section.add "X-Amz-Signature", valid_593059
-  var valid_593060 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593060 = validateParameter(valid_593060, JString, required = false,
+  if valid_600061 != nil:
+    section.add "X-Amz-Date", valid_600061
+  var valid_600062 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600062 = validateParameter(valid_600062, JString, required = false,
                                  default = nil)
-  if valid_593060 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593060
-  var valid_593061 = header.getOrDefault("X-Amz-Date")
-  valid_593061 = validateParameter(valid_593061, JString, required = false,
+  if valid_600062 != nil:
+    section.add "X-Amz-Security-Token", valid_600062
+  var valid_600063 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600063 = validateParameter(valid_600063, JString, required = false,
                                  default = nil)
-  if valid_593061 != nil:
-    section.add "X-Amz-Date", valid_593061
-  var valid_593062 = header.getOrDefault("X-Amz-Credential")
-  valid_593062 = validateParameter(valid_593062, JString, required = false,
+  if valid_600063 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600063
+  var valid_600064 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600064 = validateParameter(valid_600064, JString, required = false,
                                  default = nil)
-  if valid_593062 != nil:
-    section.add "X-Amz-Credential", valid_593062
-  var valid_593063 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593063 = validateParameter(valid_593063, JString, required = false,
+  if valid_600064 != nil:
+    section.add "X-Amz-Algorithm", valid_600064
+  var valid_600065 = header.getOrDefault("X-Amz-Signature")
+  valid_600065 = validateParameter(valid_600065, JString, required = false,
                                  default = nil)
-  if valid_593063 != nil:
-    section.add "X-Amz-Security-Token", valid_593063
-  var valid_593064 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593064 = validateParameter(valid_593064, JString, required = false,
+  if valid_600065 != nil:
+    section.add "X-Amz-Signature", valid_600065
+  var valid_600066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600066 = validateParameter(valid_600066, JString, required = false,
                                  default = nil)
-  if valid_593064 != nil:
-    section.add "X-Amz-Algorithm", valid_593064
-  var valid_593065 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593065 = validateParameter(valid_593065, JString, required = false,
+  if valid_600066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600066
+  var valid_600067 = header.getOrDefault("X-Amz-Credential")
+  valid_600067 = validateParameter(valid_600067, JString, required = false,
                                  default = nil)
-  if valid_593065 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593065
+  if valid_600067 != nil:
+    section.add "X-Amz-Credential", valid_600067
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593066: Call_DeleteBotAlias_593054; path: JsonNode; query: JsonNode;
+proc call*(call_600068: Call_DeleteBotAlias_600056; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes an alias for the specified bot. </p> <p>You can't delete an alias that is used in the association between a bot and a messaging channel. If an alias is used in a channel association, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the channel association that refers to the bot. You can remove the reference to the alias by deleting the channel association. If you get the same exception again, delete the referring association until the <code>DeleteBotAlias</code> operation is successful.</p>
   ## 
-  let valid = call_593066.validator(path, query, header, formData, body)
-  let scheme = call_593066.pickScheme
+  let valid = call_600068.validator(path, query, header, formData, body)
+  let scheme = call_600068.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593066.url(scheme.get, call_593066.host, call_593066.base,
-                         call_593066.route, valid.getOrDefault("path"),
+  let url = call_600068.url(scheme.get, call_600068.host, call_600068.base,
+                         call_600068.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593066, url, valid)
+  result = atozHook(call_600068, url, valid)
 
-proc call*(call_593067: Call_DeleteBotAlias_593054; botName: string; name: string): Recallable =
+proc call*(call_600069: Call_DeleteBotAlias_600056; name: string; botName: string): Recallable =
   ## deleteBotAlias
   ## <p>Deletes an alias for the specified bot. </p> <p>You can't delete an alias that is used in the association between a bot and a messaging channel. If an alias is used in a channel association, the <code>DeleteBot</code> operation returns a <code>ResourceInUseException</code> exception that includes a reference to the channel association that refers to the bot. You can remove the reference to the alias by deleting the channel association. If you get the same exception again, delete the referring association until the <code>DeleteBotAlias</code> operation is successful.</p>
-  ##   botName: string (required)
-  ##          : The name of the bot that the alias points to.
   ##   name: string (required)
   ##       : The name of the alias to delete. The name is case sensitive. 
-  var path_593068 = newJObject()
-  add(path_593068, "botName", newJString(botName))
-  add(path_593068, "name", newJString(name))
-  result = call_593067.call(path_593068, nil, nil, nil, nil)
+  ##   botName: string (required)
+  ##          : The name of the bot that the alias points to.
+  var path_600070 = newJObject()
+  add(path_600070, "name", newJString(name))
+  add(path_600070, "botName", newJString(botName))
+  result = call_600069.call(path_600070, nil, nil, nil, nil)
 
-var deleteBotAlias* = Call_DeleteBotAlias_593054(name: "deleteBotAlias",
+var deleteBotAlias* = Call_DeleteBotAlias_600056(name: "deleteBotAlias",
     meth: HttpMethod.HttpDelete, host: "models.lex.amazonaws.com",
-    route: "/bots/{botName}/aliases/{name}", validator: validate_DeleteBotAlias_593055,
-    base: "/", url: url_DeleteBotAlias_593056, schemes: {Scheme.Https, Scheme.Http})
+    route: "/bots/{botName}/aliases/{name}", validator: validate_DeleteBotAlias_600057,
+    base: "/", url: url_DeleteBotAlias_600058, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBotChannelAssociation_593069 = ref object of OpenApiRestCall_592365
-proc url_GetBotChannelAssociation_593071(protocol: Scheme; host: string;
+  Call_GetBotChannelAssociation_600071 = ref object of OpenApiRestCall_599369
+proc url_GetBotChannelAssociation_600073(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1038,129 +1073,134 @@ proc url_GetBotChannelAssociation_593071(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetBotChannelAssociation_593070(path: JsonNode; query: JsonNode;
+proc validate_GetBotChannelAssociation_600072(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about the association between an Amazon Lex bot and a messaging platform.</p> <p>This operation requires permissions for the <code>lex:GetBotChannelAssociation</code> action.</p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   botName: JString (required)
-  ##          : The name of the Amazon Lex bot.
   ##   name: JString (required)
   ##       : The name of the association between the bot and the channel. The name is case sensitive. 
+  ##   botName: JString (required)
+  ##          : The name of the Amazon Lex bot.
   ##   aliasName: JString (required)
   ##            : An alias pointing to the specific version of the Amazon Lex bot to which this association is being made.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_593072 = path.getOrDefault("botName")
-  valid_593072 = validateParameter(valid_593072, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600074 = path.getOrDefault("name")
+  valid_600074 = validateParameter(valid_600074, JString, required = true,
                                  default = nil)
-  if valid_593072 != nil:
-    section.add "botName", valid_593072
-  var valid_593073 = path.getOrDefault("name")
-  valid_593073 = validateParameter(valid_593073, JString, required = true,
+  if valid_600074 != nil:
+    section.add "name", valid_600074
+  var valid_600075 = path.getOrDefault("botName")
+  valid_600075 = validateParameter(valid_600075, JString, required = true,
                                  default = nil)
-  if valid_593073 != nil:
-    section.add "name", valid_593073
-  var valid_593074 = path.getOrDefault("aliasName")
-  valid_593074 = validateParameter(valid_593074, JString, required = true,
+  if valid_600075 != nil:
+    section.add "botName", valid_600075
+  var valid_600076 = path.getOrDefault("aliasName")
+  valid_600076 = validateParameter(valid_600076, JString, required = true,
                                  default = nil)
-  if valid_593074 != nil:
-    section.add "aliasName", valid_593074
+  if valid_600076 != nil:
+    section.add "aliasName", valid_600076
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593075 = header.getOrDefault("X-Amz-Signature")
-  valid_593075 = validateParameter(valid_593075, JString, required = false,
+  var valid_600077 = header.getOrDefault("X-Amz-Date")
+  valid_600077 = validateParameter(valid_600077, JString, required = false,
                                  default = nil)
-  if valid_593075 != nil:
-    section.add "X-Amz-Signature", valid_593075
-  var valid_593076 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593076 = validateParameter(valid_593076, JString, required = false,
+  if valid_600077 != nil:
+    section.add "X-Amz-Date", valid_600077
+  var valid_600078 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600078 = validateParameter(valid_600078, JString, required = false,
                                  default = nil)
-  if valid_593076 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593076
-  var valid_593077 = header.getOrDefault("X-Amz-Date")
-  valid_593077 = validateParameter(valid_593077, JString, required = false,
+  if valid_600078 != nil:
+    section.add "X-Amz-Security-Token", valid_600078
+  var valid_600079 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600079 = validateParameter(valid_600079, JString, required = false,
                                  default = nil)
-  if valid_593077 != nil:
-    section.add "X-Amz-Date", valid_593077
-  var valid_593078 = header.getOrDefault("X-Amz-Credential")
-  valid_593078 = validateParameter(valid_593078, JString, required = false,
+  if valid_600079 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600079
+  var valid_600080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600080 = validateParameter(valid_600080, JString, required = false,
                                  default = nil)
-  if valid_593078 != nil:
-    section.add "X-Amz-Credential", valid_593078
-  var valid_593079 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593079 = validateParameter(valid_593079, JString, required = false,
+  if valid_600080 != nil:
+    section.add "X-Amz-Algorithm", valid_600080
+  var valid_600081 = header.getOrDefault("X-Amz-Signature")
+  valid_600081 = validateParameter(valid_600081, JString, required = false,
                                  default = nil)
-  if valid_593079 != nil:
-    section.add "X-Amz-Security-Token", valid_593079
-  var valid_593080 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593080 = validateParameter(valid_593080, JString, required = false,
+  if valid_600081 != nil:
+    section.add "X-Amz-Signature", valid_600081
+  var valid_600082 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600082 = validateParameter(valid_600082, JString, required = false,
                                  default = nil)
-  if valid_593080 != nil:
-    section.add "X-Amz-Algorithm", valid_593080
-  var valid_593081 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593081 = validateParameter(valid_593081, JString, required = false,
+  if valid_600082 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600082
+  var valid_600083 = header.getOrDefault("X-Amz-Credential")
+  valid_600083 = validateParameter(valid_600083, JString, required = false,
                                  default = nil)
-  if valid_593081 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593081
+  if valid_600083 != nil:
+    section.add "X-Amz-Credential", valid_600083
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593082: Call_GetBotChannelAssociation_593069; path: JsonNode;
+proc call*(call_600084: Call_GetBotChannelAssociation_600071; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the association between an Amazon Lex bot and a messaging platform.</p> <p>This operation requires permissions for the <code>lex:GetBotChannelAssociation</code> action.</p>
   ## 
-  let valid = call_593082.validator(path, query, header, formData, body)
-  let scheme = call_593082.pickScheme
+  let valid = call_600084.validator(path, query, header, formData, body)
+  let scheme = call_600084.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593082.url(scheme.get, call_593082.host, call_593082.base,
-                         call_593082.route, valid.getOrDefault("path"),
+  let url = call_600084.url(scheme.get, call_600084.host, call_600084.base,
+                         call_600084.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593082, url, valid)
+  result = atozHook(call_600084, url, valid)
 
-proc call*(call_593083: Call_GetBotChannelAssociation_593069; botName: string;
-          name: string; aliasName: string): Recallable =
+proc call*(call_600085: Call_GetBotChannelAssociation_600071; name: string;
+          botName: string; aliasName: string): Recallable =
   ## getBotChannelAssociation
   ## <p>Returns information about the association between an Amazon Lex bot and a messaging platform.</p> <p>This operation requires permissions for the <code>lex:GetBotChannelAssociation</code> action.</p>
-  ##   botName: string (required)
-  ##          : The name of the Amazon Lex bot.
   ##   name: string (required)
   ##       : The name of the association between the bot and the channel. The name is case sensitive. 
+  ##   botName: string (required)
+  ##          : The name of the Amazon Lex bot.
   ##   aliasName: string (required)
   ##            : An alias pointing to the specific version of the Amazon Lex bot to which this association is being made.
-  var path_593084 = newJObject()
-  add(path_593084, "botName", newJString(botName))
-  add(path_593084, "name", newJString(name))
-  add(path_593084, "aliasName", newJString(aliasName))
-  result = call_593083.call(path_593084, nil, nil, nil, nil)
+  var path_600086 = newJObject()
+  add(path_600086, "name", newJString(name))
+  add(path_600086, "botName", newJString(botName))
+  add(path_600086, "aliasName", newJString(aliasName))
+  result = call_600085.call(path_600086, nil, nil, nil, nil)
 
-var getBotChannelAssociation* = Call_GetBotChannelAssociation_593069(
+var getBotChannelAssociation* = Call_GetBotChannelAssociation_600071(
     name: "getBotChannelAssociation", meth: HttpMethod.HttpGet,
     host: "models.lex.amazonaws.com",
     route: "/bots/{botName}/aliases/{aliasName}/channels/{name}",
-    validator: validate_GetBotChannelAssociation_593070, base: "/",
-    url: url_GetBotChannelAssociation_593071, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBotChannelAssociation_600072, base: "/",
+    url: url_GetBotChannelAssociation_600073, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBotChannelAssociation_593085 = ref object of OpenApiRestCall_592365
-proc url_DeleteBotChannelAssociation_593087(protocol: Scheme; host: string;
+  Call_DeleteBotChannelAssociation_600087 = ref object of OpenApiRestCall_599369
+proc url_DeleteBotChannelAssociation_600089(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1179,130 +1219,135 @@ proc url_DeleteBotChannelAssociation_593087(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteBotChannelAssociation_593086(path: JsonNode; query: JsonNode;
+proc validate_DeleteBotChannelAssociation_600088(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the association between an Amazon Lex bot and a messaging platform.</p> <p>This operation requires permission for the <code>lex:DeleteBotChannelAssociation</code> action.</p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   botName: JString (required)
-  ##          : The name of the Amazon Lex bot.
   ##   name: JString (required)
   ##       : The name of the association. The name is case sensitive. 
+  ##   botName: JString (required)
+  ##          : The name of the Amazon Lex bot.
   ##   aliasName: JString (required)
   ##            : An alias that points to the specific version of the Amazon Lex bot to which this association is being made.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_593088 = path.getOrDefault("botName")
-  valid_593088 = validateParameter(valid_593088, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600090 = path.getOrDefault("name")
+  valid_600090 = validateParameter(valid_600090, JString, required = true,
                                  default = nil)
-  if valid_593088 != nil:
-    section.add "botName", valid_593088
-  var valid_593089 = path.getOrDefault("name")
-  valid_593089 = validateParameter(valid_593089, JString, required = true,
+  if valid_600090 != nil:
+    section.add "name", valid_600090
+  var valid_600091 = path.getOrDefault("botName")
+  valid_600091 = validateParameter(valid_600091, JString, required = true,
                                  default = nil)
-  if valid_593089 != nil:
-    section.add "name", valid_593089
-  var valid_593090 = path.getOrDefault("aliasName")
-  valid_593090 = validateParameter(valid_593090, JString, required = true,
+  if valid_600091 != nil:
+    section.add "botName", valid_600091
+  var valid_600092 = path.getOrDefault("aliasName")
+  valid_600092 = validateParameter(valid_600092, JString, required = true,
                                  default = nil)
-  if valid_593090 != nil:
-    section.add "aliasName", valid_593090
+  if valid_600092 != nil:
+    section.add "aliasName", valid_600092
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593091 = header.getOrDefault("X-Amz-Signature")
-  valid_593091 = validateParameter(valid_593091, JString, required = false,
+  var valid_600093 = header.getOrDefault("X-Amz-Date")
+  valid_600093 = validateParameter(valid_600093, JString, required = false,
                                  default = nil)
-  if valid_593091 != nil:
-    section.add "X-Amz-Signature", valid_593091
-  var valid_593092 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593092 = validateParameter(valid_593092, JString, required = false,
+  if valid_600093 != nil:
+    section.add "X-Amz-Date", valid_600093
+  var valid_600094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600094 = validateParameter(valid_600094, JString, required = false,
                                  default = nil)
-  if valid_593092 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593092
-  var valid_593093 = header.getOrDefault("X-Amz-Date")
-  valid_593093 = validateParameter(valid_593093, JString, required = false,
+  if valid_600094 != nil:
+    section.add "X-Amz-Security-Token", valid_600094
+  var valid_600095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600095 = validateParameter(valid_600095, JString, required = false,
                                  default = nil)
-  if valid_593093 != nil:
-    section.add "X-Amz-Date", valid_593093
-  var valid_593094 = header.getOrDefault("X-Amz-Credential")
-  valid_593094 = validateParameter(valid_593094, JString, required = false,
+  if valid_600095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600095
+  var valid_600096 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600096 = validateParameter(valid_600096, JString, required = false,
                                  default = nil)
-  if valid_593094 != nil:
-    section.add "X-Amz-Credential", valid_593094
-  var valid_593095 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593095 = validateParameter(valid_593095, JString, required = false,
+  if valid_600096 != nil:
+    section.add "X-Amz-Algorithm", valid_600096
+  var valid_600097 = header.getOrDefault("X-Amz-Signature")
+  valid_600097 = validateParameter(valid_600097, JString, required = false,
                                  default = nil)
-  if valid_593095 != nil:
-    section.add "X-Amz-Security-Token", valid_593095
-  var valid_593096 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593096 = validateParameter(valid_593096, JString, required = false,
+  if valid_600097 != nil:
+    section.add "X-Amz-Signature", valid_600097
+  var valid_600098 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600098 = validateParameter(valid_600098, JString, required = false,
                                  default = nil)
-  if valid_593096 != nil:
-    section.add "X-Amz-Algorithm", valid_593096
-  var valid_593097 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593097 = validateParameter(valid_593097, JString, required = false,
+  if valid_600098 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600098
+  var valid_600099 = header.getOrDefault("X-Amz-Credential")
+  valid_600099 = validateParameter(valid_600099, JString, required = false,
                                  default = nil)
-  if valid_593097 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593097
+  if valid_600099 != nil:
+    section.add "X-Amz-Credential", valid_600099
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593098: Call_DeleteBotChannelAssociation_593085; path: JsonNode;
+proc call*(call_600100: Call_DeleteBotChannelAssociation_600087; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the association between an Amazon Lex bot and a messaging platform.</p> <p>This operation requires permission for the <code>lex:DeleteBotChannelAssociation</code> action.</p>
   ## 
-  let valid = call_593098.validator(path, query, header, formData, body)
-  let scheme = call_593098.pickScheme
+  let valid = call_600100.validator(path, query, header, formData, body)
+  let scheme = call_600100.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593098.url(scheme.get, call_593098.host, call_593098.base,
-                         call_593098.route, valid.getOrDefault("path"),
+  let url = call_600100.url(scheme.get, call_600100.host, call_600100.base,
+                         call_600100.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593098, url, valid)
+  result = atozHook(call_600100, url, valid)
 
-proc call*(call_593099: Call_DeleteBotChannelAssociation_593085; botName: string;
-          name: string; aliasName: string): Recallable =
+proc call*(call_600101: Call_DeleteBotChannelAssociation_600087; name: string;
+          botName: string; aliasName: string): Recallable =
   ## deleteBotChannelAssociation
   ## <p>Deletes the association between an Amazon Lex bot and a messaging platform.</p> <p>This operation requires permission for the <code>lex:DeleteBotChannelAssociation</code> action.</p>
-  ##   botName: string (required)
-  ##          : The name of the Amazon Lex bot.
   ##   name: string (required)
   ##       : The name of the association. The name is case sensitive. 
+  ##   botName: string (required)
+  ##          : The name of the Amazon Lex bot.
   ##   aliasName: string (required)
   ##            : An alias that points to the specific version of the Amazon Lex bot to which this association is being made.
-  var path_593100 = newJObject()
-  add(path_593100, "botName", newJString(botName))
-  add(path_593100, "name", newJString(name))
-  add(path_593100, "aliasName", newJString(aliasName))
-  result = call_593099.call(path_593100, nil, nil, nil, nil)
+  var path_600102 = newJObject()
+  add(path_600102, "name", newJString(name))
+  add(path_600102, "botName", newJString(botName))
+  add(path_600102, "aliasName", newJString(aliasName))
+  result = call_600101.call(path_600102, nil, nil, nil, nil)
 
-var deleteBotChannelAssociation* = Call_DeleteBotChannelAssociation_593085(
+var deleteBotChannelAssociation* = Call_DeleteBotChannelAssociation_600087(
     name: "deleteBotChannelAssociation", meth: HttpMethod.HttpDelete,
     host: "models.lex.amazonaws.com",
     route: "/bots/{botName}/aliases/{aliasName}/channels/{name}",
-    validator: validate_DeleteBotChannelAssociation_593086, base: "/",
-    url: url_DeleteBotChannelAssociation_593087,
+    validator: validate_DeleteBotChannelAssociation_600088, base: "/",
+    url: url_DeleteBotChannelAssociation_600089,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBotVersion_593101 = ref object of OpenApiRestCall_592365
-proc url_DeleteBotVersion_593103(protocol: Scheme; host: string; base: string;
+  Call_DeleteBotVersion_600103 = ref object of OpenApiRestCall_599369
+proc url_DeleteBotVersion_600105(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1318,9 +1363,14 @@ proc url_DeleteBotVersion_593103(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteBotVersion_593102(path: JsonNode; query: JsonNode;
+proc validate_DeleteBotVersion_600104(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes a specific version of a bot. To delete all versions of a bot, use the <a>DeleteBot</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteBotVersion</code> action.</p>
@@ -1328,108 +1378,108 @@ proc validate_DeleteBotVersion_593102(path: JsonNode; query: JsonNode;
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   version: JString (required)
-  ##          : The version of the bot to delete. You cannot delete the <code>$LATEST</code> version of the bot. To delete the <code>$LATEST</code> version, use the <a>DeleteBot</a> operation.
   ##   name: JString (required)
   ##       : The name of the bot.
+  ##   version: JString (required)
+  ##          : The version of the bot to delete. You cannot delete the <code>$LATEST</code> version of the bot. To delete the <code>$LATEST</code> version, use the <a>DeleteBot</a> operation.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `version` field"
-  var valid_593104 = path.getOrDefault("version")
-  valid_593104 = validateParameter(valid_593104, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600106 = path.getOrDefault("name")
+  valid_600106 = validateParameter(valid_600106, JString, required = true,
                                  default = nil)
-  if valid_593104 != nil:
-    section.add "version", valid_593104
-  var valid_593105 = path.getOrDefault("name")
-  valid_593105 = validateParameter(valid_593105, JString, required = true,
+  if valid_600106 != nil:
+    section.add "name", valid_600106
+  var valid_600107 = path.getOrDefault("version")
+  valid_600107 = validateParameter(valid_600107, JString, required = true,
                                  default = nil)
-  if valid_593105 != nil:
-    section.add "name", valid_593105
+  if valid_600107 != nil:
+    section.add "version", valid_600107
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593106 = header.getOrDefault("X-Amz-Signature")
-  valid_593106 = validateParameter(valid_593106, JString, required = false,
+  var valid_600108 = header.getOrDefault("X-Amz-Date")
+  valid_600108 = validateParameter(valid_600108, JString, required = false,
                                  default = nil)
-  if valid_593106 != nil:
-    section.add "X-Amz-Signature", valid_593106
-  var valid_593107 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593107 = validateParameter(valid_593107, JString, required = false,
+  if valid_600108 != nil:
+    section.add "X-Amz-Date", valid_600108
+  var valid_600109 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600109 = validateParameter(valid_600109, JString, required = false,
                                  default = nil)
-  if valid_593107 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593107
-  var valid_593108 = header.getOrDefault("X-Amz-Date")
-  valid_593108 = validateParameter(valid_593108, JString, required = false,
+  if valid_600109 != nil:
+    section.add "X-Amz-Security-Token", valid_600109
+  var valid_600110 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600110 = validateParameter(valid_600110, JString, required = false,
                                  default = nil)
-  if valid_593108 != nil:
-    section.add "X-Amz-Date", valid_593108
-  var valid_593109 = header.getOrDefault("X-Amz-Credential")
-  valid_593109 = validateParameter(valid_593109, JString, required = false,
+  if valid_600110 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600110
+  var valid_600111 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600111 = validateParameter(valid_600111, JString, required = false,
                                  default = nil)
-  if valid_593109 != nil:
-    section.add "X-Amz-Credential", valid_593109
-  var valid_593110 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593110 = validateParameter(valid_593110, JString, required = false,
+  if valid_600111 != nil:
+    section.add "X-Amz-Algorithm", valid_600111
+  var valid_600112 = header.getOrDefault("X-Amz-Signature")
+  valid_600112 = validateParameter(valid_600112, JString, required = false,
                                  default = nil)
-  if valid_593110 != nil:
-    section.add "X-Amz-Security-Token", valid_593110
-  var valid_593111 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593111 = validateParameter(valid_593111, JString, required = false,
+  if valid_600112 != nil:
+    section.add "X-Amz-Signature", valid_600112
+  var valid_600113 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600113 = validateParameter(valid_600113, JString, required = false,
                                  default = nil)
-  if valid_593111 != nil:
-    section.add "X-Amz-Algorithm", valid_593111
-  var valid_593112 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593112 = validateParameter(valid_593112, JString, required = false,
+  if valid_600113 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600113
+  var valid_600114 = header.getOrDefault("X-Amz-Credential")
+  valid_600114 = validateParameter(valid_600114, JString, required = false,
                                  default = nil)
-  if valid_593112 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593112
+  if valid_600114 != nil:
+    section.add "X-Amz-Credential", valid_600114
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593113: Call_DeleteBotVersion_593101; path: JsonNode;
+proc call*(call_600115: Call_DeleteBotVersion_600103; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specific version of a bot. To delete all versions of a bot, use the <a>DeleteBot</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteBotVersion</code> action.</p>
   ## 
-  let valid = call_593113.validator(path, query, header, formData, body)
-  let scheme = call_593113.pickScheme
+  let valid = call_600115.validator(path, query, header, formData, body)
+  let scheme = call_600115.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593113.url(scheme.get, call_593113.host, call_593113.base,
-                         call_593113.route, valid.getOrDefault("path"),
+  let url = call_600115.url(scheme.get, call_600115.host, call_600115.base,
+                         call_600115.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593113, url, valid)
+  result = atozHook(call_600115, url, valid)
 
-proc call*(call_593114: Call_DeleteBotVersion_593101; version: string; name: string): Recallable =
+proc call*(call_600116: Call_DeleteBotVersion_600103; name: string; version: string): Recallable =
   ## deleteBotVersion
   ## <p>Deletes a specific version of a bot. To delete all versions of a bot, use the <a>DeleteBot</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteBotVersion</code> action.</p>
-  ##   version: string (required)
-  ##          : The version of the bot to delete. You cannot delete the <code>$LATEST</code> version of the bot. To delete the <code>$LATEST</code> version, use the <a>DeleteBot</a> operation.
   ##   name: string (required)
   ##       : The name of the bot.
-  var path_593115 = newJObject()
-  add(path_593115, "version", newJString(version))
-  add(path_593115, "name", newJString(name))
-  result = call_593114.call(path_593115, nil, nil, nil, nil)
+  ##   version: string (required)
+  ##          : The version of the bot to delete. You cannot delete the <code>$LATEST</code> version of the bot. To delete the <code>$LATEST</code> version, use the <a>DeleteBot</a> operation.
+  var path_600117 = newJObject()
+  add(path_600117, "name", newJString(name))
+  add(path_600117, "version", newJString(version))
+  result = call_600116.call(path_600117, nil, nil, nil, nil)
 
-var deleteBotVersion* = Call_DeleteBotVersion_593101(name: "deleteBotVersion",
+var deleteBotVersion* = Call_DeleteBotVersion_600103(name: "deleteBotVersion",
     meth: HttpMethod.HttpDelete, host: "models.lex.amazonaws.com",
     route: "/bots/{name}/versions/{version}",
-    validator: validate_DeleteBotVersion_593102, base: "/",
-    url: url_DeleteBotVersion_593103, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteBotVersion_600104, base: "/",
+    url: url_DeleteBotVersion_600105, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteIntent_593116 = ref object of OpenApiRestCall_592365
-proc url_DeleteIntent_593118(protocol: Scheme; host: string; base: string;
+  Call_DeleteIntent_600118 = ref object of OpenApiRestCall_599369
+proc url_DeleteIntent_600120(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1442,9 +1492,14 @@ proc url_DeleteIntent_593118(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteIntent_593117(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteIntent_600119(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes all versions of the intent, including the <code>$LATEST</code> version. To delete a specific version of the intent, use the <a>DeleteIntentVersion</a> operation.</p> <p> You can delete a version of an intent only if it is not referenced. To delete an intent that is referred to in one or more bots (see <a>how-it-works</a>), you must remove those references first. </p> <note> <p> If you get the <code>ResourceInUseException</code> exception, it provides an example reference that shows where the intent is referenced. To remove the reference to the intent, either update the bot or delete it. If you get the same exception when you attempt to delete the intent again, repeat until the intent has no references and the call to <code>DeleteIntent</code> is successful. </p> </note> <p> This operation requires permission for the <code>lex:DeleteIntent</code> action. </p>
   ## 
@@ -1455,93 +1510,93 @@ proc validate_DeleteIntent_593117(path: JsonNode; query: JsonNode; header: JsonN
   ##       : The name of the intent. The name is case sensitive. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593119 = path.getOrDefault("name")
-  valid_593119 = validateParameter(valid_593119, JString, required = true,
+  var valid_600121 = path.getOrDefault("name")
+  valid_600121 = validateParameter(valid_600121, JString, required = true,
                                  default = nil)
-  if valid_593119 != nil:
-    section.add "name", valid_593119
+  if valid_600121 != nil:
+    section.add "name", valid_600121
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593120 = header.getOrDefault("X-Amz-Signature")
-  valid_593120 = validateParameter(valid_593120, JString, required = false,
+  var valid_600122 = header.getOrDefault("X-Amz-Date")
+  valid_600122 = validateParameter(valid_600122, JString, required = false,
                                  default = nil)
-  if valid_593120 != nil:
-    section.add "X-Amz-Signature", valid_593120
-  var valid_593121 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593121 = validateParameter(valid_593121, JString, required = false,
+  if valid_600122 != nil:
+    section.add "X-Amz-Date", valid_600122
+  var valid_600123 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600123 = validateParameter(valid_600123, JString, required = false,
                                  default = nil)
-  if valid_593121 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593121
-  var valid_593122 = header.getOrDefault("X-Amz-Date")
-  valid_593122 = validateParameter(valid_593122, JString, required = false,
+  if valid_600123 != nil:
+    section.add "X-Amz-Security-Token", valid_600123
+  var valid_600124 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600124 = validateParameter(valid_600124, JString, required = false,
                                  default = nil)
-  if valid_593122 != nil:
-    section.add "X-Amz-Date", valid_593122
-  var valid_593123 = header.getOrDefault("X-Amz-Credential")
-  valid_593123 = validateParameter(valid_593123, JString, required = false,
+  if valid_600124 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600124
+  var valid_600125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600125 = validateParameter(valid_600125, JString, required = false,
                                  default = nil)
-  if valid_593123 != nil:
-    section.add "X-Amz-Credential", valid_593123
-  var valid_593124 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593124 = validateParameter(valid_593124, JString, required = false,
+  if valid_600125 != nil:
+    section.add "X-Amz-Algorithm", valid_600125
+  var valid_600126 = header.getOrDefault("X-Amz-Signature")
+  valid_600126 = validateParameter(valid_600126, JString, required = false,
                                  default = nil)
-  if valid_593124 != nil:
-    section.add "X-Amz-Security-Token", valid_593124
-  var valid_593125 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593125 = validateParameter(valid_593125, JString, required = false,
+  if valid_600126 != nil:
+    section.add "X-Amz-Signature", valid_600126
+  var valid_600127 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600127 = validateParameter(valid_600127, JString, required = false,
                                  default = nil)
-  if valid_593125 != nil:
-    section.add "X-Amz-Algorithm", valid_593125
-  var valid_593126 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593126 = validateParameter(valid_593126, JString, required = false,
+  if valid_600127 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600127
+  var valid_600128 = header.getOrDefault("X-Amz-Credential")
+  valid_600128 = validateParameter(valid_600128, JString, required = false,
                                  default = nil)
-  if valid_593126 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593126
+  if valid_600128 != nil:
+    section.add "X-Amz-Credential", valid_600128
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593127: Call_DeleteIntent_593116; path: JsonNode; query: JsonNode;
+proc call*(call_600129: Call_DeleteIntent_600118; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes all versions of the intent, including the <code>$LATEST</code> version. To delete a specific version of the intent, use the <a>DeleteIntentVersion</a> operation.</p> <p> You can delete a version of an intent only if it is not referenced. To delete an intent that is referred to in one or more bots (see <a>how-it-works</a>), you must remove those references first. </p> <note> <p> If you get the <code>ResourceInUseException</code> exception, it provides an example reference that shows where the intent is referenced. To remove the reference to the intent, either update the bot or delete it. If you get the same exception when you attempt to delete the intent again, repeat until the intent has no references and the call to <code>DeleteIntent</code> is successful. </p> </note> <p> This operation requires permission for the <code>lex:DeleteIntent</code> action. </p>
   ## 
-  let valid = call_593127.validator(path, query, header, formData, body)
-  let scheme = call_593127.pickScheme
+  let valid = call_600129.validator(path, query, header, formData, body)
+  let scheme = call_600129.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593127.url(scheme.get, call_593127.host, call_593127.base,
-                         call_593127.route, valid.getOrDefault("path"),
+  let url = call_600129.url(scheme.get, call_600129.host, call_600129.base,
+                         call_600129.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593127, url, valid)
+  result = atozHook(call_600129, url, valid)
 
-proc call*(call_593128: Call_DeleteIntent_593116; name: string): Recallable =
+proc call*(call_600130: Call_DeleteIntent_600118; name: string): Recallable =
   ## deleteIntent
   ## <p>Deletes all versions of the intent, including the <code>$LATEST</code> version. To delete a specific version of the intent, use the <a>DeleteIntentVersion</a> operation.</p> <p> You can delete a version of an intent only if it is not referenced. To delete an intent that is referred to in one or more bots (see <a>how-it-works</a>), you must remove those references first. </p> <note> <p> If you get the <code>ResourceInUseException</code> exception, it provides an example reference that shows where the intent is referenced. To remove the reference to the intent, either update the bot or delete it. If you get the same exception when you attempt to delete the intent again, repeat until the intent has no references and the call to <code>DeleteIntent</code> is successful. </p> </note> <p> This operation requires permission for the <code>lex:DeleteIntent</code> action. </p>
   ##   name: string (required)
   ##       : The name of the intent. The name is case sensitive. 
-  var path_593129 = newJObject()
-  add(path_593129, "name", newJString(name))
-  result = call_593128.call(path_593129, nil, nil, nil, nil)
+  var path_600131 = newJObject()
+  add(path_600131, "name", newJString(name))
+  result = call_600130.call(path_600131, nil, nil, nil, nil)
 
-var deleteIntent* = Call_DeleteIntent_593116(name: "deleteIntent",
+var deleteIntent* = Call_DeleteIntent_600118(name: "deleteIntent",
     meth: HttpMethod.HttpDelete, host: "models.lex.amazonaws.com",
-    route: "/intents/{name}", validator: validate_DeleteIntent_593117, base: "/",
-    url: url_DeleteIntent_593118, schemes: {Scheme.Https, Scheme.Http})
+    route: "/intents/{name}", validator: validate_DeleteIntent_600119, base: "/",
+    url: url_DeleteIntent_600120, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetIntent_593130 = ref object of OpenApiRestCall_592365
-proc url_GetIntent_593132(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetIntent_600132 = ref object of OpenApiRestCall_599369
+proc url_GetIntent_600134(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1557,117 +1612,122 @@ proc url_GetIntent_593132(protocol: Scheme; host: string; base: string; route: s
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetIntent_593131(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetIntent_600133(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> Returns information about an intent. In addition to the intent name, you must specify the intent version. </p> <p> This operation requires permissions to perform the <code>lex:GetIntent</code> action. </p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   version: JString (required)
-  ##          : The version of the intent.
   ##   name: JString (required)
   ##       : The name of the intent. The name is case sensitive. 
+  ##   version: JString (required)
+  ##          : The version of the intent.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `version` field"
-  var valid_593133 = path.getOrDefault("version")
-  valid_593133 = validateParameter(valid_593133, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600135 = path.getOrDefault("name")
+  valid_600135 = validateParameter(valid_600135, JString, required = true,
                                  default = nil)
-  if valid_593133 != nil:
-    section.add "version", valid_593133
-  var valid_593134 = path.getOrDefault("name")
-  valid_593134 = validateParameter(valid_593134, JString, required = true,
+  if valid_600135 != nil:
+    section.add "name", valid_600135
+  var valid_600136 = path.getOrDefault("version")
+  valid_600136 = validateParameter(valid_600136, JString, required = true,
                                  default = nil)
-  if valid_593134 != nil:
-    section.add "name", valid_593134
+  if valid_600136 != nil:
+    section.add "version", valid_600136
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593135 = header.getOrDefault("X-Amz-Signature")
-  valid_593135 = validateParameter(valid_593135, JString, required = false,
+  var valid_600137 = header.getOrDefault("X-Amz-Date")
+  valid_600137 = validateParameter(valid_600137, JString, required = false,
                                  default = nil)
-  if valid_593135 != nil:
-    section.add "X-Amz-Signature", valid_593135
-  var valid_593136 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593136 = validateParameter(valid_593136, JString, required = false,
+  if valid_600137 != nil:
+    section.add "X-Amz-Date", valid_600137
+  var valid_600138 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600138 = validateParameter(valid_600138, JString, required = false,
                                  default = nil)
-  if valid_593136 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593136
-  var valid_593137 = header.getOrDefault("X-Amz-Date")
-  valid_593137 = validateParameter(valid_593137, JString, required = false,
+  if valid_600138 != nil:
+    section.add "X-Amz-Security-Token", valid_600138
+  var valid_600139 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600139 = validateParameter(valid_600139, JString, required = false,
                                  default = nil)
-  if valid_593137 != nil:
-    section.add "X-Amz-Date", valid_593137
-  var valid_593138 = header.getOrDefault("X-Amz-Credential")
-  valid_593138 = validateParameter(valid_593138, JString, required = false,
+  if valid_600139 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600139
+  var valid_600140 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600140 = validateParameter(valid_600140, JString, required = false,
                                  default = nil)
-  if valid_593138 != nil:
-    section.add "X-Amz-Credential", valid_593138
-  var valid_593139 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593139 = validateParameter(valid_593139, JString, required = false,
+  if valid_600140 != nil:
+    section.add "X-Amz-Algorithm", valid_600140
+  var valid_600141 = header.getOrDefault("X-Amz-Signature")
+  valid_600141 = validateParameter(valid_600141, JString, required = false,
                                  default = nil)
-  if valid_593139 != nil:
-    section.add "X-Amz-Security-Token", valid_593139
-  var valid_593140 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593140 = validateParameter(valid_593140, JString, required = false,
+  if valid_600141 != nil:
+    section.add "X-Amz-Signature", valid_600141
+  var valid_600142 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600142 = validateParameter(valid_600142, JString, required = false,
                                  default = nil)
-  if valid_593140 != nil:
-    section.add "X-Amz-Algorithm", valid_593140
-  var valid_593141 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593141 = validateParameter(valid_593141, JString, required = false,
+  if valid_600142 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600142
+  var valid_600143 = header.getOrDefault("X-Amz-Credential")
+  valid_600143 = validateParameter(valid_600143, JString, required = false,
                                  default = nil)
-  if valid_593141 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593141
+  if valid_600143 != nil:
+    section.add "X-Amz-Credential", valid_600143
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593142: Call_GetIntent_593130; path: JsonNode; query: JsonNode;
+proc call*(call_600144: Call_GetIntent_600132; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Returns information about an intent. In addition to the intent name, you must specify the intent version. </p> <p> This operation requires permissions to perform the <code>lex:GetIntent</code> action. </p>
   ## 
-  let valid = call_593142.validator(path, query, header, formData, body)
-  let scheme = call_593142.pickScheme
+  let valid = call_600144.validator(path, query, header, formData, body)
+  let scheme = call_600144.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593142.url(scheme.get, call_593142.host, call_593142.base,
-                         call_593142.route, valid.getOrDefault("path"),
+  let url = call_600144.url(scheme.get, call_600144.host, call_600144.base,
+                         call_600144.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593142, url, valid)
+  result = atozHook(call_600144, url, valid)
 
-proc call*(call_593143: Call_GetIntent_593130; version: string; name: string): Recallable =
+proc call*(call_600145: Call_GetIntent_600132; name: string; version: string): Recallable =
   ## getIntent
   ## <p> Returns information about an intent. In addition to the intent name, you must specify the intent version. </p> <p> This operation requires permissions to perform the <code>lex:GetIntent</code> action. </p>
-  ##   version: string (required)
-  ##          : The version of the intent.
   ##   name: string (required)
   ##       : The name of the intent. The name is case sensitive. 
-  var path_593144 = newJObject()
-  add(path_593144, "version", newJString(version))
-  add(path_593144, "name", newJString(name))
-  result = call_593143.call(path_593144, nil, nil, nil, nil)
+  ##   version: string (required)
+  ##          : The version of the intent.
+  var path_600146 = newJObject()
+  add(path_600146, "name", newJString(name))
+  add(path_600146, "version", newJString(version))
+  result = call_600145.call(path_600146, nil, nil, nil, nil)
 
-var getIntent* = Call_GetIntent_593130(name: "getIntent", meth: HttpMethod.HttpGet,
+var getIntent* = Call_GetIntent_600132(name: "getIntent", meth: HttpMethod.HttpGet,
                                     host: "models.lex.amazonaws.com", route: "/intents/{name}/versions/{version}",
-                                    validator: validate_GetIntent_593131,
-                                    base: "/", url: url_GetIntent_593132,
+                                    validator: validate_GetIntent_600133,
+                                    base: "/", url: url_GetIntent_600134,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteIntentVersion_593145 = ref object of OpenApiRestCall_592365
-proc url_DeleteIntentVersion_593147(protocol: Scheme; host: string; base: string;
+  Call_DeleteIntentVersion_600147 = ref object of OpenApiRestCall_599369
+proc url_DeleteIntentVersion_600149(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1683,9 +1743,14 @@ proc url_DeleteIntentVersion_593147(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteIntentVersion_593146(path: JsonNode; query: JsonNode;
+proc validate_DeleteIntentVersion_600148(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Deletes a specific version of an intent. To delete all versions of a intent, use the <a>DeleteIntent</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteIntentVersion</code> action.</p>
@@ -1693,109 +1758,109 @@ proc validate_DeleteIntentVersion_593146(path: JsonNode; query: JsonNode;
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   version: JString (required)
-  ##          : The version of the intent to delete. You cannot delete the <code>$LATEST</code> version of the intent. To delete the <code>$LATEST</code> version, use the <a>DeleteIntent</a> operation.
   ##   name: JString (required)
   ##       : The name of the intent.
+  ##   version: JString (required)
+  ##          : The version of the intent to delete. You cannot delete the <code>$LATEST</code> version of the intent. To delete the <code>$LATEST</code> version, use the <a>DeleteIntent</a> operation.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `version` field"
-  var valid_593148 = path.getOrDefault("version")
-  valid_593148 = validateParameter(valid_593148, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600150 = path.getOrDefault("name")
+  valid_600150 = validateParameter(valid_600150, JString, required = true,
                                  default = nil)
-  if valid_593148 != nil:
-    section.add "version", valid_593148
-  var valid_593149 = path.getOrDefault("name")
-  valid_593149 = validateParameter(valid_593149, JString, required = true,
+  if valid_600150 != nil:
+    section.add "name", valid_600150
+  var valid_600151 = path.getOrDefault("version")
+  valid_600151 = validateParameter(valid_600151, JString, required = true,
                                  default = nil)
-  if valid_593149 != nil:
-    section.add "name", valid_593149
+  if valid_600151 != nil:
+    section.add "version", valid_600151
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593150 = header.getOrDefault("X-Amz-Signature")
-  valid_593150 = validateParameter(valid_593150, JString, required = false,
+  var valid_600152 = header.getOrDefault("X-Amz-Date")
+  valid_600152 = validateParameter(valid_600152, JString, required = false,
                                  default = nil)
-  if valid_593150 != nil:
-    section.add "X-Amz-Signature", valid_593150
-  var valid_593151 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593151 = validateParameter(valid_593151, JString, required = false,
+  if valid_600152 != nil:
+    section.add "X-Amz-Date", valid_600152
+  var valid_600153 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600153 = validateParameter(valid_600153, JString, required = false,
                                  default = nil)
-  if valid_593151 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593151
-  var valid_593152 = header.getOrDefault("X-Amz-Date")
-  valid_593152 = validateParameter(valid_593152, JString, required = false,
+  if valid_600153 != nil:
+    section.add "X-Amz-Security-Token", valid_600153
+  var valid_600154 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600154 = validateParameter(valid_600154, JString, required = false,
                                  default = nil)
-  if valid_593152 != nil:
-    section.add "X-Amz-Date", valid_593152
-  var valid_593153 = header.getOrDefault("X-Amz-Credential")
-  valid_593153 = validateParameter(valid_593153, JString, required = false,
+  if valid_600154 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600154
+  var valid_600155 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600155 = validateParameter(valid_600155, JString, required = false,
                                  default = nil)
-  if valid_593153 != nil:
-    section.add "X-Amz-Credential", valid_593153
-  var valid_593154 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593154 = validateParameter(valid_593154, JString, required = false,
+  if valid_600155 != nil:
+    section.add "X-Amz-Algorithm", valid_600155
+  var valid_600156 = header.getOrDefault("X-Amz-Signature")
+  valid_600156 = validateParameter(valid_600156, JString, required = false,
                                  default = nil)
-  if valid_593154 != nil:
-    section.add "X-Amz-Security-Token", valid_593154
-  var valid_593155 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593155 = validateParameter(valid_593155, JString, required = false,
+  if valid_600156 != nil:
+    section.add "X-Amz-Signature", valid_600156
+  var valid_600157 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600157 = validateParameter(valid_600157, JString, required = false,
                                  default = nil)
-  if valid_593155 != nil:
-    section.add "X-Amz-Algorithm", valid_593155
-  var valid_593156 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593156 = validateParameter(valid_593156, JString, required = false,
+  if valid_600157 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600157
+  var valid_600158 = header.getOrDefault("X-Amz-Credential")
+  valid_600158 = validateParameter(valid_600158, JString, required = false,
                                  default = nil)
-  if valid_593156 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593156
+  if valid_600158 != nil:
+    section.add "X-Amz-Credential", valid_600158
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593157: Call_DeleteIntentVersion_593145; path: JsonNode;
+proc call*(call_600159: Call_DeleteIntentVersion_600147; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specific version of an intent. To delete all versions of a intent, use the <a>DeleteIntent</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteIntentVersion</code> action.</p>
   ## 
-  let valid = call_593157.validator(path, query, header, formData, body)
-  let scheme = call_593157.pickScheme
+  let valid = call_600159.validator(path, query, header, formData, body)
+  let scheme = call_600159.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593157.url(scheme.get, call_593157.host, call_593157.base,
-                         call_593157.route, valid.getOrDefault("path"),
+  let url = call_600159.url(scheme.get, call_600159.host, call_600159.base,
+                         call_600159.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593157, url, valid)
+  result = atozHook(call_600159, url, valid)
 
-proc call*(call_593158: Call_DeleteIntentVersion_593145; version: string;
-          name: string): Recallable =
+proc call*(call_600160: Call_DeleteIntentVersion_600147; name: string;
+          version: string): Recallable =
   ## deleteIntentVersion
   ## <p>Deletes a specific version of an intent. To delete all versions of a intent, use the <a>DeleteIntent</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteIntentVersion</code> action.</p>
-  ##   version: string (required)
-  ##          : The version of the intent to delete. You cannot delete the <code>$LATEST</code> version of the intent. To delete the <code>$LATEST</code> version, use the <a>DeleteIntent</a> operation.
   ##   name: string (required)
   ##       : The name of the intent.
-  var path_593159 = newJObject()
-  add(path_593159, "version", newJString(version))
-  add(path_593159, "name", newJString(name))
-  result = call_593158.call(path_593159, nil, nil, nil, nil)
+  ##   version: string (required)
+  ##          : The version of the intent to delete. You cannot delete the <code>$LATEST</code> version of the intent. To delete the <code>$LATEST</code> version, use the <a>DeleteIntent</a> operation.
+  var path_600161 = newJObject()
+  add(path_600161, "name", newJString(name))
+  add(path_600161, "version", newJString(version))
+  result = call_600160.call(path_600161, nil, nil, nil, nil)
 
-var deleteIntentVersion* = Call_DeleteIntentVersion_593145(
+var deleteIntentVersion* = Call_DeleteIntentVersion_600147(
     name: "deleteIntentVersion", meth: HttpMethod.HttpDelete,
     host: "models.lex.amazonaws.com", route: "/intents/{name}/versions/{version}",
-    validator: validate_DeleteIntentVersion_593146, base: "/",
-    url: url_DeleteIntentVersion_593147, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteIntentVersion_600148, base: "/",
+    url: url_DeleteIntentVersion_600149, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSlotType_593160 = ref object of OpenApiRestCall_592365
-proc url_DeleteSlotType_593162(protocol: Scheme; host: string; base: string;
+  Call_DeleteSlotType_600162 = ref object of OpenApiRestCall_599369
+proc url_DeleteSlotType_600164(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1808,9 +1873,14 @@ proc url_DeleteSlotType_593162(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteSlotType_593161(path: JsonNode; query: JsonNode;
+proc validate_DeleteSlotType_600163(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Deletes all versions of the slot type, including the <code>$LATEST</code> version. To delete a specific version of the slot type, use the <a>DeleteSlotTypeVersion</a> operation.</p> <p> You can delete a version of a slot type only if it is not referenced. To delete a slot type that is referred to in one or more intents, you must remove those references first. </p> <note> <p> If you get the <code>ResourceInUseException</code> exception, the exception provides an example reference that shows the intent where the slot type is referenced. To remove the reference to the slot type, either update the intent or delete it. If you get the same exception when you attempt to delete the slot type again, repeat until the slot type has no references and the <code>DeleteSlotType</code> call is successful. </p> </note> <p>This operation requires permission for the <code>lex:DeleteSlotType</code> action.</p>
@@ -1822,93 +1892,93 @@ proc validate_DeleteSlotType_593161(path: JsonNode; query: JsonNode;
   ##       : The name of the slot type. The name is case sensitive. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593163 = path.getOrDefault("name")
-  valid_593163 = validateParameter(valid_593163, JString, required = true,
+  var valid_600165 = path.getOrDefault("name")
+  valid_600165 = validateParameter(valid_600165, JString, required = true,
                                  default = nil)
-  if valid_593163 != nil:
-    section.add "name", valid_593163
+  if valid_600165 != nil:
+    section.add "name", valid_600165
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593164 = header.getOrDefault("X-Amz-Signature")
-  valid_593164 = validateParameter(valid_593164, JString, required = false,
+  var valid_600166 = header.getOrDefault("X-Amz-Date")
+  valid_600166 = validateParameter(valid_600166, JString, required = false,
                                  default = nil)
-  if valid_593164 != nil:
-    section.add "X-Amz-Signature", valid_593164
-  var valid_593165 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593165 = validateParameter(valid_593165, JString, required = false,
+  if valid_600166 != nil:
+    section.add "X-Amz-Date", valid_600166
+  var valid_600167 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600167 = validateParameter(valid_600167, JString, required = false,
                                  default = nil)
-  if valid_593165 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593165
-  var valid_593166 = header.getOrDefault("X-Amz-Date")
-  valid_593166 = validateParameter(valid_593166, JString, required = false,
+  if valid_600167 != nil:
+    section.add "X-Amz-Security-Token", valid_600167
+  var valid_600168 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600168 = validateParameter(valid_600168, JString, required = false,
                                  default = nil)
-  if valid_593166 != nil:
-    section.add "X-Amz-Date", valid_593166
-  var valid_593167 = header.getOrDefault("X-Amz-Credential")
-  valid_593167 = validateParameter(valid_593167, JString, required = false,
+  if valid_600168 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600168
+  var valid_600169 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600169 = validateParameter(valid_600169, JString, required = false,
                                  default = nil)
-  if valid_593167 != nil:
-    section.add "X-Amz-Credential", valid_593167
-  var valid_593168 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593168 = validateParameter(valid_593168, JString, required = false,
+  if valid_600169 != nil:
+    section.add "X-Amz-Algorithm", valid_600169
+  var valid_600170 = header.getOrDefault("X-Amz-Signature")
+  valid_600170 = validateParameter(valid_600170, JString, required = false,
                                  default = nil)
-  if valid_593168 != nil:
-    section.add "X-Amz-Security-Token", valid_593168
-  var valid_593169 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593169 = validateParameter(valid_593169, JString, required = false,
+  if valid_600170 != nil:
+    section.add "X-Amz-Signature", valid_600170
+  var valid_600171 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600171 = validateParameter(valid_600171, JString, required = false,
                                  default = nil)
-  if valid_593169 != nil:
-    section.add "X-Amz-Algorithm", valid_593169
-  var valid_593170 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593170 = validateParameter(valid_593170, JString, required = false,
+  if valid_600171 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600171
+  var valid_600172 = header.getOrDefault("X-Amz-Credential")
+  valid_600172 = validateParameter(valid_600172, JString, required = false,
                                  default = nil)
-  if valid_593170 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593170
+  if valid_600172 != nil:
+    section.add "X-Amz-Credential", valid_600172
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593171: Call_DeleteSlotType_593160; path: JsonNode; query: JsonNode;
+proc call*(call_600173: Call_DeleteSlotType_600162; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes all versions of the slot type, including the <code>$LATEST</code> version. To delete a specific version of the slot type, use the <a>DeleteSlotTypeVersion</a> operation.</p> <p> You can delete a version of a slot type only if it is not referenced. To delete a slot type that is referred to in one or more intents, you must remove those references first. </p> <note> <p> If you get the <code>ResourceInUseException</code> exception, the exception provides an example reference that shows the intent where the slot type is referenced. To remove the reference to the slot type, either update the intent or delete it. If you get the same exception when you attempt to delete the slot type again, repeat until the slot type has no references and the <code>DeleteSlotType</code> call is successful. </p> </note> <p>This operation requires permission for the <code>lex:DeleteSlotType</code> action.</p>
   ## 
-  let valid = call_593171.validator(path, query, header, formData, body)
-  let scheme = call_593171.pickScheme
+  let valid = call_600173.validator(path, query, header, formData, body)
+  let scheme = call_600173.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593171.url(scheme.get, call_593171.host, call_593171.base,
-                         call_593171.route, valid.getOrDefault("path"),
+  let url = call_600173.url(scheme.get, call_600173.host, call_600173.base,
+                         call_600173.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593171, url, valid)
+  result = atozHook(call_600173, url, valid)
 
-proc call*(call_593172: Call_DeleteSlotType_593160; name: string): Recallable =
+proc call*(call_600174: Call_DeleteSlotType_600162; name: string): Recallable =
   ## deleteSlotType
   ## <p>Deletes all versions of the slot type, including the <code>$LATEST</code> version. To delete a specific version of the slot type, use the <a>DeleteSlotTypeVersion</a> operation.</p> <p> You can delete a version of a slot type only if it is not referenced. To delete a slot type that is referred to in one or more intents, you must remove those references first. </p> <note> <p> If you get the <code>ResourceInUseException</code> exception, the exception provides an example reference that shows the intent where the slot type is referenced. To remove the reference to the slot type, either update the intent or delete it. If you get the same exception when you attempt to delete the slot type again, repeat until the slot type has no references and the <code>DeleteSlotType</code> call is successful. </p> </note> <p>This operation requires permission for the <code>lex:DeleteSlotType</code> action.</p>
   ##   name: string (required)
   ##       : The name of the slot type. The name is case sensitive. 
-  var path_593173 = newJObject()
-  add(path_593173, "name", newJString(name))
-  result = call_593172.call(path_593173, nil, nil, nil, nil)
+  var path_600175 = newJObject()
+  add(path_600175, "name", newJString(name))
+  result = call_600174.call(path_600175, nil, nil, nil, nil)
 
-var deleteSlotType* = Call_DeleteSlotType_593160(name: "deleteSlotType",
+var deleteSlotType* = Call_DeleteSlotType_600162(name: "deleteSlotType",
     meth: HttpMethod.HttpDelete, host: "models.lex.amazonaws.com",
-    route: "/slottypes/{name}", validator: validate_DeleteSlotType_593161,
-    base: "/", url: url_DeleteSlotType_593162, schemes: {Scheme.Https, Scheme.Http})
+    route: "/slottypes/{name}", validator: validate_DeleteSlotType_600163,
+    base: "/", url: url_DeleteSlotType_600164, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSlotTypeVersion_593174 = ref object of OpenApiRestCall_592365
-proc url_DeleteSlotTypeVersion_593176(protocol: Scheme; host: string; base: string;
+  Call_DeleteSlotTypeVersion_600176 = ref object of OpenApiRestCall_599369
+proc url_DeleteSlotTypeVersion_600178(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1924,119 +1994,124 @@ proc url_DeleteSlotTypeVersion_593176(protocol: Scheme; host: string; base: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteSlotTypeVersion_593175(path: JsonNode; query: JsonNode;
+proc validate_DeleteSlotTypeVersion_600177(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a specific version of a slot type. To delete all versions of a slot type, use the <a>DeleteSlotType</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteSlotTypeVersion</code> action.</p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   version: JString (required)
-  ##          : The version of the slot type to delete. You cannot delete the <code>$LATEST</code> version of the slot type. To delete the <code>$LATEST</code> version, use the <a>DeleteSlotType</a> operation.
   ##   name: JString (required)
   ##       : The name of the slot type.
+  ##   version: JString (required)
+  ##          : The version of the slot type to delete. You cannot delete the <code>$LATEST</code> version of the slot type. To delete the <code>$LATEST</code> version, use the <a>DeleteSlotType</a> operation.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `version` field"
-  var valid_593177 = path.getOrDefault("version")
-  valid_593177 = validateParameter(valid_593177, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600179 = path.getOrDefault("name")
+  valid_600179 = validateParameter(valid_600179, JString, required = true,
                                  default = nil)
-  if valid_593177 != nil:
-    section.add "version", valid_593177
-  var valid_593178 = path.getOrDefault("name")
-  valid_593178 = validateParameter(valid_593178, JString, required = true,
+  if valid_600179 != nil:
+    section.add "name", valid_600179
+  var valid_600180 = path.getOrDefault("version")
+  valid_600180 = validateParameter(valid_600180, JString, required = true,
                                  default = nil)
-  if valid_593178 != nil:
-    section.add "name", valid_593178
+  if valid_600180 != nil:
+    section.add "version", valid_600180
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593179 = header.getOrDefault("X-Amz-Signature")
-  valid_593179 = validateParameter(valid_593179, JString, required = false,
+  var valid_600181 = header.getOrDefault("X-Amz-Date")
+  valid_600181 = validateParameter(valid_600181, JString, required = false,
                                  default = nil)
-  if valid_593179 != nil:
-    section.add "X-Amz-Signature", valid_593179
-  var valid_593180 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593180 = validateParameter(valid_593180, JString, required = false,
+  if valid_600181 != nil:
+    section.add "X-Amz-Date", valid_600181
+  var valid_600182 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600182 = validateParameter(valid_600182, JString, required = false,
                                  default = nil)
-  if valid_593180 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593180
-  var valid_593181 = header.getOrDefault("X-Amz-Date")
-  valid_593181 = validateParameter(valid_593181, JString, required = false,
+  if valid_600182 != nil:
+    section.add "X-Amz-Security-Token", valid_600182
+  var valid_600183 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600183 = validateParameter(valid_600183, JString, required = false,
                                  default = nil)
-  if valid_593181 != nil:
-    section.add "X-Amz-Date", valid_593181
-  var valid_593182 = header.getOrDefault("X-Amz-Credential")
-  valid_593182 = validateParameter(valid_593182, JString, required = false,
+  if valid_600183 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600183
+  var valid_600184 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600184 = validateParameter(valid_600184, JString, required = false,
                                  default = nil)
-  if valid_593182 != nil:
-    section.add "X-Amz-Credential", valid_593182
-  var valid_593183 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593183 = validateParameter(valid_593183, JString, required = false,
+  if valid_600184 != nil:
+    section.add "X-Amz-Algorithm", valid_600184
+  var valid_600185 = header.getOrDefault("X-Amz-Signature")
+  valid_600185 = validateParameter(valid_600185, JString, required = false,
                                  default = nil)
-  if valid_593183 != nil:
-    section.add "X-Amz-Security-Token", valid_593183
-  var valid_593184 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593184 = validateParameter(valid_593184, JString, required = false,
+  if valid_600185 != nil:
+    section.add "X-Amz-Signature", valid_600185
+  var valid_600186 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600186 = validateParameter(valid_600186, JString, required = false,
                                  default = nil)
-  if valid_593184 != nil:
-    section.add "X-Amz-Algorithm", valid_593184
-  var valid_593185 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593185 = validateParameter(valid_593185, JString, required = false,
+  if valid_600186 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600186
+  var valid_600187 = header.getOrDefault("X-Amz-Credential")
+  valid_600187 = validateParameter(valid_600187, JString, required = false,
                                  default = nil)
-  if valid_593185 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593185
+  if valid_600187 != nil:
+    section.add "X-Amz-Credential", valid_600187
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593186: Call_DeleteSlotTypeVersion_593174; path: JsonNode;
+proc call*(call_600188: Call_DeleteSlotTypeVersion_600176; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specific version of a slot type. To delete all versions of a slot type, use the <a>DeleteSlotType</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteSlotTypeVersion</code> action.</p>
   ## 
-  let valid = call_593186.validator(path, query, header, formData, body)
-  let scheme = call_593186.pickScheme
+  let valid = call_600188.validator(path, query, header, formData, body)
+  let scheme = call_600188.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593186.url(scheme.get, call_593186.host, call_593186.base,
-                         call_593186.route, valid.getOrDefault("path"),
+  let url = call_600188.url(scheme.get, call_600188.host, call_600188.base,
+                         call_600188.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593186, url, valid)
+  result = atozHook(call_600188, url, valid)
 
-proc call*(call_593187: Call_DeleteSlotTypeVersion_593174; version: string;
-          name: string): Recallable =
+proc call*(call_600189: Call_DeleteSlotTypeVersion_600176; name: string;
+          version: string): Recallable =
   ## deleteSlotTypeVersion
   ## <p>Deletes a specific version of a slot type. To delete all versions of a slot type, use the <a>DeleteSlotType</a> operation. </p> <p>This operation requires permissions for the <code>lex:DeleteSlotTypeVersion</code> action.</p>
-  ##   version: string (required)
-  ##          : The version of the slot type to delete. You cannot delete the <code>$LATEST</code> version of the slot type. To delete the <code>$LATEST</code> version, use the <a>DeleteSlotType</a> operation.
   ##   name: string (required)
   ##       : The name of the slot type.
-  var path_593188 = newJObject()
-  add(path_593188, "version", newJString(version))
-  add(path_593188, "name", newJString(name))
-  result = call_593187.call(path_593188, nil, nil, nil, nil)
+  ##   version: string (required)
+  ##          : The version of the slot type to delete. You cannot delete the <code>$LATEST</code> version of the slot type. To delete the <code>$LATEST</code> version, use the <a>DeleteSlotType</a> operation.
+  var path_600190 = newJObject()
+  add(path_600190, "name", newJString(name))
+  add(path_600190, "version", newJString(version))
+  result = call_600189.call(path_600190, nil, nil, nil, nil)
 
-var deleteSlotTypeVersion* = Call_DeleteSlotTypeVersion_593174(
+var deleteSlotTypeVersion* = Call_DeleteSlotTypeVersion_600176(
     name: "deleteSlotTypeVersion", meth: HttpMethod.HttpDelete,
     host: "models.lex.amazonaws.com",
     route: "/slottypes/{name}/version/{version}",
-    validator: validate_DeleteSlotTypeVersion_593175, base: "/",
-    url: url_DeleteSlotTypeVersion_593176, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteSlotTypeVersion_600177, base: "/",
+    url: url_DeleteSlotTypeVersion_600178, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteUtterances_593189 = ref object of OpenApiRestCall_592365
-proc url_DeleteUtterances_593191(protocol: Scheme; host: string; base: string;
+  Call_DeleteUtterances_600191 = ref object of OpenApiRestCall_599369
+proc url_DeleteUtterances_600193(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2052,12 +2127,17 @@ proc url_DeleteUtterances_593191(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteUtterances_593190(path: JsonNode; query: JsonNode;
+proc validate_DeleteUtterances_600192(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Deletes stored utterances.</p> <p>Amazon Lex stores the utterances that users send to your bot. Utterances are stored for 15 days for use with the <a>GetUtterancesView</a> operation, and then stored indefinitely for use in improving the ability of your bot to respond to user input.</p> <p>Use the <code>DeleteStoredUtterances</code> operation to manually delete stored utterances for a specific user.</p> <p>This operation requires permissions for the <code>lex:DeleteUtterances</code> action.</p>
+  ## <p>Deletes stored utterances.</p> <p>Amazon Lex stores the utterances that users send to your bot. Utterances are stored for 15 days for use with the <a>GetUtterancesView</a> operation, and then stored indefinitely for use in improving the ability of your bot to respond to user input.</p> <p>Use the <code>DeleteUtterances</code> operation to manually delete stored utterances for a specific user. When you use the <code>DeleteUtterances</code> operation, utterances stored for improving your bot's ability to respond to user input are deleted immediately. Utterances stored for use with the <code>GetUtterancesView</code> operation are deleted after 15 days.</p> <p>This operation requires permissions for the <code>lex:DeleteUtterances</code> action.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2070,104 +2150,104 @@ proc validate_DeleteUtterances_593190(path: JsonNode; query: JsonNode;
   ## href="http://docs.aws.amazon.com/lex/latest/dg/API_runtime_PostText.html">PostText</a> operation request that contained the utterance.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_593192 = path.getOrDefault("botName")
-  valid_593192 = validateParameter(valid_593192, JString, required = true,
+  var valid_600194 = path.getOrDefault("botName")
+  valid_600194 = validateParameter(valid_600194, JString, required = true,
                                  default = nil)
-  if valid_593192 != nil:
-    section.add "botName", valid_593192
-  var valid_593193 = path.getOrDefault("userId")
-  valid_593193 = validateParameter(valid_593193, JString, required = true,
+  if valid_600194 != nil:
+    section.add "botName", valid_600194
+  var valid_600195 = path.getOrDefault("userId")
+  valid_600195 = validateParameter(valid_600195, JString, required = true,
                                  default = nil)
-  if valid_593193 != nil:
-    section.add "userId", valid_593193
+  if valid_600195 != nil:
+    section.add "userId", valid_600195
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593194 = header.getOrDefault("X-Amz-Signature")
-  valid_593194 = validateParameter(valid_593194, JString, required = false,
+  var valid_600196 = header.getOrDefault("X-Amz-Date")
+  valid_600196 = validateParameter(valid_600196, JString, required = false,
                                  default = nil)
-  if valid_593194 != nil:
-    section.add "X-Amz-Signature", valid_593194
-  var valid_593195 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593195 = validateParameter(valid_593195, JString, required = false,
+  if valid_600196 != nil:
+    section.add "X-Amz-Date", valid_600196
+  var valid_600197 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600197 = validateParameter(valid_600197, JString, required = false,
                                  default = nil)
-  if valid_593195 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593195
-  var valid_593196 = header.getOrDefault("X-Amz-Date")
-  valid_593196 = validateParameter(valid_593196, JString, required = false,
+  if valid_600197 != nil:
+    section.add "X-Amz-Security-Token", valid_600197
+  var valid_600198 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600198 = validateParameter(valid_600198, JString, required = false,
                                  default = nil)
-  if valid_593196 != nil:
-    section.add "X-Amz-Date", valid_593196
-  var valid_593197 = header.getOrDefault("X-Amz-Credential")
-  valid_593197 = validateParameter(valid_593197, JString, required = false,
+  if valid_600198 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600198
+  var valid_600199 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600199 = validateParameter(valid_600199, JString, required = false,
                                  default = nil)
-  if valid_593197 != nil:
-    section.add "X-Amz-Credential", valid_593197
-  var valid_593198 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593198 = validateParameter(valid_593198, JString, required = false,
+  if valid_600199 != nil:
+    section.add "X-Amz-Algorithm", valid_600199
+  var valid_600200 = header.getOrDefault("X-Amz-Signature")
+  valid_600200 = validateParameter(valid_600200, JString, required = false,
                                  default = nil)
-  if valid_593198 != nil:
-    section.add "X-Amz-Security-Token", valid_593198
-  var valid_593199 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593199 = validateParameter(valid_593199, JString, required = false,
+  if valid_600200 != nil:
+    section.add "X-Amz-Signature", valid_600200
+  var valid_600201 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600201 = validateParameter(valid_600201, JString, required = false,
                                  default = nil)
-  if valid_593199 != nil:
-    section.add "X-Amz-Algorithm", valid_593199
-  var valid_593200 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593200 = validateParameter(valid_593200, JString, required = false,
+  if valid_600201 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600201
+  var valid_600202 = header.getOrDefault("X-Amz-Credential")
+  valid_600202 = validateParameter(valid_600202, JString, required = false,
                                  default = nil)
-  if valid_593200 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593200
+  if valid_600202 != nil:
+    section.add "X-Amz-Credential", valid_600202
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593201: Call_DeleteUtterances_593189; path: JsonNode;
+proc call*(call_600203: Call_DeleteUtterances_600191; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes stored utterances.</p> <p>Amazon Lex stores the utterances that users send to your bot. Utterances are stored for 15 days for use with the <a>GetUtterancesView</a> operation, and then stored indefinitely for use in improving the ability of your bot to respond to user input.</p> <p>Use the <code>DeleteStoredUtterances</code> operation to manually delete stored utterances for a specific user.</p> <p>This operation requires permissions for the <code>lex:DeleteUtterances</code> action.</p>
+  ## <p>Deletes stored utterances.</p> <p>Amazon Lex stores the utterances that users send to your bot. Utterances are stored for 15 days for use with the <a>GetUtterancesView</a> operation, and then stored indefinitely for use in improving the ability of your bot to respond to user input.</p> <p>Use the <code>DeleteUtterances</code> operation to manually delete stored utterances for a specific user. When you use the <code>DeleteUtterances</code> operation, utterances stored for improving your bot's ability to respond to user input are deleted immediately. Utterances stored for use with the <code>GetUtterancesView</code> operation are deleted after 15 days.</p> <p>This operation requires permissions for the <code>lex:DeleteUtterances</code> action.</p>
   ## 
-  let valid = call_593201.validator(path, query, header, formData, body)
-  let scheme = call_593201.pickScheme
+  let valid = call_600203.validator(path, query, header, formData, body)
+  let scheme = call_600203.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593201.url(scheme.get, call_593201.host, call_593201.base,
-                         call_593201.route, valid.getOrDefault("path"),
+  let url = call_600203.url(scheme.get, call_600203.host, call_600203.base,
+                         call_600203.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593201, url, valid)
+  result = atozHook(call_600203, url, valid)
 
-proc call*(call_593202: Call_DeleteUtterances_593189; botName: string; userId: string): Recallable =
+proc call*(call_600204: Call_DeleteUtterances_600191; botName: string; userId: string): Recallable =
   ## deleteUtterances
-  ## <p>Deletes stored utterances.</p> <p>Amazon Lex stores the utterances that users send to your bot. Utterances are stored for 15 days for use with the <a>GetUtterancesView</a> operation, and then stored indefinitely for use in improving the ability of your bot to respond to user input.</p> <p>Use the <code>DeleteStoredUtterances</code> operation to manually delete stored utterances for a specific user.</p> <p>This operation requires permissions for the <code>lex:DeleteUtterances</code> action.</p>
+  ## <p>Deletes stored utterances.</p> <p>Amazon Lex stores the utterances that users send to your bot. Utterances are stored for 15 days for use with the <a>GetUtterancesView</a> operation, and then stored indefinitely for use in improving the ability of your bot to respond to user input.</p> <p>Use the <code>DeleteUtterances</code> operation to manually delete stored utterances for a specific user. When you use the <code>DeleteUtterances</code> operation, utterances stored for improving your bot's ability to respond to user input are deleted immediately. Utterances stored for use with the <code>GetUtterancesView</code> operation are deleted after 15 days.</p> <p>This operation requires permissions for the <code>lex:DeleteUtterances</code> action.</p>
   ##   botName: string (required)
   ##          : The name of the bot that stored the utterances.
   ##   userId: string (required)
   ##         :  The unique identifier for the user that made the utterances. This is the user ID that was sent in the <a 
   ## href="http://docs.aws.amazon.com/lex/latest/dg/API_runtime_PostContent.html">PostContent</a> or <a 
   ## href="http://docs.aws.amazon.com/lex/latest/dg/API_runtime_PostText.html">PostText</a> operation request that contained the utterance.
-  var path_593203 = newJObject()
-  add(path_593203, "botName", newJString(botName))
-  add(path_593203, "userId", newJString(userId))
-  result = call_593202.call(path_593203, nil, nil, nil, nil)
+  var path_600205 = newJObject()
+  add(path_600205, "botName", newJString(botName))
+  add(path_600205, "userId", newJString(userId))
+  result = call_600204.call(path_600205, nil, nil, nil, nil)
 
-var deleteUtterances* = Call_DeleteUtterances_593189(name: "deleteUtterances",
+var deleteUtterances* = Call_DeleteUtterances_600191(name: "deleteUtterances",
     meth: HttpMethod.HttpDelete, host: "models.lex.amazonaws.com",
     route: "/bots/{botName}/utterances/{userId}",
-    validator: validate_DeleteUtterances_593190, base: "/",
-    url: url_DeleteUtterances_593191, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteUtterances_600192, base: "/",
+    url: url_DeleteUtterances_600193, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBot_593204 = ref object of OpenApiRestCall_592365
-proc url_GetBot_593206(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetBot_600206 = ref object of OpenApiRestCall_599369
+proc url_GetBot_600208(protocol: Scheme; host: string; base: string; route: string;
                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2183,118 +2263,124 @@ proc url_GetBot_593206(protocol: Scheme; host: string; base: string; route: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetBot_593205(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetBot_600207(path: JsonNode; query: JsonNode; header: JsonNode;
                            formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns metadata information for a specific bot. You must provide the bot name and the bot version or alias. </p> <p> This operation requires permissions for the <code>lex:GetBot</code> action. </p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   name: JString (required)
-  ##       : The name of the bot. The name is case sensitive. 
   ##   versionoralias: JString (required)
   ##                 : The version or alias of the bot.
+  ##   name: JString (required)
+  ##       : The name of the bot. The name is case sensitive. 
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593207 = path.getOrDefault("name")
-  valid_593207 = validateParameter(valid_593207, JString, required = true,
+  assert path != nil,
+        "path argument is necessary due to required `versionoralias` field"
+  var valid_600209 = path.getOrDefault("versionoralias")
+  valid_600209 = validateParameter(valid_600209, JString, required = true,
                                  default = nil)
-  if valid_593207 != nil:
-    section.add "name", valid_593207
-  var valid_593208 = path.getOrDefault("versionoralias")
-  valid_593208 = validateParameter(valid_593208, JString, required = true,
+  if valid_600209 != nil:
+    section.add "versionoralias", valid_600209
+  var valid_600210 = path.getOrDefault("name")
+  valid_600210 = validateParameter(valid_600210, JString, required = true,
                                  default = nil)
-  if valid_593208 != nil:
-    section.add "versionoralias", valid_593208
+  if valid_600210 != nil:
+    section.add "name", valid_600210
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593209 = header.getOrDefault("X-Amz-Signature")
-  valid_593209 = validateParameter(valid_593209, JString, required = false,
+  var valid_600211 = header.getOrDefault("X-Amz-Date")
+  valid_600211 = validateParameter(valid_600211, JString, required = false,
                                  default = nil)
-  if valid_593209 != nil:
-    section.add "X-Amz-Signature", valid_593209
-  var valid_593210 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593210 = validateParameter(valid_593210, JString, required = false,
+  if valid_600211 != nil:
+    section.add "X-Amz-Date", valid_600211
+  var valid_600212 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600212 = validateParameter(valid_600212, JString, required = false,
                                  default = nil)
-  if valid_593210 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593210
-  var valid_593211 = header.getOrDefault("X-Amz-Date")
-  valid_593211 = validateParameter(valid_593211, JString, required = false,
+  if valid_600212 != nil:
+    section.add "X-Amz-Security-Token", valid_600212
+  var valid_600213 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600213 = validateParameter(valid_600213, JString, required = false,
                                  default = nil)
-  if valid_593211 != nil:
-    section.add "X-Amz-Date", valid_593211
-  var valid_593212 = header.getOrDefault("X-Amz-Credential")
-  valid_593212 = validateParameter(valid_593212, JString, required = false,
+  if valid_600213 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600213
+  var valid_600214 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600214 = validateParameter(valid_600214, JString, required = false,
                                  default = nil)
-  if valid_593212 != nil:
-    section.add "X-Amz-Credential", valid_593212
-  var valid_593213 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593213 = validateParameter(valid_593213, JString, required = false,
+  if valid_600214 != nil:
+    section.add "X-Amz-Algorithm", valid_600214
+  var valid_600215 = header.getOrDefault("X-Amz-Signature")
+  valid_600215 = validateParameter(valid_600215, JString, required = false,
                                  default = nil)
-  if valid_593213 != nil:
-    section.add "X-Amz-Security-Token", valid_593213
-  var valid_593214 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593214 = validateParameter(valid_593214, JString, required = false,
+  if valid_600215 != nil:
+    section.add "X-Amz-Signature", valid_600215
+  var valid_600216 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600216 = validateParameter(valid_600216, JString, required = false,
                                  default = nil)
-  if valid_593214 != nil:
-    section.add "X-Amz-Algorithm", valid_593214
-  var valid_593215 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593215 = validateParameter(valid_593215, JString, required = false,
+  if valid_600216 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600216
+  var valid_600217 = header.getOrDefault("X-Amz-Credential")
+  valid_600217 = validateParameter(valid_600217, JString, required = false,
                                  default = nil)
-  if valid_593215 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593215
+  if valid_600217 != nil:
+    section.add "X-Amz-Credential", valid_600217
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593216: Call_GetBot_593204; path: JsonNode; query: JsonNode;
+proc call*(call_600218: Call_GetBot_600206; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns metadata information for a specific bot. You must provide the bot name and the bot version or alias. </p> <p> This operation requires permissions for the <code>lex:GetBot</code> action. </p>
   ## 
-  let valid = call_593216.validator(path, query, header, formData, body)
-  let scheme = call_593216.pickScheme
+  let valid = call_600218.validator(path, query, header, formData, body)
+  let scheme = call_600218.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593216.url(scheme.get, call_593216.host, call_593216.base,
-                         call_593216.route, valid.getOrDefault("path"),
+  let url = call_600218.url(scheme.get, call_600218.host, call_600218.base,
+                         call_600218.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593216, url, valid)
+  result = atozHook(call_600218, url, valid)
 
-proc call*(call_593217: Call_GetBot_593204; name: string; versionoralias: string): Recallable =
+proc call*(call_600219: Call_GetBot_600206; versionoralias: string; name: string): Recallable =
   ## getBot
   ## <p>Returns metadata information for a specific bot. You must provide the bot name and the bot version or alias. </p> <p> This operation requires permissions for the <code>lex:GetBot</code> action. </p>
-  ##   name: string (required)
-  ##       : The name of the bot. The name is case sensitive. 
   ##   versionoralias: string (required)
   ##                 : The version or alias of the bot.
-  var path_593218 = newJObject()
-  add(path_593218, "name", newJString(name))
-  add(path_593218, "versionoralias", newJString(versionoralias))
-  result = call_593217.call(path_593218, nil, nil, nil, nil)
+  ##   name: string (required)
+  ##       : The name of the bot. The name is case sensitive. 
+  var path_600220 = newJObject()
+  add(path_600220, "versionoralias", newJString(versionoralias))
+  add(path_600220, "name", newJString(name))
+  result = call_600219.call(path_600220, nil, nil, nil, nil)
 
-var getBot* = Call_GetBot_593204(name: "getBot", meth: HttpMethod.HttpGet,
+var getBot* = Call_GetBot_600206(name: "getBot", meth: HttpMethod.HttpGet,
                               host: "models.lex.amazonaws.com",
                               route: "/bots/{name}/versions/{versionoralias}",
-                              validator: validate_GetBot_593205, base: "/",
-                              url: url_GetBot_593206,
+                              validator: validate_GetBot_600207, base: "/",
+                              url: url_GetBot_600208,
                               schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBotAliases_593219 = ref object of OpenApiRestCall_592365
-proc url_GetBotAliases_593221(protocol: Scheme; host: string; base: string;
+  Call_GetBotAliases_600221 = ref object of OpenApiRestCall_599369
+proc url_GetBotAliases_600223(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2308,9 +2394,14 @@ proc url_GetBotAliases_593221(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetBotAliases_593220(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetBotAliases_600222(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of aliases for a specified Amazon Lex bot.</p> <p>This operation requires permissions for the <code>lex:GetBotAliases</code> action.</p>
   ## 
@@ -2321,125 +2412,125 @@ proc validate_GetBotAliases_593220(path: JsonNode; query: JsonNode; header: Json
   ##          : The name of the bot.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_593222 = path.getOrDefault("botName")
-  valid_593222 = validateParameter(valid_593222, JString, required = true,
+  var valid_600224 = path.getOrDefault("botName")
+  valid_600224 = validateParameter(valid_600224, JString, required = true,
                                  default = nil)
-  if valid_593222 != nil:
-    section.add "botName", valid_593222
+  if valid_600224 != nil:
+    section.add "botName", valid_600224
   result.add "path", section
   ## parameters in `query` object:
+  ##   maxResults: JInt
+  ##             : The maximum number of aliases to return in the response. The default is 50. . 
   ##   nextToken: JString
   ##            : A pagination token for fetching the next page of aliases. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of aliases, specify the pagination token in the next request. 
   ##   nameContains: JString
   ##               : Substring to match in bot alias names. An alias will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
-  ##   maxResults: JInt
-  ##             : The maximum number of aliases to return in the response. The default is 50. . 
   section = newJObject()
-  var valid_593223 = query.getOrDefault("nextToken")
-  valid_593223 = validateParameter(valid_593223, JString, required = false,
+  var valid_600225 = query.getOrDefault("maxResults")
+  valid_600225 = validateParameter(valid_600225, JInt, required = false, default = nil)
+  if valid_600225 != nil:
+    section.add "maxResults", valid_600225
+  var valid_600226 = query.getOrDefault("nextToken")
+  valid_600226 = validateParameter(valid_600226, JString, required = false,
                                  default = nil)
-  if valid_593223 != nil:
-    section.add "nextToken", valid_593223
-  var valid_593224 = query.getOrDefault("nameContains")
-  valid_593224 = validateParameter(valid_593224, JString, required = false,
+  if valid_600226 != nil:
+    section.add "nextToken", valid_600226
+  var valid_600227 = query.getOrDefault("nameContains")
+  valid_600227 = validateParameter(valid_600227, JString, required = false,
                                  default = nil)
-  if valid_593224 != nil:
-    section.add "nameContains", valid_593224
-  var valid_593225 = query.getOrDefault("maxResults")
-  valid_593225 = validateParameter(valid_593225, JInt, required = false, default = nil)
-  if valid_593225 != nil:
-    section.add "maxResults", valid_593225
+  if valid_600227 != nil:
+    section.add "nameContains", valid_600227
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593226 = header.getOrDefault("X-Amz-Signature")
-  valid_593226 = validateParameter(valid_593226, JString, required = false,
+  var valid_600228 = header.getOrDefault("X-Amz-Date")
+  valid_600228 = validateParameter(valid_600228, JString, required = false,
                                  default = nil)
-  if valid_593226 != nil:
-    section.add "X-Amz-Signature", valid_593226
-  var valid_593227 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593227 = validateParameter(valid_593227, JString, required = false,
+  if valid_600228 != nil:
+    section.add "X-Amz-Date", valid_600228
+  var valid_600229 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600229 = validateParameter(valid_600229, JString, required = false,
                                  default = nil)
-  if valid_593227 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593227
-  var valid_593228 = header.getOrDefault("X-Amz-Date")
-  valid_593228 = validateParameter(valid_593228, JString, required = false,
+  if valid_600229 != nil:
+    section.add "X-Amz-Security-Token", valid_600229
+  var valid_600230 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600230 = validateParameter(valid_600230, JString, required = false,
                                  default = nil)
-  if valid_593228 != nil:
-    section.add "X-Amz-Date", valid_593228
-  var valid_593229 = header.getOrDefault("X-Amz-Credential")
-  valid_593229 = validateParameter(valid_593229, JString, required = false,
+  if valid_600230 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600230
+  var valid_600231 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600231 = validateParameter(valid_600231, JString, required = false,
                                  default = nil)
-  if valid_593229 != nil:
-    section.add "X-Amz-Credential", valid_593229
-  var valid_593230 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593230 = validateParameter(valid_593230, JString, required = false,
+  if valid_600231 != nil:
+    section.add "X-Amz-Algorithm", valid_600231
+  var valid_600232 = header.getOrDefault("X-Amz-Signature")
+  valid_600232 = validateParameter(valid_600232, JString, required = false,
                                  default = nil)
-  if valid_593230 != nil:
-    section.add "X-Amz-Security-Token", valid_593230
-  var valid_593231 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593231 = validateParameter(valid_593231, JString, required = false,
+  if valid_600232 != nil:
+    section.add "X-Amz-Signature", valid_600232
+  var valid_600233 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600233 = validateParameter(valid_600233, JString, required = false,
                                  default = nil)
-  if valid_593231 != nil:
-    section.add "X-Amz-Algorithm", valid_593231
-  var valid_593232 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593232 = validateParameter(valid_593232, JString, required = false,
+  if valid_600233 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600233
+  var valid_600234 = header.getOrDefault("X-Amz-Credential")
+  valid_600234 = validateParameter(valid_600234, JString, required = false,
                                  default = nil)
-  if valid_593232 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593232
+  if valid_600234 != nil:
+    section.add "X-Amz-Credential", valid_600234
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593233: Call_GetBotAliases_593219; path: JsonNode; query: JsonNode;
+proc call*(call_600235: Call_GetBotAliases_600221; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of aliases for a specified Amazon Lex bot.</p> <p>This operation requires permissions for the <code>lex:GetBotAliases</code> action.</p>
   ## 
-  let valid = call_593233.validator(path, query, header, formData, body)
-  let scheme = call_593233.pickScheme
+  let valid = call_600235.validator(path, query, header, formData, body)
+  let scheme = call_600235.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593233.url(scheme.get, call_593233.host, call_593233.base,
-                         call_593233.route, valid.getOrDefault("path"),
+  let url = call_600235.url(scheme.get, call_600235.host, call_600235.base,
+                         call_600235.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593233, url, valid)
+  result = atozHook(call_600235, url, valid)
 
-proc call*(call_593234: Call_GetBotAliases_593219; botName: string;
-          nextToken: string = ""; nameContains: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600236: Call_GetBotAliases_600221; botName: string;
+          maxResults: int = 0; nextToken: string = ""; nameContains: string = ""): Recallable =
   ## getBotAliases
   ## <p>Returns a list of aliases for a specified Amazon Lex bot.</p> <p>This operation requires permissions for the <code>lex:GetBotAliases</code> action.</p>
+  ##   maxResults: int
+  ##             : The maximum number of aliases to return in the response. The default is 50. . 
   ##   nextToken: string
   ##            : A pagination token for fetching the next page of aliases. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of aliases, specify the pagination token in the next request. 
   ##   botName: string (required)
   ##          : The name of the bot.
   ##   nameContains: string
   ##               : Substring to match in bot alias names. An alias will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
-  ##   maxResults: int
-  ##             : The maximum number of aliases to return in the response. The default is 50. . 
-  var path_593235 = newJObject()
-  var query_593236 = newJObject()
-  add(query_593236, "nextToken", newJString(nextToken))
-  add(path_593235, "botName", newJString(botName))
-  add(query_593236, "nameContains", newJString(nameContains))
-  add(query_593236, "maxResults", newJInt(maxResults))
-  result = call_593234.call(path_593235, query_593236, nil, nil, nil)
+  var path_600237 = newJObject()
+  var query_600238 = newJObject()
+  add(query_600238, "maxResults", newJInt(maxResults))
+  add(query_600238, "nextToken", newJString(nextToken))
+  add(path_600237, "botName", newJString(botName))
+  add(query_600238, "nameContains", newJString(nameContains))
+  result = call_600236.call(path_600237, query_600238, nil, nil, nil)
 
-var getBotAliases* = Call_GetBotAliases_593219(name: "getBotAliases",
+var getBotAliases* = Call_GetBotAliases_600221(name: "getBotAliases",
     meth: HttpMethod.HttpGet, host: "models.lex.amazonaws.com",
-    route: "/bots/{botName}/aliases/", validator: validate_GetBotAliases_593220,
-    base: "/", url: url_GetBotAliases_593221, schemes: {Scheme.Https, Scheme.Http})
+    route: "/bots/{botName}/aliases/", validator: validate_GetBotAliases_600222,
+    base: "/", url: url_GetBotAliases_600223, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBotChannelAssociations_593237 = ref object of OpenApiRestCall_592365
-proc url_GetBotChannelAssociations_593239(protocol: Scheme; host: string;
+  Call_GetBotChannelAssociations_600239 = ref object of OpenApiRestCall_599369
+proc url_GetBotChannelAssociations_600241(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2456,9 +2547,14 @@ proc url_GetBotChannelAssociations_593239(protocol: Scheme; host: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetBotChannelAssociations_593238(path: JsonNode; query: JsonNode;
+proc validate_GetBotChannelAssociations_600240(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> Returns a list of all of the channels associated with the specified bot. </p> <p>The <code>GetBotChannelAssociations</code> operation requires permissions for the <code>lex:GetBotChannelAssociations</code> action.</p>
   ## 
@@ -2471,16 +2567,16 @@ proc validate_GetBotChannelAssociations_593238(path: JsonNode; query: JsonNode;
   ##            : An alias pointing to the specific version of the Amazon Lex bot to which this association is being made.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_593240 = path.getOrDefault("botName")
-  valid_593240 = validateParameter(valid_593240, JString, required = true,
+  var valid_600242 = path.getOrDefault("botName")
+  valid_600242 = validateParameter(valid_600242, JString, required = true,
                                  default = nil)
-  if valid_593240 != nil:
-    section.add "botName", valid_593240
-  var valid_593241 = path.getOrDefault("aliasName")
-  valid_593241 = validateParameter(valid_593241, JString, required = true,
+  if valid_600242 != nil:
+    section.add "botName", valid_600242
+  var valid_600243 = path.getOrDefault("aliasName")
+  valid_600243 = validateParameter(valid_600243, JString, required = true,
                                  default = nil)
-  if valid_593241 != nil:
-    section.add "aliasName", valid_593241
+  if valid_600243 != nil:
+    section.add "aliasName", valid_600243
   result.add "path", section
   ## parameters in `query` object:
   ##   maxResults: JInt
@@ -2490,85 +2586,85 @@ proc validate_GetBotChannelAssociations_593238(path: JsonNode; query: JsonNode;
   ##   nameContains: JString
   ##               : Substring to match in channel association names. An association will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz." To return all bot channel associations, use a hyphen ("-") as the <code>nameContains</code> parameter.
   section = newJObject()
-  var valid_593242 = query.getOrDefault("maxResults")
-  valid_593242 = validateParameter(valid_593242, JInt, required = false, default = nil)
-  if valid_593242 != nil:
-    section.add "maxResults", valid_593242
-  var valid_593243 = query.getOrDefault("nextToken")
-  valid_593243 = validateParameter(valid_593243, JString, required = false,
+  var valid_600244 = query.getOrDefault("maxResults")
+  valid_600244 = validateParameter(valid_600244, JInt, required = false, default = nil)
+  if valid_600244 != nil:
+    section.add "maxResults", valid_600244
+  var valid_600245 = query.getOrDefault("nextToken")
+  valid_600245 = validateParameter(valid_600245, JString, required = false,
                                  default = nil)
-  if valid_593243 != nil:
-    section.add "nextToken", valid_593243
-  var valid_593244 = query.getOrDefault("nameContains")
-  valid_593244 = validateParameter(valid_593244, JString, required = false,
+  if valid_600245 != nil:
+    section.add "nextToken", valid_600245
+  var valid_600246 = query.getOrDefault("nameContains")
+  valid_600246 = validateParameter(valid_600246, JString, required = false,
                                  default = nil)
-  if valid_593244 != nil:
-    section.add "nameContains", valid_593244
+  if valid_600246 != nil:
+    section.add "nameContains", valid_600246
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593245 = header.getOrDefault("X-Amz-Signature")
-  valid_593245 = validateParameter(valid_593245, JString, required = false,
+  var valid_600247 = header.getOrDefault("X-Amz-Date")
+  valid_600247 = validateParameter(valid_600247, JString, required = false,
                                  default = nil)
-  if valid_593245 != nil:
-    section.add "X-Amz-Signature", valid_593245
-  var valid_593246 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593246 = validateParameter(valid_593246, JString, required = false,
+  if valid_600247 != nil:
+    section.add "X-Amz-Date", valid_600247
+  var valid_600248 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600248 = validateParameter(valid_600248, JString, required = false,
                                  default = nil)
-  if valid_593246 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593246
-  var valid_593247 = header.getOrDefault("X-Amz-Date")
-  valid_593247 = validateParameter(valid_593247, JString, required = false,
+  if valid_600248 != nil:
+    section.add "X-Amz-Security-Token", valid_600248
+  var valid_600249 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600249 = validateParameter(valid_600249, JString, required = false,
                                  default = nil)
-  if valid_593247 != nil:
-    section.add "X-Amz-Date", valid_593247
-  var valid_593248 = header.getOrDefault("X-Amz-Credential")
-  valid_593248 = validateParameter(valid_593248, JString, required = false,
+  if valid_600249 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600249
+  var valid_600250 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600250 = validateParameter(valid_600250, JString, required = false,
                                  default = nil)
-  if valid_593248 != nil:
-    section.add "X-Amz-Credential", valid_593248
-  var valid_593249 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593249 = validateParameter(valid_593249, JString, required = false,
+  if valid_600250 != nil:
+    section.add "X-Amz-Algorithm", valid_600250
+  var valid_600251 = header.getOrDefault("X-Amz-Signature")
+  valid_600251 = validateParameter(valid_600251, JString, required = false,
                                  default = nil)
-  if valid_593249 != nil:
-    section.add "X-Amz-Security-Token", valid_593249
-  var valid_593250 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593250 = validateParameter(valid_593250, JString, required = false,
+  if valid_600251 != nil:
+    section.add "X-Amz-Signature", valid_600251
+  var valid_600252 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600252 = validateParameter(valid_600252, JString, required = false,
                                  default = nil)
-  if valid_593250 != nil:
-    section.add "X-Amz-Algorithm", valid_593250
-  var valid_593251 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593251 = validateParameter(valid_593251, JString, required = false,
+  if valid_600252 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600252
+  var valid_600253 = header.getOrDefault("X-Amz-Credential")
+  valid_600253 = validateParameter(valid_600253, JString, required = false,
                                  default = nil)
-  if valid_593251 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593251
+  if valid_600253 != nil:
+    section.add "X-Amz-Credential", valid_600253
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593252: Call_GetBotChannelAssociations_593237; path: JsonNode;
+proc call*(call_600254: Call_GetBotChannelAssociations_600239; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Returns a list of all of the channels associated with the specified bot. </p> <p>The <code>GetBotChannelAssociations</code> operation requires permissions for the <code>lex:GetBotChannelAssociations</code> action.</p>
   ## 
-  let valid = call_593252.validator(path, query, header, formData, body)
-  let scheme = call_593252.pickScheme
+  let valid = call_600254.validator(path, query, header, formData, body)
+  let scheme = call_600254.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593252.url(scheme.get, call_593252.host, call_593252.base,
-                         call_593252.route, valid.getOrDefault("path"),
+  let url = call_600254.url(scheme.get, call_600254.host, call_600254.base,
+                         call_600254.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593252, url, valid)
+  result = atozHook(call_600254, url, valid)
 
-proc call*(call_593253: Call_GetBotChannelAssociations_593237; botName: string;
+proc call*(call_600255: Call_GetBotChannelAssociations_600239; botName: string;
           aliasName: string; maxResults: int = 0; nextToken: string = "";
           nameContains: string = ""): Recallable =
   ## getBotChannelAssociations
@@ -2583,25 +2679,25 @@ proc call*(call_593253: Call_GetBotChannelAssociations_593237; botName: string;
   ##               : Substring to match in channel association names. An association will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz." To return all bot channel associations, use a hyphen ("-") as the <code>nameContains</code> parameter.
   ##   aliasName: string (required)
   ##            : An alias pointing to the specific version of the Amazon Lex bot to which this association is being made.
-  var path_593254 = newJObject()
-  var query_593255 = newJObject()
-  add(query_593255, "maxResults", newJInt(maxResults))
-  add(query_593255, "nextToken", newJString(nextToken))
-  add(path_593254, "botName", newJString(botName))
-  add(query_593255, "nameContains", newJString(nameContains))
-  add(path_593254, "aliasName", newJString(aliasName))
-  result = call_593253.call(path_593254, query_593255, nil, nil, nil)
+  var path_600256 = newJObject()
+  var query_600257 = newJObject()
+  add(query_600257, "maxResults", newJInt(maxResults))
+  add(query_600257, "nextToken", newJString(nextToken))
+  add(path_600256, "botName", newJString(botName))
+  add(query_600257, "nameContains", newJString(nameContains))
+  add(path_600256, "aliasName", newJString(aliasName))
+  result = call_600255.call(path_600256, query_600257, nil, nil, nil)
 
-var getBotChannelAssociations* = Call_GetBotChannelAssociations_593237(
+var getBotChannelAssociations* = Call_GetBotChannelAssociations_600239(
     name: "getBotChannelAssociations", meth: HttpMethod.HttpGet,
     host: "models.lex.amazonaws.com",
     route: "/bots/{botName}/aliases/{aliasName}/channels/",
-    validator: validate_GetBotChannelAssociations_593238, base: "/",
-    url: url_GetBotChannelAssociations_593239,
+    validator: validate_GetBotChannelAssociations_600240, base: "/",
+    url: url_GetBotChannelAssociations_600241,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBotVersions_593256 = ref object of OpenApiRestCall_592365
-proc url_GetBotVersions_593258(protocol: Scheme; host: string; base: string;
+  Call_GetBotVersions_600258 = ref object of OpenApiRestCall_599369
+proc url_GetBotVersions_600260(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2615,9 +2711,14 @@ proc url_GetBotVersions_593258(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetBotVersions_593257(path: JsonNode; query: JsonNode;
+proc validate_GetBotVersions_600259(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Gets information about all of the versions of a bot.</p> <p>The <code>GetBotVersions</code> operation returns a <code>BotMetadata</code> object for each version of a bot. For example, if a bot has three numbered versions, the <code>GetBotVersions</code> operation returns four <code>BotMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetBotVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetBotVersions</code> action.</p>
@@ -2629,122 +2730,126 @@ proc validate_GetBotVersions_593257(path: JsonNode; query: JsonNode;
   ##       : The name of the bot for which versions should be returned.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593259 = path.getOrDefault("name")
-  valid_593259 = validateParameter(valid_593259, JString, required = true,
+  var valid_600261 = path.getOrDefault("name")
+  valid_600261 = validateParameter(valid_600261, JString, required = true,
                                  default = nil)
-  if valid_593259 != nil:
-    section.add "name", valid_593259
+  if valid_600261 != nil:
+    section.add "name", valid_600261
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : A pagination token for fetching the next page of bot versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   ##   maxResults: JInt
   ##             : The maximum number of bot versions to return in the response. The default is 10.
+  ##   nextToken: JString
+  ##            : A pagination token for fetching the next page of bot versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   section = newJObject()
-  var valid_593260 = query.getOrDefault("nextToken")
-  valid_593260 = validateParameter(valid_593260, JString, required = false,
+  var valid_600262 = query.getOrDefault("maxResults")
+  valid_600262 = validateParameter(valid_600262, JInt, required = false, default = nil)
+  if valid_600262 != nil:
+    section.add "maxResults", valid_600262
+  var valid_600263 = query.getOrDefault("nextToken")
+  valid_600263 = validateParameter(valid_600263, JString, required = false,
                                  default = nil)
-  if valid_593260 != nil:
-    section.add "nextToken", valid_593260
-  var valid_593261 = query.getOrDefault("maxResults")
-  valid_593261 = validateParameter(valid_593261, JInt, required = false, default = nil)
-  if valid_593261 != nil:
-    section.add "maxResults", valid_593261
+  if valid_600263 != nil:
+    section.add "nextToken", valid_600263
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593262 = header.getOrDefault("X-Amz-Signature")
-  valid_593262 = validateParameter(valid_593262, JString, required = false,
+  var valid_600264 = header.getOrDefault("X-Amz-Date")
+  valid_600264 = validateParameter(valid_600264, JString, required = false,
                                  default = nil)
-  if valid_593262 != nil:
-    section.add "X-Amz-Signature", valid_593262
-  var valid_593263 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593263 = validateParameter(valid_593263, JString, required = false,
+  if valid_600264 != nil:
+    section.add "X-Amz-Date", valid_600264
+  var valid_600265 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600265 = validateParameter(valid_600265, JString, required = false,
                                  default = nil)
-  if valid_593263 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593263
-  var valid_593264 = header.getOrDefault("X-Amz-Date")
-  valid_593264 = validateParameter(valid_593264, JString, required = false,
+  if valid_600265 != nil:
+    section.add "X-Amz-Security-Token", valid_600265
+  var valid_600266 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600266 = validateParameter(valid_600266, JString, required = false,
                                  default = nil)
-  if valid_593264 != nil:
-    section.add "X-Amz-Date", valid_593264
-  var valid_593265 = header.getOrDefault("X-Amz-Credential")
-  valid_593265 = validateParameter(valid_593265, JString, required = false,
+  if valid_600266 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600266
+  var valid_600267 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600267 = validateParameter(valid_600267, JString, required = false,
                                  default = nil)
-  if valid_593265 != nil:
-    section.add "X-Amz-Credential", valid_593265
-  var valid_593266 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593266 = validateParameter(valid_593266, JString, required = false,
+  if valid_600267 != nil:
+    section.add "X-Amz-Algorithm", valid_600267
+  var valid_600268 = header.getOrDefault("X-Amz-Signature")
+  valid_600268 = validateParameter(valid_600268, JString, required = false,
                                  default = nil)
-  if valid_593266 != nil:
-    section.add "X-Amz-Security-Token", valid_593266
-  var valid_593267 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593267 = validateParameter(valid_593267, JString, required = false,
+  if valid_600268 != nil:
+    section.add "X-Amz-Signature", valid_600268
+  var valid_600269 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600269 = validateParameter(valid_600269, JString, required = false,
                                  default = nil)
-  if valid_593267 != nil:
-    section.add "X-Amz-Algorithm", valid_593267
-  var valid_593268 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593268 = validateParameter(valid_593268, JString, required = false,
+  if valid_600269 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600269
+  var valid_600270 = header.getOrDefault("X-Amz-Credential")
+  valid_600270 = validateParameter(valid_600270, JString, required = false,
                                  default = nil)
-  if valid_593268 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593268
+  if valid_600270 != nil:
+    section.add "X-Amz-Credential", valid_600270
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593269: Call_GetBotVersions_593256; path: JsonNode; query: JsonNode;
+proc call*(call_600271: Call_GetBotVersions_600258; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about all of the versions of a bot.</p> <p>The <code>GetBotVersions</code> operation returns a <code>BotMetadata</code> object for each version of a bot. For example, if a bot has three numbered versions, the <code>GetBotVersions</code> operation returns four <code>BotMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetBotVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetBotVersions</code> action.</p>
   ## 
-  let valid = call_593269.validator(path, query, header, formData, body)
-  let scheme = call_593269.pickScheme
+  let valid = call_600271.validator(path, query, header, formData, body)
+  let scheme = call_600271.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593269.url(scheme.get, call_593269.host, call_593269.base,
-                         call_593269.route, valid.getOrDefault("path"),
+  let url = call_600271.url(scheme.get, call_600271.host, call_600271.base,
+                         call_600271.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593269, url, valid)
+  result = atozHook(call_600271, url, valid)
 
-proc call*(call_593270: Call_GetBotVersions_593256; name: string;
-          nextToken: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600272: Call_GetBotVersions_600258; name: string;
+          maxResults: int = 0; nextToken: string = ""): Recallable =
   ## getBotVersions
   ## <p>Gets information about all of the versions of a bot.</p> <p>The <code>GetBotVersions</code> operation returns a <code>BotMetadata</code> object for each version of a bot. For example, if a bot has three numbered versions, the <code>GetBotVersions</code> operation returns four <code>BotMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetBotVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetBotVersions</code> action.</p>
-  ##   nextToken: string
-  ##            : A pagination token for fetching the next page of bot versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   ##   name: string (required)
   ##       : The name of the bot for which versions should be returned.
   ##   maxResults: int
   ##             : The maximum number of bot versions to return in the response. The default is 10.
-  var path_593271 = newJObject()
-  var query_593272 = newJObject()
-  add(query_593272, "nextToken", newJString(nextToken))
-  add(path_593271, "name", newJString(name))
-  add(query_593272, "maxResults", newJInt(maxResults))
-  result = call_593270.call(path_593271, query_593272, nil, nil, nil)
+  ##   nextToken: string
+  ##            : A pagination token for fetching the next page of bot versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
+  var path_600273 = newJObject()
+  var query_600274 = newJObject()
+  add(path_600273, "name", newJString(name))
+  add(query_600274, "maxResults", newJInt(maxResults))
+  add(query_600274, "nextToken", newJString(nextToken))
+  result = call_600272.call(path_600273, query_600274, nil, nil, nil)
 
-var getBotVersions* = Call_GetBotVersions_593256(name: "getBotVersions",
+var getBotVersions* = Call_GetBotVersions_600258(name: "getBotVersions",
     meth: HttpMethod.HttpGet, host: "models.lex.amazonaws.com",
-    route: "/bots/{name}/versions/", validator: validate_GetBotVersions_593257,
-    base: "/", url: url_GetBotVersions_593258, schemes: {Scheme.Https, Scheme.Http})
+    route: "/bots/{name}/versions/", validator: validate_GetBotVersions_600259,
+    base: "/", url: url_GetBotVersions_600260, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBots_593273 = ref object of OpenApiRestCall_592365
-proc url_GetBots_593275(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetBots_600275 = ref object of OpenApiRestCall_599369
+proc url_GetBots_600277(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_GetBots_593274(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetBots_600276(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns bot information as follows: </p> <ul> <li> <p>If you provide the <code>nameContains</code> field, the response includes information for the <code>$LATEST</code> version of all bots whose name contains the specified string.</p> </li> <li> <p>If you don't specify the <code>nameContains</code> field, the operation returns information about the <code>$LATEST</code> version of all of your bots.</p> </li> </ul> <p>This operation requires permission for the <code>lex:GetBots</code> action.</p>
   ## 
@@ -2753,115 +2858,115 @@ proc validate_GetBots_593274(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   maxResults: JInt
+  ##             : The maximum number of bots to return in the response that the request will return. The default is 10.
   ##   nextToken: JString
   ##            : A pagination token that fetches the next page of bots. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of bots, specify the pagination token in the next request. 
   ##   nameContains: JString
   ##               : Substring to match in bot names. A bot will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
-  ##   maxResults: JInt
-  ##             : The maximum number of bots to return in the response that the request will return. The default is 10.
   section = newJObject()
-  var valid_593276 = query.getOrDefault("nextToken")
-  valid_593276 = validateParameter(valid_593276, JString, required = false,
+  var valid_600278 = query.getOrDefault("maxResults")
+  valid_600278 = validateParameter(valid_600278, JInt, required = false, default = nil)
+  if valid_600278 != nil:
+    section.add "maxResults", valid_600278
+  var valid_600279 = query.getOrDefault("nextToken")
+  valid_600279 = validateParameter(valid_600279, JString, required = false,
                                  default = nil)
-  if valid_593276 != nil:
-    section.add "nextToken", valid_593276
-  var valid_593277 = query.getOrDefault("nameContains")
-  valid_593277 = validateParameter(valid_593277, JString, required = false,
+  if valid_600279 != nil:
+    section.add "nextToken", valid_600279
+  var valid_600280 = query.getOrDefault("nameContains")
+  valid_600280 = validateParameter(valid_600280, JString, required = false,
                                  default = nil)
-  if valid_593277 != nil:
-    section.add "nameContains", valid_593277
-  var valid_593278 = query.getOrDefault("maxResults")
-  valid_593278 = validateParameter(valid_593278, JInt, required = false, default = nil)
-  if valid_593278 != nil:
-    section.add "maxResults", valid_593278
+  if valid_600280 != nil:
+    section.add "nameContains", valid_600280
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593279 = header.getOrDefault("X-Amz-Signature")
-  valid_593279 = validateParameter(valid_593279, JString, required = false,
+  var valid_600281 = header.getOrDefault("X-Amz-Date")
+  valid_600281 = validateParameter(valid_600281, JString, required = false,
                                  default = nil)
-  if valid_593279 != nil:
-    section.add "X-Amz-Signature", valid_593279
-  var valid_593280 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593280 = validateParameter(valid_593280, JString, required = false,
+  if valid_600281 != nil:
+    section.add "X-Amz-Date", valid_600281
+  var valid_600282 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600282 = validateParameter(valid_600282, JString, required = false,
                                  default = nil)
-  if valid_593280 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593280
-  var valid_593281 = header.getOrDefault("X-Amz-Date")
-  valid_593281 = validateParameter(valid_593281, JString, required = false,
+  if valid_600282 != nil:
+    section.add "X-Amz-Security-Token", valid_600282
+  var valid_600283 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600283 = validateParameter(valid_600283, JString, required = false,
                                  default = nil)
-  if valid_593281 != nil:
-    section.add "X-Amz-Date", valid_593281
-  var valid_593282 = header.getOrDefault("X-Amz-Credential")
-  valid_593282 = validateParameter(valid_593282, JString, required = false,
+  if valid_600283 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600283
+  var valid_600284 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600284 = validateParameter(valid_600284, JString, required = false,
                                  default = nil)
-  if valid_593282 != nil:
-    section.add "X-Amz-Credential", valid_593282
-  var valid_593283 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593283 = validateParameter(valid_593283, JString, required = false,
+  if valid_600284 != nil:
+    section.add "X-Amz-Algorithm", valid_600284
+  var valid_600285 = header.getOrDefault("X-Amz-Signature")
+  valid_600285 = validateParameter(valid_600285, JString, required = false,
                                  default = nil)
-  if valid_593283 != nil:
-    section.add "X-Amz-Security-Token", valid_593283
-  var valid_593284 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593284 = validateParameter(valid_593284, JString, required = false,
+  if valid_600285 != nil:
+    section.add "X-Amz-Signature", valid_600285
+  var valid_600286 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600286 = validateParameter(valid_600286, JString, required = false,
                                  default = nil)
-  if valid_593284 != nil:
-    section.add "X-Amz-Algorithm", valid_593284
-  var valid_593285 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593285 = validateParameter(valid_593285, JString, required = false,
+  if valid_600286 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600286
+  var valid_600287 = header.getOrDefault("X-Amz-Credential")
+  valid_600287 = validateParameter(valid_600287, JString, required = false,
                                  default = nil)
-  if valid_593285 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593285
+  if valid_600287 != nil:
+    section.add "X-Amz-Credential", valid_600287
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593286: Call_GetBots_593273; path: JsonNode; query: JsonNode;
+proc call*(call_600288: Call_GetBots_600275; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns bot information as follows: </p> <ul> <li> <p>If you provide the <code>nameContains</code> field, the response includes information for the <code>$LATEST</code> version of all bots whose name contains the specified string.</p> </li> <li> <p>If you don't specify the <code>nameContains</code> field, the operation returns information about the <code>$LATEST</code> version of all of your bots.</p> </li> </ul> <p>This operation requires permission for the <code>lex:GetBots</code> action.</p>
   ## 
-  let valid = call_593286.validator(path, query, header, formData, body)
-  let scheme = call_593286.pickScheme
+  let valid = call_600288.validator(path, query, header, formData, body)
+  let scheme = call_600288.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593286.url(scheme.get, call_593286.host, call_593286.base,
-                         call_593286.route, valid.getOrDefault("path"),
+  let url = call_600288.url(scheme.get, call_600288.host, call_600288.base,
+                         call_600288.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593286, url, valid)
+  result = atozHook(call_600288, url, valid)
 
-proc call*(call_593287: Call_GetBots_593273; nextToken: string = "";
-          nameContains: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600289: Call_GetBots_600275; maxResults: int = 0;
+          nextToken: string = ""; nameContains: string = ""): Recallable =
   ## getBots
   ## <p>Returns bot information as follows: </p> <ul> <li> <p>If you provide the <code>nameContains</code> field, the response includes information for the <code>$LATEST</code> version of all bots whose name contains the specified string.</p> </li> <li> <p>If you don't specify the <code>nameContains</code> field, the operation returns information about the <code>$LATEST</code> version of all of your bots.</p> </li> </ul> <p>This operation requires permission for the <code>lex:GetBots</code> action.</p>
+  ##   maxResults: int
+  ##             : The maximum number of bots to return in the response that the request will return. The default is 10.
   ##   nextToken: string
   ##            : A pagination token that fetches the next page of bots. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of bots, specify the pagination token in the next request. 
   ##   nameContains: string
   ##               : Substring to match in bot names. A bot will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
-  ##   maxResults: int
-  ##             : The maximum number of bots to return in the response that the request will return. The default is 10.
-  var query_593288 = newJObject()
-  add(query_593288, "nextToken", newJString(nextToken))
-  add(query_593288, "nameContains", newJString(nameContains))
-  add(query_593288, "maxResults", newJInt(maxResults))
-  result = call_593287.call(nil, query_593288, nil, nil, nil)
+  var query_600290 = newJObject()
+  add(query_600290, "maxResults", newJInt(maxResults))
+  add(query_600290, "nextToken", newJString(nextToken))
+  add(query_600290, "nameContains", newJString(nameContains))
+  result = call_600289.call(nil, query_600290, nil, nil, nil)
 
-var getBots* = Call_GetBots_593273(name: "getBots", meth: HttpMethod.HttpGet,
+var getBots* = Call_GetBots_600275(name: "getBots", meth: HttpMethod.HttpGet,
                                 host: "models.lex.amazonaws.com", route: "/bots/",
-                                validator: validate_GetBots_593274, base: "/",
-                                url: url_GetBots_593275,
+                                validator: validate_GetBots_600276, base: "/",
+                                url: url_GetBots_600277,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBuiltinIntent_593289 = ref object of OpenApiRestCall_592365
-proc url_GetBuiltinIntent_593291(protocol: Scheme; host: string; base: string;
+  Call_GetBuiltinIntent_600291 = ref object of OpenApiRestCall_599369
+proc url_GetBuiltinIntent_600293(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2874,9 +2979,14 @@ proc url_GetBuiltinIntent_593291(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetBuiltinIntent_593290(path: JsonNode; query: JsonNode;
+proc validate_GetBuiltinIntent_600292(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Returns information about a built-in intent.</p> <p>This operation requires permission for the <code>lex:GetBuiltinIntent</code> action.</p>
@@ -2889,102 +2999,106 @@ proc validate_GetBuiltinIntent_593290(path: JsonNode; query: JsonNode;
   ## href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/standard-intents">Standard Built-in Intents</a> in the <i>Alexa Skills Kit</i>.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `signature` field"
-  var valid_593292 = path.getOrDefault("signature")
-  valid_593292 = validateParameter(valid_593292, JString, required = true,
+  var valid_600294 = path.getOrDefault("signature")
+  valid_600294 = validateParameter(valid_600294, JString, required = true,
                                  default = nil)
-  if valid_593292 != nil:
-    section.add "signature", valid_593292
+  if valid_600294 != nil:
+    section.add "signature", valid_600294
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593293 = header.getOrDefault("X-Amz-Signature")
-  valid_593293 = validateParameter(valid_593293, JString, required = false,
+  var valid_600295 = header.getOrDefault("X-Amz-Date")
+  valid_600295 = validateParameter(valid_600295, JString, required = false,
                                  default = nil)
-  if valid_593293 != nil:
-    section.add "X-Amz-Signature", valid_593293
-  var valid_593294 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593294 = validateParameter(valid_593294, JString, required = false,
+  if valid_600295 != nil:
+    section.add "X-Amz-Date", valid_600295
+  var valid_600296 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600296 = validateParameter(valid_600296, JString, required = false,
                                  default = nil)
-  if valid_593294 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593294
-  var valid_593295 = header.getOrDefault("X-Amz-Date")
-  valid_593295 = validateParameter(valid_593295, JString, required = false,
+  if valid_600296 != nil:
+    section.add "X-Amz-Security-Token", valid_600296
+  var valid_600297 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600297 = validateParameter(valid_600297, JString, required = false,
                                  default = nil)
-  if valid_593295 != nil:
-    section.add "X-Amz-Date", valid_593295
-  var valid_593296 = header.getOrDefault("X-Amz-Credential")
-  valid_593296 = validateParameter(valid_593296, JString, required = false,
+  if valid_600297 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600297
+  var valid_600298 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600298 = validateParameter(valid_600298, JString, required = false,
                                  default = nil)
-  if valid_593296 != nil:
-    section.add "X-Amz-Credential", valid_593296
-  var valid_593297 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593297 = validateParameter(valid_593297, JString, required = false,
+  if valid_600298 != nil:
+    section.add "X-Amz-Algorithm", valid_600298
+  var valid_600299 = header.getOrDefault("X-Amz-Signature")
+  valid_600299 = validateParameter(valid_600299, JString, required = false,
                                  default = nil)
-  if valid_593297 != nil:
-    section.add "X-Amz-Security-Token", valid_593297
-  var valid_593298 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593298 = validateParameter(valid_593298, JString, required = false,
+  if valid_600299 != nil:
+    section.add "X-Amz-Signature", valid_600299
+  var valid_600300 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600300 = validateParameter(valid_600300, JString, required = false,
                                  default = nil)
-  if valid_593298 != nil:
-    section.add "X-Amz-Algorithm", valid_593298
-  var valid_593299 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593299 = validateParameter(valid_593299, JString, required = false,
+  if valid_600300 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600300
+  var valid_600301 = header.getOrDefault("X-Amz-Credential")
+  valid_600301 = validateParameter(valid_600301, JString, required = false,
                                  default = nil)
-  if valid_593299 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593299
+  if valid_600301 != nil:
+    section.add "X-Amz-Credential", valid_600301
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593300: Call_GetBuiltinIntent_593289; path: JsonNode;
+proc call*(call_600302: Call_GetBuiltinIntent_600291; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about a built-in intent.</p> <p>This operation requires permission for the <code>lex:GetBuiltinIntent</code> action.</p>
   ## 
-  let valid = call_593300.validator(path, query, header, formData, body)
-  let scheme = call_593300.pickScheme
+  let valid = call_600302.validator(path, query, header, formData, body)
+  let scheme = call_600302.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593300.url(scheme.get, call_593300.host, call_593300.base,
-                         call_593300.route, valid.getOrDefault("path"),
+  let url = call_600302.url(scheme.get, call_600302.host, call_600302.base,
+                         call_600302.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593300, url, valid)
+  result = atozHook(call_600302, url, valid)
 
-proc call*(call_593301: Call_GetBuiltinIntent_593289; signature: string): Recallable =
+proc call*(call_600303: Call_GetBuiltinIntent_600291; signature: string): Recallable =
   ## getBuiltinIntent
   ## <p>Returns information about a built-in intent.</p> <p>This operation requires permission for the <code>lex:GetBuiltinIntent</code> action.</p>
   ##   signature: string (required)
   ##            : The unique identifier for a built-in intent. To find the signature for an intent, see <a 
   ## href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/standard-intents">Standard Built-in Intents</a> in the <i>Alexa Skills Kit</i>.
-  var path_593302 = newJObject()
-  add(path_593302, "signature", newJString(signature))
-  result = call_593301.call(path_593302, nil, nil, nil, nil)
+  var path_600304 = newJObject()
+  add(path_600304, "signature", newJString(signature))
+  result = call_600303.call(path_600304, nil, nil, nil, nil)
 
-var getBuiltinIntent* = Call_GetBuiltinIntent_593289(name: "getBuiltinIntent",
+var getBuiltinIntent* = Call_GetBuiltinIntent_600291(name: "getBuiltinIntent",
     meth: HttpMethod.HttpGet, host: "models.lex.amazonaws.com",
-    route: "/builtins/intents/{signature}", validator: validate_GetBuiltinIntent_593290,
-    base: "/", url: url_GetBuiltinIntent_593291,
+    route: "/builtins/intents/{signature}", validator: validate_GetBuiltinIntent_600292,
+    base: "/", url: url_GetBuiltinIntent_600293,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBuiltinIntents_593303 = ref object of OpenApiRestCall_592365
-proc url_GetBuiltinIntents_593305(protocol: Scheme; host: string; base: string;
+  Call_GetBuiltinIntents_600305 = ref object of OpenApiRestCall_599369
+proc url_GetBuiltinIntents_600307(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_GetBuiltinIntents_593304(path: JsonNode; query: JsonNode;
+proc validate_GetBuiltinIntents_600306(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Gets a list of built-in intents that meet the specified criteria.</p> <p>This operation requires permission for the <code>lex:GetBuiltinIntents</code> action.</p>
@@ -2994,134 +3108,138 @@ proc validate_GetBuiltinIntents_593304(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : A pagination token that fetches the next page of intents. If this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of intents, use the pagination token in the next request.
   ##   locale: JString
   ##         : A list of locales that the intent supports.
+  ##   maxResults: JInt
+  ##             : The maximum number of intents to return in the response. The default is 10.
+  ##   nextToken: JString
+  ##            : A pagination token that fetches the next page of intents. If this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of intents, use the pagination token in the next request.
   ##   signatureContains: JString
   ##                    : Substring to match in built-in intent signatures. An intent will be returned if any part of its signature matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz." To find the signature for an intent, see <a 
   ## href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/standard-intents">Standard Built-in Intents</a> in the <i>Alexa Skills Kit</i>.
-  ##   maxResults: JInt
-  ##             : The maximum number of intents to return in the response. The default is 10.
   section = newJObject()
-  var valid_593306 = query.getOrDefault("nextToken")
-  valid_593306 = validateParameter(valid_593306, JString, required = false,
-                                 default = nil)
-  if valid_593306 != nil:
-    section.add "nextToken", valid_593306
-  var valid_593320 = query.getOrDefault("locale")
-  valid_593320 = validateParameter(valid_593320, JString, required = false,
+  var valid_600321 = query.getOrDefault("locale")
+  valid_600321 = validateParameter(valid_600321, JString, required = false,
                                  default = newJString("en-US"))
-  if valid_593320 != nil:
-    section.add "locale", valid_593320
-  var valid_593321 = query.getOrDefault("signatureContains")
-  valid_593321 = validateParameter(valid_593321, JString, required = false,
+  if valid_600321 != nil:
+    section.add "locale", valid_600321
+  var valid_600322 = query.getOrDefault("maxResults")
+  valid_600322 = validateParameter(valid_600322, JInt, required = false, default = nil)
+  if valid_600322 != nil:
+    section.add "maxResults", valid_600322
+  var valid_600323 = query.getOrDefault("nextToken")
+  valid_600323 = validateParameter(valid_600323, JString, required = false,
                                  default = nil)
-  if valid_593321 != nil:
-    section.add "signatureContains", valid_593321
-  var valid_593322 = query.getOrDefault("maxResults")
-  valid_593322 = validateParameter(valid_593322, JInt, required = false, default = nil)
-  if valid_593322 != nil:
-    section.add "maxResults", valid_593322
+  if valid_600323 != nil:
+    section.add "nextToken", valid_600323
+  var valid_600324 = query.getOrDefault("signatureContains")
+  valid_600324 = validateParameter(valid_600324, JString, required = false,
+                                 default = nil)
+  if valid_600324 != nil:
+    section.add "signatureContains", valid_600324
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593323 = header.getOrDefault("X-Amz-Signature")
-  valid_593323 = validateParameter(valid_593323, JString, required = false,
+  var valid_600325 = header.getOrDefault("X-Amz-Date")
+  valid_600325 = validateParameter(valid_600325, JString, required = false,
                                  default = nil)
-  if valid_593323 != nil:
-    section.add "X-Amz-Signature", valid_593323
-  var valid_593324 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593324 = validateParameter(valid_593324, JString, required = false,
+  if valid_600325 != nil:
+    section.add "X-Amz-Date", valid_600325
+  var valid_600326 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600326 = validateParameter(valid_600326, JString, required = false,
                                  default = nil)
-  if valid_593324 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593324
-  var valid_593325 = header.getOrDefault("X-Amz-Date")
-  valid_593325 = validateParameter(valid_593325, JString, required = false,
+  if valid_600326 != nil:
+    section.add "X-Amz-Security-Token", valid_600326
+  var valid_600327 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600327 = validateParameter(valid_600327, JString, required = false,
                                  default = nil)
-  if valid_593325 != nil:
-    section.add "X-Amz-Date", valid_593325
-  var valid_593326 = header.getOrDefault("X-Amz-Credential")
-  valid_593326 = validateParameter(valid_593326, JString, required = false,
+  if valid_600327 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600327
+  var valid_600328 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600328 = validateParameter(valid_600328, JString, required = false,
                                  default = nil)
-  if valid_593326 != nil:
-    section.add "X-Amz-Credential", valid_593326
-  var valid_593327 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593327 = validateParameter(valid_593327, JString, required = false,
+  if valid_600328 != nil:
+    section.add "X-Amz-Algorithm", valid_600328
+  var valid_600329 = header.getOrDefault("X-Amz-Signature")
+  valid_600329 = validateParameter(valid_600329, JString, required = false,
                                  default = nil)
-  if valid_593327 != nil:
-    section.add "X-Amz-Security-Token", valid_593327
-  var valid_593328 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593328 = validateParameter(valid_593328, JString, required = false,
+  if valid_600329 != nil:
+    section.add "X-Amz-Signature", valid_600329
+  var valid_600330 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600330 = validateParameter(valid_600330, JString, required = false,
                                  default = nil)
-  if valid_593328 != nil:
-    section.add "X-Amz-Algorithm", valid_593328
-  var valid_593329 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593329 = validateParameter(valid_593329, JString, required = false,
+  if valid_600330 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600330
+  var valid_600331 = header.getOrDefault("X-Amz-Credential")
+  valid_600331 = validateParameter(valid_600331, JString, required = false,
                                  default = nil)
-  if valid_593329 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593329
+  if valid_600331 != nil:
+    section.add "X-Amz-Credential", valid_600331
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593330: Call_GetBuiltinIntents_593303; path: JsonNode;
+proc call*(call_600332: Call_GetBuiltinIntents_600305; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets a list of built-in intents that meet the specified criteria.</p> <p>This operation requires permission for the <code>lex:GetBuiltinIntents</code> action.</p>
   ## 
-  let valid = call_593330.validator(path, query, header, formData, body)
-  let scheme = call_593330.pickScheme
+  let valid = call_600332.validator(path, query, header, formData, body)
+  let scheme = call_600332.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593330.url(scheme.get, call_593330.host, call_593330.base,
-                         call_593330.route, valid.getOrDefault("path"),
+  let url = call_600332.url(scheme.get, call_600332.host, call_600332.base,
+                         call_600332.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593330, url, valid)
+  result = atozHook(call_600332, url, valid)
 
-proc call*(call_593331: Call_GetBuiltinIntents_593303; nextToken: string = "";
-          locale: string = "en-US"; signatureContains: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600333: Call_GetBuiltinIntents_600305; locale: string = "en-US";
+          maxResults: int = 0; nextToken: string = ""; signatureContains: string = ""): Recallable =
   ## getBuiltinIntents
   ## <p>Gets a list of built-in intents that meet the specified criteria.</p> <p>This operation requires permission for the <code>lex:GetBuiltinIntents</code> action.</p>
-  ##   nextToken: string
-  ##            : A pagination token that fetches the next page of intents. If this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of intents, use the pagination token in the next request.
   ##   locale: string
   ##         : A list of locales that the intent supports.
+  ##   maxResults: int
+  ##             : The maximum number of intents to return in the response. The default is 10.
+  ##   nextToken: string
+  ##            : A pagination token that fetches the next page of intents. If this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of intents, use the pagination token in the next request.
   ##   signatureContains: string
   ##                    : Substring to match in built-in intent signatures. An intent will be returned if any part of its signature matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz." To find the signature for an intent, see <a 
   ## href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/standard-intents">Standard Built-in Intents</a> in the <i>Alexa Skills Kit</i>.
-  ##   maxResults: int
-  ##             : The maximum number of intents to return in the response. The default is 10.
-  var query_593332 = newJObject()
-  add(query_593332, "nextToken", newJString(nextToken))
-  add(query_593332, "locale", newJString(locale))
-  add(query_593332, "signatureContains", newJString(signatureContains))
-  add(query_593332, "maxResults", newJInt(maxResults))
-  result = call_593331.call(nil, query_593332, nil, nil, nil)
+  var query_600334 = newJObject()
+  add(query_600334, "locale", newJString(locale))
+  add(query_600334, "maxResults", newJInt(maxResults))
+  add(query_600334, "nextToken", newJString(nextToken))
+  add(query_600334, "signatureContains", newJString(signatureContains))
+  result = call_600333.call(nil, query_600334, nil, nil, nil)
 
-var getBuiltinIntents* = Call_GetBuiltinIntents_593303(name: "getBuiltinIntents",
+var getBuiltinIntents* = Call_GetBuiltinIntents_600305(name: "getBuiltinIntents",
     meth: HttpMethod.HttpGet, host: "models.lex.amazonaws.com",
-    route: "/builtins/intents/", validator: validate_GetBuiltinIntents_593304,
-    base: "/", url: url_GetBuiltinIntents_593305,
+    route: "/builtins/intents/", validator: validate_GetBuiltinIntents_600306,
+    base: "/", url: url_GetBuiltinIntents_600307,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBuiltinSlotTypes_593333 = ref object of OpenApiRestCall_592365
-proc url_GetBuiltinSlotTypes_593335(protocol: Scheme; host: string; base: string;
+  Call_GetBuiltinSlotTypes_600335 = ref object of OpenApiRestCall_599369
+proc url_GetBuiltinSlotTypes_600337(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_GetBuiltinSlotTypes_593334(path: JsonNode; query: JsonNode;
+proc validate_GetBuiltinSlotTypes_600336(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Gets a list of built-in slot types that meet the specified criteria.</p> <p>For a list of built-in slot types, see <a href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/slot-type-reference">Slot Type Reference</a> in the <i>Alexa Skills Kit</i>.</p> <p>This operation requires permission for the <code>lex:GetBuiltInSlotTypes</code> action.</p>
@@ -3131,132 +3249,136 @@ proc validate_GetBuiltinSlotTypes_593334(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : A pagination token that fetches the next page of slot types. If the response to this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of slot types, specify the pagination token in the next request.
   ##   locale: JString
   ##         : A list of locales that the slot type supports.
-  ##   signatureContains: JString
-  ##                    : Substring to match in built-in slot type signatures. A slot type will be returned if any part of its signature matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
   ##   maxResults: JInt
   ##             : The maximum number of slot types to return in the response. The default is 10.
+  ##   nextToken: JString
+  ##            : A pagination token that fetches the next page of slot types. If the response to this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of slot types, specify the pagination token in the next request.
+  ##   signatureContains: JString
+  ##                    : Substring to match in built-in slot type signatures. A slot type will be returned if any part of its signature matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
   section = newJObject()
-  var valid_593336 = query.getOrDefault("nextToken")
-  valid_593336 = validateParameter(valid_593336, JString, required = false,
-                                 default = nil)
-  if valid_593336 != nil:
-    section.add "nextToken", valid_593336
-  var valid_593337 = query.getOrDefault("locale")
-  valid_593337 = validateParameter(valid_593337, JString, required = false,
+  var valid_600338 = query.getOrDefault("locale")
+  valid_600338 = validateParameter(valid_600338, JString, required = false,
                                  default = newJString("en-US"))
-  if valid_593337 != nil:
-    section.add "locale", valid_593337
-  var valid_593338 = query.getOrDefault("signatureContains")
-  valid_593338 = validateParameter(valid_593338, JString, required = false,
+  if valid_600338 != nil:
+    section.add "locale", valid_600338
+  var valid_600339 = query.getOrDefault("maxResults")
+  valid_600339 = validateParameter(valid_600339, JInt, required = false, default = nil)
+  if valid_600339 != nil:
+    section.add "maxResults", valid_600339
+  var valid_600340 = query.getOrDefault("nextToken")
+  valid_600340 = validateParameter(valid_600340, JString, required = false,
                                  default = nil)
-  if valid_593338 != nil:
-    section.add "signatureContains", valid_593338
-  var valid_593339 = query.getOrDefault("maxResults")
-  valid_593339 = validateParameter(valid_593339, JInt, required = false, default = nil)
-  if valid_593339 != nil:
-    section.add "maxResults", valid_593339
+  if valid_600340 != nil:
+    section.add "nextToken", valid_600340
+  var valid_600341 = query.getOrDefault("signatureContains")
+  valid_600341 = validateParameter(valid_600341, JString, required = false,
+                                 default = nil)
+  if valid_600341 != nil:
+    section.add "signatureContains", valid_600341
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593340 = header.getOrDefault("X-Amz-Signature")
-  valid_593340 = validateParameter(valid_593340, JString, required = false,
+  var valid_600342 = header.getOrDefault("X-Amz-Date")
+  valid_600342 = validateParameter(valid_600342, JString, required = false,
                                  default = nil)
-  if valid_593340 != nil:
-    section.add "X-Amz-Signature", valid_593340
-  var valid_593341 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593341 = validateParameter(valid_593341, JString, required = false,
+  if valid_600342 != nil:
+    section.add "X-Amz-Date", valid_600342
+  var valid_600343 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600343 = validateParameter(valid_600343, JString, required = false,
                                  default = nil)
-  if valid_593341 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593341
-  var valid_593342 = header.getOrDefault("X-Amz-Date")
-  valid_593342 = validateParameter(valid_593342, JString, required = false,
+  if valid_600343 != nil:
+    section.add "X-Amz-Security-Token", valid_600343
+  var valid_600344 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600344 = validateParameter(valid_600344, JString, required = false,
                                  default = nil)
-  if valid_593342 != nil:
-    section.add "X-Amz-Date", valid_593342
-  var valid_593343 = header.getOrDefault("X-Amz-Credential")
-  valid_593343 = validateParameter(valid_593343, JString, required = false,
+  if valid_600344 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600344
+  var valid_600345 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600345 = validateParameter(valid_600345, JString, required = false,
                                  default = nil)
-  if valid_593343 != nil:
-    section.add "X-Amz-Credential", valid_593343
-  var valid_593344 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593344 = validateParameter(valid_593344, JString, required = false,
+  if valid_600345 != nil:
+    section.add "X-Amz-Algorithm", valid_600345
+  var valid_600346 = header.getOrDefault("X-Amz-Signature")
+  valid_600346 = validateParameter(valid_600346, JString, required = false,
                                  default = nil)
-  if valid_593344 != nil:
-    section.add "X-Amz-Security-Token", valid_593344
-  var valid_593345 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593345 = validateParameter(valid_593345, JString, required = false,
+  if valid_600346 != nil:
+    section.add "X-Amz-Signature", valid_600346
+  var valid_600347 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600347 = validateParameter(valid_600347, JString, required = false,
                                  default = nil)
-  if valid_593345 != nil:
-    section.add "X-Amz-Algorithm", valid_593345
-  var valid_593346 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593346 = validateParameter(valid_593346, JString, required = false,
+  if valid_600347 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600347
+  var valid_600348 = header.getOrDefault("X-Amz-Credential")
+  valid_600348 = validateParameter(valid_600348, JString, required = false,
                                  default = nil)
-  if valid_593346 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593346
+  if valid_600348 != nil:
+    section.add "X-Amz-Credential", valid_600348
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593347: Call_GetBuiltinSlotTypes_593333; path: JsonNode;
+proc call*(call_600349: Call_GetBuiltinSlotTypes_600335; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets a list of built-in slot types that meet the specified criteria.</p> <p>For a list of built-in slot types, see <a href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/slot-type-reference">Slot Type Reference</a> in the <i>Alexa Skills Kit</i>.</p> <p>This operation requires permission for the <code>lex:GetBuiltInSlotTypes</code> action.</p>
   ## 
-  let valid = call_593347.validator(path, query, header, formData, body)
-  let scheme = call_593347.pickScheme
+  let valid = call_600349.validator(path, query, header, formData, body)
+  let scheme = call_600349.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593347.url(scheme.get, call_593347.host, call_593347.base,
-                         call_593347.route, valid.getOrDefault("path"),
+  let url = call_600349.url(scheme.get, call_600349.host, call_600349.base,
+                         call_600349.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593347, url, valid)
+  result = atozHook(call_600349, url, valid)
 
-proc call*(call_593348: Call_GetBuiltinSlotTypes_593333; nextToken: string = "";
-          locale: string = "en-US"; signatureContains: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600350: Call_GetBuiltinSlotTypes_600335; locale: string = "en-US";
+          maxResults: int = 0; nextToken: string = ""; signatureContains: string = ""): Recallable =
   ## getBuiltinSlotTypes
   ## <p>Gets a list of built-in slot types that meet the specified criteria.</p> <p>For a list of built-in slot types, see <a href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/slot-type-reference">Slot Type Reference</a> in the <i>Alexa Skills Kit</i>.</p> <p>This operation requires permission for the <code>lex:GetBuiltInSlotTypes</code> action.</p>
-  ##   nextToken: string
-  ##            : A pagination token that fetches the next page of slot types. If the response to this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of slot types, specify the pagination token in the next request.
   ##   locale: string
   ##         : A list of locales that the slot type supports.
-  ##   signatureContains: string
-  ##                    : Substring to match in built-in slot type signatures. A slot type will be returned if any part of its signature matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
   ##   maxResults: int
   ##             : The maximum number of slot types to return in the response. The default is 10.
-  var query_593349 = newJObject()
-  add(query_593349, "nextToken", newJString(nextToken))
-  add(query_593349, "locale", newJString(locale))
-  add(query_593349, "signatureContains", newJString(signatureContains))
-  add(query_593349, "maxResults", newJInt(maxResults))
-  result = call_593348.call(nil, query_593349, nil, nil, nil)
+  ##   nextToken: string
+  ##            : A pagination token that fetches the next page of slot types. If the response to this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of slot types, specify the pagination token in the next request.
+  ##   signatureContains: string
+  ##                    : Substring to match in built-in slot type signatures. A slot type will be returned if any part of its signature matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
+  var query_600351 = newJObject()
+  add(query_600351, "locale", newJString(locale))
+  add(query_600351, "maxResults", newJInt(maxResults))
+  add(query_600351, "nextToken", newJString(nextToken))
+  add(query_600351, "signatureContains", newJString(signatureContains))
+  result = call_600350.call(nil, query_600351, nil, nil, nil)
 
-var getBuiltinSlotTypes* = Call_GetBuiltinSlotTypes_593333(
+var getBuiltinSlotTypes* = Call_GetBuiltinSlotTypes_600335(
     name: "getBuiltinSlotTypes", meth: HttpMethod.HttpGet,
     host: "models.lex.amazonaws.com", route: "/builtins/slottypes/",
-    validator: validate_GetBuiltinSlotTypes_593334, base: "/",
-    url: url_GetBuiltinSlotTypes_593335, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetBuiltinSlotTypes_600336, base: "/",
+    url: url_GetBuiltinSlotTypes_600337, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetExport_593350 = ref object of OpenApiRestCall_592365
-proc url_GetExport_593352(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetExport_600352 = ref object of OpenApiRestCall_599369
+proc url_GetExport_600354(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_GetExport_593351(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetExport_600353(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Exports the contents of a Amazon Lex resource in a specified format. 
   ## 
@@ -3265,127 +3387,128 @@ proc validate_GetExport_593351(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   exportType: JString (required)
+  ##             : The format of the exported data.
   ##   name: JString (required)
   ##       : The name of the bot to export.
   ##   version: JString (required)
   ##          : The version of the bot to export.
   ##   resourceType: JString (required)
   ##               : The type of resource to export. 
-  ##   exportType: JString (required)
-  ##             : The format of the exported data.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `name` field"
-  var valid_593353 = query.getOrDefault("name")
-  valid_593353 = validateParameter(valid_593353, JString, required = true,
-                                 default = nil)
-  if valid_593353 != nil:
-    section.add "name", valid_593353
-  var valid_593354 = query.getOrDefault("version")
-  valid_593354 = validateParameter(valid_593354, JString, required = true,
-                                 default = nil)
-  if valid_593354 != nil:
-    section.add "version", valid_593354
-  var valid_593355 = query.getOrDefault("resourceType")
-  valid_593355 = validateParameter(valid_593355, JString, required = true,
-                                 default = newJString("BOT"))
-  if valid_593355 != nil:
-    section.add "resourceType", valid_593355
-  var valid_593356 = query.getOrDefault("exportType")
-  valid_593356 = validateParameter(valid_593356, JString, required = true,
+  assert query != nil,
+        "query argument is necessary due to required `exportType` field"
+  var valid_600355 = query.getOrDefault("exportType")
+  valid_600355 = validateParameter(valid_600355, JString, required = true,
                                  default = newJString("ALEXA_SKILLS_KIT"))
-  if valid_593356 != nil:
-    section.add "exportType", valid_593356
+  if valid_600355 != nil:
+    section.add "exportType", valid_600355
+  var valid_600356 = query.getOrDefault("name")
+  valid_600356 = validateParameter(valid_600356, JString, required = true,
+                                 default = nil)
+  if valid_600356 != nil:
+    section.add "name", valid_600356
+  var valid_600357 = query.getOrDefault("version")
+  valid_600357 = validateParameter(valid_600357, JString, required = true,
+                                 default = nil)
+  if valid_600357 != nil:
+    section.add "version", valid_600357
+  var valid_600358 = query.getOrDefault("resourceType")
+  valid_600358 = validateParameter(valid_600358, JString, required = true,
+                                 default = newJString("BOT"))
+  if valid_600358 != nil:
+    section.add "resourceType", valid_600358
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593357 = header.getOrDefault("X-Amz-Signature")
-  valid_593357 = validateParameter(valid_593357, JString, required = false,
+  var valid_600359 = header.getOrDefault("X-Amz-Date")
+  valid_600359 = validateParameter(valid_600359, JString, required = false,
                                  default = nil)
-  if valid_593357 != nil:
-    section.add "X-Amz-Signature", valid_593357
-  var valid_593358 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593358 = validateParameter(valid_593358, JString, required = false,
+  if valid_600359 != nil:
+    section.add "X-Amz-Date", valid_600359
+  var valid_600360 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600360 = validateParameter(valid_600360, JString, required = false,
                                  default = nil)
-  if valid_593358 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593358
-  var valid_593359 = header.getOrDefault("X-Amz-Date")
-  valid_593359 = validateParameter(valid_593359, JString, required = false,
+  if valid_600360 != nil:
+    section.add "X-Amz-Security-Token", valid_600360
+  var valid_600361 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600361 = validateParameter(valid_600361, JString, required = false,
                                  default = nil)
-  if valid_593359 != nil:
-    section.add "X-Amz-Date", valid_593359
-  var valid_593360 = header.getOrDefault("X-Amz-Credential")
-  valid_593360 = validateParameter(valid_593360, JString, required = false,
+  if valid_600361 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600361
+  var valid_600362 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600362 = validateParameter(valid_600362, JString, required = false,
                                  default = nil)
-  if valid_593360 != nil:
-    section.add "X-Amz-Credential", valid_593360
-  var valid_593361 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593361 = validateParameter(valid_593361, JString, required = false,
+  if valid_600362 != nil:
+    section.add "X-Amz-Algorithm", valid_600362
+  var valid_600363 = header.getOrDefault("X-Amz-Signature")
+  valid_600363 = validateParameter(valid_600363, JString, required = false,
                                  default = nil)
-  if valid_593361 != nil:
-    section.add "X-Amz-Security-Token", valid_593361
-  var valid_593362 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593362 = validateParameter(valid_593362, JString, required = false,
+  if valid_600363 != nil:
+    section.add "X-Amz-Signature", valid_600363
+  var valid_600364 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600364 = validateParameter(valid_600364, JString, required = false,
                                  default = nil)
-  if valid_593362 != nil:
-    section.add "X-Amz-Algorithm", valid_593362
-  var valid_593363 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593363 = validateParameter(valid_593363, JString, required = false,
+  if valid_600364 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600364
+  var valid_600365 = header.getOrDefault("X-Amz-Credential")
+  valid_600365 = validateParameter(valid_600365, JString, required = false,
                                  default = nil)
-  if valid_593363 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593363
+  if valid_600365 != nil:
+    section.add "X-Amz-Credential", valid_600365
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593364: Call_GetExport_593350; path: JsonNode; query: JsonNode;
+proc call*(call_600366: Call_GetExport_600352; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Exports the contents of a Amazon Lex resource in a specified format. 
   ## 
-  let valid = call_593364.validator(path, query, header, formData, body)
-  let scheme = call_593364.pickScheme
+  let valid = call_600366.validator(path, query, header, formData, body)
+  let scheme = call_600366.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593364.url(scheme.get, call_593364.host, call_593364.base,
-                         call_593364.route, valid.getOrDefault("path"),
+  let url = call_600366.url(scheme.get, call_600366.host, call_600366.base,
+                         call_600366.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593364, url, valid)
+  result = atozHook(call_600366, url, valid)
 
-proc call*(call_593365: Call_GetExport_593350; name: string; version: string;
-          resourceType: string = "BOT"; exportType: string = "ALEXA_SKILLS_KIT"): Recallable =
+proc call*(call_600367: Call_GetExport_600352; name: string; version: string;
+          exportType: string = "ALEXA_SKILLS_KIT"; resourceType: string = "BOT"): Recallable =
   ## getExport
   ## Exports the contents of a Amazon Lex resource in a specified format. 
+  ##   exportType: string (required)
+  ##             : The format of the exported data.
   ##   name: string (required)
   ##       : The name of the bot to export.
   ##   version: string (required)
   ##          : The version of the bot to export.
   ##   resourceType: string (required)
   ##               : The type of resource to export. 
-  ##   exportType: string (required)
-  ##             : The format of the exported data.
-  var query_593366 = newJObject()
-  add(query_593366, "name", newJString(name))
-  add(query_593366, "version", newJString(version))
-  add(query_593366, "resourceType", newJString(resourceType))
-  add(query_593366, "exportType", newJString(exportType))
-  result = call_593365.call(nil, query_593366, nil, nil, nil)
+  var query_600368 = newJObject()
+  add(query_600368, "exportType", newJString(exportType))
+  add(query_600368, "name", newJString(name))
+  add(query_600368, "version", newJString(version))
+  add(query_600368, "resourceType", newJString(resourceType))
+  result = call_600367.call(nil, query_600368, nil, nil, nil)
 
-var getExport* = Call_GetExport_593350(name: "getExport", meth: HttpMethod.HttpGet,
+var getExport* = Call_GetExport_600352(name: "getExport", meth: HttpMethod.HttpGet,
                                     host: "models.lex.amazonaws.com", route: "/exports/#name&version&resourceType&exportType",
-                                    validator: validate_GetExport_593351,
-                                    base: "/", url: url_GetExport_593352,
+                                    validator: validate_GetExport_600353,
+                                    base: "/", url: url_GetExport_600354,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetImport_593367 = ref object of OpenApiRestCall_592365
-proc url_GetImport_593369(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetImport_600369 = ref object of OpenApiRestCall_599369
+proc url_GetImport_600371(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3398,9 +3521,14 @@ proc url_GetImport_593369(protocol: Scheme; host: string; base: string; route: s
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetImport_593368(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetImport_600370(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets information about an import job started with the <code>StartImport</code> operation.
   ## 
@@ -3411,95 +3539,95 @@ proc validate_GetImport_593368(path: JsonNode; query: JsonNode; header: JsonNode
   ##           : The identifier of the import job information to return.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `importId` field"
-  var valid_593370 = path.getOrDefault("importId")
-  valid_593370 = validateParameter(valid_593370, JString, required = true,
+  var valid_600372 = path.getOrDefault("importId")
+  valid_600372 = validateParameter(valid_600372, JString, required = true,
                                  default = nil)
-  if valid_593370 != nil:
-    section.add "importId", valid_593370
+  if valid_600372 != nil:
+    section.add "importId", valid_600372
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593371 = header.getOrDefault("X-Amz-Signature")
-  valid_593371 = validateParameter(valid_593371, JString, required = false,
+  var valid_600373 = header.getOrDefault("X-Amz-Date")
+  valid_600373 = validateParameter(valid_600373, JString, required = false,
                                  default = nil)
-  if valid_593371 != nil:
-    section.add "X-Amz-Signature", valid_593371
-  var valid_593372 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593372 = validateParameter(valid_593372, JString, required = false,
+  if valid_600373 != nil:
+    section.add "X-Amz-Date", valid_600373
+  var valid_600374 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600374 = validateParameter(valid_600374, JString, required = false,
                                  default = nil)
-  if valid_593372 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593372
-  var valid_593373 = header.getOrDefault("X-Amz-Date")
-  valid_593373 = validateParameter(valid_593373, JString, required = false,
+  if valid_600374 != nil:
+    section.add "X-Amz-Security-Token", valid_600374
+  var valid_600375 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600375 = validateParameter(valid_600375, JString, required = false,
                                  default = nil)
-  if valid_593373 != nil:
-    section.add "X-Amz-Date", valid_593373
-  var valid_593374 = header.getOrDefault("X-Amz-Credential")
-  valid_593374 = validateParameter(valid_593374, JString, required = false,
+  if valid_600375 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600375
+  var valid_600376 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600376 = validateParameter(valid_600376, JString, required = false,
                                  default = nil)
-  if valid_593374 != nil:
-    section.add "X-Amz-Credential", valid_593374
-  var valid_593375 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593375 = validateParameter(valid_593375, JString, required = false,
+  if valid_600376 != nil:
+    section.add "X-Amz-Algorithm", valid_600376
+  var valid_600377 = header.getOrDefault("X-Amz-Signature")
+  valid_600377 = validateParameter(valid_600377, JString, required = false,
                                  default = nil)
-  if valid_593375 != nil:
-    section.add "X-Amz-Security-Token", valid_593375
-  var valid_593376 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593376 = validateParameter(valid_593376, JString, required = false,
+  if valid_600377 != nil:
+    section.add "X-Amz-Signature", valid_600377
+  var valid_600378 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600378 = validateParameter(valid_600378, JString, required = false,
                                  default = nil)
-  if valid_593376 != nil:
-    section.add "X-Amz-Algorithm", valid_593376
-  var valid_593377 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593377 = validateParameter(valid_593377, JString, required = false,
+  if valid_600378 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600378
+  var valid_600379 = header.getOrDefault("X-Amz-Credential")
+  valid_600379 = validateParameter(valid_600379, JString, required = false,
                                  default = nil)
-  if valid_593377 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593377
+  if valid_600379 != nil:
+    section.add "X-Amz-Credential", valid_600379
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593378: Call_GetImport_593367; path: JsonNode; query: JsonNode;
+proc call*(call_600380: Call_GetImport_600369; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about an import job started with the <code>StartImport</code> operation.
   ## 
-  let valid = call_593378.validator(path, query, header, formData, body)
-  let scheme = call_593378.pickScheme
+  let valid = call_600380.validator(path, query, header, formData, body)
+  let scheme = call_600380.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593378.url(scheme.get, call_593378.host, call_593378.base,
-                         call_593378.route, valid.getOrDefault("path"),
+  let url = call_600380.url(scheme.get, call_600380.host, call_600380.base,
+                         call_600380.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593378, url, valid)
+  result = atozHook(call_600380, url, valid)
 
-proc call*(call_593379: Call_GetImport_593367; importId: string): Recallable =
+proc call*(call_600381: Call_GetImport_600369; importId: string): Recallable =
   ## getImport
   ## Gets information about an import job started with the <code>StartImport</code> operation.
   ##   importId: string (required)
   ##           : The identifier of the import job information to return.
-  var path_593380 = newJObject()
-  add(path_593380, "importId", newJString(importId))
-  result = call_593379.call(path_593380, nil, nil, nil, nil)
+  var path_600382 = newJObject()
+  add(path_600382, "importId", newJString(importId))
+  result = call_600381.call(path_600382, nil, nil, nil, nil)
 
-var getImport* = Call_GetImport_593367(name: "getImport", meth: HttpMethod.HttpGet,
+var getImport* = Call_GetImport_600369(name: "getImport", meth: HttpMethod.HttpGet,
                                     host: "models.lex.amazonaws.com",
                                     route: "/imports/{importId}",
-                                    validator: validate_GetImport_593368,
-                                    base: "/", url: url_GetImport_593369,
+                                    validator: validate_GetImport_600370,
+                                    base: "/", url: url_GetImport_600371,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetIntentVersions_593381 = ref object of OpenApiRestCall_592365
-proc url_GetIntentVersions_593383(protocol: Scheme; host: string; base: string;
+  Call_GetIntentVersions_600383 = ref object of OpenApiRestCall_599369
+proc url_GetIntentVersions_600385(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3513,9 +3641,14 @@ proc url_GetIntentVersions_593383(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetIntentVersions_593382(path: JsonNode; query: JsonNode;
+proc validate_GetIntentVersions_600384(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Gets information about all of the versions of an intent.</p> <p>The <code>GetIntentVersions</code> operation returns an <code>IntentMetadata</code> object for each version of an intent. For example, if an intent has three numbered versions, the <code>GetIntentVersions</code> operation returns four <code>IntentMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetIntentVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetIntentVersions</code> action.</p>
@@ -3527,123 +3660,127 @@ proc validate_GetIntentVersions_593382(path: JsonNode; query: JsonNode;
   ##       : The name of the intent for which versions should be returned.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593384 = path.getOrDefault("name")
-  valid_593384 = validateParameter(valid_593384, JString, required = true,
+  var valid_600386 = path.getOrDefault("name")
+  valid_600386 = validateParameter(valid_600386, JString, required = true,
                                  default = nil)
-  if valid_593384 != nil:
-    section.add "name", valid_593384
+  if valid_600386 != nil:
+    section.add "name", valid_600386
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : A pagination token for fetching the next page of intent versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   ##   maxResults: JInt
   ##             : The maximum number of intent versions to return in the response. The default is 10.
+  ##   nextToken: JString
+  ##            : A pagination token for fetching the next page of intent versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   section = newJObject()
-  var valid_593385 = query.getOrDefault("nextToken")
-  valid_593385 = validateParameter(valid_593385, JString, required = false,
+  var valid_600387 = query.getOrDefault("maxResults")
+  valid_600387 = validateParameter(valid_600387, JInt, required = false, default = nil)
+  if valid_600387 != nil:
+    section.add "maxResults", valid_600387
+  var valid_600388 = query.getOrDefault("nextToken")
+  valid_600388 = validateParameter(valid_600388, JString, required = false,
                                  default = nil)
-  if valid_593385 != nil:
-    section.add "nextToken", valid_593385
-  var valid_593386 = query.getOrDefault("maxResults")
-  valid_593386 = validateParameter(valid_593386, JInt, required = false, default = nil)
-  if valid_593386 != nil:
-    section.add "maxResults", valid_593386
+  if valid_600388 != nil:
+    section.add "nextToken", valid_600388
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593387 = header.getOrDefault("X-Amz-Signature")
-  valid_593387 = validateParameter(valid_593387, JString, required = false,
+  var valid_600389 = header.getOrDefault("X-Amz-Date")
+  valid_600389 = validateParameter(valid_600389, JString, required = false,
                                  default = nil)
-  if valid_593387 != nil:
-    section.add "X-Amz-Signature", valid_593387
-  var valid_593388 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593388 = validateParameter(valid_593388, JString, required = false,
+  if valid_600389 != nil:
+    section.add "X-Amz-Date", valid_600389
+  var valid_600390 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600390 = validateParameter(valid_600390, JString, required = false,
                                  default = nil)
-  if valid_593388 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593388
-  var valid_593389 = header.getOrDefault("X-Amz-Date")
-  valid_593389 = validateParameter(valid_593389, JString, required = false,
+  if valid_600390 != nil:
+    section.add "X-Amz-Security-Token", valid_600390
+  var valid_600391 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600391 = validateParameter(valid_600391, JString, required = false,
                                  default = nil)
-  if valid_593389 != nil:
-    section.add "X-Amz-Date", valid_593389
-  var valid_593390 = header.getOrDefault("X-Amz-Credential")
-  valid_593390 = validateParameter(valid_593390, JString, required = false,
+  if valid_600391 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600391
+  var valid_600392 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600392 = validateParameter(valid_600392, JString, required = false,
                                  default = nil)
-  if valid_593390 != nil:
-    section.add "X-Amz-Credential", valid_593390
-  var valid_593391 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593391 = validateParameter(valid_593391, JString, required = false,
+  if valid_600392 != nil:
+    section.add "X-Amz-Algorithm", valid_600392
+  var valid_600393 = header.getOrDefault("X-Amz-Signature")
+  valid_600393 = validateParameter(valid_600393, JString, required = false,
                                  default = nil)
-  if valid_593391 != nil:
-    section.add "X-Amz-Security-Token", valid_593391
-  var valid_593392 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593392 = validateParameter(valid_593392, JString, required = false,
+  if valid_600393 != nil:
+    section.add "X-Amz-Signature", valid_600393
+  var valid_600394 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600394 = validateParameter(valid_600394, JString, required = false,
                                  default = nil)
-  if valid_593392 != nil:
-    section.add "X-Amz-Algorithm", valid_593392
-  var valid_593393 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593393 = validateParameter(valid_593393, JString, required = false,
+  if valid_600394 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600394
+  var valid_600395 = header.getOrDefault("X-Amz-Credential")
+  valid_600395 = validateParameter(valid_600395, JString, required = false,
                                  default = nil)
-  if valid_593393 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593393
+  if valid_600395 != nil:
+    section.add "X-Amz-Credential", valid_600395
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593394: Call_GetIntentVersions_593381; path: JsonNode;
+proc call*(call_600396: Call_GetIntentVersions_600383; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about all of the versions of an intent.</p> <p>The <code>GetIntentVersions</code> operation returns an <code>IntentMetadata</code> object for each version of an intent. For example, if an intent has three numbered versions, the <code>GetIntentVersions</code> operation returns four <code>IntentMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetIntentVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetIntentVersions</code> action.</p>
   ## 
-  let valid = call_593394.validator(path, query, header, formData, body)
-  let scheme = call_593394.pickScheme
+  let valid = call_600396.validator(path, query, header, formData, body)
+  let scheme = call_600396.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593394.url(scheme.get, call_593394.host, call_593394.base,
-                         call_593394.route, valid.getOrDefault("path"),
+  let url = call_600396.url(scheme.get, call_600396.host, call_600396.base,
+                         call_600396.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593394, url, valid)
+  result = atozHook(call_600396, url, valid)
 
-proc call*(call_593395: Call_GetIntentVersions_593381; name: string;
-          nextToken: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600397: Call_GetIntentVersions_600383; name: string;
+          maxResults: int = 0; nextToken: string = ""): Recallable =
   ## getIntentVersions
   ## <p>Gets information about all of the versions of an intent.</p> <p>The <code>GetIntentVersions</code> operation returns an <code>IntentMetadata</code> object for each version of an intent. For example, if an intent has three numbered versions, the <code>GetIntentVersions</code> operation returns four <code>IntentMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetIntentVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetIntentVersions</code> action.</p>
-  ##   nextToken: string
-  ##            : A pagination token for fetching the next page of intent versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   ##   name: string (required)
   ##       : The name of the intent for which versions should be returned.
   ##   maxResults: int
   ##             : The maximum number of intent versions to return in the response. The default is 10.
-  var path_593396 = newJObject()
-  var query_593397 = newJObject()
-  add(query_593397, "nextToken", newJString(nextToken))
-  add(path_593396, "name", newJString(name))
-  add(query_593397, "maxResults", newJInt(maxResults))
-  result = call_593395.call(path_593396, query_593397, nil, nil, nil)
+  ##   nextToken: string
+  ##            : A pagination token for fetching the next page of intent versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
+  var path_600398 = newJObject()
+  var query_600399 = newJObject()
+  add(path_600398, "name", newJString(name))
+  add(query_600399, "maxResults", newJInt(maxResults))
+  add(query_600399, "nextToken", newJString(nextToken))
+  result = call_600397.call(path_600398, query_600399, nil, nil, nil)
 
-var getIntentVersions* = Call_GetIntentVersions_593381(name: "getIntentVersions",
+var getIntentVersions* = Call_GetIntentVersions_600383(name: "getIntentVersions",
     meth: HttpMethod.HttpGet, host: "models.lex.amazonaws.com",
-    route: "/intents/{name}/versions/", validator: validate_GetIntentVersions_593382,
-    base: "/", url: url_GetIntentVersions_593383,
+    route: "/intents/{name}/versions/", validator: validate_GetIntentVersions_600384,
+    base: "/", url: url_GetIntentVersions_600385,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetIntents_593398 = ref object of OpenApiRestCall_592365
-proc url_GetIntents_593400(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetIntents_600400 = ref object of OpenApiRestCall_599369
+proc url_GetIntents_600402(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_GetIntents_593399(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetIntents_600401(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns intent information as follows: </p> <ul> <li> <p>If you specify the <code>nameContains</code> field, returns the <code>$LATEST</code> version of all intents that contain the specified string.</p> </li> <li> <p> If you don't specify the <code>nameContains</code> field, returns information about the <code>$LATEST</code> version of all intents. </p> </li> </ul> <p> The operation requires permission for the <code>lex:GetIntents</code> action. </p>
   ## 
@@ -3652,117 +3789,117 @@ proc validate_GetIntents_593399(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   maxResults: JInt
+  ##             : The maximum number of intents to return in the response. The default is 10.
   ##   nextToken: JString
   ##            : A pagination token that fetches the next page of intents. If the response to this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of intents, specify the pagination token in the next request. 
   ##   nameContains: JString
   ##               : Substring to match in intent names. An intent will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
-  ##   maxResults: JInt
-  ##             : The maximum number of intents to return in the response. The default is 10.
   section = newJObject()
-  var valid_593401 = query.getOrDefault("nextToken")
-  valid_593401 = validateParameter(valid_593401, JString, required = false,
+  var valid_600403 = query.getOrDefault("maxResults")
+  valid_600403 = validateParameter(valid_600403, JInt, required = false, default = nil)
+  if valid_600403 != nil:
+    section.add "maxResults", valid_600403
+  var valid_600404 = query.getOrDefault("nextToken")
+  valid_600404 = validateParameter(valid_600404, JString, required = false,
                                  default = nil)
-  if valid_593401 != nil:
-    section.add "nextToken", valid_593401
-  var valid_593402 = query.getOrDefault("nameContains")
-  valid_593402 = validateParameter(valid_593402, JString, required = false,
+  if valid_600404 != nil:
+    section.add "nextToken", valid_600404
+  var valid_600405 = query.getOrDefault("nameContains")
+  valid_600405 = validateParameter(valid_600405, JString, required = false,
                                  default = nil)
-  if valid_593402 != nil:
-    section.add "nameContains", valid_593402
-  var valid_593403 = query.getOrDefault("maxResults")
-  valid_593403 = validateParameter(valid_593403, JInt, required = false, default = nil)
-  if valid_593403 != nil:
-    section.add "maxResults", valid_593403
+  if valid_600405 != nil:
+    section.add "nameContains", valid_600405
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593404 = header.getOrDefault("X-Amz-Signature")
-  valid_593404 = validateParameter(valid_593404, JString, required = false,
+  var valid_600406 = header.getOrDefault("X-Amz-Date")
+  valid_600406 = validateParameter(valid_600406, JString, required = false,
                                  default = nil)
-  if valid_593404 != nil:
-    section.add "X-Amz-Signature", valid_593404
-  var valid_593405 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593405 = validateParameter(valid_593405, JString, required = false,
+  if valid_600406 != nil:
+    section.add "X-Amz-Date", valid_600406
+  var valid_600407 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600407 = validateParameter(valid_600407, JString, required = false,
                                  default = nil)
-  if valid_593405 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593405
-  var valid_593406 = header.getOrDefault("X-Amz-Date")
-  valid_593406 = validateParameter(valid_593406, JString, required = false,
+  if valid_600407 != nil:
+    section.add "X-Amz-Security-Token", valid_600407
+  var valid_600408 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600408 = validateParameter(valid_600408, JString, required = false,
                                  default = nil)
-  if valid_593406 != nil:
-    section.add "X-Amz-Date", valid_593406
-  var valid_593407 = header.getOrDefault("X-Amz-Credential")
-  valid_593407 = validateParameter(valid_593407, JString, required = false,
+  if valid_600408 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600408
+  var valid_600409 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600409 = validateParameter(valid_600409, JString, required = false,
                                  default = nil)
-  if valid_593407 != nil:
-    section.add "X-Amz-Credential", valid_593407
-  var valid_593408 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593408 = validateParameter(valid_593408, JString, required = false,
+  if valid_600409 != nil:
+    section.add "X-Amz-Algorithm", valid_600409
+  var valid_600410 = header.getOrDefault("X-Amz-Signature")
+  valid_600410 = validateParameter(valid_600410, JString, required = false,
                                  default = nil)
-  if valid_593408 != nil:
-    section.add "X-Amz-Security-Token", valid_593408
-  var valid_593409 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593409 = validateParameter(valid_593409, JString, required = false,
+  if valid_600410 != nil:
+    section.add "X-Amz-Signature", valid_600410
+  var valid_600411 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600411 = validateParameter(valid_600411, JString, required = false,
                                  default = nil)
-  if valid_593409 != nil:
-    section.add "X-Amz-Algorithm", valid_593409
-  var valid_593410 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593410 = validateParameter(valid_593410, JString, required = false,
+  if valid_600411 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600411
+  var valid_600412 = header.getOrDefault("X-Amz-Credential")
+  valid_600412 = validateParameter(valid_600412, JString, required = false,
                                  default = nil)
-  if valid_593410 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593410
+  if valid_600412 != nil:
+    section.add "X-Amz-Credential", valid_600412
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593411: Call_GetIntents_593398; path: JsonNode; query: JsonNode;
+proc call*(call_600413: Call_GetIntents_600400; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns intent information as follows: </p> <ul> <li> <p>If you specify the <code>nameContains</code> field, returns the <code>$LATEST</code> version of all intents that contain the specified string.</p> </li> <li> <p> If you don't specify the <code>nameContains</code> field, returns information about the <code>$LATEST</code> version of all intents. </p> </li> </ul> <p> The operation requires permission for the <code>lex:GetIntents</code> action. </p>
   ## 
-  let valid = call_593411.validator(path, query, header, formData, body)
-  let scheme = call_593411.pickScheme
+  let valid = call_600413.validator(path, query, header, formData, body)
+  let scheme = call_600413.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593411.url(scheme.get, call_593411.host, call_593411.base,
-                         call_593411.route, valid.getOrDefault("path"),
+  let url = call_600413.url(scheme.get, call_600413.host, call_600413.base,
+                         call_600413.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593411, url, valid)
+  result = atozHook(call_600413, url, valid)
 
-proc call*(call_593412: Call_GetIntents_593398; nextToken: string = "";
-          nameContains: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600414: Call_GetIntents_600400; maxResults: int = 0;
+          nextToken: string = ""; nameContains: string = ""): Recallable =
   ## getIntents
   ## <p>Returns intent information as follows: </p> <ul> <li> <p>If you specify the <code>nameContains</code> field, returns the <code>$LATEST</code> version of all intents that contain the specified string.</p> </li> <li> <p> If you don't specify the <code>nameContains</code> field, returns information about the <code>$LATEST</code> version of all intents. </p> </li> </ul> <p> The operation requires permission for the <code>lex:GetIntents</code> action. </p>
+  ##   maxResults: int
+  ##             : The maximum number of intents to return in the response. The default is 10.
   ##   nextToken: string
   ##            : A pagination token that fetches the next page of intents. If the response to this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of intents, specify the pagination token in the next request. 
   ##   nameContains: string
   ##               : Substring to match in intent names. An intent will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
-  ##   maxResults: int
-  ##             : The maximum number of intents to return in the response. The default is 10.
-  var query_593413 = newJObject()
-  add(query_593413, "nextToken", newJString(nextToken))
-  add(query_593413, "nameContains", newJString(nameContains))
-  add(query_593413, "maxResults", newJInt(maxResults))
-  result = call_593412.call(nil, query_593413, nil, nil, nil)
+  var query_600415 = newJObject()
+  add(query_600415, "maxResults", newJInt(maxResults))
+  add(query_600415, "nextToken", newJString(nextToken))
+  add(query_600415, "nameContains", newJString(nameContains))
+  result = call_600414.call(nil, query_600415, nil, nil, nil)
 
-var getIntents* = Call_GetIntents_593398(name: "getIntents",
+var getIntents* = Call_GetIntents_600400(name: "getIntents",
                                       meth: HttpMethod.HttpGet,
                                       host: "models.lex.amazonaws.com",
                                       route: "/intents/",
-                                      validator: validate_GetIntents_593399,
-                                      base: "/", url: url_GetIntents_593400,
+                                      validator: validate_GetIntents_600401,
+                                      base: "/", url: url_GetIntents_600402,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSlotType_593414 = ref object of OpenApiRestCall_592365
-proc url_GetSlotType_593416(protocol: Scheme; host: string; base: string;
+  Call_GetSlotType_600416 = ref object of OpenApiRestCall_599369
+proc url_GetSlotType_600418(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3778,118 +3915,123 @@ proc url_GetSlotType_593416(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetSlotType_593415(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetSlotType_600417(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about a specific version of a slot type. In addition to specifying the slot type name, you must specify the slot type version.</p> <p>This operation requires permissions for the <code>lex:GetSlotType</code> action.</p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
-  ##   version: JString (required)
-  ##          : The version of the slot type. 
   ##   name: JString (required)
   ##       : The name of the slot type. The name is case sensitive. 
+  ##   version: JString (required)
+  ##          : The version of the slot type. 
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `version` field"
-  var valid_593417 = path.getOrDefault("version")
-  valid_593417 = validateParameter(valid_593417, JString, required = true,
+  assert path != nil, "path argument is necessary due to required `name` field"
+  var valid_600419 = path.getOrDefault("name")
+  valid_600419 = validateParameter(valid_600419, JString, required = true,
                                  default = nil)
-  if valid_593417 != nil:
-    section.add "version", valid_593417
-  var valid_593418 = path.getOrDefault("name")
-  valid_593418 = validateParameter(valid_593418, JString, required = true,
+  if valid_600419 != nil:
+    section.add "name", valid_600419
+  var valid_600420 = path.getOrDefault("version")
+  valid_600420 = validateParameter(valid_600420, JString, required = true,
                                  default = nil)
-  if valid_593418 != nil:
-    section.add "name", valid_593418
+  if valid_600420 != nil:
+    section.add "version", valid_600420
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593419 = header.getOrDefault("X-Amz-Signature")
-  valid_593419 = validateParameter(valid_593419, JString, required = false,
+  var valid_600421 = header.getOrDefault("X-Amz-Date")
+  valid_600421 = validateParameter(valid_600421, JString, required = false,
                                  default = nil)
-  if valid_593419 != nil:
-    section.add "X-Amz-Signature", valid_593419
-  var valid_593420 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593420 = validateParameter(valid_593420, JString, required = false,
+  if valid_600421 != nil:
+    section.add "X-Amz-Date", valid_600421
+  var valid_600422 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600422 = validateParameter(valid_600422, JString, required = false,
                                  default = nil)
-  if valid_593420 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593420
-  var valid_593421 = header.getOrDefault("X-Amz-Date")
-  valid_593421 = validateParameter(valid_593421, JString, required = false,
+  if valid_600422 != nil:
+    section.add "X-Amz-Security-Token", valid_600422
+  var valid_600423 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600423 = validateParameter(valid_600423, JString, required = false,
                                  default = nil)
-  if valid_593421 != nil:
-    section.add "X-Amz-Date", valid_593421
-  var valid_593422 = header.getOrDefault("X-Amz-Credential")
-  valid_593422 = validateParameter(valid_593422, JString, required = false,
+  if valid_600423 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600423
+  var valid_600424 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600424 = validateParameter(valid_600424, JString, required = false,
                                  default = nil)
-  if valid_593422 != nil:
-    section.add "X-Amz-Credential", valid_593422
-  var valid_593423 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593423 = validateParameter(valid_593423, JString, required = false,
+  if valid_600424 != nil:
+    section.add "X-Amz-Algorithm", valid_600424
+  var valid_600425 = header.getOrDefault("X-Amz-Signature")
+  valid_600425 = validateParameter(valid_600425, JString, required = false,
                                  default = nil)
-  if valid_593423 != nil:
-    section.add "X-Amz-Security-Token", valid_593423
-  var valid_593424 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593424 = validateParameter(valid_593424, JString, required = false,
+  if valid_600425 != nil:
+    section.add "X-Amz-Signature", valid_600425
+  var valid_600426 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600426 = validateParameter(valid_600426, JString, required = false,
                                  default = nil)
-  if valid_593424 != nil:
-    section.add "X-Amz-Algorithm", valid_593424
-  var valid_593425 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593425 = validateParameter(valid_593425, JString, required = false,
+  if valid_600426 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600426
+  var valid_600427 = header.getOrDefault("X-Amz-Credential")
+  valid_600427 = validateParameter(valid_600427, JString, required = false,
                                  default = nil)
-  if valid_593425 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593425
+  if valid_600427 != nil:
+    section.add "X-Amz-Credential", valid_600427
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593426: Call_GetSlotType_593414; path: JsonNode; query: JsonNode;
+proc call*(call_600428: Call_GetSlotType_600416; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about a specific version of a slot type. In addition to specifying the slot type name, you must specify the slot type version.</p> <p>This operation requires permissions for the <code>lex:GetSlotType</code> action.</p>
   ## 
-  let valid = call_593426.validator(path, query, header, formData, body)
-  let scheme = call_593426.pickScheme
+  let valid = call_600428.validator(path, query, header, formData, body)
+  let scheme = call_600428.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593426.url(scheme.get, call_593426.host, call_593426.base,
-                         call_593426.route, valid.getOrDefault("path"),
+  let url = call_600428.url(scheme.get, call_600428.host, call_600428.base,
+                         call_600428.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593426, url, valid)
+  result = atozHook(call_600428, url, valid)
 
-proc call*(call_593427: Call_GetSlotType_593414; version: string; name: string): Recallable =
+proc call*(call_600429: Call_GetSlotType_600416; name: string; version: string): Recallable =
   ## getSlotType
   ## <p>Returns information about a specific version of a slot type. In addition to specifying the slot type name, you must specify the slot type version.</p> <p>This operation requires permissions for the <code>lex:GetSlotType</code> action.</p>
-  ##   version: string (required)
-  ##          : The version of the slot type. 
   ##   name: string (required)
   ##       : The name of the slot type. The name is case sensitive. 
-  var path_593428 = newJObject()
-  add(path_593428, "version", newJString(version))
-  add(path_593428, "name", newJString(name))
-  result = call_593427.call(path_593428, nil, nil, nil, nil)
+  ##   version: string (required)
+  ##          : The version of the slot type. 
+  var path_600430 = newJObject()
+  add(path_600430, "name", newJString(name))
+  add(path_600430, "version", newJString(version))
+  result = call_600429.call(path_600430, nil, nil, nil, nil)
 
-var getSlotType* = Call_GetSlotType_593414(name: "getSlotType",
+var getSlotType* = Call_GetSlotType_600416(name: "getSlotType",
                                         meth: HttpMethod.HttpGet,
                                         host: "models.lex.amazonaws.com", route: "/slottypes/{name}/versions/{version}",
-                                        validator: validate_GetSlotType_593415,
-                                        base: "/", url: url_GetSlotType_593416,
+                                        validator: validate_GetSlotType_600417,
+                                        base: "/", url: url_GetSlotType_600418,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSlotTypeVersions_593429 = ref object of OpenApiRestCall_592365
-proc url_GetSlotTypeVersions_593431(protocol: Scheme; host: string; base: string;
+  Call_GetSlotTypeVersions_600431 = ref object of OpenApiRestCall_599369
+proc url_GetSlotTypeVersions_600433(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3903,9 +4045,14 @@ proc url_GetSlotTypeVersions_593431(protocol: Scheme; host: string; base: string
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetSlotTypeVersions_593430(path: JsonNode; query: JsonNode;
+proc validate_GetSlotTypeVersions_600432(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Gets information about all versions of a slot type.</p> <p>The <code>GetSlotTypeVersions</code> operation returns a <code>SlotTypeMetadata</code> object for each version of a slot type. For example, if a slot type has three numbered versions, the <code>GetSlotTypeVersions</code> operation returns four <code>SlotTypeMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetSlotTypeVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetSlotTypeVersions</code> action.</p>
@@ -3917,123 +4064,127 @@ proc validate_GetSlotTypeVersions_593430(path: JsonNode; query: JsonNode;
   ##       : The name of the slot type for which versions should be returned.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593432 = path.getOrDefault("name")
-  valid_593432 = validateParameter(valid_593432, JString, required = true,
+  var valid_600434 = path.getOrDefault("name")
+  valid_600434 = validateParameter(valid_600434, JString, required = true,
                                  default = nil)
-  if valid_593432 != nil:
-    section.add "name", valid_593432
+  if valid_600434 != nil:
+    section.add "name", valid_600434
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : A pagination token for fetching the next page of slot type versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   ##   maxResults: JInt
   ##             : The maximum number of slot type versions to return in the response. The default is 10.
+  ##   nextToken: JString
+  ##            : A pagination token for fetching the next page of slot type versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   section = newJObject()
-  var valid_593433 = query.getOrDefault("nextToken")
-  valid_593433 = validateParameter(valid_593433, JString, required = false,
+  var valid_600435 = query.getOrDefault("maxResults")
+  valid_600435 = validateParameter(valid_600435, JInt, required = false, default = nil)
+  if valid_600435 != nil:
+    section.add "maxResults", valid_600435
+  var valid_600436 = query.getOrDefault("nextToken")
+  valid_600436 = validateParameter(valid_600436, JString, required = false,
                                  default = nil)
-  if valid_593433 != nil:
-    section.add "nextToken", valid_593433
-  var valid_593434 = query.getOrDefault("maxResults")
-  valid_593434 = validateParameter(valid_593434, JInt, required = false, default = nil)
-  if valid_593434 != nil:
-    section.add "maxResults", valid_593434
+  if valid_600436 != nil:
+    section.add "nextToken", valid_600436
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593435 = header.getOrDefault("X-Amz-Signature")
-  valid_593435 = validateParameter(valid_593435, JString, required = false,
+  var valid_600437 = header.getOrDefault("X-Amz-Date")
+  valid_600437 = validateParameter(valid_600437, JString, required = false,
                                  default = nil)
-  if valid_593435 != nil:
-    section.add "X-Amz-Signature", valid_593435
-  var valid_593436 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593436 = validateParameter(valid_593436, JString, required = false,
+  if valid_600437 != nil:
+    section.add "X-Amz-Date", valid_600437
+  var valid_600438 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600438 = validateParameter(valid_600438, JString, required = false,
                                  default = nil)
-  if valid_593436 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593436
-  var valid_593437 = header.getOrDefault("X-Amz-Date")
-  valid_593437 = validateParameter(valid_593437, JString, required = false,
+  if valid_600438 != nil:
+    section.add "X-Amz-Security-Token", valid_600438
+  var valid_600439 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600439 = validateParameter(valid_600439, JString, required = false,
                                  default = nil)
-  if valid_593437 != nil:
-    section.add "X-Amz-Date", valid_593437
-  var valid_593438 = header.getOrDefault("X-Amz-Credential")
-  valid_593438 = validateParameter(valid_593438, JString, required = false,
+  if valid_600439 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600439
+  var valid_600440 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600440 = validateParameter(valid_600440, JString, required = false,
                                  default = nil)
-  if valid_593438 != nil:
-    section.add "X-Amz-Credential", valid_593438
-  var valid_593439 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593439 = validateParameter(valid_593439, JString, required = false,
+  if valid_600440 != nil:
+    section.add "X-Amz-Algorithm", valid_600440
+  var valid_600441 = header.getOrDefault("X-Amz-Signature")
+  valid_600441 = validateParameter(valid_600441, JString, required = false,
                                  default = nil)
-  if valid_593439 != nil:
-    section.add "X-Amz-Security-Token", valid_593439
-  var valid_593440 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593440 = validateParameter(valid_593440, JString, required = false,
+  if valid_600441 != nil:
+    section.add "X-Amz-Signature", valid_600441
+  var valid_600442 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600442 = validateParameter(valid_600442, JString, required = false,
                                  default = nil)
-  if valid_593440 != nil:
-    section.add "X-Amz-Algorithm", valid_593440
-  var valid_593441 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593441 = validateParameter(valid_593441, JString, required = false,
+  if valid_600442 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600442
+  var valid_600443 = header.getOrDefault("X-Amz-Credential")
+  valid_600443 = validateParameter(valid_600443, JString, required = false,
                                  default = nil)
-  if valid_593441 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593441
+  if valid_600443 != nil:
+    section.add "X-Amz-Credential", valid_600443
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593442: Call_GetSlotTypeVersions_593429; path: JsonNode;
+proc call*(call_600444: Call_GetSlotTypeVersions_600431; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about all versions of a slot type.</p> <p>The <code>GetSlotTypeVersions</code> operation returns a <code>SlotTypeMetadata</code> object for each version of a slot type. For example, if a slot type has three numbered versions, the <code>GetSlotTypeVersions</code> operation returns four <code>SlotTypeMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetSlotTypeVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetSlotTypeVersions</code> action.</p>
   ## 
-  let valid = call_593442.validator(path, query, header, formData, body)
-  let scheme = call_593442.pickScheme
+  let valid = call_600444.validator(path, query, header, formData, body)
+  let scheme = call_600444.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593442.url(scheme.get, call_593442.host, call_593442.base,
-                         call_593442.route, valid.getOrDefault("path"),
+  let url = call_600444.url(scheme.get, call_600444.host, call_600444.base,
+                         call_600444.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593442, url, valid)
+  result = atozHook(call_600444, url, valid)
 
-proc call*(call_593443: Call_GetSlotTypeVersions_593429; name: string;
-          nextToken: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600445: Call_GetSlotTypeVersions_600431; name: string;
+          maxResults: int = 0; nextToken: string = ""): Recallable =
   ## getSlotTypeVersions
   ## <p>Gets information about all versions of a slot type.</p> <p>The <code>GetSlotTypeVersions</code> operation returns a <code>SlotTypeMetadata</code> object for each version of a slot type. For example, if a slot type has three numbered versions, the <code>GetSlotTypeVersions</code> operation returns four <code>SlotTypeMetadata</code> objects in the response, one for each numbered version and one for the <code>$LATEST</code> version. </p> <p>The <code>GetSlotTypeVersions</code> operation always returns at least one version, the <code>$LATEST</code> version.</p> <p>This operation requires permissions for the <code>lex:GetSlotTypeVersions</code> action.</p>
-  ##   nextToken: string
-  ##            : A pagination token for fetching the next page of slot type versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
   ##   name: string (required)
   ##       : The name of the slot type for which versions should be returned.
   ##   maxResults: int
   ##             : The maximum number of slot type versions to return in the response. The default is 10.
-  var path_593444 = newJObject()
-  var query_593445 = newJObject()
-  add(query_593445, "nextToken", newJString(nextToken))
-  add(path_593444, "name", newJString(name))
-  add(query_593445, "maxResults", newJInt(maxResults))
-  result = call_593443.call(path_593444, query_593445, nil, nil, nil)
+  ##   nextToken: string
+  ##            : A pagination token for fetching the next page of slot type versions. If the response to this call is truncated, Amazon Lex returns a pagination token in the response. To fetch the next page of versions, specify the pagination token in the next request. 
+  var path_600446 = newJObject()
+  var query_600447 = newJObject()
+  add(path_600446, "name", newJString(name))
+  add(query_600447, "maxResults", newJInt(maxResults))
+  add(query_600447, "nextToken", newJString(nextToken))
+  result = call_600445.call(path_600446, query_600447, nil, nil, nil)
 
-var getSlotTypeVersions* = Call_GetSlotTypeVersions_593429(
+var getSlotTypeVersions* = Call_GetSlotTypeVersions_600431(
     name: "getSlotTypeVersions", meth: HttpMethod.HttpGet,
     host: "models.lex.amazonaws.com", route: "/slottypes/{name}/versions/",
-    validator: validate_GetSlotTypeVersions_593430, base: "/",
-    url: url_GetSlotTypeVersions_593431, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSlotTypeVersions_600432, base: "/",
+    url: url_GetSlotTypeVersions_600433, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSlotTypes_593446 = ref object of OpenApiRestCall_592365
-proc url_GetSlotTypes_593448(protocol: Scheme; host: string; base: string;
+  Call_GetSlotTypes_600448 = ref object of OpenApiRestCall_599369
+proc url_GetSlotTypes_600450(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_GetSlotTypes_593447(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetSlotTypes_600449(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns slot type information as follows: </p> <ul> <li> <p>If you specify the <code>nameContains</code> field, returns the <code>$LATEST</code> version of all slot types that contain the specified string.</p> </li> <li> <p> If you don't specify the <code>nameContains</code> field, returns information about the <code>$LATEST</code> version of all slot types. </p> </li> </ul> <p> The operation requires permission for the <code>lex:GetSlotTypes</code> action. </p>
   ## 
@@ -4042,114 +4193,114 @@ proc validate_GetSlotTypes_593447(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   maxResults: JInt
+  ##             : The maximum number of slot types to return in the response. The default is 10.
   ##   nextToken: JString
   ##            : A pagination token that fetches the next page of slot types. If the response to this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch next page of slot types, specify the pagination token in the next request.
   ##   nameContains: JString
   ##               : Substring to match in slot type names. A slot type will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
-  ##   maxResults: JInt
-  ##             : The maximum number of slot types to return in the response. The default is 10.
   section = newJObject()
-  var valid_593449 = query.getOrDefault("nextToken")
-  valid_593449 = validateParameter(valid_593449, JString, required = false,
+  var valid_600451 = query.getOrDefault("maxResults")
+  valid_600451 = validateParameter(valid_600451, JInt, required = false, default = nil)
+  if valid_600451 != nil:
+    section.add "maxResults", valid_600451
+  var valid_600452 = query.getOrDefault("nextToken")
+  valid_600452 = validateParameter(valid_600452, JString, required = false,
                                  default = nil)
-  if valid_593449 != nil:
-    section.add "nextToken", valid_593449
-  var valid_593450 = query.getOrDefault("nameContains")
-  valid_593450 = validateParameter(valid_593450, JString, required = false,
+  if valid_600452 != nil:
+    section.add "nextToken", valid_600452
+  var valid_600453 = query.getOrDefault("nameContains")
+  valid_600453 = validateParameter(valid_600453, JString, required = false,
                                  default = nil)
-  if valid_593450 != nil:
-    section.add "nameContains", valid_593450
-  var valid_593451 = query.getOrDefault("maxResults")
-  valid_593451 = validateParameter(valid_593451, JInt, required = false, default = nil)
-  if valid_593451 != nil:
-    section.add "maxResults", valid_593451
+  if valid_600453 != nil:
+    section.add "nameContains", valid_600453
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593452 = header.getOrDefault("X-Amz-Signature")
-  valid_593452 = validateParameter(valid_593452, JString, required = false,
+  var valid_600454 = header.getOrDefault("X-Amz-Date")
+  valid_600454 = validateParameter(valid_600454, JString, required = false,
                                  default = nil)
-  if valid_593452 != nil:
-    section.add "X-Amz-Signature", valid_593452
-  var valid_593453 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593453 = validateParameter(valid_593453, JString, required = false,
+  if valid_600454 != nil:
+    section.add "X-Amz-Date", valid_600454
+  var valid_600455 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600455 = validateParameter(valid_600455, JString, required = false,
                                  default = nil)
-  if valid_593453 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593453
-  var valid_593454 = header.getOrDefault("X-Amz-Date")
-  valid_593454 = validateParameter(valid_593454, JString, required = false,
+  if valid_600455 != nil:
+    section.add "X-Amz-Security-Token", valid_600455
+  var valid_600456 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600456 = validateParameter(valid_600456, JString, required = false,
                                  default = nil)
-  if valid_593454 != nil:
-    section.add "X-Amz-Date", valid_593454
-  var valid_593455 = header.getOrDefault("X-Amz-Credential")
-  valid_593455 = validateParameter(valid_593455, JString, required = false,
+  if valid_600456 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600456
+  var valid_600457 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600457 = validateParameter(valid_600457, JString, required = false,
                                  default = nil)
-  if valid_593455 != nil:
-    section.add "X-Amz-Credential", valid_593455
-  var valid_593456 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593456 = validateParameter(valid_593456, JString, required = false,
+  if valid_600457 != nil:
+    section.add "X-Amz-Algorithm", valid_600457
+  var valid_600458 = header.getOrDefault("X-Amz-Signature")
+  valid_600458 = validateParameter(valid_600458, JString, required = false,
                                  default = nil)
-  if valid_593456 != nil:
-    section.add "X-Amz-Security-Token", valid_593456
-  var valid_593457 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593457 = validateParameter(valid_593457, JString, required = false,
+  if valid_600458 != nil:
+    section.add "X-Amz-Signature", valid_600458
+  var valid_600459 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600459 = validateParameter(valid_600459, JString, required = false,
                                  default = nil)
-  if valid_593457 != nil:
-    section.add "X-Amz-Algorithm", valid_593457
-  var valid_593458 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593458 = validateParameter(valid_593458, JString, required = false,
+  if valid_600459 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600459
+  var valid_600460 = header.getOrDefault("X-Amz-Credential")
+  valid_600460 = validateParameter(valid_600460, JString, required = false,
                                  default = nil)
-  if valid_593458 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593458
+  if valid_600460 != nil:
+    section.add "X-Amz-Credential", valid_600460
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593459: Call_GetSlotTypes_593446; path: JsonNode; query: JsonNode;
+proc call*(call_600461: Call_GetSlotTypes_600448; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns slot type information as follows: </p> <ul> <li> <p>If you specify the <code>nameContains</code> field, returns the <code>$LATEST</code> version of all slot types that contain the specified string.</p> </li> <li> <p> If you don't specify the <code>nameContains</code> field, returns information about the <code>$LATEST</code> version of all slot types. </p> </li> </ul> <p> The operation requires permission for the <code>lex:GetSlotTypes</code> action. </p>
   ## 
-  let valid = call_593459.validator(path, query, header, formData, body)
-  let scheme = call_593459.pickScheme
+  let valid = call_600461.validator(path, query, header, formData, body)
+  let scheme = call_600461.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593459.url(scheme.get, call_593459.host, call_593459.base,
-                         call_593459.route, valid.getOrDefault("path"),
+  let url = call_600461.url(scheme.get, call_600461.host, call_600461.base,
+                         call_600461.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593459, url, valid)
+  result = atozHook(call_600461, url, valid)
 
-proc call*(call_593460: Call_GetSlotTypes_593446; nextToken: string = "";
-          nameContains: string = ""; maxResults: int = 0): Recallable =
+proc call*(call_600462: Call_GetSlotTypes_600448; maxResults: int = 0;
+          nextToken: string = ""; nameContains: string = ""): Recallable =
   ## getSlotTypes
   ## <p>Returns slot type information as follows: </p> <ul> <li> <p>If you specify the <code>nameContains</code> field, returns the <code>$LATEST</code> version of all slot types that contain the specified string.</p> </li> <li> <p> If you don't specify the <code>nameContains</code> field, returns information about the <code>$LATEST</code> version of all slot types. </p> </li> </ul> <p> The operation requires permission for the <code>lex:GetSlotTypes</code> action. </p>
+  ##   maxResults: int
+  ##             : The maximum number of slot types to return in the response. The default is 10.
   ##   nextToken: string
   ##            : A pagination token that fetches the next page of slot types. If the response to this API call is truncated, Amazon Lex returns a pagination token in the response. To fetch next page of slot types, specify the pagination token in the next request.
   ##   nameContains: string
   ##               : Substring to match in slot type names. A slot type will be returned if any part of its name matches the substring. For example, "xyz" matches both "xyzabc" and "abcxyz."
-  ##   maxResults: int
-  ##             : The maximum number of slot types to return in the response. The default is 10.
-  var query_593461 = newJObject()
-  add(query_593461, "nextToken", newJString(nextToken))
-  add(query_593461, "nameContains", newJString(nameContains))
-  add(query_593461, "maxResults", newJInt(maxResults))
-  result = call_593460.call(nil, query_593461, nil, nil, nil)
+  var query_600463 = newJObject()
+  add(query_600463, "maxResults", newJInt(maxResults))
+  add(query_600463, "nextToken", newJString(nextToken))
+  add(query_600463, "nameContains", newJString(nameContains))
+  result = call_600462.call(nil, query_600463, nil, nil, nil)
 
-var getSlotTypes* = Call_GetSlotTypes_593446(name: "getSlotTypes",
+var getSlotTypes* = Call_GetSlotTypes_600448(name: "getSlotTypes",
     meth: HttpMethod.HttpGet, host: "models.lex.amazonaws.com",
-    route: "/slottypes/", validator: validate_GetSlotTypes_593447, base: "/",
-    url: url_GetSlotTypes_593448, schemes: {Scheme.Https, Scheme.Http})
+    route: "/slottypes/", validator: validate_GetSlotTypes_600449, base: "/",
+    url: url_GetSlotTypes_600450, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetUtterancesView_593462 = ref object of OpenApiRestCall_592365
-proc url_GetUtterancesView_593464(protocol: Scheme; host: string; base: string;
+  Call_GetUtterancesView_600464 = ref object of OpenApiRestCall_599369
+proc url_GetUtterancesView_600466(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4163,12 +4314,17 @@ proc url_GetUtterancesView_593464(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetUtterancesView_593463(path: JsonNode; query: JsonNode;
+proc validate_GetUtterancesView_600465(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
-  ## <p>Use the <code>GetUtterancesView</code> operation to get information about the utterances that your users have made to your bot. You can use this list to tune the utterances that your bot responds to.</p> <p>For example, say that you have created a bot to order flowers. After your users have used your bot for a while, use the <code>GetUtterancesView</code> operation to see the requests that they have made and whether they have been successful. You might find that the utterance "I want flowers" is not being recognized. You could add this utterance to the <code>OrderFlowers</code> intent so that your bot recognizes that utterance.</p> <p>After you publish a new version of a bot, you can get information about the old version and the new so that you can compare the performance across the two versions. </p> <note> <p>Utterance statistics are generated once a day. Data is available for the last 15 days. You can request information for up to 5 versions in each request. The response contains information about a maximum of 100 utterances for each version.</p> </note> <p>This operation requires permissions for the <code>lex:GetUtterancesView</code> action.</p>
+  ## <p>Use the <code>GetUtterancesView</code> operation to get information about the utterances that your users have made to your bot. You can use this list to tune the utterances that your bot responds to.</p> <p>For example, say that you have created a bot to order flowers. After your users have used your bot for a while, use the <code>GetUtterancesView</code> operation to see the requests that they have made and whether they have been successful. You might find that the utterance "I want flowers" is not being recognized. You could add this utterance to the <code>OrderFlowers</code> intent so that your bot recognizes that utterance.</p> <p>After you publish a new version of a bot, you can get information about the old version and the new so that you can compare the performance across the two versions. </p> <p>Utterance statistics are generated once a day. Data is available for the last 15 days. You can request information for up to 5 versions of your bot in each request. Amazon Lex returns the most frequent utterances received by the bot in the last 15 days. The response contains information about a maximum of 100 utterances for each version.</p> <p>If you set <code>childDirected</code> field to true when you created your bot, or if you opted out of participating in improving Amazon Lex, utterances are not available.</p> <p>This operation requires permissions for the <code>lex:GetUtterancesView</code> action.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4177,127 +4333,126 @@ proc validate_GetUtterancesView_593463(path: JsonNode; query: JsonNode;
   ##          : The name of the bot for which utterance information should be returned.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botname` field"
-  var valid_593465 = path.getOrDefault("botname")
-  valid_593465 = validateParameter(valid_593465, JString, required = true,
+  var valid_600467 = path.getOrDefault("botname")
+  valid_600467 = validateParameter(valid_600467, JString, required = true,
                                  default = nil)
-  if valid_593465 != nil:
-    section.add "botname", valid_593465
+  if valid_600467 != nil:
+    section.add "botname", valid_600467
   result.add "path", section
   ## parameters in `query` object:
+  ##   view: JString (required)
   ##   status_type: JString (required)
-  ##              : To return utterances that were recognized and handled, use<code>Detected</code>. To return utterances that were not recognized, use <code>Missed</code>.
+  ##              : To return utterances that were recognized and handled, use <code>Detected</code>. To return utterances that were not recognized, use <code>Missed</code>.
   ##   bot_versions: JArray (required)
   ##               : An array of bot versions for which utterance information should be returned. The limit is 5 versions per request.
-  ##   view: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `status_type` field"
-  var valid_593466 = query.getOrDefault("status_type")
-  valid_593466 = validateParameter(valid_593466, JString, required = true,
-                                 default = newJString("Detected"))
-  if valid_593466 != nil:
-    section.add "status_type", valid_593466
-  var valid_593467 = query.getOrDefault("bot_versions")
-  valid_593467 = validateParameter(valid_593467, JArray, required = true, default = nil)
-  if valid_593467 != nil:
-    section.add "bot_versions", valid_593467
-  var valid_593468 = query.getOrDefault("view")
-  valid_593468 = validateParameter(valid_593468, JString, required = true,
+  assert query != nil, "query argument is necessary due to required `view` field"
+  var valid_600468 = query.getOrDefault("view")
+  valid_600468 = validateParameter(valid_600468, JString, required = true,
                                  default = newJString("aggregation"))
-  if valid_593468 != nil:
-    section.add "view", valid_593468
+  if valid_600468 != nil:
+    section.add "view", valid_600468
+  var valid_600469 = query.getOrDefault("status_type")
+  valid_600469 = validateParameter(valid_600469, JString, required = true,
+                                 default = newJString("Detected"))
+  if valid_600469 != nil:
+    section.add "status_type", valid_600469
+  var valid_600470 = query.getOrDefault("bot_versions")
+  valid_600470 = validateParameter(valid_600470, JArray, required = true, default = nil)
+  if valid_600470 != nil:
+    section.add "bot_versions", valid_600470
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593469 = header.getOrDefault("X-Amz-Signature")
-  valid_593469 = validateParameter(valid_593469, JString, required = false,
+  var valid_600471 = header.getOrDefault("X-Amz-Date")
+  valid_600471 = validateParameter(valid_600471, JString, required = false,
                                  default = nil)
-  if valid_593469 != nil:
-    section.add "X-Amz-Signature", valid_593469
-  var valid_593470 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593470 = validateParameter(valid_593470, JString, required = false,
+  if valid_600471 != nil:
+    section.add "X-Amz-Date", valid_600471
+  var valid_600472 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600472 = validateParameter(valid_600472, JString, required = false,
                                  default = nil)
-  if valid_593470 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593470
-  var valid_593471 = header.getOrDefault("X-Amz-Date")
-  valid_593471 = validateParameter(valid_593471, JString, required = false,
+  if valid_600472 != nil:
+    section.add "X-Amz-Security-Token", valid_600472
+  var valid_600473 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600473 = validateParameter(valid_600473, JString, required = false,
                                  default = nil)
-  if valid_593471 != nil:
-    section.add "X-Amz-Date", valid_593471
-  var valid_593472 = header.getOrDefault("X-Amz-Credential")
-  valid_593472 = validateParameter(valid_593472, JString, required = false,
+  if valid_600473 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600473
+  var valid_600474 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600474 = validateParameter(valid_600474, JString, required = false,
                                  default = nil)
-  if valid_593472 != nil:
-    section.add "X-Amz-Credential", valid_593472
-  var valid_593473 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593473 = validateParameter(valid_593473, JString, required = false,
+  if valid_600474 != nil:
+    section.add "X-Amz-Algorithm", valid_600474
+  var valid_600475 = header.getOrDefault("X-Amz-Signature")
+  valid_600475 = validateParameter(valid_600475, JString, required = false,
                                  default = nil)
-  if valid_593473 != nil:
-    section.add "X-Amz-Security-Token", valid_593473
-  var valid_593474 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593474 = validateParameter(valid_593474, JString, required = false,
+  if valid_600475 != nil:
+    section.add "X-Amz-Signature", valid_600475
+  var valid_600476 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600476 = validateParameter(valid_600476, JString, required = false,
                                  default = nil)
-  if valid_593474 != nil:
-    section.add "X-Amz-Algorithm", valid_593474
-  var valid_593475 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593475 = validateParameter(valid_593475, JString, required = false,
+  if valid_600476 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600476
+  var valid_600477 = header.getOrDefault("X-Amz-Credential")
+  valid_600477 = validateParameter(valid_600477, JString, required = false,
                                  default = nil)
-  if valid_593475 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593475
+  if valid_600477 != nil:
+    section.add "X-Amz-Credential", valid_600477
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_593476: Call_GetUtterancesView_593462; path: JsonNode;
+proc call*(call_600478: Call_GetUtterancesView_600464; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Use the <code>GetUtterancesView</code> operation to get information about the utterances that your users have made to your bot. You can use this list to tune the utterances that your bot responds to.</p> <p>For example, say that you have created a bot to order flowers. After your users have used your bot for a while, use the <code>GetUtterancesView</code> operation to see the requests that they have made and whether they have been successful. You might find that the utterance "I want flowers" is not being recognized. You could add this utterance to the <code>OrderFlowers</code> intent so that your bot recognizes that utterance.</p> <p>After you publish a new version of a bot, you can get information about the old version and the new so that you can compare the performance across the two versions. </p> <note> <p>Utterance statistics are generated once a day. Data is available for the last 15 days. You can request information for up to 5 versions in each request. The response contains information about a maximum of 100 utterances for each version.</p> </note> <p>This operation requires permissions for the <code>lex:GetUtterancesView</code> action.</p>
+  ## <p>Use the <code>GetUtterancesView</code> operation to get information about the utterances that your users have made to your bot. You can use this list to tune the utterances that your bot responds to.</p> <p>For example, say that you have created a bot to order flowers. After your users have used your bot for a while, use the <code>GetUtterancesView</code> operation to see the requests that they have made and whether they have been successful. You might find that the utterance "I want flowers" is not being recognized. You could add this utterance to the <code>OrderFlowers</code> intent so that your bot recognizes that utterance.</p> <p>After you publish a new version of a bot, you can get information about the old version and the new so that you can compare the performance across the two versions. </p> <p>Utterance statistics are generated once a day. Data is available for the last 15 days. You can request information for up to 5 versions of your bot in each request. Amazon Lex returns the most frequent utterances received by the bot in the last 15 days. The response contains information about a maximum of 100 utterances for each version.</p> <p>If you set <code>childDirected</code> field to true when you created your bot, or if you opted out of participating in improving Amazon Lex, utterances are not available.</p> <p>This operation requires permissions for the <code>lex:GetUtterancesView</code> action.</p>
   ## 
-  let valid = call_593476.validator(path, query, header, formData, body)
-  let scheme = call_593476.pickScheme
+  let valid = call_600478.validator(path, query, header, formData, body)
+  let scheme = call_600478.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593476.url(scheme.get, call_593476.host, call_593476.base,
-                         call_593476.route, valid.getOrDefault("path"),
+  let url = call_600478.url(scheme.get, call_600478.host, call_600478.base,
+                         call_600478.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593476, url, valid)
+  result = atozHook(call_600478, url, valid)
 
-proc call*(call_593477: Call_GetUtterancesView_593462; botname: string;
-          botVersions: JsonNode; statusType: string = "Detected";
-          view: string = "aggregation"): Recallable =
+proc call*(call_600479: Call_GetUtterancesView_600464; botVersions: JsonNode;
+          botname: string; view: string = "aggregation";
+          statusType: string = "Detected"): Recallable =
   ## getUtterancesView
-  ## <p>Use the <code>GetUtterancesView</code> operation to get information about the utterances that your users have made to your bot. You can use this list to tune the utterances that your bot responds to.</p> <p>For example, say that you have created a bot to order flowers. After your users have used your bot for a while, use the <code>GetUtterancesView</code> operation to see the requests that they have made and whether they have been successful. You might find that the utterance "I want flowers" is not being recognized. You could add this utterance to the <code>OrderFlowers</code> intent so that your bot recognizes that utterance.</p> <p>After you publish a new version of a bot, you can get information about the old version and the new so that you can compare the performance across the two versions. </p> <note> <p>Utterance statistics are generated once a day. Data is available for the last 15 days. You can request information for up to 5 versions in each request. The response contains information about a maximum of 100 utterances for each version.</p> </note> <p>This operation requires permissions for the <code>lex:GetUtterancesView</code> action.</p>
+  ## <p>Use the <code>GetUtterancesView</code> operation to get information about the utterances that your users have made to your bot. You can use this list to tune the utterances that your bot responds to.</p> <p>For example, say that you have created a bot to order flowers. After your users have used your bot for a while, use the <code>GetUtterancesView</code> operation to see the requests that they have made and whether they have been successful. You might find that the utterance "I want flowers" is not being recognized. You could add this utterance to the <code>OrderFlowers</code> intent so that your bot recognizes that utterance.</p> <p>After you publish a new version of a bot, you can get information about the old version and the new so that you can compare the performance across the two versions. </p> <p>Utterance statistics are generated once a day. Data is available for the last 15 days. You can request information for up to 5 versions of your bot in each request. Amazon Lex returns the most frequent utterances received by the bot in the last 15 days. The response contains information about a maximum of 100 utterances for each version.</p> <p>If you set <code>childDirected</code> field to true when you created your bot, or if you opted out of participating in improving Amazon Lex, utterances are not available.</p> <p>This operation requires permissions for the <code>lex:GetUtterancesView</code> action.</p>
+  ##   view: string (required)
   ##   statusType: string (required)
-  ##             : To return utterances that were recognized and handled, use<code>Detected</code>. To return utterances that were not recognized, use <code>Missed</code>.
-  ##   botname: string (required)
-  ##          : The name of the bot for which utterance information should be returned.
+  ##             : To return utterances that were recognized and handled, use <code>Detected</code>. To return utterances that were not recognized, use <code>Missed</code>.
   ##   botVersions: JArray (required)
   ##              : An array of bot versions for which utterance information should be returned. The limit is 5 versions per request.
-  ##   view: string (required)
-  var path_593478 = newJObject()
-  var query_593479 = newJObject()
-  add(query_593479, "status_type", newJString(statusType))
-  add(path_593478, "botname", newJString(botname))
+  ##   botname: string (required)
+  ##          : The name of the bot for which utterance information should be returned.
+  var path_600480 = newJObject()
+  var query_600481 = newJObject()
+  add(query_600481, "view", newJString(view))
+  add(query_600481, "status_type", newJString(statusType))
   if botVersions != nil:
-    query_593479.add "bot_versions", botVersions
-  add(query_593479, "view", newJString(view))
-  result = call_593477.call(path_593478, query_593479, nil, nil, nil)
+    query_600481.add "bot_versions", botVersions
+  add(path_600480, "botname", newJString(botname))
+  result = call_600479.call(path_600480, query_600481, nil, nil, nil)
 
-var getUtterancesView* = Call_GetUtterancesView_593462(name: "getUtterancesView",
+var getUtterancesView* = Call_GetUtterancesView_600464(name: "getUtterancesView",
     meth: HttpMethod.HttpGet, host: "models.lex.amazonaws.com", route: "/bots/{botname}/utterances#view=aggregation&bot_versions&status_type",
-    validator: validate_GetUtterancesView_593463, base: "/",
-    url: url_GetUtterancesView_593464, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetUtterancesView_600465, base: "/",
+    url: url_GetUtterancesView_600466, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutBot_593480 = ref object of OpenApiRestCall_592365
-proc url_PutBot_593482(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutBot_600482 = ref object of OpenApiRestCall_599369
+proc url_PutBot_600484(protocol: Scheme; host: string; base: string; route: string;
                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4311,11 +4466,16 @@ proc url_PutBot_593482(protocol: Scheme; host: string; base: string; route: stri
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_PutBot_593481(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutBot_600483(path: JsonNode; query: JsonNode; header: JsonNode;
                            formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates an Amazon Lex conversational bot or replaces an existing bot. When you create or update a bot you are only required to specify a name, a locale, and whether the bot is directed toward children under age 13. You can use this to add intents later, or to remove intents from an existing bot. When you create a bot with the minimum information, the bot is created or updated but Amazon Lex returns the <code/> response <code>FAILED</code>. You can build the bot after you add one or more intents. For more information about Amazon Lex bots, see <a>how-it-works</a>. </p> <p>If you specify the name of an existing bot, the fields in the request replace the existing values in the <code>$LATEST</code> version of the bot. Amazon Lex removes any fields that you don't provide values for in the request, except for the <code>idleTTLInSeconds</code> and <code>privacySettings</code> fields, which are set to their default values. If you don't specify values for required fields, Amazon Lex throws an exception.</p> <p>This operation requires permissions for the <code>lex:PutBot</code> action. For more information, see <a>auth-and-access-control</a>.</p>
+  ## <p>Creates an Amazon Lex conversational bot or replaces an existing bot. When you create or update a bot you are only required to specify a name, a locale, and whether the bot is directed toward children under age 13. You can use this to add intents later, or to remove intents from an existing bot. When you create a bot with the minimum information, the bot is created or updated but Amazon Lex returns the <code/> response <code>FAILED</code>. You can build the bot after you add one or more intents. For more information about Amazon Lex bots, see <a>how-it-works</a>. </p> <p>If you specify the name of an existing bot, the fields in the request replace the existing values in the <code>$LATEST</code> version of the bot. Amazon Lex removes any fields that you don't provide values for in the request, except for the <code>idleTTLInSeconds</code> and <code>privacySettings</code> fields, which are set to their default values. If you don't specify values for required fields, Amazon Lex throws an exception.</p> <p>This operation requires permissions for the <code>lex:PutBot</code> action. For more information, see <a>security-iam</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4324,58 +4484,58 @@ proc validate_PutBot_593481(path: JsonNode; query: JsonNode; header: JsonNode;
   ##       : The name of the bot. The name is <i>not</i> case sensitive. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593483 = path.getOrDefault("name")
-  valid_593483 = validateParameter(valid_593483, JString, required = true,
+  var valid_600485 = path.getOrDefault("name")
+  valid_600485 = validateParameter(valid_600485, JString, required = true,
                                  default = nil)
-  if valid_593483 != nil:
-    section.add "name", valid_593483
+  if valid_600485 != nil:
+    section.add "name", valid_600485
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593484 = header.getOrDefault("X-Amz-Signature")
-  valid_593484 = validateParameter(valid_593484, JString, required = false,
+  var valid_600486 = header.getOrDefault("X-Amz-Date")
+  valid_600486 = validateParameter(valid_600486, JString, required = false,
                                  default = nil)
-  if valid_593484 != nil:
-    section.add "X-Amz-Signature", valid_593484
-  var valid_593485 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593485 = validateParameter(valid_593485, JString, required = false,
+  if valid_600486 != nil:
+    section.add "X-Amz-Date", valid_600486
+  var valid_600487 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600487 = validateParameter(valid_600487, JString, required = false,
                                  default = nil)
-  if valid_593485 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593485
-  var valid_593486 = header.getOrDefault("X-Amz-Date")
-  valid_593486 = validateParameter(valid_593486, JString, required = false,
+  if valid_600487 != nil:
+    section.add "X-Amz-Security-Token", valid_600487
+  var valid_600488 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600488 = validateParameter(valid_600488, JString, required = false,
                                  default = nil)
-  if valid_593486 != nil:
-    section.add "X-Amz-Date", valid_593486
-  var valid_593487 = header.getOrDefault("X-Amz-Credential")
-  valid_593487 = validateParameter(valid_593487, JString, required = false,
+  if valid_600488 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600488
+  var valid_600489 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600489 = validateParameter(valid_600489, JString, required = false,
                                  default = nil)
-  if valid_593487 != nil:
-    section.add "X-Amz-Credential", valid_593487
-  var valid_593488 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593488 = validateParameter(valid_593488, JString, required = false,
+  if valid_600489 != nil:
+    section.add "X-Amz-Algorithm", valid_600489
+  var valid_600490 = header.getOrDefault("X-Amz-Signature")
+  valid_600490 = validateParameter(valid_600490, JString, required = false,
                                  default = nil)
-  if valid_593488 != nil:
-    section.add "X-Amz-Security-Token", valid_593488
-  var valid_593489 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593489 = validateParameter(valid_593489, JString, required = false,
+  if valid_600490 != nil:
+    section.add "X-Amz-Signature", valid_600490
+  var valid_600491 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600491 = validateParameter(valid_600491, JString, required = false,
                                  default = nil)
-  if valid_593489 != nil:
-    section.add "X-Amz-Algorithm", valid_593489
-  var valid_593490 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593490 = validateParameter(valid_593490, JString, required = false,
+  if valid_600491 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600491
+  var valid_600492 = header.getOrDefault("X-Amz-Credential")
+  valid_600492 = validateParameter(valid_600492, JString, required = false,
                                  default = nil)
-  if valid_593490 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593490
+  if valid_600492 != nil:
+    section.add "X-Amz-Credential", valid_600492
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4386,41 +4546,41 @@ proc validate_PutBot_593481(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593492: Call_PutBot_593480; path: JsonNode; query: JsonNode;
+proc call*(call_600494: Call_PutBot_600482; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates an Amazon Lex conversational bot or replaces an existing bot. When you create or update a bot you are only required to specify a name, a locale, and whether the bot is directed toward children under age 13. You can use this to add intents later, or to remove intents from an existing bot. When you create a bot with the minimum information, the bot is created or updated but Amazon Lex returns the <code/> response <code>FAILED</code>. You can build the bot after you add one or more intents. For more information about Amazon Lex bots, see <a>how-it-works</a>. </p> <p>If you specify the name of an existing bot, the fields in the request replace the existing values in the <code>$LATEST</code> version of the bot. Amazon Lex removes any fields that you don't provide values for in the request, except for the <code>idleTTLInSeconds</code> and <code>privacySettings</code> fields, which are set to their default values. If you don't specify values for required fields, Amazon Lex throws an exception.</p> <p>This operation requires permissions for the <code>lex:PutBot</code> action. For more information, see <a>auth-and-access-control</a>.</p>
+  ## <p>Creates an Amazon Lex conversational bot or replaces an existing bot. When you create or update a bot you are only required to specify a name, a locale, and whether the bot is directed toward children under age 13. You can use this to add intents later, or to remove intents from an existing bot. When you create a bot with the minimum information, the bot is created or updated but Amazon Lex returns the <code/> response <code>FAILED</code>. You can build the bot after you add one or more intents. For more information about Amazon Lex bots, see <a>how-it-works</a>. </p> <p>If you specify the name of an existing bot, the fields in the request replace the existing values in the <code>$LATEST</code> version of the bot. Amazon Lex removes any fields that you don't provide values for in the request, except for the <code>idleTTLInSeconds</code> and <code>privacySettings</code> fields, which are set to their default values. If you don't specify values for required fields, Amazon Lex throws an exception.</p> <p>This operation requires permissions for the <code>lex:PutBot</code> action. For more information, see <a>security-iam</a>.</p>
   ## 
-  let valid = call_593492.validator(path, query, header, formData, body)
-  let scheme = call_593492.pickScheme
+  let valid = call_600494.validator(path, query, header, formData, body)
+  let scheme = call_600494.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593492.url(scheme.get, call_593492.host, call_593492.base,
-                         call_593492.route, valid.getOrDefault("path"),
+  let url = call_600494.url(scheme.get, call_600494.host, call_600494.base,
+                         call_600494.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593492, url, valid)
+  result = atozHook(call_600494, url, valid)
 
-proc call*(call_593493: Call_PutBot_593480; name: string; body: JsonNode): Recallable =
+proc call*(call_600495: Call_PutBot_600482; name: string; body: JsonNode): Recallable =
   ## putBot
-  ## <p>Creates an Amazon Lex conversational bot or replaces an existing bot. When you create or update a bot you are only required to specify a name, a locale, and whether the bot is directed toward children under age 13. You can use this to add intents later, or to remove intents from an existing bot. When you create a bot with the minimum information, the bot is created or updated but Amazon Lex returns the <code/> response <code>FAILED</code>. You can build the bot after you add one or more intents. For more information about Amazon Lex bots, see <a>how-it-works</a>. </p> <p>If you specify the name of an existing bot, the fields in the request replace the existing values in the <code>$LATEST</code> version of the bot. Amazon Lex removes any fields that you don't provide values for in the request, except for the <code>idleTTLInSeconds</code> and <code>privacySettings</code> fields, which are set to their default values. If you don't specify values for required fields, Amazon Lex throws an exception.</p> <p>This operation requires permissions for the <code>lex:PutBot</code> action. For more information, see <a>auth-and-access-control</a>.</p>
+  ## <p>Creates an Amazon Lex conversational bot or replaces an existing bot. When you create or update a bot you are only required to specify a name, a locale, and whether the bot is directed toward children under age 13. You can use this to add intents later, or to remove intents from an existing bot. When you create a bot with the minimum information, the bot is created or updated but Amazon Lex returns the <code/> response <code>FAILED</code>. You can build the bot after you add one or more intents. For more information about Amazon Lex bots, see <a>how-it-works</a>. </p> <p>If you specify the name of an existing bot, the fields in the request replace the existing values in the <code>$LATEST</code> version of the bot. Amazon Lex removes any fields that you don't provide values for in the request, except for the <code>idleTTLInSeconds</code> and <code>privacySettings</code> fields, which are set to their default values. If you don't specify values for required fields, Amazon Lex throws an exception.</p> <p>This operation requires permissions for the <code>lex:PutBot</code> action. For more information, see <a>security-iam</a>.</p>
   ##   name: string (required)
   ##       : The name of the bot. The name is <i>not</i> case sensitive. 
   ##   body: JObject (required)
-  var path_593494 = newJObject()
-  var body_593495 = newJObject()
-  add(path_593494, "name", newJString(name))
+  var path_600496 = newJObject()
+  var body_600497 = newJObject()
+  add(path_600496, "name", newJString(name))
   if body != nil:
-    body_593495 = body
-  result = call_593493.call(path_593494, nil, nil, nil, body_593495)
+    body_600497 = body
+  result = call_600495.call(path_600496, nil, nil, nil, body_600497)
 
-var putBot* = Call_PutBot_593480(name: "putBot", meth: HttpMethod.HttpPut,
+var putBot* = Call_PutBot_600482(name: "putBot", meth: HttpMethod.HttpPut,
                               host: "models.lex.amazonaws.com",
                               route: "/bots/{name}/versions/$LATEST",
-                              validator: validate_PutBot_593481, base: "/",
-                              url: url_PutBot_593482,
+                              validator: validate_PutBot_600483, base: "/",
+                              url: url_PutBot_600484,
                               schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutIntent_593496 = ref object of OpenApiRestCall_592365
-proc url_PutIntent_593498(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutIntent_600498 = ref object of OpenApiRestCall_599369
+proc url_PutIntent_600500(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4434,9 +4594,14 @@ proc url_PutIntent_593498(protocol: Scheme; host: string; base: string; route: s
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_PutIntent_593497(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutIntent_600499(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an intent or replaces an existing intent.</p> <p>To define the interaction between the user and your bot, you use one or more intents. For a pizza ordering bot, for example, you would create an <code>OrderPizza</code> intent. </p> <p>To create an intent or replace an existing intent, you must provide the following:</p> <ul> <li> <p>Intent name. For example, <code>OrderPizza</code>.</p> </li> <li> <p>Sample utterances. For example, "Can I order a pizza, please." and "I want to order a pizza."</p> </li> <li> <p>Information to be gathered. You specify slot types for the information that your bot will request from the user. You can specify standard slot types, such as a date or a time, or custom slot types such as the size and crust of a pizza.</p> </li> <li> <p>How the intent will be fulfilled. You can provide a Lambda function or configure the intent to return the intent information to the client application. If you use a Lambda function, when all of the intent information is available, Amazon Lex invokes your Lambda function. If you configure your intent to return the intent information to the client application. </p> </li> </ul> <p>You can specify other optional information in the request, such as:</p> <ul> <li> <p>A confirmation prompt to ask the user to confirm an intent. For example, "Shall I order your pizza?"</p> </li> <li> <p>A conclusion statement to send to the user after the intent has been fulfilled. For example, "I placed your pizza order."</p> </li> <li> <p>A follow-up prompt that asks the user for additional activity. For example, asking "Do you want to order a drink with your pizza?"</p> </li> </ul> <p>If you specify an existing intent name to update the intent, Amazon Lex replaces the values in the <code>$LATEST</code> version of the intent with the values in the request. Amazon Lex removes fields that you don't provide in the request. If you don't specify the required fields, Amazon Lex throws an exception. When you update the <code>$LATEST</code> version of an intent, the <code>status</code> field of any bot that uses the <code>$LATEST</code> version of the intent is set to <code>NOT_BUILT</code>.</p> <p>For more information, see <a>how-it-works</a>.</p> <p>This operation requires permissions for the <code>lex:PutIntent</code> action.</p>
   ## 
@@ -4448,58 +4613,58 @@ proc validate_PutIntent_593497(path: JsonNode; query: JsonNode; header: JsonNode
   ## href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/standard-intents">Standard Built-in Intents</a> in the <i>Alexa Skills Kit</i>.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593499 = path.getOrDefault("name")
-  valid_593499 = validateParameter(valid_593499, JString, required = true,
+  var valid_600501 = path.getOrDefault("name")
+  valid_600501 = validateParameter(valid_600501, JString, required = true,
                                  default = nil)
-  if valid_593499 != nil:
-    section.add "name", valid_593499
+  if valid_600501 != nil:
+    section.add "name", valid_600501
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593500 = header.getOrDefault("X-Amz-Signature")
-  valid_593500 = validateParameter(valid_593500, JString, required = false,
+  var valid_600502 = header.getOrDefault("X-Amz-Date")
+  valid_600502 = validateParameter(valid_600502, JString, required = false,
                                  default = nil)
-  if valid_593500 != nil:
-    section.add "X-Amz-Signature", valid_593500
-  var valid_593501 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593501 = validateParameter(valid_593501, JString, required = false,
+  if valid_600502 != nil:
+    section.add "X-Amz-Date", valid_600502
+  var valid_600503 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600503 = validateParameter(valid_600503, JString, required = false,
                                  default = nil)
-  if valid_593501 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593501
-  var valid_593502 = header.getOrDefault("X-Amz-Date")
-  valid_593502 = validateParameter(valid_593502, JString, required = false,
+  if valid_600503 != nil:
+    section.add "X-Amz-Security-Token", valid_600503
+  var valid_600504 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600504 = validateParameter(valid_600504, JString, required = false,
                                  default = nil)
-  if valid_593502 != nil:
-    section.add "X-Amz-Date", valid_593502
-  var valid_593503 = header.getOrDefault("X-Amz-Credential")
-  valid_593503 = validateParameter(valid_593503, JString, required = false,
+  if valid_600504 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600504
+  var valid_600505 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600505 = validateParameter(valid_600505, JString, required = false,
                                  default = nil)
-  if valid_593503 != nil:
-    section.add "X-Amz-Credential", valid_593503
-  var valid_593504 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593504 = validateParameter(valid_593504, JString, required = false,
+  if valid_600505 != nil:
+    section.add "X-Amz-Algorithm", valid_600505
+  var valid_600506 = header.getOrDefault("X-Amz-Signature")
+  valid_600506 = validateParameter(valid_600506, JString, required = false,
                                  default = nil)
-  if valid_593504 != nil:
-    section.add "X-Amz-Security-Token", valid_593504
-  var valid_593505 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593505 = validateParameter(valid_593505, JString, required = false,
+  if valid_600506 != nil:
+    section.add "X-Amz-Signature", valid_600506
+  var valid_600507 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600507 = validateParameter(valid_600507, JString, required = false,
                                  default = nil)
-  if valid_593505 != nil:
-    section.add "X-Amz-Algorithm", valid_593505
-  var valid_593506 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593506 = validateParameter(valid_593506, JString, required = false,
+  if valid_600507 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600507
+  var valid_600508 = header.getOrDefault("X-Amz-Credential")
+  valid_600508 = validateParameter(valid_600508, JString, required = false,
                                  default = nil)
-  if valid_593506 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593506
+  if valid_600508 != nil:
+    section.add "X-Amz-Credential", valid_600508
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4510,42 +4675,42 @@ proc validate_PutIntent_593497(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_593508: Call_PutIntent_593496; path: JsonNode; query: JsonNode;
+proc call*(call_600510: Call_PutIntent_600498; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an intent or replaces an existing intent.</p> <p>To define the interaction between the user and your bot, you use one or more intents. For a pizza ordering bot, for example, you would create an <code>OrderPizza</code> intent. </p> <p>To create an intent or replace an existing intent, you must provide the following:</p> <ul> <li> <p>Intent name. For example, <code>OrderPizza</code>.</p> </li> <li> <p>Sample utterances. For example, "Can I order a pizza, please." and "I want to order a pizza."</p> </li> <li> <p>Information to be gathered. You specify slot types for the information that your bot will request from the user. You can specify standard slot types, such as a date or a time, or custom slot types such as the size and crust of a pizza.</p> </li> <li> <p>How the intent will be fulfilled. You can provide a Lambda function or configure the intent to return the intent information to the client application. If you use a Lambda function, when all of the intent information is available, Amazon Lex invokes your Lambda function. If you configure your intent to return the intent information to the client application. </p> </li> </ul> <p>You can specify other optional information in the request, such as:</p> <ul> <li> <p>A confirmation prompt to ask the user to confirm an intent. For example, "Shall I order your pizza?"</p> </li> <li> <p>A conclusion statement to send to the user after the intent has been fulfilled. For example, "I placed your pizza order."</p> </li> <li> <p>A follow-up prompt that asks the user for additional activity. For example, asking "Do you want to order a drink with your pizza?"</p> </li> </ul> <p>If you specify an existing intent name to update the intent, Amazon Lex replaces the values in the <code>$LATEST</code> version of the intent with the values in the request. Amazon Lex removes fields that you don't provide in the request. If you don't specify the required fields, Amazon Lex throws an exception. When you update the <code>$LATEST</code> version of an intent, the <code>status</code> field of any bot that uses the <code>$LATEST</code> version of the intent is set to <code>NOT_BUILT</code>.</p> <p>For more information, see <a>how-it-works</a>.</p> <p>This operation requires permissions for the <code>lex:PutIntent</code> action.</p>
   ## 
-  let valid = call_593508.validator(path, query, header, formData, body)
-  let scheme = call_593508.pickScheme
+  let valid = call_600510.validator(path, query, header, formData, body)
+  let scheme = call_600510.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593508.url(scheme.get, call_593508.host, call_593508.base,
-                         call_593508.route, valid.getOrDefault("path"),
+  let url = call_600510.url(scheme.get, call_600510.host, call_600510.base,
+                         call_600510.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593508, url, valid)
+  result = atozHook(call_600510, url, valid)
 
-proc call*(call_593509: Call_PutIntent_593496; name: string; body: JsonNode): Recallable =
+proc call*(call_600511: Call_PutIntent_600498; name: string; body: JsonNode): Recallable =
   ## putIntent
   ## <p>Creates an intent or replaces an existing intent.</p> <p>To define the interaction between the user and your bot, you use one or more intents. For a pizza ordering bot, for example, you would create an <code>OrderPizza</code> intent. </p> <p>To create an intent or replace an existing intent, you must provide the following:</p> <ul> <li> <p>Intent name. For example, <code>OrderPizza</code>.</p> </li> <li> <p>Sample utterances. For example, "Can I order a pizza, please." and "I want to order a pizza."</p> </li> <li> <p>Information to be gathered. You specify slot types for the information that your bot will request from the user. You can specify standard slot types, such as a date or a time, or custom slot types such as the size and crust of a pizza.</p> </li> <li> <p>How the intent will be fulfilled. You can provide a Lambda function or configure the intent to return the intent information to the client application. If you use a Lambda function, when all of the intent information is available, Amazon Lex invokes your Lambda function. If you configure your intent to return the intent information to the client application. </p> </li> </ul> <p>You can specify other optional information in the request, such as:</p> <ul> <li> <p>A confirmation prompt to ask the user to confirm an intent. For example, "Shall I order your pizza?"</p> </li> <li> <p>A conclusion statement to send to the user after the intent has been fulfilled. For example, "I placed your pizza order."</p> </li> <li> <p>A follow-up prompt that asks the user for additional activity. For example, asking "Do you want to order a drink with your pizza?"</p> </li> </ul> <p>If you specify an existing intent name to update the intent, Amazon Lex replaces the values in the <code>$LATEST</code> version of the intent with the values in the request. Amazon Lex removes fields that you don't provide in the request. If you don't specify the required fields, Amazon Lex throws an exception. When you update the <code>$LATEST</code> version of an intent, the <code>status</code> field of any bot that uses the <code>$LATEST</code> version of the intent is set to <code>NOT_BUILT</code>.</p> <p>For more information, see <a>how-it-works</a>.</p> <p>This operation requires permissions for the <code>lex:PutIntent</code> action.</p>
   ##   name: string (required)
   ##       : <p>The name of the intent. The name is <i>not</i> case sensitive. </p> <p>The name can't match a built-in intent name, or a built-in intent name with "AMAZON." removed. For example, because there is a built-in intent called <code>AMAZON.HelpIntent</code>, you can't create a custom intent called <code>HelpIntent</code>.</p> <p>For a list of built-in intents, see <a 
   ## href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/standard-intents">Standard Built-in Intents</a> in the <i>Alexa Skills Kit</i>.</p>
   ##   body: JObject (required)
-  var path_593510 = newJObject()
-  var body_593511 = newJObject()
-  add(path_593510, "name", newJString(name))
+  var path_600512 = newJObject()
+  var body_600513 = newJObject()
+  add(path_600512, "name", newJString(name))
   if body != nil:
-    body_593511 = body
-  result = call_593509.call(path_593510, nil, nil, nil, body_593511)
+    body_600513 = body
+  result = call_600511.call(path_600512, nil, nil, nil, body_600513)
 
-var putIntent* = Call_PutIntent_593496(name: "putIntent", meth: HttpMethod.HttpPut,
+var putIntent* = Call_PutIntent_600498(name: "putIntent", meth: HttpMethod.HttpPut,
                                     host: "models.lex.amazonaws.com",
                                     route: "/intents/{name}/versions/$LATEST",
-                                    validator: validate_PutIntent_593497,
-                                    base: "/", url: url_PutIntent_593498,
+                                    validator: validate_PutIntent_600499,
+                                    base: "/", url: url_PutIntent_600500,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutSlotType_593512 = ref object of OpenApiRestCall_592365
-proc url_PutSlotType_593514(protocol: Scheme; host: string; base: string;
+  Call_PutSlotType_600514 = ref object of OpenApiRestCall_599369
+proc url_PutSlotType_600516(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4559,9 +4724,14 @@ proc url_PutSlotType_593514(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_PutSlotType_593513(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutSlotType_600515(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a custom slot type or replaces an existing custom slot type.</p> <p>To create a custom slot type, specify a name for the slot type and a set of enumeration values, which are the values that a slot of this type can assume. For more information, see <a>how-it-works</a>.</p> <p>If you specify the name of an existing slot type, the fields in the request replace the existing values in the <code>$LATEST</code> version of the slot type. Amazon Lex removes the fields that you don't provide in the request. If you don't specify required fields, Amazon Lex throws an exception. When you update the <code>$LATEST</code> version of a slot type, if a bot uses the <code>$LATEST</code> version of an intent that contains the slot type, the bot's <code>status</code> field is set to <code>NOT_BUILT</code>.</p> <p>This operation requires permissions for the <code>lex:PutSlotType</code> action.</p>
   ## 
@@ -4573,58 +4743,58 @@ proc validate_PutSlotType_593513(path: JsonNode; query: JsonNode; header: JsonNo
   ## href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/slot-type-reference">Slot Type Reference</a> in the <i>Alexa Skills Kit</i>.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_593515 = path.getOrDefault("name")
-  valid_593515 = validateParameter(valid_593515, JString, required = true,
+  var valid_600517 = path.getOrDefault("name")
+  valid_600517 = validateParameter(valid_600517, JString, required = true,
                                  default = nil)
-  if valid_593515 != nil:
-    section.add "name", valid_593515
+  if valid_600517 != nil:
+    section.add "name", valid_600517
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593516 = header.getOrDefault("X-Amz-Signature")
-  valid_593516 = validateParameter(valid_593516, JString, required = false,
+  var valid_600518 = header.getOrDefault("X-Amz-Date")
+  valid_600518 = validateParameter(valid_600518, JString, required = false,
                                  default = nil)
-  if valid_593516 != nil:
-    section.add "X-Amz-Signature", valid_593516
-  var valid_593517 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593517 = validateParameter(valid_593517, JString, required = false,
+  if valid_600518 != nil:
+    section.add "X-Amz-Date", valid_600518
+  var valid_600519 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600519 = validateParameter(valid_600519, JString, required = false,
                                  default = nil)
-  if valid_593517 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593517
-  var valid_593518 = header.getOrDefault("X-Amz-Date")
-  valid_593518 = validateParameter(valid_593518, JString, required = false,
+  if valid_600519 != nil:
+    section.add "X-Amz-Security-Token", valid_600519
+  var valid_600520 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600520 = validateParameter(valid_600520, JString, required = false,
                                  default = nil)
-  if valid_593518 != nil:
-    section.add "X-Amz-Date", valid_593518
-  var valid_593519 = header.getOrDefault("X-Amz-Credential")
-  valid_593519 = validateParameter(valid_593519, JString, required = false,
+  if valid_600520 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600520
+  var valid_600521 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600521 = validateParameter(valid_600521, JString, required = false,
                                  default = nil)
-  if valid_593519 != nil:
-    section.add "X-Amz-Credential", valid_593519
-  var valid_593520 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593520 = validateParameter(valid_593520, JString, required = false,
+  if valid_600521 != nil:
+    section.add "X-Amz-Algorithm", valid_600521
+  var valid_600522 = header.getOrDefault("X-Amz-Signature")
+  valid_600522 = validateParameter(valid_600522, JString, required = false,
                                  default = nil)
-  if valid_593520 != nil:
-    section.add "X-Amz-Security-Token", valid_593520
-  var valid_593521 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593521 = validateParameter(valid_593521, JString, required = false,
+  if valid_600522 != nil:
+    section.add "X-Amz-Signature", valid_600522
+  var valid_600523 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600523 = validateParameter(valid_600523, JString, required = false,
                                  default = nil)
-  if valid_593521 != nil:
-    section.add "X-Amz-Algorithm", valid_593521
-  var valid_593522 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593522 = validateParameter(valid_593522, JString, required = false,
+  if valid_600523 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600523
+  var valid_600524 = header.getOrDefault("X-Amz-Credential")
+  valid_600524 = validateParameter(valid_600524, JString, required = false,
                                  default = nil)
-  if valid_593522 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593522
+  if valid_600524 != nil:
+    section.add "X-Amz-Credential", valid_600524
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4635,49 +4805,53 @@ proc validate_PutSlotType_593513(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_593524: Call_PutSlotType_593512; path: JsonNode; query: JsonNode;
+proc call*(call_600526: Call_PutSlotType_600514; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a custom slot type or replaces an existing custom slot type.</p> <p>To create a custom slot type, specify a name for the slot type and a set of enumeration values, which are the values that a slot of this type can assume. For more information, see <a>how-it-works</a>.</p> <p>If you specify the name of an existing slot type, the fields in the request replace the existing values in the <code>$LATEST</code> version of the slot type. Amazon Lex removes the fields that you don't provide in the request. If you don't specify required fields, Amazon Lex throws an exception. When you update the <code>$LATEST</code> version of a slot type, if a bot uses the <code>$LATEST</code> version of an intent that contains the slot type, the bot's <code>status</code> field is set to <code>NOT_BUILT</code>.</p> <p>This operation requires permissions for the <code>lex:PutSlotType</code> action.</p>
   ## 
-  let valid = call_593524.validator(path, query, header, formData, body)
-  let scheme = call_593524.pickScheme
+  let valid = call_600526.validator(path, query, header, formData, body)
+  let scheme = call_600526.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593524.url(scheme.get, call_593524.host, call_593524.base,
-                         call_593524.route, valid.getOrDefault("path"),
+  let url = call_600526.url(scheme.get, call_600526.host, call_600526.base,
+                         call_600526.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593524, url, valid)
+  result = atozHook(call_600526, url, valid)
 
-proc call*(call_593525: Call_PutSlotType_593512; name: string; body: JsonNode): Recallable =
+proc call*(call_600527: Call_PutSlotType_600514; name: string; body: JsonNode): Recallable =
   ## putSlotType
   ## <p>Creates a custom slot type or replaces an existing custom slot type.</p> <p>To create a custom slot type, specify a name for the slot type and a set of enumeration values, which are the values that a slot of this type can assume. For more information, see <a>how-it-works</a>.</p> <p>If you specify the name of an existing slot type, the fields in the request replace the existing values in the <code>$LATEST</code> version of the slot type. Amazon Lex removes the fields that you don't provide in the request. If you don't specify required fields, Amazon Lex throws an exception. When you update the <code>$LATEST</code> version of a slot type, if a bot uses the <code>$LATEST</code> version of an intent that contains the slot type, the bot's <code>status</code> field is set to <code>NOT_BUILT</code>.</p> <p>This operation requires permissions for the <code>lex:PutSlotType</code> action.</p>
   ##   name: string (required)
   ##       : <p>The name of the slot type. The name is <i>not</i> case sensitive. </p> <p>The name can't match a built-in slot type name, or a built-in slot type name with "AMAZON." removed. For example, because there is a built-in slot type called <code>AMAZON.DATE</code>, you can't create a custom slot type called <code>DATE</code>.</p> <p>For a list of built-in slot types, see <a 
   ## href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/built-in-intent-ref/slot-type-reference">Slot Type Reference</a> in the <i>Alexa Skills Kit</i>.</p>
   ##   body: JObject (required)
-  var path_593526 = newJObject()
-  var body_593527 = newJObject()
-  add(path_593526, "name", newJString(name))
+  var path_600528 = newJObject()
+  var body_600529 = newJObject()
+  add(path_600528, "name", newJString(name))
   if body != nil:
-    body_593527 = body
-  result = call_593525.call(path_593526, nil, nil, nil, body_593527)
+    body_600529 = body
+  result = call_600527.call(path_600528, nil, nil, nil, body_600529)
 
-var putSlotType* = Call_PutSlotType_593512(name: "putSlotType",
+var putSlotType* = Call_PutSlotType_600514(name: "putSlotType",
                                         meth: HttpMethod.HttpPut,
                                         host: "models.lex.amazonaws.com", route: "/slottypes/{name}/versions/$LATEST",
-                                        validator: validate_PutSlotType_593513,
-                                        base: "/", url: url_PutSlotType_593514,
+                                        validator: validate_PutSlotType_600515,
+                                        base: "/", url: url_PutSlotType_600516,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartImport_593528 = ref object of OpenApiRestCall_592365
-proc url_StartImport_593530(protocol: Scheme; host: string; base: string;
+  Call_StartImport_600530 = ref object of OpenApiRestCall_599369
+proc url_StartImport_600532(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_StartImport_593529(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StartImport_600531(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Starts a job to import a resource to Amazon Lex.
   ## 
@@ -4688,49 +4862,49 @@ proc validate_StartImport_593529(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_593531 = header.getOrDefault("X-Amz-Signature")
-  valid_593531 = validateParameter(valid_593531, JString, required = false,
+  var valid_600533 = header.getOrDefault("X-Amz-Date")
+  valid_600533 = validateParameter(valid_600533, JString, required = false,
                                  default = nil)
-  if valid_593531 != nil:
-    section.add "X-Amz-Signature", valid_593531
-  var valid_593532 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593532 = validateParameter(valid_593532, JString, required = false,
+  if valid_600533 != nil:
+    section.add "X-Amz-Date", valid_600533
+  var valid_600534 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600534 = validateParameter(valid_600534, JString, required = false,
                                  default = nil)
-  if valid_593532 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593532
-  var valid_593533 = header.getOrDefault("X-Amz-Date")
-  valid_593533 = validateParameter(valid_593533, JString, required = false,
+  if valid_600534 != nil:
+    section.add "X-Amz-Security-Token", valid_600534
+  var valid_600535 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600535 = validateParameter(valid_600535, JString, required = false,
                                  default = nil)
-  if valid_593533 != nil:
-    section.add "X-Amz-Date", valid_593533
-  var valid_593534 = header.getOrDefault("X-Amz-Credential")
-  valid_593534 = validateParameter(valid_593534, JString, required = false,
+  if valid_600535 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600535
+  var valid_600536 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600536 = validateParameter(valid_600536, JString, required = false,
                                  default = nil)
-  if valid_593534 != nil:
-    section.add "X-Amz-Credential", valid_593534
-  var valid_593535 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593535 = validateParameter(valid_593535, JString, required = false,
+  if valid_600536 != nil:
+    section.add "X-Amz-Algorithm", valid_600536
+  var valid_600537 = header.getOrDefault("X-Amz-Signature")
+  valid_600537 = validateParameter(valid_600537, JString, required = false,
                                  default = nil)
-  if valid_593535 != nil:
-    section.add "X-Amz-Security-Token", valid_593535
-  var valid_593536 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593536 = validateParameter(valid_593536, JString, required = false,
+  if valid_600537 != nil:
+    section.add "X-Amz-Signature", valid_600537
+  var valid_600538 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600538 = validateParameter(valid_600538, JString, required = false,
                                  default = nil)
-  if valid_593536 != nil:
-    section.add "X-Amz-Algorithm", valid_593536
-  var valid_593537 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593537 = validateParameter(valid_593537, JString, required = false,
+  if valid_600538 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600538
+  var valid_600539 = header.getOrDefault("X-Amz-Credential")
+  valid_600539 = validateParameter(valid_600539, JString, required = false,
                                  default = nil)
-  if valid_593537 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593537
+  if valid_600539 != nil:
+    section.add "X-Amz-Credential", valid_600539
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4741,39 +4915,39 @@ proc validate_StartImport_593529(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_593539: Call_StartImport_593528; path: JsonNode; query: JsonNode;
+proc call*(call_600541: Call_StartImport_600530; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Starts a job to import a resource to Amazon Lex.
   ## 
-  let valid = call_593539.validator(path, query, header, formData, body)
-  let scheme = call_593539.pickScheme
+  let valid = call_600541.validator(path, query, header, formData, body)
+  let scheme = call_600541.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593539.url(scheme.get, call_593539.host, call_593539.base,
-                         call_593539.route, valid.getOrDefault("path"),
+  let url = call_600541.url(scheme.get, call_600541.host, call_600541.base,
+                         call_600541.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593539, url, valid)
+  result = atozHook(call_600541, url, valid)
 
-proc call*(call_593540: Call_StartImport_593528; body: JsonNode): Recallable =
+proc call*(call_600542: Call_StartImport_600530; body: JsonNode): Recallable =
   ## startImport
   ## Starts a job to import a resource to Amazon Lex.
   ##   body: JObject (required)
-  var body_593541 = newJObject()
+  var body_600543 = newJObject()
   if body != nil:
-    body_593541 = body
-  result = call_593540.call(nil, nil, nil, nil, body_593541)
+    body_600543 = body
+  result = call_600542.call(nil, nil, nil, nil, body_600543)
 
-var startImport* = Call_StartImport_593528(name: "startImport",
+var startImport* = Call_StartImport_600530(name: "startImport",
                                         meth: HttpMethod.HttpPost,
                                         host: "models.lex.amazonaws.com",
                                         route: "/imports/",
-                                        validator: validate_StartImport_593529,
-                                        base: "/", url: url_StartImport_593530,
+                                        validator: validate_StartImport_600531,
+                                        base: "/", url: url_StartImport_600532,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
-proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", "")
@@ -4812,7 +4986,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
   result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
-  result.sign(input.getOrDefault("query"), SHA256)
+  result.atozSign(input.getOrDefault("query"), SHA256)

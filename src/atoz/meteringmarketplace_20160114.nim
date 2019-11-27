@@ -10,7 +10,7 @@ import
 ##     name: Apache 2.0 License
 ##     url: http://www.apache.org/licenses/
 ## 
-## <fullname>AWS Marketplace Metering Service</fullname> <p>This reference provides descriptions of the low-level AWS Marketplace Metering Service API.</p> <p>AWS Marketplace sellers can use this API to submit usage data for custom usage dimensions.</p> <p> <b>Submitting Metering Records</b> </p> <ul> <li> <p> <i>MeterUsage</i>- Submits the metering record for a Marketplace product. MeterUsage is called from an EC2 instance.</p> </li> <li> <p> <i>BatchMeterUsage</i>- Submits the metering record for a set of customers. BatchMeterUsage is called from a software-as-a-service (SaaS) application.</p> </li> </ul> <p> <b>Accepting New Customers</b> </p> <ul> <li> <p> <i>ResolveCustomer</i>- Called by a SaaS application during the registration process. When a buyer visits your website during the registration process, the buyer submits a Registration Token through the browser. The Registration Token is resolved through this API to obtain a CustomerIdentifier and Product Code.</p> </li> </ul> <p> <b>Entitlement and Metering for Paid Container Products</b> </p> <ul> <li> <p> Paid container software products sold through AWS Marketplace must integrate with the AWS Marketplace Metering Service and call the RegisterUsage operation for software entitlement and metering. Free and BYOL products for Amazon ECS or Amazon EKS aren't required to call RegisterUsage, but you can do so if you want to receive usage data in your seller reports. For more information on using the RegisterUsage operation, see <a href="https://docs.aws.amazon.com/marketplace/latest/userguide/container-based-products.html">Container-Based Products</a>. </p> </li> </ul> <p>BatchMeterUsage API calls are captured by AWS CloudTrail. You can use Cloudtrail to verify that the SaaS metering records that you sent are accurate by searching for records with the eventName of BatchMeterUsage. You can also use CloudTrail to audit records over time. For more information, see the <i> <a href="http://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html">AWS CloudTrail User Guide</a> </i>.</p>
+## <fullname>AWS Marketplace Metering Service</fullname> <p>This reference provides descriptions of the low-level AWS Marketplace Metering Service API.</p> <p>AWS Marketplace sellers can use this API to submit usage data for custom usage dimensions.</p> <p> <b>Submitting Metering Records</b> </p> <ul> <li> <p> <i>MeterUsage</i>- Submits the metering record for a Marketplace product. MeterUsage is called from an EC2 instance or a container running on EKS or ECS.</p> </li> <li> <p> <i>BatchMeterUsage</i>- Submits the metering record for a set of customers. BatchMeterUsage is called from a software-as-a-service (SaaS) application.</p> </li> </ul> <p> <b>Accepting New Customers</b> </p> <ul> <li> <p> <i>ResolveCustomer</i>- Called by a SaaS application during the registration process. When a buyer visits your website during the registration process, the buyer submits a Registration Token through the browser. The Registration Token is resolved through this API to obtain a CustomerIdentifier and Product Code.</p> </li> </ul> <p> <b>Entitlement and Metering for Paid Container Products</b> </p> <ul> <li> <p> Paid container software products sold through AWS Marketplace must integrate with the AWS Marketplace Metering Service and call the RegisterUsage operation for software entitlement and metering. Free and BYOL products for Amazon ECS or Amazon EKS aren't required to call RegisterUsage, but you can do so if you want to receive usage data in your seller reports. For more information on using the RegisterUsage operation, see <a href="https://docs.aws.amazon.com/marketplace/latest/userguide/container-based-products.html">Container-Based Products</a>. </p> </li> </ul> <p>BatchMeterUsage API calls are captured by AWS CloudTrail. You can use Cloudtrail to verify that the SaaS metering records that you sent are accurate by searching for records with the eventName of BatchMeterUsage. You can also use CloudTrail to audit records over time. For more information, see the <i> <a href="http://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html">AWS CloudTrail User Guide</a> </i>.</p>
 ## 
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/marketplace/
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_593380 = ref object of OpenApiRestCall
+  OpenApiRestCall_599359 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_593380](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_599359](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_593380): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_599359): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -132,22 +132,21 @@ const
       "ca-central-1": "metering.marketplace.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "meteringmarketplace"
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_BatchMeterUsage_593718 = ref object of OpenApiRestCall_593380
-proc url_BatchMeterUsage_593720(protocol: Scheme; host: string; base: string;
+  Call_BatchMeterUsage_599696 = ref object of OpenApiRestCall_599359
+proc url_BatchMeterUsage_599698(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_BatchMeterUsage_593719(path: JsonNode; query: JsonNode;
+proc validate_BatchMeterUsage_599697(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>BatchMeterUsage is called from a SaaS application listed on the AWS Marketplace to post metering records for a set of customers.</p> <p>For identical requests, the API is idempotent; requests can be retried with the same records or a subset of the input records.</p> <p>Every request to BatchMeterUsage is for one product. If you need to meter usage for multiple products, you must make multiple calls to BatchMeterUsage.</p> <p>BatchMeterUsage can process up to 25 UsageRecords at a time.</p>
@@ -159,57 +158,57 @@ proc validate_BatchMeterUsage_593719(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599810 = header.getOrDefault("X-Amz-Date")
+  valid_599810 = validateParameter(valid_599810, JString, required = false,
+                                 default = nil)
+  if valid_599810 != nil:
+    section.add "X-Amz-Date", valid_599810
+  var valid_599811 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599811 = validateParameter(valid_599811, JString, required = false,
+                                 default = nil)
+  if valid_599811 != nil:
+    section.add "X-Amz-Security-Token", valid_599811
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593845 = header.getOrDefault("X-Amz-Target")
-  valid_593845 = validateParameter(valid_593845, JString, required = true, default = newJString(
+  var valid_599825 = header.getOrDefault("X-Amz-Target")
+  valid_599825 = validateParameter(valid_599825, JString, required = true, default = newJString(
       "AWSMPMeteringService.BatchMeterUsage"))
-  if valid_593845 != nil:
-    section.add "X-Amz-Target", valid_593845
-  var valid_593846 = header.getOrDefault("X-Amz-Signature")
-  valid_593846 = validateParameter(valid_593846, JString, required = false,
+  if valid_599825 != nil:
+    section.add "X-Amz-Target", valid_599825
+  var valid_599826 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599826 = validateParameter(valid_599826, JString, required = false,
                                  default = nil)
-  if valid_593846 != nil:
-    section.add "X-Amz-Signature", valid_593846
-  var valid_593847 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593847 = validateParameter(valid_593847, JString, required = false,
+  if valid_599826 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599826
+  var valid_599827 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599827 = validateParameter(valid_599827, JString, required = false,
                                  default = nil)
-  if valid_593847 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593847
-  var valid_593848 = header.getOrDefault("X-Amz-Date")
-  valid_593848 = validateParameter(valid_593848, JString, required = false,
+  if valid_599827 != nil:
+    section.add "X-Amz-Algorithm", valid_599827
+  var valid_599828 = header.getOrDefault("X-Amz-Signature")
+  valid_599828 = validateParameter(valid_599828, JString, required = false,
                                  default = nil)
-  if valid_593848 != nil:
-    section.add "X-Amz-Date", valid_593848
-  var valid_593849 = header.getOrDefault("X-Amz-Credential")
-  valid_593849 = validateParameter(valid_593849, JString, required = false,
+  if valid_599828 != nil:
+    section.add "X-Amz-Signature", valid_599828
+  var valid_599829 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599829 = validateParameter(valid_599829, JString, required = false,
                                  default = nil)
-  if valid_593849 != nil:
-    section.add "X-Amz-Credential", valid_593849
-  var valid_593850 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593850 = validateParameter(valid_593850, JString, required = false,
+  if valid_599829 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599829
+  var valid_599830 = header.getOrDefault("X-Amz-Credential")
+  valid_599830 = validateParameter(valid_599830, JString, required = false,
                                  default = nil)
-  if valid_593850 != nil:
-    section.add "X-Amz-Security-Token", valid_593850
-  var valid_593851 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593851 = validateParameter(valid_593851, JString, required = false,
-                                 default = nil)
-  if valid_593851 != nil:
-    section.add "X-Amz-Algorithm", valid_593851
-  var valid_593852 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593852 = validateParameter(valid_593852, JString, required = false,
-                                 default = nil)
-  if valid_593852 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593852
+  if valid_599830 != nil:
+    section.add "X-Amz-Credential", valid_599830
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -220,50 +219,49 @@ proc validate_BatchMeterUsage_593719(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593876: Call_BatchMeterUsage_593718; path: JsonNode; query: JsonNode;
+proc call*(call_599854: Call_BatchMeterUsage_599696; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>BatchMeterUsage is called from a SaaS application listed on the AWS Marketplace to post metering records for a set of customers.</p> <p>For identical requests, the API is idempotent; requests can be retried with the same records or a subset of the input records.</p> <p>Every request to BatchMeterUsage is for one product. If you need to meter usage for multiple products, you must make multiple calls to BatchMeterUsage.</p> <p>BatchMeterUsage can process up to 25 UsageRecords at a time.</p>
   ## 
-  let valid = call_593876.validator(path, query, header, formData, body)
-  let scheme = call_593876.pickScheme
+  let valid = call_599854.validator(path, query, header, formData, body)
+  let scheme = call_599854.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593876.url(scheme.get, call_593876.host, call_593876.base,
-                         call_593876.route, valid.getOrDefault("path"),
+  let url = call_599854.url(scheme.get, call_599854.host, call_599854.base,
+                         call_599854.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593876, url, valid)
+  result = atozHook(call_599854, url, valid)
 
-proc call*(call_593947: Call_BatchMeterUsage_593718; body: JsonNode): Recallable =
+proc call*(call_599925: Call_BatchMeterUsage_599696; body: JsonNode): Recallable =
   ## batchMeterUsage
   ## <p>BatchMeterUsage is called from a SaaS application listed on the AWS Marketplace to post metering records for a set of customers.</p> <p>For identical requests, the API is idempotent; requests can be retried with the same records or a subset of the input records.</p> <p>Every request to BatchMeterUsage is for one product. If you need to meter usage for multiple products, you must make multiple calls to BatchMeterUsage.</p> <p>BatchMeterUsage can process up to 25 UsageRecords at a time.</p>
   ##   body: JObject (required)
-  var body_593948 = newJObject()
+  var body_599926 = newJObject()
   if body != nil:
-    body_593948 = body
-  result = call_593947.call(nil, nil, nil, nil, body_593948)
+    body_599926 = body
+  result = call_599925.call(nil, nil, nil, nil, body_599926)
 
-var batchMeterUsage* = Call_BatchMeterUsage_593718(name: "batchMeterUsage",
+var batchMeterUsage* = Call_BatchMeterUsage_599696(name: "batchMeterUsage",
     meth: HttpMethod.HttpPost, host: "metering.marketplace.amazonaws.com",
     route: "/#X-Amz-Target=AWSMPMeteringService.BatchMeterUsage",
-    validator: validate_BatchMeterUsage_593719, base: "/", url: url_BatchMeterUsage_593720,
+    validator: validate_BatchMeterUsage_599697, base: "/", url: url_BatchMeterUsage_599698,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_MeterUsage_593987 = ref object of OpenApiRestCall_593380
-proc url_MeterUsage_593989(protocol: Scheme; host: string; base: string; route: string;
+  Call_MeterUsage_599965 = ref object of OpenApiRestCall_599359
+proc url_MeterUsage_599967(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_MeterUsage_593988(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_MeterUsage_599966(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>API to emit metering records. For identical requests, the API is idempotent. It simply returns the metering record ID.</p> <p>MeterUsage is authenticated on the buyer's AWS account, generally when running from an EC2 instance on the AWS Marketplace.</p>
+  ## <p>API to emit metering records. For identical requests, the API is idempotent. It simply returns the metering record ID.</p> <p>MeterUsage is authenticated on the buyer's AWS account using credentials from the EC2 instance, ECS task, or EKS pod.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -272,57 +270,57 @@ proc validate_MeterUsage_593988(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599968 = header.getOrDefault("X-Amz-Date")
+  valid_599968 = validateParameter(valid_599968, JString, required = false,
+                                 default = nil)
+  if valid_599968 != nil:
+    section.add "X-Amz-Date", valid_599968
+  var valid_599969 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599969 = validateParameter(valid_599969, JString, required = false,
+                                 default = nil)
+  if valid_599969 != nil:
+    section.add "X-Amz-Security-Token", valid_599969
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593990 = header.getOrDefault("X-Amz-Target")
-  valid_593990 = validateParameter(valid_593990, JString, required = true, default = newJString(
+  var valid_599970 = header.getOrDefault("X-Amz-Target")
+  valid_599970 = validateParameter(valid_599970, JString, required = true, default = newJString(
       "AWSMPMeteringService.MeterUsage"))
-  if valid_593990 != nil:
-    section.add "X-Amz-Target", valid_593990
-  var valid_593991 = header.getOrDefault("X-Amz-Signature")
-  valid_593991 = validateParameter(valid_593991, JString, required = false,
+  if valid_599970 != nil:
+    section.add "X-Amz-Target", valid_599970
+  var valid_599971 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599971 = validateParameter(valid_599971, JString, required = false,
                                  default = nil)
-  if valid_593991 != nil:
-    section.add "X-Amz-Signature", valid_593991
-  var valid_593992 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593992 = validateParameter(valid_593992, JString, required = false,
+  if valid_599971 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599971
+  var valid_599972 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599972 = validateParameter(valid_599972, JString, required = false,
                                  default = nil)
-  if valid_593992 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593992
-  var valid_593993 = header.getOrDefault("X-Amz-Date")
-  valid_593993 = validateParameter(valid_593993, JString, required = false,
+  if valid_599972 != nil:
+    section.add "X-Amz-Algorithm", valid_599972
+  var valid_599973 = header.getOrDefault("X-Amz-Signature")
+  valid_599973 = validateParameter(valid_599973, JString, required = false,
                                  default = nil)
-  if valid_593993 != nil:
-    section.add "X-Amz-Date", valid_593993
-  var valid_593994 = header.getOrDefault("X-Amz-Credential")
-  valid_593994 = validateParameter(valid_593994, JString, required = false,
+  if valid_599973 != nil:
+    section.add "X-Amz-Signature", valid_599973
+  var valid_599974 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599974 = validateParameter(valid_599974, JString, required = false,
                                  default = nil)
-  if valid_593994 != nil:
-    section.add "X-Amz-Credential", valid_593994
-  var valid_593995 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593995 = validateParameter(valid_593995, JString, required = false,
+  if valid_599974 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599974
+  var valid_599975 = header.getOrDefault("X-Amz-Credential")
+  valid_599975 = validateParameter(valid_599975, JString, required = false,
                                  default = nil)
-  if valid_593995 != nil:
-    section.add "X-Amz-Security-Token", valid_593995
-  var valid_593996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593996 = validateParameter(valid_593996, JString, required = false,
-                                 default = nil)
-  if valid_593996 != nil:
-    section.add "X-Amz-Algorithm", valid_593996
-  var valid_593997 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593997 = validateParameter(valid_593997, JString, required = false,
-                                 default = nil)
-  if valid_593997 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593997
+  if valid_599975 != nil:
+    section.add "X-Amz-Credential", valid_599975
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -333,48 +331,47 @@ proc validate_MeterUsage_593988(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_593999: Call_MeterUsage_593987; path: JsonNode; query: JsonNode;
+proc call*(call_599977: Call_MeterUsage_599965; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>API to emit metering records. For identical requests, the API is idempotent. It simply returns the metering record ID.</p> <p>MeterUsage is authenticated on the buyer's AWS account, generally when running from an EC2 instance on the AWS Marketplace.</p>
+  ## <p>API to emit metering records. For identical requests, the API is idempotent. It simply returns the metering record ID.</p> <p>MeterUsage is authenticated on the buyer's AWS account using credentials from the EC2 instance, ECS task, or EKS pod.</p>
   ## 
-  let valid = call_593999.validator(path, query, header, formData, body)
-  let scheme = call_593999.pickScheme
+  let valid = call_599977.validator(path, query, header, formData, body)
+  let scheme = call_599977.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593999.url(scheme.get, call_593999.host, call_593999.base,
-                         call_593999.route, valid.getOrDefault("path"),
+  let url = call_599977.url(scheme.get, call_599977.host, call_599977.base,
+                         call_599977.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593999, url, valid)
+  result = atozHook(call_599977, url, valid)
 
-proc call*(call_594000: Call_MeterUsage_593987; body: JsonNode): Recallable =
+proc call*(call_599978: Call_MeterUsage_599965; body: JsonNode): Recallable =
   ## meterUsage
-  ## <p>API to emit metering records. For identical requests, the API is idempotent. It simply returns the metering record ID.</p> <p>MeterUsage is authenticated on the buyer's AWS account, generally when running from an EC2 instance on the AWS Marketplace.</p>
+  ## <p>API to emit metering records. For identical requests, the API is idempotent. It simply returns the metering record ID.</p> <p>MeterUsage is authenticated on the buyer's AWS account using credentials from the EC2 instance, ECS task, or EKS pod.</p>
   ##   body: JObject (required)
-  var body_594001 = newJObject()
+  var body_599979 = newJObject()
   if body != nil:
-    body_594001 = body
-  result = call_594000.call(nil, nil, nil, nil, body_594001)
+    body_599979 = body
+  result = call_599978.call(nil, nil, nil, nil, body_599979)
 
-var meterUsage* = Call_MeterUsage_593987(name: "meterUsage",
+var meterUsage* = Call_MeterUsage_599965(name: "meterUsage",
                                       meth: HttpMethod.HttpPost, host: "metering.marketplace.amazonaws.com", route: "/#X-Amz-Target=AWSMPMeteringService.MeterUsage",
-                                      validator: validate_MeterUsage_593988,
-                                      base: "/", url: url_MeterUsage_593989,
+                                      validator: validate_MeterUsage_599966,
+                                      base: "/", url: url_MeterUsage_599967,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterUsage_594002 = ref object of OpenApiRestCall_593380
-proc url_RegisterUsage_594004(protocol: Scheme; host: string; base: string;
+  Call_RegisterUsage_599980 = ref object of OpenApiRestCall_599359
+proc url_RegisterUsage_599982(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterUsage_594003(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RegisterUsage_599981(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Paid container software products sold through AWS Marketplace must integrate with the AWS Marketplace Metering Service and call the RegisterUsage operation for software entitlement and metering. Free and BYOL products for Amazon ECS or Amazon EKS aren't required to call RegisterUsage, but you may choose to do so if you would like to receive usage data in your seller reports. The sections below explain the behavior of RegisterUsage. RegisterUsage performs two primary functions: metering and entitlement.</p> <ul> <li> <p> <i>Entitlement</i>: RegisterUsage allows you to verify that the customer running your paid software is subscribed to your product on AWS Marketplace, enabling you to guard against unauthorized use. Your container image that integrates with RegisterUsage is only required to guard against unauthorized use at container startup, as such a CustomerNotSubscribedException/PlatformNotSupportedException will only be thrown on the initial call to RegisterUsage. Subsequent calls from the same Amazon ECS task instance (e.g. task-id) or Amazon EKS pod will not throw a CustomerNotSubscribedException, even if the customer unsubscribes while the Amazon ECS task or Amazon EKS pod is still running.</p> </li> <li> <p> <i>Metering</i>: RegisterUsage meters software use per ECS task, per hour, or per pod for Amazon EKS with usage prorated to the second. A minimum of 1 minute of usage applies to tasks that are short lived. For example, if a customer has a 10 node Amazon ECS or Amazon EKS cluster and a service configured as a Daemon Set, then Amazon ECS or Amazon EKS will launch a task on all 10 cluster nodes and the customer will be charged: (10 * hourly_rate). Metering for software use is automatically handled by the AWS Marketplace Metering Control Plane -- your software is not required to perform any metering specific actions, other than call RegisterUsage once for metering of software use to commence. The AWS Marketplace Metering Control Plane will also continue to bill customers for running ECS tasks and Amazon EKS pods, regardless of the customers subscription state, removing the need for your software to perform entitlement checks at runtime.</p> </li> </ul>
   ## 
@@ -385,57 +382,57 @@ proc validate_RegisterUsage_594003(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599983 = header.getOrDefault("X-Amz-Date")
+  valid_599983 = validateParameter(valid_599983, JString, required = false,
+                                 default = nil)
+  if valid_599983 != nil:
+    section.add "X-Amz-Date", valid_599983
+  var valid_599984 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599984 = validateParameter(valid_599984, JString, required = false,
+                                 default = nil)
+  if valid_599984 != nil:
+    section.add "X-Amz-Security-Token", valid_599984
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594005 = header.getOrDefault("X-Amz-Target")
-  valid_594005 = validateParameter(valid_594005, JString, required = true, default = newJString(
+  var valid_599985 = header.getOrDefault("X-Amz-Target")
+  valid_599985 = validateParameter(valid_599985, JString, required = true, default = newJString(
       "AWSMPMeteringService.RegisterUsage"))
-  if valid_594005 != nil:
-    section.add "X-Amz-Target", valid_594005
-  var valid_594006 = header.getOrDefault("X-Amz-Signature")
-  valid_594006 = validateParameter(valid_594006, JString, required = false,
+  if valid_599985 != nil:
+    section.add "X-Amz-Target", valid_599985
+  var valid_599986 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599986 = validateParameter(valid_599986, JString, required = false,
                                  default = nil)
-  if valid_594006 != nil:
-    section.add "X-Amz-Signature", valid_594006
-  var valid_594007 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594007 = validateParameter(valid_594007, JString, required = false,
+  if valid_599986 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599986
+  var valid_599987 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599987 = validateParameter(valid_599987, JString, required = false,
                                  default = nil)
-  if valid_594007 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594007
-  var valid_594008 = header.getOrDefault("X-Amz-Date")
-  valid_594008 = validateParameter(valid_594008, JString, required = false,
+  if valid_599987 != nil:
+    section.add "X-Amz-Algorithm", valid_599987
+  var valid_599988 = header.getOrDefault("X-Amz-Signature")
+  valid_599988 = validateParameter(valid_599988, JString, required = false,
                                  default = nil)
-  if valid_594008 != nil:
-    section.add "X-Amz-Date", valid_594008
-  var valid_594009 = header.getOrDefault("X-Amz-Credential")
-  valid_594009 = validateParameter(valid_594009, JString, required = false,
+  if valid_599988 != nil:
+    section.add "X-Amz-Signature", valid_599988
+  var valid_599989 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599989 = validateParameter(valid_599989, JString, required = false,
                                  default = nil)
-  if valid_594009 != nil:
-    section.add "X-Amz-Credential", valid_594009
-  var valid_594010 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594010 = validateParameter(valid_594010, JString, required = false,
+  if valid_599989 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599989
+  var valid_599990 = header.getOrDefault("X-Amz-Credential")
+  valid_599990 = validateParameter(valid_599990, JString, required = false,
                                  default = nil)
-  if valid_594010 != nil:
-    section.add "X-Amz-Security-Token", valid_594010
-  var valid_594011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594011 = validateParameter(valid_594011, JString, required = false,
-                                 default = nil)
-  if valid_594011 != nil:
-    section.add "X-Amz-Algorithm", valid_594011
-  var valid_594012 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594012 = validateParameter(valid_594012, JString, required = false,
-                                 default = nil)
-  if valid_594012 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594012
+  if valid_599990 != nil:
+    section.add "X-Amz-Credential", valid_599990
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -446,48 +443,47 @@ proc validate_RegisterUsage_594003(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_594014: Call_RegisterUsage_594002; path: JsonNode; query: JsonNode;
+proc call*(call_599992: Call_RegisterUsage_599980; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Paid container software products sold through AWS Marketplace must integrate with the AWS Marketplace Metering Service and call the RegisterUsage operation for software entitlement and metering. Free and BYOL products for Amazon ECS or Amazon EKS aren't required to call RegisterUsage, but you may choose to do so if you would like to receive usage data in your seller reports. The sections below explain the behavior of RegisterUsage. RegisterUsage performs two primary functions: metering and entitlement.</p> <ul> <li> <p> <i>Entitlement</i>: RegisterUsage allows you to verify that the customer running your paid software is subscribed to your product on AWS Marketplace, enabling you to guard against unauthorized use. Your container image that integrates with RegisterUsage is only required to guard against unauthorized use at container startup, as such a CustomerNotSubscribedException/PlatformNotSupportedException will only be thrown on the initial call to RegisterUsage. Subsequent calls from the same Amazon ECS task instance (e.g. task-id) or Amazon EKS pod will not throw a CustomerNotSubscribedException, even if the customer unsubscribes while the Amazon ECS task or Amazon EKS pod is still running.</p> </li> <li> <p> <i>Metering</i>: RegisterUsage meters software use per ECS task, per hour, or per pod for Amazon EKS with usage prorated to the second. A minimum of 1 minute of usage applies to tasks that are short lived. For example, if a customer has a 10 node Amazon ECS or Amazon EKS cluster and a service configured as a Daemon Set, then Amazon ECS or Amazon EKS will launch a task on all 10 cluster nodes and the customer will be charged: (10 * hourly_rate). Metering for software use is automatically handled by the AWS Marketplace Metering Control Plane -- your software is not required to perform any metering specific actions, other than call RegisterUsage once for metering of software use to commence. The AWS Marketplace Metering Control Plane will also continue to bill customers for running ECS tasks and Amazon EKS pods, regardless of the customers subscription state, removing the need for your software to perform entitlement checks at runtime.</p> </li> </ul>
   ## 
-  let valid = call_594014.validator(path, query, header, formData, body)
-  let scheme = call_594014.pickScheme
+  let valid = call_599992.validator(path, query, header, formData, body)
+  let scheme = call_599992.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594014.url(scheme.get, call_594014.host, call_594014.base,
-                         call_594014.route, valid.getOrDefault("path"),
+  let url = call_599992.url(scheme.get, call_599992.host, call_599992.base,
+                         call_599992.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594014, url, valid)
+  result = atozHook(call_599992, url, valid)
 
-proc call*(call_594015: Call_RegisterUsage_594002; body: JsonNode): Recallable =
+proc call*(call_599993: Call_RegisterUsage_599980; body: JsonNode): Recallable =
   ## registerUsage
   ## <p>Paid container software products sold through AWS Marketplace must integrate with the AWS Marketplace Metering Service and call the RegisterUsage operation for software entitlement and metering. Free and BYOL products for Amazon ECS or Amazon EKS aren't required to call RegisterUsage, but you may choose to do so if you would like to receive usage data in your seller reports. The sections below explain the behavior of RegisterUsage. RegisterUsage performs two primary functions: metering and entitlement.</p> <ul> <li> <p> <i>Entitlement</i>: RegisterUsage allows you to verify that the customer running your paid software is subscribed to your product on AWS Marketplace, enabling you to guard against unauthorized use. Your container image that integrates with RegisterUsage is only required to guard against unauthorized use at container startup, as such a CustomerNotSubscribedException/PlatformNotSupportedException will only be thrown on the initial call to RegisterUsage. Subsequent calls from the same Amazon ECS task instance (e.g. task-id) or Amazon EKS pod will not throw a CustomerNotSubscribedException, even if the customer unsubscribes while the Amazon ECS task or Amazon EKS pod is still running.</p> </li> <li> <p> <i>Metering</i>: RegisterUsage meters software use per ECS task, per hour, or per pod for Amazon EKS with usage prorated to the second. A minimum of 1 minute of usage applies to tasks that are short lived. For example, if a customer has a 10 node Amazon ECS or Amazon EKS cluster and a service configured as a Daemon Set, then Amazon ECS or Amazon EKS will launch a task on all 10 cluster nodes and the customer will be charged: (10 * hourly_rate). Metering for software use is automatically handled by the AWS Marketplace Metering Control Plane -- your software is not required to perform any metering specific actions, other than call RegisterUsage once for metering of software use to commence. The AWS Marketplace Metering Control Plane will also continue to bill customers for running ECS tasks and Amazon EKS pods, regardless of the customers subscription state, removing the need for your software to perform entitlement checks at runtime.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_594016 = newJObject()
+  var body_599994 = newJObject()
   if body != nil:
-    body_594016 = body
-  result = call_594015.call(nil, nil, nil, nil, body_594016)
+    body_599994 = body
+  result = call_599993.call(nil, nil, nil, nil, body_599994)
 
-var registerUsage* = Call_RegisterUsage_594002(name: "registerUsage",
+var registerUsage* = Call_RegisterUsage_599980(name: "registerUsage",
     meth: HttpMethod.HttpPost, host: "metering.marketplace.amazonaws.com",
     route: "/#X-Amz-Target=AWSMPMeteringService.RegisterUsage",
-    validator: validate_RegisterUsage_594003, base: "/", url: url_RegisterUsage_594004,
+    validator: validate_RegisterUsage_599981, base: "/", url: url_RegisterUsage_599982,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ResolveCustomer_594017 = ref object of OpenApiRestCall_593380
-proc url_ResolveCustomer_594019(protocol: Scheme; host: string; base: string;
+  Call_ResolveCustomer_599995 = ref object of OpenApiRestCall_599359
+proc url_ResolveCustomer_599997(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ResolveCustomer_594018(path: JsonNode; query: JsonNode;
+proc validate_ResolveCustomer_599996(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## ResolveCustomer is called by a SaaS application during the registration process. When a buyer visits your website during the registration process, the buyer submits a registration token through their browser. The registration token is resolved through this API to obtain a CustomerIdentifier and product code.
@@ -499,57 +495,57 @@ proc validate_ResolveCustomer_594018(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599998 = header.getOrDefault("X-Amz-Date")
+  valid_599998 = validateParameter(valid_599998, JString, required = false,
+                                 default = nil)
+  if valid_599998 != nil:
+    section.add "X-Amz-Date", valid_599998
+  var valid_599999 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599999 = validateParameter(valid_599999, JString, required = false,
+                                 default = nil)
+  if valid_599999 != nil:
+    section.add "X-Amz-Security-Token", valid_599999
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594020 = header.getOrDefault("X-Amz-Target")
-  valid_594020 = validateParameter(valid_594020, JString, required = true, default = newJString(
+  var valid_600000 = header.getOrDefault("X-Amz-Target")
+  valid_600000 = validateParameter(valid_600000, JString, required = true, default = newJString(
       "AWSMPMeteringService.ResolveCustomer"))
-  if valid_594020 != nil:
-    section.add "X-Amz-Target", valid_594020
-  var valid_594021 = header.getOrDefault("X-Amz-Signature")
-  valid_594021 = validateParameter(valid_594021, JString, required = false,
+  if valid_600000 != nil:
+    section.add "X-Amz-Target", valid_600000
+  var valid_600001 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600001 = validateParameter(valid_600001, JString, required = false,
                                  default = nil)
-  if valid_594021 != nil:
-    section.add "X-Amz-Signature", valid_594021
-  var valid_594022 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594022 = validateParameter(valid_594022, JString, required = false,
+  if valid_600001 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600001
+  var valid_600002 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600002 = validateParameter(valid_600002, JString, required = false,
                                  default = nil)
-  if valid_594022 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594022
-  var valid_594023 = header.getOrDefault("X-Amz-Date")
-  valid_594023 = validateParameter(valid_594023, JString, required = false,
+  if valid_600002 != nil:
+    section.add "X-Amz-Algorithm", valid_600002
+  var valid_600003 = header.getOrDefault("X-Amz-Signature")
+  valid_600003 = validateParameter(valid_600003, JString, required = false,
                                  default = nil)
-  if valid_594023 != nil:
-    section.add "X-Amz-Date", valid_594023
-  var valid_594024 = header.getOrDefault("X-Amz-Credential")
-  valid_594024 = validateParameter(valid_594024, JString, required = false,
+  if valid_600003 != nil:
+    section.add "X-Amz-Signature", valid_600003
+  var valid_600004 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600004 = validateParameter(valid_600004, JString, required = false,
                                  default = nil)
-  if valid_594024 != nil:
-    section.add "X-Amz-Credential", valid_594024
-  var valid_594025 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594025 = validateParameter(valid_594025, JString, required = false,
+  if valid_600004 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600004
+  var valid_600005 = header.getOrDefault("X-Amz-Credential")
+  valid_600005 = validateParameter(valid_600005, JString, required = false,
                                  default = nil)
-  if valid_594025 != nil:
-    section.add "X-Amz-Security-Token", valid_594025
-  var valid_594026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594026 = validateParameter(valid_594026, JString, required = false,
-                                 default = nil)
-  if valid_594026 != nil:
-    section.add "X-Amz-Algorithm", valid_594026
-  var valid_594027 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594027 = validateParameter(valid_594027, JString, required = false,
-                                 default = nil)
-  if valid_594027 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594027
+  if valid_600005 != nil:
+    section.add "X-Amz-Credential", valid_600005
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -560,37 +556,37 @@ proc validate_ResolveCustomer_594018(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594029: Call_ResolveCustomer_594017; path: JsonNode; query: JsonNode;
+proc call*(call_600007: Call_ResolveCustomer_599995; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## ResolveCustomer is called by a SaaS application during the registration process. When a buyer visits your website during the registration process, the buyer submits a registration token through their browser. The registration token is resolved through this API to obtain a CustomerIdentifier and product code.
   ## 
-  let valid = call_594029.validator(path, query, header, formData, body)
-  let scheme = call_594029.pickScheme
+  let valid = call_600007.validator(path, query, header, formData, body)
+  let scheme = call_600007.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594029.url(scheme.get, call_594029.host, call_594029.base,
-                         call_594029.route, valid.getOrDefault("path"),
+  let url = call_600007.url(scheme.get, call_600007.host, call_600007.base,
+                         call_600007.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594029, url, valid)
+  result = atozHook(call_600007, url, valid)
 
-proc call*(call_594030: Call_ResolveCustomer_594017; body: JsonNode): Recallable =
+proc call*(call_600008: Call_ResolveCustomer_599995; body: JsonNode): Recallable =
   ## resolveCustomer
   ## ResolveCustomer is called by a SaaS application during the registration process. When a buyer visits your website during the registration process, the buyer submits a registration token through their browser. The registration token is resolved through this API to obtain a CustomerIdentifier and product code.
   ##   body: JObject (required)
-  var body_594031 = newJObject()
+  var body_600009 = newJObject()
   if body != nil:
-    body_594031 = body
-  result = call_594030.call(nil, nil, nil, nil, body_594031)
+    body_600009 = body
+  result = call_600008.call(nil, nil, nil, nil, body_600009)
 
-var resolveCustomer* = Call_ResolveCustomer_594017(name: "resolveCustomer",
+var resolveCustomer* = Call_ResolveCustomer_599995(name: "resolveCustomer",
     meth: HttpMethod.HttpPost, host: "metering.marketplace.amazonaws.com",
     route: "/#X-Amz-Target=AWSMPMeteringService.ResolveCustomer",
-    validator: validate_ResolveCustomer_594018, base: "/", url: url_ResolveCustomer_594019,
+    validator: validate_ResolveCustomer_599996, base: "/", url: url_ResolveCustomer_599997,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
-proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", "")
@@ -629,7 +625,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
   result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
-  result.sign(input.getOrDefault("query"), SHA256)
+  result.atozSign(input.getOrDefault("query"), SHA256)

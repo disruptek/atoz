@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Mobile Analytics
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_592355 = ref object of OpenApiRestCall
+  OpenApiRestCall_599359 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_592355](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_599359](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_592355): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_599359): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -132,17 +132,21 @@ const
       "ca-central-1": "mobileanalytics.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "mobileanalytics"
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_PutEvents_592694 = ref object of OpenApiRestCall_592355
-proc url_PutEvents_592696(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutEvents_599696 = ref object of OpenApiRestCall_599359
+proc url_PutEvents_599698(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_PutEvents_592695(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutEvents_599697(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## The PutEvents operation records one or more events. You can have up to 1,500 unique custom events per app, any combination of up to 40 attributes and metrics per custom event, and any number of attribute or metric values.
   ## 
@@ -153,64 +157,64 @@ proc validate_PutEvents_592695(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   x-amz-Client-Context-Encoding: JString
+  ##                                : The encoding used for the client context.
+  ##   X-Amz-Algorithm: JString
   ##   x-amz-Client-Context: JString (required)
   ##                       : The client context including the client ID, app title, app version and package name.
   ##   X-Amz-Signature: JString
-  ##   x-amz-Client-Context-Encoding: JString
-  ##                                : The encoding used for the client context.
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599810 = header.getOrDefault("X-Amz-Date")
+  valid_599810 = validateParameter(valid_599810, JString, required = false,
+                                 default = nil)
+  if valid_599810 != nil:
+    section.add "X-Amz-Date", valid_599810
+  var valid_599811 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599811 = validateParameter(valid_599811, JString, required = false,
+                                 default = nil)
+  if valid_599811 != nil:
+    section.add "X-Amz-Security-Token", valid_599811
+  var valid_599812 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599812 = validateParameter(valid_599812, JString, required = false,
+                                 default = nil)
+  if valid_599812 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599812
+  var valid_599813 = header.getOrDefault("x-amz-Client-Context-Encoding")
+  valid_599813 = validateParameter(valid_599813, JString, required = false,
+                                 default = nil)
+  if valid_599813 != nil:
+    section.add "x-amz-Client-Context-Encoding", valid_599813
+  var valid_599814 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599814 = validateParameter(valid_599814, JString, required = false,
+                                 default = nil)
+  if valid_599814 != nil:
+    section.add "X-Amz-Algorithm", valid_599814
   assert header != nil, "header argument is necessary due to required `x-amz-Client-Context` field"
-  var valid_592808 = header.getOrDefault("x-amz-Client-Context")
-  valid_592808 = validateParameter(valid_592808, JString, required = true,
+  var valid_599815 = header.getOrDefault("x-amz-Client-Context")
+  valid_599815 = validateParameter(valid_599815, JString, required = true,
                                  default = nil)
-  if valid_592808 != nil:
-    section.add "x-amz-Client-Context", valid_592808
-  var valid_592809 = header.getOrDefault("X-Amz-Signature")
-  valid_592809 = validateParameter(valid_592809, JString, required = false,
+  if valid_599815 != nil:
+    section.add "x-amz-Client-Context", valid_599815
+  var valid_599816 = header.getOrDefault("X-Amz-Signature")
+  valid_599816 = validateParameter(valid_599816, JString, required = false,
                                  default = nil)
-  if valid_592809 != nil:
-    section.add "X-Amz-Signature", valid_592809
-  var valid_592810 = header.getOrDefault("x-amz-Client-Context-Encoding")
-  valid_592810 = validateParameter(valid_592810, JString, required = false,
+  if valid_599816 != nil:
+    section.add "X-Amz-Signature", valid_599816
+  var valid_599817 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599817 = validateParameter(valid_599817, JString, required = false,
                                  default = nil)
-  if valid_592810 != nil:
-    section.add "x-amz-Client-Context-Encoding", valid_592810
-  var valid_592811 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592811 = validateParameter(valid_592811, JString, required = false,
+  if valid_599817 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599817
+  var valid_599818 = header.getOrDefault("X-Amz-Credential")
+  valid_599818 = validateParameter(valid_599818, JString, required = false,
                                  default = nil)
-  if valid_592811 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592811
-  var valid_592812 = header.getOrDefault("X-Amz-Date")
-  valid_592812 = validateParameter(valid_592812, JString, required = false,
-                                 default = nil)
-  if valid_592812 != nil:
-    section.add "X-Amz-Date", valid_592812
-  var valid_592813 = header.getOrDefault("X-Amz-Credential")
-  valid_592813 = validateParameter(valid_592813, JString, required = false,
-                                 default = nil)
-  if valid_592813 != nil:
-    section.add "X-Amz-Credential", valid_592813
-  var valid_592814 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592814 = validateParameter(valid_592814, JString, required = false,
-                                 default = nil)
-  if valid_592814 != nil:
-    section.add "X-Amz-Security-Token", valid_592814
-  var valid_592815 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592815 = validateParameter(valid_592815, JString, required = false,
-                                 default = nil)
-  if valid_592815 != nil:
-    section.add "X-Amz-Algorithm", valid_592815
-  var valid_592816 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592816 = validateParameter(valid_592816, JString, required = false,
-                                 default = nil)
-  if valid_592816 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592816
+  if valid_599818 != nil:
+    section.add "X-Amz-Credential", valid_599818
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -221,37 +225,37 @@ proc validate_PutEvents_592695(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_592840: Call_PutEvents_592694; path: JsonNode; query: JsonNode;
+proc call*(call_599842: Call_PutEvents_599696; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## The PutEvents operation records one or more events. You can have up to 1,500 unique custom events per app, any combination of up to 40 attributes and metrics per custom event, and any number of attribute or metric values.
   ## 
-  let valid = call_592840.validator(path, query, header, formData, body)
-  let scheme = call_592840.pickScheme
+  let valid = call_599842.validator(path, query, header, formData, body)
+  let scheme = call_599842.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592840.url(scheme.get, call_592840.host, call_592840.base,
-                         call_592840.route, valid.getOrDefault("path"),
+  let url = call_599842.url(scheme.get, call_599842.host, call_599842.base,
+                         call_599842.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592840, url, valid)
+  result = atozHook(call_599842, url, valid)
 
-proc call*(call_592911: Call_PutEvents_592694; body: JsonNode): Recallable =
+proc call*(call_599913: Call_PutEvents_599696; body: JsonNode): Recallable =
   ## putEvents
   ## The PutEvents operation records one or more events. You can have up to 1,500 unique custom events per app, any combination of up to 40 attributes and metrics per custom event, and any number of attribute or metric values.
   ##   body: JObject (required)
-  var body_592912 = newJObject()
+  var body_599914 = newJObject()
   if body != nil:
-    body_592912 = body
-  result = call_592911.call(nil, nil, nil, nil, body_592912)
+    body_599914 = body
+  result = call_599913.call(nil, nil, nil, nil, body_599914)
 
-var putEvents* = Call_PutEvents_592694(name: "putEvents", meth: HttpMethod.HttpPost,
+var putEvents* = Call_PutEvents_599696(name: "putEvents", meth: HttpMethod.HttpPost,
                                     host: "mobileanalytics.amazonaws.com", route: "/2014-06-05/events#x-amz-Client-Context",
-                                    validator: validate_PutEvents_592695,
-                                    base: "/", url: url_PutEvents_592696,
+                                    validator: validate_PutEvents_599697,
+                                    base: "/", url: url_PutEvents_599698,
                                     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
-proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", "")
@@ -290,7 +294,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
   result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
-  result.sign(input.getOrDefault("query"), SHA256)
+  result.atozSign(input.getOrDefault("query"), SHA256)

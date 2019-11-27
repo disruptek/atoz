@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: AWS IoT Data Plane
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_592355 = ref object of OpenApiRestCall
+  OpenApiRestCall_599359 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_592355](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_599359](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_592355): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_599359): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -142,10 +142,10 @@ const
       "ca-central-1": "data.iot.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "iot-data"
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_UpdateThingShadow_592964 = ref object of OpenApiRestCall_592355
-proc url_UpdateThingShadow_592966(protocol: Scheme; host: string; base: string;
+  Call_UpdateThingShadow_599966 = ref object of OpenApiRestCall_599359
+proc url_UpdateThingShadow_599968(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -159,9 +159,14 @@ proc url_UpdateThingShadow_592966(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_UpdateThingShadow_592965(path: JsonNode; query: JsonNode;
+proc validate_UpdateThingShadow_599967(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Updates the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_UpdateThingShadow.html">UpdateThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
@@ -173,58 +178,58 @@ proc validate_UpdateThingShadow_592965(path: JsonNode; query: JsonNode;
   ##            : The name of the thing.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `thingName` field"
-  var valid_592967 = path.getOrDefault("thingName")
-  valid_592967 = validateParameter(valid_592967, JString, required = true,
+  var valid_599969 = path.getOrDefault("thingName")
+  valid_599969 = validateParameter(valid_599969, JString, required = true,
                                  default = nil)
-  if valid_592967 != nil:
-    section.add "thingName", valid_592967
+  if valid_599969 != nil:
+    section.add "thingName", valid_599969
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_592968 = header.getOrDefault("X-Amz-Signature")
-  valid_592968 = validateParameter(valid_592968, JString, required = false,
+  var valid_599970 = header.getOrDefault("X-Amz-Date")
+  valid_599970 = validateParameter(valid_599970, JString, required = false,
                                  default = nil)
-  if valid_592968 != nil:
-    section.add "X-Amz-Signature", valid_592968
-  var valid_592969 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592969 = validateParameter(valid_592969, JString, required = false,
+  if valid_599970 != nil:
+    section.add "X-Amz-Date", valid_599970
+  var valid_599971 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599971 = validateParameter(valid_599971, JString, required = false,
                                  default = nil)
-  if valid_592969 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592969
-  var valid_592970 = header.getOrDefault("X-Amz-Date")
-  valid_592970 = validateParameter(valid_592970, JString, required = false,
+  if valid_599971 != nil:
+    section.add "X-Amz-Security-Token", valid_599971
+  var valid_599972 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599972 = validateParameter(valid_599972, JString, required = false,
                                  default = nil)
-  if valid_592970 != nil:
-    section.add "X-Amz-Date", valid_592970
-  var valid_592971 = header.getOrDefault("X-Amz-Credential")
-  valid_592971 = validateParameter(valid_592971, JString, required = false,
+  if valid_599972 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599972
+  var valid_599973 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599973 = validateParameter(valid_599973, JString, required = false,
                                  default = nil)
-  if valid_592971 != nil:
-    section.add "X-Amz-Credential", valid_592971
-  var valid_592972 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592972 = validateParameter(valid_592972, JString, required = false,
+  if valid_599973 != nil:
+    section.add "X-Amz-Algorithm", valid_599973
+  var valid_599974 = header.getOrDefault("X-Amz-Signature")
+  valid_599974 = validateParameter(valid_599974, JString, required = false,
                                  default = nil)
-  if valid_592972 != nil:
-    section.add "X-Amz-Security-Token", valid_592972
-  var valid_592973 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592973 = validateParameter(valid_592973, JString, required = false,
+  if valid_599974 != nil:
+    section.add "X-Amz-Signature", valid_599974
+  var valid_599975 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599975 = validateParameter(valid_599975, JString, required = false,
                                  default = nil)
-  if valid_592973 != nil:
-    section.add "X-Amz-Algorithm", valid_592973
-  var valid_592974 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592974 = validateParameter(valid_592974, JString, required = false,
+  if valid_599975 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599975
+  var valid_599976 = header.getOrDefault("X-Amz-Credential")
+  valid_599976 = validateParameter(valid_599976, JString, required = false,
                                  default = nil)
-  if valid_592974 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592974
+  if valid_599976 != nil:
+    section.add "X-Amz-Credential", valid_599976
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -235,41 +240,41 @@ proc validate_UpdateThingShadow_592965(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_592976: Call_UpdateThingShadow_592964; path: JsonNode;
+proc call*(call_599978: Call_UpdateThingShadow_599966; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_UpdateThingShadow.html">UpdateThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
   ## 
-  let valid = call_592976.validator(path, query, header, formData, body)
-  let scheme = call_592976.pickScheme
+  let valid = call_599978.validator(path, query, header, formData, body)
+  let scheme = call_599978.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592976.url(scheme.get, call_592976.host, call_592976.base,
-                         call_592976.route, valid.getOrDefault("path"),
+  let url = call_599978.url(scheme.get, call_599978.host, call_599978.base,
+                         call_599978.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592976, url, valid)
+  result = atozHook(call_599978, url, valid)
 
-proc call*(call_592977: Call_UpdateThingShadow_592964; thingName: string;
+proc call*(call_599979: Call_UpdateThingShadow_599966; thingName: string;
           body: JsonNode): Recallable =
   ## updateThingShadow
   ## <p>Updates the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_UpdateThingShadow.html">UpdateThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
   ##   thingName: string (required)
   ##            : The name of the thing.
   ##   body: JObject (required)
-  var path_592978 = newJObject()
-  var body_592979 = newJObject()
-  add(path_592978, "thingName", newJString(thingName))
+  var path_599980 = newJObject()
+  var body_599981 = newJObject()
+  add(path_599980, "thingName", newJString(thingName))
   if body != nil:
-    body_592979 = body
-  result = call_592977.call(path_592978, nil, nil, nil, body_592979)
+    body_599981 = body
+  result = call_599979.call(path_599980, nil, nil, nil, body_599981)
 
-var updateThingShadow* = Call_UpdateThingShadow_592964(name: "updateThingShadow",
+var updateThingShadow* = Call_UpdateThingShadow_599966(name: "updateThingShadow",
     meth: HttpMethod.HttpPost, host: "data.iot.amazonaws.com",
-    route: "/things/{thingName}/shadow", validator: validate_UpdateThingShadow_592965,
-    base: "/", url: url_UpdateThingShadow_592966,
+    route: "/things/{thingName}/shadow", validator: validate_UpdateThingShadow_599967,
+    base: "/", url: url_UpdateThingShadow_599968,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetThingShadow_592694 = ref object of OpenApiRestCall_592355
-proc url_GetThingShadow_592696(protocol: Scheme; host: string; base: string;
+  Call_GetThingShadow_599696 = ref object of OpenApiRestCall_599359
+proc url_GetThingShadow_599698(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -283,9 +288,14 @@ proc url_GetThingShadow_592696(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_GetThingShadow_592695(path: JsonNode; query: JsonNode;
+proc validate_GetThingShadow_599697(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Gets the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_GetThingShadow.html">GetThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
@@ -297,93 +307,93 @@ proc validate_GetThingShadow_592695(path: JsonNode; query: JsonNode;
   ##            : The name of the thing.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `thingName` field"
-  var valid_592822 = path.getOrDefault("thingName")
-  valid_592822 = validateParameter(valid_592822, JString, required = true,
+  var valid_599824 = path.getOrDefault("thingName")
+  valid_599824 = validateParameter(valid_599824, JString, required = true,
                                  default = nil)
-  if valid_592822 != nil:
-    section.add "thingName", valid_592822
+  if valid_599824 != nil:
+    section.add "thingName", valid_599824
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_592823 = header.getOrDefault("X-Amz-Signature")
-  valid_592823 = validateParameter(valid_592823, JString, required = false,
+  var valid_599825 = header.getOrDefault("X-Amz-Date")
+  valid_599825 = validateParameter(valid_599825, JString, required = false,
                                  default = nil)
-  if valid_592823 != nil:
-    section.add "X-Amz-Signature", valid_592823
-  var valid_592824 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592824 = validateParameter(valid_592824, JString, required = false,
+  if valid_599825 != nil:
+    section.add "X-Amz-Date", valid_599825
+  var valid_599826 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599826 = validateParameter(valid_599826, JString, required = false,
                                  default = nil)
-  if valid_592824 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592824
-  var valid_592825 = header.getOrDefault("X-Amz-Date")
-  valid_592825 = validateParameter(valid_592825, JString, required = false,
+  if valid_599826 != nil:
+    section.add "X-Amz-Security-Token", valid_599826
+  var valid_599827 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599827 = validateParameter(valid_599827, JString, required = false,
                                  default = nil)
-  if valid_592825 != nil:
-    section.add "X-Amz-Date", valid_592825
-  var valid_592826 = header.getOrDefault("X-Amz-Credential")
-  valid_592826 = validateParameter(valid_592826, JString, required = false,
+  if valid_599827 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599827
+  var valid_599828 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599828 = validateParameter(valid_599828, JString, required = false,
                                  default = nil)
-  if valid_592826 != nil:
-    section.add "X-Amz-Credential", valid_592826
-  var valid_592827 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592827 = validateParameter(valid_592827, JString, required = false,
+  if valid_599828 != nil:
+    section.add "X-Amz-Algorithm", valid_599828
+  var valid_599829 = header.getOrDefault("X-Amz-Signature")
+  valid_599829 = validateParameter(valid_599829, JString, required = false,
                                  default = nil)
-  if valid_592827 != nil:
-    section.add "X-Amz-Security-Token", valid_592827
-  var valid_592828 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592828 = validateParameter(valid_592828, JString, required = false,
+  if valid_599829 != nil:
+    section.add "X-Amz-Signature", valid_599829
+  var valid_599830 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599830 = validateParameter(valid_599830, JString, required = false,
                                  default = nil)
-  if valid_592828 != nil:
-    section.add "X-Amz-Algorithm", valid_592828
-  var valid_592829 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592829 = validateParameter(valid_592829, JString, required = false,
+  if valid_599830 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599830
+  var valid_599831 = header.getOrDefault("X-Amz-Credential")
+  valid_599831 = validateParameter(valid_599831, JString, required = false,
                                  default = nil)
-  if valid_592829 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592829
+  if valid_599831 != nil:
+    section.add "X-Amz-Credential", valid_599831
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_592852: Call_GetThingShadow_592694; path: JsonNode; query: JsonNode;
+proc call*(call_599854: Call_GetThingShadow_599696; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_GetThingShadow.html">GetThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
   ## 
-  let valid = call_592852.validator(path, query, header, formData, body)
-  let scheme = call_592852.pickScheme
+  let valid = call_599854.validator(path, query, header, formData, body)
+  let scheme = call_599854.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592852.url(scheme.get, call_592852.host, call_592852.base,
-                         call_592852.route, valid.getOrDefault("path"),
+  let url = call_599854.url(scheme.get, call_599854.host, call_599854.base,
+                         call_599854.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592852, url, valid)
+  result = atozHook(call_599854, url, valid)
 
-proc call*(call_592923: Call_GetThingShadow_592694; thingName: string): Recallable =
+proc call*(call_599925: Call_GetThingShadow_599696; thingName: string): Recallable =
   ## getThingShadow
   ## <p>Gets the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_GetThingShadow.html">GetThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
   ##   thingName: string (required)
   ##            : The name of the thing.
-  var path_592924 = newJObject()
-  add(path_592924, "thingName", newJString(thingName))
-  result = call_592923.call(path_592924, nil, nil, nil, nil)
+  var path_599926 = newJObject()
+  add(path_599926, "thingName", newJString(thingName))
+  result = call_599925.call(path_599926, nil, nil, nil, nil)
 
-var getThingShadow* = Call_GetThingShadow_592694(name: "getThingShadow",
+var getThingShadow* = Call_GetThingShadow_599696(name: "getThingShadow",
     meth: HttpMethod.HttpGet, host: "data.iot.amazonaws.com",
-    route: "/things/{thingName}/shadow", validator: validate_GetThingShadow_592695,
-    base: "/", url: url_GetThingShadow_592696, schemes: {Scheme.Https, Scheme.Http})
+    route: "/things/{thingName}/shadow", validator: validate_GetThingShadow_599697,
+    base: "/", url: url_GetThingShadow_599698, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteThingShadow_592980 = ref object of OpenApiRestCall_592355
-proc url_DeleteThingShadow_592982(protocol: Scheme; host: string; base: string;
+  Call_DeleteThingShadow_599982 = ref object of OpenApiRestCall_599359
+proc url_DeleteThingShadow_599984(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -397,9 +407,14 @@ proc url_DeleteThingShadow_592982(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_DeleteThingShadow_592981(path: JsonNode; query: JsonNode;
+proc validate_DeleteThingShadow_599983(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_DeleteThingShadow.html">DeleteThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
@@ -411,94 +426,94 @@ proc validate_DeleteThingShadow_592981(path: JsonNode; query: JsonNode;
   ##            : The name of the thing.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `thingName` field"
-  var valid_592983 = path.getOrDefault("thingName")
-  valid_592983 = validateParameter(valid_592983, JString, required = true,
+  var valid_599985 = path.getOrDefault("thingName")
+  valid_599985 = validateParameter(valid_599985, JString, required = true,
                                  default = nil)
-  if valid_592983 != nil:
-    section.add "thingName", valid_592983
+  if valid_599985 != nil:
+    section.add "thingName", valid_599985
   result.add "path", section
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_592984 = header.getOrDefault("X-Amz-Signature")
-  valid_592984 = validateParameter(valid_592984, JString, required = false,
+  var valid_599986 = header.getOrDefault("X-Amz-Date")
+  valid_599986 = validateParameter(valid_599986, JString, required = false,
                                  default = nil)
-  if valid_592984 != nil:
-    section.add "X-Amz-Signature", valid_592984
-  var valid_592985 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592985 = validateParameter(valid_592985, JString, required = false,
+  if valid_599986 != nil:
+    section.add "X-Amz-Date", valid_599986
+  var valid_599987 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599987 = validateParameter(valid_599987, JString, required = false,
                                  default = nil)
-  if valid_592985 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592985
-  var valid_592986 = header.getOrDefault("X-Amz-Date")
-  valid_592986 = validateParameter(valid_592986, JString, required = false,
+  if valid_599987 != nil:
+    section.add "X-Amz-Security-Token", valid_599987
+  var valid_599988 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599988 = validateParameter(valid_599988, JString, required = false,
                                  default = nil)
-  if valid_592986 != nil:
-    section.add "X-Amz-Date", valid_592986
-  var valid_592987 = header.getOrDefault("X-Amz-Credential")
-  valid_592987 = validateParameter(valid_592987, JString, required = false,
+  if valid_599988 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599988
+  var valid_599989 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599989 = validateParameter(valid_599989, JString, required = false,
                                  default = nil)
-  if valid_592987 != nil:
-    section.add "X-Amz-Credential", valid_592987
-  var valid_592988 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592988 = validateParameter(valid_592988, JString, required = false,
+  if valid_599989 != nil:
+    section.add "X-Amz-Algorithm", valid_599989
+  var valid_599990 = header.getOrDefault("X-Amz-Signature")
+  valid_599990 = validateParameter(valid_599990, JString, required = false,
                                  default = nil)
-  if valid_592988 != nil:
-    section.add "X-Amz-Security-Token", valid_592988
-  var valid_592989 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592989 = validateParameter(valid_592989, JString, required = false,
+  if valid_599990 != nil:
+    section.add "X-Amz-Signature", valid_599990
+  var valid_599991 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599991 = validateParameter(valid_599991, JString, required = false,
                                  default = nil)
-  if valid_592989 != nil:
-    section.add "X-Amz-Algorithm", valid_592989
-  var valid_592990 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592990 = validateParameter(valid_592990, JString, required = false,
+  if valid_599991 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599991
+  var valid_599992 = header.getOrDefault("X-Amz-Credential")
+  valid_599992 = validateParameter(valid_599992, JString, required = false,
                                  default = nil)
-  if valid_592990 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592990
+  if valid_599992 != nil:
+    section.add "X-Amz-Credential", valid_599992
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_592991: Call_DeleteThingShadow_592980; path: JsonNode;
+proc call*(call_599993: Call_DeleteThingShadow_599982; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_DeleteThingShadow.html">DeleteThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
   ## 
-  let valid = call_592991.validator(path, query, header, formData, body)
-  let scheme = call_592991.pickScheme
+  let valid = call_599993.validator(path, query, header, formData, body)
+  let scheme = call_599993.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592991.url(scheme.get, call_592991.host, call_592991.base,
-                         call_592991.route, valid.getOrDefault("path"),
+  let url = call_599993.url(scheme.get, call_599993.host, call_599993.base,
+                         call_599993.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592991, url, valid)
+  result = atozHook(call_599993, url, valid)
 
-proc call*(call_592992: Call_DeleteThingShadow_592980; thingName: string): Recallable =
+proc call*(call_599994: Call_DeleteThingShadow_599982; thingName: string): Recallable =
   ## deleteThingShadow
   ## <p>Deletes the thing shadow for the specified thing.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/API_DeleteThingShadow.html">DeleteThingShadow</a> in the <i>AWS IoT Developer Guide</i>.</p>
   ##   thingName: string (required)
   ##            : The name of the thing.
-  var path_592993 = newJObject()
-  add(path_592993, "thingName", newJString(thingName))
-  result = call_592992.call(path_592993, nil, nil, nil, nil)
+  var path_599995 = newJObject()
+  add(path_599995, "thingName", newJString(thingName))
+  result = call_599994.call(path_599995, nil, nil, nil, nil)
 
-var deleteThingShadow* = Call_DeleteThingShadow_592980(name: "deleteThingShadow",
+var deleteThingShadow* = Call_DeleteThingShadow_599982(name: "deleteThingShadow",
     meth: HttpMethod.HttpDelete, host: "data.iot.amazonaws.com",
-    route: "/things/{thingName}/shadow", validator: validate_DeleteThingShadow_592981,
-    base: "/", url: url_DeleteThingShadow_592982,
+    route: "/things/{thingName}/shadow", validator: validate_DeleteThingShadow_599983,
+    base: "/", url: url_DeleteThingShadow_599984,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_Publish_592994 = ref object of OpenApiRestCall_592355
-proc url_Publish_592996(protocol: Scheme; host: string; base: string; route: string;
+  Call_Publish_599996 = ref object of OpenApiRestCall_599359
+proc url_Publish_599998(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -511,9 +526,14 @@ proc url_Publish_592996(protocol: Scheme; host: string; base: string; route: str
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  result.path = base & hydrated.get
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
 
-proc validate_Publish_592995(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_Publish_599997(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Publishes state information.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/protocols.html#http">HTTP Protocol</a> in the <i>AWS IoT Developer Guide</i>.</p>
   ## 
@@ -524,65 +544,65 @@ proc validate_Publish_592995(path: JsonNode; query: JsonNode; header: JsonNode;
   ##        : The name of the MQTT topic.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `topic` field"
-  var valid_592997 = path.getOrDefault("topic")
-  valid_592997 = validateParameter(valid_592997, JString, required = true,
+  var valid_599999 = path.getOrDefault("topic")
+  valid_599999 = validateParameter(valid_599999, JString, required = true,
                                  default = nil)
-  if valid_592997 != nil:
-    section.add "topic", valid_592997
+  if valid_599999 != nil:
+    section.add "topic", valid_599999
   result.add "path", section
   ## parameters in `query` object:
   ##   qos: JInt
   ##      : The Quality of Service (QoS) level.
   section = newJObject()
-  var valid_592998 = query.getOrDefault("qos")
-  valid_592998 = validateParameter(valid_592998, JInt, required = false, default = nil)
-  if valid_592998 != nil:
-    section.add "qos", valid_592998
+  var valid_600000 = query.getOrDefault("qos")
+  valid_600000 = validateParameter(valid_600000, JInt, required = false, default = nil)
+  if valid_600000 != nil:
+    section.add "qos", valid_600000
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_592999 = header.getOrDefault("X-Amz-Signature")
-  valid_592999 = validateParameter(valid_592999, JString, required = false,
+  var valid_600001 = header.getOrDefault("X-Amz-Date")
+  valid_600001 = validateParameter(valid_600001, JString, required = false,
                                  default = nil)
-  if valid_592999 != nil:
-    section.add "X-Amz-Signature", valid_592999
-  var valid_593000 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593000 = validateParameter(valid_593000, JString, required = false,
+  if valid_600001 != nil:
+    section.add "X-Amz-Date", valid_600001
+  var valid_600002 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600002 = validateParameter(valid_600002, JString, required = false,
                                  default = nil)
-  if valid_593000 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593000
-  var valid_593001 = header.getOrDefault("X-Amz-Date")
-  valid_593001 = validateParameter(valid_593001, JString, required = false,
+  if valid_600002 != nil:
+    section.add "X-Amz-Security-Token", valid_600002
+  var valid_600003 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600003 = validateParameter(valid_600003, JString, required = false,
                                  default = nil)
-  if valid_593001 != nil:
-    section.add "X-Amz-Date", valid_593001
-  var valid_593002 = header.getOrDefault("X-Amz-Credential")
-  valid_593002 = validateParameter(valid_593002, JString, required = false,
+  if valid_600003 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600003
+  var valid_600004 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600004 = validateParameter(valid_600004, JString, required = false,
                                  default = nil)
-  if valid_593002 != nil:
-    section.add "X-Amz-Credential", valid_593002
-  var valid_593003 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593003 = validateParameter(valid_593003, JString, required = false,
+  if valid_600004 != nil:
+    section.add "X-Amz-Algorithm", valid_600004
+  var valid_600005 = header.getOrDefault("X-Amz-Signature")
+  valid_600005 = validateParameter(valid_600005, JString, required = false,
                                  default = nil)
-  if valid_593003 != nil:
-    section.add "X-Amz-Security-Token", valid_593003
-  var valid_593004 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593004 = validateParameter(valid_593004, JString, required = false,
+  if valid_600005 != nil:
+    section.add "X-Amz-Signature", valid_600005
+  var valid_600006 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600006 = validateParameter(valid_600006, JString, required = false,
                                  default = nil)
-  if valid_593004 != nil:
-    section.add "X-Amz-Algorithm", valid_593004
-  var valid_593005 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593005 = validateParameter(valid_593005, JString, required = false,
+  if valid_600006 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600006
+  var valid_600007 = header.getOrDefault("X-Amz-Credential")
+  valid_600007 = validateParameter(valid_600007, JString, required = false,
                                  default = nil)
-  if valid_593005 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593005
+  if valid_600007 != nil:
+    section.add "X-Amz-Credential", valid_600007
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -593,20 +613,20 @@ proc validate_Publish_592995(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593007: Call_Publish_592994; path: JsonNode; query: JsonNode;
+proc call*(call_600009: Call_Publish_599996; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Publishes state information.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/protocols.html#http">HTTP Protocol</a> in the <i>AWS IoT Developer Guide</i>.</p>
   ## 
-  let valid = call_593007.validator(path, query, header, formData, body)
-  let scheme = call_593007.pickScheme
+  let valid = call_600009.validator(path, query, header, formData, body)
+  let scheme = call_600009.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593007.url(scheme.get, call_593007.host, call_593007.base,
-                         call_593007.route, valid.getOrDefault("path"),
+  let url = call_600009.url(scheme.get, call_600009.host, call_600009.base,
+                         call_600009.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593007, url, valid)
+  result = atozHook(call_600009, url, valid)
 
-proc call*(call_593008: Call_Publish_592994; topic: string; body: JsonNode;
+proc call*(call_600010: Call_Publish_599996; topic: string; body: JsonNode;
           qos: int = 0): Recallable =
   ## publish
   ## <p>Publishes state information.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/iot/latest/developerguide/protocols.html#http">HTTP Protocol</a> in the <i>AWS IoT Developer Guide</i>.</p>
@@ -615,25 +635,25 @@ proc call*(call_593008: Call_Publish_592994; topic: string; body: JsonNode;
   ##   topic: string (required)
   ##        : The name of the MQTT topic.
   ##   body: JObject (required)
-  var path_593009 = newJObject()
-  var query_593010 = newJObject()
-  var body_593011 = newJObject()
-  add(query_593010, "qos", newJInt(qos))
-  add(path_593009, "topic", newJString(topic))
+  var path_600011 = newJObject()
+  var query_600012 = newJObject()
+  var body_600013 = newJObject()
+  add(query_600012, "qos", newJInt(qos))
+  add(path_600011, "topic", newJString(topic))
   if body != nil:
-    body_593011 = body
-  result = call_593008.call(path_593009, query_593010, nil, nil, body_593011)
+    body_600013 = body
+  result = call_600010.call(path_600011, query_600012, nil, nil, body_600013)
 
-var publish* = Call_Publish_592994(name: "publish", meth: HttpMethod.HttpPost,
+var publish* = Call_Publish_599996(name: "publish", meth: HttpMethod.HttpPost,
                                 host: "data.iot.amazonaws.com",
                                 route: "/topics/{topic}",
-                                validator: validate_Publish_592995, base: "/",
-                                url: url_Publish_592996,
+                                validator: validate_Publish_599997, base: "/",
+                                url: url_Publish_599998,
                                 schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
-proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", "")
@@ -672,7 +692,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
   result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
-  result.sign(input.getOrDefault("query"), SHA256)
+  result.atozSign(input.getOrDefault("query"), SHA256)

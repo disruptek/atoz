@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon FSx
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_592364 = ref object of OpenApiRestCall
+  OpenApiRestCall_599368 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_592364](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_592364): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -147,17 +147,21 @@ const
       "ca-central-1": "fsx.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "fsx"
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateBackup_592703 = ref object of OpenApiRestCall_592364
-proc url_CreateBackup_592705(protocol: Scheme; host: string; base: string;
+  Call_CreateBackup_599705 = ref object of OpenApiRestCall_599368
+proc url_CreateBackup_599707(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_CreateBackup_592704(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateBackup_599706(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a backup of an existing Amazon FSx for Windows File Server file system. Creating regular backups for your file system is a best practice that complements the replication that Amazon FSx for Windows File Server performs for your file system. It also enables you to restore from user modification of data.</p> <p>If a backup with the specified client request token exists, and the parameters match, this operation returns the description of the existing backup. If a backup specified client request token exists, and the parameters don't match, this operation returns <code>IncompatibleParameterError</code>. If a backup with the specified client request token doesn't exist, <code>CreateBackup</code> does the following: </p> <ul> <li> <p>Creates a new Amazon FSx backup with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the backup.</p> </li> </ul> <p>By using the idempotent operation, you can retry a <code>CreateBackup</code> operation without the risk of creating an extra backup. This approach can be useful when an initial call fails in a way that makes it unclear whether a backup was created. If you use the same client request token and the initial call created a backup, the operation returns a successful result because all the parameters are the same.</p> <p>The <code>CreateFileSystem</code> operation returns while the backup's lifecycle state is still <code>CREATING</code>. You can check the file system creation status by calling the <a>DescribeBackups</a> operation, which returns the backup state along with other information.</p> <note> <p/> </note>
   ## 
@@ -168,57 +172,57 @@ proc validate_CreateBackup_592704(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599819 = header.getOrDefault("X-Amz-Date")
+  valid_599819 = validateParameter(valid_599819, JString, required = false,
+                                 default = nil)
+  if valid_599819 != nil:
+    section.add "X-Amz-Date", valid_599819
+  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599820 = validateParameter(valid_599820, JString, required = false,
+                                 default = nil)
+  if valid_599820 != nil:
+    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_592830 = header.getOrDefault("X-Amz-Target")
-  valid_592830 = validateParameter(valid_592830, JString, required = true, default = newJString(
+  var valid_599834 = header.getOrDefault("X-Amz-Target")
+  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.CreateBackup"))
-  if valid_592830 != nil:
-    section.add "X-Amz-Target", valid_592830
-  var valid_592831 = header.getOrDefault("X-Amz-Signature")
-  valid_592831 = validateParameter(valid_592831, JString, required = false,
+  if valid_599834 != nil:
+    section.add "X-Amz-Target", valid_599834
+  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599835 = validateParameter(valid_599835, JString, required = false,
                                  default = nil)
-  if valid_592831 != nil:
-    section.add "X-Amz-Signature", valid_592831
-  var valid_592832 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592832 = validateParameter(valid_592832, JString, required = false,
+  if valid_599835 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599835
+  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599836 = validateParameter(valid_599836, JString, required = false,
                                  default = nil)
-  if valid_592832 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592832
-  var valid_592833 = header.getOrDefault("X-Amz-Date")
-  valid_592833 = validateParameter(valid_592833, JString, required = false,
+  if valid_599836 != nil:
+    section.add "X-Amz-Algorithm", valid_599836
+  var valid_599837 = header.getOrDefault("X-Amz-Signature")
+  valid_599837 = validateParameter(valid_599837, JString, required = false,
                                  default = nil)
-  if valid_592833 != nil:
-    section.add "X-Amz-Date", valid_592833
-  var valid_592834 = header.getOrDefault("X-Amz-Credential")
-  valid_592834 = validateParameter(valid_592834, JString, required = false,
+  if valid_599837 != nil:
+    section.add "X-Amz-Signature", valid_599837
+  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599838 = validateParameter(valid_599838, JString, required = false,
                                  default = nil)
-  if valid_592834 != nil:
-    section.add "X-Amz-Credential", valid_592834
-  var valid_592835 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592835 = validateParameter(valid_592835, JString, required = false,
+  if valid_599838 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599838
+  var valid_599839 = header.getOrDefault("X-Amz-Credential")
+  valid_599839 = validateParameter(valid_599839, JString, required = false,
                                  default = nil)
-  if valid_592835 != nil:
-    section.add "X-Amz-Security-Token", valid_592835
-  var valid_592836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592836 = validateParameter(valid_592836, JString, required = false,
-                                 default = nil)
-  if valid_592836 != nil:
-    section.add "X-Amz-Algorithm", valid_592836
-  var valid_592837 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592837 = validateParameter(valid_592837, JString, required = false,
-                                 default = nil)
-  if valid_592837 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592837
+  if valid_599839 != nil:
+    section.add "X-Amz-Credential", valid_599839
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -229,43 +233,47 @@ proc validate_CreateBackup_592704(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_592861: Call_CreateBackup_592703; path: JsonNode; query: JsonNode;
+proc call*(call_599863: Call_CreateBackup_599705; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a backup of an existing Amazon FSx for Windows File Server file system. Creating regular backups for your file system is a best practice that complements the replication that Amazon FSx for Windows File Server performs for your file system. It also enables you to restore from user modification of data.</p> <p>If a backup with the specified client request token exists, and the parameters match, this operation returns the description of the existing backup. If a backup specified client request token exists, and the parameters don't match, this operation returns <code>IncompatibleParameterError</code>. If a backup with the specified client request token doesn't exist, <code>CreateBackup</code> does the following: </p> <ul> <li> <p>Creates a new Amazon FSx backup with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the backup.</p> </li> </ul> <p>By using the idempotent operation, you can retry a <code>CreateBackup</code> operation without the risk of creating an extra backup. This approach can be useful when an initial call fails in a way that makes it unclear whether a backup was created. If you use the same client request token and the initial call created a backup, the operation returns a successful result because all the parameters are the same.</p> <p>The <code>CreateFileSystem</code> operation returns while the backup's lifecycle state is still <code>CREATING</code>. You can check the file system creation status by calling the <a>DescribeBackups</a> operation, which returns the backup state along with other information.</p> <note> <p/> </note>
   ## 
-  let valid = call_592861.validator(path, query, header, formData, body)
-  let scheme = call_592861.pickScheme
+  let valid = call_599863.validator(path, query, header, formData, body)
+  let scheme = call_599863.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592861.url(scheme.get, call_592861.host, call_592861.base,
-                         call_592861.route, valid.getOrDefault("path"),
+  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
+                         call_599863.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592861, url, valid)
+  result = atozHook(call_599863, url, valid)
 
-proc call*(call_592932: Call_CreateBackup_592703; body: JsonNode): Recallable =
+proc call*(call_599934: Call_CreateBackup_599705; body: JsonNode): Recallable =
   ## createBackup
   ## <p>Creates a backup of an existing Amazon FSx for Windows File Server file system. Creating regular backups for your file system is a best practice that complements the replication that Amazon FSx for Windows File Server performs for your file system. It also enables you to restore from user modification of data.</p> <p>If a backup with the specified client request token exists, and the parameters match, this operation returns the description of the existing backup. If a backup specified client request token exists, and the parameters don't match, this operation returns <code>IncompatibleParameterError</code>. If a backup with the specified client request token doesn't exist, <code>CreateBackup</code> does the following: </p> <ul> <li> <p>Creates a new Amazon FSx backup with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the backup.</p> </li> </ul> <p>By using the idempotent operation, you can retry a <code>CreateBackup</code> operation without the risk of creating an extra backup. This approach can be useful when an initial call fails in a way that makes it unclear whether a backup was created. If you use the same client request token and the initial call created a backup, the operation returns a successful result because all the parameters are the same.</p> <p>The <code>CreateFileSystem</code> operation returns while the backup's lifecycle state is still <code>CREATING</code>. You can check the file system creation status by calling the <a>DescribeBackups</a> operation, which returns the backup state along with other information.</p> <note> <p/> </note>
   ##   body: JObject (required)
-  var body_592933 = newJObject()
+  var body_599935 = newJObject()
   if body != nil:
-    body_592933 = body
-  result = call_592932.call(nil, nil, nil, nil, body_592933)
+    body_599935 = body
+  result = call_599934.call(nil, nil, nil, nil, body_599935)
 
-var createBackup* = Call_CreateBackup_592703(name: "createBackup",
+var createBackup* = Call_CreateBackup_599705(name: "createBackup",
     meth: HttpMethod.HttpPost, host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.CreateBackup",
-    validator: validate_CreateBackup_592704, base: "/", url: url_CreateBackup_592705,
+    validator: validate_CreateBackup_599706, base: "/", url: url_CreateBackup_599707,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateFileSystem_592972 = ref object of OpenApiRestCall_592364
-proc url_CreateFileSystem_592974(protocol: Scheme; host: string; base: string;
+  Call_CreateFileSystem_599974 = ref object of OpenApiRestCall_599368
+proc url_CreateFileSystem_599976(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_CreateFileSystem_592973(path: JsonNode; query: JsonNode;
+proc validate_CreateFileSystem_599975(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates a new, empty Amazon FSx file system.</p> <p>If a file system with the specified client request token exists and the parameters match, <code>CreateFileSystem</code> returns the description of the existing file system. If a file system specified client request token exists and the parameters don't match, this call returns <code>IncompatibleParameterError</code>. If a file system with the specified client request token doesn't exist, <code>CreateFileSystem</code> does the following: </p> <ul> <li> <p>Creates a new, empty Amazon FSx file system with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the file system.</p> </li> </ul> <p>This operation requires a client request token in the request that Amazon FSx uses to ensure idempotent creation. This means that calling the operation multiple times with the same client request token has no effect. By using the idempotent operation, you can retry a <code>CreateFileSystem</code> operation without the risk of creating an extra file system. This approach can be useful when an initial call fails in a way that makes it unclear whether a file system was created. Examples are if a transport level timeout occurred, or your connection was reset. If you use the same client request token and the initial call created a file system, the client receives success as long as the parameters are the same.</p> <note> <p>The <code>CreateFileSystem</code> call returns while the file system's lifecycle state is still <code>CREATING</code>. You can check the file-system creation status by calling the <a>DescribeFileSystems</a> operation, which returns the file system state along with other information.</p> </note>
@@ -277,57 +285,57 @@ proc validate_CreateFileSystem_592973(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599977 = header.getOrDefault("X-Amz-Date")
+  valid_599977 = validateParameter(valid_599977, JString, required = false,
+                                 default = nil)
+  if valid_599977 != nil:
+    section.add "X-Amz-Date", valid_599977
+  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599978 = validateParameter(valid_599978, JString, required = false,
+                                 default = nil)
+  if valid_599978 != nil:
+    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_592975 = header.getOrDefault("X-Amz-Target")
-  valid_592975 = validateParameter(valid_592975, JString, required = true, default = newJString(
+  var valid_599979 = header.getOrDefault("X-Amz-Target")
+  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.CreateFileSystem"))
-  if valid_592975 != nil:
-    section.add "X-Amz-Target", valid_592975
-  var valid_592976 = header.getOrDefault("X-Amz-Signature")
-  valid_592976 = validateParameter(valid_592976, JString, required = false,
+  if valid_599979 != nil:
+    section.add "X-Amz-Target", valid_599979
+  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599980 = validateParameter(valid_599980, JString, required = false,
                                  default = nil)
-  if valid_592976 != nil:
-    section.add "X-Amz-Signature", valid_592976
-  var valid_592977 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592977 = validateParameter(valid_592977, JString, required = false,
+  if valid_599980 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599980
+  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599981 = validateParameter(valid_599981, JString, required = false,
                                  default = nil)
-  if valid_592977 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592977
-  var valid_592978 = header.getOrDefault("X-Amz-Date")
-  valid_592978 = validateParameter(valid_592978, JString, required = false,
+  if valid_599981 != nil:
+    section.add "X-Amz-Algorithm", valid_599981
+  var valid_599982 = header.getOrDefault("X-Amz-Signature")
+  valid_599982 = validateParameter(valid_599982, JString, required = false,
                                  default = nil)
-  if valid_592978 != nil:
-    section.add "X-Amz-Date", valid_592978
-  var valid_592979 = header.getOrDefault("X-Amz-Credential")
-  valid_592979 = validateParameter(valid_592979, JString, required = false,
+  if valid_599982 != nil:
+    section.add "X-Amz-Signature", valid_599982
+  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599983 = validateParameter(valid_599983, JString, required = false,
                                  default = nil)
-  if valid_592979 != nil:
-    section.add "X-Amz-Credential", valid_592979
-  var valid_592980 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592980 = validateParameter(valid_592980, JString, required = false,
+  if valid_599983 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599983
+  var valid_599984 = header.getOrDefault("X-Amz-Credential")
+  valid_599984 = validateParameter(valid_599984, JString, required = false,
                                  default = nil)
-  if valid_592980 != nil:
-    section.add "X-Amz-Security-Token", valid_592980
-  var valid_592981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592981 = validateParameter(valid_592981, JString, required = false,
-                                 default = nil)
-  if valid_592981 != nil:
-    section.add "X-Amz-Algorithm", valid_592981
-  var valid_592982 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592982 = validateParameter(valid_592982, JString, required = false,
-                                 default = nil)
-  if valid_592982 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592982
+  if valid_599984 != nil:
+    section.add "X-Amz-Credential", valid_599984
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -338,43 +346,47 @@ proc validate_CreateFileSystem_592973(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_592984: Call_CreateFileSystem_592972; path: JsonNode;
+proc call*(call_599986: Call_CreateFileSystem_599974; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new, empty Amazon FSx file system.</p> <p>If a file system with the specified client request token exists and the parameters match, <code>CreateFileSystem</code> returns the description of the existing file system. If a file system specified client request token exists and the parameters don't match, this call returns <code>IncompatibleParameterError</code>. If a file system with the specified client request token doesn't exist, <code>CreateFileSystem</code> does the following: </p> <ul> <li> <p>Creates a new, empty Amazon FSx file system with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the file system.</p> </li> </ul> <p>This operation requires a client request token in the request that Amazon FSx uses to ensure idempotent creation. This means that calling the operation multiple times with the same client request token has no effect. By using the idempotent operation, you can retry a <code>CreateFileSystem</code> operation without the risk of creating an extra file system. This approach can be useful when an initial call fails in a way that makes it unclear whether a file system was created. Examples are if a transport level timeout occurred, or your connection was reset. If you use the same client request token and the initial call created a file system, the client receives success as long as the parameters are the same.</p> <note> <p>The <code>CreateFileSystem</code> call returns while the file system's lifecycle state is still <code>CREATING</code>. You can check the file-system creation status by calling the <a>DescribeFileSystems</a> operation, which returns the file system state along with other information.</p> </note>
   ## 
-  let valid = call_592984.validator(path, query, header, formData, body)
-  let scheme = call_592984.pickScheme
+  let valid = call_599986.validator(path, query, header, formData, body)
+  let scheme = call_599986.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592984.url(scheme.get, call_592984.host, call_592984.base,
-                         call_592984.route, valid.getOrDefault("path"),
+  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
+                         call_599986.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592984, url, valid)
+  result = atozHook(call_599986, url, valid)
 
-proc call*(call_592985: Call_CreateFileSystem_592972; body: JsonNode): Recallable =
+proc call*(call_599987: Call_CreateFileSystem_599974; body: JsonNode): Recallable =
   ## createFileSystem
   ## <p>Creates a new, empty Amazon FSx file system.</p> <p>If a file system with the specified client request token exists and the parameters match, <code>CreateFileSystem</code> returns the description of the existing file system. If a file system specified client request token exists and the parameters don't match, this call returns <code>IncompatibleParameterError</code>. If a file system with the specified client request token doesn't exist, <code>CreateFileSystem</code> does the following: </p> <ul> <li> <p>Creates a new, empty Amazon FSx file system with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the file system.</p> </li> </ul> <p>This operation requires a client request token in the request that Amazon FSx uses to ensure idempotent creation. This means that calling the operation multiple times with the same client request token has no effect. By using the idempotent operation, you can retry a <code>CreateFileSystem</code> operation without the risk of creating an extra file system. This approach can be useful when an initial call fails in a way that makes it unclear whether a file system was created. Examples are if a transport level timeout occurred, or your connection was reset. If you use the same client request token and the initial call created a file system, the client receives success as long as the parameters are the same.</p> <note> <p>The <code>CreateFileSystem</code> call returns while the file system's lifecycle state is still <code>CREATING</code>. You can check the file-system creation status by calling the <a>DescribeFileSystems</a> operation, which returns the file system state along with other information.</p> </note>
   ##   body: JObject (required)
-  var body_592986 = newJObject()
+  var body_599988 = newJObject()
   if body != nil:
-    body_592986 = body
-  result = call_592985.call(nil, nil, nil, nil, body_592986)
+    body_599988 = body
+  result = call_599987.call(nil, nil, nil, nil, body_599988)
 
-var createFileSystem* = Call_CreateFileSystem_592972(name: "createFileSystem",
+var createFileSystem* = Call_CreateFileSystem_599974(name: "createFileSystem",
     meth: HttpMethod.HttpPost, host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.CreateFileSystem",
-    validator: validate_CreateFileSystem_592973, base: "/",
-    url: url_CreateFileSystem_592974, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateFileSystem_599975, base: "/",
+    url: url_CreateFileSystem_599976, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateFileSystemFromBackup_592987 = ref object of OpenApiRestCall_592364
-proc url_CreateFileSystemFromBackup_592989(protocol: Scheme; host: string;
+  Call_CreateFileSystemFromBackup_599989 = ref object of OpenApiRestCall_599368
+proc url_CreateFileSystemFromBackup_599991(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_CreateFileSystemFromBackup_592988(path: JsonNode; query: JsonNode;
+proc validate_CreateFileSystemFromBackup_599990(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new Amazon FSx file system from an existing Amazon FSx for Windows File Server backup.</p> <p>If a file system with the specified client request token exists and the parameters match, this operation returns the description of the file system. If a client request token specified by the file system exists and the parameters don't match, this call returns <code>IncompatibleParameterError</code>. If a file system with the specified client request token doesn't exist, this operation does the following:</p> <ul> <li> <p>Creates a new Amazon FSx file system from backup with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the file system.</p> </li> </ul> <p>Parameters like Active Directory, default share name, automatic backup, and backup settings default to the parameters of the file system that was backed up, unless overridden. You can explicitly supply other settings.</p> <p>By using the idempotent operation, you can retry a <code>CreateFileSystemFromBackup</code> call without the risk of creating an extra file system. This approach can be useful when an initial call fails in a way that makes it unclear whether a file system was created. Examples are if a transport level timeout occurred, or your connection was reset. If you use the same client request token and the initial call created a file system, the client receives success as long as the parameters are the same.</p> <note> <p>The <code>CreateFileSystemFromBackup</code> call returns while the file system's lifecycle state is still <code>CREATING</code>. You can check the file-system creation status by calling the <a>DescribeFileSystems</a> operation, which returns the file system state along with other information.</p> </note>
   ## 
@@ -385,57 +397,57 @@ proc validate_CreateFileSystemFromBackup_592988(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599992 = header.getOrDefault("X-Amz-Date")
+  valid_599992 = validateParameter(valid_599992, JString, required = false,
+                                 default = nil)
+  if valid_599992 != nil:
+    section.add "X-Amz-Date", valid_599992
+  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599993 = validateParameter(valid_599993, JString, required = false,
+                                 default = nil)
+  if valid_599993 != nil:
+    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_592990 = header.getOrDefault("X-Amz-Target")
-  valid_592990 = validateParameter(valid_592990, JString, required = true, default = newJString(
+  var valid_599994 = header.getOrDefault("X-Amz-Target")
+  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.CreateFileSystemFromBackup"))
-  if valid_592990 != nil:
-    section.add "X-Amz-Target", valid_592990
-  var valid_592991 = header.getOrDefault("X-Amz-Signature")
-  valid_592991 = validateParameter(valid_592991, JString, required = false,
+  if valid_599994 != nil:
+    section.add "X-Amz-Target", valid_599994
+  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599995 = validateParameter(valid_599995, JString, required = false,
                                  default = nil)
-  if valid_592991 != nil:
-    section.add "X-Amz-Signature", valid_592991
-  var valid_592992 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592992 = validateParameter(valid_592992, JString, required = false,
+  if valid_599995 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599995
+  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599996 = validateParameter(valid_599996, JString, required = false,
                                  default = nil)
-  if valid_592992 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592992
-  var valid_592993 = header.getOrDefault("X-Amz-Date")
-  valid_592993 = validateParameter(valid_592993, JString, required = false,
+  if valid_599996 != nil:
+    section.add "X-Amz-Algorithm", valid_599996
+  var valid_599997 = header.getOrDefault("X-Amz-Signature")
+  valid_599997 = validateParameter(valid_599997, JString, required = false,
                                  default = nil)
-  if valid_592993 != nil:
-    section.add "X-Amz-Date", valid_592993
-  var valid_592994 = header.getOrDefault("X-Amz-Credential")
-  valid_592994 = validateParameter(valid_592994, JString, required = false,
+  if valid_599997 != nil:
+    section.add "X-Amz-Signature", valid_599997
+  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599998 = validateParameter(valid_599998, JString, required = false,
                                  default = nil)
-  if valid_592994 != nil:
-    section.add "X-Amz-Credential", valid_592994
-  var valid_592995 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592995 = validateParameter(valid_592995, JString, required = false,
+  if valid_599998 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599998
+  var valid_599999 = header.getOrDefault("X-Amz-Credential")
+  valid_599999 = validateParameter(valid_599999, JString, required = false,
                                  default = nil)
-  if valid_592995 != nil:
-    section.add "X-Amz-Security-Token", valid_592995
-  var valid_592996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592996 = validateParameter(valid_592996, JString, required = false,
-                                 default = nil)
-  if valid_592996 != nil:
-    section.add "X-Amz-Algorithm", valid_592996
-  var valid_592997 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592997 = validateParameter(valid_592997, JString, required = false,
-                                 default = nil)
-  if valid_592997 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592997
+  if valid_599999 != nil:
+    section.add "X-Amz-Credential", valid_599999
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -446,44 +458,48 @@ proc validate_CreateFileSystemFromBackup_592988(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_592999: Call_CreateFileSystemFromBackup_592987; path: JsonNode;
+proc call*(call_600001: Call_CreateFileSystemFromBackup_599989; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new Amazon FSx file system from an existing Amazon FSx for Windows File Server backup.</p> <p>If a file system with the specified client request token exists and the parameters match, this operation returns the description of the file system. If a client request token specified by the file system exists and the parameters don't match, this call returns <code>IncompatibleParameterError</code>. If a file system with the specified client request token doesn't exist, this operation does the following:</p> <ul> <li> <p>Creates a new Amazon FSx file system from backup with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the file system.</p> </li> </ul> <p>Parameters like Active Directory, default share name, automatic backup, and backup settings default to the parameters of the file system that was backed up, unless overridden. You can explicitly supply other settings.</p> <p>By using the idempotent operation, you can retry a <code>CreateFileSystemFromBackup</code> call without the risk of creating an extra file system. This approach can be useful when an initial call fails in a way that makes it unclear whether a file system was created. Examples are if a transport level timeout occurred, or your connection was reset. If you use the same client request token and the initial call created a file system, the client receives success as long as the parameters are the same.</p> <note> <p>The <code>CreateFileSystemFromBackup</code> call returns while the file system's lifecycle state is still <code>CREATING</code>. You can check the file-system creation status by calling the <a>DescribeFileSystems</a> operation, which returns the file system state along with other information.</p> </note>
   ## 
-  let valid = call_592999.validator(path, query, header, formData, body)
-  let scheme = call_592999.pickScheme
+  let valid = call_600001.validator(path, query, header, formData, body)
+  let scheme = call_600001.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592999.url(scheme.get, call_592999.host, call_592999.base,
-                         call_592999.route, valid.getOrDefault("path"),
+  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
+                         call_600001.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592999, url, valid)
+  result = atozHook(call_600001, url, valid)
 
-proc call*(call_593000: Call_CreateFileSystemFromBackup_592987; body: JsonNode): Recallable =
+proc call*(call_600002: Call_CreateFileSystemFromBackup_599989; body: JsonNode): Recallable =
   ## createFileSystemFromBackup
   ## <p>Creates a new Amazon FSx file system from an existing Amazon FSx for Windows File Server backup.</p> <p>If a file system with the specified client request token exists and the parameters match, this operation returns the description of the file system. If a client request token specified by the file system exists and the parameters don't match, this call returns <code>IncompatibleParameterError</code>. If a file system with the specified client request token doesn't exist, this operation does the following:</p> <ul> <li> <p>Creates a new Amazon FSx file system from backup with an assigned ID, and an initial lifecycle state of <code>CREATING</code>.</p> </li> <li> <p>Returns the description of the file system.</p> </li> </ul> <p>Parameters like Active Directory, default share name, automatic backup, and backup settings default to the parameters of the file system that was backed up, unless overridden. You can explicitly supply other settings.</p> <p>By using the idempotent operation, you can retry a <code>CreateFileSystemFromBackup</code> call without the risk of creating an extra file system. This approach can be useful when an initial call fails in a way that makes it unclear whether a file system was created. Examples are if a transport level timeout occurred, or your connection was reset. If you use the same client request token and the initial call created a file system, the client receives success as long as the parameters are the same.</p> <note> <p>The <code>CreateFileSystemFromBackup</code> call returns while the file system's lifecycle state is still <code>CREATING</code>. You can check the file-system creation status by calling the <a>DescribeFileSystems</a> operation, which returns the file system state along with other information.</p> </note>
   ##   body: JObject (required)
-  var body_593001 = newJObject()
+  var body_600003 = newJObject()
   if body != nil:
-    body_593001 = body
-  result = call_593000.call(nil, nil, nil, nil, body_593001)
+    body_600003 = body
+  result = call_600002.call(nil, nil, nil, nil, body_600003)
 
-var createFileSystemFromBackup* = Call_CreateFileSystemFromBackup_592987(
+var createFileSystemFromBackup* = Call_CreateFileSystemFromBackup_599989(
     name: "createFileSystemFromBackup", meth: HttpMethod.HttpPost,
     host: "fsx.amazonaws.com", route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.CreateFileSystemFromBackup",
-    validator: validate_CreateFileSystemFromBackup_592988, base: "/",
-    url: url_CreateFileSystemFromBackup_592989,
+    validator: validate_CreateFileSystemFromBackup_599990, base: "/",
+    url: url_CreateFileSystemFromBackup_599991,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBackup_593002 = ref object of OpenApiRestCall_592364
-proc url_DeleteBackup_593004(protocol: Scheme; host: string; base: string;
+  Call_DeleteBackup_600004 = ref object of OpenApiRestCall_599368
+proc url_DeleteBackup_600006(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_DeleteBackup_593003(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteBackup_600005(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes an Amazon FSx for Windows File Server backup, deleting its contents. After deletion, the backup no longer exists, and its data is gone.</p> <p>The <code>DeleteBackup</code> call returns instantly. The backup will not show up in later <code>DescribeBackups</code> calls.</p> <important> <p>The data in a deleted backup is also deleted and can't be recovered by any means.</p> </important>
   ## 
@@ -494,57 +510,57 @@ proc validate_DeleteBackup_593003(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600007 = header.getOrDefault("X-Amz-Date")
+  valid_600007 = validateParameter(valid_600007, JString, required = false,
+                                 default = nil)
+  if valid_600007 != nil:
+    section.add "X-Amz-Date", valid_600007
+  var valid_600008 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600008 = validateParameter(valid_600008, JString, required = false,
+                                 default = nil)
+  if valid_600008 != nil:
+    section.add "X-Amz-Security-Token", valid_600008
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593005 = header.getOrDefault("X-Amz-Target")
-  valid_593005 = validateParameter(valid_593005, JString, required = true, default = newJString(
+  var valid_600009 = header.getOrDefault("X-Amz-Target")
+  valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DeleteBackup"))
-  if valid_593005 != nil:
-    section.add "X-Amz-Target", valid_593005
-  var valid_593006 = header.getOrDefault("X-Amz-Signature")
-  valid_593006 = validateParameter(valid_593006, JString, required = false,
+  if valid_600009 != nil:
+    section.add "X-Amz-Target", valid_600009
+  var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600010 = validateParameter(valid_600010, JString, required = false,
                                  default = nil)
-  if valid_593006 != nil:
-    section.add "X-Amz-Signature", valid_593006
-  var valid_593007 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593007 = validateParameter(valid_593007, JString, required = false,
+  if valid_600010 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600010
+  var valid_600011 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600011 = validateParameter(valid_600011, JString, required = false,
                                  default = nil)
-  if valid_593007 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593007
-  var valid_593008 = header.getOrDefault("X-Amz-Date")
-  valid_593008 = validateParameter(valid_593008, JString, required = false,
+  if valid_600011 != nil:
+    section.add "X-Amz-Algorithm", valid_600011
+  var valid_600012 = header.getOrDefault("X-Amz-Signature")
+  valid_600012 = validateParameter(valid_600012, JString, required = false,
                                  default = nil)
-  if valid_593008 != nil:
-    section.add "X-Amz-Date", valid_593008
-  var valid_593009 = header.getOrDefault("X-Amz-Credential")
-  valid_593009 = validateParameter(valid_593009, JString, required = false,
+  if valid_600012 != nil:
+    section.add "X-Amz-Signature", valid_600012
+  var valid_600013 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600013 = validateParameter(valid_600013, JString, required = false,
                                  default = nil)
-  if valid_593009 != nil:
-    section.add "X-Amz-Credential", valid_593009
-  var valid_593010 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593010 = validateParameter(valid_593010, JString, required = false,
+  if valid_600013 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600013
+  var valid_600014 = header.getOrDefault("X-Amz-Credential")
+  valid_600014 = validateParameter(valid_600014, JString, required = false,
                                  default = nil)
-  if valid_593010 != nil:
-    section.add "X-Amz-Security-Token", valid_593010
-  var valid_593011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593011 = validateParameter(valid_593011, JString, required = false,
-                                 default = nil)
-  if valid_593011 != nil:
-    section.add "X-Amz-Algorithm", valid_593011
-  var valid_593012 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593012 = validateParameter(valid_593012, JString, required = false,
-                                 default = nil)
-  if valid_593012 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593012
+  if valid_600014 != nil:
+    section.add "X-Amz-Credential", valid_600014
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -555,43 +571,47 @@ proc validate_DeleteBackup_593003(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_593014: Call_DeleteBackup_593002; path: JsonNode; query: JsonNode;
+proc call*(call_600016: Call_DeleteBackup_600004; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes an Amazon FSx for Windows File Server backup, deleting its contents. After deletion, the backup no longer exists, and its data is gone.</p> <p>The <code>DeleteBackup</code> call returns instantly. The backup will not show up in later <code>DescribeBackups</code> calls.</p> <important> <p>The data in a deleted backup is also deleted and can't be recovered by any means.</p> </important>
   ## 
-  let valid = call_593014.validator(path, query, header, formData, body)
-  let scheme = call_593014.pickScheme
+  let valid = call_600016.validator(path, query, header, formData, body)
+  let scheme = call_600016.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593014.url(scheme.get, call_593014.host, call_593014.base,
-                         call_593014.route, valid.getOrDefault("path"),
+  let url = call_600016.url(scheme.get, call_600016.host, call_600016.base,
+                         call_600016.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593014, url, valid)
+  result = atozHook(call_600016, url, valid)
 
-proc call*(call_593015: Call_DeleteBackup_593002; body: JsonNode): Recallable =
+proc call*(call_600017: Call_DeleteBackup_600004; body: JsonNode): Recallable =
   ## deleteBackup
   ## <p>Deletes an Amazon FSx for Windows File Server backup, deleting its contents. After deletion, the backup no longer exists, and its data is gone.</p> <p>The <code>DeleteBackup</code> call returns instantly. The backup will not show up in later <code>DescribeBackups</code> calls.</p> <important> <p>The data in a deleted backup is also deleted and can't be recovered by any means.</p> </important>
   ##   body: JObject (required)
-  var body_593016 = newJObject()
+  var body_600018 = newJObject()
   if body != nil:
-    body_593016 = body
-  result = call_593015.call(nil, nil, nil, nil, body_593016)
+    body_600018 = body
+  result = call_600017.call(nil, nil, nil, nil, body_600018)
 
-var deleteBackup* = Call_DeleteBackup_593002(name: "deleteBackup",
+var deleteBackup* = Call_DeleteBackup_600004(name: "deleteBackup",
     meth: HttpMethod.HttpPost, host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.DeleteBackup",
-    validator: validate_DeleteBackup_593003, base: "/", url: url_DeleteBackup_593004,
+    validator: validate_DeleteBackup_600005, base: "/", url: url_DeleteBackup_600006,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteFileSystem_593017 = ref object of OpenApiRestCall_592364
-proc url_DeleteFileSystem_593019(protocol: Scheme; host: string; base: string;
+  Call_DeleteFileSystem_600019 = ref object of OpenApiRestCall_599368
+proc url_DeleteFileSystem_600021(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_DeleteFileSystem_593018(path: JsonNode; query: JsonNode;
+proc validate_DeleteFileSystem_600020(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes a file system, deleting its contents. After deletion, the file system no longer exists, and its data is gone. Any existing automatic backups will also be deleted.</p> <p>By default, when you delete an Amazon FSx for Windows File Server file system, a final backup is created upon deletion. This final backup is not subject to the file system's retention policy, and must be manually deleted.</p> <p>The <code>DeleteFileSystem</code> action returns while the file system has the <code>DELETING</code> status. You can check the file system deletion status by calling the <a>DescribeFileSystems</a> action, which returns a list of file systems in your account. If you pass the file system ID for a deleted file system, the <a>DescribeFileSystems</a> returns a <code>FileSystemNotFound</code> error.</p> <important> <p>The data in a deleted file system is also deleted and can't be recovered by any means.</p> </important>
@@ -603,57 +623,57 @@ proc validate_DeleteFileSystem_593018(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600022 = header.getOrDefault("X-Amz-Date")
+  valid_600022 = validateParameter(valid_600022, JString, required = false,
+                                 default = nil)
+  if valid_600022 != nil:
+    section.add "X-Amz-Date", valid_600022
+  var valid_600023 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600023 = validateParameter(valid_600023, JString, required = false,
+                                 default = nil)
+  if valid_600023 != nil:
+    section.add "X-Amz-Security-Token", valid_600023
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593020 = header.getOrDefault("X-Amz-Target")
-  valid_593020 = validateParameter(valid_593020, JString, required = true, default = newJString(
+  var valid_600024 = header.getOrDefault("X-Amz-Target")
+  valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DeleteFileSystem"))
-  if valid_593020 != nil:
-    section.add "X-Amz-Target", valid_593020
-  var valid_593021 = header.getOrDefault("X-Amz-Signature")
-  valid_593021 = validateParameter(valid_593021, JString, required = false,
+  if valid_600024 != nil:
+    section.add "X-Amz-Target", valid_600024
+  var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600025 = validateParameter(valid_600025, JString, required = false,
                                  default = nil)
-  if valid_593021 != nil:
-    section.add "X-Amz-Signature", valid_593021
-  var valid_593022 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593022 = validateParameter(valid_593022, JString, required = false,
+  if valid_600025 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600025
+  var valid_600026 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600026 = validateParameter(valid_600026, JString, required = false,
                                  default = nil)
-  if valid_593022 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593022
-  var valid_593023 = header.getOrDefault("X-Amz-Date")
-  valid_593023 = validateParameter(valid_593023, JString, required = false,
+  if valid_600026 != nil:
+    section.add "X-Amz-Algorithm", valid_600026
+  var valid_600027 = header.getOrDefault("X-Amz-Signature")
+  valid_600027 = validateParameter(valid_600027, JString, required = false,
                                  default = nil)
-  if valid_593023 != nil:
-    section.add "X-Amz-Date", valid_593023
-  var valid_593024 = header.getOrDefault("X-Amz-Credential")
-  valid_593024 = validateParameter(valid_593024, JString, required = false,
+  if valid_600027 != nil:
+    section.add "X-Amz-Signature", valid_600027
+  var valid_600028 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600028 = validateParameter(valid_600028, JString, required = false,
                                  default = nil)
-  if valid_593024 != nil:
-    section.add "X-Amz-Credential", valid_593024
-  var valid_593025 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593025 = validateParameter(valid_593025, JString, required = false,
+  if valid_600028 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600028
+  var valid_600029 = header.getOrDefault("X-Amz-Credential")
+  valid_600029 = validateParameter(valid_600029, JString, required = false,
                                  default = nil)
-  if valid_593025 != nil:
-    section.add "X-Amz-Security-Token", valid_593025
-  var valid_593026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593026 = validateParameter(valid_593026, JString, required = false,
-                                 default = nil)
-  if valid_593026 != nil:
-    section.add "X-Amz-Algorithm", valid_593026
-  var valid_593027 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593027 = validateParameter(valid_593027, JString, required = false,
-                                 default = nil)
-  if valid_593027 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593027
+  if valid_600029 != nil:
+    section.add "X-Amz-Credential", valid_600029
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -664,43 +684,47 @@ proc validate_DeleteFileSystem_593018(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593029: Call_DeleteFileSystem_593017; path: JsonNode;
+proc call*(call_600031: Call_DeleteFileSystem_600019; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a file system, deleting its contents. After deletion, the file system no longer exists, and its data is gone. Any existing automatic backups will also be deleted.</p> <p>By default, when you delete an Amazon FSx for Windows File Server file system, a final backup is created upon deletion. This final backup is not subject to the file system's retention policy, and must be manually deleted.</p> <p>The <code>DeleteFileSystem</code> action returns while the file system has the <code>DELETING</code> status. You can check the file system deletion status by calling the <a>DescribeFileSystems</a> action, which returns a list of file systems in your account. If you pass the file system ID for a deleted file system, the <a>DescribeFileSystems</a> returns a <code>FileSystemNotFound</code> error.</p> <important> <p>The data in a deleted file system is also deleted and can't be recovered by any means.</p> </important>
   ## 
-  let valid = call_593029.validator(path, query, header, formData, body)
-  let scheme = call_593029.pickScheme
+  let valid = call_600031.validator(path, query, header, formData, body)
+  let scheme = call_600031.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593029.url(scheme.get, call_593029.host, call_593029.base,
-                         call_593029.route, valid.getOrDefault("path"),
+  let url = call_600031.url(scheme.get, call_600031.host, call_600031.base,
+                         call_600031.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593029, url, valid)
+  result = atozHook(call_600031, url, valid)
 
-proc call*(call_593030: Call_DeleteFileSystem_593017; body: JsonNode): Recallable =
+proc call*(call_600032: Call_DeleteFileSystem_600019; body: JsonNode): Recallable =
   ## deleteFileSystem
   ## <p>Deletes a file system, deleting its contents. After deletion, the file system no longer exists, and its data is gone. Any existing automatic backups will also be deleted.</p> <p>By default, when you delete an Amazon FSx for Windows File Server file system, a final backup is created upon deletion. This final backup is not subject to the file system's retention policy, and must be manually deleted.</p> <p>The <code>DeleteFileSystem</code> action returns while the file system has the <code>DELETING</code> status. You can check the file system deletion status by calling the <a>DescribeFileSystems</a> action, which returns a list of file systems in your account. If you pass the file system ID for a deleted file system, the <a>DescribeFileSystems</a> returns a <code>FileSystemNotFound</code> error.</p> <important> <p>The data in a deleted file system is also deleted and can't be recovered by any means.</p> </important>
   ##   body: JObject (required)
-  var body_593031 = newJObject()
+  var body_600033 = newJObject()
   if body != nil:
-    body_593031 = body
-  result = call_593030.call(nil, nil, nil, nil, body_593031)
+    body_600033 = body
+  result = call_600032.call(nil, nil, nil, nil, body_600033)
 
-var deleteFileSystem* = Call_DeleteFileSystem_593017(name: "deleteFileSystem",
+var deleteFileSystem* = Call_DeleteFileSystem_600019(name: "deleteFileSystem",
     meth: HttpMethod.HttpPost, host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.DeleteFileSystem",
-    validator: validate_DeleteFileSystem_593018, base: "/",
-    url: url_DeleteFileSystem_593019, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteFileSystem_600020, base: "/",
+    url: url_DeleteFileSystem_600021, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeBackups_593032 = ref object of OpenApiRestCall_592364
-proc url_DescribeBackups_593034(protocol: Scheme; host: string; base: string;
+  Call_DescribeBackups_600034 = ref object of OpenApiRestCall_599368
+proc url_DescribeBackups_600036(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_DescribeBackups_593033(path: JsonNode; query: JsonNode;
+proc validate_DescribeBackups_600035(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Returns the description of specific Amazon FSx for Windows File Server backups, if a <code>BackupIds</code> value is provided for that backup. Otherwise, it returns all backups owned by your AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all backups, you can optionally specify the <code>MaxResults</code> parameter to limit the number of backups in a response. If more backups remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your backups. <code>DescribeBackups</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of backups returned in the response of one <code>DescribeBackups</code> call and the order of backups returned across the responses of a multi-call iteration is unspecified.</p> </li> </ul>
@@ -710,74 +734,74 @@ proc validate_DescribeBackups_593033(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   MaxResults: JString
-  ##             : Pagination limit
   ##   NextToken: JString
   ##            : Pagination token
+  ##   MaxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_593035 = query.getOrDefault("MaxResults")
-  valid_593035 = validateParameter(valid_593035, JString, required = false,
+  var valid_600037 = query.getOrDefault("NextToken")
+  valid_600037 = validateParameter(valid_600037, JString, required = false,
                                  default = nil)
-  if valid_593035 != nil:
-    section.add "MaxResults", valid_593035
-  var valid_593036 = query.getOrDefault("NextToken")
-  valid_593036 = validateParameter(valid_593036, JString, required = false,
+  if valid_600037 != nil:
+    section.add "NextToken", valid_600037
+  var valid_600038 = query.getOrDefault("MaxResults")
+  valid_600038 = validateParameter(valid_600038, JString, required = false,
                                  default = nil)
-  if valid_593036 != nil:
-    section.add "NextToken", valid_593036
+  if valid_600038 != nil:
+    section.add "MaxResults", valid_600038
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600039 = header.getOrDefault("X-Amz-Date")
+  valid_600039 = validateParameter(valid_600039, JString, required = false,
+                                 default = nil)
+  if valid_600039 != nil:
+    section.add "X-Amz-Date", valid_600039
+  var valid_600040 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600040 = validateParameter(valid_600040, JString, required = false,
+                                 default = nil)
+  if valid_600040 != nil:
+    section.add "X-Amz-Security-Token", valid_600040
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593037 = header.getOrDefault("X-Amz-Target")
-  valid_593037 = validateParameter(valid_593037, JString, required = true, default = newJString(
+  var valid_600041 = header.getOrDefault("X-Amz-Target")
+  valid_600041 = validateParameter(valid_600041, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DescribeBackups"))
-  if valid_593037 != nil:
-    section.add "X-Amz-Target", valid_593037
-  var valid_593038 = header.getOrDefault("X-Amz-Signature")
-  valid_593038 = validateParameter(valid_593038, JString, required = false,
+  if valid_600041 != nil:
+    section.add "X-Amz-Target", valid_600041
+  var valid_600042 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600042 = validateParameter(valid_600042, JString, required = false,
                                  default = nil)
-  if valid_593038 != nil:
-    section.add "X-Amz-Signature", valid_593038
-  var valid_593039 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593039 = validateParameter(valid_593039, JString, required = false,
+  if valid_600042 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600042
+  var valid_600043 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600043 = validateParameter(valid_600043, JString, required = false,
                                  default = nil)
-  if valid_593039 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593039
-  var valid_593040 = header.getOrDefault("X-Amz-Date")
-  valid_593040 = validateParameter(valid_593040, JString, required = false,
+  if valid_600043 != nil:
+    section.add "X-Amz-Algorithm", valid_600043
+  var valid_600044 = header.getOrDefault("X-Amz-Signature")
+  valid_600044 = validateParameter(valid_600044, JString, required = false,
                                  default = nil)
-  if valid_593040 != nil:
-    section.add "X-Amz-Date", valid_593040
-  var valid_593041 = header.getOrDefault("X-Amz-Credential")
-  valid_593041 = validateParameter(valid_593041, JString, required = false,
+  if valid_600044 != nil:
+    section.add "X-Amz-Signature", valid_600044
+  var valid_600045 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600045 = validateParameter(valid_600045, JString, required = false,
                                  default = nil)
-  if valid_593041 != nil:
-    section.add "X-Amz-Credential", valid_593041
-  var valid_593042 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593042 = validateParameter(valid_593042, JString, required = false,
+  if valid_600045 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600045
+  var valid_600046 = header.getOrDefault("X-Amz-Credential")
+  valid_600046 = validateParameter(valid_600046, JString, required = false,
                                  default = nil)
-  if valid_593042 != nil:
-    section.add "X-Amz-Security-Token", valid_593042
-  var valid_593043 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593043 = validateParameter(valid_593043, JString, required = false,
-                                 default = nil)
-  if valid_593043 != nil:
-    section.add "X-Amz-Algorithm", valid_593043
-  var valid_593044 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593044 = validateParameter(valid_593044, JString, required = false,
-                                 default = nil)
-  if valid_593044 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593044
+  if valid_600046 != nil:
+    section.add "X-Amz-Credential", valid_600046
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -788,51 +812,55 @@ proc validate_DescribeBackups_593033(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593046: Call_DescribeBackups_593032; path: JsonNode; query: JsonNode;
+proc call*(call_600048: Call_DescribeBackups_600034; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the description of specific Amazon FSx for Windows File Server backups, if a <code>BackupIds</code> value is provided for that backup. Otherwise, it returns all backups owned by your AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all backups, you can optionally specify the <code>MaxResults</code> parameter to limit the number of backups in a response. If more backups remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your backups. <code>DescribeBackups</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of backups returned in the response of one <code>DescribeBackups</code> call and the order of backups returned across the responses of a multi-call iteration is unspecified.</p> </li> </ul>
   ## 
-  let valid = call_593046.validator(path, query, header, formData, body)
-  let scheme = call_593046.pickScheme
+  let valid = call_600048.validator(path, query, header, formData, body)
+  let scheme = call_600048.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593046.url(scheme.get, call_593046.host, call_593046.base,
-                         call_593046.route, valid.getOrDefault("path"),
+  let url = call_600048.url(scheme.get, call_600048.host, call_600048.base,
+                         call_600048.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593046, url, valid)
+  result = atozHook(call_600048, url, valid)
 
-proc call*(call_593047: Call_DescribeBackups_593032; body: JsonNode;
-          MaxResults: string = ""; NextToken: string = ""): Recallable =
+proc call*(call_600049: Call_DescribeBackups_600034; body: JsonNode;
+          NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## describeBackups
   ## <p>Returns the description of specific Amazon FSx for Windows File Server backups, if a <code>BackupIds</code> value is provided for that backup. Otherwise, it returns all backups owned by your AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all backups, you can optionally specify the <code>MaxResults</code> parameter to limit the number of backups in a response. If more backups remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your backups. <code>DescribeBackups</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of backups returned in the response of one <code>DescribeBackups</code> call and the order of backups returned across the responses of a multi-call iteration is unspecified.</p> </li> </ul>
-  ##   MaxResults: string
-  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_593048 = newJObject()
-  var body_593049 = newJObject()
-  add(query_593048, "MaxResults", newJString(MaxResults))
-  add(query_593048, "NextToken", newJString(NextToken))
+  ##   MaxResults: string
+  ##             : Pagination limit
+  var query_600050 = newJObject()
+  var body_600051 = newJObject()
+  add(query_600050, "NextToken", newJString(NextToken))
   if body != nil:
-    body_593049 = body
-  result = call_593047.call(nil, query_593048, nil, nil, body_593049)
+    body_600051 = body
+  add(query_600050, "MaxResults", newJString(MaxResults))
+  result = call_600049.call(nil, query_600050, nil, nil, body_600051)
 
-var describeBackups* = Call_DescribeBackups_593032(name: "describeBackups",
+var describeBackups* = Call_DescribeBackups_600034(name: "describeBackups",
     meth: HttpMethod.HttpPost, host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.DescribeBackups",
-    validator: validate_DescribeBackups_593033, base: "/", url: url_DescribeBackups_593034,
+    validator: validate_DescribeBackups_600035, base: "/", url: url_DescribeBackups_600036,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeFileSystems_593051 = ref object of OpenApiRestCall_592364
-proc url_DescribeFileSystems_593053(protocol: Scheme; host: string; base: string;
+  Call_DescribeFileSystems_600053 = ref object of OpenApiRestCall_599368
+proc url_DescribeFileSystems_600055(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_DescribeFileSystems_593052(path: JsonNode; query: JsonNode;
+proc validate_DescribeFileSystems_600054(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Returns the description of specific Amazon FSx file systems, if a <code>FileSystemIds</code> value is provided for that file system. Otherwise, it returns descriptions of all file systems owned by your AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all file system descriptions, you can optionally specify the <code>MaxResults</code> parameter to limit the number of descriptions in a response. If more file system descriptions remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your file system descriptions. <code>DescribeFileSystems</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of file systems returned in the response of one <code>DescribeFileSystems</code> call and the order of file systems returned across the responses of a multicall iteration is unspecified.</p> </li> </ul>
@@ -842,74 +870,74 @@ proc validate_DescribeFileSystems_593052(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   MaxResults: JString
-  ##             : Pagination limit
   ##   NextToken: JString
   ##            : Pagination token
+  ##   MaxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_593054 = query.getOrDefault("MaxResults")
-  valid_593054 = validateParameter(valid_593054, JString, required = false,
+  var valid_600056 = query.getOrDefault("NextToken")
+  valid_600056 = validateParameter(valid_600056, JString, required = false,
                                  default = nil)
-  if valid_593054 != nil:
-    section.add "MaxResults", valid_593054
-  var valid_593055 = query.getOrDefault("NextToken")
-  valid_593055 = validateParameter(valid_593055, JString, required = false,
+  if valid_600056 != nil:
+    section.add "NextToken", valid_600056
+  var valid_600057 = query.getOrDefault("MaxResults")
+  valid_600057 = validateParameter(valid_600057, JString, required = false,
                                  default = nil)
-  if valid_593055 != nil:
-    section.add "NextToken", valid_593055
+  if valid_600057 != nil:
+    section.add "MaxResults", valid_600057
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600058 = header.getOrDefault("X-Amz-Date")
+  valid_600058 = validateParameter(valid_600058, JString, required = false,
+                                 default = nil)
+  if valid_600058 != nil:
+    section.add "X-Amz-Date", valid_600058
+  var valid_600059 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600059 = validateParameter(valid_600059, JString, required = false,
+                                 default = nil)
+  if valid_600059 != nil:
+    section.add "X-Amz-Security-Token", valid_600059
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593056 = header.getOrDefault("X-Amz-Target")
-  valid_593056 = validateParameter(valid_593056, JString, required = true, default = newJString(
+  var valid_600060 = header.getOrDefault("X-Amz-Target")
+  valid_600060 = validateParameter(valid_600060, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DescribeFileSystems"))
-  if valid_593056 != nil:
-    section.add "X-Amz-Target", valid_593056
-  var valid_593057 = header.getOrDefault("X-Amz-Signature")
-  valid_593057 = validateParameter(valid_593057, JString, required = false,
+  if valid_600060 != nil:
+    section.add "X-Amz-Target", valid_600060
+  var valid_600061 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600061 = validateParameter(valid_600061, JString, required = false,
                                  default = nil)
-  if valid_593057 != nil:
-    section.add "X-Amz-Signature", valid_593057
-  var valid_593058 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593058 = validateParameter(valid_593058, JString, required = false,
+  if valid_600061 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600061
+  var valid_600062 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600062 = validateParameter(valid_600062, JString, required = false,
                                  default = nil)
-  if valid_593058 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593058
-  var valid_593059 = header.getOrDefault("X-Amz-Date")
-  valid_593059 = validateParameter(valid_593059, JString, required = false,
+  if valid_600062 != nil:
+    section.add "X-Amz-Algorithm", valid_600062
+  var valid_600063 = header.getOrDefault("X-Amz-Signature")
+  valid_600063 = validateParameter(valid_600063, JString, required = false,
                                  default = nil)
-  if valid_593059 != nil:
-    section.add "X-Amz-Date", valid_593059
-  var valid_593060 = header.getOrDefault("X-Amz-Credential")
-  valid_593060 = validateParameter(valid_593060, JString, required = false,
+  if valid_600063 != nil:
+    section.add "X-Amz-Signature", valid_600063
+  var valid_600064 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600064 = validateParameter(valid_600064, JString, required = false,
                                  default = nil)
-  if valid_593060 != nil:
-    section.add "X-Amz-Credential", valid_593060
-  var valid_593061 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593061 = validateParameter(valid_593061, JString, required = false,
+  if valid_600064 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600064
+  var valid_600065 = header.getOrDefault("X-Amz-Credential")
+  valid_600065 = validateParameter(valid_600065, JString, required = false,
                                  default = nil)
-  if valid_593061 != nil:
-    section.add "X-Amz-Security-Token", valid_593061
-  var valid_593062 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593062 = validateParameter(valid_593062, JString, required = false,
-                                 default = nil)
-  if valid_593062 != nil:
-    section.add "X-Amz-Algorithm", valid_593062
-  var valid_593063 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593063 = validateParameter(valid_593063, JString, required = false,
-                                 default = nil)
-  if valid_593063 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593063
+  if valid_600065 != nil:
+    section.add "X-Amz-Credential", valid_600065
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -920,52 +948,56 @@ proc validate_DescribeFileSystems_593052(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593065: Call_DescribeFileSystems_593051; path: JsonNode;
+proc call*(call_600067: Call_DescribeFileSystems_600053; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the description of specific Amazon FSx file systems, if a <code>FileSystemIds</code> value is provided for that file system. Otherwise, it returns descriptions of all file systems owned by your AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all file system descriptions, you can optionally specify the <code>MaxResults</code> parameter to limit the number of descriptions in a response. If more file system descriptions remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your file system descriptions. <code>DescribeFileSystems</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of file systems returned in the response of one <code>DescribeFileSystems</code> call and the order of file systems returned across the responses of a multicall iteration is unspecified.</p> </li> </ul>
   ## 
-  let valid = call_593065.validator(path, query, header, formData, body)
-  let scheme = call_593065.pickScheme
+  let valid = call_600067.validator(path, query, header, formData, body)
+  let scheme = call_600067.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593065.url(scheme.get, call_593065.host, call_593065.base,
-                         call_593065.route, valid.getOrDefault("path"),
+  let url = call_600067.url(scheme.get, call_600067.host, call_600067.base,
+                         call_600067.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593065, url, valid)
+  result = atozHook(call_600067, url, valid)
 
-proc call*(call_593066: Call_DescribeFileSystems_593051; body: JsonNode;
-          MaxResults: string = ""; NextToken: string = ""): Recallable =
+proc call*(call_600068: Call_DescribeFileSystems_600053; body: JsonNode;
+          NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## describeFileSystems
   ## <p>Returns the description of specific Amazon FSx file systems, if a <code>FileSystemIds</code> value is provided for that file system. Otherwise, it returns descriptions of all file systems owned by your AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all file system descriptions, you can optionally specify the <code>MaxResults</code> parameter to limit the number of descriptions in a response. If more file system descriptions remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your file system descriptions. <code>DescribeFileSystems</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of file systems returned in the response of one <code>DescribeFileSystems</code> call and the order of file systems returned across the responses of a multicall iteration is unspecified.</p> </li> </ul>
-  ##   MaxResults: string
-  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_593067 = newJObject()
-  var body_593068 = newJObject()
-  add(query_593067, "MaxResults", newJString(MaxResults))
-  add(query_593067, "NextToken", newJString(NextToken))
+  ##   MaxResults: string
+  ##             : Pagination limit
+  var query_600069 = newJObject()
+  var body_600070 = newJObject()
+  add(query_600069, "NextToken", newJString(NextToken))
   if body != nil:
-    body_593068 = body
-  result = call_593066.call(nil, query_593067, nil, nil, body_593068)
+    body_600070 = body
+  add(query_600069, "MaxResults", newJString(MaxResults))
+  result = call_600068.call(nil, query_600069, nil, nil, body_600070)
 
-var describeFileSystems* = Call_DescribeFileSystems_593051(
+var describeFileSystems* = Call_DescribeFileSystems_600053(
     name: "describeFileSystems", meth: HttpMethod.HttpPost,
     host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.DescribeFileSystems",
-    validator: validate_DescribeFileSystems_593052, base: "/",
-    url: url_DescribeFileSystems_593053, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeFileSystems_600054, base: "/",
+    url: url_DescribeFileSystems_600055, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_593069 = ref object of OpenApiRestCall_592364
-proc url_ListTagsForResource_593071(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_600071 = ref object of OpenApiRestCall_599368
+proc url_ListTagsForResource_600073(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_ListTagsForResource_593070(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_600072(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Lists tags for an Amazon FSx file systems and backups in the case of Amazon FSx for Windows File Server.</p> <p>When retrieving all tags, you can optionally specify the <code>MaxResults</code> parameter to limit the number of tags in a response. If more tags remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your tags. <code>ListTagsForResource</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of tags returned in the response of one <code>ListTagsForResource</code> call and the order of tags returned across the responses of a multi-call iteration is unspecified.</p> </li> </ul>
@@ -977,57 +1009,57 @@ proc validate_ListTagsForResource_593070(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600074 = header.getOrDefault("X-Amz-Date")
+  valid_600074 = validateParameter(valid_600074, JString, required = false,
+                                 default = nil)
+  if valid_600074 != nil:
+    section.add "X-Amz-Date", valid_600074
+  var valid_600075 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600075 = validateParameter(valid_600075, JString, required = false,
+                                 default = nil)
+  if valid_600075 != nil:
+    section.add "X-Amz-Security-Token", valid_600075
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593072 = header.getOrDefault("X-Amz-Target")
-  valid_593072 = validateParameter(valid_593072, JString, required = true, default = newJString(
+  var valid_600076 = header.getOrDefault("X-Amz-Target")
+  valid_600076 = validateParameter(valid_600076, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.ListTagsForResource"))
-  if valid_593072 != nil:
-    section.add "X-Amz-Target", valid_593072
-  var valid_593073 = header.getOrDefault("X-Amz-Signature")
-  valid_593073 = validateParameter(valid_593073, JString, required = false,
+  if valid_600076 != nil:
+    section.add "X-Amz-Target", valid_600076
+  var valid_600077 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600077 = validateParameter(valid_600077, JString, required = false,
                                  default = nil)
-  if valid_593073 != nil:
-    section.add "X-Amz-Signature", valid_593073
-  var valid_593074 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593074 = validateParameter(valid_593074, JString, required = false,
+  if valid_600077 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600077
+  var valid_600078 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600078 = validateParameter(valid_600078, JString, required = false,
                                  default = nil)
-  if valid_593074 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593074
-  var valid_593075 = header.getOrDefault("X-Amz-Date")
-  valid_593075 = validateParameter(valid_593075, JString, required = false,
+  if valid_600078 != nil:
+    section.add "X-Amz-Algorithm", valid_600078
+  var valid_600079 = header.getOrDefault("X-Amz-Signature")
+  valid_600079 = validateParameter(valid_600079, JString, required = false,
                                  default = nil)
-  if valid_593075 != nil:
-    section.add "X-Amz-Date", valid_593075
-  var valid_593076 = header.getOrDefault("X-Amz-Credential")
-  valid_593076 = validateParameter(valid_593076, JString, required = false,
+  if valid_600079 != nil:
+    section.add "X-Amz-Signature", valid_600079
+  var valid_600080 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600080 = validateParameter(valid_600080, JString, required = false,
                                  default = nil)
-  if valid_593076 != nil:
-    section.add "X-Amz-Credential", valid_593076
-  var valid_593077 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593077 = validateParameter(valid_593077, JString, required = false,
+  if valid_600080 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600080
+  var valid_600081 = header.getOrDefault("X-Amz-Credential")
+  valid_600081 = validateParameter(valid_600081, JString, required = false,
                                  default = nil)
-  if valid_593077 != nil:
-    section.add "X-Amz-Security-Token", valid_593077
-  var valid_593078 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593078 = validateParameter(valid_593078, JString, required = false,
-                                 default = nil)
-  if valid_593078 != nil:
-    section.add "X-Amz-Algorithm", valid_593078
-  var valid_593079 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593079 = validateParameter(valid_593079, JString, required = false,
-                                 default = nil)
-  if valid_593079 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593079
+  if valid_600081 != nil:
+    section.add "X-Amz-Credential", valid_600081
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1038,44 +1070,48 @@ proc validate_ListTagsForResource_593070(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593081: Call_ListTagsForResource_593069; path: JsonNode;
+proc call*(call_600083: Call_ListTagsForResource_600071; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists tags for an Amazon FSx file systems and backups in the case of Amazon FSx for Windows File Server.</p> <p>When retrieving all tags, you can optionally specify the <code>MaxResults</code> parameter to limit the number of tags in a response. If more tags remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your tags. <code>ListTagsForResource</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of tags returned in the response of one <code>ListTagsForResource</code> call and the order of tags returned across the responses of a multi-call iteration is unspecified.</p> </li> </ul>
   ## 
-  let valid = call_593081.validator(path, query, header, formData, body)
-  let scheme = call_593081.pickScheme
+  let valid = call_600083.validator(path, query, header, formData, body)
+  let scheme = call_600083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593081.url(scheme.get, call_593081.host, call_593081.base,
-                         call_593081.route, valid.getOrDefault("path"),
+  let url = call_600083.url(scheme.get, call_600083.host, call_600083.base,
+                         call_600083.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593081, url, valid)
+  result = atozHook(call_600083, url, valid)
 
-proc call*(call_593082: Call_ListTagsForResource_593069; body: JsonNode): Recallable =
+proc call*(call_600084: Call_ListTagsForResource_600071; body: JsonNode): Recallable =
   ## listTagsForResource
   ## <p>Lists tags for an Amazon FSx file systems and backups in the case of Amazon FSx for Windows File Server.</p> <p>When retrieving all tags, you can optionally specify the <code>MaxResults</code> parameter to limit the number of tags in a response. If more tags remain, Amazon FSx returns a <code>NextToken</code> value in the response. In this case, send a later request with the <code>NextToken</code> request parameter set to the value of <code>NextToken</code> from the last response.</p> <p>This action is used in an iterative process to retrieve a list of your tags. <code>ListTagsForResource</code> is called first without a <code>NextToken</code>value. Then the action continues to be called with the <code>NextToken</code> parameter set to the value of the last <code>NextToken</code> value until a response has no <code>NextToken</code>.</p> <p>When using this action, keep the following in mind:</p> <ul> <li> <p>The implementation might return fewer than <code>MaxResults</code> file system descriptions while still including a <code>NextToken</code> value.</p> </li> <li> <p>The order of tags returned in the response of one <code>ListTagsForResource</code> call and the order of tags returned across the responses of a multi-call iteration is unspecified.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_593083 = newJObject()
+  var body_600085 = newJObject()
   if body != nil:
-    body_593083 = body
-  result = call_593082.call(nil, nil, nil, nil, body_593083)
+    body_600085 = body
+  result = call_600084.call(nil, nil, nil, nil, body_600085)
 
-var listTagsForResource* = Call_ListTagsForResource_593069(
+var listTagsForResource* = Call_ListTagsForResource_600071(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.ListTagsForResource",
-    validator: validate_ListTagsForResource_593070, base: "/",
-    url: url_ListTagsForResource_593071, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_600072, base: "/",
+    url: url_ListTagsForResource_600073, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_593084 = ref object of OpenApiRestCall_592364
-proc url_TagResource_593086(protocol: Scheme; host: string; base: string;
+  Call_TagResource_600086 = ref object of OpenApiRestCall_599368
+proc url_TagResource_600088(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_TagResource_593085(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_600087(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Tags an Amazon FSx resource.
   ## 
@@ -1086,57 +1122,57 @@ proc validate_TagResource_593085(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600089 = header.getOrDefault("X-Amz-Date")
+  valid_600089 = validateParameter(valid_600089, JString, required = false,
+                                 default = nil)
+  if valid_600089 != nil:
+    section.add "X-Amz-Date", valid_600089
+  var valid_600090 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600090 = validateParameter(valid_600090, JString, required = false,
+                                 default = nil)
+  if valid_600090 != nil:
+    section.add "X-Amz-Security-Token", valid_600090
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593087 = header.getOrDefault("X-Amz-Target")
-  valid_593087 = validateParameter(valid_593087, JString, required = true, default = newJString(
+  var valid_600091 = header.getOrDefault("X-Amz-Target")
+  valid_600091 = validateParameter(valid_600091, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.TagResource"))
-  if valid_593087 != nil:
-    section.add "X-Amz-Target", valid_593087
-  var valid_593088 = header.getOrDefault("X-Amz-Signature")
-  valid_593088 = validateParameter(valid_593088, JString, required = false,
+  if valid_600091 != nil:
+    section.add "X-Amz-Target", valid_600091
+  var valid_600092 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600092 = validateParameter(valid_600092, JString, required = false,
                                  default = nil)
-  if valid_593088 != nil:
-    section.add "X-Amz-Signature", valid_593088
-  var valid_593089 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593089 = validateParameter(valid_593089, JString, required = false,
+  if valid_600092 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600092
+  var valid_600093 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600093 = validateParameter(valid_600093, JString, required = false,
                                  default = nil)
-  if valid_593089 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593089
-  var valid_593090 = header.getOrDefault("X-Amz-Date")
-  valid_593090 = validateParameter(valid_593090, JString, required = false,
+  if valid_600093 != nil:
+    section.add "X-Amz-Algorithm", valid_600093
+  var valid_600094 = header.getOrDefault("X-Amz-Signature")
+  valid_600094 = validateParameter(valid_600094, JString, required = false,
                                  default = nil)
-  if valid_593090 != nil:
-    section.add "X-Amz-Date", valid_593090
-  var valid_593091 = header.getOrDefault("X-Amz-Credential")
-  valid_593091 = validateParameter(valid_593091, JString, required = false,
+  if valid_600094 != nil:
+    section.add "X-Amz-Signature", valid_600094
+  var valid_600095 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600095 = validateParameter(valid_600095, JString, required = false,
                                  default = nil)
-  if valid_593091 != nil:
-    section.add "X-Amz-Credential", valid_593091
-  var valid_593092 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593092 = validateParameter(valid_593092, JString, required = false,
+  if valid_600095 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600095
+  var valid_600096 = header.getOrDefault("X-Amz-Credential")
+  valid_600096 = validateParameter(valid_600096, JString, required = false,
                                  default = nil)
-  if valid_593092 != nil:
-    section.add "X-Amz-Security-Token", valid_593092
-  var valid_593093 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593093 = validateParameter(valid_593093, JString, required = false,
-                                 default = nil)
-  if valid_593093 != nil:
-    section.add "X-Amz-Algorithm", valid_593093
-  var valid_593094 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593094 = validateParameter(valid_593094, JString, required = false,
-                                 default = nil)
-  if valid_593094 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593094
+  if valid_600096 != nil:
+    section.add "X-Amz-Credential", valid_600096
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1147,44 +1183,48 @@ proc validate_TagResource_593085(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_593096: Call_TagResource_593084; path: JsonNode; query: JsonNode;
+proc call*(call_600098: Call_TagResource_600086; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Tags an Amazon FSx resource.
   ## 
-  let valid = call_593096.validator(path, query, header, formData, body)
-  let scheme = call_593096.pickScheme
+  let valid = call_600098.validator(path, query, header, formData, body)
+  let scheme = call_600098.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593096.url(scheme.get, call_593096.host, call_593096.base,
-                         call_593096.route, valid.getOrDefault("path"),
+  let url = call_600098.url(scheme.get, call_600098.host, call_600098.base,
+                         call_600098.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593096, url, valid)
+  result = atozHook(call_600098, url, valid)
 
-proc call*(call_593097: Call_TagResource_593084; body: JsonNode): Recallable =
+proc call*(call_600099: Call_TagResource_600086; body: JsonNode): Recallable =
   ## tagResource
   ## Tags an Amazon FSx resource.
   ##   body: JObject (required)
-  var body_593098 = newJObject()
+  var body_600100 = newJObject()
   if body != nil:
-    body_593098 = body
-  result = call_593097.call(nil, nil, nil, nil, body_593098)
+    body_600100 = body
+  result = call_600099.call(nil, nil, nil, nil, body_600100)
 
-var tagResource* = Call_TagResource_593084(name: "tagResource",
+var tagResource* = Call_TagResource_600086(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "fsx.amazonaws.com", route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.TagResource",
-                                        validator: validate_TagResource_593085,
-                                        base: "/", url: url_TagResource_593086,
+                                        validator: validate_TagResource_600087,
+                                        base: "/", url: url_TagResource_600088,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_593099 = ref object of OpenApiRestCall_592364
-proc url_UntagResource_593101(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_600101 = ref object of OpenApiRestCall_599368
+proc url_UntagResource_600103(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_UntagResource_593100(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_600102(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## This action removes a tag from an Amazon FSx resource.
   ## 
@@ -1195,57 +1235,57 @@ proc validate_UntagResource_593100(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600104 = header.getOrDefault("X-Amz-Date")
+  valid_600104 = validateParameter(valid_600104, JString, required = false,
+                                 default = nil)
+  if valid_600104 != nil:
+    section.add "X-Amz-Date", valid_600104
+  var valid_600105 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600105 = validateParameter(valid_600105, JString, required = false,
+                                 default = nil)
+  if valid_600105 != nil:
+    section.add "X-Amz-Security-Token", valid_600105
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593102 = header.getOrDefault("X-Amz-Target")
-  valid_593102 = validateParameter(valid_593102, JString, required = true, default = newJString(
+  var valid_600106 = header.getOrDefault("X-Amz-Target")
+  valid_600106 = validateParameter(valid_600106, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.UntagResource"))
-  if valid_593102 != nil:
-    section.add "X-Amz-Target", valid_593102
-  var valid_593103 = header.getOrDefault("X-Amz-Signature")
-  valid_593103 = validateParameter(valid_593103, JString, required = false,
+  if valid_600106 != nil:
+    section.add "X-Amz-Target", valid_600106
+  var valid_600107 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600107 = validateParameter(valid_600107, JString, required = false,
                                  default = nil)
-  if valid_593103 != nil:
-    section.add "X-Amz-Signature", valid_593103
-  var valid_593104 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593104 = validateParameter(valid_593104, JString, required = false,
+  if valid_600107 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600107
+  var valid_600108 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600108 = validateParameter(valid_600108, JString, required = false,
                                  default = nil)
-  if valid_593104 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593104
-  var valid_593105 = header.getOrDefault("X-Amz-Date")
-  valid_593105 = validateParameter(valid_593105, JString, required = false,
+  if valid_600108 != nil:
+    section.add "X-Amz-Algorithm", valid_600108
+  var valid_600109 = header.getOrDefault("X-Amz-Signature")
+  valid_600109 = validateParameter(valid_600109, JString, required = false,
                                  default = nil)
-  if valid_593105 != nil:
-    section.add "X-Amz-Date", valid_593105
-  var valid_593106 = header.getOrDefault("X-Amz-Credential")
-  valid_593106 = validateParameter(valid_593106, JString, required = false,
+  if valid_600109 != nil:
+    section.add "X-Amz-Signature", valid_600109
+  var valid_600110 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600110 = validateParameter(valid_600110, JString, required = false,
                                  default = nil)
-  if valid_593106 != nil:
-    section.add "X-Amz-Credential", valid_593106
-  var valid_593107 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593107 = validateParameter(valid_593107, JString, required = false,
+  if valid_600110 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600110
+  var valid_600111 = header.getOrDefault("X-Amz-Credential")
+  valid_600111 = validateParameter(valid_600111, JString, required = false,
                                  default = nil)
-  if valid_593107 != nil:
-    section.add "X-Amz-Security-Token", valid_593107
-  var valid_593108 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593108 = validateParameter(valid_593108, JString, required = false,
-                                 default = nil)
-  if valid_593108 != nil:
-    section.add "X-Amz-Algorithm", valid_593108
-  var valid_593109 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593109 = validateParameter(valid_593109, JString, required = false,
-                                 default = nil)
-  if valid_593109 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593109
+  if valid_600111 != nil:
+    section.add "X-Amz-Credential", valid_600111
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1256,43 +1296,47 @@ proc validate_UntagResource_593100(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_593111: Call_UntagResource_593099; path: JsonNode; query: JsonNode;
+proc call*(call_600113: Call_UntagResource_600101; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This action removes a tag from an Amazon FSx resource.
   ## 
-  let valid = call_593111.validator(path, query, header, formData, body)
-  let scheme = call_593111.pickScheme
+  let valid = call_600113.validator(path, query, header, formData, body)
+  let scheme = call_600113.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593111.url(scheme.get, call_593111.host, call_593111.base,
-                         call_593111.route, valid.getOrDefault("path"),
+  let url = call_600113.url(scheme.get, call_600113.host, call_600113.base,
+                         call_600113.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593111, url, valid)
+  result = atozHook(call_600113, url, valid)
 
-proc call*(call_593112: Call_UntagResource_593099; body: JsonNode): Recallable =
+proc call*(call_600114: Call_UntagResource_600101; body: JsonNode): Recallable =
   ## untagResource
   ## This action removes a tag from an Amazon FSx resource.
   ##   body: JObject (required)
-  var body_593113 = newJObject()
+  var body_600115 = newJObject()
   if body != nil:
-    body_593113 = body
-  result = call_593112.call(nil, nil, nil, nil, body_593113)
+    body_600115 = body
+  result = call_600114.call(nil, nil, nil, nil, body_600115)
 
-var untagResource* = Call_UntagResource_593099(name: "untagResource",
+var untagResource* = Call_UntagResource_600101(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.UntagResource",
-    validator: validate_UntagResource_593100, base: "/", url: url_UntagResource_593101,
+    validator: validate_UntagResource_600102, base: "/", url: url_UntagResource_600103,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateFileSystem_593114 = ref object of OpenApiRestCall_592364
-proc url_UpdateFileSystem_593116(protocol: Scheme; host: string; base: string;
+  Call_UpdateFileSystem_600116 = ref object of OpenApiRestCall_599368
+proc url_UpdateFileSystem_600118(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_UpdateFileSystem_593115(path: JsonNode; query: JsonNode;
+proc validate_UpdateFileSystem_600117(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Updates a file system configuration.
@@ -1304,57 +1348,57 @@ proc validate_UpdateFileSystem_593115(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600119 = header.getOrDefault("X-Amz-Date")
+  valid_600119 = validateParameter(valid_600119, JString, required = false,
+                                 default = nil)
+  if valid_600119 != nil:
+    section.add "X-Amz-Date", valid_600119
+  var valid_600120 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600120 = validateParameter(valid_600120, JString, required = false,
+                                 default = nil)
+  if valid_600120 != nil:
+    section.add "X-Amz-Security-Token", valid_600120
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593117 = header.getOrDefault("X-Amz-Target")
-  valid_593117 = validateParameter(valid_593117, JString, required = true, default = newJString(
+  var valid_600121 = header.getOrDefault("X-Amz-Target")
+  valid_600121 = validateParameter(valid_600121, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.UpdateFileSystem"))
-  if valid_593117 != nil:
-    section.add "X-Amz-Target", valid_593117
-  var valid_593118 = header.getOrDefault("X-Amz-Signature")
-  valid_593118 = validateParameter(valid_593118, JString, required = false,
+  if valid_600121 != nil:
+    section.add "X-Amz-Target", valid_600121
+  var valid_600122 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600122 = validateParameter(valid_600122, JString, required = false,
                                  default = nil)
-  if valid_593118 != nil:
-    section.add "X-Amz-Signature", valid_593118
-  var valid_593119 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593119 = validateParameter(valid_593119, JString, required = false,
+  if valid_600122 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600122
+  var valid_600123 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600123 = validateParameter(valid_600123, JString, required = false,
                                  default = nil)
-  if valid_593119 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593119
-  var valid_593120 = header.getOrDefault("X-Amz-Date")
-  valid_593120 = validateParameter(valid_593120, JString, required = false,
+  if valid_600123 != nil:
+    section.add "X-Amz-Algorithm", valid_600123
+  var valid_600124 = header.getOrDefault("X-Amz-Signature")
+  valid_600124 = validateParameter(valid_600124, JString, required = false,
                                  default = nil)
-  if valid_593120 != nil:
-    section.add "X-Amz-Date", valid_593120
-  var valid_593121 = header.getOrDefault("X-Amz-Credential")
-  valid_593121 = validateParameter(valid_593121, JString, required = false,
+  if valid_600124 != nil:
+    section.add "X-Amz-Signature", valid_600124
+  var valid_600125 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600125 = validateParameter(valid_600125, JString, required = false,
                                  default = nil)
-  if valid_593121 != nil:
-    section.add "X-Amz-Credential", valid_593121
-  var valid_593122 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593122 = validateParameter(valid_593122, JString, required = false,
+  if valid_600125 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600125
+  var valid_600126 = header.getOrDefault("X-Amz-Credential")
+  valid_600126 = validateParameter(valid_600126, JString, required = false,
                                  default = nil)
-  if valid_593122 != nil:
-    section.add "X-Amz-Security-Token", valid_593122
-  var valid_593123 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593123 = validateParameter(valid_593123, JString, required = false,
-                                 default = nil)
-  if valid_593123 != nil:
-    section.add "X-Amz-Algorithm", valid_593123
-  var valid_593124 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593124 = validateParameter(valid_593124, JString, required = false,
-                                 default = nil)
-  if valid_593124 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593124
+  if valid_600126 != nil:
+    section.add "X-Amz-Credential", valid_600126
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1365,37 +1409,37 @@ proc validate_UpdateFileSystem_593115(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_593126: Call_UpdateFileSystem_593114; path: JsonNode;
+proc call*(call_600128: Call_UpdateFileSystem_600116; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates a file system configuration.
   ## 
-  let valid = call_593126.validator(path, query, header, formData, body)
-  let scheme = call_593126.pickScheme
+  let valid = call_600128.validator(path, query, header, formData, body)
+  let scheme = call_600128.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593126.url(scheme.get, call_593126.host, call_593126.base,
-                         call_593126.route, valid.getOrDefault("path"),
+  let url = call_600128.url(scheme.get, call_600128.host, call_600128.base,
+                         call_600128.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593126, url, valid)
+  result = atozHook(call_600128, url, valid)
 
-proc call*(call_593127: Call_UpdateFileSystem_593114; body: JsonNode): Recallable =
+proc call*(call_600129: Call_UpdateFileSystem_600116; body: JsonNode): Recallable =
   ## updateFileSystem
   ## Updates a file system configuration.
   ##   body: JObject (required)
-  var body_593128 = newJObject()
+  var body_600130 = newJObject()
   if body != nil:
-    body_593128 = body
-  result = call_593127.call(nil, nil, nil, nil, body_593128)
+    body_600130 = body
+  result = call_600129.call(nil, nil, nil, nil, body_600130)
 
-var updateFileSystem* = Call_UpdateFileSystem_593114(name: "updateFileSystem",
+var updateFileSystem* = Call_UpdateFileSystem_600116(name: "updateFileSystem",
     meth: HttpMethod.HttpPost, host: "fsx.amazonaws.com",
     route: "/#X-Amz-Target=AWSSimbaAPIService_v20180301.UpdateFileSystem",
-    validator: validate_UpdateFileSystem_593115, base: "/",
-    url: url_UpdateFileSystem_593116, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateFileSystem_600117, base: "/",
+    url: url_UpdateFileSystem_600118, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
-proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", "")
@@ -1434,7 +1478,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
   result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
-  result.sign(input.getOrDefault("query"), SHA256)
+  result.atozSign(input.getOrDefault("query"), SHA256)

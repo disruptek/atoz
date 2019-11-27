@@ -1,6 +1,6 @@
 
 import
-  json, options, hashes, uri, tables, rest, os, uri, strutils, httpcore, sigv4
+  json, options, hashes, uri, strutils, tables, rest, os, uri, strutils, httpcore, sigv4
 
 ## auto-generated via openapi macro
 ## title: Amazon Personalize Events
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_592355 = ref object of OpenApiRestCall
+  OpenApiRestCall_599359 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_592355](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_599359](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_592355): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_599359): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -132,17 +132,21 @@ const
       "ca-central-1": "personalize-events.ca-central-1.amazonaws.com"}.toTable}.toTable
 const
   awsServiceName = "personalize-events"
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_PutEvents_592694 = ref object of OpenApiRestCall_592355
-proc url_PutEvents_592696(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutEvents_599696 = ref object of OpenApiRestCall_599359
+proc url_PutEvents_599698(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  result.path = base & route
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
 
-proc validate_PutEvents_592695(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutEvents_599697(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Records user interaction event data.
   ## 
@@ -153,49 +157,49 @@ proc validate_PutEvents_592695(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_592808 = header.getOrDefault("X-Amz-Signature")
-  valid_592808 = validateParameter(valid_592808, JString, required = false,
+  var valid_599810 = header.getOrDefault("X-Amz-Date")
+  valid_599810 = validateParameter(valid_599810, JString, required = false,
                                  default = nil)
-  if valid_592808 != nil:
-    section.add "X-Amz-Signature", valid_592808
-  var valid_592809 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_592809 = validateParameter(valid_592809, JString, required = false,
+  if valid_599810 != nil:
+    section.add "X-Amz-Date", valid_599810
+  var valid_599811 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599811 = validateParameter(valid_599811, JString, required = false,
                                  default = nil)
-  if valid_592809 != nil:
-    section.add "X-Amz-Content-Sha256", valid_592809
-  var valid_592810 = header.getOrDefault("X-Amz-Date")
-  valid_592810 = validateParameter(valid_592810, JString, required = false,
+  if valid_599811 != nil:
+    section.add "X-Amz-Security-Token", valid_599811
+  var valid_599812 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599812 = validateParameter(valid_599812, JString, required = false,
                                  default = nil)
-  if valid_592810 != nil:
-    section.add "X-Amz-Date", valid_592810
-  var valid_592811 = header.getOrDefault("X-Amz-Credential")
-  valid_592811 = validateParameter(valid_592811, JString, required = false,
+  if valid_599812 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599812
+  var valid_599813 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599813 = validateParameter(valid_599813, JString, required = false,
                                  default = nil)
-  if valid_592811 != nil:
-    section.add "X-Amz-Credential", valid_592811
-  var valid_592812 = header.getOrDefault("X-Amz-Security-Token")
-  valid_592812 = validateParameter(valid_592812, JString, required = false,
+  if valid_599813 != nil:
+    section.add "X-Amz-Algorithm", valid_599813
+  var valid_599814 = header.getOrDefault("X-Amz-Signature")
+  valid_599814 = validateParameter(valid_599814, JString, required = false,
                                  default = nil)
-  if valid_592812 != nil:
-    section.add "X-Amz-Security-Token", valid_592812
-  var valid_592813 = header.getOrDefault("X-Amz-Algorithm")
-  valid_592813 = validateParameter(valid_592813, JString, required = false,
+  if valid_599814 != nil:
+    section.add "X-Amz-Signature", valid_599814
+  var valid_599815 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599815 = validateParameter(valid_599815, JString, required = false,
                                  default = nil)
-  if valid_592813 != nil:
-    section.add "X-Amz-Algorithm", valid_592813
-  var valid_592814 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_592814 = validateParameter(valid_592814, JString, required = false,
+  if valid_599815 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599815
+  var valid_599816 = header.getOrDefault("X-Amz-Credential")
+  valid_599816 = validateParameter(valid_599816, JString, required = false,
                                  default = nil)
-  if valid_592814 != nil:
-    section.add "X-Amz-SignedHeaders", valid_592814
+  if valid_599816 != nil:
+    section.add "X-Amz-Credential", valid_599816
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -206,38 +210,38 @@ proc validate_PutEvents_592695(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_592838: Call_PutEvents_592694; path: JsonNode; query: JsonNode;
+proc call*(call_599840: Call_PutEvents_599696; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Records user interaction event data.
   ## 
-  let valid = call_592838.validator(path, query, header, formData, body)
-  let scheme = call_592838.pickScheme
+  let valid = call_599840.validator(path, query, header, formData, body)
+  let scheme = call_599840.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_592838.url(scheme.get, call_592838.host, call_592838.base,
-                         call_592838.route, valid.getOrDefault("path"),
+  let url = call_599840.url(scheme.get, call_599840.host, call_599840.base,
+                         call_599840.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_592838, url, valid)
+  result = atozHook(call_599840, url, valid)
 
-proc call*(call_592909: Call_PutEvents_592694; body: JsonNode): Recallable =
+proc call*(call_599911: Call_PutEvents_599696; body: JsonNode): Recallable =
   ## putEvents
   ## Records user interaction event data.
   ##   body: JObject (required)
-  var body_592910 = newJObject()
+  var body_599912 = newJObject()
   if body != nil:
-    body_592910 = body
-  result = call_592909.call(nil, nil, nil, nil, body_592910)
+    body_599912 = body
+  result = call_599911.call(nil, nil, nil, nil, body_599912)
 
-var putEvents* = Call_PutEvents_592694(name: "putEvents", meth: HttpMethod.HttpPost,
+var putEvents* = Call_PutEvents_599696(name: "putEvents", meth: HttpMethod.HttpPost,
                                     host: "personalize-events.amazonaws.com",
                                     route: "/events",
-                                    validator: validate_PutEvents_592695,
-                                    base: "/", url: url_PutEvents_592696,
+                                    validator: validate_PutEvents_599697,
+                                    base: "/", url: url_PutEvents_599698,
                                     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
-proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", "")
@@ -276,7 +280,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
   result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
-  result.sign(input.getOrDefault("query"), SHA256)
+  result.atozSign(input.getOrDefault("query"), SHA256)

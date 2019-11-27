@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_593389 = ref object of OpenApiRestCall
+  OpenApiRestCall_599368 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_593389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_593389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -114,22 +114,21 @@ const
       "cn-north-1": "budgets.cn-north-1.amazonaws.com.cn"}.toTable}.toTable
 const
   awsServiceName = "budgets"
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateBudget_593727 = ref object of OpenApiRestCall_593389
-proc url_CreateBudget_593729(protocol: Scheme; host: string; base: string;
+  Call_CreateBudget_599705 = ref object of OpenApiRestCall_599368
+proc url_CreateBudget_599707(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateBudget_593728(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateBudget_599706(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a budget and, if included, notifications and subscribers. </p> <important> <p>Only one of <code>BudgetLimit</code> or <code>PlannedBudgetLimits</code> can be present in the syntax at one time. Use the syntax that matches your case. The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_CreateBudget.html#API_CreateBudget_Examples">Examples</a> section. </p> </important>
   ## 
@@ -140,57 +139,57 @@ proc validate_CreateBudget_593728(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599819 = header.getOrDefault("X-Amz-Date")
+  valid_599819 = validateParameter(valid_599819, JString, required = false,
+                                 default = nil)
+  if valid_599819 != nil:
+    section.add "X-Amz-Date", valid_599819
+  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599820 = validateParameter(valid_599820, JString, required = false,
+                                 default = nil)
+  if valid_599820 != nil:
+    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593854 = header.getOrDefault("X-Amz-Target")
-  valid_593854 = validateParameter(valid_593854, JString, required = true, default = newJString(
+  var valid_599834 = header.getOrDefault("X-Amz-Target")
+  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.CreateBudget"))
-  if valid_593854 != nil:
-    section.add "X-Amz-Target", valid_593854
-  var valid_593855 = header.getOrDefault("X-Amz-Signature")
-  valid_593855 = validateParameter(valid_593855, JString, required = false,
+  if valid_599834 != nil:
+    section.add "X-Amz-Target", valid_599834
+  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599835 = validateParameter(valid_599835, JString, required = false,
                                  default = nil)
-  if valid_593855 != nil:
-    section.add "X-Amz-Signature", valid_593855
-  var valid_593856 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_593856 = validateParameter(valid_593856, JString, required = false,
+  if valid_599835 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599835
+  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599836 = validateParameter(valid_599836, JString, required = false,
                                  default = nil)
-  if valid_593856 != nil:
-    section.add "X-Amz-Content-Sha256", valid_593856
-  var valid_593857 = header.getOrDefault("X-Amz-Date")
-  valid_593857 = validateParameter(valid_593857, JString, required = false,
+  if valid_599836 != nil:
+    section.add "X-Amz-Algorithm", valid_599836
+  var valid_599837 = header.getOrDefault("X-Amz-Signature")
+  valid_599837 = validateParameter(valid_599837, JString, required = false,
                                  default = nil)
-  if valid_593857 != nil:
-    section.add "X-Amz-Date", valid_593857
-  var valid_593858 = header.getOrDefault("X-Amz-Credential")
-  valid_593858 = validateParameter(valid_593858, JString, required = false,
+  if valid_599837 != nil:
+    section.add "X-Amz-Signature", valid_599837
+  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599838 = validateParameter(valid_599838, JString, required = false,
                                  default = nil)
-  if valid_593858 != nil:
-    section.add "X-Amz-Credential", valid_593858
-  var valid_593859 = header.getOrDefault("X-Amz-Security-Token")
-  valid_593859 = validateParameter(valid_593859, JString, required = false,
+  if valid_599838 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599838
+  var valid_599839 = header.getOrDefault("X-Amz-Credential")
+  valid_599839 = validateParameter(valid_599839, JString, required = false,
                                  default = nil)
-  if valid_593859 != nil:
-    section.add "X-Amz-Security-Token", valid_593859
-  var valid_593860 = header.getOrDefault("X-Amz-Algorithm")
-  valid_593860 = validateParameter(valid_593860, JString, required = false,
-                                 default = nil)
-  if valid_593860 != nil:
-    section.add "X-Amz-Algorithm", valid_593860
-  var valid_593861 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_593861 = validateParameter(valid_593861, JString, required = false,
-                                 default = nil)
-  if valid_593861 != nil:
-    section.add "X-Amz-SignedHeaders", valid_593861
+  if valid_599839 != nil:
+    section.add "X-Amz-Credential", valid_599839
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -201,48 +200,47 @@ proc validate_CreateBudget_593728(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_593885: Call_CreateBudget_593727; path: JsonNode; query: JsonNode;
+proc call*(call_599863: Call_CreateBudget_599705; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a budget and, if included, notifications and subscribers. </p> <important> <p>Only one of <code>BudgetLimit</code> or <code>PlannedBudgetLimits</code> can be present in the syntax at one time. Use the syntax that matches your case. The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_CreateBudget.html#API_CreateBudget_Examples">Examples</a> section. </p> </important>
   ## 
-  let valid = call_593885.validator(path, query, header, formData, body)
-  let scheme = call_593885.pickScheme
+  let valid = call_599863.validator(path, query, header, formData, body)
+  let scheme = call_599863.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_593885.url(scheme.get, call_593885.host, call_593885.base,
-                         call_593885.route, valid.getOrDefault("path"),
+  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
+                         call_599863.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_593885, url, valid)
+  result = atozHook(call_599863, url, valid)
 
-proc call*(call_593956: Call_CreateBudget_593727; body: JsonNode): Recallable =
+proc call*(call_599934: Call_CreateBudget_599705; body: JsonNode): Recallable =
   ## createBudget
   ## <p>Creates a budget and, if included, notifications and subscribers. </p> <important> <p>Only one of <code>BudgetLimit</code> or <code>PlannedBudgetLimits</code> can be present in the syntax at one time. Use the syntax that matches your case. The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_CreateBudget.html#API_CreateBudget_Examples">Examples</a> section. </p> </important>
   ##   body: JObject (required)
-  var body_593957 = newJObject()
+  var body_599935 = newJObject()
   if body != nil:
-    body_593957 = body
-  result = call_593956.call(nil, nil, nil, nil, body_593957)
+    body_599935 = body
+  result = call_599934.call(nil, nil, nil, nil, body_599935)
 
-var createBudget* = Call_CreateBudget_593727(name: "createBudget",
+var createBudget* = Call_CreateBudget_599705(name: "createBudget",
     meth: HttpMethod.HttpPost, host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.CreateBudget",
-    validator: validate_CreateBudget_593728, base: "/", url: url_CreateBudget_593729,
+    validator: validate_CreateBudget_599706, base: "/", url: url_CreateBudget_599707,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateNotification_593996 = ref object of OpenApiRestCall_593389
-proc url_CreateNotification_593998(protocol: Scheme; host: string; base: string;
+  Call_CreateNotification_599974 = ref object of OpenApiRestCall_599368
+proc url_CreateNotification_599976(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateNotification_593997(path: JsonNode; query: JsonNode;
+proc validate_CreateNotification_599975(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Creates a notification. You must create the budget before you create the associated notification.
@@ -254,57 +252,57 @@ proc validate_CreateNotification_593997(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599977 = header.getOrDefault("X-Amz-Date")
+  valid_599977 = validateParameter(valid_599977, JString, required = false,
+                                 default = nil)
+  if valid_599977 != nil:
+    section.add "X-Amz-Date", valid_599977
+  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599978 = validateParameter(valid_599978, JString, required = false,
+                                 default = nil)
+  if valid_599978 != nil:
+    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_593999 = header.getOrDefault("X-Amz-Target")
-  valid_593999 = validateParameter(valid_593999, JString, required = true, default = newJString(
+  var valid_599979 = header.getOrDefault("X-Amz-Target")
+  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.CreateNotification"))
-  if valid_593999 != nil:
-    section.add "X-Amz-Target", valid_593999
-  var valid_594000 = header.getOrDefault("X-Amz-Signature")
-  valid_594000 = validateParameter(valid_594000, JString, required = false,
+  if valid_599979 != nil:
+    section.add "X-Amz-Target", valid_599979
+  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599980 = validateParameter(valid_599980, JString, required = false,
                                  default = nil)
-  if valid_594000 != nil:
-    section.add "X-Amz-Signature", valid_594000
-  var valid_594001 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594001 = validateParameter(valid_594001, JString, required = false,
+  if valid_599980 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599980
+  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599981 = validateParameter(valid_599981, JString, required = false,
                                  default = nil)
-  if valid_594001 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594001
-  var valid_594002 = header.getOrDefault("X-Amz-Date")
-  valid_594002 = validateParameter(valid_594002, JString, required = false,
+  if valid_599981 != nil:
+    section.add "X-Amz-Algorithm", valid_599981
+  var valid_599982 = header.getOrDefault("X-Amz-Signature")
+  valid_599982 = validateParameter(valid_599982, JString, required = false,
                                  default = nil)
-  if valid_594002 != nil:
-    section.add "X-Amz-Date", valid_594002
-  var valid_594003 = header.getOrDefault("X-Amz-Credential")
-  valid_594003 = validateParameter(valid_594003, JString, required = false,
+  if valid_599982 != nil:
+    section.add "X-Amz-Signature", valid_599982
+  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599983 = validateParameter(valid_599983, JString, required = false,
                                  default = nil)
-  if valid_594003 != nil:
-    section.add "X-Amz-Credential", valid_594003
-  var valid_594004 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594004 = validateParameter(valid_594004, JString, required = false,
+  if valid_599983 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599983
+  var valid_599984 = header.getOrDefault("X-Amz-Credential")
+  valid_599984 = validateParameter(valid_599984, JString, required = false,
                                  default = nil)
-  if valid_594004 != nil:
-    section.add "X-Amz-Security-Token", valid_594004
-  var valid_594005 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594005 = validateParameter(valid_594005, JString, required = false,
-                                 default = nil)
-  if valid_594005 != nil:
-    section.add "X-Amz-Algorithm", valid_594005
-  var valid_594006 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594006 = validateParameter(valid_594006, JString, required = false,
-                                 default = nil)
-  if valid_594006 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594006
+  if valid_599984 != nil:
+    section.add "X-Amz-Credential", valid_599984
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -315,49 +313,48 @@ proc validate_CreateNotification_593997(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594008: Call_CreateNotification_593996; path: JsonNode;
+proc call*(call_599986: Call_CreateNotification_599974; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a notification. You must create the budget before you create the associated notification.
   ## 
-  let valid = call_594008.validator(path, query, header, formData, body)
-  let scheme = call_594008.pickScheme
+  let valid = call_599986.validator(path, query, header, formData, body)
+  let scheme = call_599986.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594008.url(scheme.get, call_594008.host, call_594008.base,
-                         call_594008.route, valid.getOrDefault("path"),
+  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
+                         call_599986.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594008, url, valid)
+  result = atozHook(call_599986, url, valid)
 
-proc call*(call_594009: Call_CreateNotification_593996; body: JsonNode): Recallable =
+proc call*(call_599987: Call_CreateNotification_599974; body: JsonNode): Recallable =
   ## createNotification
   ## Creates a notification. You must create the budget before you create the associated notification.
   ##   body: JObject (required)
-  var body_594010 = newJObject()
+  var body_599988 = newJObject()
   if body != nil:
-    body_594010 = body
-  result = call_594009.call(nil, nil, nil, nil, body_594010)
+    body_599988 = body
+  result = call_599987.call(nil, nil, nil, nil, body_599988)
 
-var createNotification* = Call_CreateNotification_593996(
+var createNotification* = Call_CreateNotification_599974(
     name: "createNotification", meth: HttpMethod.HttpPost,
     host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.CreateNotification",
-    validator: validate_CreateNotification_593997, base: "/",
-    url: url_CreateNotification_593998, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateNotification_599975, base: "/",
+    url: url_CreateNotification_599976, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSubscriber_594011 = ref object of OpenApiRestCall_593389
-proc url_CreateSubscriber_594013(protocol: Scheme; host: string; base: string;
+  Call_CreateSubscriber_599989 = ref object of OpenApiRestCall_599368
+proc url_CreateSubscriber_599991(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateSubscriber_594012(path: JsonNode; query: JsonNode;
+proc validate_CreateSubscriber_599990(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Creates a subscriber. You must create the associated budget and notification before you create the subscriber.
@@ -369,57 +366,57 @@ proc validate_CreateSubscriber_594012(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_599992 = header.getOrDefault("X-Amz-Date")
+  valid_599992 = validateParameter(valid_599992, JString, required = false,
+                                 default = nil)
+  if valid_599992 != nil:
+    section.add "X-Amz-Date", valid_599992
+  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
+  valid_599993 = validateParameter(valid_599993, JString, required = false,
+                                 default = nil)
+  if valid_599993 != nil:
+    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594014 = header.getOrDefault("X-Amz-Target")
-  valid_594014 = validateParameter(valid_594014, JString, required = true, default = newJString(
+  var valid_599994 = header.getOrDefault("X-Amz-Target")
+  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.CreateSubscriber"))
-  if valid_594014 != nil:
-    section.add "X-Amz-Target", valid_594014
-  var valid_594015 = header.getOrDefault("X-Amz-Signature")
-  valid_594015 = validateParameter(valid_594015, JString, required = false,
+  if valid_599994 != nil:
+    section.add "X-Amz-Target", valid_599994
+  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_599995 = validateParameter(valid_599995, JString, required = false,
                                  default = nil)
-  if valid_594015 != nil:
-    section.add "X-Amz-Signature", valid_594015
-  var valid_594016 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594016 = validateParameter(valid_594016, JString, required = false,
+  if valid_599995 != nil:
+    section.add "X-Amz-Content-Sha256", valid_599995
+  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
+  valid_599996 = validateParameter(valid_599996, JString, required = false,
                                  default = nil)
-  if valid_594016 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594016
-  var valid_594017 = header.getOrDefault("X-Amz-Date")
-  valid_594017 = validateParameter(valid_594017, JString, required = false,
+  if valid_599996 != nil:
+    section.add "X-Amz-Algorithm", valid_599996
+  var valid_599997 = header.getOrDefault("X-Amz-Signature")
+  valid_599997 = validateParameter(valid_599997, JString, required = false,
                                  default = nil)
-  if valid_594017 != nil:
-    section.add "X-Amz-Date", valid_594017
-  var valid_594018 = header.getOrDefault("X-Amz-Credential")
-  valid_594018 = validateParameter(valid_594018, JString, required = false,
+  if valid_599997 != nil:
+    section.add "X-Amz-Signature", valid_599997
+  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_599998 = validateParameter(valid_599998, JString, required = false,
                                  default = nil)
-  if valid_594018 != nil:
-    section.add "X-Amz-Credential", valid_594018
-  var valid_594019 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594019 = validateParameter(valid_594019, JString, required = false,
+  if valid_599998 != nil:
+    section.add "X-Amz-SignedHeaders", valid_599998
+  var valid_599999 = header.getOrDefault("X-Amz-Credential")
+  valid_599999 = validateParameter(valid_599999, JString, required = false,
                                  default = nil)
-  if valid_594019 != nil:
-    section.add "X-Amz-Security-Token", valid_594019
-  var valid_594020 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594020 = validateParameter(valid_594020, JString, required = false,
-                                 default = nil)
-  if valid_594020 != nil:
-    section.add "X-Amz-Algorithm", valid_594020
-  var valid_594021 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594021 = validateParameter(valid_594021, JString, required = false,
-                                 default = nil)
-  if valid_594021 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594021
+  if valid_599999 != nil:
+    section.add "X-Amz-Credential", valid_599999
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -430,48 +427,47 @@ proc validate_CreateSubscriber_594012(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594023: Call_CreateSubscriber_594011; path: JsonNode;
+proc call*(call_600001: Call_CreateSubscriber_599989; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a subscriber. You must create the associated budget and notification before you create the subscriber.
   ## 
-  let valid = call_594023.validator(path, query, header, formData, body)
-  let scheme = call_594023.pickScheme
+  let valid = call_600001.validator(path, query, header, formData, body)
+  let scheme = call_600001.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594023.url(scheme.get, call_594023.host, call_594023.base,
-                         call_594023.route, valid.getOrDefault("path"),
+  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
+                         call_600001.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594023, url, valid)
+  result = atozHook(call_600001, url, valid)
 
-proc call*(call_594024: Call_CreateSubscriber_594011; body: JsonNode): Recallable =
+proc call*(call_600002: Call_CreateSubscriber_599989; body: JsonNode): Recallable =
   ## createSubscriber
   ## Creates a subscriber. You must create the associated budget and notification before you create the subscriber.
   ##   body: JObject (required)
-  var body_594025 = newJObject()
+  var body_600003 = newJObject()
   if body != nil:
-    body_594025 = body
-  result = call_594024.call(nil, nil, nil, nil, body_594025)
+    body_600003 = body
+  result = call_600002.call(nil, nil, nil, nil, body_600003)
 
-var createSubscriber* = Call_CreateSubscriber_594011(name: "createSubscriber",
+var createSubscriber* = Call_CreateSubscriber_599989(name: "createSubscriber",
     meth: HttpMethod.HttpPost, host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.CreateSubscriber",
-    validator: validate_CreateSubscriber_594012, base: "/",
-    url: url_CreateSubscriber_594013, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateSubscriber_599990, base: "/",
+    url: url_CreateSubscriber_599991, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteBudget_594026 = ref object of OpenApiRestCall_593389
-proc url_DeleteBudget_594028(protocol: Scheme; host: string; base: string;
+  Call_DeleteBudget_600004 = ref object of OpenApiRestCall_599368
+proc url_DeleteBudget_600006(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteBudget_594027(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteBudget_600005(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a budget. You can delete your budget at any time.</p> <important> <p>Deleting a budget also deletes the notifications and subscribers that are associated with that budget.</p> </important>
   ## 
@@ -482,57 +478,57 @@ proc validate_DeleteBudget_594027(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600007 = header.getOrDefault("X-Amz-Date")
+  valid_600007 = validateParameter(valid_600007, JString, required = false,
+                                 default = nil)
+  if valid_600007 != nil:
+    section.add "X-Amz-Date", valid_600007
+  var valid_600008 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600008 = validateParameter(valid_600008, JString, required = false,
+                                 default = nil)
+  if valid_600008 != nil:
+    section.add "X-Amz-Security-Token", valid_600008
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594029 = header.getOrDefault("X-Amz-Target")
-  valid_594029 = validateParameter(valid_594029, JString, required = true, default = newJString(
+  var valid_600009 = header.getOrDefault("X-Amz-Target")
+  valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DeleteBudget"))
-  if valid_594029 != nil:
-    section.add "X-Amz-Target", valid_594029
-  var valid_594030 = header.getOrDefault("X-Amz-Signature")
-  valid_594030 = validateParameter(valid_594030, JString, required = false,
+  if valid_600009 != nil:
+    section.add "X-Amz-Target", valid_600009
+  var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600010 = validateParameter(valid_600010, JString, required = false,
                                  default = nil)
-  if valid_594030 != nil:
-    section.add "X-Amz-Signature", valid_594030
-  var valid_594031 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594031 = validateParameter(valid_594031, JString, required = false,
+  if valid_600010 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600010
+  var valid_600011 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600011 = validateParameter(valid_600011, JString, required = false,
                                  default = nil)
-  if valid_594031 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594031
-  var valid_594032 = header.getOrDefault("X-Amz-Date")
-  valid_594032 = validateParameter(valid_594032, JString, required = false,
+  if valid_600011 != nil:
+    section.add "X-Amz-Algorithm", valid_600011
+  var valid_600012 = header.getOrDefault("X-Amz-Signature")
+  valid_600012 = validateParameter(valid_600012, JString, required = false,
                                  default = nil)
-  if valid_594032 != nil:
-    section.add "X-Amz-Date", valid_594032
-  var valid_594033 = header.getOrDefault("X-Amz-Credential")
-  valid_594033 = validateParameter(valid_594033, JString, required = false,
+  if valid_600012 != nil:
+    section.add "X-Amz-Signature", valid_600012
+  var valid_600013 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600013 = validateParameter(valid_600013, JString, required = false,
                                  default = nil)
-  if valid_594033 != nil:
-    section.add "X-Amz-Credential", valid_594033
-  var valid_594034 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594034 = validateParameter(valid_594034, JString, required = false,
+  if valid_600013 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600013
+  var valid_600014 = header.getOrDefault("X-Amz-Credential")
+  valid_600014 = validateParameter(valid_600014, JString, required = false,
                                  default = nil)
-  if valid_594034 != nil:
-    section.add "X-Amz-Security-Token", valid_594034
-  var valid_594035 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594035 = validateParameter(valid_594035, JString, required = false,
-                                 default = nil)
-  if valid_594035 != nil:
-    section.add "X-Amz-Algorithm", valid_594035
-  var valid_594036 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594036 = validateParameter(valid_594036, JString, required = false,
-                                 default = nil)
-  if valid_594036 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594036
+  if valid_600014 != nil:
+    section.add "X-Amz-Credential", valid_600014
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -543,48 +539,47 @@ proc validate_DeleteBudget_594027(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_594038: Call_DeleteBudget_594026; path: JsonNode; query: JsonNode;
+proc call*(call_600016: Call_DeleteBudget_600004; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a budget. You can delete your budget at any time.</p> <important> <p>Deleting a budget also deletes the notifications and subscribers that are associated with that budget.</p> </important>
   ## 
-  let valid = call_594038.validator(path, query, header, formData, body)
-  let scheme = call_594038.pickScheme
+  let valid = call_600016.validator(path, query, header, formData, body)
+  let scheme = call_600016.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594038.url(scheme.get, call_594038.host, call_594038.base,
-                         call_594038.route, valid.getOrDefault("path"),
+  let url = call_600016.url(scheme.get, call_600016.host, call_600016.base,
+                         call_600016.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594038, url, valid)
+  result = atozHook(call_600016, url, valid)
 
-proc call*(call_594039: Call_DeleteBudget_594026; body: JsonNode): Recallable =
+proc call*(call_600017: Call_DeleteBudget_600004; body: JsonNode): Recallable =
   ## deleteBudget
   ## <p>Deletes a budget. You can delete your budget at any time.</p> <important> <p>Deleting a budget also deletes the notifications and subscribers that are associated with that budget.</p> </important>
   ##   body: JObject (required)
-  var body_594040 = newJObject()
+  var body_600018 = newJObject()
   if body != nil:
-    body_594040 = body
-  result = call_594039.call(nil, nil, nil, nil, body_594040)
+    body_600018 = body
+  result = call_600017.call(nil, nil, nil, nil, body_600018)
 
-var deleteBudget* = Call_DeleteBudget_594026(name: "deleteBudget",
+var deleteBudget* = Call_DeleteBudget_600004(name: "deleteBudget",
     meth: HttpMethod.HttpPost, host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.DeleteBudget",
-    validator: validate_DeleteBudget_594027, base: "/", url: url_DeleteBudget_594028,
+    validator: validate_DeleteBudget_600005, base: "/", url: url_DeleteBudget_600006,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteNotification_594041 = ref object of OpenApiRestCall_593389
-proc url_DeleteNotification_594043(protocol: Scheme; host: string; base: string;
+  Call_DeleteNotification_600019 = ref object of OpenApiRestCall_599368
+proc url_DeleteNotification_600021(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteNotification_594042(path: JsonNode; query: JsonNode;
+proc validate_DeleteNotification_600020(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Deletes a notification.</p> <important> <p>Deleting a notification also deletes the subscribers that are associated with the notification.</p> </important>
@@ -596,57 +591,57 @@ proc validate_DeleteNotification_594042(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600022 = header.getOrDefault("X-Amz-Date")
+  valid_600022 = validateParameter(valid_600022, JString, required = false,
+                                 default = nil)
+  if valid_600022 != nil:
+    section.add "X-Amz-Date", valid_600022
+  var valid_600023 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600023 = validateParameter(valid_600023, JString, required = false,
+                                 default = nil)
+  if valid_600023 != nil:
+    section.add "X-Amz-Security-Token", valid_600023
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594044 = header.getOrDefault("X-Amz-Target")
-  valid_594044 = validateParameter(valid_594044, JString, required = true, default = newJString(
+  var valid_600024 = header.getOrDefault("X-Amz-Target")
+  valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DeleteNotification"))
-  if valid_594044 != nil:
-    section.add "X-Amz-Target", valid_594044
-  var valid_594045 = header.getOrDefault("X-Amz-Signature")
-  valid_594045 = validateParameter(valid_594045, JString, required = false,
+  if valid_600024 != nil:
+    section.add "X-Amz-Target", valid_600024
+  var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600025 = validateParameter(valid_600025, JString, required = false,
                                  default = nil)
-  if valid_594045 != nil:
-    section.add "X-Amz-Signature", valid_594045
-  var valid_594046 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594046 = validateParameter(valid_594046, JString, required = false,
+  if valid_600025 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600025
+  var valid_600026 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600026 = validateParameter(valid_600026, JString, required = false,
                                  default = nil)
-  if valid_594046 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594046
-  var valid_594047 = header.getOrDefault("X-Amz-Date")
-  valid_594047 = validateParameter(valid_594047, JString, required = false,
+  if valid_600026 != nil:
+    section.add "X-Amz-Algorithm", valid_600026
+  var valid_600027 = header.getOrDefault("X-Amz-Signature")
+  valid_600027 = validateParameter(valid_600027, JString, required = false,
                                  default = nil)
-  if valid_594047 != nil:
-    section.add "X-Amz-Date", valid_594047
-  var valid_594048 = header.getOrDefault("X-Amz-Credential")
-  valid_594048 = validateParameter(valid_594048, JString, required = false,
+  if valid_600027 != nil:
+    section.add "X-Amz-Signature", valid_600027
+  var valid_600028 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600028 = validateParameter(valid_600028, JString, required = false,
                                  default = nil)
-  if valid_594048 != nil:
-    section.add "X-Amz-Credential", valid_594048
-  var valid_594049 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594049 = validateParameter(valid_594049, JString, required = false,
+  if valid_600028 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600028
+  var valid_600029 = header.getOrDefault("X-Amz-Credential")
+  valid_600029 = validateParameter(valid_600029, JString, required = false,
                                  default = nil)
-  if valid_594049 != nil:
-    section.add "X-Amz-Security-Token", valid_594049
-  var valid_594050 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594050 = validateParameter(valid_594050, JString, required = false,
-                                 default = nil)
-  if valid_594050 != nil:
-    section.add "X-Amz-Algorithm", valid_594050
-  var valid_594051 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594051 = validateParameter(valid_594051, JString, required = false,
-                                 default = nil)
-  if valid_594051 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594051
+  if valid_600029 != nil:
+    section.add "X-Amz-Credential", valid_600029
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -657,49 +652,48 @@ proc validate_DeleteNotification_594042(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594053: Call_DeleteNotification_594041; path: JsonNode;
+proc call*(call_600031: Call_DeleteNotification_600019; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a notification.</p> <important> <p>Deleting a notification also deletes the subscribers that are associated with the notification.</p> </important>
   ## 
-  let valid = call_594053.validator(path, query, header, formData, body)
-  let scheme = call_594053.pickScheme
+  let valid = call_600031.validator(path, query, header, formData, body)
+  let scheme = call_600031.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594053.url(scheme.get, call_594053.host, call_594053.base,
-                         call_594053.route, valid.getOrDefault("path"),
+  let url = call_600031.url(scheme.get, call_600031.host, call_600031.base,
+                         call_600031.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594053, url, valid)
+  result = atozHook(call_600031, url, valid)
 
-proc call*(call_594054: Call_DeleteNotification_594041; body: JsonNode): Recallable =
+proc call*(call_600032: Call_DeleteNotification_600019; body: JsonNode): Recallable =
   ## deleteNotification
   ## <p>Deletes a notification.</p> <important> <p>Deleting a notification also deletes the subscribers that are associated with the notification.</p> </important>
   ##   body: JObject (required)
-  var body_594055 = newJObject()
+  var body_600033 = newJObject()
   if body != nil:
-    body_594055 = body
-  result = call_594054.call(nil, nil, nil, nil, body_594055)
+    body_600033 = body
+  result = call_600032.call(nil, nil, nil, nil, body_600033)
 
-var deleteNotification* = Call_DeleteNotification_594041(
+var deleteNotification* = Call_DeleteNotification_600019(
     name: "deleteNotification", meth: HttpMethod.HttpPost,
     host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.DeleteNotification",
-    validator: validate_DeleteNotification_594042, base: "/",
-    url: url_DeleteNotification_594043, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteNotification_600020, base: "/",
+    url: url_DeleteNotification_600021, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSubscriber_594056 = ref object of OpenApiRestCall_593389
-proc url_DeleteSubscriber_594058(protocol: Scheme; host: string; base: string;
+  Call_DeleteSubscriber_600034 = ref object of OpenApiRestCall_599368
+proc url_DeleteSubscriber_600036(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteSubscriber_594057(path: JsonNode; query: JsonNode;
+proc validate_DeleteSubscriber_600035(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes a subscriber.</p> <important> <p>Deleting the last subscriber to a notification also deletes the notification.</p> </important>
@@ -711,57 +705,57 @@ proc validate_DeleteSubscriber_594057(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600037 = header.getOrDefault("X-Amz-Date")
+  valid_600037 = validateParameter(valid_600037, JString, required = false,
+                                 default = nil)
+  if valid_600037 != nil:
+    section.add "X-Amz-Date", valid_600037
+  var valid_600038 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600038 = validateParameter(valid_600038, JString, required = false,
+                                 default = nil)
+  if valid_600038 != nil:
+    section.add "X-Amz-Security-Token", valid_600038
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594059 = header.getOrDefault("X-Amz-Target")
-  valid_594059 = validateParameter(valid_594059, JString, required = true, default = newJString(
+  var valid_600039 = header.getOrDefault("X-Amz-Target")
+  valid_600039 = validateParameter(valid_600039, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DeleteSubscriber"))
-  if valid_594059 != nil:
-    section.add "X-Amz-Target", valid_594059
-  var valid_594060 = header.getOrDefault("X-Amz-Signature")
-  valid_594060 = validateParameter(valid_594060, JString, required = false,
+  if valid_600039 != nil:
+    section.add "X-Amz-Target", valid_600039
+  var valid_600040 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600040 = validateParameter(valid_600040, JString, required = false,
                                  default = nil)
-  if valid_594060 != nil:
-    section.add "X-Amz-Signature", valid_594060
-  var valid_594061 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594061 = validateParameter(valid_594061, JString, required = false,
+  if valid_600040 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600040
+  var valid_600041 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600041 = validateParameter(valid_600041, JString, required = false,
                                  default = nil)
-  if valid_594061 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594061
-  var valid_594062 = header.getOrDefault("X-Amz-Date")
-  valid_594062 = validateParameter(valid_594062, JString, required = false,
+  if valid_600041 != nil:
+    section.add "X-Amz-Algorithm", valid_600041
+  var valid_600042 = header.getOrDefault("X-Amz-Signature")
+  valid_600042 = validateParameter(valid_600042, JString, required = false,
                                  default = nil)
-  if valid_594062 != nil:
-    section.add "X-Amz-Date", valid_594062
-  var valid_594063 = header.getOrDefault("X-Amz-Credential")
-  valid_594063 = validateParameter(valid_594063, JString, required = false,
+  if valid_600042 != nil:
+    section.add "X-Amz-Signature", valid_600042
+  var valid_600043 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600043 = validateParameter(valid_600043, JString, required = false,
                                  default = nil)
-  if valid_594063 != nil:
-    section.add "X-Amz-Credential", valid_594063
-  var valid_594064 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594064 = validateParameter(valid_594064, JString, required = false,
+  if valid_600043 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600043
+  var valid_600044 = header.getOrDefault("X-Amz-Credential")
+  valid_600044 = validateParameter(valid_600044, JString, required = false,
                                  default = nil)
-  if valid_594064 != nil:
-    section.add "X-Amz-Security-Token", valid_594064
-  var valid_594065 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594065 = validateParameter(valid_594065, JString, required = false,
-                                 default = nil)
-  if valid_594065 != nil:
-    section.add "X-Amz-Algorithm", valid_594065
-  var valid_594066 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594066 = validateParameter(valid_594066, JString, required = false,
-                                 default = nil)
-  if valid_594066 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594066
+  if valid_600044 != nil:
+    section.add "X-Amz-Credential", valid_600044
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -772,48 +766,47 @@ proc validate_DeleteSubscriber_594057(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594068: Call_DeleteSubscriber_594056; path: JsonNode;
+proc call*(call_600046: Call_DeleteSubscriber_600034; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a subscriber.</p> <important> <p>Deleting the last subscriber to a notification also deletes the notification.</p> </important>
   ## 
-  let valid = call_594068.validator(path, query, header, formData, body)
-  let scheme = call_594068.pickScheme
+  let valid = call_600046.validator(path, query, header, formData, body)
+  let scheme = call_600046.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594068.url(scheme.get, call_594068.host, call_594068.base,
-                         call_594068.route, valid.getOrDefault("path"),
+  let url = call_600046.url(scheme.get, call_600046.host, call_600046.base,
+                         call_600046.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594068, url, valid)
+  result = atozHook(call_600046, url, valid)
 
-proc call*(call_594069: Call_DeleteSubscriber_594056; body: JsonNode): Recallable =
+proc call*(call_600047: Call_DeleteSubscriber_600034; body: JsonNode): Recallable =
   ## deleteSubscriber
   ## <p>Deletes a subscriber.</p> <important> <p>Deleting the last subscriber to a notification also deletes the notification.</p> </important>
   ##   body: JObject (required)
-  var body_594070 = newJObject()
+  var body_600048 = newJObject()
   if body != nil:
-    body_594070 = body
-  result = call_594069.call(nil, nil, nil, nil, body_594070)
+    body_600048 = body
+  result = call_600047.call(nil, nil, nil, nil, body_600048)
 
-var deleteSubscriber* = Call_DeleteSubscriber_594056(name: "deleteSubscriber",
+var deleteSubscriber* = Call_DeleteSubscriber_600034(name: "deleteSubscriber",
     meth: HttpMethod.HttpPost, host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.DeleteSubscriber",
-    validator: validate_DeleteSubscriber_594057, base: "/",
-    url: url_DeleteSubscriber_594058, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteSubscriber_600035, base: "/",
+    url: url_DeleteSubscriber_600036, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeBudget_594071 = ref object of OpenApiRestCall_593389
-proc url_DescribeBudget_594073(protocol: Scheme; host: string; base: string;
+  Call_DescribeBudget_600049 = ref object of OpenApiRestCall_599368
+proc url_DescribeBudget_600051(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeBudget_594072(path: JsonNode; query: JsonNode;
+proc validate_DescribeBudget_600050(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Describes a budget.</p> <important> <p>The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_DescribeBudget.html#API_DescribeBudget_Examples">Examples</a> section. </p> </important>
@@ -825,57 +818,57 @@ proc validate_DescribeBudget_594072(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600052 = header.getOrDefault("X-Amz-Date")
+  valid_600052 = validateParameter(valid_600052, JString, required = false,
+                                 default = nil)
+  if valid_600052 != nil:
+    section.add "X-Amz-Date", valid_600052
+  var valid_600053 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600053 = validateParameter(valid_600053, JString, required = false,
+                                 default = nil)
+  if valid_600053 != nil:
+    section.add "X-Amz-Security-Token", valid_600053
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594074 = header.getOrDefault("X-Amz-Target")
-  valid_594074 = validateParameter(valid_594074, JString, required = true, default = newJString(
+  var valid_600054 = header.getOrDefault("X-Amz-Target")
+  valid_600054 = validateParameter(valid_600054, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeBudget"))
-  if valid_594074 != nil:
-    section.add "X-Amz-Target", valid_594074
-  var valid_594075 = header.getOrDefault("X-Amz-Signature")
-  valid_594075 = validateParameter(valid_594075, JString, required = false,
+  if valid_600054 != nil:
+    section.add "X-Amz-Target", valid_600054
+  var valid_600055 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600055 = validateParameter(valid_600055, JString, required = false,
                                  default = nil)
-  if valid_594075 != nil:
-    section.add "X-Amz-Signature", valid_594075
-  var valid_594076 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594076 = validateParameter(valid_594076, JString, required = false,
+  if valid_600055 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600055
+  var valid_600056 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600056 = validateParameter(valid_600056, JString, required = false,
                                  default = nil)
-  if valid_594076 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594076
-  var valid_594077 = header.getOrDefault("X-Amz-Date")
-  valid_594077 = validateParameter(valid_594077, JString, required = false,
+  if valid_600056 != nil:
+    section.add "X-Amz-Algorithm", valid_600056
+  var valid_600057 = header.getOrDefault("X-Amz-Signature")
+  valid_600057 = validateParameter(valid_600057, JString, required = false,
                                  default = nil)
-  if valid_594077 != nil:
-    section.add "X-Amz-Date", valid_594077
-  var valid_594078 = header.getOrDefault("X-Amz-Credential")
-  valid_594078 = validateParameter(valid_594078, JString, required = false,
+  if valid_600057 != nil:
+    section.add "X-Amz-Signature", valid_600057
+  var valid_600058 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600058 = validateParameter(valid_600058, JString, required = false,
                                  default = nil)
-  if valid_594078 != nil:
-    section.add "X-Amz-Credential", valid_594078
-  var valid_594079 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594079 = validateParameter(valid_594079, JString, required = false,
+  if valid_600058 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600058
+  var valid_600059 = header.getOrDefault("X-Amz-Credential")
+  valid_600059 = validateParameter(valid_600059, JString, required = false,
                                  default = nil)
-  if valid_594079 != nil:
-    section.add "X-Amz-Security-Token", valid_594079
-  var valid_594080 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594080 = validateParameter(valid_594080, JString, required = false,
-                                 default = nil)
-  if valid_594080 != nil:
-    section.add "X-Amz-Algorithm", valid_594080
-  var valid_594081 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594081 = validateParameter(valid_594081, JString, required = false,
-                                 default = nil)
-  if valid_594081 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594081
+  if valid_600059 != nil:
+    section.add "X-Amz-Credential", valid_600059
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -886,48 +879,47 @@ proc validate_DescribeBudget_594072(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594083: Call_DescribeBudget_594071; path: JsonNode; query: JsonNode;
+proc call*(call_600061: Call_DescribeBudget_600049; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a budget.</p> <important> <p>The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_DescribeBudget.html#API_DescribeBudget_Examples">Examples</a> section. </p> </important>
   ## 
-  let valid = call_594083.validator(path, query, header, formData, body)
-  let scheme = call_594083.pickScheme
+  let valid = call_600061.validator(path, query, header, formData, body)
+  let scheme = call_600061.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594083.url(scheme.get, call_594083.host, call_594083.base,
-                         call_594083.route, valid.getOrDefault("path"),
+  let url = call_600061.url(scheme.get, call_600061.host, call_600061.base,
+                         call_600061.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594083, url, valid)
+  result = atozHook(call_600061, url, valid)
 
-proc call*(call_594084: Call_DescribeBudget_594071; body: JsonNode): Recallable =
+proc call*(call_600062: Call_DescribeBudget_600049; body: JsonNode): Recallable =
   ## describeBudget
   ## <p>Describes a budget.</p> <important> <p>The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_DescribeBudget.html#API_DescribeBudget_Examples">Examples</a> section. </p> </important>
   ##   body: JObject (required)
-  var body_594085 = newJObject()
+  var body_600063 = newJObject()
   if body != nil:
-    body_594085 = body
-  result = call_594084.call(nil, nil, nil, nil, body_594085)
+    body_600063 = body
+  result = call_600062.call(nil, nil, nil, nil, body_600063)
 
-var describeBudget* = Call_DescribeBudget_594071(name: "describeBudget",
+var describeBudget* = Call_DescribeBudget_600049(name: "describeBudget",
     meth: HttpMethod.HttpPost, host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.DescribeBudget",
-    validator: validate_DescribeBudget_594072, base: "/", url: url_DescribeBudget_594073,
+    validator: validate_DescribeBudget_600050, base: "/", url: url_DescribeBudget_600051,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeBudgetPerformanceHistory_594086 = ref object of OpenApiRestCall_593389
-proc url_DescribeBudgetPerformanceHistory_594088(protocol: Scheme; host: string;
+  Call_DescribeBudgetPerformanceHistory_600064 = ref object of OpenApiRestCall_599368
+proc url_DescribeBudgetPerformanceHistory_600066(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeBudgetPerformanceHistory_594087(path: JsonNode;
+proc validate_DescribeBudgetPerformanceHistory_600065(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the history for <code>DAILY</code>, <code>MONTHLY</code>, and <code>QUARTERLY</code> budgets. Budget history isn't available for <code>ANNUAL</code> budgets.
   ## 
@@ -938,57 +930,57 @@ proc validate_DescribeBudgetPerformanceHistory_594087(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600067 = header.getOrDefault("X-Amz-Date")
+  valid_600067 = validateParameter(valid_600067, JString, required = false,
+                                 default = nil)
+  if valid_600067 != nil:
+    section.add "X-Amz-Date", valid_600067
+  var valid_600068 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600068 = validateParameter(valid_600068, JString, required = false,
+                                 default = nil)
+  if valid_600068 != nil:
+    section.add "X-Amz-Security-Token", valid_600068
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594089 = header.getOrDefault("X-Amz-Target")
-  valid_594089 = validateParameter(valid_594089, JString, required = true, default = newJString(
+  var valid_600069 = header.getOrDefault("X-Amz-Target")
+  valid_600069 = validateParameter(valid_600069, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeBudgetPerformanceHistory"))
-  if valid_594089 != nil:
-    section.add "X-Amz-Target", valid_594089
-  var valid_594090 = header.getOrDefault("X-Amz-Signature")
-  valid_594090 = validateParameter(valid_594090, JString, required = false,
+  if valid_600069 != nil:
+    section.add "X-Amz-Target", valid_600069
+  var valid_600070 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600070 = validateParameter(valid_600070, JString, required = false,
                                  default = nil)
-  if valid_594090 != nil:
-    section.add "X-Amz-Signature", valid_594090
-  var valid_594091 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594091 = validateParameter(valid_594091, JString, required = false,
+  if valid_600070 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600070
+  var valid_600071 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600071 = validateParameter(valid_600071, JString, required = false,
                                  default = nil)
-  if valid_594091 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594091
-  var valid_594092 = header.getOrDefault("X-Amz-Date")
-  valid_594092 = validateParameter(valid_594092, JString, required = false,
+  if valid_600071 != nil:
+    section.add "X-Amz-Algorithm", valid_600071
+  var valid_600072 = header.getOrDefault("X-Amz-Signature")
+  valid_600072 = validateParameter(valid_600072, JString, required = false,
                                  default = nil)
-  if valid_594092 != nil:
-    section.add "X-Amz-Date", valid_594092
-  var valid_594093 = header.getOrDefault("X-Amz-Credential")
-  valid_594093 = validateParameter(valid_594093, JString, required = false,
+  if valid_600072 != nil:
+    section.add "X-Amz-Signature", valid_600072
+  var valid_600073 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600073 = validateParameter(valid_600073, JString, required = false,
                                  default = nil)
-  if valid_594093 != nil:
-    section.add "X-Amz-Credential", valid_594093
-  var valid_594094 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594094 = validateParameter(valid_594094, JString, required = false,
+  if valid_600073 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600073
+  var valid_600074 = header.getOrDefault("X-Amz-Credential")
+  valid_600074 = validateParameter(valid_600074, JString, required = false,
                                  default = nil)
-  if valid_594094 != nil:
-    section.add "X-Amz-Security-Token", valid_594094
-  var valid_594095 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594095 = validateParameter(valid_594095, JString, required = false,
-                                 default = nil)
-  if valid_594095 != nil:
-    section.add "X-Amz-Algorithm", valid_594095
-  var valid_594096 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594096 = validateParameter(valid_594096, JString, required = false,
-                                 default = nil)
-  if valid_594096 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594096
+  if valid_600074 != nil:
+    section.add "X-Amz-Credential", valid_600074
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -999,51 +991,50 @@ proc validate_DescribeBudgetPerformanceHistory_594087(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594098: Call_DescribeBudgetPerformanceHistory_594086;
+proc call*(call_600076: Call_DescribeBudgetPerformanceHistory_600064;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Describes the history for <code>DAILY</code>, <code>MONTHLY</code>, and <code>QUARTERLY</code> budgets. Budget history isn't available for <code>ANNUAL</code> budgets.
   ## 
-  let valid = call_594098.validator(path, query, header, formData, body)
-  let scheme = call_594098.pickScheme
+  let valid = call_600076.validator(path, query, header, formData, body)
+  let scheme = call_600076.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594098.url(scheme.get, call_594098.host, call_594098.base,
-                         call_594098.route, valid.getOrDefault("path"),
+  let url = call_600076.url(scheme.get, call_600076.host, call_600076.base,
+                         call_600076.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594098, url, valid)
+  result = atozHook(call_600076, url, valid)
 
-proc call*(call_594099: Call_DescribeBudgetPerformanceHistory_594086;
+proc call*(call_600077: Call_DescribeBudgetPerformanceHistory_600064;
           body: JsonNode): Recallable =
   ## describeBudgetPerformanceHistory
   ## Describes the history for <code>DAILY</code>, <code>MONTHLY</code>, and <code>QUARTERLY</code> budgets. Budget history isn't available for <code>ANNUAL</code> budgets.
   ##   body: JObject (required)
-  var body_594100 = newJObject()
+  var body_600078 = newJObject()
   if body != nil:
-    body_594100 = body
-  result = call_594099.call(nil, nil, nil, nil, body_594100)
+    body_600078 = body
+  result = call_600077.call(nil, nil, nil, nil, body_600078)
 
-var describeBudgetPerformanceHistory* = Call_DescribeBudgetPerformanceHistory_594086(
+var describeBudgetPerformanceHistory* = Call_DescribeBudgetPerformanceHistory_600064(
     name: "describeBudgetPerformanceHistory", meth: HttpMethod.HttpPost,
     host: "budgets.amazonaws.com", route: "/#X-Amz-Target=AWSBudgetServiceGateway.DescribeBudgetPerformanceHistory",
-    validator: validate_DescribeBudgetPerformanceHistory_594087, base: "/",
-    url: url_DescribeBudgetPerformanceHistory_594088,
+    validator: validate_DescribeBudgetPerformanceHistory_600065, base: "/",
+    url: url_DescribeBudgetPerformanceHistory_600066,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeBudgets_594101 = ref object of OpenApiRestCall_593389
-proc url_DescribeBudgets_594103(protocol: Scheme; host: string; base: string;
+  Call_DescribeBudgets_600079 = ref object of OpenApiRestCall_599368
+proc url_DescribeBudgets_600081(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeBudgets_594102(path: JsonNode; query: JsonNode;
+proc validate_DescribeBudgets_600080(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Lists the budgets that are associated with an account.</p> <important> <p>The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_DescribeBudgets.html#API_DescribeBudgets_Examples">Examples</a> section. </p> </important>
@@ -1055,57 +1046,57 @@ proc validate_DescribeBudgets_594102(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600082 = header.getOrDefault("X-Amz-Date")
+  valid_600082 = validateParameter(valid_600082, JString, required = false,
+                                 default = nil)
+  if valid_600082 != nil:
+    section.add "X-Amz-Date", valid_600082
+  var valid_600083 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600083 = validateParameter(valid_600083, JString, required = false,
+                                 default = nil)
+  if valid_600083 != nil:
+    section.add "X-Amz-Security-Token", valid_600083
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594104 = header.getOrDefault("X-Amz-Target")
-  valid_594104 = validateParameter(valid_594104, JString, required = true, default = newJString(
+  var valid_600084 = header.getOrDefault("X-Amz-Target")
+  valid_600084 = validateParameter(valid_600084, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeBudgets"))
-  if valid_594104 != nil:
-    section.add "X-Amz-Target", valid_594104
-  var valid_594105 = header.getOrDefault("X-Amz-Signature")
-  valid_594105 = validateParameter(valid_594105, JString, required = false,
+  if valid_600084 != nil:
+    section.add "X-Amz-Target", valid_600084
+  var valid_600085 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600085 = validateParameter(valid_600085, JString, required = false,
                                  default = nil)
-  if valid_594105 != nil:
-    section.add "X-Amz-Signature", valid_594105
-  var valid_594106 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594106 = validateParameter(valid_594106, JString, required = false,
+  if valid_600085 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600085
+  var valid_600086 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600086 = validateParameter(valid_600086, JString, required = false,
                                  default = nil)
-  if valid_594106 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594106
-  var valid_594107 = header.getOrDefault("X-Amz-Date")
-  valid_594107 = validateParameter(valid_594107, JString, required = false,
+  if valid_600086 != nil:
+    section.add "X-Amz-Algorithm", valid_600086
+  var valid_600087 = header.getOrDefault("X-Amz-Signature")
+  valid_600087 = validateParameter(valid_600087, JString, required = false,
                                  default = nil)
-  if valid_594107 != nil:
-    section.add "X-Amz-Date", valid_594107
-  var valid_594108 = header.getOrDefault("X-Amz-Credential")
-  valid_594108 = validateParameter(valid_594108, JString, required = false,
+  if valid_600087 != nil:
+    section.add "X-Amz-Signature", valid_600087
+  var valid_600088 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600088 = validateParameter(valid_600088, JString, required = false,
                                  default = nil)
-  if valid_594108 != nil:
-    section.add "X-Amz-Credential", valid_594108
-  var valid_594109 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594109 = validateParameter(valid_594109, JString, required = false,
+  if valid_600088 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600088
+  var valid_600089 = header.getOrDefault("X-Amz-Credential")
+  valid_600089 = validateParameter(valid_600089, JString, required = false,
                                  default = nil)
-  if valid_594109 != nil:
-    section.add "X-Amz-Security-Token", valid_594109
-  var valid_594110 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594110 = validateParameter(valid_594110, JString, required = false,
-                                 default = nil)
-  if valid_594110 != nil:
-    section.add "X-Amz-Algorithm", valid_594110
-  var valid_594111 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594111 = validateParameter(valid_594111, JString, required = false,
-                                 default = nil)
-  if valid_594111 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594111
+  if valid_600089 != nil:
+    section.add "X-Amz-Credential", valid_600089
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1116,48 +1107,47 @@ proc validate_DescribeBudgets_594102(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594113: Call_DescribeBudgets_594101; path: JsonNode; query: JsonNode;
+proc call*(call_600091: Call_DescribeBudgets_600079; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the budgets that are associated with an account.</p> <important> <p>The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_DescribeBudgets.html#API_DescribeBudgets_Examples">Examples</a> section. </p> </important>
   ## 
-  let valid = call_594113.validator(path, query, header, formData, body)
-  let scheme = call_594113.pickScheme
+  let valid = call_600091.validator(path, query, header, formData, body)
+  let scheme = call_600091.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594113.url(scheme.get, call_594113.host, call_594113.base,
-                         call_594113.route, valid.getOrDefault("path"),
+  let url = call_600091.url(scheme.get, call_600091.host, call_600091.base,
+                         call_600091.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594113, url, valid)
+  result = atozHook(call_600091, url, valid)
 
-proc call*(call_594114: Call_DescribeBudgets_594101; body: JsonNode): Recallable =
+proc call*(call_600092: Call_DescribeBudgets_600079; body: JsonNode): Recallable =
   ## describeBudgets
   ## <p>Lists the budgets that are associated with an account.</p> <important> <p>The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_DescribeBudgets.html#API_DescribeBudgets_Examples">Examples</a> section. </p> </important>
   ##   body: JObject (required)
-  var body_594115 = newJObject()
+  var body_600093 = newJObject()
   if body != nil:
-    body_594115 = body
-  result = call_594114.call(nil, nil, nil, nil, body_594115)
+    body_600093 = body
+  result = call_600092.call(nil, nil, nil, nil, body_600093)
 
-var describeBudgets* = Call_DescribeBudgets_594101(name: "describeBudgets",
+var describeBudgets* = Call_DescribeBudgets_600079(name: "describeBudgets",
     meth: HttpMethod.HttpPost, host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.DescribeBudgets",
-    validator: validate_DescribeBudgets_594102, base: "/", url: url_DescribeBudgets_594103,
+    validator: validate_DescribeBudgets_600080, base: "/", url: url_DescribeBudgets_600081,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeNotificationsForBudget_594116 = ref object of OpenApiRestCall_593389
-proc url_DescribeNotificationsForBudget_594118(protocol: Scheme; host: string;
+  Call_DescribeNotificationsForBudget_600094 = ref object of OpenApiRestCall_599368
+proc url_DescribeNotificationsForBudget_600096(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeNotificationsForBudget_594117(path: JsonNode;
+proc validate_DescribeNotificationsForBudget_600095(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the notifications that are associated with a budget.
   ## 
@@ -1168,57 +1158,57 @@ proc validate_DescribeNotificationsForBudget_594117(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600097 = header.getOrDefault("X-Amz-Date")
+  valid_600097 = validateParameter(valid_600097, JString, required = false,
+                                 default = nil)
+  if valid_600097 != nil:
+    section.add "X-Amz-Date", valid_600097
+  var valid_600098 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600098 = validateParameter(valid_600098, JString, required = false,
+                                 default = nil)
+  if valid_600098 != nil:
+    section.add "X-Amz-Security-Token", valid_600098
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594119 = header.getOrDefault("X-Amz-Target")
-  valid_594119 = validateParameter(valid_594119, JString, required = true, default = newJString(
+  var valid_600099 = header.getOrDefault("X-Amz-Target")
+  valid_600099 = validateParameter(valid_600099, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeNotificationsForBudget"))
-  if valid_594119 != nil:
-    section.add "X-Amz-Target", valid_594119
-  var valid_594120 = header.getOrDefault("X-Amz-Signature")
-  valid_594120 = validateParameter(valid_594120, JString, required = false,
+  if valid_600099 != nil:
+    section.add "X-Amz-Target", valid_600099
+  var valid_600100 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600100 = validateParameter(valid_600100, JString, required = false,
                                  default = nil)
-  if valid_594120 != nil:
-    section.add "X-Amz-Signature", valid_594120
-  var valid_594121 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594121 = validateParameter(valid_594121, JString, required = false,
+  if valid_600100 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600100
+  var valid_600101 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600101 = validateParameter(valid_600101, JString, required = false,
                                  default = nil)
-  if valid_594121 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594121
-  var valid_594122 = header.getOrDefault("X-Amz-Date")
-  valid_594122 = validateParameter(valid_594122, JString, required = false,
+  if valid_600101 != nil:
+    section.add "X-Amz-Algorithm", valid_600101
+  var valid_600102 = header.getOrDefault("X-Amz-Signature")
+  valid_600102 = validateParameter(valid_600102, JString, required = false,
                                  default = nil)
-  if valid_594122 != nil:
-    section.add "X-Amz-Date", valid_594122
-  var valid_594123 = header.getOrDefault("X-Amz-Credential")
-  valid_594123 = validateParameter(valid_594123, JString, required = false,
+  if valid_600102 != nil:
+    section.add "X-Amz-Signature", valid_600102
+  var valid_600103 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600103 = validateParameter(valid_600103, JString, required = false,
                                  default = nil)
-  if valid_594123 != nil:
-    section.add "X-Amz-Credential", valid_594123
-  var valid_594124 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594124 = validateParameter(valid_594124, JString, required = false,
+  if valid_600103 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600103
+  var valid_600104 = header.getOrDefault("X-Amz-Credential")
+  valid_600104 = validateParameter(valid_600104, JString, required = false,
                                  default = nil)
-  if valid_594124 != nil:
-    section.add "X-Amz-Security-Token", valid_594124
-  var valid_594125 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594125 = validateParameter(valid_594125, JString, required = false,
-                                 default = nil)
-  if valid_594125 != nil:
-    section.add "X-Amz-Algorithm", valid_594125
-  var valid_594126 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594126 = validateParameter(valid_594126, JString, required = false,
-                                 default = nil)
-  if valid_594126 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594126
+  if valid_600104 != nil:
+    section.add "X-Amz-Credential", valid_600104
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1229,49 +1219,48 @@ proc validate_DescribeNotificationsForBudget_594117(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594128: Call_DescribeNotificationsForBudget_594116; path: JsonNode;
+proc call*(call_600106: Call_DescribeNotificationsForBudget_600094; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the notifications that are associated with a budget.
   ## 
-  let valid = call_594128.validator(path, query, header, formData, body)
-  let scheme = call_594128.pickScheme
+  let valid = call_600106.validator(path, query, header, formData, body)
+  let scheme = call_600106.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594128.url(scheme.get, call_594128.host, call_594128.base,
-                         call_594128.route, valid.getOrDefault("path"),
+  let url = call_600106.url(scheme.get, call_600106.host, call_600106.base,
+                         call_600106.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594128, url, valid)
+  result = atozHook(call_600106, url, valid)
 
-proc call*(call_594129: Call_DescribeNotificationsForBudget_594116; body: JsonNode): Recallable =
+proc call*(call_600107: Call_DescribeNotificationsForBudget_600094; body: JsonNode): Recallable =
   ## describeNotificationsForBudget
   ## Lists the notifications that are associated with a budget.
   ##   body: JObject (required)
-  var body_594130 = newJObject()
+  var body_600108 = newJObject()
   if body != nil:
-    body_594130 = body
-  result = call_594129.call(nil, nil, nil, nil, body_594130)
+    body_600108 = body
+  result = call_600107.call(nil, nil, nil, nil, body_600108)
 
-var describeNotificationsForBudget* = Call_DescribeNotificationsForBudget_594116(
+var describeNotificationsForBudget* = Call_DescribeNotificationsForBudget_600094(
     name: "describeNotificationsForBudget", meth: HttpMethod.HttpPost,
     host: "budgets.amazonaws.com", route: "/#X-Amz-Target=AWSBudgetServiceGateway.DescribeNotificationsForBudget",
-    validator: validate_DescribeNotificationsForBudget_594117, base: "/",
-    url: url_DescribeNotificationsForBudget_594118,
+    validator: validate_DescribeNotificationsForBudget_600095, base: "/",
+    url: url_DescribeNotificationsForBudget_600096,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSubscribersForNotification_594131 = ref object of OpenApiRestCall_593389
-proc url_DescribeSubscribersForNotification_594133(protocol: Scheme; host: string;
+  Call_DescribeSubscribersForNotification_600109 = ref object of OpenApiRestCall_599368
+proc url_DescribeSubscribersForNotification_600111(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeSubscribersForNotification_594132(path: JsonNode;
+proc validate_DescribeSubscribersForNotification_600110(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the subscribers that are associated with a notification.
   ## 
@@ -1282,57 +1271,57 @@ proc validate_DescribeSubscribersForNotification_594132(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600112 = header.getOrDefault("X-Amz-Date")
+  valid_600112 = validateParameter(valid_600112, JString, required = false,
+                                 default = nil)
+  if valid_600112 != nil:
+    section.add "X-Amz-Date", valid_600112
+  var valid_600113 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600113 = validateParameter(valid_600113, JString, required = false,
+                                 default = nil)
+  if valid_600113 != nil:
+    section.add "X-Amz-Security-Token", valid_600113
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594134 = header.getOrDefault("X-Amz-Target")
-  valid_594134 = validateParameter(valid_594134, JString, required = true, default = newJString(
+  var valid_600114 = header.getOrDefault("X-Amz-Target")
+  valid_600114 = validateParameter(valid_600114, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeSubscribersForNotification"))
-  if valid_594134 != nil:
-    section.add "X-Amz-Target", valid_594134
-  var valid_594135 = header.getOrDefault("X-Amz-Signature")
-  valid_594135 = validateParameter(valid_594135, JString, required = false,
+  if valid_600114 != nil:
+    section.add "X-Amz-Target", valid_600114
+  var valid_600115 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600115 = validateParameter(valid_600115, JString, required = false,
                                  default = nil)
-  if valid_594135 != nil:
-    section.add "X-Amz-Signature", valid_594135
-  var valid_594136 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594136 = validateParameter(valid_594136, JString, required = false,
+  if valid_600115 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600115
+  var valid_600116 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600116 = validateParameter(valid_600116, JString, required = false,
                                  default = nil)
-  if valid_594136 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594136
-  var valid_594137 = header.getOrDefault("X-Amz-Date")
-  valid_594137 = validateParameter(valid_594137, JString, required = false,
+  if valid_600116 != nil:
+    section.add "X-Amz-Algorithm", valid_600116
+  var valid_600117 = header.getOrDefault("X-Amz-Signature")
+  valid_600117 = validateParameter(valid_600117, JString, required = false,
                                  default = nil)
-  if valid_594137 != nil:
-    section.add "X-Amz-Date", valid_594137
-  var valid_594138 = header.getOrDefault("X-Amz-Credential")
-  valid_594138 = validateParameter(valid_594138, JString, required = false,
+  if valid_600117 != nil:
+    section.add "X-Amz-Signature", valid_600117
+  var valid_600118 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600118 = validateParameter(valid_600118, JString, required = false,
                                  default = nil)
-  if valid_594138 != nil:
-    section.add "X-Amz-Credential", valid_594138
-  var valid_594139 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594139 = validateParameter(valid_594139, JString, required = false,
+  if valid_600118 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600118
+  var valid_600119 = header.getOrDefault("X-Amz-Credential")
+  valid_600119 = validateParameter(valid_600119, JString, required = false,
                                  default = nil)
-  if valid_594139 != nil:
-    section.add "X-Amz-Security-Token", valid_594139
-  var valid_594140 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594140 = validateParameter(valid_594140, JString, required = false,
-                                 default = nil)
-  if valid_594140 != nil:
-    section.add "X-Amz-Algorithm", valid_594140
-  var valid_594141 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594141 = validateParameter(valid_594141, JString, required = false,
-                                 default = nil)
-  if valid_594141 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594141
+  if valid_600119 != nil:
+    section.add "X-Amz-Credential", valid_600119
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1343,51 +1332,50 @@ proc validate_DescribeSubscribersForNotification_594132(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594143: Call_DescribeSubscribersForNotification_594131;
+proc call*(call_600121: Call_DescribeSubscribersForNotification_600109;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Lists the subscribers that are associated with a notification.
   ## 
-  let valid = call_594143.validator(path, query, header, formData, body)
-  let scheme = call_594143.pickScheme
+  let valid = call_600121.validator(path, query, header, formData, body)
+  let scheme = call_600121.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594143.url(scheme.get, call_594143.host, call_594143.base,
-                         call_594143.route, valid.getOrDefault("path"),
+  let url = call_600121.url(scheme.get, call_600121.host, call_600121.base,
+                         call_600121.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594143, url, valid)
+  result = atozHook(call_600121, url, valid)
 
-proc call*(call_594144: Call_DescribeSubscribersForNotification_594131;
+proc call*(call_600122: Call_DescribeSubscribersForNotification_600109;
           body: JsonNode): Recallable =
   ## describeSubscribersForNotification
   ## Lists the subscribers that are associated with a notification.
   ##   body: JObject (required)
-  var body_594145 = newJObject()
+  var body_600123 = newJObject()
   if body != nil:
-    body_594145 = body
-  result = call_594144.call(nil, nil, nil, nil, body_594145)
+    body_600123 = body
+  result = call_600122.call(nil, nil, nil, nil, body_600123)
 
-var describeSubscribersForNotification* = Call_DescribeSubscribersForNotification_594131(
+var describeSubscribersForNotification* = Call_DescribeSubscribersForNotification_600109(
     name: "describeSubscribersForNotification", meth: HttpMethod.HttpPost,
     host: "budgets.amazonaws.com", route: "/#X-Amz-Target=AWSBudgetServiceGateway.DescribeSubscribersForNotification",
-    validator: validate_DescribeSubscribersForNotification_594132, base: "/",
-    url: url_DescribeSubscribersForNotification_594133,
+    validator: validate_DescribeSubscribersForNotification_600110, base: "/",
+    url: url_DescribeSubscribersForNotification_600111,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateBudget_594146 = ref object of OpenApiRestCall_593389
-proc url_UpdateBudget_594148(protocol: Scheme; host: string; base: string;
+  Call_UpdateBudget_600124 = ref object of OpenApiRestCall_599368
+proc url_UpdateBudget_600126(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateBudget_594147(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateBudget_600125(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates a budget. You can change every part of a budget except for the <code>budgetName</code> and the <code>calculatedSpend</code>. When you modify a budget, the <code>calculatedSpend</code> drops to zero until AWS has new usage data to use for forecasting.</p> <important> <p>Only one of <code>BudgetLimit</code> or <code>PlannedBudgetLimits</code> can be present in the syntax at one time. Use the syntax that matches your case. The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_UpdateBudget.html#API_UpdateBudget_Examples">Examples</a> section. </p> </important>
   ## 
@@ -1398,57 +1386,57 @@ proc validate_UpdateBudget_594147(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600127 = header.getOrDefault("X-Amz-Date")
+  valid_600127 = validateParameter(valid_600127, JString, required = false,
+                                 default = nil)
+  if valid_600127 != nil:
+    section.add "X-Amz-Date", valid_600127
+  var valid_600128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600128 = validateParameter(valid_600128, JString, required = false,
+                                 default = nil)
+  if valid_600128 != nil:
+    section.add "X-Amz-Security-Token", valid_600128
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594149 = header.getOrDefault("X-Amz-Target")
-  valid_594149 = validateParameter(valid_594149, JString, required = true, default = newJString(
+  var valid_600129 = header.getOrDefault("X-Amz-Target")
+  valid_600129 = validateParameter(valid_600129, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.UpdateBudget"))
-  if valid_594149 != nil:
-    section.add "X-Amz-Target", valid_594149
-  var valid_594150 = header.getOrDefault("X-Amz-Signature")
-  valid_594150 = validateParameter(valid_594150, JString, required = false,
+  if valid_600129 != nil:
+    section.add "X-Amz-Target", valid_600129
+  var valid_600130 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600130 = validateParameter(valid_600130, JString, required = false,
                                  default = nil)
-  if valid_594150 != nil:
-    section.add "X-Amz-Signature", valid_594150
-  var valid_594151 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594151 = validateParameter(valid_594151, JString, required = false,
+  if valid_600130 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600130
+  var valid_600131 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600131 = validateParameter(valid_600131, JString, required = false,
                                  default = nil)
-  if valid_594151 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594151
-  var valid_594152 = header.getOrDefault("X-Amz-Date")
-  valid_594152 = validateParameter(valid_594152, JString, required = false,
+  if valid_600131 != nil:
+    section.add "X-Amz-Algorithm", valid_600131
+  var valid_600132 = header.getOrDefault("X-Amz-Signature")
+  valid_600132 = validateParameter(valid_600132, JString, required = false,
                                  default = nil)
-  if valid_594152 != nil:
-    section.add "X-Amz-Date", valid_594152
-  var valid_594153 = header.getOrDefault("X-Amz-Credential")
-  valid_594153 = validateParameter(valid_594153, JString, required = false,
+  if valid_600132 != nil:
+    section.add "X-Amz-Signature", valid_600132
+  var valid_600133 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600133 = validateParameter(valid_600133, JString, required = false,
                                  default = nil)
-  if valid_594153 != nil:
-    section.add "X-Amz-Credential", valid_594153
-  var valid_594154 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594154 = validateParameter(valid_594154, JString, required = false,
+  if valid_600133 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600133
+  var valid_600134 = header.getOrDefault("X-Amz-Credential")
+  valid_600134 = validateParameter(valid_600134, JString, required = false,
                                  default = nil)
-  if valid_594154 != nil:
-    section.add "X-Amz-Security-Token", valid_594154
-  var valid_594155 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594155 = validateParameter(valid_594155, JString, required = false,
-                                 default = nil)
-  if valid_594155 != nil:
-    section.add "X-Amz-Algorithm", valid_594155
-  var valid_594156 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594156 = validateParameter(valid_594156, JString, required = false,
-                                 default = nil)
-  if valid_594156 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594156
+  if valid_600134 != nil:
+    section.add "X-Amz-Credential", valid_600134
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1459,48 +1447,47 @@ proc validate_UpdateBudget_594147(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_594158: Call_UpdateBudget_594146; path: JsonNode; query: JsonNode;
+proc call*(call_600136: Call_UpdateBudget_600124; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a budget. You can change every part of a budget except for the <code>budgetName</code> and the <code>calculatedSpend</code>. When you modify a budget, the <code>calculatedSpend</code> drops to zero until AWS has new usage data to use for forecasting.</p> <important> <p>Only one of <code>BudgetLimit</code> or <code>PlannedBudgetLimits</code> can be present in the syntax at one time. Use the syntax that matches your case. The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_UpdateBudget.html#API_UpdateBudget_Examples">Examples</a> section. </p> </important>
   ## 
-  let valid = call_594158.validator(path, query, header, formData, body)
-  let scheme = call_594158.pickScheme
+  let valid = call_600136.validator(path, query, header, formData, body)
+  let scheme = call_600136.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594158.url(scheme.get, call_594158.host, call_594158.base,
-                         call_594158.route, valid.getOrDefault("path"),
+  let url = call_600136.url(scheme.get, call_600136.host, call_600136.base,
+                         call_600136.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594158, url, valid)
+  result = atozHook(call_600136, url, valid)
 
-proc call*(call_594159: Call_UpdateBudget_594146; body: JsonNode): Recallable =
+proc call*(call_600137: Call_UpdateBudget_600124; body: JsonNode): Recallable =
   ## updateBudget
   ## <p>Updates a budget. You can change every part of a budget except for the <code>budgetName</code> and the <code>calculatedSpend</code>. When you modify a budget, the <code>calculatedSpend</code> drops to zero until AWS has new usage data to use for forecasting.</p> <important> <p>Only one of <code>BudgetLimit</code> or <code>PlannedBudgetLimits</code> can be present in the syntax at one time. Use the syntax that matches your case. The Request Syntax section shows the <code>BudgetLimit</code> syntax. For <code>PlannedBudgetLimits</code>, see the <a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_budgets_UpdateBudget.html#API_UpdateBudget_Examples">Examples</a> section. </p> </important>
   ##   body: JObject (required)
-  var body_594160 = newJObject()
+  var body_600138 = newJObject()
   if body != nil:
-    body_594160 = body
-  result = call_594159.call(nil, nil, nil, nil, body_594160)
+    body_600138 = body
+  result = call_600137.call(nil, nil, nil, nil, body_600138)
 
-var updateBudget* = Call_UpdateBudget_594146(name: "updateBudget",
+var updateBudget* = Call_UpdateBudget_600124(name: "updateBudget",
     meth: HttpMethod.HttpPost, host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.UpdateBudget",
-    validator: validate_UpdateBudget_594147, base: "/", url: url_UpdateBudget_594148,
+    validator: validate_UpdateBudget_600125, base: "/", url: url_UpdateBudget_600126,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateNotification_594161 = ref object of OpenApiRestCall_593389
-proc url_UpdateNotification_594163(protocol: Scheme; host: string; base: string;
+  Call_UpdateNotification_600139 = ref object of OpenApiRestCall_599368
+proc url_UpdateNotification_600141(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateNotification_594162(path: JsonNode; query: JsonNode;
+proc validate_UpdateNotification_600140(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Updates a notification.
@@ -1512,57 +1499,57 @@ proc validate_UpdateNotification_594162(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600142 = header.getOrDefault("X-Amz-Date")
+  valid_600142 = validateParameter(valid_600142, JString, required = false,
+                                 default = nil)
+  if valid_600142 != nil:
+    section.add "X-Amz-Date", valid_600142
+  var valid_600143 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600143 = validateParameter(valid_600143, JString, required = false,
+                                 default = nil)
+  if valid_600143 != nil:
+    section.add "X-Amz-Security-Token", valid_600143
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594164 = header.getOrDefault("X-Amz-Target")
-  valid_594164 = validateParameter(valid_594164, JString, required = true, default = newJString(
+  var valid_600144 = header.getOrDefault("X-Amz-Target")
+  valid_600144 = validateParameter(valid_600144, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.UpdateNotification"))
-  if valid_594164 != nil:
-    section.add "X-Amz-Target", valid_594164
-  var valid_594165 = header.getOrDefault("X-Amz-Signature")
-  valid_594165 = validateParameter(valid_594165, JString, required = false,
+  if valid_600144 != nil:
+    section.add "X-Amz-Target", valid_600144
+  var valid_600145 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600145 = validateParameter(valid_600145, JString, required = false,
                                  default = nil)
-  if valid_594165 != nil:
-    section.add "X-Amz-Signature", valid_594165
-  var valid_594166 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594166 = validateParameter(valid_594166, JString, required = false,
+  if valid_600145 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600145
+  var valid_600146 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600146 = validateParameter(valid_600146, JString, required = false,
                                  default = nil)
-  if valid_594166 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594166
-  var valid_594167 = header.getOrDefault("X-Amz-Date")
-  valid_594167 = validateParameter(valid_594167, JString, required = false,
+  if valid_600146 != nil:
+    section.add "X-Amz-Algorithm", valid_600146
+  var valid_600147 = header.getOrDefault("X-Amz-Signature")
+  valid_600147 = validateParameter(valid_600147, JString, required = false,
                                  default = nil)
-  if valid_594167 != nil:
-    section.add "X-Amz-Date", valid_594167
-  var valid_594168 = header.getOrDefault("X-Amz-Credential")
-  valid_594168 = validateParameter(valid_594168, JString, required = false,
+  if valid_600147 != nil:
+    section.add "X-Amz-Signature", valid_600147
+  var valid_600148 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600148 = validateParameter(valid_600148, JString, required = false,
                                  default = nil)
-  if valid_594168 != nil:
-    section.add "X-Amz-Credential", valid_594168
-  var valid_594169 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594169 = validateParameter(valid_594169, JString, required = false,
+  if valid_600148 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600148
+  var valid_600149 = header.getOrDefault("X-Amz-Credential")
+  valid_600149 = validateParameter(valid_600149, JString, required = false,
                                  default = nil)
-  if valid_594169 != nil:
-    section.add "X-Amz-Security-Token", valid_594169
-  var valid_594170 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594170 = validateParameter(valid_594170, JString, required = false,
-                                 default = nil)
-  if valid_594170 != nil:
-    section.add "X-Amz-Algorithm", valid_594170
-  var valid_594171 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594171 = validateParameter(valid_594171, JString, required = false,
-                                 default = nil)
-  if valid_594171 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594171
+  if valid_600149 != nil:
+    section.add "X-Amz-Credential", valid_600149
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1573,49 +1560,48 @@ proc validate_UpdateNotification_594162(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594173: Call_UpdateNotification_594161; path: JsonNode;
+proc call*(call_600151: Call_UpdateNotification_600139; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates a notification.
   ## 
-  let valid = call_594173.validator(path, query, header, formData, body)
-  let scheme = call_594173.pickScheme
+  let valid = call_600151.validator(path, query, header, formData, body)
+  let scheme = call_600151.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594173.url(scheme.get, call_594173.host, call_594173.base,
-                         call_594173.route, valid.getOrDefault("path"),
+  let url = call_600151.url(scheme.get, call_600151.host, call_600151.base,
+                         call_600151.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594173, url, valid)
+  result = atozHook(call_600151, url, valid)
 
-proc call*(call_594174: Call_UpdateNotification_594161; body: JsonNode): Recallable =
+proc call*(call_600152: Call_UpdateNotification_600139; body: JsonNode): Recallable =
   ## updateNotification
   ## Updates a notification.
   ##   body: JObject (required)
-  var body_594175 = newJObject()
+  var body_600153 = newJObject()
   if body != nil:
-    body_594175 = body
-  result = call_594174.call(nil, nil, nil, nil, body_594175)
+    body_600153 = body
+  result = call_600152.call(nil, nil, nil, nil, body_600153)
 
-var updateNotification* = Call_UpdateNotification_594161(
+var updateNotification* = Call_UpdateNotification_600139(
     name: "updateNotification", meth: HttpMethod.HttpPost,
     host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.UpdateNotification",
-    validator: validate_UpdateNotification_594162, base: "/",
-    url: url_UpdateNotification_594163, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateNotification_600140, base: "/",
+    url: url_UpdateNotification_600141, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSubscriber_594176 = ref object of OpenApiRestCall_593389
-proc url_UpdateSubscriber_594178(protocol: Scheme; host: string; base: string;
+  Call_UpdateSubscriber_600154 = ref object of OpenApiRestCall_599368
+proc url_UpdateSubscriber_600156(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and
-      route.startsWith "/":
+      "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateSubscriber_594177(path: JsonNode; query: JsonNode;
+proc validate_UpdateSubscriber_600155(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Updates a subscriber.
@@ -1627,57 +1613,57 @@ proc validate_UpdateSubscriber_594177(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
   ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
   ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
   ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
   section = newJObject()
+  var valid_600157 = header.getOrDefault("X-Amz-Date")
+  valid_600157 = validateParameter(valid_600157, JString, required = false,
+                                 default = nil)
+  if valid_600157 != nil:
+    section.add "X-Amz-Date", valid_600157
+  var valid_600158 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600158 = validateParameter(valid_600158, JString, required = false,
+                                 default = nil)
+  if valid_600158 != nil:
+    section.add "X-Amz-Security-Token", valid_600158
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_594179 = header.getOrDefault("X-Amz-Target")
-  valid_594179 = validateParameter(valid_594179, JString, required = true, default = newJString(
+  var valid_600159 = header.getOrDefault("X-Amz-Target")
+  valid_600159 = validateParameter(valid_600159, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.UpdateSubscriber"))
-  if valid_594179 != nil:
-    section.add "X-Amz-Target", valid_594179
-  var valid_594180 = header.getOrDefault("X-Amz-Signature")
-  valid_594180 = validateParameter(valid_594180, JString, required = false,
+  if valid_600159 != nil:
+    section.add "X-Amz-Target", valid_600159
+  var valid_600160 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600160 = validateParameter(valid_600160, JString, required = false,
                                  default = nil)
-  if valid_594180 != nil:
-    section.add "X-Amz-Signature", valid_594180
-  var valid_594181 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_594181 = validateParameter(valid_594181, JString, required = false,
+  if valid_600160 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600160
+  var valid_600161 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600161 = validateParameter(valid_600161, JString, required = false,
                                  default = nil)
-  if valid_594181 != nil:
-    section.add "X-Amz-Content-Sha256", valid_594181
-  var valid_594182 = header.getOrDefault("X-Amz-Date")
-  valid_594182 = validateParameter(valid_594182, JString, required = false,
+  if valid_600161 != nil:
+    section.add "X-Amz-Algorithm", valid_600161
+  var valid_600162 = header.getOrDefault("X-Amz-Signature")
+  valid_600162 = validateParameter(valid_600162, JString, required = false,
                                  default = nil)
-  if valid_594182 != nil:
-    section.add "X-Amz-Date", valid_594182
-  var valid_594183 = header.getOrDefault("X-Amz-Credential")
-  valid_594183 = validateParameter(valid_594183, JString, required = false,
+  if valid_600162 != nil:
+    section.add "X-Amz-Signature", valid_600162
+  var valid_600163 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600163 = validateParameter(valid_600163, JString, required = false,
                                  default = nil)
-  if valid_594183 != nil:
-    section.add "X-Amz-Credential", valid_594183
-  var valid_594184 = header.getOrDefault("X-Amz-Security-Token")
-  valid_594184 = validateParameter(valid_594184, JString, required = false,
+  if valid_600163 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600163
+  var valid_600164 = header.getOrDefault("X-Amz-Credential")
+  valid_600164 = validateParameter(valid_600164, JString, required = false,
                                  default = nil)
-  if valid_594184 != nil:
-    section.add "X-Amz-Security-Token", valid_594184
-  var valid_594185 = header.getOrDefault("X-Amz-Algorithm")
-  valid_594185 = validateParameter(valid_594185, JString, required = false,
-                                 default = nil)
-  if valid_594185 != nil:
-    section.add "X-Amz-Algorithm", valid_594185
-  var valid_594186 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_594186 = validateParameter(valid_594186, JString, required = false,
-                                 default = nil)
-  if valid_594186 != nil:
-    section.add "X-Amz-SignedHeaders", valid_594186
+  if valid_600164 != nil:
+    section.add "X-Amz-Credential", valid_600164
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1688,37 +1674,37 @@ proc validate_UpdateSubscriber_594177(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_594188: Call_UpdateSubscriber_594176; path: JsonNode;
+proc call*(call_600166: Call_UpdateSubscriber_600154; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates a subscriber.
   ## 
-  let valid = call_594188.validator(path, query, header, formData, body)
-  let scheme = call_594188.pickScheme
+  let valid = call_600166.validator(path, query, header, formData, body)
+  let scheme = call_600166.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_594188.url(scheme.get, call_594188.host, call_594188.base,
-                         call_594188.route, valid.getOrDefault("path"),
+  let url = call_600166.url(scheme.get, call_600166.host, call_600166.base,
+                         call_600166.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = hook(call_594188, url, valid)
+  result = atozHook(call_600166, url, valid)
 
-proc call*(call_594189: Call_UpdateSubscriber_594176; body: JsonNode): Recallable =
+proc call*(call_600167: Call_UpdateSubscriber_600154; body: JsonNode): Recallable =
   ## updateSubscriber
   ## Updates a subscriber.
   ##   body: JObject (required)
-  var body_594190 = newJObject()
+  var body_600168 = newJObject()
   if body != nil:
-    body_594190 = body
-  result = call_594189.call(nil, nil, nil, nil, body_594190)
+    body_600168 = body
+  result = call_600167.call(nil, nil, nil, nil, body_600168)
 
-var updateSubscriber* = Call_UpdateSubscriber_594176(name: "updateSubscriber",
+var updateSubscriber* = Call_UpdateSubscriber_600154(name: "updateSubscriber",
     meth: HttpMethod.HttpPost, host: "budgets.amazonaws.com",
     route: "/#X-Amz-Target=AWSBudgetServiceGateway.UpdateSubscriber",
-    validator: validate_UpdateSubscriber_594177, base: "/",
-    url: url_UpdateSubscriber_594178, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateSubscriber_600155, base: "/",
+    url: url_UpdateSubscriber_600156, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
-proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
+proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
     access = os.getEnv("AWS_ACCESS_KEY_ID", "")
@@ -1757,7 +1743,7 @@ proc sign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   recall.headers.del "Host"
   recall.url = $url
 
-method hook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
+method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
   result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
-  result.sign(input.getOrDefault("query"), SHA256)
+  result.atozSign(input.getOrDefault("query"), SHA256)
