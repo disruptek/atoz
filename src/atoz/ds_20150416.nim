@@ -1072,7 +1072,7 @@ proc url_CreateDirectory_600081(protocol: Scheme; host: string; base: string;
 proc validate_CreateDirectory_600080(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Creates a Simple AD directory.</p> <p>Before you call <code>CreateDirectory</code>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <code>CreateDirectory</code> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
+  ## <p>Creates a Simple AD directory. For more information, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_simple_ad.html">Simple Active Directory</a> in the <i>AWS Directory Service Admin Guide</i>.</p> <p>Before you call <code>CreateDirectory</code>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <code>CreateDirectory</code> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1144,7 +1144,7 @@ proc validate_CreateDirectory_600080(path: JsonNode; query: JsonNode;
 
 proc call*(call_600091: Call_CreateDirectory_600079; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a Simple AD directory.</p> <p>Before you call <code>CreateDirectory</code>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <code>CreateDirectory</code> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
+  ## <p>Creates a Simple AD directory. For more information, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_simple_ad.html">Simple Active Directory</a> in the <i>AWS Directory Service Admin Guide</i>.</p> <p>Before you call <code>CreateDirectory</code>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <code>CreateDirectory</code> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
   ## 
   let valid = call_600091.validator(path, query, header, formData, body)
   let scheme = call_600091.pickScheme
@@ -1157,7 +1157,7 @@ proc call*(call_600091: Call_CreateDirectory_600079; path: JsonNode; query: Json
 
 proc call*(call_600092: Call_CreateDirectory_600079; body: JsonNode): Recallable =
   ## createDirectory
-  ## <p>Creates a Simple AD directory.</p> <p>Before you call <code>CreateDirectory</code>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <code>CreateDirectory</code> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
+  ## <p>Creates a Simple AD directory. For more information, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_simple_ad.html">Simple Active Directory</a> in the <i>AWS Directory Service Admin Guide</i>.</p> <p>Before you call <code>CreateDirectory</code>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <code>CreateDirectory</code> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
   ##   body: JObject (required)
   var body_600093 = newJObject()
   if body != nil:
@@ -1184,7 +1184,7 @@ proc url_CreateLogSubscription_600096(protocol: Scheme; host: string; base: stri
 
 proc validate_CreateLogSubscription_600095(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a subscription to forward real time Directory Service domain controller security logs to the specified CloudWatch log group in your AWS account.
+  ## Creates a subscription to forward real-time Directory Service domain controller security logs to the specified Amazon CloudWatch log group in your AWS account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1256,7 +1256,7 @@ proc validate_CreateLogSubscription_600095(path: JsonNode; query: JsonNode;
 
 proc call*(call_600106: Call_CreateLogSubscription_600094; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a subscription to forward real time Directory Service domain controller security logs to the specified CloudWatch log group in your AWS account.
+  ## Creates a subscription to forward real-time Directory Service domain controller security logs to the specified Amazon CloudWatch log group in your AWS account.
   ## 
   let valid = call_600106.validator(path, query, header, formData, body)
   let scheme = call_600106.pickScheme
@@ -1269,7 +1269,7 @@ proc call*(call_600106: Call_CreateLogSubscription_600094; path: JsonNode;
 
 proc call*(call_600107: Call_CreateLogSubscription_600094; body: JsonNode): Recallable =
   ## createLogSubscription
-  ## Creates a subscription to forward real time Directory Service domain controller security logs to the specified CloudWatch log group in your AWS account.
+  ## Creates a subscription to forward real-time Directory Service domain controller security logs to the specified Amazon CloudWatch log group in your AWS account.
   ##   body: JObject (required)
   var body_600108 = newJObject()
   if body != nil:
@@ -1298,7 +1298,7 @@ proc url_CreateMicrosoftAD_600111(protocol: Scheme; host: string; base: string;
 proc validate_CreateMicrosoftAD_600110(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
-  ## <p>Creates an AWS Managed Microsoft AD directory.</p> <p>Before you call <i>CreateMicrosoftAD</i>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <i>CreateMicrosoftAD</i> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
+  ## <p>Creates a Microsoft AD directory in the AWS Cloud. For more information, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_microsoft_ad.html">AWS Managed Microsoft AD</a> in the <i>AWS Directory Service Admin Guide</i>.</p> <p>Before you call <i>CreateMicrosoftAD</i>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <i>CreateMicrosoftAD</i> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1370,7 +1370,7 @@ proc validate_CreateMicrosoftAD_600110(path: JsonNode; query: JsonNode;
 
 proc call*(call_600121: Call_CreateMicrosoftAD_600109; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates an AWS Managed Microsoft AD directory.</p> <p>Before you call <i>CreateMicrosoftAD</i>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <i>CreateMicrosoftAD</i> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
+  ## <p>Creates a Microsoft AD directory in the AWS Cloud. For more information, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_microsoft_ad.html">AWS Managed Microsoft AD</a> in the <i>AWS Directory Service Admin Guide</i>.</p> <p>Before you call <i>CreateMicrosoftAD</i>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <i>CreateMicrosoftAD</i> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
   ## 
   let valid = call_600121.validator(path, query, header, formData, body)
   let scheme = call_600121.pickScheme
@@ -1383,7 +1383,7 @@ proc call*(call_600121: Call_CreateMicrosoftAD_600109; path: JsonNode;
 
 proc call*(call_600122: Call_CreateMicrosoftAD_600109; body: JsonNode): Recallable =
   ## createMicrosoftAD
-  ## <p>Creates an AWS Managed Microsoft AD directory.</p> <p>Before you call <i>CreateMicrosoftAD</i>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <i>CreateMicrosoftAD</i> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
+  ## <p>Creates a Microsoft AD directory in the AWS Cloud. For more information, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_microsoft_ad.html">AWS Managed Microsoft AD</a> in the <i>AWS Directory Service Admin Guide</i>.</p> <p>Before you call <i>CreateMicrosoftAD</i>, ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the <i>CreateMicrosoftAD</i> operation, see <a href="http://docs.aws.amazon.com/directoryservice/latest/admin-guide/UsingWithDS_IAM_ResourcePermissions.html">AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference</a>.</p>
   ##   body: JObject (required)
   var body_600123 = newJObject()
   if body != nil:
@@ -2187,9 +2187,9 @@ var deleteTrust* = Call_DeleteTrust_600214(name: "deleteTrust",
                                         base: "/", url: url_DeleteTrust_600216,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterEventTopic_600229 = ref object of OpenApiRestCall_599368
-proc url_DeregisterEventTopic_600231(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeregisterCertificate_600229 = ref object of OpenApiRestCall_599368
+proc url_DeregisterCertificate_600231(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2199,9 +2199,9 @@ proc url_DeregisterEventTopic_600231(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_DeregisterEventTopic_600230(path: JsonNode; query: JsonNode;
+proc validate_DeregisterCertificate_600230(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Removes the specified directory as a publisher to the specified SNS topic.
+  ## Deletes from the system the certificate that was registered for a secured LDAP connection.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2233,7 +2233,7 @@ proc validate_DeregisterEventTopic_600230(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600234 = header.getOrDefault("X-Amz-Target")
   valid_600234 = validateParameter(valid_600234, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DeregisterEventTopic"))
+      "DirectoryService_20150416.DeregisterCertificate"))
   if valid_600234 != nil:
     section.add "X-Amz-Target", valid_600234
   var valid_600235 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2271,9 +2271,9 @@ proc validate_DeregisterEventTopic_600230(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600241: Call_DeregisterEventTopic_600229; path: JsonNode;
+proc call*(call_600241: Call_DeregisterCertificate_600229; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Removes the specified directory as a publisher to the specified SNS topic.
+  ## Deletes from the system the certificate that was registered for a secured LDAP connection.
   ## 
   let valid = call_600241.validator(path, query, header, formData, body)
   let scheme = call_600241.pickScheme
@@ -2284,25 +2284,25 @@ proc call*(call_600241: Call_DeregisterEventTopic_600229; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600241, url, valid)
 
-proc call*(call_600242: Call_DeregisterEventTopic_600229; body: JsonNode): Recallable =
-  ## deregisterEventTopic
-  ## Removes the specified directory as a publisher to the specified SNS topic.
+proc call*(call_600242: Call_DeregisterCertificate_600229; body: JsonNode): Recallable =
+  ## deregisterCertificate
+  ## Deletes from the system the certificate that was registered for a secured LDAP connection.
   ##   body: JObject (required)
   var body_600243 = newJObject()
   if body != nil:
     body_600243 = body
   result = call_600242.call(nil, nil, nil, nil, body_600243)
 
-var deregisterEventTopic* = Call_DeregisterEventTopic_600229(
-    name: "deregisterEventTopic", meth: HttpMethod.HttpPost,
+var deregisterCertificate* = Call_DeregisterCertificate_600229(
+    name: "deregisterCertificate", meth: HttpMethod.HttpPost,
     host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.DeregisterEventTopic",
-    validator: validate_DeregisterEventTopic_600230, base: "/",
-    url: url_DeregisterEventTopic_600231, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=DirectoryService_20150416.DeregisterCertificate",
+    validator: validate_DeregisterCertificate_600230, base: "/",
+    url: url_DeregisterCertificate_600231, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeConditionalForwarders_600244 = ref object of OpenApiRestCall_599368
-proc url_DescribeConditionalForwarders_600246(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeregisterEventTopic_600244 = ref object of OpenApiRestCall_599368
+proc url_DeregisterEventTopic_600246(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2312,9 +2312,9 @@ proc url_DescribeConditionalForwarders_600246(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeConditionalForwarders_600245(path: JsonNode; query: JsonNode;
+proc validate_DeregisterEventTopic_600245(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Obtains information about the conditional forwarders for this account.</p> <p>If no input parameters are provided for RemoteDomainNames, this request describes all conditional forwarders for the specified directory ID.</p>
+  ## Removes the specified directory as a publisher to the specified SNS topic.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2346,7 +2346,7 @@ proc validate_DescribeConditionalForwarders_600245(path: JsonNode; query: JsonNo
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600249 = header.getOrDefault("X-Amz-Target")
   valid_600249 = validateParameter(valid_600249, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DescribeConditionalForwarders"))
+      "DirectoryService_20150416.DeregisterEventTopic"))
   if valid_600249 != nil:
     section.add "X-Amz-Target", valid_600249
   var valid_600250 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2384,9 +2384,9 @@ proc validate_DescribeConditionalForwarders_600245(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600256: Call_DescribeConditionalForwarders_600244; path: JsonNode;
+proc call*(call_600256: Call_DeregisterEventTopic_600244; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Obtains information about the conditional forwarders for this account.</p> <p>If no input parameters are provided for RemoteDomainNames, this request describes all conditional forwarders for the specified directory ID.</p>
+  ## Removes the specified directory as a publisher to the specified SNS topic.
   ## 
   let valid = call_600256.validator(path, query, header, formData, body)
   let scheme = call_600256.pickScheme
@@ -2397,24 +2397,24 @@ proc call*(call_600256: Call_DescribeConditionalForwarders_600244; path: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600256, url, valid)
 
-proc call*(call_600257: Call_DescribeConditionalForwarders_600244; body: JsonNode): Recallable =
-  ## describeConditionalForwarders
-  ## <p>Obtains information about the conditional forwarders for this account.</p> <p>If no input parameters are provided for RemoteDomainNames, this request describes all conditional forwarders for the specified directory ID.</p>
+proc call*(call_600257: Call_DeregisterEventTopic_600244; body: JsonNode): Recallable =
+  ## deregisterEventTopic
+  ## Removes the specified directory as a publisher to the specified SNS topic.
   ##   body: JObject (required)
   var body_600258 = newJObject()
   if body != nil:
     body_600258 = body
   result = call_600257.call(nil, nil, nil, nil, body_600258)
 
-var describeConditionalForwarders* = Call_DescribeConditionalForwarders_600244(
-    name: "describeConditionalForwarders", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.DescribeConditionalForwarders",
-    validator: validate_DescribeConditionalForwarders_600245, base: "/",
-    url: url_DescribeConditionalForwarders_600246,
-    schemes: {Scheme.Https, Scheme.Http})
+var deregisterEventTopic* = Call_DeregisterEventTopic_600244(
+    name: "deregisterEventTopic", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.DeregisterEventTopic",
+    validator: validate_DeregisterEventTopic_600245, base: "/",
+    url: url_DeregisterEventTopic_600246, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDirectories_600259 = ref object of OpenApiRestCall_599368
-proc url_DescribeDirectories_600261(protocol: Scheme; host: string; base: string;
+  Call_DescribeCertificate_600259 = ref object of OpenApiRestCall_599368
+proc url_DescribeCertificate_600261(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2425,10 +2425,10 @@ proc url_DescribeDirectories_600261(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_DescribeDirectories_600260(path: JsonNode; query: JsonNode;
+proc validate_DescribeCertificate_600260(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Obtains information about the directories that belong to this account.</p> <p>You can retrieve information about specific directories by passing the directory identifiers in the <code>DirectoryIds</code> parameter. Otherwise, all directories that belong to the current account are returned.</p> <p>This operation supports pagination with the use of the <code>NextToken</code> request and response parameters. If more results are available, the <code>DescribeDirectoriesResult.NextToken</code> member contains a token that you pass in the next call to <a>DescribeDirectories</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <code>Limit</code> parameter.</p>
+  ## Displays information about the certificate registered for a secured LDAP connection.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2460,7 +2460,7 @@ proc validate_DescribeDirectories_600260(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600264 = header.getOrDefault("X-Amz-Target")
   valid_600264 = validateParameter(valid_600264, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DescribeDirectories"))
+      "DirectoryService_20150416.DescribeCertificate"))
   if valid_600264 != nil:
     section.add "X-Amz-Target", valid_600264
   var valid_600265 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2498,9 +2498,9 @@ proc validate_DescribeDirectories_600260(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600271: Call_DescribeDirectories_600259; path: JsonNode;
+proc call*(call_600271: Call_DescribeCertificate_600259; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Obtains information about the directories that belong to this account.</p> <p>You can retrieve information about specific directories by passing the directory identifiers in the <code>DirectoryIds</code> parameter. Otherwise, all directories that belong to the current account are returned.</p> <p>This operation supports pagination with the use of the <code>NextToken</code> request and response parameters. If more results are available, the <code>DescribeDirectoriesResult.NextToken</code> member contains a token that you pass in the next call to <a>DescribeDirectories</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <code>Limit</code> parameter.</p>
+  ## Displays information about the certificate registered for a secured LDAP connection.
   ## 
   let valid = call_600271.validator(path, query, header, formData, body)
   let scheme = call_600271.pickScheme
@@ -2511,24 +2511,24 @@ proc call*(call_600271: Call_DescribeDirectories_600259; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600271, url, valid)
 
-proc call*(call_600272: Call_DescribeDirectories_600259; body: JsonNode): Recallable =
-  ## describeDirectories
-  ## <p>Obtains information about the directories that belong to this account.</p> <p>You can retrieve information about specific directories by passing the directory identifiers in the <code>DirectoryIds</code> parameter. Otherwise, all directories that belong to the current account are returned.</p> <p>This operation supports pagination with the use of the <code>NextToken</code> request and response parameters. If more results are available, the <code>DescribeDirectoriesResult.NextToken</code> member contains a token that you pass in the next call to <a>DescribeDirectories</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <code>Limit</code> parameter.</p>
+proc call*(call_600272: Call_DescribeCertificate_600259; body: JsonNode): Recallable =
+  ## describeCertificate
+  ## Displays information about the certificate registered for a secured LDAP connection.
   ##   body: JObject (required)
   var body_600273 = newJObject()
   if body != nil:
     body_600273 = body
   result = call_600272.call(nil, nil, nil, nil, body_600273)
 
-var describeDirectories* = Call_DescribeDirectories_600259(
-    name: "describeDirectories", meth: HttpMethod.HttpPost,
+var describeCertificate* = Call_DescribeCertificate_600259(
+    name: "describeCertificate", meth: HttpMethod.HttpPost,
     host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeDirectories",
-    validator: validate_DescribeDirectories_600260, base: "/",
-    url: url_DescribeDirectories_600261, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeCertificate",
+    validator: validate_DescribeCertificate_600260, base: "/",
+    url: url_DescribeCertificate_600261, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDomainControllers_600274 = ref object of OpenApiRestCall_599368
-proc url_DescribeDomainControllers_600276(protocol: Scheme; host: string;
+  Call_DescribeConditionalForwarders_600274 = ref object of OpenApiRestCall_599368
+proc url_DescribeConditionalForwarders_600276(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2539,7 +2539,234 @@ proc url_DescribeDomainControllers_600276(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeDomainControllers_600275(path: JsonNode; query: JsonNode;
+proc validate_DescribeConditionalForwarders_600275(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Obtains information about the conditional forwarders for this account.</p> <p>If no input parameters are provided for RemoteDomainNames, this request describes all conditional forwarders for the specified directory ID.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600277 = header.getOrDefault("X-Amz-Date")
+  valid_600277 = validateParameter(valid_600277, JString, required = false,
+                                 default = nil)
+  if valid_600277 != nil:
+    section.add "X-Amz-Date", valid_600277
+  var valid_600278 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600278 = validateParameter(valid_600278, JString, required = false,
+                                 default = nil)
+  if valid_600278 != nil:
+    section.add "X-Amz-Security-Token", valid_600278
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600279 = header.getOrDefault("X-Amz-Target")
+  valid_600279 = validateParameter(valid_600279, JString, required = true, default = newJString(
+      "DirectoryService_20150416.DescribeConditionalForwarders"))
+  if valid_600279 != nil:
+    section.add "X-Amz-Target", valid_600279
+  var valid_600280 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600280 = validateParameter(valid_600280, JString, required = false,
+                                 default = nil)
+  if valid_600280 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600280
+  var valid_600281 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600281 = validateParameter(valid_600281, JString, required = false,
+                                 default = nil)
+  if valid_600281 != nil:
+    section.add "X-Amz-Algorithm", valid_600281
+  var valid_600282 = header.getOrDefault("X-Amz-Signature")
+  valid_600282 = validateParameter(valid_600282, JString, required = false,
+                                 default = nil)
+  if valid_600282 != nil:
+    section.add "X-Amz-Signature", valid_600282
+  var valid_600283 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600283 = validateParameter(valid_600283, JString, required = false,
+                                 default = nil)
+  if valid_600283 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600283
+  var valid_600284 = header.getOrDefault("X-Amz-Credential")
+  valid_600284 = validateParameter(valid_600284, JString, required = false,
+                                 default = nil)
+  if valid_600284 != nil:
+    section.add "X-Amz-Credential", valid_600284
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600286: Call_DescribeConditionalForwarders_600274; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Obtains information about the conditional forwarders for this account.</p> <p>If no input parameters are provided for RemoteDomainNames, this request describes all conditional forwarders for the specified directory ID.</p>
+  ## 
+  let valid = call_600286.validator(path, query, header, formData, body)
+  let scheme = call_600286.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600286.url(scheme.get, call_600286.host, call_600286.base,
+                         call_600286.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600286, url, valid)
+
+proc call*(call_600287: Call_DescribeConditionalForwarders_600274; body: JsonNode): Recallable =
+  ## describeConditionalForwarders
+  ## <p>Obtains information about the conditional forwarders for this account.</p> <p>If no input parameters are provided for RemoteDomainNames, this request describes all conditional forwarders for the specified directory ID.</p>
+  ##   body: JObject (required)
+  var body_600288 = newJObject()
+  if body != nil:
+    body_600288 = body
+  result = call_600287.call(nil, nil, nil, nil, body_600288)
+
+var describeConditionalForwarders* = Call_DescribeConditionalForwarders_600274(
+    name: "describeConditionalForwarders", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.DescribeConditionalForwarders",
+    validator: validate_DescribeConditionalForwarders_600275, base: "/",
+    url: url_DescribeConditionalForwarders_600276,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeDirectories_600289 = ref object of OpenApiRestCall_599368
+proc url_DescribeDirectories_600291(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeDirectories_600290(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## <p>Obtains information about the directories that belong to this account.</p> <p>You can retrieve information about specific directories by passing the directory identifiers in the <code>DirectoryIds</code> parameter. Otherwise, all directories that belong to the current account are returned.</p> <p>This operation supports pagination with the use of the <code>NextToken</code> request and response parameters. If more results are available, the <code>DescribeDirectoriesResult.NextToken</code> member contains a token that you pass in the next call to <a>DescribeDirectories</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <code>Limit</code> parameter.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600292 = header.getOrDefault("X-Amz-Date")
+  valid_600292 = validateParameter(valid_600292, JString, required = false,
+                                 default = nil)
+  if valid_600292 != nil:
+    section.add "X-Amz-Date", valid_600292
+  var valid_600293 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600293 = validateParameter(valid_600293, JString, required = false,
+                                 default = nil)
+  if valid_600293 != nil:
+    section.add "X-Amz-Security-Token", valid_600293
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600294 = header.getOrDefault("X-Amz-Target")
+  valid_600294 = validateParameter(valid_600294, JString, required = true, default = newJString(
+      "DirectoryService_20150416.DescribeDirectories"))
+  if valid_600294 != nil:
+    section.add "X-Amz-Target", valid_600294
+  var valid_600295 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600295 = validateParameter(valid_600295, JString, required = false,
+                                 default = nil)
+  if valid_600295 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600295
+  var valid_600296 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600296 = validateParameter(valid_600296, JString, required = false,
+                                 default = nil)
+  if valid_600296 != nil:
+    section.add "X-Amz-Algorithm", valid_600296
+  var valid_600297 = header.getOrDefault("X-Amz-Signature")
+  valid_600297 = validateParameter(valid_600297, JString, required = false,
+                                 default = nil)
+  if valid_600297 != nil:
+    section.add "X-Amz-Signature", valid_600297
+  var valid_600298 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600298 = validateParameter(valid_600298, JString, required = false,
+                                 default = nil)
+  if valid_600298 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600298
+  var valid_600299 = header.getOrDefault("X-Amz-Credential")
+  valid_600299 = validateParameter(valid_600299, JString, required = false,
+                                 default = nil)
+  if valid_600299 != nil:
+    section.add "X-Amz-Credential", valid_600299
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600301: Call_DescribeDirectories_600289; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Obtains information about the directories that belong to this account.</p> <p>You can retrieve information about specific directories by passing the directory identifiers in the <code>DirectoryIds</code> parameter. Otherwise, all directories that belong to the current account are returned.</p> <p>This operation supports pagination with the use of the <code>NextToken</code> request and response parameters. If more results are available, the <code>DescribeDirectoriesResult.NextToken</code> member contains a token that you pass in the next call to <a>DescribeDirectories</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <code>Limit</code> parameter.</p>
+  ## 
+  let valid = call_600301.validator(path, query, header, formData, body)
+  let scheme = call_600301.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600301.url(scheme.get, call_600301.host, call_600301.base,
+                         call_600301.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600301, url, valid)
+
+proc call*(call_600302: Call_DescribeDirectories_600289; body: JsonNode): Recallable =
+  ## describeDirectories
+  ## <p>Obtains information about the directories that belong to this account.</p> <p>You can retrieve information about specific directories by passing the directory identifiers in the <code>DirectoryIds</code> parameter. Otherwise, all directories that belong to the current account are returned.</p> <p>This operation supports pagination with the use of the <code>NextToken</code> request and response parameters. If more results are available, the <code>DescribeDirectoriesResult.NextToken</code> member contains a token that you pass in the next call to <a>DescribeDirectories</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <code>Limit</code> parameter.</p>
+  ##   body: JObject (required)
+  var body_600303 = newJObject()
+  if body != nil:
+    body_600303 = body
+  result = call_600302.call(nil, nil, nil, nil, body_600303)
+
+var describeDirectories* = Call_DescribeDirectories_600289(
+    name: "describeDirectories", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeDirectories",
+    validator: validate_DescribeDirectories_600290, base: "/",
+    url: url_DescribeDirectories_600291, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeDomainControllers_600304 = ref object of OpenApiRestCall_599368
+proc url_DescribeDomainControllers_600306(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeDomainControllers_600305(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Provides information about any domain controllers in your directory.
   ## 
@@ -2553,16 +2780,16 @@ proc validate_DescribeDomainControllers_600275(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_600277 = query.getOrDefault("Limit")
-  valid_600277 = validateParameter(valid_600277, JString, required = false,
+  var valid_600307 = query.getOrDefault("Limit")
+  valid_600307 = validateParameter(valid_600307, JString, required = false,
                                  default = nil)
-  if valid_600277 != nil:
-    section.add "Limit", valid_600277
-  var valid_600278 = query.getOrDefault("NextToken")
-  valid_600278 = validateParameter(valid_600278, JString, required = false,
+  if valid_600307 != nil:
+    section.add "Limit", valid_600307
+  var valid_600308 = query.getOrDefault("NextToken")
+  valid_600308 = validateParameter(valid_600308, JString, required = false,
                                  default = nil)
-  if valid_600278 != nil:
-    section.add "NextToken", valid_600278
+  if valid_600308 != nil:
+    section.add "NextToken", valid_600308
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2574,48 +2801,48 @@ proc validate_DescribeDomainControllers_600275(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600279 = header.getOrDefault("X-Amz-Date")
-  valid_600279 = validateParameter(valid_600279, JString, required = false,
+  var valid_600309 = header.getOrDefault("X-Amz-Date")
+  valid_600309 = validateParameter(valid_600309, JString, required = false,
                                  default = nil)
-  if valid_600279 != nil:
-    section.add "X-Amz-Date", valid_600279
-  var valid_600280 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600280 = validateParameter(valid_600280, JString, required = false,
+  if valid_600309 != nil:
+    section.add "X-Amz-Date", valid_600309
+  var valid_600310 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600310 = validateParameter(valid_600310, JString, required = false,
                                  default = nil)
-  if valid_600280 != nil:
-    section.add "X-Amz-Security-Token", valid_600280
+  if valid_600310 != nil:
+    section.add "X-Amz-Security-Token", valid_600310
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600281 = header.getOrDefault("X-Amz-Target")
-  valid_600281 = validateParameter(valid_600281, JString, required = true, default = newJString(
+  var valid_600311 = header.getOrDefault("X-Amz-Target")
+  valid_600311 = validateParameter(valid_600311, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeDomainControllers"))
-  if valid_600281 != nil:
-    section.add "X-Amz-Target", valid_600281
-  var valid_600282 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600282 = validateParameter(valid_600282, JString, required = false,
+  if valid_600311 != nil:
+    section.add "X-Amz-Target", valid_600311
+  var valid_600312 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600312 = validateParameter(valid_600312, JString, required = false,
                                  default = nil)
-  if valid_600282 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600282
-  var valid_600283 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600283 = validateParameter(valid_600283, JString, required = false,
+  if valid_600312 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600312
+  var valid_600313 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600313 = validateParameter(valid_600313, JString, required = false,
                                  default = nil)
-  if valid_600283 != nil:
-    section.add "X-Amz-Algorithm", valid_600283
-  var valid_600284 = header.getOrDefault("X-Amz-Signature")
-  valid_600284 = validateParameter(valid_600284, JString, required = false,
+  if valid_600313 != nil:
+    section.add "X-Amz-Algorithm", valid_600313
+  var valid_600314 = header.getOrDefault("X-Amz-Signature")
+  valid_600314 = validateParameter(valid_600314, JString, required = false,
                                  default = nil)
-  if valid_600284 != nil:
-    section.add "X-Amz-Signature", valid_600284
-  var valid_600285 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600285 = validateParameter(valid_600285, JString, required = false,
+  if valid_600314 != nil:
+    section.add "X-Amz-Signature", valid_600314
+  var valid_600315 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600315 = validateParameter(valid_600315, JString, required = false,
                                  default = nil)
-  if valid_600285 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600285
-  var valid_600286 = header.getOrDefault("X-Amz-Credential")
-  valid_600286 = validateParameter(valid_600286, JString, required = false,
+  if valid_600315 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600315
+  var valid_600316 = header.getOrDefault("X-Amz-Credential")
+  valid_600316 = validateParameter(valid_600316, JString, required = false,
                                  default = nil)
-  if valid_600286 != nil:
-    section.add "X-Amz-Credential", valid_600286
+  if valid_600316 != nil:
+    section.add "X-Amz-Credential", valid_600316
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2626,20 +2853,20 @@ proc validate_DescribeDomainControllers_600275(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600288: Call_DescribeDomainControllers_600274; path: JsonNode;
+proc call*(call_600318: Call_DescribeDomainControllers_600304; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Provides information about any domain controllers in your directory.
   ## 
-  let valid = call_600288.validator(path, query, header, formData, body)
-  let scheme = call_600288.pickScheme
+  let valid = call_600318.validator(path, query, header, formData, body)
+  let scheme = call_600318.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600288.url(scheme.get, call_600288.host, call_600288.base,
-                         call_600288.route, valid.getOrDefault("path"),
+  let url = call_600318.url(scheme.get, call_600318.host, call_600318.base,
+                         call_600318.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600288, url, valid)
+  result = atozHook(call_600318, url, valid)
 
-proc call*(call_600289: Call_DescribeDomainControllers_600274; body: JsonNode;
+proc call*(call_600319: Call_DescribeDomainControllers_600304; body: JsonNode;
           Limit: string = ""; NextToken: string = ""): Recallable =
   ## describeDomainControllers
   ## Provides information about any domain controllers in your directory.
@@ -2648,23 +2875,23 @@ proc call*(call_600289: Call_DescribeDomainControllers_600274; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_600290 = newJObject()
-  var body_600291 = newJObject()
-  add(query_600290, "Limit", newJString(Limit))
-  add(query_600290, "NextToken", newJString(NextToken))
+  var query_600320 = newJObject()
+  var body_600321 = newJObject()
+  add(query_600320, "Limit", newJString(Limit))
+  add(query_600320, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600291 = body
-  result = call_600289.call(nil, query_600290, nil, nil, body_600291)
+    body_600321 = body
+  result = call_600319.call(nil, query_600320, nil, nil, body_600321)
 
-var describeDomainControllers* = Call_DescribeDomainControllers_600274(
+var describeDomainControllers* = Call_DescribeDomainControllers_600304(
     name: "describeDomainControllers", meth: HttpMethod.HttpPost,
     host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.DescribeDomainControllers",
-    validator: validate_DescribeDomainControllers_600275, base: "/",
-    url: url_DescribeDomainControllers_600276,
+    validator: validate_DescribeDomainControllers_600305, base: "/",
+    url: url_DescribeDomainControllers_600306,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEventTopics_600293 = ref object of OpenApiRestCall_599368
-proc url_DescribeEventTopics_600295(protocol: Scheme; host: string; base: string;
+  Call_DescribeEventTopics_600323 = ref object of OpenApiRestCall_599368
+proc url_DescribeEventTopics_600325(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2675,237 +2902,10 @@ proc url_DescribeEventTopics_600295(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_DescribeEventTopics_600294(path: JsonNode; query: JsonNode;
+proc validate_DescribeEventTopics_600324(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Obtains information about which SNS topics receive status messages from the specified directory.</p> <p>If no input parameters are provided, such as DirectoryId or TopicName, this request describes all of the associations in the account.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_600296 = header.getOrDefault("X-Amz-Date")
-  valid_600296 = validateParameter(valid_600296, JString, required = false,
-                                 default = nil)
-  if valid_600296 != nil:
-    section.add "X-Amz-Date", valid_600296
-  var valid_600297 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600297 = validateParameter(valid_600297, JString, required = false,
-                                 default = nil)
-  if valid_600297 != nil:
-    section.add "X-Amz-Security-Token", valid_600297
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600298 = header.getOrDefault("X-Amz-Target")
-  valid_600298 = validateParameter(valid_600298, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DescribeEventTopics"))
-  if valid_600298 != nil:
-    section.add "X-Amz-Target", valid_600298
-  var valid_600299 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600299 = validateParameter(valid_600299, JString, required = false,
-                                 default = nil)
-  if valid_600299 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600299
-  var valid_600300 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600300 = validateParameter(valid_600300, JString, required = false,
-                                 default = nil)
-  if valid_600300 != nil:
-    section.add "X-Amz-Algorithm", valid_600300
-  var valid_600301 = header.getOrDefault("X-Amz-Signature")
-  valid_600301 = validateParameter(valid_600301, JString, required = false,
-                                 default = nil)
-  if valid_600301 != nil:
-    section.add "X-Amz-Signature", valid_600301
-  var valid_600302 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600302 = validateParameter(valid_600302, JString, required = false,
-                                 default = nil)
-  if valid_600302 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600302
-  var valid_600303 = header.getOrDefault("X-Amz-Credential")
-  valid_600303 = validateParameter(valid_600303, JString, required = false,
-                                 default = nil)
-  if valid_600303 != nil:
-    section.add "X-Amz-Credential", valid_600303
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_600305: Call_DescribeEventTopics_600293; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Obtains information about which SNS topics receive status messages from the specified directory.</p> <p>If no input parameters are provided, such as DirectoryId or TopicName, this request describes all of the associations in the account.</p>
-  ## 
-  let valid = call_600305.validator(path, query, header, formData, body)
-  let scheme = call_600305.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600305.url(scheme.get, call_600305.host, call_600305.base,
-                         call_600305.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_600305, url, valid)
-
-proc call*(call_600306: Call_DescribeEventTopics_600293; body: JsonNode): Recallable =
-  ## describeEventTopics
-  ## <p>Obtains information about which SNS topics receive status messages from the specified directory.</p> <p>If no input parameters are provided, such as DirectoryId or TopicName, this request describes all of the associations in the account.</p>
-  ##   body: JObject (required)
-  var body_600307 = newJObject()
-  if body != nil:
-    body_600307 = body
-  result = call_600306.call(nil, nil, nil, nil, body_600307)
-
-var describeEventTopics* = Call_DescribeEventTopics_600293(
-    name: "describeEventTopics", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeEventTopics",
-    validator: validate_DescribeEventTopics_600294, base: "/",
-    url: url_DescribeEventTopics_600295, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeSharedDirectories_600308 = ref object of OpenApiRestCall_599368
-proc url_DescribeSharedDirectories_600310(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeSharedDirectories_600309(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Returns the shared directories in your account. 
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_600311 = header.getOrDefault("X-Amz-Date")
-  valid_600311 = validateParameter(valid_600311, JString, required = false,
-                                 default = nil)
-  if valid_600311 != nil:
-    section.add "X-Amz-Date", valid_600311
-  var valid_600312 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600312 = validateParameter(valid_600312, JString, required = false,
-                                 default = nil)
-  if valid_600312 != nil:
-    section.add "X-Amz-Security-Token", valid_600312
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600313 = header.getOrDefault("X-Amz-Target")
-  valid_600313 = validateParameter(valid_600313, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DescribeSharedDirectories"))
-  if valid_600313 != nil:
-    section.add "X-Amz-Target", valid_600313
-  var valid_600314 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600314 = validateParameter(valid_600314, JString, required = false,
-                                 default = nil)
-  if valid_600314 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600314
-  var valid_600315 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600315 = validateParameter(valid_600315, JString, required = false,
-                                 default = nil)
-  if valid_600315 != nil:
-    section.add "X-Amz-Algorithm", valid_600315
-  var valid_600316 = header.getOrDefault("X-Amz-Signature")
-  valid_600316 = validateParameter(valid_600316, JString, required = false,
-                                 default = nil)
-  if valid_600316 != nil:
-    section.add "X-Amz-Signature", valid_600316
-  var valid_600317 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600317 = validateParameter(valid_600317, JString, required = false,
-                                 default = nil)
-  if valid_600317 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600317
-  var valid_600318 = header.getOrDefault("X-Amz-Credential")
-  valid_600318 = validateParameter(valid_600318, JString, required = false,
-                                 default = nil)
-  if valid_600318 != nil:
-    section.add "X-Amz-Credential", valid_600318
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_600320: Call_DescribeSharedDirectories_600308; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns the shared directories in your account. 
-  ## 
-  let valid = call_600320.validator(path, query, header, formData, body)
-  let scheme = call_600320.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600320.url(scheme.get, call_600320.host, call_600320.base,
-                         call_600320.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_600320, url, valid)
-
-proc call*(call_600321: Call_DescribeSharedDirectories_600308; body: JsonNode): Recallable =
-  ## describeSharedDirectories
-  ## Returns the shared directories in your account. 
-  ##   body: JObject (required)
-  var body_600322 = newJObject()
-  if body != nil:
-    body_600322 = body
-  result = call_600321.call(nil, nil, nil, nil, body_600322)
-
-var describeSharedDirectories* = Call_DescribeSharedDirectories_600308(
-    name: "describeSharedDirectories", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.DescribeSharedDirectories",
-    validator: validate_DescribeSharedDirectories_600309, base: "/",
-    url: url_DescribeSharedDirectories_600310,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeSnapshots_600323 = ref object of OpenApiRestCall_599368
-proc url_DescribeSnapshots_600325(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeSnapshots_600324(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## <p>Obtains information about the directory snapshots that belong to this account.</p> <p>This operation supports pagination with the use of the <i>NextToken</i> request and response parameters. If more results are available, the <i>DescribeSnapshots.NextToken</i> member contains a token that you pass in the next call to <a>DescribeSnapshots</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <i>Limit</i> parameter.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2937,7 +2937,7 @@ proc validate_DescribeSnapshots_600324(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600328 = header.getOrDefault("X-Amz-Target")
   valid_600328 = validateParameter(valid_600328, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DescribeSnapshots"))
+      "DirectoryService_20150416.DescribeEventTopics"))
   if valid_600328 != nil:
     section.add "X-Amz-Target", valid_600328
   var valid_600329 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2975,9 +2975,9 @@ proc validate_DescribeSnapshots_600324(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600335: Call_DescribeSnapshots_600323; path: JsonNode;
+proc call*(call_600335: Call_DescribeEventTopics_600323; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Obtains information about the directory snapshots that belong to this account.</p> <p>This operation supports pagination with the use of the <i>NextToken</i> request and response parameters. If more results are available, the <i>DescribeSnapshots.NextToken</i> member contains a token that you pass in the next call to <a>DescribeSnapshots</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <i>Limit</i> parameter.</p>
+  ## <p>Obtains information about which SNS topics receive status messages from the specified directory.</p> <p>If no input parameters are provided, such as DirectoryId or TopicName, this request describes all of the associations in the account.</p>
   ## 
   let valid = call_600335.validator(path, query, header, formData, body)
   let scheme = call_600335.pickScheme
@@ -2988,24 +2988,25 @@ proc call*(call_600335: Call_DescribeSnapshots_600323; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600335, url, valid)
 
-proc call*(call_600336: Call_DescribeSnapshots_600323; body: JsonNode): Recallable =
-  ## describeSnapshots
-  ## <p>Obtains information about the directory snapshots that belong to this account.</p> <p>This operation supports pagination with the use of the <i>NextToken</i> request and response parameters. If more results are available, the <i>DescribeSnapshots.NextToken</i> member contains a token that you pass in the next call to <a>DescribeSnapshots</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <i>Limit</i> parameter.</p>
+proc call*(call_600336: Call_DescribeEventTopics_600323; body: JsonNode): Recallable =
+  ## describeEventTopics
+  ## <p>Obtains information about which SNS topics receive status messages from the specified directory.</p> <p>If no input parameters are provided, such as DirectoryId or TopicName, this request describes all of the associations in the account.</p>
   ##   body: JObject (required)
   var body_600337 = newJObject()
   if body != nil:
     body_600337 = body
   result = call_600336.call(nil, nil, nil, nil, body_600337)
 
-var describeSnapshots* = Call_DescribeSnapshots_600323(name: "describeSnapshots",
-    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeSnapshots",
-    validator: validate_DescribeSnapshots_600324, base: "/",
-    url: url_DescribeSnapshots_600325, schemes: {Scheme.Https, Scheme.Http})
+var describeEventTopics* = Call_DescribeEventTopics_600323(
+    name: "describeEventTopics", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeEventTopics",
+    validator: validate_DescribeEventTopics_600324, base: "/",
+    url: url_DescribeEventTopics_600325, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTrusts_600338 = ref object of OpenApiRestCall_599368
-proc url_DescribeTrusts_600340(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeLDAPSSettings_600338 = ref object of OpenApiRestCall_599368
+proc url_DescribeLDAPSSettings_600340(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3015,10 +3016,9 @@ proc url_DescribeTrusts_600340(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeTrusts_600339(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode): JsonNode =
-  ## <p>Obtains information about the trust relationships for this account.</p> <p>If no input parameters are provided, such as DirectoryId or TrustIds, this request describes all the trust relationships belonging to the account.</p>
+proc validate_DescribeLDAPSSettings_600339(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Describes the status of LDAP security for the specified directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3050,7 +3050,7 @@ proc validate_DescribeTrusts_600339(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600343 = header.getOrDefault("X-Amz-Target")
   valid_600343 = validateParameter(valid_600343, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DescribeTrusts"))
+      "DirectoryService_20150416.DescribeLDAPSSettings"))
   if valid_600343 != nil:
     section.add "X-Amz-Target", valid_600343
   var valid_600344 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3088,9 +3088,9 @@ proc validate_DescribeTrusts_600339(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600350: Call_DescribeTrusts_600338; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Obtains information about the trust relationships for this account.</p> <p>If no input parameters are provided, such as DirectoryId or TrustIds, this request describes all the trust relationships belonging to the account.</p>
+proc call*(call_600350: Call_DescribeLDAPSSettings_600338; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Describes the status of LDAP security for the specified directory.
   ## 
   let valid = call_600350.validator(path, query, header, formData, body)
   let scheme = call_600350.pickScheme
@@ -3101,24 +3101,25 @@ proc call*(call_600350: Call_DescribeTrusts_600338; path: JsonNode; query: JsonN
                          valid.getOrDefault("query"))
   result = atozHook(call_600350, url, valid)
 
-proc call*(call_600351: Call_DescribeTrusts_600338; body: JsonNode): Recallable =
-  ## describeTrusts
-  ## <p>Obtains information about the trust relationships for this account.</p> <p>If no input parameters are provided, such as DirectoryId or TrustIds, this request describes all the trust relationships belonging to the account.</p>
+proc call*(call_600351: Call_DescribeLDAPSSettings_600338; body: JsonNode): Recallable =
+  ## describeLDAPSSettings
+  ## Describes the status of LDAP security for the specified directory.
   ##   body: JObject (required)
   var body_600352 = newJObject()
   if body != nil:
     body_600352 = body
   result = call_600351.call(nil, nil, nil, nil, body_600352)
 
-var describeTrusts* = Call_DescribeTrusts_600338(name: "describeTrusts",
-    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeTrusts",
-    validator: validate_DescribeTrusts_600339, base: "/", url: url_DescribeTrusts_600340,
-    schemes: {Scheme.Https, Scheme.Http})
+var describeLDAPSSettings* = Call_DescribeLDAPSSettings_600338(
+    name: "describeLDAPSSettings", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeLDAPSSettings",
+    validator: validate_DescribeLDAPSSettings_600339, base: "/",
+    url: url_DescribeLDAPSSettings_600340, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableRadius_600353 = ref object of OpenApiRestCall_599368
-proc url_DisableRadius_600355(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeSharedDirectories_600353 = ref object of OpenApiRestCall_599368
+proc url_DescribeSharedDirectories_600355(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3128,9 +3129,9 @@ proc url_DisableRadius_600355(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DisableRadius_600354(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## Disables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
+proc validate_DescribeSharedDirectories_600354(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Returns the shared directories in your account. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3162,7 +3163,7 @@ proc validate_DisableRadius_600354(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600358 = header.getOrDefault("X-Amz-Target")
   valid_600358 = validateParameter(valid_600358, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DisableRadius"))
+      "DirectoryService_20150416.DescribeSharedDirectories"))
   if valid_600358 != nil:
     section.add "X-Amz-Target", valid_600358
   var valid_600359 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3200,9 +3201,9 @@ proc validate_DisableRadius_600354(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600365: Call_DisableRadius_600353; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Disables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
+proc call*(call_600365: Call_DescribeSharedDirectories_600353; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns the shared directories in your account. 
   ## 
   let valid = call_600365.validator(path, query, header, formData, body)
   let scheme = call_600365.pickScheme
@@ -3213,24 +3214,25 @@ proc call*(call_600365: Call_DisableRadius_600353; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_600365, url, valid)
 
-proc call*(call_600366: Call_DisableRadius_600353; body: JsonNode): Recallable =
-  ## disableRadius
-  ## Disables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
+proc call*(call_600366: Call_DescribeSharedDirectories_600353; body: JsonNode): Recallable =
+  ## describeSharedDirectories
+  ## Returns the shared directories in your account. 
   ##   body: JObject (required)
   var body_600367 = newJObject()
   if body != nil:
     body_600367 = body
   result = call_600366.call(nil, nil, nil, nil, body_600367)
 
-var disableRadius* = Call_DisableRadius_600353(name: "disableRadius",
-    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.DisableRadius",
-    validator: validate_DisableRadius_600354, base: "/", url: url_DisableRadius_600355,
+var describeSharedDirectories* = Call_DescribeSharedDirectories_600353(
+    name: "describeSharedDirectories", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.DescribeSharedDirectories",
+    validator: validate_DescribeSharedDirectories_600354, base: "/",
+    url: url_DescribeSharedDirectories_600355,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableSso_600368 = ref object of OpenApiRestCall_599368
-proc url_DisableSso_600370(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeSnapshots_600368 = ref object of OpenApiRestCall_599368
+proc url_DescribeSnapshots_600370(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3240,9 +3242,10 @@ proc url_DisableSso_600370(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_DisableSso_600369(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode): JsonNode =
-  ## Disables single-sign on for a directory.
+proc validate_DescribeSnapshots_600369(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## <p>Obtains information about the directory snapshots that belong to this account.</p> <p>This operation supports pagination with the use of the <i>NextToken</i> request and response parameters. If more results are available, the <i>DescribeSnapshots.NextToken</i> member contains a token that you pass in the next call to <a>DescribeSnapshots</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <i>Limit</i> parameter.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3274,7 +3277,7 @@ proc validate_DisableSso_600369(path: JsonNode; query: JsonNode; header: JsonNod
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600373 = header.getOrDefault("X-Amz-Target")
   valid_600373 = validateParameter(valid_600373, JString, required = true, default = newJString(
-      "DirectoryService_20150416.DisableSso"))
+      "DirectoryService_20150416.DescribeSnapshots"))
   if valid_600373 != nil:
     section.add "X-Amz-Target", valid_600373
   var valid_600374 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3312,9 +3315,9 @@ proc validate_DisableSso_600369(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600380: Call_DisableSso_600368; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Disables single-sign on for a directory.
+proc call*(call_600380: Call_DescribeSnapshots_600368; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Obtains information about the directory snapshots that belong to this account.</p> <p>This operation supports pagination with the use of the <i>NextToken</i> request and response parameters. If more results are available, the <i>DescribeSnapshots.NextToken</i> member contains a token that you pass in the next call to <a>DescribeSnapshots</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <i>Limit</i> parameter.</p>
   ## 
   let valid = call_600380.validator(path, query, header, formData, body)
   let scheme = call_600380.pickScheme
@@ -3325,25 +3328,24 @@ proc call*(call_600380: Call_DisableSso_600368; path: JsonNode; query: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600380, url, valid)
 
-proc call*(call_600381: Call_DisableSso_600368; body: JsonNode): Recallable =
-  ## disableSso
-  ## Disables single-sign on for a directory.
+proc call*(call_600381: Call_DescribeSnapshots_600368; body: JsonNode): Recallable =
+  ## describeSnapshots
+  ## <p>Obtains information about the directory snapshots that belong to this account.</p> <p>This operation supports pagination with the use of the <i>NextToken</i> request and response parameters. If more results are available, the <i>DescribeSnapshots.NextToken</i> member contains a token that you pass in the next call to <a>DescribeSnapshots</a> to retrieve the next set of items.</p> <p>You can also specify a maximum number of return results with the <i>Limit</i> parameter.</p>
   ##   body: JObject (required)
   var body_600382 = newJObject()
   if body != nil:
     body_600382 = body
   result = call_600381.call(nil, nil, nil, nil, body_600382)
 
-var disableSso* = Call_DisableSso_600368(name: "disableSso",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.DisableSso",
-                                      validator: validate_DisableSso_600369,
-                                      base: "/", url: url_DisableSso_600370,
-                                      schemes: {Scheme.Https, Scheme.Http})
+var describeSnapshots* = Call_DescribeSnapshots_600368(name: "describeSnapshots",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeSnapshots",
+    validator: validate_DescribeSnapshots_600369, base: "/",
+    url: url_DescribeSnapshots_600370, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableRadius_600383 = ref object of OpenApiRestCall_599368
-proc url_EnableRadius_600385(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeTrusts_600383 = ref object of OpenApiRestCall_599368
+proc url_DescribeTrusts_600385(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3353,9 +3355,10 @@ proc url_EnableRadius_600385(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_EnableRadius_600384(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## Enables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
+proc validate_DescribeTrusts_600384(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode): JsonNode =
+  ## <p>Obtains information about the trust relationships for this account.</p> <p>If no input parameters are provided, such as DirectoryId or TrustIds, this request describes all the trust relationships belonging to the account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3387,7 +3390,7 @@ proc validate_EnableRadius_600384(path: JsonNode; query: JsonNode; header: JsonN
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600388 = header.getOrDefault("X-Amz-Target")
   valid_600388 = validateParameter(valid_600388, JString, required = true, default = newJString(
-      "DirectoryService_20150416.EnableRadius"))
+      "DirectoryService_20150416.DescribeTrusts"))
   if valid_600388 != nil:
     section.add "X-Amz-Target", valid_600388
   var valid_600389 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3425,9 +3428,9 @@ proc validate_EnableRadius_600384(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600395: Call_EnableRadius_600383; path: JsonNode; query: JsonNode;
+proc call*(call_600395: Call_DescribeTrusts_600383; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Enables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
+  ## <p>Obtains information about the trust relationships for this account.</p> <p>If no input parameters are provided, such as DirectoryId or TrustIds, this request describes all the trust relationships belonging to the account.</p>
   ## 
   let valid = call_600395.validator(path, query, header, formData, body)
   let scheme = call_600395.pickScheme
@@ -3438,24 +3441,24 @@ proc call*(call_600395: Call_EnableRadius_600383; path: JsonNode; query: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600395, url, valid)
 
-proc call*(call_600396: Call_EnableRadius_600383; body: JsonNode): Recallable =
-  ## enableRadius
-  ## Enables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
+proc call*(call_600396: Call_DescribeTrusts_600383; body: JsonNode): Recallable =
+  ## describeTrusts
+  ## <p>Obtains information about the trust relationships for this account.</p> <p>If no input parameters are provided, such as DirectoryId or TrustIds, this request describes all the trust relationships belonging to the account.</p>
   ##   body: JObject (required)
   var body_600397 = newJObject()
   if body != nil:
     body_600397 = body
   result = call_600396.call(nil, nil, nil, nil, body_600397)
 
-var enableRadius* = Call_EnableRadius_600383(name: "enableRadius",
+var describeTrusts* = Call_DescribeTrusts_600383(name: "describeTrusts",
     meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.EnableRadius",
-    validator: validate_EnableRadius_600384, base: "/", url: url_EnableRadius_600385,
+    route: "/#X-Amz-Target=DirectoryService_20150416.DescribeTrusts",
+    validator: validate_DescribeTrusts_600384, base: "/", url: url_DescribeTrusts_600385,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableSso_600398 = ref object of OpenApiRestCall_599368
-proc url_EnableSso_600400(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode; query: JsonNode): Uri =
+  Call_DisableLDAPS_600398 = ref object of OpenApiRestCall_599368
+proc url_DisableLDAPS_600400(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3465,9 +3468,9 @@ proc url_EnableSso_600400(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & route
 
-proc validate_EnableSso_600399(path: JsonNode; query: JsonNode; header: JsonNode;
-                              formData: JsonNode; body: JsonNode): JsonNode =
-  ## Enables single sign-on for a directory.
+proc validate_DisableLDAPS_600399(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## Deactivates LDAP secure calls for the specified directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3499,7 +3502,7 @@ proc validate_EnableSso_600399(path: JsonNode; query: JsonNode; header: JsonNode
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600403 = header.getOrDefault("X-Amz-Target")
   valid_600403 = validateParameter(valid_600403, JString, required = true, default = newJString(
-      "DirectoryService_20150416.EnableSso"))
+      "DirectoryService_20150416.DisableLDAPS"))
   if valid_600403 != nil:
     section.add "X-Amz-Target", valid_600403
   var valid_600404 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3537,9 +3540,9 @@ proc validate_EnableSso_600399(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600410: Call_EnableSso_600398; path: JsonNode; query: JsonNode;
+proc call*(call_600410: Call_DisableLDAPS_600398; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Enables single sign-on for a directory.
+  ## Deactivates LDAP secure calls for the specified directory.
   ## 
   let valid = call_600410.validator(path, query, header, formData, body)
   let scheme = call_600410.pickScheme
@@ -3550,24 +3553,24 @@ proc call*(call_600410: Call_EnableSso_600398; path: JsonNode; query: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600410, url, valid)
 
-proc call*(call_600411: Call_EnableSso_600398; body: JsonNode): Recallable =
-  ## enableSso
-  ## Enables single sign-on for a directory.
+proc call*(call_600411: Call_DisableLDAPS_600398; body: JsonNode): Recallable =
+  ## disableLDAPS
+  ## Deactivates LDAP secure calls for the specified directory.
   ##   body: JObject (required)
   var body_600412 = newJObject()
   if body != nil:
     body_600412 = body
   result = call_600411.call(nil, nil, nil, nil, body_600412)
 
-var enableSso* = Call_EnableSso_600398(name: "enableSso", meth: HttpMethod.HttpPost,
-                                    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.EnableSso",
-                                    validator: validate_EnableSso_600399,
-                                    base: "/", url: url_EnableSso_600400,
-                                    schemes: {Scheme.Https, Scheme.Http})
+var disableLDAPS* = Call_DisableLDAPS_600398(name: "disableLDAPS",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.DisableLDAPS",
+    validator: validate_DisableLDAPS_600399, base: "/", url: url_DisableLDAPS_600400,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDirectoryLimits_600413 = ref object of OpenApiRestCall_599368
-proc url_GetDirectoryLimits_600415(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DisableRadius_600413 = ref object of OpenApiRestCall_599368
+proc url_DisableRadius_600415(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3577,10 +3580,9 @@ proc url_GetDirectoryLimits_600415(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetDirectoryLimits_600414(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode): JsonNode =
-  ## Obtains directory limit information for the current region.
+proc validate_DisableRadius_600414(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Disables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3612,7 +3614,7 @@ proc validate_GetDirectoryLimits_600414(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600418 = header.getOrDefault("X-Amz-Target")
   valid_600418 = validateParameter(valid_600418, JString, required = true, default = newJString(
-      "DirectoryService_20150416.GetDirectoryLimits"))
+      "DirectoryService_20150416.DisableRadius"))
   if valid_600418 != nil:
     section.add "X-Amz-Target", valid_600418
   var valid_600419 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3650,9 +3652,9 @@ proc validate_GetDirectoryLimits_600414(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600425: Call_GetDirectoryLimits_600413; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Obtains directory limit information for the current region.
+proc call*(call_600425: Call_DisableRadius_600413; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Disables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
   ## 
   let valid = call_600425.validator(path, query, header, formData, body)
   let scheme = call_600425.pickScheme
@@ -3663,24 +3665,24 @@ proc call*(call_600425: Call_GetDirectoryLimits_600413; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600425, url, valid)
 
-proc call*(call_600426: Call_GetDirectoryLimits_600413; body: JsonNode): Recallable =
-  ## getDirectoryLimits
-  ## Obtains directory limit information for the current region.
+proc call*(call_600426: Call_DisableRadius_600413; body: JsonNode): Recallable =
+  ## disableRadius
+  ## Disables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
   ##   body: JObject (required)
   var body_600427 = newJObject()
   if body != nil:
     body_600427 = body
   result = call_600426.call(nil, nil, nil, nil, body_600427)
 
-var getDirectoryLimits* = Call_GetDirectoryLimits_600413(
-    name: "getDirectoryLimits", meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.GetDirectoryLimits",
-    validator: validate_GetDirectoryLimits_600414, base: "/",
-    url: url_GetDirectoryLimits_600415, schemes: {Scheme.Https, Scheme.Http})
+var disableRadius* = Call_DisableRadius_600413(name: "disableRadius",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.DisableRadius",
+    validator: validate_DisableRadius_600414, base: "/", url: url_DisableRadius_600415,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSnapshotLimits_600428 = ref object of OpenApiRestCall_599368
-proc url_GetSnapshotLimits_600430(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DisableSso_600428 = ref object of OpenApiRestCall_599368
+proc url_DisableSso_600430(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3690,10 +3692,9 @@ proc url_GetSnapshotLimits_600430(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetSnapshotLimits_600429(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## Obtains the manual snapshot limits for a directory.
+proc validate_DisableSso_600429(path: JsonNode; query: JsonNode; header: JsonNode;
+                               formData: JsonNode; body: JsonNode): JsonNode =
+  ## Disables single-sign on for a directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3725,7 +3726,7 @@ proc validate_GetSnapshotLimits_600429(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600433 = header.getOrDefault("X-Amz-Target")
   valid_600433 = validateParameter(valid_600433, JString, required = true, default = newJString(
-      "DirectoryService_20150416.GetSnapshotLimits"))
+      "DirectoryService_20150416.DisableSso"))
   if valid_600433 != nil:
     section.add "X-Amz-Target", valid_600433
   var valid_600434 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3763,9 +3764,9 @@ proc validate_GetSnapshotLimits_600429(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600440: Call_GetSnapshotLimits_600428; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Obtains the manual snapshot limits for a directory.
+proc call*(call_600440: Call_DisableSso_600428; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Disables single-sign on for a directory.
   ## 
   let valid = call_600440.validator(path, query, header, formData, body)
   let scheme = call_600440.pickScheme
@@ -3776,24 +3777,25 @@ proc call*(call_600440: Call_GetSnapshotLimits_600428; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600440, url, valid)
 
-proc call*(call_600441: Call_GetSnapshotLimits_600428; body: JsonNode): Recallable =
-  ## getSnapshotLimits
-  ## Obtains the manual snapshot limits for a directory.
+proc call*(call_600441: Call_DisableSso_600428; body: JsonNode): Recallable =
+  ## disableSso
+  ## Disables single-sign on for a directory.
   ##   body: JObject (required)
   var body_600442 = newJObject()
   if body != nil:
     body_600442 = body
   result = call_600441.call(nil, nil, nil, nil, body_600442)
 
-var getSnapshotLimits* = Call_GetSnapshotLimits_600428(name: "getSnapshotLimits",
-    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.GetSnapshotLimits",
-    validator: validate_GetSnapshotLimits_600429, base: "/",
-    url: url_GetSnapshotLimits_600430, schemes: {Scheme.Https, Scheme.Http})
+var disableSso* = Call_DisableSso_600428(name: "disableSso",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.DisableSso",
+                                      validator: validate_DisableSso_600429,
+                                      base: "/", url: url_DisableSso_600430,
+                                      schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListIpRoutes_600443 = ref object of OpenApiRestCall_599368
-proc url_ListIpRoutes_600445(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_EnableLDAPS_600443 = ref object of OpenApiRestCall_599368
+proc url_EnableLDAPS_600445(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3803,9 +3805,9 @@ proc url_ListIpRoutes_600445(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListIpRoutes_600444(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## Lists the address blocks that you have added to a directory.
+proc validate_EnableLDAPS_600444(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## Activates the switch for the specific directory to always use LDAP secure calls.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3837,7 +3839,7 @@ proc validate_ListIpRoutes_600444(path: JsonNode; query: JsonNode; header: JsonN
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600448 = header.getOrDefault("X-Amz-Target")
   valid_600448 = validateParameter(valid_600448, JString, required = true, default = newJString(
-      "DirectoryService_20150416.ListIpRoutes"))
+      "DirectoryService_20150416.EnableLDAPS"))
   if valid_600448 != nil:
     section.add "X-Amz-Target", valid_600448
   var valid_600449 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3875,9 +3877,9 @@ proc validate_ListIpRoutes_600444(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600455: Call_ListIpRoutes_600443; path: JsonNode; query: JsonNode;
+proc call*(call_600455: Call_EnableLDAPS_600443; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Lists the address blocks that you have added to a directory.
+  ## Activates the switch for the specific directory to always use LDAP secure calls.
   ## 
   let valid = call_600455.validator(path, query, header, formData, body)
   let scheme = call_600455.pickScheme
@@ -3888,24 +3890,25 @@ proc call*(call_600455: Call_ListIpRoutes_600443; path: JsonNode; query: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600455, url, valid)
 
-proc call*(call_600456: Call_ListIpRoutes_600443; body: JsonNode): Recallable =
-  ## listIpRoutes
-  ## Lists the address blocks that you have added to a directory.
+proc call*(call_600456: Call_EnableLDAPS_600443; body: JsonNode): Recallable =
+  ## enableLDAPS
+  ## Activates the switch for the specific directory to always use LDAP secure calls.
   ##   body: JObject (required)
   var body_600457 = newJObject()
   if body != nil:
     body_600457 = body
   result = call_600456.call(nil, nil, nil, nil, body_600457)
 
-var listIpRoutes* = Call_ListIpRoutes_600443(name: "listIpRoutes",
-    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.ListIpRoutes",
-    validator: validate_ListIpRoutes_600444, base: "/", url: url_ListIpRoutes_600445,
-    schemes: {Scheme.Https, Scheme.Http})
+var enableLDAPS* = Call_EnableLDAPS_600443(name: "enableLDAPS",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.EnableLDAPS",
+                                        validator: validate_EnableLDAPS_600444,
+                                        base: "/", url: url_EnableLDAPS_600445,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListLogSubscriptions_600458 = ref object of OpenApiRestCall_599368
-proc url_ListLogSubscriptions_600460(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_EnableRadius_600458 = ref object of OpenApiRestCall_599368
+proc url_EnableRadius_600460(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3915,9 +3918,9 @@ proc url_ListLogSubscriptions_600460(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListLogSubscriptions_600459(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Lists the active log subscriptions for the AWS account.
+proc validate_EnableRadius_600459(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## Enables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3949,7 +3952,7 @@ proc validate_ListLogSubscriptions_600459(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600463 = header.getOrDefault("X-Amz-Target")
   valid_600463 = validateParameter(valid_600463, JString, required = true, default = newJString(
-      "DirectoryService_20150416.ListLogSubscriptions"))
+      "DirectoryService_20150416.EnableRadius"))
   if valid_600463 != nil:
     section.add "X-Amz-Target", valid_600463
   var valid_600464 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3987,9 +3990,9 @@ proc validate_ListLogSubscriptions_600459(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600470: Call_ListLogSubscriptions_600458; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Lists the active log subscriptions for the AWS account.
+proc call*(call_600470: Call_EnableRadius_600458; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Enables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
   ## 
   let valid = call_600470.validator(path, query, header, formData, body)
   let scheme = call_600470.pickScheme
@@ -4000,25 +4003,24 @@ proc call*(call_600470: Call_ListLogSubscriptions_600458; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600470, url, valid)
 
-proc call*(call_600471: Call_ListLogSubscriptions_600458; body: JsonNode): Recallable =
-  ## listLogSubscriptions
-  ## Lists the active log subscriptions for the AWS account.
+proc call*(call_600471: Call_EnableRadius_600458; body: JsonNode): Recallable =
+  ## enableRadius
+  ## Enables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
   ##   body: JObject (required)
   var body_600472 = newJObject()
   if body != nil:
     body_600472 = body
   result = call_600471.call(nil, nil, nil, nil, body_600472)
 
-var listLogSubscriptions* = Call_ListLogSubscriptions_600458(
-    name: "listLogSubscriptions", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.ListLogSubscriptions",
-    validator: validate_ListLogSubscriptions_600459, base: "/",
-    url: url_ListLogSubscriptions_600460, schemes: {Scheme.Https, Scheme.Http})
+var enableRadius* = Call_EnableRadius_600458(name: "enableRadius",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.EnableRadius",
+    validator: validate_EnableRadius_600459, base: "/", url: url_EnableRadius_600460,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSchemaExtensions_600473 = ref object of OpenApiRestCall_599368
-proc url_ListSchemaExtensions_600475(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_EnableSso_600473 = ref object of OpenApiRestCall_599368
+proc url_EnableSso_600475(protocol: Scheme; host: string; base: string; route: string;
+                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -4028,9 +4030,9 @@ proc url_ListSchemaExtensions_600475(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListSchemaExtensions_600474(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Lists all schema extensions applied to a Microsoft AD Directory.
+proc validate_EnableSso_600474(path: JsonNode; query: JsonNode; header: JsonNode;
+                              formData: JsonNode; body: JsonNode): JsonNode =
+  ## Enables single sign-on for a directory. Single sign-on allows users in your directory to access certain AWS services from a computer joined to the directory without having to enter their credentials separately.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4062,7 +4064,7 @@ proc validate_ListSchemaExtensions_600474(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600478 = header.getOrDefault("X-Amz-Target")
   valid_600478 = validateParameter(valid_600478, JString, required = true, default = newJString(
-      "DirectoryService_20150416.ListSchemaExtensions"))
+      "DirectoryService_20150416.EnableSso"))
   if valid_600478 != nil:
     section.add "X-Amz-Target", valid_600478
   var valid_600479 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -4100,9 +4102,9 @@ proc validate_ListSchemaExtensions_600474(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600485: Call_ListSchemaExtensions_600473; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Lists all schema extensions applied to a Microsoft AD Directory.
+proc call*(call_600485: Call_EnableSso_600473; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Enables single sign-on for a directory. Single sign-on allows users in your directory to access certain AWS services from a computer joined to the directory without having to enter their credentials separately.
   ## 
   let valid = call_600485.validator(path, query, header, formData, body)
   let scheme = call_600485.pickScheme
@@ -4113,25 +4115,24 @@ proc call*(call_600485: Call_ListSchemaExtensions_600473; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600485, url, valid)
 
-proc call*(call_600486: Call_ListSchemaExtensions_600473; body: JsonNode): Recallable =
-  ## listSchemaExtensions
-  ## Lists all schema extensions applied to a Microsoft AD Directory.
+proc call*(call_600486: Call_EnableSso_600473; body: JsonNode): Recallable =
+  ## enableSso
+  ## Enables single sign-on for a directory. Single sign-on allows users in your directory to access certain AWS services from a computer joined to the directory without having to enter their credentials separately.
   ##   body: JObject (required)
   var body_600487 = newJObject()
   if body != nil:
     body_600487 = body
   result = call_600486.call(nil, nil, nil, nil, body_600487)
 
-var listSchemaExtensions* = Call_ListSchemaExtensions_600473(
-    name: "listSchemaExtensions", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.ListSchemaExtensions",
-    validator: validate_ListSchemaExtensions_600474, base: "/",
-    url: url_ListSchemaExtensions_600475, schemes: {Scheme.Https, Scheme.Http})
+var enableSso* = Call_EnableSso_600473(name: "enableSso", meth: HttpMethod.HttpPost,
+                                    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.EnableSso",
+                                    validator: validate_EnableSso_600474,
+                                    base: "/", url: url_EnableSso_600475,
+                                    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_600488 = ref object of OpenApiRestCall_599368
-proc url_ListTagsForResource_600490(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetDirectoryLimits_600488 = ref object of OpenApiRestCall_599368
+proc url_GetDirectoryLimits_600490(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -4141,10 +4142,10 @@ proc url_ListTagsForResource_600490(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListTagsForResource_600489(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode): JsonNode =
-  ## Lists all tags on a directory.
+proc validate_GetDirectoryLimits_600489(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode): JsonNode =
+  ## Obtains directory limit information for the current Region.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4176,7 +4177,7 @@ proc validate_ListTagsForResource_600489(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600493 = header.getOrDefault("X-Amz-Target")
   valid_600493 = validateParameter(valid_600493, JString, required = true, default = newJString(
-      "DirectoryService_20150416.ListTagsForResource"))
+      "DirectoryService_20150416.GetDirectoryLimits"))
   if valid_600493 != nil:
     section.add "X-Amz-Target", valid_600493
   var valid_600494 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -4214,9 +4215,9 @@ proc validate_ListTagsForResource_600489(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600500: Call_ListTagsForResource_600488; path: JsonNode;
+proc call*(call_600500: Call_GetDirectoryLimits_600488; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Lists all tags on a directory.
+  ## Obtains directory limit information for the current Region.
   ## 
   let valid = call_600500.validator(path, query, header, formData, body)
   let scheme = call_600500.pickScheme
@@ -4227,25 +4228,24 @@ proc call*(call_600500: Call_ListTagsForResource_600488; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600500, url, valid)
 
-proc call*(call_600501: Call_ListTagsForResource_600488; body: JsonNode): Recallable =
-  ## listTagsForResource
-  ## Lists all tags on a directory.
+proc call*(call_600501: Call_GetDirectoryLimits_600488; body: JsonNode): Recallable =
+  ## getDirectoryLimits
+  ## Obtains directory limit information for the current Region.
   ##   body: JObject (required)
   var body_600502 = newJObject()
   if body != nil:
     body_600502 = body
   result = call_600501.call(nil, nil, nil, nil, body_600502)
 
-var listTagsForResource* = Call_ListTagsForResource_600488(
-    name: "listTagsForResource", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.ListTagsForResource",
-    validator: validate_ListTagsForResource_600489, base: "/",
-    url: url_ListTagsForResource_600490, schemes: {Scheme.Https, Scheme.Http})
+var getDirectoryLimits* = Call_GetDirectoryLimits_600488(
+    name: "getDirectoryLimits", meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.GetDirectoryLimits",
+    validator: validate_GetDirectoryLimits_600489, base: "/",
+    url: url_GetDirectoryLimits_600490, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterEventTopic_600503 = ref object of OpenApiRestCall_599368
-proc url_RegisterEventTopic_600505(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetSnapshotLimits_600503 = ref object of OpenApiRestCall_599368
+proc url_GetSnapshotLimits_600505(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -4255,10 +4255,10 @@ proc url_RegisterEventTopic_600505(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RegisterEventTopic_600504(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode): JsonNode =
-  ## Associates a directory with an SNS topic. This establishes the directory as a publisher to the specified SNS topic. You can then receive email or text (SMS) messages when the status of your directory changes. You get notified if your directory goes from an Active status to an Impaired or Inoperable status. You also receive a notification when the directory returns to an Active status.
+proc validate_GetSnapshotLimits_600504(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## Obtains the manual snapshot limits for a directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4290,7 +4290,7 @@ proc validate_RegisterEventTopic_600504(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600508 = header.getOrDefault("X-Amz-Target")
   valid_600508 = validateParameter(valid_600508, JString, required = true, default = newJString(
-      "DirectoryService_20150416.RegisterEventTopic"))
+      "DirectoryService_20150416.GetSnapshotLimits"))
   if valid_600508 != nil:
     section.add "X-Amz-Target", valid_600508
   var valid_600509 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -4328,9 +4328,9 @@ proc validate_RegisterEventTopic_600504(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600515: Call_RegisterEventTopic_600503; path: JsonNode;
+proc call*(call_600515: Call_GetSnapshotLimits_600503; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Associates a directory with an SNS topic. This establishes the directory as a publisher to the specified SNS topic. You can then receive email or text (SMS) messages when the status of your directory changes. You get notified if your directory goes from an Active status to an Impaired or Inoperable status. You also receive a notification when the directory returns to an Active status.
+  ## Obtains the manual snapshot limits for a directory.
   ## 
   let valid = call_600515.validator(path, query, header, formData, body)
   let scheme = call_600515.pickScheme
@@ -4341,24 +4341,24 @@ proc call*(call_600515: Call_RegisterEventTopic_600503; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600515, url, valid)
 
-proc call*(call_600516: Call_RegisterEventTopic_600503; body: JsonNode): Recallable =
-  ## registerEventTopic
-  ## Associates a directory with an SNS topic. This establishes the directory as a publisher to the specified SNS topic. You can then receive email or text (SMS) messages when the status of your directory changes. You get notified if your directory goes from an Active status to an Impaired or Inoperable status. You also receive a notification when the directory returns to an Active status.
+proc call*(call_600516: Call_GetSnapshotLimits_600503; body: JsonNode): Recallable =
+  ## getSnapshotLimits
+  ## Obtains the manual snapshot limits for a directory.
   ##   body: JObject (required)
   var body_600517 = newJObject()
   if body != nil:
     body_600517 = body
   result = call_600516.call(nil, nil, nil, nil, body_600517)
 
-var registerEventTopic* = Call_RegisterEventTopic_600503(
-    name: "registerEventTopic", meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.RegisterEventTopic",
-    validator: validate_RegisterEventTopic_600504, base: "/",
-    url: url_RegisterEventTopic_600505, schemes: {Scheme.Https, Scheme.Http})
+var getSnapshotLimits* = Call_GetSnapshotLimits_600503(name: "getSnapshotLimits",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.GetSnapshotLimits",
+    validator: validate_GetSnapshotLimits_600504, base: "/",
+    url: url_GetSnapshotLimits_600505, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RejectSharedDirectory_600518 = ref object of OpenApiRestCall_599368
-proc url_RejectSharedDirectory_600520(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListCertificates_600518 = ref object of OpenApiRestCall_599368
+proc url_ListCertificates_600520(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -4368,9 +4368,10 @@ proc url_RejectSharedDirectory_600520(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_RejectSharedDirectory_600519(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Rejects a directory sharing request that was sent from the directory owner account.
+proc validate_ListCertificates_600519(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## For the specified directory, lists all the certificates registered for a secured LDAP connection.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4402,7 +4403,7 @@ proc validate_RejectSharedDirectory_600519(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600523 = header.getOrDefault("X-Amz-Target")
   valid_600523 = validateParameter(valid_600523, JString, required = true, default = newJString(
-      "DirectoryService_20150416.RejectSharedDirectory"))
+      "DirectoryService_20150416.ListCertificates"))
   if valid_600523 != nil:
     section.add "X-Amz-Target", valid_600523
   var valid_600524 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -4440,9 +4441,9 @@ proc validate_RejectSharedDirectory_600519(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600530: Call_RejectSharedDirectory_600518; path: JsonNode;
+proc call*(call_600530: Call_ListCertificates_600518; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Rejects a directory sharing request that was sent from the directory owner account.
+  ## For the specified directory, lists all the certificates registered for a secured LDAP connection.
   ## 
   let valid = call_600530.validator(path, query, header, formData, body)
   let scheme = call_600530.pickScheme
@@ -4453,25 +4454,24 @@ proc call*(call_600530: Call_RejectSharedDirectory_600518; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600530, url, valid)
 
-proc call*(call_600531: Call_RejectSharedDirectory_600518; body: JsonNode): Recallable =
-  ## rejectSharedDirectory
-  ## Rejects a directory sharing request that was sent from the directory owner account.
+proc call*(call_600531: Call_ListCertificates_600518; body: JsonNode): Recallable =
+  ## listCertificates
+  ## For the specified directory, lists all the certificates registered for a secured LDAP connection.
   ##   body: JObject (required)
   var body_600532 = newJObject()
   if body != nil:
     body_600532 = body
   result = call_600531.call(nil, nil, nil, nil, body_600532)
 
-var rejectSharedDirectory* = Call_RejectSharedDirectory_600518(
-    name: "rejectSharedDirectory", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.RejectSharedDirectory",
-    validator: validate_RejectSharedDirectory_600519, base: "/",
-    url: url_RejectSharedDirectory_600520, schemes: {Scheme.Https, Scheme.Http})
+var listCertificates* = Call_ListCertificates_600518(name: "listCertificates",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.ListCertificates",
+    validator: validate_ListCertificates_600519, base: "/",
+    url: url_ListCertificates_600520, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RemoveIpRoutes_600533 = ref object of OpenApiRestCall_599368
-proc url_RemoveIpRoutes_600535(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListIpRoutes_600533 = ref object of OpenApiRestCall_599368
+proc url_ListIpRoutes_600535(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -4481,10 +4481,9 @@ proc url_RemoveIpRoutes_600535(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RemoveIpRoutes_600534(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode): JsonNode =
-  ## Removes IP address blocks from a directory.
+proc validate_ListIpRoutes_600534(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## Lists the address blocks that you have added to a directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4516,7 +4515,7 @@ proc validate_RemoveIpRoutes_600534(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600538 = header.getOrDefault("X-Amz-Target")
   valid_600538 = validateParameter(valid_600538, JString, required = true, default = newJString(
-      "DirectoryService_20150416.RemoveIpRoutes"))
+      "DirectoryService_20150416.ListIpRoutes"))
   if valid_600538 != nil:
     section.add "X-Amz-Target", valid_600538
   var valid_600539 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -4554,9 +4553,9 @@ proc validate_RemoveIpRoutes_600534(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600545: Call_RemoveIpRoutes_600533; path: JsonNode; query: JsonNode;
+proc call*(call_600545: Call_ListIpRoutes_600533; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Removes IP address blocks from a directory.
+  ## Lists the address blocks that you have added to a directory.
   ## 
   let valid = call_600545.validator(path, query, header, formData, body)
   let scheme = call_600545.pickScheme
@@ -4567,24 +4566,24 @@ proc call*(call_600545: Call_RemoveIpRoutes_600533; path: JsonNode; query: JsonN
                          valid.getOrDefault("query"))
   result = atozHook(call_600545, url, valid)
 
-proc call*(call_600546: Call_RemoveIpRoutes_600533; body: JsonNode): Recallable =
-  ## removeIpRoutes
-  ## Removes IP address blocks from a directory.
+proc call*(call_600546: Call_ListIpRoutes_600533; body: JsonNode): Recallable =
+  ## listIpRoutes
+  ## Lists the address blocks that you have added to a directory.
   ##   body: JObject (required)
   var body_600547 = newJObject()
   if body != nil:
     body_600547 = body
   result = call_600546.call(nil, nil, nil, nil, body_600547)
 
-var removeIpRoutes* = Call_RemoveIpRoutes_600533(name: "removeIpRoutes",
+var listIpRoutes* = Call_ListIpRoutes_600533(name: "listIpRoutes",
     meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.RemoveIpRoutes",
-    validator: validate_RemoveIpRoutes_600534, base: "/", url: url_RemoveIpRoutes_600535,
+    route: "/#X-Amz-Target=DirectoryService_20150416.ListIpRoutes",
+    validator: validate_ListIpRoutes_600534, base: "/", url: url_ListIpRoutes_600535,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RemoveTagsFromResource_600548 = ref object of OpenApiRestCall_599368
-proc url_RemoveTagsFromResource_600550(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListLogSubscriptions_600548 = ref object of OpenApiRestCall_599368
+proc url_ListLogSubscriptions_600550(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -4594,9 +4593,9 @@ proc url_RemoveTagsFromResource_600550(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_RemoveTagsFromResource_600549(path: JsonNode; query: JsonNode;
+proc validate_ListLogSubscriptions_600549(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Removes tags from a directory.
+  ## Lists the active log subscriptions for the AWS account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4628,7 +4627,7 @@ proc validate_RemoveTagsFromResource_600549(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600553 = header.getOrDefault("X-Amz-Target")
   valid_600553 = validateParameter(valid_600553, JString, required = true, default = newJString(
-      "DirectoryService_20150416.RemoveTagsFromResource"))
+      "DirectoryService_20150416.ListLogSubscriptions"))
   if valid_600553 != nil:
     section.add "X-Amz-Target", valid_600553
   var valid_600554 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -4666,9 +4665,9 @@ proc validate_RemoveTagsFromResource_600549(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600560: Call_RemoveTagsFromResource_600548; path: JsonNode;
+proc call*(call_600560: Call_ListLogSubscriptions_600548; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Removes tags from a directory.
+  ## Lists the active log subscriptions for the AWS account.
   ## 
   let valid = call_600560.validator(path, query, header, formData, body)
   let scheme = call_600560.pickScheme
@@ -4679,25 +4678,25 @@ proc call*(call_600560: Call_RemoveTagsFromResource_600548; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600560, url, valid)
 
-proc call*(call_600561: Call_RemoveTagsFromResource_600548; body: JsonNode): Recallable =
-  ## removeTagsFromResource
-  ## Removes tags from a directory.
+proc call*(call_600561: Call_ListLogSubscriptions_600548; body: JsonNode): Recallable =
+  ## listLogSubscriptions
+  ## Lists the active log subscriptions for the AWS account.
   ##   body: JObject (required)
   var body_600562 = newJObject()
   if body != nil:
     body_600562 = body
   result = call_600561.call(nil, nil, nil, nil, body_600562)
 
-var removeTagsFromResource* = Call_RemoveTagsFromResource_600548(
-    name: "removeTagsFromResource", meth: HttpMethod.HttpPost,
+var listLogSubscriptions* = Call_ListLogSubscriptions_600548(
+    name: "listLogSubscriptions", meth: HttpMethod.HttpPost,
     host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.RemoveTagsFromResource",
-    validator: validate_RemoveTagsFromResource_600549, base: "/",
-    url: url_RemoveTagsFromResource_600550, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=DirectoryService_20150416.ListLogSubscriptions",
+    validator: validate_ListLogSubscriptions_600549, base: "/",
+    url: url_ListLogSubscriptions_600550, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ResetUserPassword_600563 = ref object of OpenApiRestCall_599368
-proc url_ResetUserPassword_600565(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListSchemaExtensions_600563 = ref object of OpenApiRestCall_599368
+proc url_ListSchemaExtensions_600565(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -4707,10 +4706,9 @@ proc url_ResetUserPassword_600565(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ResetUserPassword_600564(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## Resets the password for any user in your AWS Managed Microsoft AD or Simple AD directory.
+proc validate_ListSchemaExtensions_600564(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Lists all schema extensions applied to a Microsoft AD Directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4742,7 +4740,7 @@ proc validate_ResetUserPassword_600564(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600568 = header.getOrDefault("X-Amz-Target")
   valid_600568 = validateParameter(valid_600568, JString, required = true, default = newJString(
-      "DirectoryService_20150416.ResetUserPassword"))
+      "DirectoryService_20150416.ListSchemaExtensions"))
   if valid_600568 != nil:
     section.add "X-Amz-Target", valid_600568
   var valid_600569 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -4780,9 +4778,9 @@ proc validate_ResetUserPassword_600564(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600575: Call_ResetUserPassword_600563; path: JsonNode;
+proc call*(call_600575: Call_ListSchemaExtensions_600563; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Resets the password for any user in your AWS Managed Microsoft AD or Simple AD directory.
+  ## Lists all schema extensions applied to a Microsoft AD Directory.
   ## 
   let valid = call_600575.validator(path, query, header, formData, body)
   let scheme = call_600575.pickScheme
@@ -4793,23 +4791,24 @@ proc call*(call_600575: Call_ResetUserPassword_600563; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600575, url, valid)
 
-proc call*(call_600576: Call_ResetUserPassword_600563; body: JsonNode): Recallable =
-  ## resetUserPassword
-  ## Resets the password for any user in your AWS Managed Microsoft AD or Simple AD directory.
+proc call*(call_600576: Call_ListSchemaExtensions_600563; body: JsonNode): Recallable =
+  ## listSchemaExtensions
+  ## Lists all schema extensions applied to a Microsoft AD Directory.
   ##   body: JObject (required)
   var body_600577 = newJObject()
   if body != nil:
     body_600577 = body
   result = call_600576.call(nil, nil, nil, nil, body_600577)
 
-var resetUserPassword* = Call_ResetUserPassword_600563(name: "resetUserPassword",
-    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.ResetUserPassword",
-    validator: validate_ResetUserPassword_600564, base: "/",
-    url: url_ResetUserPassword_600565, schemes: {Scheme.Https, Scheme.Http})
+var listSchemaExtensions* = Call_ListSchemaExtensions_600563(
+    name: "listSchemaExtensions", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.ListSchemaExtensions",
+    validator: validate_ListSchemaExtensions_600564, base: "/",
+    url: url_ListSchemaExtensions_600565, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestoreFromSnapshot_600578 = ref object of OpenApiRestCall_599368
-proc url_RestoreFromSnapshot_600580(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_600578 = ref object of OpenApiRestCall_599368
+proc url_ListTagsForResource_600580(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4820,10 +4819,10 @@ proc url_RestoreFromSnapshot_600580(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_RestoreFromSnapshot_600579(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_600579(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Restores a directory using an existing directory snapshot.</p> <p>When you restore a directory from a snapshot, any changes made to the directory after the snapshot date are overwritten.</p> <p>This action returns as soon as the restore operation is initiated. You can monitor the progress of the restore operation by calling the <a>DescribeDirectories</a> operation with the directory identifier. When the <b>DirectoryDescription.Stage</b> value changes to <code>Active</code>, the restore operation is complete.</p>
+  ## Lists all tags on a directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4855,7 +4854,7 @@ proc validate_RestoreFromSnapshot_600579(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600583 = header.getOrDefault("X-Amz-Target")
   valid_600583 = validateParameter(valid_600583, JString, required = true, default = newJString(
-      "DirectoryService_20150416.RestoreFromSnapshot"))
+      "DirectoryService_20150416.ListTagsForResource"))
   if valid_600583 != nil:
     section.add "X-Amz-Target", valid_600583
   var valid_600584 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -4893,9 +4892,9 @@ proc validate_RestoreFromSnapshot_600579(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600590: Call_RestoreFromSnapshot_600578; path: JsonNode;
+proc call*(call_600590: Call_ListTagsForResource_600578; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Restores a directory using an existing directory snapshot.</p> <p>When you restore a directory from a snapshot, any changes made to the directory after the snapshot date are overwritten.</p> <p>This action returns as soon as the restore operation is initiated. You can monitor the progress of the restore operation by calling the <a>DescribeDirectories</a> operation with the directory identifier. When the <b>DirectoryDescription.Stage</b> value changes to <code>Active</code>, the restore operation is complete.</p>
+  ## Lists all tags on a directory.
   ## 
   let valid = call_600590.validator(path, query, header, formData, body)
   let scheme = call_600590.pickScheme
@@ -4906,25 +4905,25 @@ proc call*(call_600590: Call_RestoreFromSnapshot_600578; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600590, url, valid)
 
-proc call*(call_600591: Call_RestoreFromSnapshot_600578; body: JsonNode): Recallable =
-  ## restoreFromSnapshot
-  ## <p>Restores a directory using an existing directory snapshot.</p> <p>When you restore a directory from a snapshot, any changes made to the directory after the snapshot date are overwritten.</p> <p>This action returns as soon as the restore operation is initiated. You can monitor the progress of the restore operation by calling the <a>DescribeDirectories</a> operation with the directory identifier. When the <b>DirectoryDescription.Stage</b> value changes to <code>Active</code>, the restore operation is complete.</p>
+proc call*(call_600591: Call_ListTagsForResource_600578; body: JsonNode): Recallable =
+  ## listTagsForResource
+  ## Lists all tags on a directory.
   ##   body: JObject (required)
   var body_600592 = newJObject()
   if body != nil:
     body_600592 = body
   result = call_600591.call(nil, nil, nil, nil, body_600592)
 
-var restoreFromSnapshot* = Call_RestoreFromSnapshot_600578(
-    name: "restoreFromSnapshot", meth: HttpMethod.HttpPost,
+var listTagsForResource* = Call_ListTagsForResource_600578(
+    name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.RestoreFromSnapshot",
-    validator: validate_RestoreFromSnapshot_600579, base: "/",
-    url: url_RestoreFromSnapshot_600580, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=DirectoryService_20150416.ListTagsForResource",
+    validator: validate_ListTagsForResource_600579, base: "/",
+    url: url_ListTagsForResource_600580, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ShareDirectory_600593 = ref object of OpenApiRestCall_599368
-proc url_ShareDirectory_600595(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RegisterCertificate_600593 = ref object of OpenApiRestCall_599368
+proc url_RegisterCertificate_600595(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -4934,10 +4933,10 @@ proc url_ShareDirectory_600595(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ShareDirectory_600594(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode): JsonNode =
-  ## <p>Shares a specified directory (<code>DirectoryId</code>) in your AWS account (directory owner) with another AWS account (directory consumer). With this operation you can use your directory from any AWS account and from any Amazon VPC within an AWS Region.</p> <p>When you share your AWS Managed Microsoft AD directory, AWS Directory Service creates a shared directory in the directory consumer account. This shared directory contains the metadata to provide access to the directory within the directory owner account. The shared directory is visible in all VPCs in the directory consumer account.</p> <p>The <code>ShareMethod</code> parameter determines whether the specified directory can be shared between AWS accounts inside the same AWS organization (<code>ORGANIZATIONS</code>). It also determines whether you can share the directory with any other AWS account either inside or outside of the organization (<code>HANDSHAKE</code>).</p> <p>The <code>ShareNotes</code> parameter is only used when <code>HANDSHAKE</code> is called, which sends a directory sharing request to the directory consumer. </p>
+proc validate_RegisterCertificate_600594(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## Registers a certificate for secured LDAP connection.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4969,7 +4968,7 @@ proc validate_ShareDirectory_600594(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600598 = header.getOrDefault("X-Amz-Target")
   valid_600598 = validateParameter(valid_600598, JString, required = true, default = newJString(
-      "DirectoryService_20150416.ShareDirectory"))
+      "DirectoryService_20150416.RegisterCertificate"))
   if valid_600598 != nil:
     section.add "X-Amz-Target", valid_600598
   var valid_600599 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5007,9 +5006,9 @@ proc validate_ShareDirectory_600594(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600605: Call_ShareDirectory_600593; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Shares a specified directory (<code>DirectoryId</code>) in your AWS account (directory owner) with another AWS account (directory consumer). With this operation you can use your directory from any AWS account and from any Amazon VPC within an AWS Region.</p> <p>When you share your AWS Managed Microsoft AD directory, AWS Directory Service creates a shared directory in the directory consumer account. This shared directory contains the metadata to provide access to the directory within the directory owner account. The shared directory is visible in all VPCs in the directory consumer account.</p> <p>The <code>ShareMethod</code> parameter determines whether the specified directory can be shared between AWS accounts inside the same AWS organization (<code>ORGANIZATIONS</code>). It also determines whether you can share the directory with any other AWS account either inside or outside of the organization (<code>HANDSHAKE</code>).</p> <p>The <code>ShareNotes</code> parameter is only used when <code>HANDSHAKE</code> is called, which sends a directory sharing request to the directory consumer. </p>
+proc call*(call_600605: Call_RegisterCertificate_600593; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Registers a certificate for secured LDAP connection.
   ## 
   let valid = call_600605.validator(path, query, header, formData, body)
   let scheme = call_600605.pickScheme
@@ -5020,24 +5019,25 @@ proc call*(call_600605: Call_ShareDirectory_600593; path: JsonNode; query: JsonN
                          valid.getOrDefault("query"))
   result = atozHook(call_600605, url, valid)
 
-proc call*(call_600606: Call_ShareDirectory_600593; body: JsonNode): Recallable =
-  ## shareDirectory
-  ## <p>Shares a specified directory (<code>DirectoryId</code>) in your AWS account (directory owner) with another AWS account (directory consumer). With this operation you can use your directory from any AWS account and from any Amazon VPC within an AWS Region.</p> <p>When you share your AWS Managed Microsoft AD directory, AWS Directory Service creates a shared directory in the directory consumer account. This shared directory contains the metadata to provide access to the directory within the directory owner account. The shared directory is visible in all VPCs in the directory consumer account.</p> <p>The <code>ShareMethod</code> parameter determines whether the specified directory can be shared between AWS accounts inside the same AWS organization (<code>ORGANIZATIONS</code>). It also determines whether you can share the directory with any other AWS account either inside or outside of the organization (<code>HANDSHAKE</code>).</p> <p>The <code>ShareNotes</code> parameter is only used when <code>HANDSHAKE</code> is called, which sends a directory sharing request to the directory consumer. </p>
+proc call*(call_600606: Call_RegisterCertificate_600593; body: JsonNode): Recallable =
+  ## registerCertificate
+  ## Registers a certificate for secured LDAP connection.
   ##   body: JObject (required)
   var body_600607 = newJObject()
   if body != nil:
     body_600607 = body
   result = call_600606.call(nil, nil, nil, nil, body_600607)
 
-var shareDirectory* = Call_ShareDirectory_600593(name: "shareDirectory",
-    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.ShareDirectory",
-    validator: validate_ShareDirectory_600594, base: "/", url: url_ShareDirectory_600595,
-    schemes: {Scheme.Https, Scheme.Http})
+var registerCertificate* = Call_RegisterCertificate_600593(
+    name: "registerCertificate", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.RegisterCertificate",
+    validator: validate_RegisterCertificate_600594, base: "/",
+    url: url_RegisterCertificate_600595, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartSchemaExtension_600608 = ref object of OpenApiRestCall_599368
-proc url_StartSchemaExtension_600610(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RegisterEventTopic_600608 = ref object of OpenApiRestCall_599368
+proc url_RegisterEventTopic_600610(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5047,9 +5047,10 @@ proc url_StartSchemaExtension_600610(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_StartSchemaExtension_600609(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Applies a schema extension to a Microsoft AD directory.
+proc validate_RegisterEventTopic_600609(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode): JsonNode =
+  ## Associates a directory with an SNS topic. This establishes the directory as a publisher to the specified SNS topic. You can then receive email or text (SMS) messages when the status of your directory changes. You get notified if your directory goes from an Active status to an Impaired or Inoperable status. You also receive a notification when the directory returns to an Active status.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5081,7 +5082,7 @@ proc validate_StartSchemaExtension_600609(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600613 = header.getOrDefault("X-Amz-Target")
   valid_600613 = validateParameter(valid_600613, JString, required = true, default = newJString(
-      "DirectoryService_20150416.StartSchemaExtension"))
+      "DirectoryService_20150416.RegisterEventTopic"))
   if valid_600613 != nil:
     section.add "X-Amz-Target", valid_600613
   var valid_600614 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5119,9 +5120,9 @@ proc validate_StartSchemaExtension_600609(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600620: Call_StartSchemaExtension_600608; path: JsonNode;
+proc call*(call_600620: Call_RegisterEventTopic_600608; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Applies a schema extension to a Microsoft AD directory.
+  ## Associates a directory with an SNS topic. This establishes the directory as a publisher to the specified SNS topic. You can then receive email or text (SMS) messages when the status of your directory changes. You get notified if your directory goes from an Active status to an Impaired or Inoperable status. You also receive a notification when the directory returns to an Active status.
   ## 
   let valid = call_600620.validator(path, query, header, formData, body)
   let scheme = call_600620.pickScheme
@@ -5132,25 +5133,24 @@ proc call*(call_600620: Call_StartSchemaExtension_600608; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600620, url, valid)
 
-proc call*(call_600621: Call_StartSchemaExtension_600608; body: JsonNode): Recallable =
-  ## startSchemaExtension
-  ## Applies a schema extension to a Microsoft AD directory.
+proc call*(call_600621: Call_RegisterEventTopic_600608; body: JsonNode): Recallable =
+  ## registerEventTopic
+  ## Associates a directory with an SNS topic. This establishes the directory as a publisher to the specified SNS topic. You can then receive email or text (SMS) messages when the status of your directory changes. You get notified if your directory goes from an Active status to an Impaired or Inoperable status. You also receive a notification when the directory returns to an Active status.
   ##   body: JObject (required)
   var body_600622 = newJObject()
   if body != nil:
     body_600622 = body
   result = call_600621.call(nil, nil, nil, nil, body_600622)
 
-var startSchemaExtension* = Call_StartSchemaExtension_600608(
-    name: "startSchemaExtension", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.StartSchemaExtension",
-    validator: validate_StartSchemaExtension_600609, base: "/",
-    url: url_StartSchemaExtension_600610, schemes: {Scheme.Https, Scheme.Http})
+var registerEventTopic* = Call_RegisterEventTopic_600608(
+    name: "registerEventTopic", meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.RegisterEventTopic",
+    validator: validate_RegisterEventTopic_600609, base: "/",
+    url: url_RegisterEventTopic_600610, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UnshareDirectory_600623 = ref object of OpenApiRestCall_599368
-proc url_UnshareDirectory_600625(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RejectSharedDirectory_600623 = ref object of OpenApiRestCall_599368
+proc url_RejectSharedDirectory_600625(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5160,10 +5160,9 @@ proc url_UnshareDirectory_600625(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UnshareDirectory_600624(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## Stops the directory sharing between the directory owner and consumer accounts. 
+proc validate_RejectSharedDirectory_600624(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Rejects a directory sharing request that was sent from the directory owner account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5195,7 +5194,7 @@ proc validate_UnshareDirectory_600624(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600628 = header.getOrDefault("X-Amz-Target")
   valid_600628 = validateParameter(valid_600628, JString, required = true, default = newJString(
-      "DirectoryService_20150416.UnshareDirectory"))
+      "DirectoryService_20150416.RejectSharedDirectory"))
   if valid_600628 != nil:
     section.add "X-Amz-Target", valid_600628
   var valid_600629 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5233,9 +5232,9 @@ proc validate_UnshareDirectory_600624(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600635: Call_UnshareDirectory_600623; path: JsonNode;
+proc call*(call_600635: Call_RejectSharedDirectory_600623; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Stops the directory sharing between the directory owner and consumer accounts. 
+  ## Rejects a directory sharing request that was sent from the directory owner account.
   ## 
   let valid = call_600635.validator(path, query, header, formData, body)
   let scheme = call_600635.pickScheme
@@ -5246,24 +5245,25 @@ proc call*(call_600635: Call_UnshareDirectory_600623; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600635, url, valid)
 
-proc call*(call_600636: Call_UnshareDirectory_600623; body: JsonNode): Recallable =
-  ## unshareDirectory
-  ## Stops the directory sharing between the directory owner and consumer accounts. 
+proc call*(call_600636: Call_RejectSharedDirectory_600623; body: JsonNode): Recallable =
+  ## rejectSharedDirectory
+  ## Rejects a directory sharing request that was sent from the directory owner account.
   ##   body: JObject (required)
   var body_600637 = newJObject()
   if body != nil:
     body_600637 = body
   result = call_600636.call(nil, nil, nil, nil, body_600637)
 
-var unshareDirectory* = Call_UnshareDirectory_600623(name: "unshareDirectory",
-    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.UnshareDirectory",
-    validator: validate_UnshareDirectory_600624, base: "/",
-    url: url_UnshareDirectory_600625, schemes: {Scheme.Https, Scheme.Http})
+var rejectSharedDirectory* = Call_RejectSharedDirectory_600623(
+    name: "rejectSharedDirectory", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.RejectSharedDirectory",
+    validator: validate_RejectSharedDirectory_600624, base: "/",
+    url: url_RejectSharedDirectory_600625, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateConditionalForwarder_600638 = ref object of OpenApiRestCall_599368
-proc url_UpdateConditionalForwarder_600640(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RemoveIpRoutes_600638 = ref object of OpenApiRestCall_599368
+proc url_RemoveIpRoutes_600640(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5273,9 +5273,10 @@ proc url_UpdateConditionalForwarder_600640(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateConditionalForwarder_600639(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates a conditional forwarder that has been set up for your AWS directory.
+proc validate_RemoveIpRoutes_600639(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode): JsonNode =
+  ## Removes IP address blocks from a directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5307,7 +5308,7 @@ proc validate_UpdateConditionalForwarder_600639(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600643 = header.getOrDefault("X-Amz-Target")
   valid_600643 = validateParameter(valid_600643, JString, required = true, default = newJString(
-      "DirectoryService_20150416.UpdateConditionalForwarder"))
+      "DirectoryService_20150416.RemoveIpRoutes"))
   if valid_600643 != nil:
     section.add "X-Amz-Target", valid_600643
   var valid_600644 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5345,9 +5346,9 @@ proc validate_UpdateConditionalForwarder_600639(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600650: Call_UpdateConditionalForwarder_600638; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates a conditional forwarder that has been set up for your AWS directory.
+proc call*(call_600650: Call_RemoveIpRoutes_600638; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Removes IP address blocks from a directory.
   ## 
   let valid = call_600650.validator(path, query, header, formData, body)
   let scheme = call_600650.pickScheme
@@ -5358,25 +5359,24 @@ proc call*(call_600650: Call_UpdateConditionalForwarder_600638; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600650, url, valid)
 
-proc call*(call_600651: Call_UpdateConditionalForwarder_600638; body: JsonNode): Recallable =
-  ## updateConditionalForwarder
-  ## Updates a conditional forwarder that has been set up for your AWS directory.
+proc call*(call_600651: Call_RemoveIpRoutes_600638; body: JsonNode): Recallable =
+  ## removeIpRoutes
+  ## Removes IP address blocks from a directory.
   ##   body: JObject (required)
   var body_600652 = newJObject()
   if body != nil:
     body_600652 = body
   result = call_600651.call(nil, nil, nil, nil, body_600652)
 
-var updateConditionalForwarder* = Call_UpdateConditionalForwarder_600638(
-    name: "updateConditionalForwarder", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.UpdateConditionalForwarder",
-    validator: validate_UpdateConditionalForwarder_600639, base: "/",
-    url: url_UpdateConditionalForwarder_600640,
+var removeIpRoutes* = Call_RemoveIpRoutes_600638(name: "removeIpRoutes",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.RemoveIpRoutes",
+    validator: validate_RemoveIpRoutes_600639, base: "/", url: url_RemoveIpRoutes_600640,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateNumberOfDomainControllers_600653 = ref object of OpenApiRestCall_599368
-proc url_UpdateNumberOfDomainControllers_600655(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RemoveTagsFromResource_600653 = ref object of OpenApiRestCall_599368
+proc url_RemoveTagsFromResource_600655(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5386,9 +5386,9 @@ proc url_UpdateNumberOfDomainControllers_600655(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateNumberOfDomainControllers_600654(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Adds or removes domain controllers to or from the directory. Based on the difference between current value and new value (provided through this API call), domain controllers will be added or removed. It may take up to 45 minutes for any new domain controllers to become fully active once the requested number of domain controllers is updated. During this time, you cannot make another update request.
+proc validate_RemoveTagsFromResource_600654(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Removes tags from a directory.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5420,7 +5420,7 @@ proc validate_UpdateNumberOfDomainControllers_600654(path: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600658 = header.getOrDefault("X-Amz-Target")
   valid_600658 = validateParameter(valid_600658, JString, required = true, default = newJString(
-      "DirectoryService_20150416.UpdateNumberOfDomainControllers"))
+      "DirectoryService_20150416.RemoveTagsFromResource"))
   if valid_600658 != nil:
     section.add "X-Amz-Target", valid_600658
   var valid_600659 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5458,10 +5458,9 @@ proc validate_UpdateNumberOfDomainControllers_600654(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600665: Call_UpdateNumberOfDomainControllers_600653;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## Adds or removes domain controllers to or from the directory. Based on the difference between current value and new value (provided through this API call), domain controllers will be added or removed. It may take up to 45 minutes for any new domain controllers to become fully active once the requested number of domain controllers is updated. During this time, you cannot make another update request.
+proc call*(call_600665: Call_RemoveTagsFromResource_600653; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Removes tags from a directory.
   ## 
   let valid = call_600665.validator(path, query, header, formData, body)
   let scheme = call_600665.pickScheme
@@ -5472,25 +5471,25 @@ proc call*(call_600665: Call_UpdateNumberOfDomainControllers_600653;
                          valid.getOrDefault("query"))
   result = atozHook(call_600665, url, valid)
 
-proc call*(call_600666: Call_UpdateNumberOfDomainControllers_600653; body: JsonNode): Recallable =
-  ## updateNumberOfDomainControllers
-  ## Adds or removes domain controllers to or from the directory. Based on the difference between current value and new value (provided through this API call), domain controllers will be added or removed. It may take up to 45 minutes for any new domain controllers to become fully active once the requested number of domain controllers is updated. During this time, you cannot make another update request.
+proc call*(call_600666: Call_RemoveTagsFromResource_600653; body: JsonNode): Recallable =
+  ## removeTagsFromResource
+  ## Removes tags from a directory.
   ##   body: JObject (required)
   var body_600667 = newJObject()
   if body != nil:
     body_600667 = body
   result = call_600666.call(nil, nil, nil, nil, body_600667)
 
-var updateNumberOfDomainControllers* = Call_UpdateNumberOfDomainControllers_600653(
-    name: "updateNumberOfDomainControllers", meth: HttpMethod.HttpPost,
-    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.UpdateNumberOfDomainControllers",
-    validator: validate_UpdateNumberOfDomainControllers_600654, base: "/",
-    url: url_UpdateNumberOfDomainControllers_600655,
-    schemes: {Scheme.Https, Scheme.Http})
+var removeTagsFromResource* = Call_RemoveTagsFromResource_600653(
+    name: "removeTagsFromResource", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.RemoveTagsFromResource",
+    validator: validate_RemoveTagsFromResource_600654, base: "/",
+    url: url_RemoveTagsFromResource_600655, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRadius_600668 = ref object of OpenApiRestCall_599368
-proc url_UpdateRadius_600670(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ResetUserPassword_600668 = ref object of OpenApiRestCall_599368
+proc url_ResetUserPassword_600670(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5500,9 +5499,10 @@ proc url_UpdateRadius_600670(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateRadius_600669(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates the Remote Authentication Dial In User Service (RADIUS) server information for an AD Connector or Microsoft AD directory.
+proc validate_ResetUserPassword_600669(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## <p>Resets the password for any user in your AWS Managed Microsoft AD or Simple AD directory.</p> <p>You can reset the password for any user in your directory with the following exceptions:</p> <ul> <li> <p>For Simple AD, you cannot reset the password for any user that is a member of either the <b>Domain Admins</b> or <b>Enterprise Admins</b> group except for the administrator user.</p> </li> <li> <p>For AWS Managed Microsoft AD, you can only reset the password for a user that is in an OU based off of the NetBIOS name that you typed when you created your directory. For example, you cannot reset the password for a user in the <b>AWS Reserved</b> OU. For more information about the OU structure for an AWS Managed Microsoft AD directory, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_getting_started_what_gets_created.html">What Gets Created</a> in the <i>AWS Directory Service Administration Guide</i>.</p> </li> </ul>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5534,7 +5534,7 @@ proc validate_UpdateRadius_600669(path: JsonNode; query: JsonNode; header: JsonN
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600673 = header.getOrDefault("X-Amz-Target")
   valid_600673 = validateParameter(valid_600673, JString, required = true, default = newJString(
-      "DirectoryService_20150416.UpdateRadius"))
+      "DirectoryService_20150416.ResetUserPassword"))
   if valid_600673 != nil:
     section.add "X-Amz-Target", valid_600673
   var valid_600674 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5572,9 +5572,9 @@ proc validate_UpdateRadius_600669(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600680: Call_UpdateRadius_600668; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates the Remote Authentication Dial In User Service (RADIUS) server information for an AD Connector or Microsoft AD directory.
+proc call*(call_600680: Call_ResetUserPassword_600668; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Resets the password for any user in your AWS Managed Microsoft AD or Simple AD directory.</p> <p>You can reset the password for any user in your directory with the following exceptions:</p> <ul> <li> <p>For Simple AD, you cannot reset the password for any user that is a member of either the <b>Domain Admins</b> or <b>Enterprise Admins</b> group except for the administrator user.</p> </li> <li> <p>For AWS Managed Microsoft AD, you can only reset the password for a user that is in an OU based off of the NetBIOS name that you typed when you created your directory. For example, you cannot reset the password for a user in the <b>AWS Reserved</b> OU. For more information about the OU structure for an AWS Managed Microsoft AD directory, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_getting_started_what_gets_created.html">What Gets Created</a> in the <i>AWS Directory Service Administration Guide</i>.</p> </li> </ul>
   ## 
   let valid = call_600680.validator(path, query, header, formData, body)
   let scheme = call_600680.pickScheme
@@ -5585,24 +5585,24 @@ proc call*(call_600680: Call_UpdateRadius_600668; path: JsonNode; query: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600680, url, valid)
 
-proc call*(call_600681: Call_UpdateRadius_600668; body: JsonNode): Recallable =
-  ## updateRadius
-  ## Updates the Remote Authentication Dial In User Service (RADIUS) server information for an AD Connector or Microsoft AD directory.
+proc call*(call_600681: Call_ResetUserPassword_600668; body: JsonNode): Recallable =
+  ## resetUserPassword
+  ## <p>Resets the password for any user in your AWS Managed Microsoft AD or Simple AD directory.</p> <p>You can reset the password for any user in your directory with the following exceptions:</p> <ul> <li> <p>For Simple AD, you cannot reset the password for any user that is a member of either the <b>Domain Admins</b> or <b>Enterprise Admins</b> group except for the administrator user.</p> </li> <li> <p>For AWS Managed Microsoft AD, you can only reset the password for a user that is in an OU based off of the NetBIOS name that you typed when you created your directory. For example, you cannot reset the password for a user in the <b>AWS Reserved</b> OU. For more information about the OU structure for an AWS Managed Microsoft AD directory, see <a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_getting_started_what_gets_created.html">What Gets Created</a> in the <i>AWS Directory Service Administration Guide</i>.</p> </li> </ul>
   ##   body: JObject (required)
   var body_600682 = newJObject()
   if body != nil:
     body_600682 = body
   result = call_600681.call(nil, nil, nil, nil, body_600682)
 
-var updateRadius* = Call_UpdateRadius_600668(name: "updateRadius",
+var resetUserPassword* = Call_ResetUserPassword_600668(name: "resetUserPassword",
     meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
-    route: "/#X-Amz-Target=DirectoryService_20150416.UpdateRadius",
-    validator: validate_UpdateRadius_600669, base: "/", url: url_UpdateRadius_600670,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=DirectoryService_20150416.ResetUserPassword",
+    validator: validate_ResetUserPassword_600669, base: "/",
+    url: url_ResetUserPassword_600670, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTrust_600683 = ref object of OpenApiRestCall_599368
-proc url_UpdateTrust_600685(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RestoreFromSnapshot_600683 = ref object of OpenApiRestCall_599368
+proc url_RestoreFromSnapshot_600685(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5612,9 +5612,10 @@ proc url_UpdateTrust_600685(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateTrust_600684(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates the trust that has been set up between your AWS Managed Microsoft AD directory and an on-premises Active Directory.
+proc validate_RestoreFromSnapshot_600684(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## <p>Restores a directory using an existing directory snapshot.</p> <p>When you restore a directory from a snapshot, any changes made to the directory after the snapshot date are overwritten.</p> <p>This action returns as soon as the restore operation is initiated. You can monitor the progress of the restore operation by calling the <a>DescribeDirectories</a> operation with the directory identifier. When the <b>DirectoryDescription.Stage</b> value changes to <code>Active</code>, the restore operation is complete.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5646,7 +5647,7 @@ proc validate_UpdateTrust_600684(path: JsonNode; query: JsonNode; header: JsonNo
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600688 = header.getOrDefault("X-Amz-Target")
   valid_600688 = validateParameter(valid_600688, JString, required = true, default = newJString(
-      "DirectoryService_20150416.UpdateTrust"))
+      "DirectoryService_20150416.RestoreFromSnapshot"))
   if valid_600688 != nil:
     section.add "X-Amz-Target", valid_600688
   var valid_600689 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5684,9 +5685,9 @@ proc validate_UpdateTrust_600684(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600695: Call_UpdateTrust_600683; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates the trust that has been set up between your AWS Managed Microsoft AD directory and an on-premises Active Directory.
+proc call*(call_600695: Call_RestoreFromSnapshot_600683; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Restores a directory using an existing directory snapshot.</p> <p>When you restore a directory from a snapshot, any changes made to the directory after the snapshot date are overwritten.</p> <p>This action returns as soon as the restore operation is initiated. You can monitor the progress of the restore operation by calling the <a>DescribeDirectories</a> operation with the directory identifier. When the <b>DirectoryDescription.Stage</b> value changes to <code>Active</code>, the restore operation is complete.</p>
   ## 
   let valid = call_600695.validator(path, query, header, formData, body)
   let scheme = call_600695.pickScheme
@@ -5697,25 +5698,25 @@ proc call*(call_600695: Call_UpdateTrust_600683; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_600695, url, valid)
 
-proc call*(call_600696: Call_UpdateTrust_600683; body: JsonNode): Recallable =
-  ## updateTrust
-  ## Updates the trust that has been set up between your AWS Managed Microsoft AD directory and an on-premises Active Directory.
+proc call*(call_600696: Call_RestoreFromSnapshot_600683; body: JsonNode): Recallable =
+  ## restoreFromSnapshot
+  ## <p>Restores a directory using an existing directory snapshot.</p> <p>When you restore a directory from a snapshot, any changes made to the directory after the snapshot date are overwritten.</p> <p>This action returns as soon as the restore operation is initiated. You can monitor the progress of the restore operation by calling the <a>DescribeDirectories</a> operation with the directory identifier. When the <b>DirectoryDescription.Stage</b> value changes to <code>Active</code>, the restore operation is complete.</p>
   ##   body: JObject (required)
   var body_600697 = newJObject()
   if body != nil:
     body_600697 = body
   result = call_600696.call(nil, nil, nil, nil, body_600697)
 
-var updateTrust* = Call_UpdateTrust_600683(name: "updateTrust",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.UpdateTrust",
-                                        validator: validate_UpdateTrust_600684,
-                                        base: "/", url: url_UpdateTrust_600685,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var restoreFromSnapshot* = Call_RestoreFromSnapshot_600683(
+    name: "restoreFromSnapshot", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.RestoreFromSnapshot",
+    validator: validate_RestoreFromSnapshot_600684, base: "/",
+    url: url_RestoreFromSnapshot_600685, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_VerifyTrust_600698 = ref object of OpenApiRestCall_599368
-proc url_VerifyTrust_600700(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ShareDirectory_600698 = ref object of OpenApiRestCall_599368
+proc url_ShareDirectory_600700(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5725,9 +5726,10 @@ proc url_VerifyTrust_600700(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_VerifyTrust_600699(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>AWS Directory Service for Microsoft Active Directory allows you to configure and verify trust relationships.</p> <p>This action verifies a trust relationship between your AWS Managed Microsoft AD directory and an external domain.</p>
+proc validate_ShareDirectory_600699(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode): JsonNode =
+  ## <p>Shares a specified directory (<code>DirectoryId</code>) in your AWS account (directory owner) with another AWS account (directory consumer). With this operation you can use your directory from any AWS account and from any Amazon VPC within an AWS Region.</p> <p>When you share your AWS Managed Microsoft AD directory, AWS Directory Service creates a shared directory in the directory consumer account. This shared directory contains the metadata to provide access to the directory within the directory owner account. The shared directory is visible in all VPCs in the directory consumer account.</p> <p>The <code>ShareMethod</code> parameter determines whether the specified directory can be shared between AWS accounts inside the same AWS organization (<code>ORGANIZATIONS</code>). It also determines whether you can share the directory with any other AWS account either inside or outside of the organization (<code>HANDSHAKE</code>).</p> <p>The <code>ShareNotes</code> parameter is only used when <code>HANDSHAKE</code> is called, which sends a directory sharing request to the directory consumer. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5759,7 +5761,7 @@ proc validate_VerifyTrust_600699(path: JsonNode; query: JsonNode; header: JsonNo
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600703 = header.getOrDefault("X-Amz-Target")
   valid_600703 = validateParameter(valid_600703, JString, required = true, default = newJString(
-      "DirectoryService_20150416.VerifyTrust"))
+      "DirectoryService_20150416.ShareDirectory"))
   if valid_600703 != nil:
     section.add "X-Amz-Target", valid_600703
   var valid_600704 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5797,9 +5799,9 @@ proc validate_VerifyTrust_600699(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600710: Call_VerifyTrust_600698; path: JsonNode; query: JsonNode;
+proc call*(call_600710: Call_ShareDirectory_600698; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>AWS Directory Service for Microsoft Active Directory allows you to configure and verify trust relationships.</p> <p>This action verifies a trust relationship between your AWS Managed Microsoft AD directory and an external domain.</p>
+  ## <p>Shares a specified directory (<code>DirectoryId</code>) in your AWS account (directory owner) with another AWS account (directory consumer). With this operation you can use your directory from any AWS account and from any Amazon VPC within an AWS Region.</p> <p>When you share your AWS Managed Microsoft AD directory, AWS Directory Service creates a shared directory in the directory consumer account. This shared directory contains the metadata to provide access to the directory within the directory owner account. The shared directory is visible in all VPCs in the directory consumer account.</p> <p>The <code>ShareMethod</code> parameter determines whether the specified directory can be shared between AWS accounts inside the same AWS organization (<code>ORGANIZATIONS</code>). It also determines whether you can share the directory with any other AWS account either inside or outside of the organization (<code>HANDSHAKE</code>).</p> <p>The <code>ShareNotes</code> parameter is only used when <code>HANDSHAKE</code> is called, which sends a directory sharing request to the directory consumer. </p>
   ## 
   let valid = call_600710.validator(path, query, header, formData, body)
   let scheme = call_600710.pickScheme
@@ -5810,20 +5812,810 @@ proc call*(call_600710: Call_VerifyTrust_600698; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_600710, url, valid)
 
-proc call*(call_600711: Call_VerifyTrust_600698; body: JsonNode): Recallable =
-  ## verifyTrust
-  ## <p>AWS Directory Service for Microsoft Active Directory allows you to configure and verify trust relationships.</p> <p>This action verifies a trust relationship between your AWS Managed Microsoft AD directory and an external domain.</p>
+proc call*(call_600711: Call_ShareDirectory_600698; body: JsonNode): Recallable =
+  ## shareDirectory
+  ## <p>Shares a specified directory (<code>DirectoryId</code>) in your AWS account (directory owner) with another AWS account (directory consumer). With this operation you can use your directory from any AWS account and from any Amazon VPC within an AWS Region.</p> <p>When you share your AWS Managed Microsoft AD directory, AWS Directory Service creates a shared directory in the directory consumer account. This shared directory contains the metadata to provide access to the directory within the directory owner account. The shared directory is visible in all VPCs in the directory consumer account.</p> <p>The <code>ShareMethod</code> parameter determines whether the specified directory can be shared between AWS accounts inside the same AWS organization (<code>ORGANIZATIONS</code>). It also determines whether you can share the directory with any other AWS account either inside or outside of the organization (<code>HANDSHAKE</code>).</p> <p>The <code>ShareNotes</code> parameter is only used when <code>HANDSHAKE</code> is called, which sends a directory sharing request to the directory consumer. </p>
   ##   body: JObject (required)
   var body_600712 = newJObject()
   if body != nil:
     body_600712 = body
   result = call_600711.call(nil, nil, nil, nil, body_600712)
 
-var verifyTrust* = Call_VerifyTrust_600698(name: "verifyTrust",
+var shareDirectory* = Call_ShareDirectory_600698(name: "shareDirectory",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.ShareDirectory",
+    validator: validate_ShareDirectory_600699, base: "/", url: url_ShareDirectory_600700,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_StartSchemaExtension_600713 = ref object of OpenApiRestCall_599368
+proc url_StartSchemaExtension_600715(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StartSchemaExtension_600714(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Applies a schema extension to a Microsoft AD directory.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600716 = header.getOrDefault("X-Amz-Date")
+  valid_600716 = validateParameter(valid_600716, JString, required = false,
+                                 default = nil)
+  if valid_600716 != nil:
+    section.add "X-Amz-Date", valid_600716
+  var valid_600717 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600717 = validateParameter(valid_600717, JString, required = false,
+                                 default = nil)
+  if valid_600717 != nil:
+    section.add "X-Amz-Security-Token", valid_600717
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600718 = header.getOrDefault("X-Amz-Target")
+  valid_600718 = validateParameter(valid_600718, JString, required = true, default = newJString(
+      "DirectoryService_20150416.StartSchemaExtension"))
+  if valid_600718 != nil:
+    section.add "X-Amz-Target", valid_600718
+  var valid_600719 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600719 = validateParameter(valid_600719, JString, required = false,
+                                 default = nil)
+  if valid_600719 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600719
+  var valid_600720 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600720 = validateParameter(valid_600720, JString, required = false,
+                                 default = nil)
+  if valid_600720 != nil:
+    section.add "X-Amz-Algorithm", valid_600720
+  var valid_600721 = header.getOrDefault("X-Amz-Signature")
+  valid_600721 = validateParameter(valid_600721, JString, required = false,
+                                 default = nil)
+  if valid_600721 != nil:
+    section.add "X-Amz-Signature", valid_600721
+  var valid_600722 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600722 = validateParameter(valid_600722, JString, required = false,
+                                 default = nil)
+  if valid_600722 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600722
+  var valid_600723 = header.getOrDefault("X-Amz-Credential")
+  valid_600723 = validateParameter(valid_600723, JString, required = false,
+                                 default = nil)
+  if valid_600723 != nil:
+    section.add "X-Amz-Credential", valid_600723
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600725: Call_StartSchemaExtension_600713; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Applies a schema extension to a Microsoft AD directory.
+  ## 
+  let valid = call_600725.validator(path, query, header, formData, body)
+  let scheme = call_600725.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600725.url(scheme.get, call_600725.host, call_600725.base,
+                         call_600725.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600725, url, valid)
+
+proc call*(call_600726: Call_StartSchemaExtension_600713; body: JsonNode): Recallable =
+  ## startSchemaExtension
+  ## Applies a schema extension to a Microsoft AD directory.
+  ##   body: JObject (required)
+  var body_600727 = newJObject()
+  if body != nil:
+    body_600727 = body
+  result = call_600726.call(nil, nil, nil, nil, body_600727)
+
+var startSchemaExtension* = Call_StartSchemaExtension_600713(
+    name: "startSchemaExtension", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.StartSchemaExtension",
+    validator: validate_StartSchemaExtension_600714, base: "/",
+    url: url_StartSchemaExtension_600715, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UnshareDirectory_600728 = ref object of OpenApiRestCall_599368
+proc url_UnshareDirectory_600730(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UnshareDirectory_600729(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## Stops the directory sharing between the directory owner and consumer accounts. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600731 = header.getOrDefault("X-Amz-Date")
+  valid_600731 = validateParameter(valid_600731, JString, required = false,
+                                 default = nil)
+  if valid_600731 != nil:
+    section.add "X-Amz-Date", valid_600731
+  var valid_600732 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600732 = validateParameter(valid_600732, JString, required = false,
+                                 default = nil)
+  if valid_600732 != nil:
+    section.add "X-Amz-Security-Token", valid_600732
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600733 = header.getOrDefault("X-Amz-Target")
+  valid_600733 = validateParameter(valid_600733, JString, required = true, default = newJString(
+      "DirectoryService_20150416.UnshareDirectory"))
+  if valid_600733 != nil:
+    section.add "X-Amz-Target", valid_600733
+  var valid_600734 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600734 = validateParameter(valid_600734, JString, required = false,
+                                 default = nil)
+  if valid_600734 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600734
+  var valid_600735 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600735 = validateParameter(valid_600735, JString, required = false,
+                                 default = nil)
+  if valid_600735 != nil:
+    section.add "X-Amz-Algorithm", valid_600735
+  var valid_600736 = header.getOrDefault("X-Amz-Signature")
+  valid_600736 = validateParameter(valid_600736, JString, required = false,
+                                 default = nil)
+  if valid_600736 != nil:
+    section.add "X-Amz-Signature", valid_600736
+  var valid_600737 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600737 = validateParameter(valid_600737, JString, required = false,
+                                 default = nil)
+  if valid_600737 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600737
+  var valid_600738 = header.getOrDefault("X-Amz-Credential")
+  valid_600738 = validateParameter(valid_600738, JString, required = false,
+                                 default = nil)
+  if valid_600738 != nil:
+    section.add "X-Amz-Credential", valid_600738
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600740: Call_UnshareDirectory_600728; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Stops the directory sharing between the directory owner and consumer accounts. 
+  ## 
+  let valid = call_600740.validator(path, query, header, formData, body)
+  let scheme = call_600740.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600740.url(scheme.get, call_600740.host, call_600740.base,
+                         call_600740.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600740, url, valid)
+
+proc call*(call_600741: Call_UnshareDirectory_600728; body: JsonNode): Recallable =
+  ## unshareDirectory
+  ## Stops the directory sharing between the directory owner and consumer accounts. 
+  ##   body: JObject (required)
+  var body_600742 = newJObject()
+  if body != nil:
+    body_600742 = body
+  result = call_600741.call(nil, nil, nil, nil, body_600742)
+
+var unshareDirectory* = Call_UnshareDirectory_600728(name: "unshareDirectory",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.UnshareDirectory",
+    validator: validate_UnshareDirectory_600729, base: "/",
+    url: url_UnshareDirectory_600730, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateConditionalForwarder_600743 = ref object of OpenApiRestCall_599368
+proc url_UpdateConditionalForwarder_600745(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateConditionalForwarder_600744(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates a conditional forwarder that has been set up for your AWS directory.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600746 = header.getOrDefault("X-Amz-Date")
+  valid_600746 = validateParameter(valid_600746, JString, required = false,
+                                 default = nil)
+  if valid_600746 != nil:
+    section.add "X-Amz-Date", valid_600746
+  var valid_600747 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600747 = validateParameter(valid_600747, JString, required = false,
+                                 default = nil)
+  if valid_600747 != nil:
+    section.add "X-Amz-Security-Token", valid_600747
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600748 = header.getOrDefault("X-Amz-Target")
+  valid_600748 = validateParameter(valid_600748, JString, required = true, default = newJString(
+      "DirectoryService_20150416.UpdateConditionalForwarder"))
+  if valid_600748 != nil:
+    section.add "X-Amz-Target", valid_600748
+  var valid_600749 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600749 = validateParameter(valid_600749, JString, required = false,
+                                 default = nil)
+  if valid_600749 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600749
+  var valid_600750 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600750 = validateParameter(valid_600750, JString, required = false,
+                                 default = nil)
+  if valid_600750 != nil:
+    section.add "X-Amz-Algorithm", valid_600750
+  var valid_600751 = header.getOrDefault("X-Amz-Signature")
+  valid_600751 = validateParameter(valid_600751, JString, required = false,
+                                 default = nil)
+  if valid_600751 != nil:
+    section.add "X-Amz-Signature", valid_600751
+  var valid_600752 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600752 = validateParameter(valid_600752, JString, required = false,
+                                 default = nil)
+  if valid_600752 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600752
+  var valid_600753 = header.getOrDefault("X-Amz-Credential")
+  valid_600753 = validateParameter(valid_600753, JString, required = false,
+                                 default = nil)
+  if valid_600753 != nil:
+    section.add "X-Amz-Credential", valid_600753
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600755: Call_UpdateConditionalForwarder_600743; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates a conditional forwarder that has been set up for your AWS directory.
+  ## 
+  let valid = call_600755.validator(path, query, header, formData, body)
+  let scheme = call_600755.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600755.url(scheme.get, call_600755.host, call_600755.base,
+                         call_600755.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600755, url, valid)
+
+proc call*(call_600756: Call_UpdateConditionalForwarder_600743; body: JsonNode): Recallable =
+  ## updateConditionalForwarder
+  ## Updates a conditional forwarder that has been set up for your AWS directory.
+  ##   body: JObject (required)
+  var body_600757 = newJObject()
+  if body != nil:
+    body_600757 = body
+  result = call_600756.call(nil, nil, nil, nil, body_600757)
+
+var updateConditionalForwarder* = Call_UpdateConditionalForwarder_600743(
+    name: "updateConditionalForwarder", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.UpdateConditionalForwarder",
+    validator: validate_UpdateConditionalForwarder_600744, base: "/",
+    url: url_UpdateConditionalForwarder_600745,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateNumberOfDomainControllers_600758 = ref object of OpenApiRestCall_599368
+proc url_UpdateNumberOfDomainControllers_600760(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateNumberOfDomainControllers_600759(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Adds or removes domain controllers to or from the directory. Based on the difference between current value and new value (provided through this API call), domain controllers will be added or removed. It may take up to 45 minutes for any new domain controllers to become fully active once the requested number of domain controllers is updated. During this time, you cannot make another update request.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600761 = header.getOrDefault("X-Amz-Date")
+  valid_600761 = validateParameter(valid_600761, JString, required = false,
+                                 default = nil)
+  if valid_600761 != nil:
+    section.add "X-Amz-Date", valid_600761
+  var valid_600762 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600762 = validateParameter(valid_600762, JString, required = false,
+                                 default = nil)
+  if valid_600762 != nil:
+    section.add "X-Amz-Security-Token", valid_600762
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600763 = header.getOrDefault("X-Amz-Target")
+  valid_600763 = validateParameter(valid_600763, JString, required = true, default = newJString(
+      "DirectoryService_20150416.UpdateNumberOfDomainControllers"))
+  if valid_600763 != nil:
+    section.add "X-Amz-Target", valid_600763
+  var valid_600764 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600764 = validateParameter(valid_600764, JString, required = false,
+                                 default = nil)
+  if valid_600764 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600764
+  var valid_600765 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600765 = validateParameter(valid_600765, JString, required = false,
+                                 default = nil)
+  if valid_600765 != nil:
+    section.add "X-Amz-Algorithm", valid_600765
+  var valid_600766 = header.getOrDefault("X-Amz-Signature")
+  valid_600766 = validateParameter(valid_600766, JString, required = false,
+                                 default = nil)
+  if valid_600766 != nil:
+    section.add "X-Amz-Signature", valid_600766
+  var valid_600767 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600767 = validateParameter(valid_600767, JString, required = false,
+                                 default = nil)
+  if valid_600767 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600767
+  var valid_600768 = header.getOrDefault("X-Amz-Credential")
+  valid_600768 = validateParameter(valid_600768, JString, required = false,
+                                 default = nil)
+  if valid_600768 != nil:
+    section.add "X-Amz-Credential", valid_600768
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600770: Call_UpdateNumberOfDomainControllers_600758;
+          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
+          body: JsonNode): Recallable =
+  ## Adds or removes domain controllers to or from the directory. Based on the difference between current value and new value (provided through this API call), domain controllers will be added or removed. It may take up to 45 minutes for any new domain controllers to become fully active once the requested number of domain controllers is updated. During this time, you cannot make another update request.
+  ## 
+  let valid = call_600770.validator(path, query, header, formData, body)
+  let scheme = call_600770.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600770.url(scheme.get, call_600770.host, call_600770.base,
+                         call_600770.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600770, url, valid)
+
+proc call*(call_600771: Call_UpdateNumberOfDomainControllers_600758; body: JsonNode): Recallable =
+  ## updateNumberOfDomainControllers
+  ## Adds or removes domain controllers to or from the directory. Based on the difference between current value and new value (provided through this API call), domain controllers will be added or removed. It may take up to 45 minutes for any new domain controllers to become fully active once the requested number of domain controllers is updated. During this time, you cannot make another update request.
+  ##   body: JObject (required)
+  var body_600772 = newJObject()
+  if body != nil:
+    body_600772 = body
+  result = call_600771.call(nil, nil, nil, nil, body_600772)
+
+var updateNumberOfDomainControllers* = Call_UpdateNumberOfDomainControllers_600758(
+    name: "updateNumberOfDomainControllers", meth: HttpMethod.HttpPost,
+    host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.UpdateNumberOfDomainControllers",
+    validator: validate_UpdateNumberOfDomainControllers_600759, base: "/",
+    url: url_UpdateNumberOfDomainControllers_600760,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateRadius_600773 = ref object of OpenApiRestCall_599368
+proc url_UpdateRadius_600775(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateRadius_600774(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates the Remote Authentication Dial In User Service (RADIUS) server information for an AD Connector or Microsoft AD directory.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600776 = header.getOrDefault("X-Amz-Date")
+  valid_600776 = validateParameter(valid_600776, JString, required = false,
+                                 default = nil)
+  if valid_600776 != nil:
+    section.add "X-Amz-Date", valid_600776
+  var valid_600777 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600777 = validateParameter(valid_600777, JString, required = false,
+                                 default = nil)
+  if valid_600777 != nil:
+    section.add "X-Amz-Security-Token", valid_600777
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600778 = header.getOrDefault("X-Amz-Target")
+  valid_600778 = validateParameter(valid_600778, JString, required = true, default = newJString(
+      "DirectoryService_20150416.UpdateRadius"))
+  if valid_600778 != nil:
+    section.add "X-Amz-Target", valid_600778
+  var valid_600779 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600779 = validateParameter(valid_600779, JString, required = false,
+                                 default = nil)
+  if valid_600779 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600779
+  var valid_600780 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600780 = validateParameter(valid_600780, JString, required = false,
+                                 default = nil)
+  if valid_600780 != nil:
+    section.add "X-Amz-Algorithm", valid_600780
+  var valid_600781 = header.getOrDefault("X-Amz-Signature")
+  valid_600781 = validateParameter(valid_600781, JString, required = false,
+                                 default = nil)
+  if valid_600781 != nil:
+    section.add "X-Amz-Signature", valid_600781
+  var valid_600782 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600782 = validateParameter(valid_600782, JString, required = false,
+                                 default = nil)
+  if valid_600782 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600782
+  var valid_600783 = header.getOrDefault("X-Amz-Credential")
+  valid_600783 = validateParameter(valid_600783, JString, required = false,
+                                 default = nil)
+  if valid_600783 != nil:
+    section.add "X-Amz-Credential", valid_600783
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600785: Call_UpdateRadius_600773; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates the Remote Authentication Dial In User Service (RADIUS) server information for an AD Connector or Microsoft AD directory.
+  ## 
+  let valid = call_600785.validator(path, query, header, formData, body)
+  let scheme = call_600785.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600785.url(scheme.get, call_600785.host, call_600785.base,
+                         call_600785.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600785, url, valid)
+
+proc call*(call_600786: Call_UpdateRadius_600773; body: JsonNode): Recallable =
+  ## updateRadius
+  ## Updates the Remote Authentication Dial In User Service (RADIUS) server information for an AD Connector or Microsoft AD directory.
+  ##   body: JObject (required)
+  var body_600787 = newJObject()
+  if body != nil:
+    body_600787 = body
+  result = call_600786.call(nil, nil, nil, nil, body_600787)
+
+var updateRadius* = Call_UpdateRadius_600773(name: "updateRadius",
+    meth: HttpMethod.HttpPost, host: "ds.amazonaws.com",
+    route: "/#X-Amz-Target=DirectoryService_20150416.UpdateRadius",
+    validator: validate_UpdateRadius_600774, base: "/", url: url_UpdateRadius_600775,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateTrust_600788 = ref object of OpenApiRestCall_599368
+proc url_UpdateTrust_600790(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateTrust_600789(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates the trust that has been set up between your AWS Managed Microsoft AD directory and an on-premises Active Directory.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600791 = header.getOrDefault("X-Amz-Date")
+  valid_600791 = validateParameter(valid_600791, JString, required = false,
+                                 default = nil)
+  if valid_600791 != nil:
+    section.add "X-Amz-Date", valid_600791
+  var valid_600792 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600792 = validateParameter(valid_600792, JString, required = false,
+                                 default = nil)
+  if valid_600792 != nil:
+    section.add "X-Amz-Security-Token", valid_600792
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600793 = header.getOrDefault("X-Amz-Target")
+  valid_600793 = validateParameter(valid_600793, JString, required = true, default = newJString(
+      "DirectoryService_20150416.UpdateTrust"))
+  if valid_600793 != nil:
+    section.add "X-Amz-Target", valid_600793
+  var valid_600794 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600794 = validateParameter(valid_600794, JString, required = false,
+                                 default = nil)
+  if valid_600794 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600794
+  var valid_600795 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600795 = validateParameter(valid_600795, JString, required = false,
+                                 default = nil)
+  if valid_600795 != nil:
+    section.add "X-Amz-Algorithm", valid_600795
+  var valid_600796 = header.getOrDefault("X-Amz-Signature")
+  valid_600796 = validateParameter(valid_600796, JString, required = false,
+                                 default = nil)
+  if valid_600796 != nil:
+    section.add "X-Amz-Signature", valid_600796
+  var valid_600797 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600797 = validateParameter(valid_600797, JString, required = false,
+                                 default = nil)
+  if valid_600797 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600797
+  var valid_600798 = header.getOrDefault("X-Amz-Credential")
+  valid_600798 = validateParameter(valid_600798, JString, required = false,
+                                 default = nil)
+  if valid_600798 != nil:
+    section.add "X-Amz-Credential", valid_600798
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600800: Call_UpdateTrust_600788; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates the trust that has been set up between your AWS Managed Microsoft AD directory and an on-premises Active Directory.
+  ## 
+  let valid = call_600800.validator(path, query, header, formData, body)
+  let scheme = call_600800.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600800.url(scheme.get, call_600800.host, call_600800.base,
+                         call_600800.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600800, url, valid)
+
+proc call*(call_600801: Call_UpdateTrust_600788; body: JsonNode): Recallable =
+  ## updateTrust
+  ## Updates the trust that has been set up between your AWS Managed Microsoft AD directory and an on-premises Active Directory.
+  ##   body: JObject (required)
+  var body_600802 = newJObject()
+  if body != nil:
+    body_600802 = body
+  result = call_600801.call(nil, nil, nil, nil, body_600802)
+
+var updateTrust* = Call_UpdateTrust_600788(name: "updateTrust",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.UpdateTrust",
+                                        validator: validate_UpdateTrust_600789,
+                                        base: "/", url: url_UpdateTrust_600790,
+                                        schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_VerifyTrust_600803 = ref object of OpenApiRestCall_599368
+proc url_VerifyTrust_600805(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_VerifyTrust_600804(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>AWS Directory Service for Microsoft Active Directory allows you to configure and verify trust relationships.</p> <p>This action verifies a trust relationship between your AWS Managed Microsoft AD directory and an external domain.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600806 = header.getOrDefault("X-Amz-Date")
+  valid_600806 = validateParameter(valid_600806, JString, required = false,
+                                 default = nil)
+  if valid_600806 != nil:
+    section.add "X-Amz-Date", valid_600806
+  var valid_600807 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600807 = validateParameter(valid_600807, JString, required = false,
+                                 default = nil)
+  if valid_600807 != nil:
+    section.add "X-Amz-Security-Token", valid_600807
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600808 = header.getOrDefault("X-Amz-Target")
+  valid_600808 = validateParameter(valid_600808, JString, required = true, default = newJString(
+      "DirectoryService_20150416.VerifyTrust"))
+  if valid_600808 != nil:
+    section.add "X-Amz-Target", valid_600808
+  var valid_600809 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600809 = validateParameter(valid_600809, JString, required = false,
+                                 default = nil)
+  if valid_600809 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600809
+  var valid_600810 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600810 = validateParameter(valid_600810, JString, required = false,
+                                 default = nil)
+  if valid_600810 != nil:
+    section.add "X-Amz-Algorithm", valid_600810
+  var valid_600811 = header.getOrDefault("X-Amz-Signature")
+  valid_600811 = validateParameter(valid_600811, JString, required = false,
+                                 default = nil)
+  if valid_600811 != nil:
+    section.add "X-Amz-Signature", valid_600811
+  var valid_600812 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600812 = validateParameter(valid_600812, JString, required = false,
+                                 default = nil)
+  if valid_600812 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600812
+  var valid_600813 = header.getOrDefault("X-Amz-Credential")
+  valid_600813 = validateParameter(valid_600813, JString, required = false,
+                                 default = nil)
+  if valid_600813 != nil:
+    section.add "X-Amz-Credential", valid_600813
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600815: Call_VerifyTrust_600803; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>AWS Directory Service for Microsoft Active Directory allows you to configure and verify trust relationships.</p> <p>This action verifies a trust relationship between your AWS Managed Microsoft AD directory and an external domain.</p>
+  ## 
+  let valid = call_600815.validator(path, query, header, formData, body)
+  let scheme = call_600815.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600815.url(scheme.get, call_600815.host, call_600815.base,
+                         call_600815.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600815, url, valid)
+
+proc call*(call_600816: Call_VerifyTrust_600803; body: JsonNode): Recallable =
+  ## verifyTrust
+  ## <p>AWS Directory Service for Microsoft Active Directory allows you to configure and verify trust relationships.</p> <p>This action verifies a trust relationship between your AWS Managed Microsoft AD directory and an external domain.</p>
+  ##   body: JObject (required)
+  var body_600817 = newJObject()
+  if body != nil:
+    body_600817 = body
+  result = call_600816.call(nil, nil, nil, nil, body_600817)
+
+var verifyTrust* = Call_VerifyTrust_600803(name: "verifyTrust",
                                         meth: HttpMethod.HttpPost,
                                         host: "ds.amazonaws.com", route: "/#X-Amz-Target=DirectoryService_20150416.VerifyTrust",
-                                        validator: validate_VerifyTrust_600699,
-                                        base: "/", url: url_VerifyTrust_600700,
+                                        validator: validate_VerifyTrust_600804,
+                                        base: "/", url: url_VerifyTrust_600805,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest

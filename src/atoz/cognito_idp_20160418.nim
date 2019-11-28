@@ -3133,7 +3133,7 @@ proc url_AdminUserGlobalSignOut_600358(protocol: Scheme; host: string; base: str
 
 proc validate_AdminUserGlobalSignOut_600357(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Signs out users from all devices, as an administrator.</p> <p>Calling this action requires developer credentials.</p>
+  ## <p>Signs out users from all devices, as an administrator. It also invalidates all refresh tokens issued to a user. The user's current access and Id tokens remain valid until their expiry. Access and Id tokens expire one hour after they are issued.</p> <p>Calling this action requires developer credentials.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3205,7 +3205,7 @@ proc validate_AdminUserGlobalSignOut_600357(path: JsonNode; query: JsonNode;
 
 proc call*(call_600368: Call_AdminUserGlobalSignOut_600356; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Signs out users from all devices, as an administrator.</p> <p>Calling this action requires developer credentials.</p>
+  ## <p>Signs out users from all devices, as an administrator. It also invalidates all refresh tokens issued to a user. The user's current access and Id tokens remain valid until their expiry. Access and Id tokens expire one hour after they are issued.</p> <p>Calling this action requires developer credentials.</p>
   ## 
   let valid = call_600368.validator(path, query, header, formData, body)
   let scheme = call_600368.pickScheme
@@ -3218,7 +3218,7 @@ proc call*(call_600368: Call_AdminUserGlobalSignOut_600356; path: JsonNode;
 
 proc call*(call_600369: Call_AdminUserGlobalSignOut_600356; body: JsonNode): Recallable =
   ## adminUserGlobalSignOut
-  ## <p>Signs out users from all devices, as an administrator.</p> <p>Calling this action requires developer credentials.</p>
+  ## <p>Signs out users from all devices, as an administrator. It also invalidates all refresh tokens issued to a user. The user's current access and Id tokens remain valid until their expiry. Access and Id tokens expire one hour after they are issued.</p> <p>Calling this action requires developer credentials.</p>
   ##   body: JObject (required)
   var body_600370 = newJObject()
   if body != nil:
@@ -7518,7 +7518,7 @@ proc url_GlobalSignOut_600943(protocol: Scheme; host: string; base: string;
 
 proc validate_GlobalSignOut_600942(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## Signs out users from all devices.
+  ## Signs out users from all devices. It also invalidates all refresh tokens issued to a user. The user's current access and Id tokens remain valid until their expiry. Access and Id tokens expire one hour after they are issued.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7590,7 +7590,7 @@ proc validate_GlobalSignOut_600942(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_600953: Call_GlobalSignOut_600941; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Signs out users from all devices.
+  ## Signs out users from all devices. It also invalidates all refresh tokens issued to a user. The user's current access and Id tokens remain valid until their expiry. Access and Id tokens expire one hour after they are issued.
   ## 
   let valid = call_600953.validator(path, query, header, formData, body)
   let scheme = call_600953.pickScheme
@@ -7603,7 +7603,7 @@ proc call*(call_600953: Call_GlobalSignOut_600941; path: JsonNode; query: JsonNo
 
 proc call*(call_600954: Call_GlobalSignOut_600941; body: JsonNode): Recallable =
   ## globalSignOut
-  ## Signs out users from all devices.
+  ## Signs out users from all devices. It also invalidates all refresh tokens issued to a user. The user's current access and Id tokens remain valid until their expiry. Access and Id tokens expire one hour after they are issued.
   ##   body: JObject (required)
   var body_600955 = newJObject()
   if body != nil:

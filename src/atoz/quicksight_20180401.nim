@@ -10,7 +10,7 @@ import
 ##     name: Apache 2.0 License
 ##     url: http://www.apache.org/licenses/
 ## 
-## <fullname>Amazon QuickSight API Reference</fullname> <p>Amazon QuickSight is a fully managed, serverless, cloud business intelligence service that makes it easy to extend data and insights to every user in your organization. This API interface reference contains documentation for a programming interface that you can use to manage Amazon QuickSight. </p>
+## <fullname>Amazon QuickSight API Reference</fullname> <p>Amazon QuickSight is a fully managed, serverless business intelligence service for the AWS Cloud that makes it easy to extend data and insights to every user in your organization. This API reference contains documentation for a programming interface that you can use to manage Amazon QuickSight. </p>
 ## 
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/quicksight/
@@ -174,7 +174,7 @@ proc url_CreateIngestion_599979(protocol: Scheme; host: string; base: string;
 proc validate_CreateIngestion_599978(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Creates and starts a new SPICE ingestion on a dataset</p> <p>Any ingestions operating on tagged datasets inherit the same tags automatically for use in access-control. For an example, see <a href="https://aws.example.com/premiumsupport/knowledge-center/iam-ec2-resource-tags/">How do I create an IAM policy to control access to Amazon EC2 resources using tags?</a>. Tags will be visible on the tagged dataset, but not on the ingestion resource.</p>
+  ## <p>Creates and starts a new SPICE ingestion on a dataset</p> <p>Any ingestions operating on tagged datasets inherit the same tags automatically for use in access control. For an example, see <a href="https://aws.example.com/premiumsupport/knowledge-center/iam-ec2-resource-tags/">How do I create an IAM policy to control access to Amazon EC2 resources using tags?</a> in the AWS Knowledge Center. Tags are visible on the tagged dataset, but not on the ingestion resource.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -258,7 +258,7 @@ proc validate_CreateIngestion_599978(path: JsonNode; query: JsonNode;
 
 proc call*(call_599990: Call_CreateIngestion_599977; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates and starts a new SPICE ingestion on a dataset</p> <p>Any ingestions operating on tagged datasets inherit the same tags automatically for use in access-control. For an example, see <a href="https://aws.example.com/premiumsupport/knowledge-center/iam-ec2-resource-tags/">How do I create an IAM policy to control access to Amazon EC2 resources using tags?</a>. Tags will be visible on the tagged dataset, but not on the ingestion resource.</p>
+  ## <p>Creates and starts a new SPICE ingestion on a dataset</p> <p>Any ingestions operating on tagged datasets inherit the same tags automatically for use in access control. For an example, see <a href="https://aws.example.com/premiumsupport/knowledge-center/iam-ec2-resource-tags/">How do I create an IAM policy to control access to Amazon EC2 resources using tags?</a> in the AWS Knowledge Center. Tags are visible on the tagged dataset, but not on the ingestion resource.</p>
   ## 
   let valid = call_599990.validator(path, query, header, formData, body)
   let scheme = call_599990.pickScheme
@@ -272,7 +272,7 @@ proc call*(call_599990: Call_CreateIngestion_599977; path: JsonNode; query: Json
 proc call*(call_599991: Call_CreateIngestion_599977; AwsAccountId: string;
           DataSetId: string; IngestionId: string): Recallable =
   ## createIngestion
-  ## <p>Creates and starts a new SPICE ingestion on a dataset</p> <p>Any ingestions operating on tagged datasets inherit the same tags automatically for use in access-control. For an example, see <a href="https://aws.example.com/premiumsupport/knowledge-center/iam-ec2-resource-tags/">How do I create an IAM policy to control access to Amazon EC2 resources using tags?</a>. Tags will be visible on the tagged dataset, but not on the ingestion resource.</p>
+  ## <p>Creates and starts a new SPICE ingestion on a dataset</p> <p>Any ingestions operating on tagged datasets inherit the same tags automatically for use in access control. For an example, see <a href="https://aws.example.com/premiumsupport/knowledge-center/iam-ec2-resource-tags/">How do I create an IAM policy to control access to Amazon EC2 resources using tags?</a> in the AWS Knowledge Center. Tags are visible on the tagged dataset, but not on the ingestion resource.</p>
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   DataSetId: string (required)
@@ -466,7 +466,7 @@ proc url_CancelIngestion_599995(protocol: Scheme; host: string; base: string;
 proc validate_CancelIngestion_599994(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## Cancels an on-going ingestion of data into SPICE.
+  ## Cancels an ongoing ingestion of data into SPICE.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -550,7 +550,7 @@ proc validate_CancelIngestion_599994(path: JsonNode; query: JsonNode;
 
 proc call*(call_600006: Call_CancelIngestion_599993; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Cancels an on-going ingestion of data into SPICE.
+  ## Cancels an ongoing ingestion of data into SPICE.
   ## 
   let valid = call_600006.validator(path, query, header, formData, body)
   let scheme = call_600006.pickScheme
@@ -564,7 +564,7 @@ proc call*(call_600006: Call_CancelIngestion_599993; path: JsonNode; query: Json
 proc call*(call_600007: Call_CancelIngestion_599993; AwsAccountId: string;
           DataSetId: string; IngestionId: string): Recallable =
   ## cancelIngestion
-  ## Cancels an on-going ingestion of data into SPICE.
+  ## Cancels an ongoing ingestion of data into SPICE.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   DataSetId: string (required)
@@ -609,7 +609,7 @@ proc url_UpdateDashboard_600029(protocol: Scheme; host: string; base: string;
 proc validate_UpdateDashboard_600028(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Updates a dashboard in the AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard --aws-account-id 111122223333 --dashboard-id 123123123 --dashboard-name "test-update102" --source-entity SourceTemplate={Arn=arn:aws:quicksight:us-west-2:111122223333:template/sales-report-template2} --data-set-references DataSetPlaceholder=SalesDataSet,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/0e251aef-9ebf-46e1-b852-eb4fa33c1d3a</code> </p> <p> <code>aws quicksight update-dashboard --cli-input-json file://update-dashboard.json </code> </p>
+  ## Updates a dashboard in the AWS account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -690,7 +690,7 @@ proc validate_UpdateDashboard_600028(path: JsonNode; query: JsonNode;
 
 proc call*(call_600040: Call_UpdateDashboard_600027; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates a dashboard in the AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard --aws-account-id 111122223333 --dashboard-id 123123123 --dashboard-name "test-update102" --source-entity SourceTemplate={Arn=arn:aws:quicksight:us-west-2:111122223333:template/sales-report-template2} --data-set-references DataSetPlaceholder=SalesDataSet,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/0e251aef-9ebf-46e1-b852-eb4fa33c1d3a</code> </p> <p> <code>aws quicksight update-dashboard --cli-input-json file://update-dashboard.json </code> </p>
+  ## Updates a dashboard in the AWS account.
   ## 
   let valid = call_600040.validator(path, query, header, formData, body)
   let scheme = call_600040.pickScheme
@@ -704,7 +704,7 @@ proc call*(call_600040: Call_UpdateDashboard_600027; path: JsonNode; query: Json
 proc call*(call_600041: Call_UpdateDashboard_600027; AwsAccountId: string;
           DashboardId: string; body: JsonNode): Recallable =
   ## updateDashboard
-  ## <p>Updates a dashboard in the AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard --aws-account-id 111122223333 --dashboard-id 123123123 --dashboard-name "test-update102" --source-entity SourceTemplate={Arn=arn:aws:quicksight:us-west-2:111122223333:template/sales-report-template2} --data-set-references DataSetPlaceholder=SalesDataSet,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/0e251aef-9ebf-46e1-b852-eb4fa33c1d3a</code> </p> <p> <code>aws quicksight update-dashboard --cli-input-json file://update-dashboard.json </code> </p>
+  ## Updates a dashboard in the AWS account.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboard you are updating.
   ##   DashboardId: string (required)
@@ -751,7 +751,7 @@ proc url_CreateDashboard_600046(protocol: Scheme; host: string; base: string;
 proc validate_CreateDashboard_600045(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Creates a dashboard from a template. To first create a template, see the CreateTemplate API.</p> <p>A dashboard is an entity in QuickSight which identifies Quicksight reports, created from analyses. QuickSight dashboards are sharable. With the right permissions, you can create scheduled email reports from them. The <code>CreateDashboard</code>, <code>DescribeDashboard</code> and <code>ListDashboardsByUser</code> APIs act on the dashboard entity. If you have the correct permissions, you can create a dashboard from a template that exists in a different AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-dashboard --cli-input-json file://create-dashboard.json</code> </p>
+  ## <p>Creates a dashboard from a template. To first create a template, see the CreateTemplate API.</p> <p>A dashboard is an entity in QuickSight which identifies Quicksight reports, created from analyses. QuickSight dashboards are sharable. With the right permissions, you can create scheduled email reports from them. The <code>CreateDashboard</code>, <code>DescribeDashboard</code> and <code>ListDashboardsByUser</code> APIs act on the dashboard entity. If you have the correct permissions, you can create a dashboard from a template that exists in a different AWS account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -832,7 +832,7 @@ proc validate_CreateDashboard_600045(path: JsonNode; query: JsonNode;
 
 proc call*(call_600057: Call_CreateDashboard_600044; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a dashboard from a template. To first create a template, see the CreateTemplate API.</p> <p>A dashboard is an entity in QuickSight which identifies Quicksight reports, created from analyses. QuickSight dashboards are sharable. With the right permissions, you can create scheduled email reports from them. The <code>CreateDashboard</code>, <code>DescribeDashboard</code> and <code>ListDashboardsByUser</code> APIs act on the dashboard entity. If you have the correct permissions, you can create a dashboard from a template that exists in a different AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-dashboard --cli-input-json file://create-dashboard.json</code> </p>
+  ## <p>Creates a dashboard from a template. To first create a template, see the CreateTemplate API.</p> <p>A dashboard is an entity in QuickSight which identifies Quicksight reports, created from analyses. QuickSight dashboards are sharable. With the right permissions, you can create scheduled email reports from them. The <code>CreateDashboard</code>, <code>DescribeDashboard</code> and <code>ListDashboardsByUser</code> APIs act on the dashboard entity. If you have the correct permissions, you can create a dashboard from a template that exists in a different AWS account.</p>
   ## 
   let valid = call_600057.validator(path, query, header, formData, body)
   let scheme = call_600057.pickScheme
@@ -846,7 +846,7 @@ proc call*(call_600057: Call_CreateDashboard_600044; path: JsonNode; query: Json
 proc call*(call_600058: Call_CreateDashboard_600044; AwsAccountId: string;
           DashboardId: string; body: JsonNode): Recallable =
   ## createDashboard
-  ## <p>Creates a dashboard from a template. To first create a template, see the CreateTemplate API.</p> <p>A dashboard is an entity in QuickSight which identifies Quicksight reports, created from analyses. QuickSight dashboards are sharable. With the right permissions, you can create scheduled email reports from them. The <code>CreateDashboard</code>, <code>DescribeDashboard</code> and <code>ListDashboardsByUser</code> APIs act on the dashboard entity. If you have the correct permissions, you can create a dashboard from a template that exists in a different AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-dashboard --cli-input-json file://create-dashboard.json</code> </p>
+  ## <p>Creates a dashboard from a template. To first create a template, see the CreateTemplate API.</p> <p>A dashboard is an entity in QuickSight which identifies Quicksight reports, created from analyses. QuickSight dashboards are sharable. With the right permissions, you can create scheduled email reports from them. The <code>CreateDashboard</code>, <code>DescribeDashboard</code> and <code>ListDashboardsByUser</code> APIs act on the dashboard entity. If you have the correct permissions, you can create a dashboard from a template that exists in a different AWS account.</p>
   ##   AwsAccountId: string (required)
   ##               : AWS account ID where you want to create the dashboard.
   ##   DashboardId: string (required)
@@ -893,7 +893,7 @@ proc url_DescribeDashboard_600011(protocol: Scheme; host: string; base: string;
 proc validate_DescribeDashboard_600010(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
-  ## <p>Provides a summary for a dashboard.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight describe-dashboard --aws-account-id 111122223333 —dashboard-id reports_test_report -version-number 2</code> </p> </li> <li> <p> <code> aws quicksight describe-dashboard --aws-account-id 111122223333 —dashboard-id reports_test_report -alias-name ‘$PUBLISHED’ </code> </p> </li> </ul> <p/>
+  ## Provides a summary for a dashboard.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -984,7 +984,7 @@ proc validate_DescribeDashboard_600010(path: JsonNode; query: JsonNode;
 
 proc call*(call_600023: Call_DescribeDashboard_600009; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Provides a summary for a dashboard.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight describe-dashboard --aws-account-id 111122223333 —dashboard-id reports_test_report -version-number 2</code> </p> </li> <li> <p> <code> aws quicksight describe-dashboard --aws-account-id 111122223333 —dashboard-id reports_test_report -alias-name ‘$PUBLISHED’ </code> </p> </li> </ul> <p/>
+  ## Provides a summary for a dashboard.
   ## 
   let valid = call_600023.validator(path, query, header, formData, body)
   let scheme = call_600023.pickScheme
@@ -998,7 +998,7 @@ proc call*(call_600023: Call_DescribeDashboard_600009; path: JsonNode;
 proc call*(call_600024: Call_DescribeDashboard_600009; AwsAccountId: string;
           DashboardId: string; aliasName: string = ""; versionNumber: int = 0): Recallable =
   ## describeDashboard
-  ## <p>Provides a summary for a dashboard.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight describe-dashboard --aws-account-id 111122223333 —dashboard-id reports_test_report -version-number 2</code> </p> </li> <li> <p> <code> aws quicksight describe-dashboard --aws-account-id 111122223333 —dashboard-id reports_test_report -alias-name ‘$PUBLISHED’ </code> </p> </li> </ul> <p/>
+  ## Provides a summary for a dashboard.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboard you are describing.
   ##   DashboardId: string (required)
@@ -1048,7 +1048,7 @@ proc url_DeleteDashboard_600063(protocol: Scheme; host: string; base: string;
 proc validate_DeleteDashboard_600062(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Deletes a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-dashboard --aws-account-id 111122223333 —dashboard-id 123123123</code> </p> <p> <code>aws quicksight delete-dashboard --aws-account-id 111122223333 —dashboard-id 123123123 —version-number 3</code> </p>
+  ## Deletes a dashboard.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1132,7 +1132,7 @@ proc validate_DeleteDashboard_600062(path: JsonNode; query: JsonNode;
 
 proc call*(call_600074: Call_DeleteDashboard_600061; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-dashboard --aws-account-id 111122223333 —dashboard-id 123123123</code> </p> <p> <code>aws quicksight delete-dashboard --aws-account-id 111122223333 —dashboard-id 123123123 —version-number 3</code> </p>
+  ## Deletes a dashboard.
   ## 
   let valid = call_600074.validator(path, query, header, formData, body)
   let scheme = call_600074.pickScheme
@@ -1146,7 +1146,7 @@ proc call*(call_600074: Call_DeleteDashboard_600061; path: JsonNode; query: Json
 proc call*(call_600075: Call_DeleteDashboard_600061; AwsAccountId: string;
           DashboardId: string; versionNumber: int = 0): Recallable =
   ## deleteDashboard
-  ## <p>Deletes a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-dashboard --aws-account-id 111122223333 —dashboard-id 123123123</code> </p> <p> <code>aws quicksight delete-dashboard --aws-account-id 111122223333 —dashboard-id 123123123 —version-number 3</code> </p>
+  ## Deletes a dashboard.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboard you are deleting.
   ##   DashboardId: string (required)
@@ -1190,7 +1190,7 @@ proc url_CreateDataSet_600099(protocol: Scheme; host: string; base: string;
 
 proc validate_CreateDataSet_600098(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-data-set \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--name='My dataset' \</code> </p> <p> <code>--import-mode=SPICE \</code> </p> <p> <code>--physical-table-map='{</code> </p> <p> <code> "physical-table-id": {</code> </p> <p> <code> "RelationalTable": {</code> </p> <p> <code> "DataSourceArn": "arn:aws:quicksight:us-west-2:111111111111:datasource/data-source-id",</code> </p> <p> <code> "Name": "table1",</code> </p> <p> <code> "InputColumns": [</code> </p> <p> <code> {</code> </p> <p> <code> "Name": "column1",</code> </p> <p> <code> "Type": "STRING"</code> </p> <p> <code> }</code> </p> <p> <code> ]</code> </p> <p> <code> }</code> </p> <p> <code> }'</code> </p>
+  ## Creates a dataset.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1264,7 +1264,7 @@ proc validate_CreateDataSet_600098(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_600109: Call_CreateDataSet_600097; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-data-set \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--name='My dataset' \</code> </p> <p> <code>--import-mode=SPICE \</code> </p> <p> <code>--physical-table-map='{</code> </p> <p> <code> "physical-table-id": {</code> </p> <p> <code> "RelationalTable": {</code> </p> <p> <code> "DataSourceArn": "arn:aws:quicksight:us-west-2:111111111111:datasource/data-source-id",</code> </p> <p> <code> "Name": "table1",</code> </p> <p> <code> "InputColumns": [</code> </p> <p> <code> {</code> </p> <p> <code> "Name": "column1",</code> </p> <p> <code> "Type": "STRING"</code> </p> <p> <code> }</code> </p> <p> <code> ]</code> </p> <p> <code> }</code> </p> <p> <code> }'</code> </p>
+  ## Creates a dataset.
   ## 
   let valid = call_600109.validator(path, query, header, formData, body)
   let scheme = call_600109.pickScheme
@@ -1278,7 +1278,7 @@ proc call*(call_600109: Call_CreateDataSet_600097; path: JsonNode; query: JsonNo
 proc call*(call_600110: Call_CreateDataSet_600097; AwsAccountId: string;
           body: JsonNode): Recallable =
   ## createDataSet
-  ## <p>Creates a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-data-set \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--name='My dataset' \</code> </p> <p> <code>--import-mode=SPICE \</code> </p> <p> <code>--physical-table-map='{</code> </p> <p> <code> "physical-table-id": {</code> </p> <p> <code> "RelationalTable": {</code> </p> <p> <code> "DataSourceArn": "arn:aws:quicksight:us-west-2:111111111111:datasource/data-source-id",</code> </p> <p> <code> "Name": "table1",</code> </p> <p> <code> "InputColumns": [</code> </p> <p> <code> {</code> </p> <p> <code> "Name": "column1",</code> </p> <p> <code> "Type": "STRING"</code> </p> <p> <code> }</code> </p> <p> <code> ]</code> </p> <p> <code> }</code> </p> <p> <code> }'</code> </p>
+  ## Creates a dataset.
   ##   AwsAccountId: string (required)
   ##               : The AWS Account ID.
   ##   body: JObject (required)
@@ -1319,7 +1319,7 @@ proc url_ListDataSets_600080(protocol: Scheme; host: string; base: string;
 
 proc validate_ListDataSets_600079(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists all of the datasets belonging to this account in an AWS region.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/*</code> </p> <p>CLI syntax: <code>aws quicksight list-data-sets --aws-account-id=111111111111</code> </p>
+  ## <p>Lists all of the datasets belonging to this account in an AWS region.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/*</code>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1417,7 +1417,7 @@ proc validate_ListDataSets_600079(path: JsonNode; query: JsonNode; header: JsonN
 
 proc call*(call_600093: Call_ListDataSets_600078; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists all of the datasets belonging to this account in an AWS region.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/*</code> </p> <p>CLI syntax: <code>aws quicksight list-data-sets --aws-account-id=111111111111</code> </p>
+  ## <p>Lists all of the datasets belonging to this account in an AWS region.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/*</code>.</p>
   ## 
   let valid = call_600093.validator(path, query, header, formData, body)
   let scheme = call_600093.pickScheme
@@ -1432,7 +1432,7 @@ proc call*(call_600094: Call_ListDataSets_600078; AwsAccountId: string;
           NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
           MaxResults: string = ""): Recallable =
   ## listDataSets
-  ## <p>Lists all of the datasets belonging to this account in an AWS region.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/*</code> </p> <p>CLI syntax: <code>aws quicksight list-data-sets --aws-account-id=111111111111</code> </p>
+  ## <p>Lists all of the datasets belonging to this account in an AWS region.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/*</code>.</p>
   ##   AwsAccountId: string (required)
   ##               : The AWS Account ID.
   ##   NextToken: string
@@ -1482,7 +1482,7 @@ proc url_CreateDataSource_600134(protocol: Scheme; host: string; base: string;
 proc validate_CreateDataSource_600133(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Creates a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight create-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--type=POSTGRESQL \</code> </p> <p> <code>--data-source-parameters='{ "PostgreSqlParameters": {</code> </p> <p> <code> "Host": "my-db-host.example.com",</code> </p> <p> <code> "Port": 1234,</code> </p> <p> <code> "Database": "my-db" } }' \</code> </p> <p> <code>--credentials='{ "CredentialPair": {</code> </p> <p> <code> "Username": "username",</code> </p> <p> <code> "Password": "password" } }'</code> </p>
+  ## Creates a data source.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1556,7 +1556,7 @@ proc validate_CreateDataSource_600133(path: JsonNode; query: JsonNode;
 
 proc call*(call_600144: Call_CreateDataSource_600132; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight create-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--type=POSTGRESQL \</code> </p> <p> <code>--data-source-parameters='{ "PostgreSqlParameters": {</code> </p> <p> <code> "Host": "my-db-host.example.com",</code> </p> <p> <code> "Port": 1234,</code> </p> <p> <code> "Database": "my-db" } }' \</code> </p> <p> <code>--credentials='{ "CredentialPair": {</code> </p> <p> <code> "Username": "username",</code> </p> <p> <code> "Password": "password" } }'</code> </p>
+  ## Creates a data source.
   ## 
   let valid = call_600144.validator(path, query, header, formData, body)
   let scheme = call_600144.pickScheme
@@ -1570,7 +1570,7 @@ proc call*(call_600144: Call_CreateDataSource_600132; path: JsonNode;
 proc call*(call_600145: Call_CreateDataSource_600132; AwsAccountId: string;
           body: JsonNode): Recallable =
   ## createDataSource
-  ## <p>Creates a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight create-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--type=POSTGRESQL \</code> </p> <p> <code>--data-source-parameters='{ "PostgreSqlParameters": {</code> </p> <p> <code> "Host": "my-db-host.example.com",</code> </p> <p> <code> "Port": 1234,</code> </p> <p> <code> "Database": "my-db" } }' \</code> </p> <p> <code>--credentials='{ "CredentialPair": {</code> </p> <p> <code> "Username": "username",</code> </p> <p> <code> "Password": "password" } }'</code> </p>
+  ## Creates a data source.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   body: JObject (required)
@@ -1612,7 +1612,7 @@ proc url_ListDataSources_600115(protocol: Scheme; host: string; base: string;
 proc validate_ListDataSources_600114(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Lists data sources in current AWS region that belong to this AWS account.</p> <p>The permissions resource is: <code>arn:aws:quicksight:region:aws-account-id:datasource/*</code> </p> <p>CLI syntax: <code>aws quicksight list-data-sources --aws-account-id=111122223333</code> </p>
+  ## Lists data sources in current AWS Region that belong to this AWS account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1710,7 +1710,7 @@ proc validate_ListDataSources_600114(path: JsonNode; query: JsonNode;
 
 proc call*(call_600128: Call_ListDataSources_600113; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists data sources in current AWS region that belong to this AWS account.</p> <p>The permissions resource is: <code>arn:aws:quicksight:region:aws-account-id:datasource/*</code> </p> <p>CLI syntax: <code>aws quicksight list-data-sources --aws-account-id=111122223333</code> </p>
+  ## Lists data sources in current AWS Region that belong to this AWS account.
   ## 
   let valid = call_600128.validator(path, query, header, formData, body)
   let scheme = call_600128.pickScheme
@@ -1725,7 +1725,7 @@ proc call*(call_600129: Call_ListDataSources_600113; AwsAccountId: string;
           NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
           MaxResults: string = ""): Recallable =
   ## listDataSources
-  ## <p>Lists data sources in current AWS region that belong to this AWS account.</p> <p>The permissions resource is: <code>arn:aws:quicksight:region:aws-account-id:datasource/*</code> </p> <p>CLI syntax: <code>aws quicksight list-data-sources --aws-account-id=111122223333</code> </p>
+  ## Lists data sources in current AWS Region that belong to this AWS account.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   NextToken: string
@@ -1778,7 +1778,7 @@ proc url_CreateGroup_600168(protocol: Scheme; host: string; base: string;
 
 proc validate_CreateGroup_600167(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group --aws-account-id=111122223333 --namespace=default --group-name="Sales-Management" --description="Sales Management - Forecasting" </code> </p>
+  ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1859,7 +1859,7 @@ proc validate_CreateGroup_600167(path: JsonNode; query: JsonNode; header: JsonNo
 
 proc call*(call_600179: Call_CreateGroup_600166; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group --aws-account-id=111122223333 --namespace=default --group-name="Sales-Management" --description="Sales Management - Forecasting" </code> </p>
+  ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p>
   ## 
   let valid = call_600179.validator(path, query, header, formData, body)
   let scheme = call_600179.pickScheme
@@ -1873,7 +1873,7 @@ proc call*(call_600179: Call_CreateGroup_600166; path: JsonNode; query: JsonNode
 proc call*(call_600180: Call_CreateGroup_600166; AwsAccountId: string;
           body: JsonNode; Namespace: string): Recallable =
   ## createGroup
-  ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group --aws-account-id=111122223333 --namespace=default --group-name="Sales-Management" --description="Sales Management - Forecasting" </code> </p>
+  ## <p>Creates an Amazon QuickSight group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p>
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the group is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   body: JObject (required)
@@ -1921,7 +1921,7 @@ proc url_ListGroups_600150(protocol: Scheme; host: string; base: string; route: 
 
 proc validate_ListGroups_600149(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists all user groups in Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/*</code>.</p> <p>The response is a list of group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-groups -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
+  ## Lists all user groups in Amazon QuickSight. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2012,7 +2012,7 @@ proc validate_ListGroups_600149(path: JsonNode; query: JsonNode; header: JsonNod
 
 proc call*(call_600162: Call_ListGroups_600148; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists all user groups in Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/*</code>.</p> <p>The response is a list of group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-groups -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
+  ## Lists all user groups in Amazon QuickSight. 
   ## 
   let valid = call_600162.validator(path, query, header, formData, body)
   let scheme = call_600162.pickScheme
@@ -2026,7 +2026,7 @@ proc call*(call_600162: Call_ListGroups_600148; path: JsonNode; query: JsonNode;
 proc call*(call_600163: Call_ListGroups_600148; AwsAccountId: string;
           Namespace: string; maxResults: int = 0; nextToken: string = ""): Recallable =
   ## listGroups
-  ## <p>Lists all user groups in Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/*</code>.</p> <p>The response is a list of group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-groups -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
+  ## Lists all user groups in Amazon QuickSight. 
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the group is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   maxResults: int
@@ -2082,7 +2082,7 @@ proc url_CreateGroupMembership_600185(protocol: Scheme; host: string; base: stri
 
 proc validate_CreateGroupMembership_600184(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Adds an Amazon QuickSight user to an Amazon QuickSight group. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p>The response is the group member object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales --member-name=Pat </code> </p>
+  ## Adds an Amazon QuickSight user to an Amazon QuickSight group. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2172,7 +2172,7 @@ proc validate_CreateGroupMembership_600184(path: JsonNode; query: JsonNode;
 
 proc call*(call_600197: Call_CreateGroupMembership_600183; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Adds an Amazon QuickSight user to an Amazon QuickSight group. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p>The response is the group member object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales --member-name=Pat </code> </p>
+  ## Adds an Amazon QuickSight user to an Amazon QuickSight group. 
   ## 
   let valid = call_600197.validator(path, query, header, formData, body)
   let scheme = call_600197.pickScheme
@@ -2186,7 +2186,7 @@ proc call*(call_600197: Call_CreateGroupMembership_600183; path: JsonNode;
 proc call*(call_600198: Call_CreateGroupMembership_600183; GroupName: string;
           AwsAccountId: string; MemberName: string; Namespace: string): Recallable =
   ## createGroupMembership
-  ## <p>Adds an Amazon QuickSight user to an Amazon QuickSight group. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p>The response is the group member object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight create-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales --member-name=Pat </code> </p>
+  ## Adds an Amazon QuickSight user to an Amazon QuickSight group. 
   ##   GroupName: string (required)
   ##            : The name of the group that you want to add the user to.
   ##   AwsAccountId: string (required)
@@ -2240,7 +2240,7 @@ proc url_DeleteGroupMembership_600202(protocol: Scheme; host: string; base: stri
 
 proc validate_DeleteGroupMembership_600201(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Removes a user from a group so that the user is no longer a member of the group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales-Management --member-name=Charlie </code> </p>
+  ## Removes a user from a group so that the user is no longer a member of the group.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2330,7 +2330,7 @@ proc validate_DeleteGroupMembership_600201(path: JsonNode; query: JsonNode;
 
 proc call*(call_600214: Call_DeleteGroupMembership_600200; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Removes a user from a group so that the user is no longer a member of the group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales-Management --member-name=Charlie </code> </p>
+  ## Removes a user from a group so that the user is no longer a member of the group.
   ## 
   let valid = call_600214.validator(path, query, header, formData, body)
   let scheme = call_600214.pickScheme
@@ -2344,7 +2344,7 @@ proc call*(call_600214: Call_DeleteGroupMembership_600200; path: JsonNode;
 proc call*(call_600215: Call_DeleteGroupMembership_600200; GroupName: string;
           AwsAccountId: string; MemberName: string; Namespace: string): Recallable =
   ## deleteGroupMembership
-  ## <p>Removes a user from a group so that the user is no longer a member of the group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The condition resource is the user name.</p> <p>The condition key is <code>quicksight:UserName</code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group-membership --aws-account-id=111122223333 --namespace=default --group-name=Sales-Management --member-name=Charlie </code> </p>
+  ## Removes a user from a group so that the user is no longer a member of the group.
   ##   GroupName: string (required)
   ##            : The name of the group that you want to delete the user from.
   ##   AwsAccountId: string (required)
@@ -2393,7 +2393,7 @@ proc url_CreateIAMPolicyAssignment_600219(protocol: Scheme; host: string;
 
 proc validate_CreateIAMPolicyAssignment_600218(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates an assignment with one specified IAM policy ARN and will assigned to specified groups or users of QuickSight. Users and groups need to be in the same namespace. </p> <p>CLI syntax:</p> <p> <code>aws quicksight create-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=helpAssignment --policy-arn=arn:aws:iam::aws:policy/AdministratorAccess --identities="user=user5,engineer123,group=QS-Admin" --namespace=default --region=us-west-2</code> </p>
+  ## Creates an assignment with one specified IAM policy Amazon Resource Name (ARN) and will assigned to specified groups or users of QuickSight. Users and groups need to be in the same namespace. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2474,7 +2474,7 @@ proc validate_CreateIAMPolicyAssignment_600218(path: JsonNode; query: JsonNode;
 
 proc call*(call_600230: Call_CreateIAMPolicyAssignment_600217; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates an assignment with one specified IAM policy ARN and will assigned to specified groups or users of QuickSight. Users and groups need to be in the same namespace. </p> <p>CLI syntax:</p> <p> <code>aws quicksight create-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=helpAssignment --policy-arn=arn:aws:iam::aws:policy/AdministratorAccess --identities="user=user5,engineer123,group=QS-Admin" --namespace=default --region=us-west-2</code> </p>
+  ## Creates an assignment with one specified IAM policy Amazon Resource Name (ARN) and will assigned to specified groups or users of QuickSight. Users and groups need to be in the same namespace. 
   ## 
   let valid = call_600230.validator(path, query, header, formData, body)
   let scheme = call_600230.pickScheme
@@ -2488,7 +2488,7 @@ proc call*(call_600230: Call_CreateIAMPolicyAssignment_600217; path: JsonNode;
 proc call*(call_600231: Call_CreateIAMPolicyAssignment_600217;
           AwsAccountId: string; body: JsonNode; Namespace: string): Recallable =
   ## createIAMPolicyAssignment
-  ## <p>Creates an assignment with one specified IAM policy ARN and will assigned to specified groups or users of QuickSight. Users and groups need to be in the same namespace. </p> <p>CLI syntax:</p> <p> <code>aws quicksight create-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=helpAssignment --policy-arn=arn:aws:iam::aws:policy/AdministratorAccess --identities="user=user5,engineer123,group=QS-Admin" --namespace=default --region=us-west-2</code> </p>
+  ## Creates an assignment with one specified IAM policy Amazon Resource Name (ARN) and will assigned to specified groups or users of QuickSight. Users and groups need to be in the same namespace. 
   ##   AwsAccountId: string (required)
   ##               : The AWS Account ID where you want to assign QuickSight users or groups to an IAM policy.
   ##   body: JObject (required)
@@ -2536,7 +2536,7 @@ proc url_UpdateTemplate_600254(protocol: Scheme; host: string; base: string;
 proc validate_UpdateTemplate_600253(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ## <p>Updates a template from an existing QuickSight analysis.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-template --aws-account-id 111122223333 --template-id reports_test_template --data-set-references DataSetPlaceholder=reports,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/c684a204-d134-4c53-a63c-451f72c60c28 DataSetPlaceholder=Elblogs,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/15840b7d-b542-4491-937b-602416b367b3 —source-entity SourceAnalysis=’{Arn=arn:aws:quicksight:us-west-2:111122223333:analysis/c5731fe9-4708-4598-8f6d-cf2a70875b6d}</code> </p> <p>You can also pass in a json file: <code>aws quicksight update-template —cli-input-json file://create-template.json</code> </p>
+  ## Updates a template from an existing QuickSight analysis.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2617,7 +2617,7 @@ proc validate_UpdateTemplate_600253(path: JsonNode; query: JsonNode;
 
 proc call*(call_600265: Call_UpdateTemplate_600252; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates a template from an existing QuickSight analysis.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-template --aws-account-id 111122223333 --template-id reports_test_template --data-set-references DataSetPlaceholder=reports,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/c684a204-d134-4c53-a63c-451f72c60c28 DataSetPlaceholder=Elblogs,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/15840b7d-b542-4491-937b-602416b367b3 —source-entity SourceAnalysis=’{Arn=arn:aws:quicksight:us-west-2:111122223333:analysis/c5731fe9-4708-4598-8f6d-cf2a70875b6d}</code> </p> <p>You can also pass in a json file: <code>aws quicksight update-template —cli-input-json file://create-template.json</code> </p>
+  ## Updates a template from an existing QuickSight analysis.
   ## 
   let valid = call_600265.validator(path, query, header, formData, body)
   let scheme = call_600265.pickScheme
@@ -2631,7 +2631,7 @@ proc call*(call_600265: Call_UpdateTemplate_600252; path: JsonNode; query: JsonN
 proc call*(call_600266: Call_UpdateTemplate_600252; AwsAccountId: string;
           TemplateId: string; body: JsonNode): Recallable =
   ## updateTemplate
-  ## <p>Updates a template from an existing QuickSight analysis.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-template --aws-account-id 111122223333 --template-id reports_test_template --data-set-references DataSetPlaceholder=reports,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/c684a204-d134-4c53-a63c-451f72c60c28 DataSetPlaceholder=Elblogs,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/15840b7d-b542-4491-937b-602416b367b3 —source-entity SourceAnalysis=’{Arn=arn:aws:quicksight:us-west-2:111122223333:analysis/c5731fe9-4708-4598-8f6d-cf2a70875b6d}</code> </p> <p>You can also pass in a json file: <code>aws quicksight update-template —cli-input-json file://create-template.json</code> </p>
+  ## Updates a template from an existing QuickSight analysis.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template you are updating.
   ##   TemplateId: string (required)
@@ -2678,7 +2678,7 @@ proc url_CreateTemplate_600271(protocol: Scheme; host: string; base: string;
 proc validate_CreateTemplate_600270(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ## <p>Creates a template from an existing QuickSight analysis or template. The resulting template can be used to create a dashboard.</p> <p>A template is an entity in QuickSight which encapsulates the metadata required to create an analysis that can be used to create dashboard. It adds a layer of abstraction by use placeholders to replace the dataset associated with the analysis. You can use templates to create dashboards by replacing dataset placeholders with datasets which follow the same schema that was used to create the source analysis and template.</p> <p>To create a template from an existing analysis, use the analysis's ARN, <code>aws-account-id</code>, <code>template-id</code>, <code>source-entity</code>, and <code>data-set-references</code>.</p> <p>CLI syntax to create a template: </p> <p> <code>aws quicksight create-template —cli-input-json file://create-template.json</code> </p> <p>CLI syntax to create a template from another template in the same AWS account:</p> <p> <code>aws quicksight create-template --aws-account-id 111122223333 --template-id reports_test_template --data-set-references DataSetPlaceholder=reports,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/0dfc789c-81f6-4f4f-b9ac-7db2453eefc8 DataSetPlaceholder=Elblogs,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/f60da323-af68-45db-9016-08e0d1d7ded5 --source-entity SourceAnalysis='{Arn=arn:aws:quicksight:us-west-2:111122223333:analysis/7fb74527-c36d-4be8-8139-ac1be4c97365}'</code> </p> <p>To create template from another account’s template, you need to grant cross account resource permission for DescribeTemplate the account that contains the template.</p> <p>You can use a file to pass JSON to the function if you prefer. </p>
+  ## <p>Creates a template from an existing QuickSight analysis or template. The resulting template can be used to create a dashboard.</p> <p>A template is an entity in QuickSight which encapsulates the metadata required to create an analysis that can be used to create dashboard. It adds a layer of abstraction by use placeholders to replace the dataset associated with the analysis. You can use templates to create dashboards by replacing dataset placeholders with datasets which follow the same schema that was used to create the source analysis and template.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2759,7 +2759,7 @@ proc validate_CreateTemplate_600270(path: JsonNode; query: JsonNode;
 
 proc call*(call_600282: Call_CreateTemplate_600269; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a template from an existing QuickSight analysis or template. The resulting template can be used to create a dashboard.</p> <p>A template is an entity in QuickSight which encapsulates the metadata required to create an analysis that can be used to create dashboard. It adds a layer of abstraction by use placeholders to replace the dataset associated with the analysis. You can use templates to create dashboards by replacing dataset placeholders with datasets which follow the same schema that was used to create the source analysis and template.</p> <p>To create a template from an existing analysis, use the analysis's ARN, <code>aws-account-id</code>, <code>template-id</code>, <code>source-entity</code>, and <code>data-set-references</code>.</p> <p>CLI syntax to create a template: </p> <p> <code>aws quicksight create-template —cli-input-json file://create-template.json</code> </p> <p>CLI syntax to create a template from another template in the same AWS account:</p> <p> <code>aws quicksight create-template --aws-account-id 111122223333 --template-id reports_test_template --data-set-references DataSetPlaceholder=reports,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/0dfc789c-81f6-4f4f-b9ac-7db2453eefc8 DataSetPlaceholder=Elblogs,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/f60da323-af68-45db-9016-08e0d1d7ded5 --source-entity SourceAnalysis='{Arn=arn:aws:quicksight:us-west-2:111122223333:analysis/7fb74527-c36d-4be8-8139-ac1be4c97365}'</code> </p> <p>To create template from another account’s template, you need to grant cross account resource permission for DescribeTemplate the account that contains the template.</p> <p>You can use a file to pass JSON to the function if you prefer. </p>
+  ## <p>Creates a template from an existing QuickSight analysis or template. The resulting template can be used to create a dashboard.</p> <p>A template is an entity in QuickSight which encapsulates the metadata required to create an analysis that can be used to create dashboard. It adds a layer of abstraction by use placeholders to replace the dataset associated with the analysis. You can use templates to create dashboards by replacing dataset placeholders with datasets which follow the same schema that was used to create the source analysis and template.</p>
   ## 
   let valid = call_600282.validator(path, query, header, formData, body)
   let scheme = call_600282.pickScheme
@@ -2773,7 +2773,7 @@ proc call*(call_600282: Call_CreateTemplate_600269; path: JsonNode; query: JsonN
 proc call*(call_600283: Call_CreateTemplate_600269; AwsAccountId: string;
           TemplateId: string; body: JsonNode): Recallable =
   ## createTemplate
-  ## <p>Creates a template from an existing QuickSight analysis or template. The resulting template can be used to create a dashboard.</p> <p>A template is an entity in QuickSight which encapsulates the metadata required to create an analysis that can be used to create dashboard. It adds a layer of abstraction by use placeholders to replace the dataset associated with the analysis. You can use templates to create dashboards by replacing dataset placeholders with datasets which follow the same schema that was used to create the source analysis and template.</p> <p>To create a template from an existing analysis, use the analysis's ARN, <code>aws-account-id</code>, <code>template-id</code>, <code>source-entity</code>, and <code>data-set-references</code>.</p> <p>CLI syntax to create a template: </p> <p> <code>aws quicksight create-template —cli-input-json file://create-template.json</code> </p> <p>CLI syntax to create a template from another template in the same AWS account:</p> <p> <code>aws quicksight create-template --aws-account-id 111122223333 --template-id reports_test_template --data-set-references DataSetPlaceholder=reports,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/0dfc789c-81f6-4f4f-b9ac-7db2453eefc8 DataSetPlaceholder=Elblogs,DataSetArn=arn:aws:quicksight:us-west-2:111122223333:dataset/f60da323-af68-45db-9016-08e0d1d7ded5 --source-entity SourceAnalysis='{Arn=arn:aws:quicksight:us-west-2:111122223333:analysis/7fb74527-c36d-4be8-8139-ac1be4c97365}'</code> </p> <p>To create template from another account’s template, you need to grant cross account resource permission for DescribeTemplate the account that contains the template.</p> <p>You can use a file to pass JSON to the function if you prefer. </p>
+  ## <p>Creates a template from an existing QuickSight analysis or template. The resulting template can be used to create a dashboard.</p> <p>A template is an entity in QuickSight which encapsulates the metadata required to create an analysis that can be used to create dashboard. It adds a layer of abstraction by use placeholders to replace the dataset associated with the analysis. You can use templates to create dashboards by replacing dataset placeholders with datasets which follow the same schema that was used to create the source analysis and template.</p>
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the group is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   TemplateId: string (required)
@@ -2820,7 +2820,7 @@ proc url_DescribeTemplate_600236(protocol: Scheme; host: string; base: string;
 proc validate_DescribeTemplate_600235(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Describes a template's metadata.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template </code> </p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template --version-number-2</code> </p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template --alias-name '\$LATEST' </code> </p> <p>Users can explicitly describe the latest version of the dashboard by passing <code>$LATEST</code> to the <code>alias-name</code> parameter. <code>$LATEST</code> is an internally supported alias, which points to the latest version of the dashboard. </p>
+  ## Describes a template's metadata.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2845,7 +2845,7 @@ proc validate_DescribeTemplate_600235(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   alias-name: JString
-  ##             : This is an optional field, when an alias name is provided, the version referenced by the alias is described. Refer to <code>CreateTemplateAlias</code> to create a template alias. <code>$PUBLISHED</code> is not supported for template.
+  ##             : The alias of the template that you want to describe. If you provide a specific alias, you describe the version that the alias points to. You can specify the latest version of the template by providing the keyword <code>$LATEST</code> in the <code>AliasName</code> parameter. The keyword <code>$PUBLISHED</code> doesn't apply to templates.
   ##   version-number: JInt
   ##                 : This is an optional field, when a version number is provided the corresponding version is describe, if it's not provided the latest version of the template is described.
   section = newJObject()
@@ -2911,7 +2911,7 @@ proc validate_DescribeTemplate_600235(path: JsonNode; query: JsonNode;
 
 proc call*(call_600248: Call_DescribeTemplate_600234; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes a template's metadata.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template </code> </p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template --version-number-2</code> </p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template --alias-name '\$LATEST' </code> </p> <p>Users can explicitly describe the latest version of the dashboard by passing <code>$LATEST</code> to the <code>alias-name</code> parameter. <code>$LATEST</code> is an internally supported alias, which points to the latest version of the dashboard. </p>
+  ## Describes a template's metadata.
   ## 
   let valid = call_600248.validator(path, query, header, formData, body)
   let scheme = call_600248.pickScheme
@@ -2925,13 +2925,13 @@ proc call*(call_600248: Call_DescribeTemplate_600234; path: JsonNode;
 proc call*(call_600249: Call_DescribeTemplate_600234; AwsAccountId: string;
           TemplateId: string; aliasName: string = ""; versionNumber: int = 0): Recallable =
   ## describeTemplate
-  ## <p>Describes a template's metadata.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template </code> </p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template --version-number-2</code> </p> <p> <code>aws quicksight describe-template --aws-account-id 111122223333 --template-id reports_test_template --alias-name '\$LATEST' </code> </p> <p>Users can explicitly describe the latest version of the dashboard by passing <code>$LATEST</code> to the <code>alias-name</code> parameter. <code>$LATEST</code> is an internally supported alias, which points to the latest version of the dashboard. </p>
+  ## Describes a template's metadata.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template you are describing.
   ##   TemplateId: string (required)
   ##             : An ID for the template.
   ##   aliasName: string
-  ##            : This is an optional field, when an alias name is provided, the version referenced by the alias is described. Refer to <code>CreateTemplateAlias</code> to create a template alias. <code>$PUBLISHED</code> is not supported for template.
+  ##            : The alias of the template that you want to describe. If you provide a specific alias, you describe the version that the alias points to. You can specify the latest version of the template by providing the keyword <code>$LATEST</code> in the <code>AliasName</code> parameter. The keyword <code>$PUBLISHED</code> doesn't apply to templates.
   ##   versionNumber: int
   ##                : This is an optional field, when a version number is provided the corresponding version is describe, if it's not provided the latest version of the template is described.
   var path_600250 = newJObject()
@@ -2975,7 +2975,7 @@ proc url_DeleteTemplate_600288(protocol: Scheme; host: string; base: string;
 proc validate_DeleteTemplate_600287(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ## <p>Deletes a template.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight delete-template --aws-account-id 111122223333 —-template-id reports_test_template --version-number 2 </code> </p> </li> <li> <p> <code>aws quicksight delete-template —aws-account-id 111122223333 —template-id reports_test_template —alias-name STAGING </code> </p> </li> <li> <p> <code>aws quicksight delete-template —aws-account-id 111122223333 —template-id reports_test_template —alias-name ‘\$LATEST’ </code> </p> </li> <li> <p> <code>aws quicksight delete-template --aws-account-id 111122223333 —-template-id reports_test_template</code> </p> </li> </ul> <p>If version number which is an optional field is not passed the template (including all the versions) is deleted by the API, if version number is provided, the specific template version is deleted by the API.</p> <p>Users can explicitly describe the latest version of the template by passing <code>$LATEST</code> to the <code>alias-name</code> parameter. <code>$LATEST</code> is an internally supported alias, which points to the latest version of the template. </p>
+  ## Deletes a template.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3000,7 +3000,7 @@ proc validate_DeleteTemplate_600287(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   version-number: JInt
-  ##                 : The version number
+  ##                 : Specifies the version of the template that you want to delete. If you don't provide a version number, <code>DeleteTemplate</code> deletes all versions of the template. 
   section = newJObject()
   var valid_600291 = query.getOrDefault("version-number")
   valid_600291 = validateParameter(valid_600291, JInt, required = false, default = nil)
@@ -3059,7 +3059,7 @@ proc validate_DeleteTemplate_600287(path: JsonNode; query: JsonNode;
 
 proc call*(call_600299: Call_DeleteTemplate_600286; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes a template.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight delete-template --aws-account-id 111122223333 —-template-id reports_test_template --version-number 2 </code> </p> </li> <li> <p> <code>aws quicksight delete-template —aws-account-id 111122223333 —template-id reports_test_template —alias-name STAGING </code> </p> </li> <li> <p> <code>aws quicksight delete-template —aws-account-id 111122223333 —template-id reports_test_template —alias-name ‘\$LATEST’ </code> </p> </li> <li> <p> <code>aws quicksight delete-template --aws-account-id 111122223333 —-template-id reports_test_template</code> </p> </li> </ul> <p>If version number which is an optional field is not passed the template (including all the versions) is deleted by the API, if version number is provided, the specific template version is deleted by the API.</p> <p>Users can explicitly describe the latest version of the template by passing <code>$LATEST</code> to the <code>alias-name</code> parameter. <code>$LATEST</code> is an internally supported alias, which points to the latest version of the template. </p>
+  ## Deletes a template.
   ## 
   let valid = call_600299.validator(path, query, header, formData, body)
   let scheme = call_600299.pickScheme
@@ -3073,13 +3073,13 @@ proc call*(call_600299: Call_DeleteTemplate_600286; path: JsonNode; query: JsonN
 proc call*(call_600300: Call_DeleteTemplate_600286; AwsAccountId: string;
           TemplateId: string; versionNumber: int = 0): Recallable =
   ## deleteTemplate
-  ## <p>Deletes a template.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight delete-template --aws-account-id 111122223333 —-template-id reports_test_template --version-number 2 </code> </p> </li> <li> <p> <code>aws quicksight delete-template —aws-account-id 111122223333 —template-id reports_test_template —alias-name STAGING </code> </p> </li> <li> <p> <code>aws quicksight delete-template —aws-account-id 111122223333 —template-id reports_test_template —alias-name ‘\$LATEST’ </code> </p> </li> <li> <p> <code>aws quicksight delete-template --aws-account-id 111122223333 —-template-id reports_test_template</code> </p> </li> </ul> <p>If version number which is an optional field is not passed the template (including all the versions) is deleted by the API, if version number is provided, the specific template version is deleted by the API.</p> <p>Users can explicitly describe the latest version of the template by passing <code>$LATEST</code> to the <code>alias-name</code> parameter. <code>$LATEST</code> is an internally supported alias, which points to the latest version of the template. </p>
+  ## Deletes a template.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template you are deleting.
   ##   TemplateId: string (required)
   ##             : An ID for the template you want to delete.
   ##   versionNumber: int
-  ##                : The version number
+  ##                : Specifies the version of the template that you want to delete. If you don't provide a version number, <code>DeleteTemplate</code> deletes all versions of the template. 
   var path_600301 = newJObject()
   var query_600302 = newJObject()
   add(path_600301, "AwsAccountId", newJString(AwsAccountId))
@@ -3123,7 +3123,7 @@ proc url_UpdateTemplateAlias_600321(protocol: Scheme; host: string; base: string
 proc validate_UpdateTemplateAlias_600320(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Updates the template alias of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name STAGING —template-version-number 2 </code> </p>
+  ## Updates the template alias of a template.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3133,7 +3133,7 @@ proc validate_UpdateTemplateAlias_600320(path: JsonNode; query: JsonNode;
   ##   TemplateId: JString (required)
   ##             : The ID for the template.
   ##   AliasName: JString (required)
-  ##            : The alias name.
+  ##            : The alias of the template that you want to update. If you provide a specific alias, you update the version that the alias points to. You can specify the latest version of the template by providing the keyword <code>$LATEST</code> in the <code>AliasName</code> parameter. The keyword <code>$PUBLISHED</code> doesn't apply to templates.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -3211,7 +3211,7 @@ proc validate_UpdateTemplateAlias_600320(path: JsonNode; query: JsonNode;
 
 proc call*(call_600333: Call_UpdateTemplateAlias_600319; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates the template alias of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name STAGING —template-version-number 2 </code> </p>
+  ## Updates the template alias of a template.
   ## 
   let valid = call_600333.validator(path, query, header, formData, body)
   let scheme = call_600333.pickScheme
@@ -3225,14 +3225,14 @@ proc call*(call_600333: Call_UpdateTemplateAlias_600319; path: JsonNode;
 proc call*(call_600334: Call_UpdateTemplateAlias_600319; AwsAccountId: string;
           TemplateId: string; body: JsonNode; AliasName: string): Recallable =
   ## updateTemplateAlias
-  ## <p>Updates the template alias of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name STAGING —template-version-number 2 </code> </p>
+  ## Updates the template alias of a template.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template aliases you are updating.
   ##   TemplateId: string (required)
   ##             : The ID for the template.
   ##   body: JObject (required)
   ##   AliasName: string (required)
-  ##            : The alias name.
+  ##            : The alias of the template that you want to update. If you provide a specific alias, you update the version that the alias points to. You can specify the latest version of the template by providing the keyword <code>$LATEST</code> in the <code>AliasName</code> parameter. The keyword <code>$PUBLISHED</code> doesn't apply to templates.
   var path_600335 = newJObject()
   var body_600336 = newJObject()
   add(path_600335, "AwsAccountId", newJString(AwsAccountId))
@@ -3278,7 +3278,7 @@ proc url_CreateTemplateAlias_600339(protocol: Scheme; host: string; base: string
 proc validate_CreateTemplateAlias_600338(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Creates a template alias for a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name PROD —version-number 1</code> </p>
+  ## Creates a template alias for a template.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3288,7 +3288,7 @@ proc validate_CreateTemplateAlias_600338(path: JsonNode; query: JsonNode;
   ##   TemplateId: JString (required)
   ##             : An ID for the template.
   ##   AliasName: JString (required)
-  ##            : The name you want to give the template's alias. Alias names can't begin with a <code>$</code>, which is reserved by QuickSight. Alias names that start with ‘$’ sign are QuickSight reserved naming and can't be deleted. 
+  ##            : The name that you want to give to the template alias that you're creating. Aliases that start with <code>$</code> are reserved by QuickSight. 
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -3366,7 +3366,7 @@ proc validate_CreateTemplateAlias_600338(path: JsonNode; query: JsonNode;
 
 proc call*(call_600351: Call_CreateTemplateAlias_600337; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a template alias for a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name PROD —version-number 1</code> </p>
+  ## Creates a template alias for a template.
   ## 
   let valid = call_600351.validator(path, query, header, formData, body)
   let scheme = call_600351.pickScheme
@@ -3380,14 +3380,14 @@ proc call*(call_600351: Call_CreateTemplateAlias_600337; path: JsonNode;
 proc call*(call_600352: Call_CreateTemplateAlias_600337; AwsAccountId: string;
           TemplateId: string; body: JsonNode; AliasName: string): Recallable =
   ## createTemplateAlias
-  ## <p>Creates a template alias for a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight create-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name PROD —version-number 1</code> </p>
+  ## Creates a template alias for a template.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template you are aliasing.
   ##   TemplateId: string (required)
   ##             : An ID for the template.
   ##   body: JObject (required)
   ##   AliasName: string (required)
-  ##            : The name you want to give the template's alias. Alias names can't begin with a <code>$</code>, which is reserved by QuickSight. Alias names that start with ‘$’ sign are QuickSight reserved naming and can't be deleted. 
+  ##            : The name that you want to give to the template alias that you're creating. Aliases that start with <code>$</code> are reserved by QuickSight. 
   var path_600353 = newJObject()
   var body_600354 = newJObject()
   add(path_600353, "AwsAccountId", newJString(AwsAccountId))
@@ -3432,7 +3432,7 @@ proc url_DescribeTemplateAlias_600305(protocol: Scheme; host: string; base: stri
 
 proc validate_DescribeTemplateAlias_600304(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Describes the template aliases of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name 'STAGING'</code> </p>
+  ## Describes the template aliases of a template.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3442,7 +3442,7 @@ proc validate_DescribeTemplateAlias_600304(path: JsonNode; query: JsonNode;
   ##   TemplateId: JString (required)
   ##             : An ID for the template.
   ##   AliasName: JString (required)
-  ##            : The alias name. <code>$PUBLISHED</code> is not supported for template.
+  ##            : The alias of the template that you want to describe. If you provide a specific alias, you describe the version that the alias points to. You can specify the latest version of the template by providing the keyword <code>$LATEST</code> in the <code>AliasName</code> parameter. The keyword <code>$PUBLISHED</code> doesn't apply to templates.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -3516,7 +3516,7 @@ proc validate_DescribeTemplateAlias_600304(path: JsonNode; query: JsonNode;
 
 proc call*(call_600316: Call_DescribeTemplateAlias_600303; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes the template aliases of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name 'STAGING'</code> </p>
+  ## Describes the template aliases of a template.
   ## 
   let valid = call_600316.validator(path, query, header, formData, body)
   let scheme = call_600316.pickScheme
@@ -3530,13 +3530,13 @@ proc call*(call_600316: Call_DescribeTemplateAlias_600303; path: JsonNode;
 proc call*(call_600317: Call_DescribeTemplateAlias_600303; AwsAccountId: string;
           TemplateId: string; AliasName: string): Recallable =
   ## describeTemplateAlias
-  ## <p>Describes the template aliases of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name 'STAGING'</code> </p>
+  ## Describes the template aliases of a template.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template alias you are describing.
   ##   TemplateId: string (required)
   ##             : An ID for the template.
   ##   AliasName: string (required)
-  ##            : The alias name. <code>$PUBLISHED</code> is not supported for template.
+  ##            : The alias of the template that you want to describe. If you provide a specific alias, you describe the version that the alias points to. You can specify the latest version of the template by providing the keyword <code>$LATEST</code> in the <code>AliasName</code> parameter. The keyword <code>$PUBLISHED</code> doesn't apply to templates.
   var path_600318 = newJObject()
   add(path_600318, "AwsAccountId", newJString(AwsAccountId))
   add(path_600318, "TemplateId", newJString(TemplateId))
@@ -3579,7 +3579,7 @@ proc url_DeleteTemplateAlias_600357(protocol: Scheme; host: string; base: string
 proc validate_DeleteTemplateAlias_600356(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Update template alias of given template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name 'STAGING'</code> </p>
+  ## Update template alias of given template.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3589,7 +3589,7 @@ proc validate_DeleteTemplateAlias_600356(path: JsonNode; query: JsonNode;
   ##   TemplateId: JString (required)
   ##             : An ID for the template.
   ##   AliasName: JString (required)
-  ##            : The alias of the template. If alias-name is provided, the version that the alias-name points to is deleted. Alias names that start with <code>$</code> are reserved by QuickSight and can't be deleted.”
+  ##            : The alias of the template that you want to delete. If you provide a specific alias, you delete the version that the alias points to. You can specify the latest version of the template by providing the keyword <code>$LATEST</code> in the <code>AliasName</code> parameter. 
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -3663,7 +3663,7 @@ proc validate_DeleteTemplateAlias_600356(path: JsonNode; query: JsonNode;
 
 proc call*(call_600368: Call_DeleteTemplateAlias_600355; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Update template alias of given template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name 'STAGING'</code> </p>
+  ## Update template alias of given template.
   ## 
   let valid = call_600368.validator(path, query, header, formData, body)
   let scheme = call_600368.pickScheme
@@ -3677,13 +3677,13 @@ proc call*(call_600368: Call_DeleteTemplateAlias_600355; path: JsonNode;
 proc call*(call_600369: Call_DeleteTemplateAlias_600355; AwsAccountId: string;
           TemplateId: string; AliasName: string): Recallable =
   ## deleteTemplateAlias
-  ## <p>Update template alias of given template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-template-alias --aws-account-id 111122223333 --template-id 'reports_test_template' --alias-name 'STAGING'</code> </p>
+  ## Update template alias of given template.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template alias you are deleting.
   ##   TemplateId: string (required)
   ##             : An ID for the template.
   ##   AliasName: string (required)
-  ##            : The alias of the template. If alias-name is provided, the version that the alias-name points to is deleted. Alias names that start with <code>$</code> are reserved by QuickSight and can't be deleted.”
+  ##            : The alias of the template that you want to delete. If you provide a specific alias, you delete the version that the alias points to. You can specify the latest version of the template by providing the keyword <code>$LATEST</code> in the <code>AliasName</code> parameter. 
   var path_600370 = newJObject()
   add(path_600370, "AwsAccountId", newJString(AwsAccountId))
   add(path_600370, "TemplateId", newJString(TemplateId))
@@ -3722,7 +3722,7 @@ proc url_UpdateDataSet_600388(protocol: Scheme; host: string; base: string;
 
 proc validate_UpdateDataSet_600387(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-set \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--name='My dataset' \</code> </p> <p> <code>--import-mode=SPICE \</code> </p> <p> <code>--physical-table-map='{</code> </p> <p> <code> "physical-table-id": {</code> </p> <p> <code> "RelationalTable": {</code> </p> <p> <code> "DataSourceArn": "arn:aws:quicksight:us-west-2:111111111111:datasource/data-source-id",</code> </p> <p> <code> "Name": "table1",</code> </p> <p> <code> "InputColumns": [</code> </p> <p> <code> {</code> </p> <p> <code> "Name": "column1",</code> </p> <p> <code> "Type": "STRING"</code> </p> <p> <code> }</code> </p> <p> <code> ]</code> </p> <p> <code> }</code> </p> <p> <code> }'</code> </p>
+  ## Updates a dataset.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3730,7 +3730,7 @@ proc validate_UpdateDataSet_600387(path: JsonNode; query: JsonNode; header: Json
   ##   AwsAccountId: JString (required)
   ##               : The AWS Account ID.
   ##   DataSetId: JString (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -3803,7 +3803,7 @@ proc validate_UpdateDataSet_600387(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_600399: Call_UpdateDataSet_600386; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-set \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--name='My dataset' \</code> </p> <p> <code>--import-mode=SPICE \</code> </p> <p> <code>--physical-table-map='{</code> </p> <p> <code> "physical-table-id": {</code> </p> <p> <code> "RelationalTable": {</code> </p> <p> <code> "DataSourceArn": "arn:aws:quicksight:us-west-2:111111111111:datasource/data-source-id",</code> </p> <p> <code> "Name": "table1",</code> </p> <p> <code> "InputColumns": [</code> </p> <p> <code> {</code> </p> <p> <code> "Name": "column1",</code> </p> <p> <code> "Type": "STRING"</code> </p> <p> <code> }</code> </p> <p> <code> ]</code> </p> <p> <code> }</code> </p> <p> <code> }'</code> </p>
+  ## Updates a dataset.
   ## 
   let valid = call_600399.validator(path, query, header, formData, body)
   let scheme = call_600399.pickScheme
@@ -3817,12 +3817,12 @@ proc call*(call_600399: Call_UpdateDataSet_600386; path: JsonNode; query: JsonNo
 proc call*(call_600400: Call_UpdateDataSet_600386; AwsAccountId: string;
           body: JsonNode; DataSetId: string): Recallable =
   ## updateDataSet
-  ## <p>Updates a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-set \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--name='My dataset' \</code> </p> <p> <code>--import-mode=SPICE \</code> </p> <p> <code>--physical-table-map='{</code> </p> <p> <code> "physical-table-id": {</code> </p> <p> <code> "RelationalTable": {</code> </p> <p> <code> "DataSourceArn": "arn:aws:quicksight:us-west-2:111111111111:datasource/data-source-id",</code> </p> <p> <code> "Name": "table1",</code> </p> <p> <code> "InputColumns": [</code> </p> <p> <code> {</code> </p> <p> <code> "Name": "column1",</code> </p> <p> <code> "Type": "STRING"</code> </p> <p> <code> }</code> </p> <p> <code> ]</code> </p> <p> <code> }</code> </p> <p> <code> }'</code> </p>
+  ## Updates a dataset.
   ##   AwsAccountId: string (required)
   ##               : The AWS Account ID.
   ##   body: JObject (required)
   ##   DataSetId: string (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   var path_600401 = newJObject()
   var body_600402 = newJObject()
   add(path_600401, "AwsAccountId", newJString(AwsAccountId))
@@ -3864,7 +3864,7 @@ proc url_DescribeDataSet_600373(protocol: Scheme; host: string; base: string;
 proc validate_DescribeDataSet_600372(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Describes a dataset. </p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-data-set \</code> </p> <p> <code>--aws-account-id=111111111111 \</code> </p> <p> <code>--data-set-id=unique-data-set-id</code> </p>
+  ## Describes a dataset. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3872,7 +3872,7 @@ proc validate_DescribeDataSet_600372(path: JsonNode; query: JsonNode;
   ##   AwsAccountId: JString (required)
   ##               : The AWS Account ID.
   ##   DataSetId: JString (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -3941,7 +3941,7 @@ proc validate_DescribeDataSet_600372(path: JsonNode; query: JsonNode;
 
 proc call*(call_600383: Call_DescribeDataSet_600371; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes a dataset. </p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-data-set \</code> </p> <p> <code>--aws-account-id=111111111111 \</code> </p> <p> <code>--data-set-id=unique-data-set-id</code> </p>
+  ## Describes a dataset. 
   ## 
   let valid = call_600383.validator(path, query, header, formData, body)
   let scheme = call_600383.pickScheme
@@ -3955,11 +3955,11 @@ proc call*(call_600383: Call_DescribeDataSet_600371; path: JsonNode; query: Json
 proc call*(call_600384: Call_DescribeDataSet_600371; AwsAccountId: string;
           DataSetId: string): Recallable =
   ## describeDataSet
-  ## <p>Describes a dataset. </p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-data-set \</code> </p> <p> <code>--aws-account-id=111111111111 \</code> </p> <p> <code>--data-set-id=unique-data-set-id</code> </p>
+  ## Describes a dataset. 
   ##   AwsAccountId: string (required)
   ##               : The AWS Account ID.
   ##   DataSetId: string (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   var path_600385 = newJObject()
   add(path_600385, "AwsAccountId", newJString(AwsAccountId))
   add(path_600385, "DataSetId", newJString(DataSetId))
@@ -3997,15 +3997,15 @@ proc url_DeleteDataSet_600405(protocol: Scheme; host: string; base: string;
 
 proc validate_DeleteDataSet_600404(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Deletes a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-data-set \</code> </p> <p> <code>--aws-account-id=111111111111 \</code> </p> <p> <code>--data-set-id=unique-data-set-id</code> </p>
+  ## Deletes a dataset.
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   AwsAccountId: JString (required)
-  ##               : The AWS Account ID.
+  ##               : The AWS account ID.
   ##   DataSetId: JString (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -4074,7 +4074,7 @@ proc validate_DeleteDataSet_600404(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_600415: Call_DeleteDataSet_600403; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-data-set \</code> </p> <p> <code>--aws-account-id=111111111111 \</code> </p> <p> <code>--data-set-id=unique-data-set-id</code> </p>
+  ## Deletes a dataset.
   ## 
   let valid = call_600415.validator(path, query, header, formData, body)
   let scheme = call_600415.pickScheme
@@ -4088,11 +4088,11 @@ proc call*(call_600415: Call_DeleteDataSet_600403; path: JsonNode; query: JsonNo
 proc call*(call_600416: Call_DeleteDataSet_600403; AwsAccountId: string;
           DataSetId: string): Recallable =
   ## deleteDataSet
-  ## <p>Deletes a dataset.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-data-set \</code> </p> <p> <code>--aws-account-id=111111111111 \</code> </p> <p> <code>--data-set-id=unique-data-set-id</code> </p>
+  ## Deletes a dataset.
   ##   AwsAccountId: string (required)
-  ##               : The AWS Account ID.
+  ##               : The AWS account ID.
   ##   DataSetId: string (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   var path_600417 = newJObject()
   add(path_600417, "AwsAccountId", newJString(AwsAccountId))
   add(path_600417, "DataSetId", newJString(DataSetId))
@@ -4131,7 +4131,7 @@ proc url_UpdateDataSource_600435(protocol: Scheme; host: string; base: string;
 proc validate_UpdateDataSource_600434(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Updates a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--data-source-parameters='{"PostgreSqlParameters":{"Host":"my-db-host.example.com","Port":1234,"Database":"my-db"}}' \</code> </p> <p> <code>--credentials='{"CredentialPair":{"Username":"username","Password":"password"}}</code> </p>
+  ## Updates a data source.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4139,7 +4139,7 @@ proc validate_UpdateDataSource_600434(path: JsonNode; query: JsonNode;
   ##   AwsAccountId: JString (required)
   ##               : The AWS account ID.
   ##   DataSourceId: JString (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account. 
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account. 
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -4212,7 +4212,7 @@ proc validate_UpdateDataSource_600434(path: JsonNode; query: JsonNode;
 
 proc call*(call_600446: Call_UpdateDataSource_600433; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--data-source-parameters='{"PostgreSqlParameters":{"Host":"my-db-host.example.com","Port":1234,"Database":"my-db"}}' \</code> </p> <p> <code>--credentials='{"CredentialPair":{"Username":"username","Password":"password"}}</code> </p>
+  ## Updates a data source.
   ## 
   let valid = call_600446.validator(path, query, header, formData, body)
   let scheme = call_600446.pickScheme
@@ -4226,11 +4226,11 @@ proc call*(call_600446: Call_UpdateDataSource_600433; path: JsonNode;
 proc call*(call_600447: Call_UpdateDataSource_600433; AwsAccountId: string;
           DataSourceId: string; body: JsonNode): Recallable =
   ## updateDataSource
-  ## <p>Updates a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--data-source-parameters='{"PostgreSqlParameters":{"Host":"my-db-host.example.com","Port":1234,"Database":"my-db"}}' \</code> </p> <p> <code>--credentials='{"CredentialPair":{"Username":"username","Password":"password"}}</code> </p>
+  ## Updates a data source.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   DataSourceId: string (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account. 
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account. 
   ##   body: JObject (required)
   var path_600448 = newJObject()
   var body_600449 = newJObject()
@@ -4273,7 +4273,7 @@ proc url_DescribeDataSource_600420(protocol: Scheme; host: string; base: string;
 proc validate_DescribeDataSource_600419(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
-  ## <p>Describes a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p>
+  ## Describes a data source.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4281,7 +4281,7 @@ proc validate_DescribeDataSource_600419(path: JsonNode; query: JsonNode;
   ##   AwsAccountId: JString (required)
   ##               : The AWS account ID.
   ##   DataSourceId: JString (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account.
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -4350,7 +4350,7 @@ proc validate_DescribeDataSource_600419(path: JsonNode; query: JsonNode;
 
 proc call*(call_600430: Call_DescribeDataSource_600418; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p>
+  ## Describes a data source.
   ## 
   let valid = call_600430.validator(path, query, header, formData, body)
   let scheme = call_600430.pickScheme
@@ -4364,11 +4364,11 @@ proc call*(call_600430: Call_DescribeDataSource_600418; path: JsonNode;
 proc call*(call_600431: Call_DescribeDataSource_600418; AwsAccountId: string;
           DataSourceId: string): Recallable =
   ## describeDataSource
-  ## <p>Describes a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p>
+  ## Describes a data source.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   DataSourceId: string (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account.
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account.
   var path_600432 = newJObject()
   add(path_600432, "AwsAccountId", newJString(AwsAccountId))
   add(path_600432, "DataSourceId", newJString(DataSourceId))
@@ -4408,7 +4408,7 @@ proc url_DeleteDataSource_600452(protocol: Scheme; host: string; base: string;
 proc validate_DeleteDataSource_600451(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Deletes the data source permanently. This action breaks all the datasets that reference the deleted data source.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id </code> </p>
+  ## Deletes the data source permanently. This action breaks all the datasets that reference the deleted data source.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4416,7 +4416,7 @@ proc validate_DeleteDataSource_600451(path: JsonNode; query: JsonNode;
   ##   AwsAccountId: JString (required)
   ##               : The AWS account ID.
   ##   DataSourceId: JString (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account.
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -4485,7 +4485,7 @@ proc validate_DeleteDataSource_600451(path: JsonNode; query: JsonNode;
 
 proc call*(call_600462: Call_DeleteDataSource_600450; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes the data source permanently. This action breaks all the datasets that reference the deleted data source.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id </code> </p>
+  ## Deletes the data source permanently. This action breaks all the datasets that reference the deleted data source.
   ## 
   let valid = call_600462.validator(path, query, header, formData, body)
   let scheme = call_600462.pickScheme
@@ -4499,11 +4499,11 @@ proc call*(call_600462: Call_DeleteDataSource_600450; path: JsonNode;
 proc call*(call_600463: Call_DeleteDataSource_600450; AwsAccountId: string;
           DataSourceId: string): Recallable =
   ## deleteDataSource
-  ## <p>Deletes the data source permanently. This action breaks all the datasets that reference the deleted data source.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-data-source \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id </code> </p>
+  ## Deletes the data source permanently. This action breaks all the datasets that reference the deleted data source.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   DataSourceId: string (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account.
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account.
   var path_600464 = newJObject()
   add(path_600464, "AwsAccountId", newJString(AwsAccountId))
   add(path_600464, "DataSourceId", newJString(DataSourceId))
@@ -4544,7 +4544,7 @@ proc url_UpdateGroup_600483(protocol: Scheme; host: string; base: string;
 
 proc validate_UpdateGroup_600482(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Changes a group description. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-group --aws-account-id=111122223333 --namespace=default --group-name=Sales --description="Sales BI Dashboards" </code> </p>
+  ## Changes a group description. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4631,7 +4631,7 @@ proc validate_UpdateGroup_600482(path: JsonNode; query: JsonNode; header: JsonNo
 
 proc call*(call_600495: Call_UpdateGroup_600481; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Changes a group description. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-group --aws-account-id=111122223333 --namespace=default --group-name=Sales --description="Sales BI Dashboards" </code> </p>
+  ## Changes a group description. 
   ## 
   let valid = call_600495.validator(path, query, header, formData, body)
   let scheme = call_600495.pickScheme
@@ -4645,7 +4645,7 @@ proc call*(call_600495: Call_UpdateGroup_600481; path: JsonNode; query: JsonNode
 proc call*(call_600496: Call_UpdateGroup_600481; GroupName: string;
           AwsAccountId: string; body: JsonNode; Namespace: string): Recallable =
   ## updateGroup
-  ## <p>Changes a group description. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a group object.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-group --aws-account-id=111122223333 --namespace=default --group-name=Sales --description="Sales BI Dashboards" </code> </p>
+  ## Changes a group description. 
   ##   GroupName: string (required)
   ##            : The name of the group that you want to update.
   ##   AwsAccountId: string (required)
@@ -4698,7 +4698,7 @@ proc url_DescribeGroup_600467(protocol: Scheme; host: string; base: string;
 
 proc validate_DescribeGroup_600466(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is the group object. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-group -\-aws-account-id=11112222333 -\-namespace=default -\-group-name=Sales </code> </p>
+  ## Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4781,7 +4781,7 @@ proc validate_DescribeGroup_600466(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_600478: Call_DescribeGroup_600465; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is the group object. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-group -\-aws-account-id=11112222333 -\-namespace=default -\-group-name=Sales </code> </p>
+  ## Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). 
   ## 
   let valid = call_600478.validator(path, query, header, formData, body)
   let scheme = call_600478.pickScheme
@@ -4795,7 +4795,7 @@ proc call*(call_600478: Call_DescribeGroup_600465; path: JsonNode; query: JsonNo
 proc call*(call_600479: Call_DescribeGroup_600465; GroupName: string;
           AwsAccountId: string; Namespace: string): Recallable =
   ## describeGroup
-  ## <p>Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;relevant-aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is the group object. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-group -\-aws-account-id=11112222333 -\-namespace=default -\-group-name=Sales </code> </p>
+  ## Returns an Amazon QuickSight group's description and Amazon Resource Name (ARN). 
   ##   GroupName: string (required)
   ##            : The name of the group that you want to describe.
   ##   AwsAccountId: string (required)
@@ -4842,7 +4842,7 @@ proc url_DeleteGroup_600501(protocol: Scheme; host: string; base: string;
 
 proc validate_DeleteGroup_600500(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Removes a user group from Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group -\-aws-account-id=111122223333 -\-namespace=default -\-group-name=Sales-Management </code> </p>
+  ## Removes a user group from Amazon QuickSight. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4925,7 +4925,7 @@ proc validate_DeleteGroup_600500(path: JsonNode; query: JsonNode; header: JsonNo
 
 proc call*(call_600512: Call_DeleteGroup_600499; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Removes a user group from Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group -\-aws-account-id=111122223333 -\-namespace=default -\-group-name=Sales-Management </code> </p>
+  ## Removes a user group from Amazon QuickSight. 
   ## 
   let valid = call_600512.validator(path, query, header, formData, body)
   let scheme = call_600512.pickScheme
@@ -4939,7 +4939,7 @@ proc call*(call_600512: Call_DeleteGroup_600499; path: JsonNode; query: JsonNode
 proc call*(call_600513: Call_DeleteGroup_600499; GroupName: string;
           AwsAccountId: string; Namespace: string): Recallable =
   ## deleteGroup
-  ## <p>Removes a user group from Amazon QuickSight. </p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-group -\-aws-account-id=111122223333 -\-namespace=default -\-group-name=Sales-Management </code> </p>
+  ## Removes a user group from Amazon QuickSight. 
   ##   GroupName: string (required)
   ##            : The name of the group that you want to delete.
   ##   AwsAccountId: string (required)
@@ -4988,7 +4988,7 @@ proc url_DeleteIAMPolicyAssignment_600517(protocol: Scheme; host: string;
 
 proc validate_DeleteIAMPolicyAssignment_600516(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Deletes an existing assignment.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=testtest --region=us-east-1 --namespace=default</code> </p>
+  ## Deletes an existing assignment.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5072,7 +5072,7 @@ proc validate_DeleteIAMPolicyAssignment_600516(path: JsonNode; query: JsonNode;
 
 proc call*(call_600528: Call_DeleteIAMPolicyAssignment_600515; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes an existing assignment.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=testtest --region=us-east-1 --namespace=default</code> </p>
+  ## Deletes an existing assignment.
   ## 
   let valid = call_600528.validator(path, query, header, formData, body)
   let scheme = call_600528.pickScheme
@@ -5086,7 +5086,7 @@ proc call*(call_600528: Call_DeleteIAMPolicyAssignment_600515; path: JsonNode;
 proc call*(call_600529: Call_DeleteIAMPolicyAssignment_600515;
           AssignmentName: string; AwsAccountId: string; Namespace: string): Recallable =
   ## deleteIAMPolicyAssignment
-  ## <p>Deletes an existing assignment.</p> <p>CLI syntax:</p> <p> <code>aws quicksight delete-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=testtest --region=us-east-1 --namespace=default</code> </p>
+  ## Deletes an existing assignment.
   ##   AssignmentName: string (required)
   ##                 : The name of the assignment. 
   ##   AwsAccountId: string (required)
@@ -5135,7 +5135,7 @@ proc url_UpdateUser_600549(protocol: Scheme; host: string; base: string; route: 
 
 proc validate_UpdateUser_600548(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates an Amazon QuickSight user.</p> <p>The response is a user object that contains the user's Amazon QuickSight user name, email address, active or inactive status in Amazon QuickSight, Amazon QuickSight role, and Amazon Resource Name (ARN). </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-user --user-name=Pat --role=ADMIN --email=new_address@example.com --aws-account-id=111122223333 --namespace=default --region=us-east-1 </code> </p>
+  ## Updates an Amazon QuickSight user.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5223,7 +5223,7 @@ proc validate_UpdateUser_600548(path: JsonNode; query: JsonNode; header: JsonNod
 
 proc call*(call_600561: Call_UpdateUser_600547; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates an Amazon QuickSight user.</p> <p>The response is a user object that contains the user's Amazon QuickSight user name, email address, active or inactive status in Amazon QuickSight, Amazon QuickSight role, and Amazon Resource Name (ARN). </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-user --user-name=Pat --role=ADMIN --email=new_address@example.com --aws-account-id=111122223333 --namespace=default --region=us-east-1 </code> </p>
+  ## Updates an Amazon QuickSight user.
   ## 
   let valid = call_600561.validator(path, query, header, formData, body)
   let scheme = call_600561.pickScheme
@@ -5237,7 +5237,7 @@ proc call*(call_600561: Call_UpdateUser_600547; path: JsonNode; query: JsonNode;
 proc call*(call_600562: Call_UpdateUser_600547; AwsAccountId: string; body: JsonNode;
           UserName: string; Namespace: string): Recallable =
   ## updateUser
-  ## <p>Updates an Amazon QuickSight user.</p> <p>The response is a user object that contains the user's Amazon QuickSight user name, email address, active or inactive status in Amazon QuickSight, Amazon QuickSight role, and Amazon Resource Name (ARN). </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight update-user --user-name=Pat --role=ADMIN --email=new_address@example.com --aws-account-id=111122223333 --namespace=default --region=us-east-1 </code> </p>
+  ## Updates an Amazon QuickSight user.
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the user is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   body: JObject (required)
@@ -5290,7 +5290,7 @@ proc url_DescribeUser_600533(protocol: Scheme; host: string; base: string;
 
 proc validate_DescribeUser_600532(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns information about a user, given the user name. </p> <p>The response is a user object that contains the user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
+  ## Returns information about a user, given the user name. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5374,7 +5374,7 @@ proc validate_DescribeUser_600532(path: JsonNode; query: JsonNode; header: JsonN
 
 proc call*(call_600544: Call_DescribeUser_600531; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns information about a user, given the user name. </p> <p>The response is a user object that contains the user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
+  ## Returns information about a user, given the user name. 
   ## 
   let valid = call_600544.validator(path, query, header, formData, body)
   let scheme = call_600544.pickScheme
@@ -5388,7 +5388,7 @@ proc call*(call_600544: Call_DescribeUser_600531; path: JsonNode; query: JsonNod
 proc call*(call_600545: Call_DescribeUser_600531; AwsAccountId: string;
           UserName: string; Namespace: string): Recallable =
   ## describeUser
-  ## <p>Returns information about a user, given the user name. </p> <p>The response is a user object that contains the user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight describe-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
+  ## Returns information about a user, given the user name. 
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the user is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   UserName: string (required)
@@ -5436,7 +5436,7 @@ proc url_DeleteUser_600567(protocol: Scheme; host: string; base: string; route: 
 
 proc validate_DeleteUser_600566(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
+  ## Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5520,7 +5520,7 @@ proc validate_DeleteUser_600566(path: JsonNode; query: JsonNode; header: JsonNod
 
 proc call*(call_600578: Call_DeleteUser_600565; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
+  ## Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. 
   ## 
   let valid = call_600578.validator(path, query, header, formData, body)
   let scheme = call_600578.pickScheme
@@ -5534,7 +5534,7 @@ proc call*(call_600578: Call_DeleteUser_600565; path: JsonNode; query: JsonNode;
 proc call*(call_600579: Call_DeleteUser_600565; AwsAccountId: string;
           UserName: string; Namespace: string): Recallable =
   ## deleteUser
-  ## <p>Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user --aws-account-id=111122223333 --namespace=default --user-name=Pat </code> </p>
+  ## Deletes the Amazon QuickSight user that is associated with the identity of the AWS Identity and Access Management (IAM) user or role that's making the call. The IAM user isn't deleted as a result of this call. 
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the user is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   UserName: string (required)
@@ -5584,7 +5584,7 @@ proc url_DeleteUserByPrincipalId_600583(protocol: Scheme; host: string; base: st
 
 proc validate_DeleteUserByPrincipalId_600582(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Deletes a user identified by its principal ID. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user-by-principal-id --aws-account-id=111122223333 --namespace=default --principal-id=ABCDEFJA26JLI7EUUOEHS </code> </p>
+  ## Deletes a user identified by its principal ID. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5668,7 +5668,7 @@ proc validate_DeleteUserByPrincipalId_600582(path: JsonNode; query: JsonNode;
 
 proc call*(call_600594: Call_DeleteUserByPrincipalId_600581; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes a user identified by its principal ID. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user-by-principal-id --aws-account-id=111122223333 --namespace=default --principal-id=ABCDEFJA26JLI7EUUOEHS </code> </p>
+  ## Deletes a user identified by its principal ID. 
   ## 
   let valid = call_600594.validator(path, query, header, formData, body)
   let scheme = call_600594.pickScheme
@@ -5682,7 +5682,7 @@ proc call*(call_600594: Call_DeleteUserByPrincipalId_600581; path: JsonNode;
 proc call*(call_600595: Call_DeleteUserByPrincipalId_600581; AwsAccountId: string;
           PrincipalId: string; Namespace: string): Recallable =
   ## deleteUserByPrincipalId
-  ## <p>Deletes a user identified by its principal ID. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight delete-user-by-principal-id --aws-account-id=111122223333 --namespace=default --principal-id=ABCDEFJA26JLI7EUUOEHS </code> </p>
+  ## Deletes a user identified by its principal ID. 
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the user is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   PrincipalId: string (required)
@@ -5728,7 +5728,7 @@ proc url_UpdateDashboardPermissions_600614(protocol: Scheme; host: string;
 
 proc validate_UpdateDashboardPermissions_600613(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates read and write permissions on a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard-permissions —cli-input-json file://update-permission.json</code> </p> <p>A sample update-permissions.json for granting read only permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "GrantPermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard" ] } ] }</code> </p> <p>A sample update-permissions.json for granting read and write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "GrantPermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard", "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>A sample update-permissions.json for revoking write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "RevokePermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>A sample update-permissions.json for revoking read and write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "RevokePermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard", "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>To obtain the principal name of a QuickSight user or group, you can use describe-group or describe-user. For example:</p> <p> <code>aws quicksight describe-user --aws-account-id 111122223333 --namespace default --user-name user2 --region us-east-1 { "User": { "Arn": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Active": true, "Email": "user2@example.com", "Role": "ADMIN", "UserName": "user2", "PrincipalId": "federated/iam/abcd2abcdabcdeabc5ab5" }, "RequestId": "8f74bb31-6291-448a-a71c-a765a44bae31", "Status": 200 }</code> </p>
+  ## Updates read and write permissions on a dashboard.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5809,7 +5809,7 @@ proc validate_UpdateDashboardPermissions_600613(path: JsonNode; query: JsonNode;
 
 proc call*(call_600625: Call_UpdateDashboardPermissions_600612; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates read and write permissions on a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard-permissions —cli-input-json file://update-permission.json</code> </p> <p>A sample update-permissions.json for granting read only permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "GrantPermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard" ] } ] }</code> </p> <p>A sample update-permissions.json for granting read and write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "GrantPermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard", "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>A sample update-permissions.json for revoking write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "RevokePermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>A sample update-permissions.json for revoking read and write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "RevokePermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard", "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>To obtain the principal name of a QuickSight user or group, you can use describe-group or describe-user. For example:</p> <p> <code>aws quicksight describe-user --aws-account-id 111122223333 --namespace default --user-name user2 --region us-east-1 { "User": { "Arn": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Active": true, "Email": "user2@example.com", "Role": "ADMIN", "UserName": "user2", "PrincipalId": "federated/iam/abcd2abcdabcdeabc5ab5" }, "RequestId": "8f74bb31-6291-448a-a71c-a765a44bae31", "Status": 200 }</code> </p>
+  ## Updates read and write permissions on a dashboard.
   ## 
   let valid = call_600625.validator(path, query, header, formData, body)
   let scheme = call_600625.pickScheme
@@ -5823,7 +5823,7 @@ proc call*(call_600625: Call_UpdateDashboardPermissions_600612; path: JsonNode;
 proc call*(call_600626: Call_UpdateDashboardPermissions_600612;
           AwsAccountId: string; DashboardId: string; body: JsonNode): Recallable =
   ## updateDashboardPermissions
-  ## <p>Updates read and write permissions on a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard-permissions —cli-input-json file://update-permission.json</code> </p> <p>A sample update-permissions.json for granting read only permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "GrantPermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard" ] } ] }</code> </p> <p>A sample update-permissions.json for granting read and write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "GrantPermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard", "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>A sample update-permissions.json for revoking write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "RevokePermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>A sample update-permissions.json for revoking read and write permissions:</p> <p> <code>{ "AwsAccountId": "111122223333", "DashboardId": "reports_test_report", "RevokePermissions": [ { "Principal": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Actions": [ "quicksight:DescribeDashboard", "quicksight:ListDashboardVersions", "quicksight:DescribeDashboardVersion", "quicksight:QueryDashboard", "quicksight:DescribeDashboardPermissions", "quicksight:UpdateDashboardPermissions", "quicksight:DeleteDashboardVersion", "quicksight:DeleteDashboard", "quicksight:UpdateDashboard", "quicksight:UpdateDashboardPublishedVersion", ] } ] }</code> </p> <p>To obtain the principal name of a QuickSight user or group, you can use describe-group or describe-user. For example:</p> <p> <code>aws quicksight describe-user --aws-account-id 111122223333 --namespace default --user-name user2 --region us-east-1 { "User": { "Arn": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2", "Active": true, "Email": "user2@example.com", "Role": "ADMIN", "UserName": "user2", "PrincipalId": "federated/iam/abcd2abcdabcdeabc5ab5" }, "RequestId": "8f74bb31-6291-448a-a71c-a765a44bae31", "Status": 200 }</code> </p>
+  ## Updates read and write permissions on a dashboard.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboard you are updating.
   ##   DashboardId: string (required)
@@ -5872,7 +5872,7 @@ proc url_DescribeDashboardPermissions_600599(protocol: Scheme; host: string;
 
 proc validate_DescribeDashboardPermissions_600598(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Describes read and write permissions on a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-dashboard-permissions --aws-account-id 735340738645 —dashboard-id reports_test_bob_report</code> </p>
+  ## Describes read and write permissions on a dashboard.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5949,7 +5949,7 @@ proc validate_DescribeDashboardPermissions_600598(path: JsonNode; query: JsonNod
 
 proc call*(call_600609: Call_DescribeDashboardPermissions_600597; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes read and write permissions on a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-dashboard-permissions --aws-account-id 735340738645 —dashboard-id reports_test_bob_report</code> </p>
+  ## Describes read and write permissions on a dashboard.
   ## 
   let valid = call_600609.validator(path, query, header, formData, body)
   let scheme = call_600609.pickScheme
@@ -5963,7 +5963,7 @@ proc call*(call_600609: Call_DescribeDashboardPermissions_600597; path: JsonNode
 proc call*(call_600610: Call_DescribeDashboardPermissions_600597;
           AwsAccountId: string; DashboardId: string): Recallable =
   ## describeDashboardPermissions
-  ## <p>Describes read and write permissions on a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-dashboard-permissions --aws-account-id 735340738645 —dashboard-id reports_test_bob_report</code> </p>
+  ## Describes read and write permissions on a dashboard.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboard you are describing permissions of.
   ##   DashboardId: string (required)
@@ -6009,7 +6009,7 @@ proc url_UpdateDataSetPermissions_600646(protocol: Scheme; host: string;
 
 proc validate_UpdateDataSetPermissions_600645(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code> </p> <p>CLI syntax: </p> <p> <code>aws quicksight update-data-set-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--grant-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user1","Actions":["quicksight:DescribeDataSet","quicksight:DescribeDataSetPermissions","quicksight:PassDataSet","quicksight:ListIngestions","quicksight:DescribeIngestion"]}]' \</code> </p> <p> <code>--revoke-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user2","Actions":["quicksight:UpdateDataSet","quicksight:DeleteDataSet","quicksight:UpdateDataSetPermissions","quicksight:CreateIngestion","quicksight:CancelIngestion"]}]'</code> </p>
+  ## <p>Updates the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6017,7 +6017,7 @@ proc validate_UpdateDataSetPermissions_600645(path: JsonNode; query: JsonNode;
   ##   AwsAccountId: JString (required)
   ##               : The AWS Account ID.
   ##   DataSetId: JString (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -6090,7 +6090,7 @@ proc validate_UpdateDataSetPermissions_600645(path: JsonNode; query: JsonNode;
 
 proc call*(call_600657: Call_UpdateDataSetPermissions_600644; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code> </p> <p>CLI syntax: </p> <p> <code>aws quicksight update-data-set-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--grant-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user1","Actions":["quicksight:DescribeDataSet","quicksight:DescribeDataSetPermissions","quicksight:PassDataSet","quicksight:ListIngestions","quicksight:DescribeIngestion"]}]' \</code> </p> <p> <code>--revoke-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user2","Actions":["quicksight:UpdateDataSet","quicksight:DeleteDataSet","quicksight:UpdateDataSetPermissions","quicksight:CreateIngestion","quicksight:CancelIngestion"]}]'</code> </p>
+  ## <p>Updates the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code>.</p>
   ## 
   let valid = call_600657.validator(path, query, header, formData, body)
   let scheme = call_600657.pickScheme
@@ -6104,12 +6104,12 @@ proc call*(call_600657: Call_UpdateDataSetPermissions_600644; path: JsonNode;
 proc call*(call_600658: Call_UpdateDataSetPermissions_600644; AwsAccountId: string;
           body: JsonNode; DataSetId: string): Recallable =
   ## updateDataSetPermissions
-  ## <p>Updates the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code> </p> <p>CLI syntax: </p> <p> <code>aws quicksight update-data-set-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p> <p> <code>--grant-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user1","Actions":["quicksight:DescribeDataSet","quicksight:DescribeDataSetPermissions","quicksight:PassDataSet","quicksight:ListIngestions","quicksight:DescribeIngestion"]}]' \</code> </p> <p> <code>--revoke-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user2","Actions":["quicksight:UpdateDataSet","quicksight:DeleteDataSet","quicksight:UpdateDataSetPermissions","quicksight:CreateIngestion","quicksight:CancelIngestion"]}]'</code> </p>
+  ## <p>Updates the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code>.</p>
   ##   AwsAccountId: string (required)
   ##               : The AWS Account ID.
   ##   body: JObject (required)
   ##   DataSetId: string (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   var path_600659 = newJObject()
   var body_600660 = newJObject()
   add(path_600659, "AwsAccountId", newJString(AwsAccountId))
@@ -6152,7 +6152,7 @@ proc url_DescribeDataSetPermissions_600631(protocol: Scheme; host: string;
 
 proc validate_DescribeDataSetPermissions_600630(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Describes the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code> </p> <p>CLI syntax: </p> <p> <code>aws quicksight describe-data-set-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p>
+  ## <p>Describes the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6160,7 +6160,7 @@ proc validate_DescribeDataSetPermissions_600630(path: JsonNode; query: JsonNode;
   ##   AwsAccountId: JString (required)
   ##               : The AWS Account ID.
   ##   DataSetId: JString (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -6229,7 +6229,7 @@ proc validate_DescribeDataSetPermissions_600630(path: JsonNode; query: JsonNode;
 
 proc call*(call_600641: Call_DescribeDataSetPermissions_600629; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code> </p> <p>CLI syntax: </p> <p> <code>aws quicksight describe-data-set-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p>
+  ## <p>Describes the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code>.</p>
   ## 
   let valid = call_600641.validator(path, query, header, formData, body)
   let scheme = call_600641.pickScheme
@@ -6243,11 +6243,11 @@ proc call*(call_600641: Call_DescribeDataSetPermissions_600629; path: JsonNode;
 proc call*(call_600642: Call_DescribeDataSetPermissions_600629;
           AwsAccountId: string; DataSetId: string): Recallable =
   ## describeDataSetPermissions
-  ## <p>Describes the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code> </p> <p>CLI syntax: </p> <p> <code>aws quicksight describe-data-set-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-set-id=unique-data-set-id \</code> </p>
+  ## <p>Describes the permissions on a dataset.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:dataset/data-set-id</code>.</p>
   ##   AwsAccountId: string (required)
   ##               : The AWS Account ID.
   ##   DataSetId: string (required)
-  ##            : The ID for the dataset you want to create. This is unique per region per AWS account.
+  ##            : The ID for the dataset that you want to create. This ID is unique per AWS Region for each AWS account.
   var path_600643 = newJObject()
   add(path_600643, "AwsAccountId", newJString(AwsAccountId))
   add(path_600643, "DataSetId", newJString(DataSetId))
@@ -6288,7 +6288,7 @@ proc url_UpdateDataSourcePermissions_600678(protocol: Scheme; host: string;
 
 proc validate_UpdateDataSourcePermissions_600677(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates the permissions to a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-source-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--grant-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user1","Actions":["quicksight:DescribeDataSource","quicksight:DescribeDataSourcePermissions","quicksight:PassDataSource"]}]' \</code> </p> <p> <code>--revoke-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user2","Actions":["quicksight:UpdateDataSource","quicksight:DeleteDataSource","quicksight:UpdateDataSourcePermissions"]}]'</code> </p>
+  ## Updates the permissions to a data source.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6296,7 +6296,7 @@ proc validate_UpdateDataSourcePermissions_600677(path: JsonNode; query: JsonNode
   ##   AwsAccountId: JString (required)
   ##               : The AWS account ID.
   ##   DataSourceId: JString (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account. 
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account. 
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -6369,7 +6369,7 @@ proc validate_UpdateDataSourcePermissions_600677(path: JsonNode; query: JsonNode
 
 proc call*(call_600689: Call_UpdateDataSourcePermissions_600676; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates the permissions to a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-source-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--grant-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user1","Actions":["quicksight:DescribeDataSource","quicksight:DescribeDataSourcePermissions","quicksight:PassDataSource"]}]' \</code> </p> <p> <code>--revoke-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user2","Actions":["quicksight:UpdateDataSource","quicksight:DeleteDataSource","quicksight:UpdateDataSourcePermissions"]}]'</code> </p>
+  ## Updates the permissions to a data source.
   ## 
   let valid = call_600689.validator(path, query, header, formData, body)
   let scheme = call_600689.pickScheme
@@ -6383,11 +6383,11 @@ proc call*(call_600689: Call_UpdateDataSourcePermissions_600676; path: JsonNode;
 proc call*(call_600690: Call_UpdateDataSourcePermissions_600676;
           AwsAccountId: string; DataSourceId: string; body: JsonNode): Recallable =
   ## updateDataSourcePermissions
-  ## <p>Updates the permissions to a data source.</p> <p>The permissions resource is <code>arn:aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p> <p>CLI syntax:</p> <p> <code>aws quicksight update-data-source-permissions \</code> </p> <p> <code>--aws-account-id=111122223333 \</code> </p> <p> <code>--data-source-id=unique-data-source-id \</code> </p> <p> <code>--name='My Data Source' \</code> </p> <p> <code>--grant-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user1","Actions":["quicksight:DescribeDataSource","quicksight:DescribeDataSourcePermissions","quicksight:PassDataSource"]}]' \</code> </p> <p> <code>--revoke-permissions='[{"Principal":"arn:aws:quicksight:us-east-1:111122223333:user/default/user2","Actions":["quicksight:UpdateDataSource","quicksight:DeleteDataSource","quicksight:UpdateDataSourcePermissions"]}]'</code> </p>
+  ## Updates the permissions to a data source.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   DataSourceId: string (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account. 
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account. 
   ##   body: JObject (required)
   var path_600691 = newJObject()
   var body_600692 = newJObject()
@@ -6432,7 +6432,7 @@ proc url_DescribeDataSourcePermissions_600663(protocol: Scheme; host: string;
 
 proc validate_DescribeDataSourcePermissions_600662(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Describes the resource permissions for a data source.</p> <p>The permissions resource is <code>aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p>
+  ## Describes the resource permissions for a data source.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6440,7 +6440,7 @@ proc validate_DescribeDataSourcePermissions_600662(path: JsonNode; query: JsonNo
   ##   AwsAccountId: JString (required)
   ##               : The AWS account ID.
   ##   DataSourceId: JString (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account.
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AwsAccountId` field"
@@ -6509,7 +6509,7 @@ proc validate_DescribeDataSourcePermissions_600662(path: JsonNode; query: JsonNo
 
 proc call*(call_600673: Call_DescribeDataSourcePermissions_600661; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes the resource permissions for a data source.</p> <p>The permissions resource is <code>aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p>
+  ## Describes the resource permissions for a data source.
   ## 
   let valid = call_600673.validator(path, query, header, formData, body)
   let scheme = call_600673.pickScheme
@@ -6523,11 +6523,11 @@ proc call*(call_600673: Call_DescribeDataSourcePermissions_600661; path: JsonNod
 proc call*(call_600674: Call_DescribeDataSourcePermissions_600661;
           AwsAccountId: string; DataSourceId: string): Recallable =
   ## describeDataSourcePermissions
-  ## <p>Describes the resource permissions for a data source.</p> <p>The permissions resource is <code>aws:quicksight:region:aws-account-id:datasource/data-source-id</code> </p>
+  ## Describes the resource permissions for a data source.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID.
   ##   DataSourceId: string (required)
-  ##               : The ID of the data source. This is unique per AWS Region per AWS account.
+  ##               : The ID of the data source. This ID is unique per AWS Region for each AWS account.
   var path_600675 = newJObject()
   add(path_600675, "AwsAccountId", newJString(AwsAccountId))
   add(path_600675, "DataSourceId", newJString(DataSourceId))
@@ -6570,7 +6570,7 @@ proc url_UpdateIAMPolicyAssignment_600711(protocol: Scheme; host: string;
 
 proc validate_UpdateIAMPolicyAssignment_600710(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates an existing assignment. This operation updates only the optional parameter or parameters that are specified in the request.</p> <p>CLI syntax:</p> <p> <code/>aws quicksight update-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=FullAccessAssignment --assignment-status=DRAFT --policy-arns=arn:aws:iam::aws:policy/AdministratorAccess --identities="user=user-1,user-2,group=admin" --namespace=default --region=us-east-1</p>
+  ## Updates an existing assignment. This operation updates only the optional parameter or parameters that are specified in the request.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6658,7 +6658,7 @@ proc validate_UpdateIAMPolicyAssignment_600710(path: JsonNode; query: JsonNode;
 
 proc call*(call_600723: Call_UpdateIAMPolicyAssignment_600709; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates an existing assignment. This operation updates only the optional parameter or parameters that are specified in the request.</p> <p>CLI syntax:</p> <p> <code/>aws quicksight update-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=FullAccessAssignment --assignment-status=DRAFT --policy-arns=arn:aws:iam::aws:policy/AdministratorAccess --identities="user=user-1,user-2,group=admin" --namespace=default --region=us-east-1</p>
+  ## Updates an existing assignment. This operation updates only the optional parameter or parameters that are specified in the request.
   ## 
   let valid = call_600723.validator(path, query, header, formData, body)
   let scheme = call_600723.pickScheme
@@ -6673,7 +6673,7 @@ proc call*(call_600724: Call_UpdateIAMPolicyAssignment_600709;
           AssignmentName: string; AwsAccountId: string; body: JsonNode;
           Namespace: string): Recallable =
   ## updateIAMPolicyAssignment
-  ## <p>Updates an existing assignment. This operation updates only the optional parameter or parameters that are specified in the request.</p> <p>CLI syntax:</p> <p> <code/>aws quicksight update-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=FullAccessAssignment --assignment-status=DRAFT --policy-arns=arn:aws:iam::aws:policy/AdministratorAccess --identities="user=user-1,user-2,group=admin" --namespace=default --region=us-east-1</p>
+  ## Updates an existing assignment. This operation updates only the optional parameter or parameters that are specified in the request.
   ##   AssignmentName: string (required)
   ##                 : The name of the assignment. It must be unique within an AWS account.
   ##   AwsAccountId: string (required)
@@ -6726,7 +6726,7 @@ proc url_DescribeIAMPolicyAssignment_600695(protocol: Scheme; host: string;
 
 proc validate_DescribeIAMPolicyAssignment_600694(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Describes an existing IAMPolicy Assignment by specified assignment name.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=testtest --namespace=default --region=us-east-1 </code> </p>
+  ## Describes an existing IAMPolicy Assignment by specified assignment name.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6810,7 +6810,7 @@ proc validate_DescribeIAMPolicyAssignment_600694(path: JsonNode; query: JsonNode
 
 proc call*(call_600706: Call_DescribeIAMPolicyAssignment_600693; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes an existing IAMPolicy Assignment by specified assignment name.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=testtest --namespace=default --region=us-east-1 </code> </p>
+  ## Describes an existing IAMPolicy Assignment by specified assignment name.
   ## 
   let valid = call_600706.validator(path, query, header, formData, body)
   let scheme = call_600706.pickScheme
@@ -6824,7 +6824,7 @@ proc call*(call_600706: Call_DescribeIAMPolicyAssignment_600693; path: JsonNode;
 proc call*(call_600707: Call_DescribeIAMPolicyAssignment_600693;
           AssignmentName: string; AwsAccountId: string; Namespace: string): Recallable =
   ## describeIAMPolicyAssignment
-  ## <p>Describes an existing IAMPolicy Assignment by specified assignment name.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-iam-policy-assignment --aws-account-id=111122223333 --assignment-name=testtest --namespace=default --region=us-east-1 </code> </p>
+  ## Describes an existing IAMPolicy Assignment by specified assignment name.
   ##   AssignmentName: string (required)
   ##                 : The name of the assignment. 
   ##   AwsAccountId: string (required)
@@ -6871,7 +6871,7 @@ proc url_UpdateTemplatePermissions_600744(protocol: Scheme; host: string;
 
 proc validate_UpdateTemplatePermissions_600743(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates the permissions on a template.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight describe-template-permissions —aws-account-id 111122223333 —template-id reports_test_template</code> </p> </li> <li> <p> <code>aws quicksight update-template-permissions —cli-input-json file://update-permission.json </code> </p> </li> <li> <p>The structure of <code>update-permissions.json</code> to add permissions:</p> <p> <code>{ "AwsAccountId": "111122223333",</code> </p> <p> <code> "DashboardId": "reports_test_template",</code> </p> <p> <code> "GrantPermissions": [</code> </p> <p> <code> { "Principal": "arn:aws:quicksight:us-east-1:196359894473:user/default/user3",</code> </p> <p> <code> "Actions": [</code> </p> <p> <code> "quicksight:DescribeTemplate",</code> </p> <p> <code> "quicksight:ListTemplateVersions"</code> </p> <p> <code> ] } ] }</code> </p> <p>The structure of <code>update-permissions.json</code> to add permissions:</p> <p> <code>{ "AwsAccountId": "111122223333",</code> </p> <p> <code> "DashboardId": "reports_test_template",</code> </p> <p> <code> "RevokePermissions": [</code> </p> <p> <code> { "Principal": "arn:aws:quicksight:us-east-1:196359894473:user/default/user3",</code> </p> <p> <code> "Actions": [</code> </p> <p> <code> "quicksight:DescribeTemplate",</code> </p> <p> <code> "quicksight:ListTemplateVersions"</code> </p> <p> <code> ] } ] }</code> </p> <p>To obtain the principal name of a QuickSight group or user, use user describe-group or describe-user. For example:</p> <p> <code>aws quicksight describe-user </code> </p> <p> <code>--aws-account-id 111122223333</code> </p> <p> <code>--namespace default</code> </p> <p> <code>--user-name user2 </code> </p> <p> <code>--region us-east-1</code> </p> <p> <code>{</code> </p> <p> <code> "User": {</code> </p> <p> <code> "Arn": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2",</code> </p> <p> <code> "Active": true,</code> </p> <p> <code> "Email": "user2@example.com",</code> </p> <p> <code> "Role": "ADMIN",</code> </p> <p> <code> "UserName": "user2",</code> </p> <p> <code> "PrincipalId": "federated/iam/abcd2abcdabcdeabc5ab5"</code> </p> <p> <code> },</code> </p> <p> <code> "RequestId": "8f74bb31-6291-448a-a71c-a765a44bae31",</code> </p> <p> <code> "Status": 200</code> </p> <p> <code>}</code> </p> </li> </ul>
+  ## Updates the permissions on a template.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6952,7 +6952,7 @@ proc validate_UpdateTemplatePermissions_600743(path: JsonNode; query: JsonNode;
 
 proc call*(call_600755: Call_UpdateTemplatePermissions_600742; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates the permissions on a template.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight describe-template-permissions —aws-account-id 111122223333 —template-id reports_test_template</code> </p> </li> <li> <p> <code>aws quicksight update-template-permissions —cli-input-json file://update-permission.json </code> </p> </li> <li> <p>The structure of <code>update-permissions.json</code> to add permissions:</p> <p> <code>{ "AwsAccountId": "111122223333",</code> </p> <p> <code> "DashboardId": "reports_test_template",</code> </p> <p> <code> "GrantPermissions": [</code> </p> <p> <code> { "Principal": "arn:aws:quicksight:us-east-1:196359894473:user/default/user3",</code> </p> <p> <code> "Actions": [</code> </p> <p> <code> "quicksight:DescribeTemplate",</code> </p> <p> <code> "quicksight:ListTemplateVersions"</code> </p> <p> <code> ] } ] }</code> </p> <p>The structure of <code>update-permissions.json</code> to add permissions:</p> <p> <code>{ "AwsAccountId": "111122223333",</code> </p> <p> <code> "DashboardId": "reports_test_template",</code> </p> <p> <code> "RevokePermissions": [</code> </p> <p> <code> { "Principal": "arn:aws:quicksight:us-east-1:196359894473:user/default/user3",</code> </p> <p> <code> "Actions": [</code> </p> <p> <code> "quicksight:DescribeTemplate",</code> </p> <p> <code> "quicksight:ListTemplateVersions"</code> </p> <p> <code> ] } ] }</code> </p> <p>To obtain the principal name of a QuickSight group or user, use user describe-group or describe-user. For example:</p> <p> <code>aws quicksight describe-user </code> </p> <p> <code>--aws-account-id 111122223333</code> </p> <p> <code>--namespace default</code> </p> <p> <code>--user-name user2 </code> </p> <p> <code>--region us-east-1</code> </p> <p> <code>{</code> </p> <p> <code> "User": {</code> </p> <p> <code> "Arn": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2",</code> </p> <p> <code> "Active": true,</code> </p> <p> <code> "Email": "user2@example.com",</code> </p> <p> <code> "Role": "ADMIN",</code> </p> <p> <code> "UserName": "user2",</code> </p> <p> <code> "PrincipalId": "federated/iam/abcd2abcdabcdeabc5ab5"</code> </p> <p> <code> },</code> </p> <p> <code> "RequestId": "8f74bb31-6291-448a-a71c-a765a44bae31",</code> </p> <p> <code> "Status": 200</code> </p> <p> <code>}</code> </p> </li> </ul>
+  ## Updates the permissions on a template.
   ## 
   let valid = call_600755.validator(path, query, header, formData, body)
   let scheme = call_600755.pickScheme
@@ -6966,7 +6966,7 @@ proc call*(call_600755: Call_UpdateTemplatePermissions_600742; path: JsonNode;
 proc call*(call_600756: Call_UpdateTemplatePermissions_600742;
           AwsAccountId: string; TemplateId: string; body: JsonNode): Recallable =
   ## updateTemplatePermissions
-  ## <p>Updates the permissions on a template.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight describe-template-permissions —aws-account-id 111122223333 —template-id reports_test_template</code> </p> </li> <li> <p> <code>aws quicksight update-template-permissions —cli-input-json file://update-permission.json </code> </p> </li> <li> <p>The structure of <code>update-permissions.json</code> to add permissions:</p> <p> <code>{ "AwsAccountId": "111122223333",</code> </p> <p> <code> "DashboardId": "reports_test_template",</code> </p> <p> <code> "GrantPermissions": [</code> </p> <p> <code> { "Principal": "arn:aws:quicksight:us-east-1:196359894473:user/default/user3",</code> </p> <p> <code> "Actions": [</code> </p> <p> <code> "quicksight:DescribeTemplate",</code> </p> <p> <code> "quicksight:ListTemplateVersions"</code> </p> <p> <code> ] } ] }</code> </p> <p>The structure of <code>update-permissions.json</code> to add permissions:</p> <p> <code>{ "AwsAccountId": "111122223333",</code> </p> <p> <code> "DashboardId": "reports_test_template",</code> </p> <p> <code> "RevokePermissions": [</code> </p> <p> <code> { "Principal": "arn:aws:quicksight:us-east-1:196359894473:user/default/user3",</code> </p> <p> <code> "Actions": [</code> </p> <p> <code> "quicksight:DescribeTemplate",</code> </p> <p> <code> "quicksight:ListTemplateVersions"</code> </p> <p> <code> ] } ] }</code> </p> <p>To obtain the principal name of a QuickSight group or user, use user describe-group or describe-user. For example:</p> <p> <code>aws quicksight describe-user </code> </p> <p> <code>--aws-account-id 111122223333</code> </p> <p> <code>--namespace default</code> </p> <p> <code>--user-name user2 </code> </p> <p> <code>--region us-east-1</code> </p> <p> <code>{</code> </p> <p> <code> "User": {</code> </p> <p> <code> "Arn": "arn:aws:quicksight:us-east-1:111122223333:user/default/user2",</code> </p> <p> <code> "Active": true,</code> </p> <p> <code> "Email": "user2@example.com",</code> </p> <p> <code> "Role": "ADMIN",</code> </p> <p> <code> "UserName": "user2",</code> </p> <p> <code> "PrincipalId": "federated/iam/abcd2abcdabcdeabc5ab5"</code> </p> <p> <code> },</code> </p> <p> <code> "RequestId": "8f74bb31-6291-448a-a71c-a765a44bae31",</code> </p> <p> <code> "Status": 200</code> </p> <p> <code>}</code> </p> </li> </ul>
+  ## Updates the permissions on a template.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template.
   ##   TemplateId: string (required)
@@ -7015,7 +7015,7 @@ proc url_DescribeTemplatePermissions_600729(protocol: Scheme; host: string;
 
 proc validate_DescribeTemplatePermissions_600728(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Describes read and write permissions on a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template-permissions —aws-account-id 735340738645 —template-id reports_test_template</code> </p>
+  ## Describes read and write permissions on a template.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7092,7 +7092,7 @@ proc validate_DescribeTemplatePermissions_600728(path: JsonNode; query: JsonNode
 
 proc call*(call_600739: Call_DescribeTemplatePermissions_600727; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes read and write permissions on a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template-permissions —aws-account-id 735340738645 —template-id reports_test_template</code> </p>
+  ## Describes read and write permissions on a template.
   ## 
   let valid = call_600739.validator(path, query, header, formData, body)
   let scheme = call_600739.pickScheme
@@ -7106,7 +7106,7 @@ proc call*(call_600739: Call_DescribeTemplatePermissions_600727; path: JsonNode;
 proc call*(call_600740: Call_DescribeTemplatePermissions_600727;
           AwsAccountId: string; TemplateId: string): Recallable =
   ## describeTemplatePermissions
-  ## <p>Describes read and write permissions on a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight describe-template-permissions —aws-account-id 735340738645 —template-id reports_test_template</code> </p>
+  ## Describes read and write permissions on a template.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template you are describing.
   ##   TemplateId: string (required)
@@ -7151,7 +7151,7 @@ proc url_GetDashboardEmbedUrl_600761(protocol: Scheme; host: string; base: strin
 
 proc validate_GetDashboardEmbedUrl_600760(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Generates a server-side embeddable URL and authorization code. Before this can work properly, first you need to configure the dashboards and user permissions. For more information, see <a href="https://docs.aws.example.com/en_us/quicksight/latest/user/embedding.html"> Embedding Amazon QuickSight Dashboards</a>.</p> <p>Currently, you can use <code>GetDashboardEmbedURL</code> only from the server, not from the user’s browser.</p> <p> <b>CLI Sample:</b> </p> <p>Assume the role with permissions enabled for actions: <code>quickSight:RegisterUser</code> and <code>quicksight:GetDashboardEmbedURL</code>. You can use assume-role, assume-role-with-web-identity, or assume-role-with-saml. </p> <p> <code>aws sts assume-role --role-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --role-session-name embeddingsession</code> </p> <p>If the user does not exist in QuickSight, register the user:</p> <p> <code>aws quicksight register-user --aws-account-id 111122223333 --namespace default --identity-type IAM --iam-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --user-role READER --session-name "embeddingsession" --email user123@example.com --region us-east-1</code> </p> <p>Get the URL for the embedded dashboard (<code>IAM</code> identity authentication):</p> <p> <code>aws quicksight get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id 1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type IAM</code> </p> <p>Get the URL for the embedded dashboard (<code>QUICKSIGHT</code> identity authentication):</p> <p> <code>aws quicksight get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id 1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type QUICKSIGHT --user-arn arn:aws:quicksight:us-east-1:111122223333:user/default/embedding_quicksight_dashboard_role/embeddingsession</code> </p>
+  ## <p>Generates a server-side embeddable URL and authorization code. Before this can work properly, first you need to configure the dashboards and user permissions. For more information, see the Amazon QuickSight User Guide section on <a href="https://docs.aws.amazon.com/quicksight/latest/user/embedding-dashboards.html">Embedding Amazon QuickSight Dashboards</a> or see the Amazon QuickSight API Reference section on <a href="https://docs.aws.amazon.com/quicksight/latest/APIReference/qs-dev-embedded-dashboards.html">Embedding Amazon QuickSight Dashboards</a> .</p> <p>Currently, you can use <code>GetDashboardEmbedURL</code> only from the server, not from the user’s browser.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7180,11 +7180,11 @@ proc validate_GetDashboardEmbedUrl_600760(path: JsonNode; query: JsonNode;
   ##   reset-disabled: JBool
   ##                 : Remove the reset button on embedded dashboard. The default is FALSE, which allows the reset button.
   ##   user-arn: JString
-  ##           : <p>The Amazon QuickSight user's ARN, for use with <code>QUICKSIGHT</code> identity type. You can use this for any Amazon QuickSight users in your account (readers, authors, or admins) authenticated as one of the following:</p> <ul> <li> <p>Active Directory (AD) users or group members</p> </li> <li> <p>Invited non-federated users</p> </li> <li> <p>IAM users and IAM role-based sessions authenticated through Federated Single Sign-On using SAML, OpenID Connect, or IAM Federation</p> </li> </ul>
+  ##           : <p>The Amazon QuickSight user's Amazon Resource Name (ARN), for use with <code>QUICKSIGHT</code> identity type. You can use this for any Amazon QuickSight users in your account (readers, authors, or admins) authenticated as one of the following:</p> <ul> <li> <p>Active Directory (AD) users or group members</p> </li> <li> <p>Invited non-federated users</p> </li> <li> <p>IAM users and IAM role-based sessions authenticated through Federated Single Sign-On using SAML, OpenID Connect, or IAM Federation</p> </li> </ul>
   ##   undo-redo-disabled: JBool
   ##                     : Remove the undo/redo button on embedded dashboard. The default is FALSE, which enables the undo/redo button.
   ##   creds-type: JString (required)
-  ##             : The authentication method the user uses to sign in (IAM only).
+  ##             : The authentication method the user uses to sign in.
   section = newJObject()
   var valid_600764 = query.getOrDefault("session-lifetime")
   valid_600764 = validateParameter(valid_600764, JInt, required = false, default = nil)
@@ -7263,7 +7263,7 @@ proc validate_GetDashboardEmbedUrl_600760(path: JsonNode; query: JsonNode;
 
 proc call*(call_600789: Call_GetDashboardEmbedUrl_600759; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Generates a server-side embeddable URL and authorization code. Before this can work properly, first you need to configure the dashboards and user permissions. For more information, see <a href="https://docs.aws.example.com/en_us/quicksight/latest/user/embedding.html"> Embedding Amazon QuickSight Dashboards</a>.</p> <p>Currently, you can use <code>GetDashboardEmbedURL</code> only from the server, not from the user’s browser.</p> <p> <b>CLI Sample:</b> </p> <p>Assume the role with permissions enabled for actions: <code>quickSight:RegisterUser</code> and <code>quicksight:GetDashboardEmbedURL</code>. You can use assume-role, assume-role-with-web-identity, or assume-role-with-saml. </p> <p> <code>aws sts assume-role --role-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --role-session-name embeddingsession</code> </p> <p>If the user does not exist in QuickSight, register the user:</p> <p> <code>aws quicksight register-user --aws-account-id 111122223333 --namespace default --identity-type IAM --iam-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --user-role READER --session-name "embeddingsession" --email user123@example.com --region us-east-1</code> </p> <p>Get the URL for the embedded dashboard (<code>IAM</code> identity authentication):</p> <p> <code>aws quicksight get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id 1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type IAM</code> </p> <p>Get the URL for the embedded dashboard (<code>QUICKSIGHT</code> identity authentication):</p> <p> <code>aws quicksight get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id 1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type QUICKSIGHT --user-arn arn:aws:quicksight:us-east-1:111122223333:user/default/embedding_quicksight_dashboard_role/embeddingsession</code> </p>
+  ## <p>Generates a server-side embeddable URL and authorization code. Before this can work properly, first you need to configure the dashboards and user permissions. For more information, see the Amazon QuickSight User Guide section on <a href="https://docs.aws.amazon.com/quicksight/latest/user/embedding-dashboards.html">Embedding Amazon QuickSight Dashboards</a> or see the Amazon QuickSight API Reference section on <a href="https://docs.aws.amazon.com/quicksight/latest/APIReference/qs-dev-embedded-dashboards.html">Embedding Amazon QuickSight Dashboards</a> .</p> <p>Currently, you can use <code>GetDashboardEmbedURL</code> only from the server, not from the user’s browser.</p>
   ## 
   let valid = call_600789.validator(path, query, header, formData, body)
   let scheme = call_600789.pickScheme
@@ -7279,7 +7279,7 @@ proc call*(call_600790: Call_GetDashboardEmbedUrl_600759; AwsAccountId: string;
           userArn: string = ""; undoRedoDisabled: bool = false;
           credsType: string = "IAM"): Recallable =
   ## getDashboardEmbedUrl
-  ## <p>Generates a server-side embeddable URL and authorization code. Before this can work properly, first you need to configure the dashboards and user permissions. For more information, see <a href="https://docs.aws.example.com/en_us/quicksight/latest/user/embedding.html"> Embedding Amazon QuickSight Dashboards</a>.</p> <p>Currently, you can use <code>GetDashboardEmbedURL</code> only from the server, not from the user’s browser.</p> <p> <b>CLI Sample:</b> </p> <p>Assume the role with permissions enabled for actions: <code>quickSight:RegisterUser</code> and <code>quicksight:GetDashboardEmbedURL</code>. You can use assume-role, assume-role-with-web-identity, or assume-role-with-saml. </p> <p> <code>aws sts assume-role --role-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --role-session-name embeddingsession</code> </p> <p>If the user does not exist in QuickSight, register the user:</p> <p> <code>aws quicksight register-user --aws-account-id 111122223333 --namespace default --identity-type IAM --iam-arn "arn:aws:iam::111122223333:role/embedding_quicksight_dashboard_role" --user-role READER --session-name "embeddingsession" --email user123@example.com --region us-east-1</code> </p> <p>Get the URL for the embedded dashboard (<code>IAM</code> identity authentication):</p> <p> <code>aws quicksight get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id 1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type IAM</code> </p> <p>Get the URL for the embedded dashboard (<code>QUICKSIGHT</code> identity authentication):</p> <p> <code>aws quicksight get-dashboard-embed-url --aws-account-id 111122223333 --dashboard-id 1a1ac2b2-3fc3-4b44-5e5d-c6db6778df89 --identity-type QUICKSIGHT --user-arn arn:aws:quicksight:us-east-1:111122223333:user/default/embedding_quicksight_dashboard_role/embeddingsession</code> </p>
+  ## <p>Generates a server-side embeddable URL and authorization code. Before this can work properly, first you need to configure the dashboards and user permissions. For more information, see the Amazon QuickSight User Guide section on <a href="https://docs.aws.amazon.com/quicksight/latest/user/embedding-dashboards.html">Embedding Amazon QuickSight Dashboards</a> or see the Amazon QuickSight API Reference section on <a href="https://docs.aws.amazon.com/quicksight/latest/APIReference/qs-dev-embedded-dashboards.html">Embedding Amazon QuickSight Dashboards</a> .</p> <p>Currently, you can use <code>GetDashboardEmbedURL</code> only from the server, not from the user’s browser.</p>
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboard you are embedding.
   ##   sessionLifetime: int
@@ -7287,13 +7287,13 @@ proc call*(call_600790: Call_GetDashboardEmbedUrl_600759; AwsAccountId: string;
   ##   resetDisabled: bool
   ##                : Remove the reset button on embedded dashboard. The default is FALSE, which allows the reset button.
   ##   userArn: string
-  ##          : <p>The Amazon QuickSight user's ARN, for use with <code>QUICKSIGHT</code> identity type. You can use this for any Amazon QuickSight users in your account (readers, authors, or admins) authenticated as one of the following:</p> <ul> <li> <p>Active Directory (AD) users or group members</p> </li> <li> <p>Invited non-federated users</p> </li> <li> <p>IAM users and IAM role-based sessions authenticated through Federated Single Sign-On using SAML, OpenID Connect, or IAM Federation</p> </li> </ul>
+  ##          : <p>The Amazon QuickSight user's Amazon Resource Name (ARN), for use with <code>QUICKSIGHT</code> identity type. You can use this for any Amazon QuickSight users in your account (readers, authors, or admins) authenticated as one of the following:</p> <ul> <li> <p>Active Directory (AD) users or group members</p> </li> <li> <p>Invited non-federated users</p> </li> <li> <p>IAM users and IAM role-based sessions authenticated through Federated Single Sign-On using SAML, OpenID Connect, or IAM Federation</p> </li> </ul>
   ##   DashboardId: string (required)
   ##              : The ID for the dashboard, also added to IAM policy
   ##   undoRedoDisabled: bool
   ##                   : Remove the undo/redo button on embedded dashboard. The default is FALSE, which enables the undo/redo button.
   ##   credsType: string (required)
-  ##            : The authentication method the user uses to sign in (IAM only).
+  ##            : The authentication method the user uses to sign in.
   var path_600791 = newJObject()
   var query_600792 = newJObject()
   add(path_600791, "AwsAccountId", newJString(AwsAccountId))
@@ -7338,7 +7338,7 @@ proc url_ListDashboardVersions_600795(protocol: Scheme; host: string; base: stri
 
 proc validate_ListDashboardVersions_600794(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists all the versions of the dashboards in the Quicksight subscription.</p> <p>CLI syntax:</p> <p>aws quicksight list-template-versions —aws-account-id 111122223333 —template-id reports-test-template</p>
+  ## Lists all the versions of the dashboards in the Quicksight subscription.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7443,7 +7443,7 @@ proc validate_ListDashboardVersions_600794(path: JsonNode; query: JsonNode;
 
 proc call*(call_600809: Call_ListDashboardVersions_600793; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists all the versions of the dashboards in the Quicksight subscription.</p> <p>CLI syntax:</p> <p>aws quicksight list-template-versions —aws-account-id 111122223333 —template-id reports-test-template</p>
+  ## Lists all the versions of the dashboards in the Quicksight subscription.
   ## 
   let valid = call_600809.validator(path, query, header, formData, body)
   let scheme = call_600809.pickScheme
@@ -7458,7 +7458,7 @@ proc call*(call_600810: Call_ListDashboardVersions_600793; AwsAccountId: string;
           DashboardId: string; NextToken: string = ""; maxResults: int = 0;
           nextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listDashboardVersions
-  ## <p>Lists all the versions of the dashboards in the Quicksight subscription.</p> <p>CLI syntax:</p> <p>aws quicksight list-template-versions —aws-account-id 111122223333 —template-id reports-test-template</p>
+  ## Lists all the versions of the dashboards in the Quicksight subscription.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboard you are listing.
   ##   DashboardId: string (required)
@@ -7513,7 +7513,7 @@ proc url_ListDashboards_600815(protocol: Scheme; host: string; base: string;
 proc validate_ListDashboards_600814(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ## <p>Lists dashboards in the AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-dashboards --aws-account-id 111122223333 --max-results 5 —next-token 'next-10'</code> </p>
+  ## Lists dashboards in the AWS account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7611,7 +7611,7 @@ proc validate_ListDashboards_600814(path: JsonNode; query: JsonNode;
 
 proc call*(call_600828: Call_ListDashboards_600813; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists dashboards in the AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-dashboards --aws-account-id 111122223333 --max-results 5 —next-token 'next-10'</code> </p>
+  ## Lists dashboards in the AWS account.
   ## 
   let valid = call_600828.validator(path, query, header, formData, body)
   let scheme = call_600828.pickScheme
@@ -7626,7 +7626,7 @@ proc call*(call_600829: Call_ListDashboards_600813; AwsAccountId: string;
           NextToken: string = ""; maxResults: int = 0; nextToken: string = "";
           MaxResults: string = ""): Recallable =
   ## listDashboards
-  ## <p>Lists dashboards in the AWS account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-dashboards --aws-account-id 111122223333 --max-results 5 —next-token 'next-10'</code> </p>
+  ## Lists dashboards in the AWS account.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboards you are listing.
   ##   NextToken: string
@@ -7682,7 +7682,7 @@ proc url_ListGroupMemberships_600834(protocol: Scheme; host: string; base: strin
 
 proc validate_ListGroupMemberships_600833(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists member users in a group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a list of group member objects.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-group-memberships -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
+  ## Lists member users in a group.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7779,7 +7779,7 @@ proc validate_ListGroupMemberships_600833(path: JsonNode; query: JsonNode;
 
 proc call*(call_600847: Call_ListGroupMemberships_600832; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists member users in a group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a list of group member objects.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-group-memberships -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
+  ## Lists member users in a group.
   ## 
   let valid = call_600847.validator(path, query, header, formData, body)
   let scheme = call_600847.pickScheme
@@ -7794,7 +7794,7 @@ proc call*(call_600848: Call_ListGroupMemberships_600832; GroupName: string;
           AwsAccountId: string; Namespace: string; maxResults: int = 0;
           nextToken: string = ""): Recallable =
   ## listGroupMemberships
-  ## <p>Lists member users in a group.</p> <p>The permissions resource is <code>arn:aws:quicksight:us-east-1:<i>&lt;aws-account-id&gt;</i>:group/default/<i>&lt;group-name&gt;</i> </code>.</p> <p>The response is a list of group member objects.</p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-group-memberships -\-aws-account-id=111122223333 -\-namespace=default </code> </p>
+  ## Lists member users in a group.
   ##   GroupName: string (required)
   ##            : The name of the group that you want to see a membership list of.
   ##   AwsAccountId: string (required)
@@ -7848,7 +7848,7 @@ proc url_ListIAMPolicyAssignments_600853(protocol: Scheme; host: string;
 
 proc validate_ListIAMPolicyAssignments_600852(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists assignments in current QuickSight account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-iam-policy-assignments --aws-account-id=111122223333 --max-result=5 --assignment-status=ENABLED --namespace=default --region=us-east-1 --next-token=3 </code> </p>
+  ## Lists assignments in current QuickSight account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7943,7 +7943,7 @@ proc validate_ListIAMPolicyAssignments_600852(path: JsonNode; query: JsonNode;
 
 proc call*(call_600866: Call_ListIAMPolicyAssignments_600851; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists assignments in current QuickSight account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-iam-policy-assignments --aws-account-id=111122223333 --max-result=5 --assignment-status=ENABLED --namespace=default --region=us-east-1 --next-token=3 </code> </p>
+  ## Lists assignments in current QuickSight account.
   ## 
   let valid = call_600866.validator(path, query, header, formData, body)
   let scheme = call_600866.pickScheme
@@ -7957,7 +7957,7 @@ proc call*(call_600866: Call_ListIAMPolicyAssignments_600851; path: JsonNode;
 proc call*(call_600867: Call_ListIAMPolicyAssignments_600851; AwsAccountId: string;
           body: JsonNode; Namespace: string; maxResults: int = 0; nextToken: string = ""): Recallable =
   ## listIAMPolicyAssignments
-  ## <p>Lists assignments in current QuickSight account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-iam-policy-assignments --aws-account-id=111122223333 --max-result=5 --assignment-status=ENABLED --namespace=default --region=us-east-1 --next-token=3 </code> </p>
+  ## Lists assignments in current QuickSight account.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID that contains this IAM policy assignment.
   ##   maxResults: int
@@ -8014,7 +8014,7 @@ proc url_ListIAMPolicyAssignmentsForUser_600873(protocol: Scheme; host: string;
 
 proc validate_ListIAMPolicyAssignmentsForUser_600872(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists all the assignments and the ARNs for the associated IAM policies assigned to the specified user and the group or groups that the user belongs to.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-iam-policy-assignments-for-user --aws-account-id=111122223333 --user-name=user5 --namespace=default --max-result=6 --region=us-east-1 </code> </p>
+  ## Lists all the assignments and the Amazon Resource Names (ARNs) for the associated IAM policies assigned to the specified user and the group or groups that the user belongs to.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -8113,7 +8113,7 @@ proc validate_ListIAMPolicyAssignmentsForUser_600872(path: JsonNode;
 proc call*(call_600886: Call_ListIAMPolicyAssignmentsForUser_600871;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## <p>Lists all the assignments and the ARNs for the associated IAM policies assigned to the specified user and the group or groups that the user belongs to.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-iam-policy-assignments-for-user --aws-account-id=111122223333 --user-name=user5 --namespace=default --max-result=6 --region=us-east-1 </code> </p>
+  ## Lists all the assignments and the Amazon Resource Names (ARNs) for the associated IAM policies assigned to the specified user and the group or groups that the user belongs to.
   ## 
   let valid = call_600886.validator(path, query, header, formData, body)
   let scheme = call_600886.pickScheme
@@ -8128,7 +8128,7 @@ proc call*(call_600887: Call_ListIAMPolicyAssignmentsForUser_600871;
           AwsAccountId: string; UserName: string; Namespace: string;
           maxResults: int = 0; nextToken: string = ""): Recallable =
   ## listIAMPolicyAssignmentsForUser
-  ## <p>Lists all the assignments and the ARNs for the associated IAM policies assigned to the specified user and the group or groups that the user belongs to.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-iam-policy-assignments-for-user --aws-account-id=111122223333 --user-name=user5 --namespace=default --max-result=6 --region=us-east-1 </code> </p>
+  ## Lists all the assignments and the Amazon Resource Names (ARNs) for the associated IAM policies assigned to the specified user and the group or groups that the user belongs to.
   ##   AwsAccountId: string (required)
   ##               : The AWS account ID that contains the assignment.
   ##   maxResults: int
@@ -8356,13 +8356,13 @@ proc url_TagResource_600926(protocol: Scheme; host: string; base: string;
 
 proc validate_TagResource_600925(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Assigns a tag or tags to a resource.</p> <p>Assigns one or more tags (key-value pairs) to the specified QuickSight resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only resources with certain tag values. You can use the TagResource action with a resource that already has tags. If you specify a new tag key for the resource, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource. QuickSight supports tagging on data-set, data-source, dashboard, template. </p> <p>Tagging for QuickSight works in a similar was to tagging for other AWS services, except for the following:</p> <ul> <li> <p>You can't use tags to track AWS costs for QuickSight, because QuickSight costs are based on users and SPICE capacity, which aren't taggable resources.</p> </li> <li> <p>QuickSight doesn't currently support the Tag Editor for AWS Resource Groups.</p> </li> </ul> <p>CLI syntax to tag a resource:</p> <ul> <li> <p> <code>aws quicksight tag-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --tags Key=K1,Value=V1 Key=K2,Value=V2 --region us-east-1</code> </p> </li> </ul>
+  ## <p>Assigns one or more tags (key-value pairs) to the specified QuickSight resource. </p> <p>Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only resources with certain tag values. You can use the <code>TagResource</code> operation with a resource that already has tags. If you specify a new tag key for the resource, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource. QuickSight supports tagging on data set, data source, dashboard, and template. </p> <p>Tagging for QuickSight works in a similar way to tagging for other AWS services, except for the following:</p> <ul> <li> <p>You can't use tags to track AWS costs for QuickSight. This restriction is because QuickSight costs are based on users and SPICE capacity, which aren't taggable resources.</p> </li> <li> <p>QuickSight doesn't currently support the Tag Editor for AWS Resource Groups.</p> </li> </ul>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ResourceArn: JString (required)
-  ##              : The ARN of the resource you want to tag.
+  ##              : The Amazon Resource Name (ARN) of the resource that you want to tag.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceArn` field"
@@ -8430,7 +8430,7 @@ proc validate_TagResource_600925(path: JsonNode; query: JsonNode; header: JsonNo
 
 proc call*(call_600936: Call_TagResource_600924; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Assigns a tag or tags to a resource.</p> <p>Assigns one or more tags (key-value pairs) to the specified QuickSight resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only resources with certain tag values. You can use the TagResource action with a resource that already has tags. If you specify a new tag key for the resource, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource. QuickSight supports tagging on data-set, data-source, dashboard, template. </p> <p>Tagging for QuickSight works in a similar was to tagging for other AWS services, except for the following:</p> <ul> <li> <p>You can't use tags to track AWS costs for QuickSight, because QuickSight costs are based on users and SPICE capacity, which aren't taggable resources.</p> </li> <li> <p>QuickSight doesn't currently support the Tag Editor for AWS Resource Groups.</p> </li> </ul> <p>CLI syntax to tag a resource:</p> <ul> <li> <p> <code>aws quicksight tag-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --tags Key=K1,Value=V1 Key=K2,Value=V2 --region us-east-1</code> </p> </li> </ul>
+  ## <p>Assigns one or more tags (key-value pairs) to the specified QuickSight resource. </p> <p>Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only resources with certain tag values. You can use the <code>TagResource</code> operation with a resource that already has tags. If you specify a new tag key for the resource, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource. QuickSight supports tagging on data set, data source, dashboard, and template. </p> <p>Tagging for QuickSight works in a similar way to tagging for other AWS services, except for the following:</p> <ul> <li> <p>You can't use tags to track AWS costs for QuickSight. This restriction is because QuickSight costs are based on users and SPICE capacity, which aren't taggable resources.</p> </li> <li> <p>QuickSight doesn't currently support the Tag Editor for AWS Resource Groups.</p> </li> </ul>
   ## 
   let valid = call_600936.validator(path, query, header, formData, body)
   let scheme = call_600936.pickScheme
@@ -8443,9 +8443,9 @@ proc call*(call_600936: Call_TagResource_600924; path: JsonNode; query: JsonNode
 
 proc call*(call_600937: Call_TagResource_600924; ResourceArn: string; body: JsonNode): Recallable =
   ## tagResource
-  ## <p>Assigns a tag or tags to a resource.</p> <p>Assigns one or more tags (key-value pairs) to the specified QuickSight resource. Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only resources with certain tag values. You can use the TagResource action with a resource that already has tags. If you specify a new tag key for the resource, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource. QuickSight supports tagging on data-set, data-source, dashboard, template. </p> <p>Tagging for QuickSight works in a similar was to tagging for other AWS services, except for the following:</p> <ul> <li> <p>You can't use tags to track AWS costs for QuickSight, because QuickSight costs are based on users and SPICE capacity, which aren't taggable resources.</p> </li> <li> <p>QuickSight doesn't currently support the Tag Editor for AWS Resource Groups.</p> </li> </ul> <p>CLI syntax to tag a resource:</p> <ul> <li> <p> <code>aws quicksight tag-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --tags Key=K1,Value=V1 Key=K2,Value=V2 --region us-east-1</code> </p> </li> </ul>
+  ## <p>Assigns one or more tags (key-value pairs) to the specified QuickSight resource. </p> <p>Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only resources with certain tag values. You can use the <code>TagResource</code> operation with a resource that already has tags. If you specify a new tag key for the resource, this tag is appended to the list of tags associated with the resource. If you specify a tag key that is already associated with the resource, the new tag value that you specify replaces the previous value for that tag.</p> <p>You can associate as many as 50 tags with a resource. QuickSight supports tagging on data set, data source, dashboard, and template. </p> <p>Tagging for QuickSight works in a similar way to tagging for other AWS services, except for the following:</p> <ul> <li> <p>You can't use tags to track AWS costs for QuickSight. This restriction is because QuickSight costs are based on users and SPICE capacity, which aren't taggable resources.</p> </li> <li> <p>QuickSight doesn't currently support the Tag Editor for AWS Resource Groups.</p> </li> </ul>
   ##   ResourceArn: string (required)
-  ##              : The ARN of the resource you want to tag.
+  ##              : The Amazon Resource Name (ARN) of the resource that you want to tag.
   ##   body: JObject (required)
   var path_600938 = newJObject()
   var body_600939 = newJObject()
@@ -8487,13 +8487,13 @@ proc url_ListTagsForResource_600912(protocol: Scheme; host: string; base: string
 proc validate_ListTagsForResource_600911(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Lists the tags assigned to a resource.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight list-tags-for-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --region us-east-1</code> </p> </li> </ul>
+  ## Lists the tags assigned to a resource.
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ResourceArn: JString (required)
-  ##              : The ARN of the resource you want a list of tags for.
+  ##              : The Amazon Resource Name (ARN) of the resource that you want a list of tags for.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceArn` field"
@@ -8557,7 +8557,7 @@ proc validate_ListTagsForResource_600911(path: JsonNode; query: JsonNode;
 
 proc call*(call_600921: Call_ListTagsForResource_600910; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists the tags assigned to a resource.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight list-tags-for-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --region us-east-1</code> </p> </li> </ul>
+  ## Lists the tags assigned to a resource.
   ## 
   let valid = call_600921.validator(path, query, header, formData, body)
   let scheme = call_600921.pickScheme
@@ -8570,9 +8570,9 @@ proc call*(call_600921: Call_ListTagsForResource_600910; path: JsonNode;
 
 proc call*(call_600922: Call_ListTagsForResource_600910; ResourceArn: string): Recallable =
   ## listTagsForResource
-  ## <p>Lists the tags assigned to a resource.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight list-tags-for-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --region us-east-1</code> </p> </li> </ul>
+  ## Lists the tags assigned to a resource.
   ##   ResourceArn: string (required)
-  ##              : The ARN of the resource you want a list of tags for.
+  ##              : The Amazon Resource Name (ARN) of the resource that you want a list of tags for.
   var path_600923 = newJObject()
   add(path_600923, "ResourceArn", newJString(ResourceArn))
   result = call_600922.call(path_600923, nil, nil, nil, nil)
@@ -8611,7 +8611,7 @@ proc url_ListTemplateAliases_600942(protocol: Scheme; host: string; base: string
 proc validate_ListTemplateAliases_600941(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Lists all the aliases of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-template-aliases --aws-account-id 111122223333 —template-id 'reports_test_template'</code> </p>
+  ## Lists all the aliases of a template.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -8716,7 +8716,7 @@ proc validate_ListTemplateAliases_600941(path: JsonNode; query: JsonNode;
 
 proc call*(call_600956: Call_ListTemplateAliases_600940; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists all the aliases of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-template-aliases --aws-account-id 111122223333 —template-id 'reports_test_template'</code> </p>
+  ## Lists all the aliases of a template.
   ## 
   let valid = call_600956.validator(path, query, header, formData, body)
   let scheme = call_600956.pickScheme
@@ -8731,7 +8731,7 @@ proc call*(call_600957: Call_ListTemplateAliases_600940; AwsAccountId: string;
           TemplateId: string; NextToken: string = ""; maxResult: int = 0;
           nextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listTemplateAliases
-  ## <p>Lists all the aliases of a template.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-template-aliases --aws-account-id 111122223333 —template-id 'reports_test_template'</code> </p>
+  ## Lists all the aliases of a template.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the template aliases you are listing.
   ##   NextToken: string
@@ -8788,7 +8788,7 @@ proc url_ListTemplateVersions_600962(protocol: Scheme; host: string; base: strin
 
 proc validate_ListTemplateVersions_600961(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists all the versions of the templates in the Quicksight account.</p> <p>CLI syntax:</p> <p>aws quicksight list-template-versions --aws-account-id 111122223333 --aws-account-id 196359894473 --template-id reports-test-template</p>
+  ## Lists all the versions of the templates in the Quicksight account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -8893,7 +8893,7 @@ proc validate_ListTemplateVersions_600961(path: JsonNode; query: JsonNode;
 
 proc call*(call_600976: Call_ListTemplateVersions_600960; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists all the versions of the templates in the Quicksight account.</p> <p>CLI syntax:</p> <p>aws quicksight list-template-versions --aws-account-id 111122223333 --aws-account-id 196359894473 --template-id reports-test-template</p>
+  ## Lists all the versions of the templates in the Quicksight account.
   ## 
   let valid = call_600976.validator(path, query, header, formData, body)
   let scheme = call_600976.pickScheme
@@ -8908,7 +8908,7 @@ proc call*(call_600977: Call_ListTemplateVersions_600960; AwsAccountId: string;
           TemplateId: string; NextToken: string = ""; maxResults: int = 0;
           nextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listTemplateVersions
-  ## <p>Lists all the versions of the templates in the Quicksight account.</p> <p>CLI syntax:</p> <p>aws quicksight list-template-versions --aws-account-id 111122223333 --aws-account-id 196359894473 --template-id reports-test-template</p>
+  ## Lists all the versions of the templates in the Quicksight account.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the templates you are listing.
   ##   NextToken: string
@@ -8962,7 +8962,7 @@ proc url_ListTemplates_600982(protocol: Scheme; host: string; base: string;
 
 proc validate_ListTemplates_600981(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists all the templates in the QuickSight account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-templates --aws-account-id 111122223333 --max-results 1 —next-token AYADeJuxwOypAndSoOn</code> </p>
+  ## Lists all the templates in the QuickSight account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -9060,7 +9060,7 @@ proc validate_ListTemplates_600981(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_600995: Call_ListTemplates_600980; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists all the templates in the QuickSight account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-templates --aws-account-id 111122223333 --max-results 1 —next-token AYADeJuxwOypAndSoOn</code> </p>
+  ## Lists all the templates in the QuickSight account.
   ## 
   let valid = call_600995.validator(path, query, header, formData, body)
   let scheme = call_600995.pickScheme
@@ -9075,7 +9075,7 @@ proc call*(call_600996: Call_ListTemplates_600980; AwsAccountId: string;
           NextToken: string = ""; maxResult: int = 0; nextToken: string = "";
           MaxResults: string = ""): Recallable =
   ## listTemplates
-  ## <p>Lists all the templates in the QuickSight account.</p> <p>CLI syntax:</p> <p> <code>aws quicksight list-templates --aws-account-id 111122223333 --max-results 1 —next-token AYADeJuxwOypAndSoOn</code> </p>
+  ## Lists all the templates in the QuickSight account.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the templates you are listing.
   ##   NextToken: string
@@ -9132,7 +9132,7 @@ proc url_ListUserGroups_601001(protocol: Scheme; host: string; base: string;
 proc validate_ListUserGroups_601000(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ## <p>Lists the Amazon QuickSight groups that an Amazon QuickSight user is a member of.</p> <p>The response is a one or more group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-user-groups -\-user-name=Pat -\-aws-account-id=111122223333 -\-namespace=default -\-region=us-east-1 </code> </p>
+  ## Lists the Amazon QuickSight groups that an Amazon QuickSight user is a member of.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -9230,7 +9230,7 @@ proc validate_ListUserGroups_601000(path: JsonNode; query: JsonNode;
 
 proc call*(call_601014: Call_ListUserGroups_600999; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists the Amazon QuickSight groups that an Amazon QuickSight user is a member of.</p> <p>The response is a one or more group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-user-groups -\-user-name=Pat -\-aws-account-id=111122223333 -\-namespace=default -\-region=us-east-1 </code> </p>
+  ## Lists the Amazon QuickSight groups that an Amazon QuickSight user is a member of.
   ## 
   let valid = call_601014.validator(path, query, header, formData, body)
   let scheme = call_601014.pickScheme
@@ -9245,7 +9245,7 @@ proc call*(call_601015: Call_ListUserGroups_600999; AwsAccountId: string;
           UserName: string; Namespace: string; maxResults: int = 0;
           nextToken: string = ""): Recallable =
   ## listUserGroups
-  ## <p>Lists the Amazon QuickSight groups that an Amazon QuickSight user is a member of.</p> <p>The response is a one or more group objects. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-user-groups -\-user-name=Pat -\-aws-account-id=111122223333 -\-namespace=default -\-region=us-east-1 </code> </p>
+  ## Lists the Amazon QuickSight groups that an Amazon QuickSight user is a member of.
   ##   AwsAccountId: string (required)
   ##               : The AWS Account ID that the user is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   maxResults: int
@@ -9297,7 +9297,7 @@ proc url_RegisterUser_601038(protocol: Scheme; host: string; base: string;
 
 proc validate_RegisterUser_601037(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight register-user -\-aws-account-id=111122223333 -\-namespace=default -\-email=pat@example.com -\-identity-type=IAM -\-user-role=AUTHOR -\-iam-arn=arn:aws:iam::111122223333:user/Pat </code> </p>
+  ## Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -9378,7 +9378,7 @@ proc validate_RegisterUser_601037(path: JsonNode; query: JsonNode; header: JsonN
 
 proc call*(call_601049: Call_RegisterUser_601036; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight register-user -\-aws-account-id=111122223333 -\-namespace=default -\-email=pat@example.com -\-identity-type=IAM -\-user-role=AUTHOR -\-iam-arn=arn:aws:iam::111122223333:user/Pat </code> </p>
+  ## Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. 
   ## 
   let valid = call_601049.validator(path, query, header, formData, body)
   let scheme = call_601049.pickScheme
@@ -9392,7 +9392,7 @@ proc call*(call_601049: Call_RegisterUser_601036; path: JsonNode; query: JsonNod
 proc call*(call_601050: Call_RegisterUser_601036; AwsAccountId: string;
           body: JsonNode; Namespace: string): Recallable =
   ## registerUser
-  ## <p>Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight register-user -\-aws-account-id=111122223333 -\-namespace=default -\-email=pat@example.com -\-identity-type=IAM -\-user-role=AUTHOR -\-iam-arn=arn:aws:iam::111122223333:user/Pat </code> </p>
+  ## Creates an Amazon QuickSight user, whose identity is associated with the AWS Identity and Access Management (IAM) identity or role specified in the request. 
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the user is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   body: JObject (required)
@@ -9439,7 +9439,7 @@ proc url_ListUsers_601020(protocol: Scheme; host: string; base: string; route: s
 
 proc validate_ListUsers_601019(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns a list of all of the Amazon QuickSight users belonging to this account. </p> <p>The response is a list of user objects, containing each user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-users --aws-account-id=111122223333 --namespace=default </code> </p>
+  ## Returns a list of all of the Amazon QuickSight users belonging to this account. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -9530,7 +9530,7 @@ proc validate_ListUsers_601019(path: JsonNode; query: JsonNode; header: JsonNode
 
 proc call*(call_601032: Call_ListUsers_601018; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns a list of all of the Amazon QuickSight users belonging to this account. </p> <p>The response is a list of user objects, containing each user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-users --aws-account-id=111122223333 --namespace=default </code> </p>
+  ## Returns a list of all of the Amazon QuickSight users belonging to this account. 
   ## 
   let valid = call_601032.validator(path, query, header, formData, body)
   let scheme = call_601032.pickScheme
@@ -9544,7 +9544,7 @@ proc call*(call_601032: Call_ListUsers_601018; path: JsonNode; query: JsonNode;
 proc call*(call_601033: Call_ListUsers_601018; AwsAccountId: string;
           Namespace: string; maxResults: int = 0; nextToken: string = ""): Recallable =
   ## listUsers
-  ## <p>Returns a list of all of the Amazon QuickSight users belonging to this account. </p> <p>The response is a list of user objects, containing each user's Amazon Resource Name (ARN), AWS Identity and Access Management (IAM) role, and email address. </p> <p> <b>CLI Sample:</b> </p> <p> <code>aws quicksight list-users --aws-account-id=111122223333 --namespace=default </code> </p>
+  ## Returns a list of all of the Amazon QuickSight users belonging to this account. 
   ##   AwsAccountId: string (required)
   ##               : The ID for the AWS account that the user is in. Currently, you use the ID for the AWS account that contains your Amazon QuickSight account.
   ##   maxResults: int
@@ -9591,13 +9591,13 @@ proc url_UntagResource_601055(protocol: Scheme; host: string; base: string;
 
 proc validate_UntagResource_601054(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Removes a tag or tags from a resource.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight untag-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --tag-keys K1 K2 --region us-east-1</code> </p> </li> </ul>
+  ## Removes a tag or tags from a resource.
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   ResourceArn: JString (required)
-  ##              : The ARN of the resource you to untag.
+  ##              : The Amazon Resource Name (ARN) of the resource that you want to untag.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceArn` field"
@@ -9669,7 +9669,7 @@ proc validate_UntagResource_601054(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_601065: Call_UntagResource_601053; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Removes a tag or tags from a resource.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight untag-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --tag-keys K1 K2 --region us-east-1</code> </p> </li> </ul>
+  ## Removes a tag or tags from a resource.
   ## 
   let valid = call_601065.validator(path, query, header, formData, body)
   let scheme = call_601065.pickScheme
@@ -9683,11 +9683,11 @@ proc call*(call_601065: Call_UntagResource_601053; path: JsonNode; query: JsonNo
 proc call*(call_601066: Call_UntagResource_601053; keys: JsonNode;
           ResourceArn: string): Recallable =
   ## untagResource
-  ## <p>Removes a tag or tags from a resource.</p> <p>CLI syntax:</p> <ul> <li> <p> <code>aws quicksight untag-resource --resource-arn arn:aws:quicksight:us-east-1:111111111111:dataset/dataset1 --tag-keys K1 K2 --region us-east-1</code> </p> </li> </ul>
+  ## Removes a tag or tags from a resource.
   ##   keys: JArray (required)
   ##       : The keys of the key-value pairs for the resource tag or tags assigned to the resource.
   ##   ResourceArn: string (required)
-  ##              : The ARN of the resource you to untag.
+  ##              : The Amazon Resource Name (ARN) of the resource that you want to untag.
   var path_601067 = newJObject()
   var query_601068 = newJObject()
   if keys != nil:
@@ -9730,7 +9730,7 @@ proc url_UpdateDashboardPublishedVersion_601071(protocol: Scheme; host: string;
 
 proc validate_UpdateDashboardPublishedVersion_601070(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates the published version of a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard-published-version --aws-account-id 111122223333 --dashboard-id dashboard-w1 ---version-number 2</code> </p>
+  ## Updates the published version of a dashboard.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -9814,7 +9814,7 @@ proc validate_UpdateDashboardPublishedVersion_601070(path: JsonNode;
 proc call*(call_601082: Call_UpdateDashboardPublishedVersion_601069;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## <p>Updates the published version of a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard-published-version --aws-account-id 111122223333 --dashboard-id dashboard-w1 ---version-number 2</code> </p>
+  ## Updates the published version of a dashboard.
   ## 
   let valid = call_601082.validator(path, query, header, formData, body)
   let scheme = call_601082.pickScheme
@@ -9828,7 +9828,7 @@ proc call*(call_601082: Call_UpdateDashboardPublishedVersion_601069;
 proc call*(call_601083: Call_UpdateDashboardPublishedVersion_601069;
           AwsAccountId: string; DashboardId: string; VersionNumber: int): Recallable =
   ## updateDashboardPublishedVersion
-  ## <p>Updates the published version of a dashboard.</p> <p>CLI syntax:</p> <p> <code>aws quicksight update-dashboard-published-version --aws-account-id 111122223333 --dashboard-id dashboard-w1 ---version-number 2</code> </p>
+  ## Updates the published version of a dashboard.
   ##   AwsAccountId: string (required)
   ##               : AWS account ID that contains the dashboard you are updating.
   ##   DashboardId: string (required)

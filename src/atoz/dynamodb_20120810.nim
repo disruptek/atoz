@@ -1285,9 +1285,9 @@ var describeContinuousBackups* = Call_DescribeContinuousBackups_600097(
     url: url_DescribeContinuousBackups_600099,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEndpoints_600112 = ref object of OpenApiRestCall_599368
-proc url_DescribeEndpoints_600114(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeContributorInsights_600112 = ref object of OpenApiRestCall_599368
+proc url_DescribeContributorInsights_600114(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1297,10 +1297,9 @@ proc url_DescribeEndpoints_600114(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeEndpoints_600113(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## Returns the regional endpoint information.
+proc validate_DescribeContributorInsights_600113(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Returns information about contributor insights, for a given table or global secondary index.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1332,7 +1331,7 @@ proc validate_DescribeEndpoints_600113(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600117 = header.getOrDefault("X-Amz-Target")
   valid_600117 = validateParameter(valid_600117, JString, required = true, default = newJString(
-      "DynamoDB_20120810.DescribeEndpoints"))
+      "DynamoDB_20120810.DescribeContributorInsights"))
   if valid_600117 != nil:
     section.add "X-Amz-Target", valid_600117
   var valid_600118 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1370,9 +1369,9 @@ proc validate_DescribeEndpoints_600113(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600124: Call_DescribeEndpoints_600112; path: JsonNode;
+proc call*(call_600124: Call_DescribeContributorInsights_600112; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns the regional endpoint information.
+  ## Returns information about contributor insights, for a given table or global secondary index.
   ## 
   let valid = call_600124.validator(path, query, header, formData, body)
   let scheme = call_600124.pickScheme
@@ -1383,24 +1382,26 @@ proc call*(call_600124: Call_DescribeEndpoints_600112; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600124, url, valid)
 
-proc call*(call_600125: Call_DescribeEndpoints_600112; body: JsonNode): Recallable =
-  ## describeEndpoints
-  ## Returns the regional endpoint information.
+proc call*(call_600125: Call_DescribeContributorInsights_600112; body: JsonNode): Recallable =
+  ## describeContributorInsights
+  ## Returns information about contributor insights, for a given table or global secondary index.
   ##   body: JObject (required)
   var body_600126 = newJObject()
   if body != nil:
     body_600126 = body
   result = call_600125.call(nil, nil, nil, nil, body_600126)
 
-var describeEndpoints* = Call_DescribeEndpoints_600112(name: "describeEndpoints",
-    meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeEndpoints",
-    validator: validate_DescribeEndpoints_600113, base: "/",
-    url: url_DescribeEndpoints_600114, schemes: {Scheme.Https, Scheme.Http})
+var describeContributorInsights* = Call_DescribeContributorInsights_600112(
+    name: "describeContributorInsights", meth: HttpMethod.HttpPost,
+    host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeContributorInsights",
+    validator: validate_DescribeContributorInsights_600113, base: "/",
+    url: url_DescribeContributorInsights_600114,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeGlobalTable_600127 = ref object of OpenApiRestCall_599368
-proc url_DescribeGlobalTable_600129(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeEndpoints_600127 = ref object of OpenApiRestCall_599368
+proc url_DescribeEndpoints_600129(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1410,10 +1411,10 @@ proc url_DescribeGlobalTable_600129(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_DescribeGlobalTable_600128(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode): JsonNode =
-  ## <p>Returns information about the specified global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+proc validate_DescribeEndpoints_600128(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## Returns the regional endpoint information.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1445,7 +1446,7 @@ proc validate_DescribeGlobalTable_600128(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600132 = header.getOrDefault("X-Amz-Target")
   valid_600132 = validateParameter(valid_600132, JString, required = true, default = newJString(
-      "DynamoDB_20120810.DescribeGlobalTable"))
+      "DynamoDB_20120810.DescribeEndpoints"))
   if valid_600132 != nil:
     section.add "X-Amz-Target", valid_600132
   var valid_600133 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1483,9 +1484,9 @@ proc validate_DescribeGlobalTable_600128(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600139: Call_DescribeGlobalTable_600127; path: JsonNode;
+proc call*(call_600139: Call_DescribeEndpoints_600127; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns information about the specified global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+  ## Returns the regional endpoint information.
   ## 
   let valid = call_600139.validator(path, query, header, formData, body)
   let scheme = call_600139.pickScheme
@@ -1496,25 +1497,24 @@ proc call*(call_600139: Call_DescribeGlobalTable_600127; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600139, url, valid)
 
-proc call*(call_600140: Call_DescribeGlobalTable_600127; body: JsonNode): Recallable =
-  ## describeGlobalTable
-  ## <p>Returns information about the specified global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+proc call*(call_600140: Call_DescribeEndpoints_600127; body: JsonNode): Recallable =
+  ## describeEndpoints
+  ## Returns the regional endpoint information.
   ##   body: JObject (required)
   var body_600141 = newJObject()
   if body != nil:
     body_600141 = body
   result = call_600140.call(nil, nil, nil, nil, body_600141)
 
-var describeGlobalTable* = Call_DescribeGlobalTable_600127(
-    name: "describeGlobalTable", meth: HttpMethod.HttpPost,
-    host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeGlobalTable",
-    validator: validate_DescribeGlobalTable_600128, base: "/",
-    url: url_DescribeGlobalTable_600129, schemes: {Scheme.Https, Scheme.Http})
+var describeEndpoints* = Call_DescribeEndpoints_600127(name: "describeEndpoints",
+    meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeEndpoints",
+    validator: validate_DescribeEndpoints_600128, base: "/",
+    url: url_DescribeEndpoints_600129, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeGlobalTableSettings_600142 = ref object of OpenApiRestCall_599368
-proc url_DescribeGlobalTableSettings_600144(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeGlobalTable_600142 = ref object of OpenApiRestCall_599368
+proc url_DescribeGlobalTable_600144(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1524,9 +1524,10 @@ proc url_DescribeGlobalTableSettings_600144(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeGlobalTableSettings_600143(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Describes Region-specific settings for a global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+proc validate_DescribeGlobalTable_600143(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## <p>Returns information about the specified global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1558,7 +1559,7 @@ proc validate_DescribeGlobalTableSettings_600143(path: JsonNode; query: JsonNode
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600147 = header.getOrDefault("X-Amz-Target")
   valid_600147 = validateParameter(valid_600147, JString, required = true, default = newJString(
-      "DynamoDB_20120810.DescribeGlobalTableSettings"))
+      "DynamoDB_20120810.DescribeGlobalTable"))
   if valid_600147 != nil:
     section.add "X-Amz-Target", valid_600147
   var valid_600148 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1596,9 +1597,9 @@ proc validate_DescribeGlobalTableSettings_600143(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600154: Call_DescribeGlobalTableSettings_600142; path: JsonNode;
+proc call*(call_600154: Call_DescribeGlobalTable_600142; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Describes Region-specific settings for a global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+  ## <p>Returns information about the specified global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ## 
   let valid = call_600154.validator(path, query, header, formData, body)
   let scheme = call_600154.pickScheme
@@ -1609,26 +1610,25 @@ proc call*(call_600154: Call_DescribeGlobalTableSettings_600142; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600154, url, valid)
 
-proc call*(call_600155: Call_DescribeGlobalTableSettings_600142; body: JsonNode): Recallable =
-  ## describeGlobalTableSettings
-  ## <p>Describes Region-specific settings for a global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+proc call*(call_600155: Call_DescribeGlobalTable_600142; body: JsonNode): Recallable =
+  ## describeGlobalTable
+  ## <p>Returns information about the specified global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ##   body: JObject (required)
   var body_600156 = newJObject()
   if body != nil:
     body_600156 = body
   result = call_600155.call(nil, nil, nil, nil, body_600156)
 
-var describeGlobalTableSettings* = Call_DescribeGlobalTableSettings_600142(
-    name: "describeGlobalTableSettings", meth: HttpMethod.HttpPost,
+var describeGlobalTable* = Call_DescribeGlobalTable_600142(
+    name: "describeGlobalTable", meth: HttpMethod.HttpPost,
     host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeGlobalTableSettings",
-    validator: validate_DescribeGlobalTableSettings_600143, base: "/",
-    url: url_DescribeGlobalTableSettings_600144,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeGlobalTable",
+    validator: validate_DescribeGlobalTable_600143, base: "/",
+    url: url_DescribeGlobalTable_600144, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeLimits_600157 = ref object of OpenApiRestCall_599368
-proc url_DescribeLimits_600159(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeGlobalTableSettings_600157 = ref object of OpenApiRestCall_599368
+proc url_DescribeGlobalTableSettings_600159(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1638,10 +1638,9 @@ proc url_DescribeLimits_600159(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeLimits_600158(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode): JsonNode =
-  ## <p>Returns the current provisioned-capacity limits for your AWS account in a Region, both for the Region as a whole and for any one DynamoDB table that you create there.</p> <p>When you establish an AWS account, the account has initial limits on the maximum read capacity units and write capacity units that you can provision across all of your DynamoDB tables in a given Region. Also, there are per-table limits that apply when you create a table there. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html">Limits</a> page in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p>Although you can increase these limits by filing a case at <a href="https://console.aws.amazon.com/support/home#/">AWS Support Center</a>, obtaining the increase is not instantaneous. The <code>DescribeLimits</code> action lets you write code to compare the capacity you are currently using to those limits imposed by your account so that you have enough time to apply for an increase before you hit a limit.</p> <p>For example, you could use one of the AWS SDKs to do the following:</p> <ol> <li> <p>Call <code>DescribeLimits</code> for a particular Region to obtain your current account limits on provisioned capacity there.</p> </li> <li> <p>Create a variable to hold the aggregate read capacity units provisioned for all your tables in that Region, and one to hold the aggregate write capacity units. Zero them both.</p> </li> <li> <p>Call <code>ListTables</code> to obtain a list of all your DynamoDB tables.</p> </li> <li> <p>For each table name listed by <code>ListTables</code>, do the following:</p> <ul> <li> <p>Call <code>DescribeTable</code> with the table name.</p> </li> <li> <p>Use the data returned by <code>DescribeTable</code> to add the read capacity units and write capacity units provisioned for the table itself to your variables.</p> </li> <li> <p>If the table has one or more global secondary indexes (GSIs), loop over these GSIs and add their provisioned capacity values to your variables as well.</p> </li> </ul> </li> <li> <p>Report the account limits for that Region returned by <code>DescribeLimits</code>, along with the total current provisioned capacity levels you have calculated.</p> </li> </ol> <p>This will let you see whether you are getting close to your account-level limits.</p> <p>The per-table limits apply only when you are creating a new table. They restrict the sum of the provisioned capacity of the new table itself and all its global secondary indexes.</p> <p>For existing tables and their GSIs, DynamoDB doesn't let you increase provisioned capacity extremely rapidly. But the only upper limit that applies is that the aggregate provisioned capacity over all your tables and GSIs cannot exceed either of the per-account limits.</p> <note> <p> <code>DescribeLimits</code> should only be called periodically. You can expect throttling errors if you call it more than once in a minute.</p> </note> <p>The <code>DescribeLimits</code> Request element has no content.</p>
+proc validate_DescribeGlobalTableSettings_600158(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Describes Region-specific settings for a global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1673,7 +1672,7 @@ proc validate_DescribeLimits_600158(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600162 = header.getOrDefault("X-Amz-Target")
   valid_600162 = validateParameter(valid_600162, JString, required = true, default = newJString(
-      "DynamoDB_20120810.DescribeLimits"))
+      "DynamoDB_20120810.DescribeGlobalTableSettings"))
   if valid_600162 != nil:
     section.add "X-Amz-Target", valid_600162
   var valid_600163 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1711,9 +1710,9 @@ proc validate_DescribeLimits_600158(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600169: Call_DescribeLimits_600157; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns the current provisioned-capacity limits for your AWS account in a Region, both for the Region as a whole and for any one DynamoDB table that you create there.</p> <p>When you establish an AWS account, the account has initial limits on the maximum read capacity units and write capacity units that you can provision across all of your DynamoDB tables in a given Region. Also, there are per-table limits that apply when you create a table there. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html">Limits</a> page in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p>Although you can increase these limits by filing a case at <a href="https://console.aws.amazon.com/support/home#/">AWS Support Center</a>, obtaining the increase is not instantaneous. The <code>DescribeLimits</code> action lets you write code to compare the capacity you are currently using to those limits imposed by your account so that you have enough time to apply for an increase before you hit a limit.</p> <p>For example, you could use one of the AWS SDKs to do the following:</p> <ol> <li> <p>Call <code>DescribeLimits</code> for a particular Region to obtain your current account limits on provisioned capacity there.</p> </li> <li> <p>Create a variable to hold the aggregate read capacity units provisioned for all your tables in that Region, and one to hold the aggregate write capacity units. Zero them both.</p> </li> <li> <p>Call <code>ListTables</code> to obtain a list of all your DynamoDB tables.</p> </li> <li> <p>For each table name listed by <code>ListTables</code>, do the following:</p> <ul> <li> <p>Call <code>DescribeTable</code> with the table name.</p> </li> <li> <p>Use the data returned by <code>DescribeTable</code> to add the read capacity units and write capacity units provisioned for the table itself to your variables.</p> </li> <li> <p>If the table has one or more global secondary indexes (GSIs), loop over these GSIs and add their provisioned capacity values to your variables as well.</p> </li> </ul> </li> <li> <p>Report the account limits for that Region returned by <code>DescribeLimits</code>, along with the total current provisioned capacity levels you have calculated.</p> </li> </ol> <p>This will let you see whether you are getting close to your account-level limits.</p> <p>The per-table limits apply only when you are creating a new table. They restrict the sum of the provisioned capacity of the new table itself and all its global secondary indexes.</p> <p>For existing tables and their GSIs, DynamoDB doesn't let you increase provisioned capacity extremely rapidly. But the only upper limit that applies is that the aggregate provisioned capacity over all your tables and GSIs cannot exceed either of the per-account limits.</p> <note> <p> <code>DescribeLimits</code> should only be called periodically. You can expect throttling errors if you call it more than once in a minute.</p> </note> <p>The <code>DescribeLimits</code> Request element has no content.</p>
+proc call*(call_600169: Call_DescribeGlobalTableSettings_600157; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Describes Region-specific settings for a global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ## 
   let valid = call_600169.validator(path, query, header, formData, body)
   let scheme = call_600169.pickScheme
@@ -1724,24 +1723,26 @@ proc call*(call_600169: Call_DescribeLimits_600157; path: JsonNode; query: JsonN
                          valid.getOrDefault("query"))
   result = atozHook(call_600169, url, valid)
 
-proc call*(call_600170: Call_DescribeLimits_600157; body: JsonNode): Recallable =
-  ## describeLimits
-  ## <p>Returns the current provisioned-capacity limits for your AWS account in a Region, both for the Region as a whole and for any one DynamoDB table that you create there.</p> <p>When you establish an AWS account, the account has initial limits on the maximum read capacity units and write capacity units that you can provision across all of your DynamoDB tables in a given Region. Also, there are per-table limits that apply when you create a table there. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html">Limits</a> page in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p>Although you can increase these limits by filing a case at <a href="https://console.aws.amazon.com/support/home#/">AWS Support Center</a>, obtaining the increase is not instantaneous. The <code>DescribeLimits</code> action lets you write code to compare the capacity you are currently using to those limits imposed by your account so that you have enough time to apply for an increase before you hit a limit.</p> <p>For example, you could use one of the AWS SDKs to do the following:</p> <ol> <li> <p>Call <code>DescribeLimits</code> for a particular Region to obtain your current account limits on provisioned capacity there.</p> </li> <li> <p>Create a variable to hold the aggregate read capacity units provisioned for all your tables in that Region, and one to hold the aggregate write capacity units. Zero them both.</p> </li> <li> <p>Call <code>ListTables</code> to obtain a list of all your DynamoDB tables.</p> </li> <li> <p>For each table name listed by <code>ListTables</code>, do the following:</p> <ul> <li> <p>Call <code>DescribeTable</code> with the table name.</p> </li> <li> <p>Use the data returned by <code>DescribeTable</code> to add the read capacity units and write capacity units provisioned for the table itself to your variables.</p> </li> <li> <p>If the table has one or more global secondary indexes (GSIs), loop over these GSIs and add their provisioned capacity values to your variables as well.</p> </li> </ul> </li> <li> <p>Report the account limits for that Region returned by <code>DescribeLimits</code>, along with the total current provisioned capacity levels you have calculated.</p> </li> </ol> <p>This will let you see whether you are getting close to your account-level limits.</p> <p>The per-table limits apply only when you are creating a new table. They restrict the sum of the provisioned capacity of the new table itself and all its global secondary indexes.</p> <p>For existing tables and their GSIs, DynamoDB doesn't let you increase provisioned capacity extremely rapidly. But the only upper limit that applies is that the aggregate provisioned capacity over all your tables and GSIs cannot exceed either of the per-account limits.</p> <note> <p> <code>DescribeLimits</code> should only be called periodically. You can expect throttling errors if you call it more than once in a minute.</p> </note> <p>The <code>DescribeLimits</code> Request element has no content.</p>
+proc call*(call_600170: Call_DescribeGlobalTableSettings_600157; body: JsonNode): Recallable =
+  ## describeGlobalTableSettings
+  ## <p>Describes Region-specific settings for a global table.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ##   body: JObject (required)
   var body_600171 = newJObject()
   if body != nil:
     body_600171 = body
   result = call_600170.call(nil, nil, nil, nil, body_600171)
 
-var describeLimits* = Call_DescribeLimits_600157(name: "describeLimits",
-    meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeLimits",
-    validator: validate_DescribeLimits_600158, base: "/", url: url_DescribeLimits_600159,
+var describeGlobalTableSettings* = Call_DescribeGlobalTableSettings_600157(
+    name: "describeGlobalTableSettings", meth: HttpMethod.HttpPost,
+    host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeGlobalTableSettings",
+    validator: validate_DescribeGlobalTableSettings_600158, base: "/",
+    url: url_DescribeGlobalTableSettings_600159,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTable_600172 = ref object of OpenApiRestCall_599368
-proc url_DescribeTable_600174(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeLimits_600172 = ref object of OpenApiRestCall_599368
+proc url_DescribeLimits_600174(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1751,9 +1752,10 @@ proc url_DescribeTable_600174(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeTable_600173(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns information about the table, including the current status of the table, when it was created, the primary key schema, and any indexes on the table.</p> <note> <p>If you issue a <code>DescribeTable</code> request immediately after a <code>CreateTable</code> request, DynamoDB might return a <code>ResourceNotFoundException</code>. This is because <code>DescribeTable</code> uses an eventually consistent query, and the metadata for your table might not be available at that moment. Wait for a few seconds, and then try the <code>DescribeTable</code> request again.</p> </note>
+proc validate_DescribeLimits_600173(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode): JsonNode =
+  ## <p>Returns the current provisioned-capacity limits for your AWS account in a Region, both for the Region as a whole and for any one DynamoDB table that you create there.</p> <p>When you establish an AWS account, the account has initial limits on the maximum read capacity units and write capacity units that you can provision across all of your DynamoDB tables in a given Region. Also, there are per-table limits that apply when you create a table there. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html">Limits</a> page in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p>Although you can increase these limits by filing a case at <a href="https://console.aws.amazon.com/support/home#/">AWS Support Center</a>, obtaining the increase is not instantaneous. The <code>DescribeLimits</code> action lets you write code to compare the capacity you are currently using to those limits imposed by your account so that you have enough time to apply for an increase before you hit a limit.</p> <p>For example, you could use one of the AWS SDKs to do the following:</p> <ol> <li> <p>Call <code>DescribeLimits</code> for a particular Region to obtain your current account limits on provisioned capacity there.</p> </li> <li> <p>Create a variable to hold the aggregate read capacity units provisioned for all your tables in that Region, and one to hold the aggregate write capacity units. Zero them both.</p> </li> <li> <p>Call <code>ListTables</code> to obtain a list of all your DynamoDB tables.</p> </li> <li> <p>For each table name listed by <code>ListTables</code>, do the following:</p> <ul> <li> <p>Call <code>DescribeTable</code> with the table name.</p> </li> <li> <p>Use the data returned by <code>DescribeTable</code> to add the read capacity units and write capacity units provisioned for the table itself to your variables.</p> </li> <li> <p>If the table has one or more global secondary indexes (GSIs), loop over these GSIs and add their provisioned capacity values to your variables as well.</p> </li> </ul> </li> <li> <p>Report the account limits for that Region returned by <code>DescribeLimits</code>, along with the total current provisioned capacity levels you have calculated.</p> </li> </ol> <p>This will let you see whether you are getting close to your account-level limits.</p> <p>The per-table limits apply only when you are creating a new table. They restrict the sum of the provisioned capacity of the new table itself and all its global secondary indexes.</p> <p>For existing tables and their GSIs, DynamoDB doesn't let you increase provisioned capacity extremely rapidly. But the only upper limit that applies is that the aggregate provisioned capacity over all your tables and GSIs cannot exceed either of the per-account limits.</p> <note> <p> <code>DescribeLimits</code> should only be called periodically. You can expect throttling errors if you call it more than once in a minute.</p> </note> <p>The <code>DescribeLimits</code> Request element has no content.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1785,7 +1787,7 @@ proc validate_DescribeTable_600173(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600177 = header.getOrDefault("X-Amz-Target")
   valid_600177 = validateParameter(valid_600177, JString, required = true, default = newJString(
-      "DynamoDB_20120810.DescribeTable"))
+      "DynamoDB_20120810.DescribeLimits"))
   if valid_600177 != nil:
     section.add "X-Amz-Target", valid_600177
   var valid_600178 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1823,9 +1825,9 @@ proc validate_DescribeTable_600173(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600184: Call_DescribeTable_600172; path: JsonNode; query: JsonNode;
+proc call*(call_600184: Call_DescribeLimits_600172; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns information about the table, including the current status of the table, when it was created, the primary key schema, and any indexes on the table.</p> <note> <p>If you issue a <code>DescribeTable</code> request immediately after a <code>CreateTable</code> request, DynamoDB might return a <code>ResourceNotFoundException</code>. This is because <code>DescribeTable</code> uses an eventually consistent query, and the metadata for your table might not be available at that moment. Wait for a few seconds, and then try the <code>DescribeTable</code> request again.</p> </note>
+  ## <p>Returns the current provisioned-capacity limits for your AWS account in a Region, both for the Region as a whole and for any one DynamoDB table that you create there.</p> <p>When you establish an AWS account, the account has initial limits on the maximum read capacity units and write capacity units that you can provision across all of your DynamoDB tables in a given Region. Also, there are per-table limits that apply when you create a table there. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html">Limits</a> page in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p>Although you can increase these limits by filing a case at <a href="https://console.aws.amazon.com/support/home#/">AWS Support Center</a>, obtaining the increase is not instantaneous. The <code>DescribeLimits</code> action lets you write code to compare the capacity you are currently using to those limits imposed by your account so that you have enough time to apply for an increase before you hit a limit.</p> <p>For example, you could use one of the AWS SDKs to do the following:</p> <ol> <li> <p>Call <code>DescribeLimits</code> for a particular Region to obtain your current account limits on provisioned capacity there.</p> </li> <li> <p>Create a variable to hold the aggregate read capacity units provisioned for all your tables in that Region, and one to hold the aggregate write capacity units. Zero them both.</p> </li> <li> <p>Call <code>ListTables</code> to obtain a list of all your DynamoDB tables.</p> </li> <li> <p>For each table name listed by <code>ListTables</code>, do the following:</p> <ul> <li> <p>Call <code>DescribeTable</code> with the table name.</p> </li> <li> <p>Use the data returned by <code>DescribeTable</code> to add the read capacity units and write capacity units provisioned for the table itself to your variables.</p> </li> <li> <p>If the table has one or more global secondary indexes (GSIs), loop over these GSIs and add their provisioned capacity values to your variables as well.</p> </li> </ul> </li> <li> <p>Report the account limits for that Region returned by <code>DescribeLimits</code>, along with the total current provisioned capacity levels you have calculated.</p> </li> </ol> <p>This will let you see whether you are getting close to your account-level limits.</p> <p>The per-table limits apply only when you are creating a new table. They restrict the sum of the provisioned capacity of the new table itself and all its global secondary indexes.</p> <p>For existing tables and their GSIs, DynamoDB doesn't let you increase provisioned capacity extremely rapidly. But the only upper limit that applies is that the aggregate provisioned capacity over all your tables and GSIs cannot exceed either of the per-account limits.</p> <note> <p> <code>DescribeLimits</code> should only be called periodically. You can expect throttling errors if you call it more than once in a minute.</p> </note> <p>The <code>DescribeLimits</code> Request element has no content.</p>
   ## 
   let valid = call_600184.validator(path, query, header, formData, body)
   let scheme = call_600184.pickScheme
@@ -1836,24 +1838,24 @@ proc call*(call_600184: Call_DescribeTable_600172; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_600184, url, valid)
 
-proc call*(call_600185: Call_DescribeTable_600172; body: JsonNode): Recallable =
-  ## describeTable
-  ## <p>Returns information about the table, including the current status of the table, when it was created, the primary key schema, and any indexes on the table.</p> <note> <p>If you issue a <code>DescribeTable</code> request immediately after a <code>CreateTable</code> request, DynamoDB might return a <code>ResourceNotFoundException</code>. This is because <code>DescribeTable</code> uses an eventually consistent query, and the metadata for your table might not be available at that moment. Wait for a few seconds, and then try the <code>DescribeTable</code> request again.</p> </note>
+proc call*(call_600185: Call_DescribeLimits_600172; body: JsonNode): Recallable =
+  ## describeLimits
+  ## <p>Returns the current provisioned-capacity limits for your AWS account in a Region, both for the Region as a whole and for any one DynamoDB table that you create there.</p> <p>When you establish an AWS account, the account has initial limits on the maximum read capacity units and write capacity units that you can provision across all of your DynamoDB tables in a given Region. Also, there are per-table limits that apply when you create a table there. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html">Limits</a> page in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p>Although you can increase these limits by filing a case at <a href="https://console.aws.amazon.com/support/home#/">AWS Support Center</a>, obtaining the increase is not instantaneous. The <code>DescribeLimits</code> action lets you write code to compare the capacity you are currently using to those limits imposed by your account so that you have enough time to apply for an increase before you hit a limit.</p> <p>For example, you could use one of the AWS SDKs to do the following:</p> <ol> <li> <p>Call <code>DescribeLimits</code> for a particular Region to obtain your current account limits on provisioned capacity there.</p> </li> <li> <p>Create a variable to hold the aggregate read capacity units provisioned for all your tables in that Region, and one to hold the aggregate write capacity units. Zero them both.</p> </li> <li> <p>Call <code>ListTables</code> to obtain a list of all your DynamoDB tables.</p> </li> <li> <p>For each table name listed by <code>ListTables</code>, do the following:</p> <ul> <li> <p>Call <code>DescribeTable</code> with the table name.</p> </li> <li> <p>Use the data returned by <code>DescribeTable</code> to add the read capacity units and write capacity units provisioned for the table itself to your variables.</p> </li> <li> <p>If the table has one or more global secondary indexes (GSIs), loop over these GSIs and add their provisioned capacity values to your variables as well.</p> </li> </ul> </li> <li> <p>Report the account limits for that Region returned by <code>DescribeLimits</code>, along with the total current provisioned capacity levels you have calculated.</p> </li> </ol> <p>This will let you see whether you are getting close to your account-level limits.</p> <p>The per-table limits apply only when you are creating a new table. They restrict the sum of the provisioned capacity of the new table itself and all its global secondary indexes.</p> <p>For existing tables and their GSIs, DynamoDB doesn't let you increase provisioned capacity extremely rapidly. But the only upper limit that applies is that the aggregate provisioned capacity over all your tables and GSIs cannot exceed either of the per-account limits.</p> <note> <p> <code>DescribeLimits</code> should only be called periodically. You can expect throttling errors if you call it more than once in a minute.</p> </note> <p>The <code>DescribeLimits</code> Request element has no content.</p>
   ##   body: JObject (required)
   var body_600186 = newJObject()
   if body != nil:
     body_600186 = body
   result = call_600185.call(nil, nil, nil, nil, body_600186)
 
-var describeTable* = Call_DescribeTable_600172(name: "describeTable",
+var describeLimits* = Call_DescribeLimits_600172(name: "describeLimits",
     meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeTable",
-    validator: validate_DescribeTable_600173, base: "/", url: url_DescribeTable_600174,
+    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeLimits",
+    validator: validate_DescribeLimits_600173, base: "/", url: url_DescribeLimits_600174,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTableReplicaAutoScaling_600187 = ref object of OpenApiRestCall_599368
-proc url_DescribeTableReplicaAutoScaling_600189(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeTable_600187 = ref object of OpenApiRestCall_599368
+proc url_DescribeTable_600189(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1863,9 +1865,9 @@ proc url_DescribeTableReplicaAutoScaling_600189(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeTableReplicaAutoScaling_600188(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Describes auto scaling settings across replicas of the global table at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
+proc validate_DescribeTable_600188(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Returns information about the table, including the current status of the table, when it was created, the primary key schema, and any indexes on the table.</p> <note> <p>If you issue a <code>DescribeTable</code> request immediately after a <code>CreateTable</code> request, DynamoDB might return a <code>ResourceNotFoundException</code>. This is because <code>DescribeTable</code> uses an eventually consistent query, and the metadata for your table might not be available at that moment. Wait for a few seconds, and then try the <code>DescribeTable</code> request again.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1897,7 +1899,7 @@ proc validate_DescribeTableReplicaAutoScaling_600188(path: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600192 = header.getOrDefault("X-Amz-Target")
   valid_600192 = validateParameter(valid_600192, JString, required = true, default = newJString(
-      "DynamoDB_20120810.DescribeTableReplicaAutoScaling"))
+      "DynamoDB_20120810.DescribeTable"))
   if valid_600192 != nil:
     section.add "X-Amz-Target", valid_600192
   var valid_600193 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1935,10 +1937,9 @@ proc validate_DescribeTableReplicaAutoScaling_600188(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600199: Call_DescribeTableReplicaAutoScaling_600187;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## <p>Describes auto scaling settings across replicas of the global table at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
+proc call*(call_600199: Call_DescribeTable_600187; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Returns information about the table, including the current status of the table, when it was created, the primary key schema, and any indexes on the table.</p> <note> <p>If you issue a <code>DescribeTable</code> request immediately after a <code>CreateTable</code> request, DynamoDB might return a <code>ResourceNotFoundException</code>. This is because <code>DescribeTable</code> uses an eventually consistent query, and the metadata for your table might not be available at that moment. Wait for a few seconds, and then try the <code>DescribeTable</code> request again.</p> </note>
   ## 
   let valid = call_600199.validator(path, query, header, formData, body)
   let scheme = call_600199.pickScheme
@@ -1949,26 +1950,24 @@ proc call*(call_600199: Call_DescribeTableReplicaAutoScaling_600187;
                          valid.getOrDefault("query"))
   result = atozHook(call_600199, url, valid)
 
-proc call*(call_600200: Call_DescribeTableReplicaAutoScaling_600187; body: JsonNode): Recallable =
-  ## describeTableReplicaAutoScaling
-  ## <p>Describes auto scaling settings across replicas of the global table at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
+proc call*(call_600200: Call_DescribeTable_600187; body: JsonNode): Recallable =
+  ## describeTable
+  ## <p>Returns information about the table, including the current status of the table, when it was created, the primary key schema, and any indexes on the table.</p> <note> <p>If you issue a <code>DescribeTable</code> request immediately after a <code>CreateTable</code> request, DynamoDB might return a <code>ResourceNotFoundException</code>. This is because <code>DescribeTable</code> uses an eventually consistent query, and the metadata for your table might not be available at that moment. Wait for a few seconds, and then try the <code>DescribeTable</code> request again.</p> </note>
   ##   body: JObject (required)
   var body_600201 = newJObject()
   if body != nil:
     body_600201 = body
   result = call_600200.call(nil, nil, nil, nil, body_600201)
 
-var describeTableReplicaAutoScaling* = Call_DescribeTableReplicaAutoScaling_600187(
-    name: "describeTableReplicaAutoScaling", meth: HttpMethod.HttpPost,
-    host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeTableReplicaAutoScaling",
-    validator: validate_DescribeTableReplicaAutoScaling_600188, base: "/",
-    url: url_DescribeTableReplicaAutoScaling_600189,
+var describeTable* = Call_DescribeTable_600187(name: "describeTable",
+    meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeTable",
+    validator: validate_DescribeTable_600188, base: "/", url: url_DescribeTable_600189,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTimeToLive_600202 = ref object of OpenApiRestCall_599368
-proc url_DescribeTimeToLive_600204(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeTableReplicaAutoScaling_600202 = ref object of OpenApiRestCall_599368
+proc url_DescribeTableReplicaAutoScaling_600204(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1978,10 +1977,9 @@ proc url_DescribeTimeToLive_600204(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeTimeToLive_600203(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode): JsonNode =
-  ## Gives a description of the Time to Live (TTL) status on the specified table. 
+proc validate_DescribeTableReplicaAutoScaling_600203(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Describes auto scaling settings across replicas of the global table at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2013,7 +2011,7 @@ proc validate_DescribeTimeToLive_600203(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600207 = header.getOrDefault("X-Amz-Target")
   valid_600207 = validateParameter(valid_600207, JString, required = true, default = newJString(
-      "DynamoDB_20120810.DescribeTimeToLive"))
+      "DynamoDB_20120810.DescribeTableReplicaAutoScaling"))
   if valid_600207 != nil:
     section.add "X-Amz-Target", valid_600207
   var valid_600208 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2051,9 +2049,10 @@ proc validate_DescribeTimeToLive_600203(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600214: Call_DescribeTimeToLive_600202; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gives a description of the Time to Live (TTL) status on the specified table. 
+proc call*(call_600214: Call_DescribeTableReplicaAutoScaling_600202;
+          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
+          body: JsonNode): Recallable =
+  ## <p>Describes auto scaling settings across replicas of the global table at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
   ## 
   let valid = call_600214.validator(path, query, header, formData, body)
   let scheme = call_600214.pickScheme
@@ -2064,25 +2063,26 @@ proc call*(call_600214: Call_DescribeTimeToLive_600202; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600214, url, valid)
 
-proc call*(call_600215: Call_DescribeTimeToLive_600202; body: JsonNode): Recallable =
-  ## describeTimeToLive
-  ## Gives a description of the Time to Live (TTL) status on the specified table. 
+proc call*(call_600215: Call_DescribeTableReplicaAutoScaling_600202; body: JsonNode): Recallable =
+  ## describeTableReplicaAutoScaling
+  ## <p>Describes auto scaling settings across replicas of the global table at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
   ##   body: JObject (required)
   var body_600216 = newJObject()
   if body != nil:
     body_600216 = body
   result = call_600215.call(nil, nil, nil, nil, body_600216)
 
-var describeTimeToLive* = Call_DescribeTimeToLive_600202(
-    name: "describeTimeToLive", meth: HttpMethod.HttpPost,
+var describeTableReplicaAutoScaling* = Call_DescribeTableReplicaAutoScaling_600202(
+    name: "describeTableReplicaAutoScaling", meth: HttpMethod.HttpPost,
     host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeTimeToLive",
-    validator: validate_DescribeTimeToLive_600203, base: "/",
-    url: url_DescribeTimeToLive_600204, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeTableReplicaAutoScaling",
+    validator: validate_DescribeTableReplicaAutoScaling_600203, base: "/",
+    url: url_DescribeTableReplicaAutoScaling_600204,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetItem_600217 = ref object of OpenApiRestCall_599368
-proc url_GetItem_600219(protocol: Scheme; host: string; base: string; route: string;
-                       path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeTimeToLive_600217 = ref object of OpenApiRestCall_599368
+proc url_DescribeTimeToLive_600219(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2092,9 +2092,10 @@ proc url_GetItem_600219(protocol: Scheme; host: string; base: string; route: str
   else:
     result.path = base & route
 
-proc validate_GetItem_600218(path: JsonNode; query: JsonNode; header: JsonNode;
-                            formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>The <code>GetItem</code> operation returns a set of attributes for the item with the given primary key. If there is no matching item, <code>GetItem</code> does not return any data and there will be no <code>Item</code> element in the response.</p> <p> <code>GetItem</code> provides an eventually consistent read by default. If your application requires a strongly consistent read, set <code>ConsistentRead</code> to <code>true</code>. Although a strongly consistent read might take more time than an eventually consistent read, it always returns the last updated value.</p>
+proc validate_DescribeTimeToLive_600218(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode): JsonNode =
+  ## Gives a description of the Time to Live (TTL) status on the specified table. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2126,7 +2127,7 @@ proc validate_GetItem_600218(path: JsonNode; query: JsonNode; header: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600222 = header.getOrDefault("X-Amz-Target")
   valid_600222 = validateParameter(valid_600222, JString, required = true, default = newJString(
-      "DynamoDB_20120810.GetItem"))
+      "DynamoDB_20120810.DescribeTimeToLive"))
   if valid_600222 != nil:
     section.add "X-Amz-Target", valid_600222
   var valid_600223 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2164,9 +2165,9 @@ proc validate_GetItem_600218(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600229: Call_GetItem_600217; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>The <code>GetItem</code> operation returns a set of attributes for the item with the given primary key. If there is no matching item, <code>GetItem</code> does not return any data and there will be no <code>Item</code> element in the response.</p> <p> <code>GetItem</code> provides an eventually consistent read by default. If your application requires a strongly consistent read, set <code>ConsistentRead</code> to <code>true</code>. Although a strongly consistent read might take more time than an eventually consistent read, it always returns the last updated value.</p>
+proc call*(call_600229: Call_DescribeTimeToLive_600217; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Gives a description of the Time to Live (TTL) status on the specified table. 
   ## 
   let valid = call_600229.validator(path, query, header, formData, body)
   let scheme = call_600229.pickScheme
@@ -2177,24 +2178,25 @@ proc call*(call_600229: Call_GetItem_600217; path: JsonNode; query: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600229, url, valid)
 
-proc call*(call_600230: Call_GetItem_600217; body: JsonNode): Recallable =
-  ## getItem
-  ## <p>The <code>GetItem</code> operation returns a set of attributes for the item with the given primary key. If there is no matching item, <code>GetItem</code> does not return any data and there will be no <code>Item</code> element in the response.</p> <p> <code>GetItem</code> provides an eventually consistent read by default. If your application requires a strongly consistent read, set <code>ConsistentRead</code> to <code>true</code>. Although a strongly consistent read might take more time than an eventually consistent read, it always returns the last updated value.</p>
+proc call*(call_600230: Call_DescribeTimeToLive_600217; body: JsonNode): Recallable =
+  ## describeTimeToLive
+  ## Gives a description of the Time to Live (TTL) status on the specified table. 
   ##   body: JObject (required)
   var body_600231 = newJObject()
   if body != nil:
     body_600231 = body
   result = call_600230.call(nil, nil, nil, nil, body_600231)
 
-var getItem* = Call_GetItem_600217(name: "getItem", meth: HttpMethod.HttpPost,
-                                host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.GetItem",
-                                validator: validate_GetItem_600218, base: "/",
-                                url: url_GetItem_600219,
-                                schemes: {Scheme.Https, Scheme.Http})
+var describeTimeToLive* = Call_DescribeTimeToLive_600217(
+    name: "describeTimeToLive", meth: HttpMethod.HttpPost,
+    host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.DescribeTimeToLive",
+    validator: validate_DescribeTimeToLive_600218, base: "/",
+    url: url_DescribeTimeToLive_600219, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListBackups_600232 = ref object of OpenApiRestCall_599368
-proc url_ListBackups_600234(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetItem_600232 = ref object of OpenApiRestCall_599368
+proc url_GetItem_600234(protocol: Scheme; host: string; base: string; route: string;
+                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2204,9 +2206,9 @@ proc url_ListBackups_600234(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListBackups_600233(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>List backups associated with an AWS account. To list backups for a given table, specify <code>TableName</code>. <code>ListBackups</code> returns a paginated list of results with at most 1 MB worth of items in a page. You can also specify a limit for the maximum number of entries to be returned in a page. </p> <p>In the request, start time is inclusive, but end time is exclusive. Note that these limits are for the time at which the original backup was requested.</p> <p>You can call <code>ListBackups</code> a maximum of five times per second.</p>
+proc validate_GetItem_600233(path: JsonNode; query: JsonNode; header: JsonNode;
+                            formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>The <code>GetItem</code> operation returns a set of attributes for the item with the given primary key. If there is no matching item, <code>GetItem</code> does not return any data and there will be no <code>Item</code> element in the response.</p> <p> <code>GetItem</code> provides an eventually consistent read by default. If your application requires a strongly consistent read, set <code>ConsistentRead</code> to <code>true</code>. Although a strongly consistent read might take more time than an eventually consistent read, it always returns the last updated value.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2238,7 +2240,7 @@ proc validate_ListBackups_600233(path: JsonNode; query: JsonNode; header: JsonNo
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600237 = header.getOrDefault("X-Amz-Target")
   valid_600237 = validateParameter(valid_600237, JString, required = true, default = newJString(
-      "DynamoDB_20120810.ListBackups"))
+      "DynamoDB_20120810.GetItem"))
   if valid_600237 != nil:
     section.add "X-Amz-Target", valid_600237
   var valid_600238 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2276,9 +2278,9 @@ proc validate_ListBackups_600233(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600244: Call_ListBackups_600232; path: JsonNode; query: JsonNode;
+proc call*(call_600244: Call_GetItem_600232; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>List backups associated with an AWS account. To list backups for a given table, specify <code>TableName</code>. <code>ListBackups</code> returns a paginated list of results with at most 1 MB worth of items in a page. You can also specify a limit for the maximum number of entries to be returned in a page. </p> <p>In the request, start time is inclusive, but end time is exclusive. Note that these limits are for the time at which the original backup was requested.</p> <p>You can call <code>ListBackups</code> a maximum of five times per second.</p>
+  ## <p>The <code>GetItem</code> operation returns a set of attributes for the item with the given primary key. If there is no matching item, <code>GetItem</code> does not return any data and there will be no <code>Item</code> element in the response.</p> <p> <code>GetItem</code> provides an eventually consistent read by default. If your application requires a strongly consistent read, set <code>ConsistentRead</code> to <code>true</code>. Although a strongly consistent read might take more time than an eventually consistent read, it always returns the last updated value.</p>
   ## 
   let valid = call_600244.validator(path, query, header, formData, body)
   let scheme = call_600244.pickScheme
@@ -2289,25 +2291,24 @@ proc call*(call_600244: Call_ListBackups_600232; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_600244, url, valid)
 
-proc call*(call_600245: Call_ListBackups_600232; body: JsonNode): Recallable =
-  ## listBackups
-  ## <p>List backups associated with an AWS account. To list backups for a given table, specify <code>TableName</code>. <code>ListBackups</code> returns a paginated list of results with at most 1 MB worth of items in a page. You can also specify a limit for the maximum number of entries to be returned in a page. </p> <p>In the request, start time is inclusive, but end time is exclusive. Note that these limits are for the time at which the original backup was requested.</p> <p>You can call <code>ListBackups</code> a maximum of five times per second.</p>
+proc call*(call_600245: Call_GetItem_600232; body: JsonNode): Recallable =
+  ## getItem
+  ## <p>The <code>GetItem</code> operation returns a set of attributes for the item with the given primary key. If there is no matching item, <code>GetItem</code> does not return any data and there will be no <code>Item</code> element in the response.</p> <p> <code>GetItem</code> provides an eventually consistent read by default. If your application requires a strongly consistent read, set <code>ConsistentRead</code> to <code>true</code>. Although a strongly consistent read might take more time than an eventually consistent read, it always returns the last updated value.</p>
   ##   body: JObject (required)
   var body_600246 = newJObject()
   if body != nil:
     body_600246 = body
   result = call_600245.call(nil, nil, nil, nil, body_600246)
 
-var listBackups* = Call_ListBackups_600232(name: "listBackups",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.ListBackups",
-                                        validator: validate_ListBackups_600233,
-                                        base: "/", url: url_ListBackups_600234,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var getItem* = Call_GetItem_600232(name: "getItem", meth: HttpMethod.HttpPost,
+                                host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.GetItem",
+                                validator: validate_GetItem_600233, base: "/",
+                                url: url_GetItem_600234,
+                                schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListGlobalTables_600247 = ref object of OpenApiRestCall_599368
-proc url_ListGlobalTables_600249(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListBackups_600247 = ref object of OpenApiRestCall_599368
+proc url_ListBackups_600249(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2317,10 +2318,9 @@ proc url_ListGlobalTables_600249(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListGlobalTables_600248(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## <p>Lists all global tables that have a replica in the specified Region.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+proc validate_ListBackups_600248(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>List backups associated with an AWS account. To list backups for a given table, specify <code>TableName</code>. <code>ListBackups</code> returns a paginated list of results with at most 1 MB worth of items in a page. You can also specify a limit for the maximum number of entries to be returned in a page. </p> <p>In the request, start time is inclusive, but end time is exclusive. Note that these limits are for the time at which the original backup was requested.</p> <p>You can call <code>ListBackups</code> a maximum of five times per second.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2352,7 +2352,7 @@ proc validate_ListGlobalTables_600248(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600252 = header.getOrDefault("X-Amz-Target")
   valid_600252 = validateParameter(valid_600252, JString, required = true, default = newJString(
-      "DynamoDB_20120810.ListGlobalTables"))
+      "DynamoDB_20120810.ListBackups"))
   if valid_600252 != nil:
     section.add "X-Amz-Target", valid_600252
   var valid_600253 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2390,9 +2390,9 @@ proc validate_ListGlobalTables_600248(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600259: Call_ListGlobalTables_600247; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists all global tables that have a replica in the specified Region.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+proc call*(call_600259: Call_ListBackups_600247; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>List backups associated with an AWS account. To list backups for a given table, specify <code>TableName</code>. <code>ListBackups</code> returns a paginated list of results with at most 1 MB worth of items in a page. You can also specify a limit for the maximum number of entries to be returned in a page. </p> <p>In the request, start time is inclusive, but end time is exclusive. Note that these limits are for the time at which the original backup was requested.</p> <p>You can call <code>ListBackups</code> a maximum of five times per second.</p>
   ## 
   let valid = call_600259.validator(path, query, header, formData, body)
   let scheme = call_600259.pickScheme
@@ -2403,24 +2403,26 @@ proc call*(call_600259: Call_ListGlobalTables_600247; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600259, url, valid)
 
-proc call*(call_600260: Call_ListGlobalTables_600247; body: JsonNode): Recallable =
-  ## listGlobalTables
-  ## <p>Lists all global tables that have a replica in the specified Region.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
+proc call*(call_600260: Call_ListBackups_600247; body: JsonNode): Recallable =
+  ## listBackups
+  ## <p>List backups associated with an AWS account. To list backups for a given table, specify <code>TableName</code>. <code>ListBackups</code> returns a paginated list of results with at most 1 MB worth of items in a page. You can also specify a limit for the maximum number of entries to be returned in a page. </p> <p>In the request, start time is inclusive, but end time is exclusive. Note that these limits are for the time at which the original backup was requested.</p> <p>You can call <code>ListBackups</code> a maximum of five times per second.</p>
   ##   body: JObject (required)
   var body_600261 = newJObject()
   if body != nil:
     body_600261 = body
   result = call_600260.call(nil, nil, nil, nil, body_600261)
 
-var listGlobalTables* = Call_ListGlobalTables_600247(name: "listGlobalTables",
-    meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.ListGlobalTables",
-    validator: validate_ListGlobalTables_600248, base: "/",
-    url: url_ListGlobalTables_600249, schemes: {Scheme.Https, Scheme.Http})
+var listBackups* = Call_ListBackups_600247(name: "listBackups",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.ListBackups",
+                                        validator: validate_ListBackups_600248,
+                                        base: "/", url: url_ListBackups_600249,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTables_600262 = ref object of OpenApiRestCall_599368
-proc url_ListTables_600264(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
+  Call_ListContributorInsights_600262 = ref object of OpenApiRestCall_599368
+proc url_ListContributorInsights_600264(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2430,30 +2432,30 @@ proc url_ListTables_600264(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_ListTables_600263(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode): JsonNode =
-  ## Returns an array of table names associated with the current account and endpoint. The output from <code>ListTables</code> is paginated, with each page returning a maximum of 100 table names.
+proc validate_ListContributorInsights_600263(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Returns a list of ContributorInsightsSummary for a table and all its global secondary indexes.
   ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
-  ##   ExclusiveStartTableName: JString
-  ##                          : Pagination token
+  ##   NextToken: JString
+  ##            : Pagination token
+  ##   MaxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_600265 = query.getOrDefault("Limit")
+  var valid_600265 = query.getOrDefault("NextToken")
   valid_600265 = validateParameter(valid_600265, JString, required = false,
                                  default = nil)
   if valid_600265 != nil:
-    section.add "Limit", valid_600265
-  var valid_600266 = query.getOrDefault("ExclusiveStartTableName")
+    section.add "NextToken", valid_600265
+  var valid_600266 = query.getOrDefault("MaxResults")
   valid_600266 = validateParameter(valid_600266, JString, required = false,
                                  default = nil)
   if valid_600266 != nil:
-    section.add "ExclusiveStartTableName", valid_600266
+    section.add "MaxResults", valid_600266
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -2479,7 +2481,7 @@ proc validate_ListTables_600263(path: JsonNode; query: JsonNode; header: JsonNod
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600269 = header.getOrDefault("X-Amz-Target")
   valid_600269 = validateParameter(valid_600269, JString, required = true, default = newJString(
-      "DynamoDB_20120810.ListTables"))
+      "DynamoDB_20120810.ListContributorInsights"))
   if valid_600269 != nil:
     section.add "X-Amz-Target", valid_600269
   var valid_600270 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2517,9 +2519,9 @@ proc validate_ListTables_600263(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600276: Call_ListTables_600262; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns an array of table names associated with the current account and endpoint. The output from <code>ListTables</code> is paginated, with each page returning a maximum of 100 table names.
+proc call*(call_600276: Call_ListContributorInsights_600262; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns a list of ContributorInsightsSummary for a table and all its global secondary indexes.
   ## 
   let valid = call_600276.validator(path, query, header, formData, body)
   let scheme = call_600276.pickScheme
@@ -2530,33 +2532,33 @@ proc call*(call_600276: Call_ListTables_600262; path: JsonNode; query: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600276, url, valid)
 
-proc call*(call_600277: Call_ListTables_600262; body: JsonNode; Limit: string = "";
-          ExclusiveStartTableName: string = ""): Recallable =
-  ## listTables
-  ## Returns an array of table names associated with the current account and endpoint. The output from <code>ListTables</code> is paginated, with each page returning a maximum of 100 table names.
-  ##   Limit: string
-  ##        : Pagination limit
+proc call*(call_600277: Call_ListContributorInsights_600262; body: JsonNode;
+          NextToken: string = ""; MaxResults: string = ""): Recallable =
+  ## listContributorInsights
+  ## Returns a list of ContributorInsightsSummary for a table and all its global secondary indexes.
+  ##   NextToken: string
+  ##            : Pagination token
   ##   body: JObject (required)
-  ##   ExclusiveStartTableName: string
-  ##                          : Pagination token
+  ##   MaxResults: string
+  ##             : Pagination limit
   var query_600278 = newJObject()
   var body_600279 = newJObject()
-  add(query_600278, "Limit", newJString(Limit))
+  add(query_600278, "NextToken", newJString(NextToken))
   if body != nil:
     body_600279 = body
-  add(query_600278, "ExclusiveStartTableName", newJString(ExclusiveStartTableName))
+  add(query_600278, "MaxResults", newJString(MaxResults))
   result = call_600277.call(nil, query_600278, nil, nil, body_600279)
 
-var listTables* = Call_ListTables_600262(name: "listTables",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.ListTables",
-                                      validator: validate_ListTables_600263,
-                                      base: "/", url: url_ListTables_600264,
-                                      schemes: {Scheme.Https, Scheme.Http})
+var listContributorInsights* = Call_ListContributorInsights_600262(
+    name: "listContributorInsights", meth: HttpMethod.HttpPost,
+    host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.ListContributorInsights",
+    validator: validate_ListContributorInsights_600263, base: "/",
+    url: url_ListContributorInsights_600264, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsOfResource_600280 = ref object of OpenApiRestCall_599368
-proc url_ListTagsOfResource_600282(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListGlobalTables_600280 = ref object of OpenApiRestCall_599368
+proc url_ListGlobalTables_600282(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2566,10 +2568,10 @@ proc url_ListTagsOfResource_600282(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListTagsOfResource_600281(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode): JsonNode =
-  ## <p>List all tags on an Amazon DynamoDB resource. You can call ListTagsOfResource up to 10 times per second, per account.</p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+proc validate_ListGlobalTables_600281(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## <p>Lists all global tables that have a replica in the specified Region.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2601,7 +2603,7 @@ proc validate_ListTagsOfResource_600281(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600285 = header.getOrDefault("X-Amz-Target")
   valid_600285 = validateParameter(valid_600285, JString, required = true, default = newJString(
-      "DynamoDB_20120810.ListTagsOfResource"))
+      "DynamoDB_20120810.ListGlobalTables"))
   if valid_600285 != nil:
     section.add "X-Amz-Target", valid_600285
   var valid_600286 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2639,9 +2641,9 @@ proc validate_ListTagsOfResource_600281(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600292: Call_ListTagsOfResource_600280; path: JsonNode;
+proc call*(call_600292: Call_ListGlobalTables_600280; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>List all tags on an Amazon DynamoDB resource. You can call ListTagsOfResource up to 10 times per second, per account.</p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+  ## <p>Lists all global tables that have a replica in the specified Region.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ## 
   let valid = call_600292.validator(path, query, header, formData, body)
   let scheme = call_600292.pickScheme
@@ -2652,24 +2654,273 @@ proc call*(call_600292: Call_ListTagsOfResource_600280; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600292, url, valid)
 
-proc call*(call_600293: Call_ListTagsOfResource_600280; body: JsonNode): Recallable =
-  ## listTagsOfResource
-  ## <p>List all tags on an Amazon DynamoDB resource. You can call ListTagsOfResource up to 10 times per second, per account.</p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+proc call*(call_600293: Call_ListGlobalTables_600280; body: JsonNode): Recallable =
+  ## listGlobalTables
+  ## <p>Lists all global tables that have a replica in the specified Region.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V1.html">Version 2017.11.29</a> of global tables.</p> </note>
   ##   body: JObject (required)
   var body_600294 = newJObject()
   if body != nil:
     body_600294 = body
   result = call_600293.call(nil, nil, nil, nil, body_600294)
 
-var listTagsOfResource* = Call_ListTagsOfResource_600280(
+var listGlobalTables* = Call_ListGlobalTables_600280(name: "listGlobalTables",
+    meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.ListGlobalTables",
+    validator: validate_ListGlobalTables_600281, base: "/",
+    url: url_ListGlobalTables_600282, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListTables_600295 = ref object of OpenApiRestCall_599368
+proc url_ListTables_600297(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListTables_600296(path: JsonNode; query: JsonNode; header: JsonNode;
+                               formData: JsonNode; body: JsonNode): JsonNode =
+  ## Returns an array of table names associated with the current account and endpoint. The output from <code>ListTables</code> is paginated, with each page returning a maximum of 100 table names.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   Limit: JString
+  ##        : Pagination limit
+  ##   ExclusiveStartTableName: JString
+  ##                          : Pagination token
+  section = newJObject()
+  var valid_600298 = query.getOrDefault("Limit")
+  valid_600298 = validateParameter(valid_600298, JString, required = false,
+                                 default = nil)
+  if valid_600298 != nil:
+    section.add "Limit", valid_600298
+  var valid_600299 = query.getOrDefault("ExclusiveStartTableName")
+  valid_600299 = validateParameter(valid_600299, JString, required = false,
+                                 default = nil)
+  if valid_600299 != nil:
+    section.add "ExclusiveStartTableName", valid_600299
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600300 = header.getOrDefault("X-Amz-Date")
+  valid_600300 = validateParameter(valid_600300, JString, required = false,
+                                 default = nil)
+  if valid_600300 != nil:
+    section.add "X-Amz-Date", valid_600300
+  var valid_600301 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600301 = validateParameter(valid_600301, JString, required = false,
+                                 default = nil)
+  if valid_600301 != nil:
+    section.add "X-Amz-Security-Token", valid_600301
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600302 = header.getOrDefault("X-Amz-Target")
+  valid_600302 = validateParameter(valid_600302, JString, required = true, default = newJString(
+      "DynamoDB_20120810.ListTables"))
+  if valid_600302 != nil:
+    section.add "X-Amz-Target", valid_600302
+  var valid_600303 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600303 = validateParameter(valid_600303, JString, required = false,
+                                 default = nil)
+  if valid_600303 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600303
+  var valid_600304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600304 = validateParameter(valid_600304, JString, required = false,
+                                 default = nil)
+  if valid_600304 != nil:
+    section.add "X-Amz-Algorithm", valid_600304
+  var valid_600305 = header.getOrDefault("X-Amz-Signature")
+  valid_600305 = validateParameter(valid_600305, JString, required = false,
+                                 default = nil)
+  if valid_600305 != nil:
+    section.add "X-Amz-Signature", valid_600305
+  var valid_600306 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600306 = validateParameter(valid_600306, JString, required = false,
+                                 default = nil)
+  if valid_600306 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600306
+  var valid_600307 = header.getOrDefault("X-Amz-Credential")
+  valid_600307 = validateParameter(valid_600307, JString, required = false,
+                                 default = nil)
+  if valid_600307 != nil:
+    section.add "X-Amz-Credential", valid_600307
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600309: Call_ListTables_600295; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns an array of table names associated with the current account and endpoint. The output from <code>ListTables</code> is paginated, with each page returning a maximum of 100 table names.
+  ## 
+  let valid = call_600309.validator(path, query, header, formData, body)
+  let scheme = call_600309.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600309.url(scheme.get, call_600309.host, call_600309.base,
+                         call_600309.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600309, url, valid)
+
+proc call*(call_600310: Call_ListTables_600295; body: JsonNode; Limit: string = "";
+          ExclusiveStartTableName: string = ""): Recallable =
+  ## listTables
+  ## Returns an array of table names associated with the current account and endpoint. The output from <code>ListTables</code> is paginated, with each page returning a maximum of 100 table names.
+  ##   Limit: string
+  ##        : Pagination limit
+  ##   body: JObject (required)
+  ##   ExclusiveStartTableName: string
+  ##                          : Pagination token
+  var query_600311 = newJObject()
+  var body_600312 = newJObject()
+  add(query_600311, "Limit", newJString(Limit))
+  if body != nil:
+    body_600312 = body
+  add(query_600311, "ExclusiveStartTableName", newJString(ExclusiveStartTableName))
+  result = call_600310.call(nil, query_600311, nil, nil, body_600312)
+
+var listTables* = Call_ListTables_600295(name: "listTables",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.ListTables",
+                                      validator: validate_ListTables_600296,
+                                      base: "/", url: url_ListTables_600297,
+                                      schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListTagsOfResource_600313 = ref object of OpenApiRestCall_599368
+proc url_ListTagsOfResource_600315(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListTagsOfResource_600314(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode): JsonNode =
+  ## <p>List all tags on an Amazon DynamoDB resource. You can call ListTagsOfResource up to 10 times per second, per account.</p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600316 = header.getOrDefault("X-Amz-Date")
+  valid_600316 = validateParameter(valid_600316, JString, required = false,
+                                 default = nil)
+  if valid_600316 != nil:
+    section.add "X-Amz-Date", valid_600316
+  var valid_600317 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600317 = validateParameter(valid_600317, JString, required = false,
+                                 default = nil)
+  if valid_600317 != nil:
+    section.add "X-Amz-Security-Token", valid_600317
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600318 = header.getOrDefault("X-Amz-Target")
+  valid_600318 = validateParameter(valid_600318, JString, required = true, default = newJString(
+      "DynamoDB_20120810.ListTagsOfResource"))
+  if valid_600318 != nil:
+    section.add "X-Amz-Target", valid_600318
+  var valid_600319 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600319 = validateParameter(valid_600319, JString, required = false,
+                                 default = nil)
+  if valid_600319 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600319
+  var valid_600320 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600320 = validateParameter(valid_600320, JString, required = false,
+                                 default = nil)
+  if valid_600320 != nil:
+    section.add "X-Amz-Algorithm", valid_600320
+  var valid_600321 = header.getOrDefault("X-Amz-Signature")
+  valid_600321 = validateParameter(valid_600321, JString, required = false,
+                                 default = nil)
+  if valid_600321 != nil:
+    section.add "X-Amz-Signature", valid_600321
+  var valid_600322 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600322 = validateParameter(valid_600322, JString, required = false,
+                                 default = nil)
+  if valid_600322 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600322
+  var valid_600323 = header.getOrDefault("X-Amz-Credential")
+  valid_600323 = validateParameter(valid_600323, JString, required = false,
+                                 default = nil)
+  if valid_600323 != nil:
+    section.add "X-Amz-Credential", valid_600323
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600325: Call_ListTagsOfResource_600313; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>List all tags on an Amazon DynamoDB resource. You can call ListTagsOfResource up to 10 times per second, per account.</p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+  ## 
+  let valid = call_600325.validator(path, query, header, formData, body)
+  let scheme = call_600325.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600325.url(scheme.get, call_600325.host, call_600325.base,
+                         call_600325.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600325, url, valid)
+
+proc call*(call_600326: Call_ListTagsOfResource_600313; body: JsonNode): Recallable =
+  ## listTagsOfResource
+  ## <p>List all tags on an Amazon DynamoDB resource. You can call ListTagsOfResource up to 10 times per second, per account.</p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+  ##   body: JObject (required)
+  var body_600327 = newJObject()
+  if body != nil:
+    body_600327 = body
+  result = call_600326.call(nil, nil, nil, nil, body_600327)
+
+var listTagsOfResource* = Call_ListTagsOfResource_600313(
     name: "listTagsOfResource", meth: HttpMethod.HttpPost,
     host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.ListTagsOfResource",
-    validator: validate_ListTagsOfResource_600281, base: "/",
-    url: url_ListTagsOfResource_600282, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsOfResource_600314, base: "/",
+    url: url_ListTagsOfResource_600315, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutItem_600295 = ref object of OpenApiRestCall_599368
-proc url_PutItem_600297(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutItem_600328 = ref object of OpenApiRestCall_599368
+proc url_PutItem_600330(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2680,257 +2931,9 @@ proc url_PutItem_600297(protocol: Scheme; host: string; base: string; route: str
   else:
     result.path = base & route
 
-proc validate_PutItem_600296(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutItem_600329(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new item, or replaces an old item with a new item. If an item that has the same primary key as the new item already exists in the specified table, the new item completely replaces the existing item. You can perform a conditional put operation (add a new item if one with the specified primary key doesn't exist), or replace an existing item if it has certain attribute values. You can return the item's attribute values in the same operation, using the <code>ReturnValues</code> parameter.</p> <important> <p>This topic provides general information about the <code>PutItem</code> API.</p> <p>For information on how to call the <code>PutItem</code> API using the AWS SDK in specific languages, see the following:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/goto/aws-cli/dynamodb-2012-08-10/PutItem"> PutItem in the AWS Command Line Interface</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/DotNetSDKV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for .NET</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForCpp/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for C++</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForGoV1/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Go</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForJava/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Java</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/AWSJavaScriptSDK/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for JavaScript</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForPHPV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for PHP V3</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/boto3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Python</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForRubyV2/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Ruby V2</a> </p> </li> </ul> </important> <p>When you add an item, the primary key attributes are the only required attributes. Attribute values cannot be null. String and Binary type attributes must have lengths greater than zero. Set type attributes cannot be empty. Requests with empty values will be rejected with a <code>ValidationException</code> exception.</p> <note> <p>To prevent a new item from replacing an existing item, use a conditional expression that contains the <code>attribute_not_exists</code> function with the name of the attribute being used as the partition key for the table. Since every record must contain that attribute, the <code>attribute_not_exists</code> function will only succeed if no matching item exists.</p> </note> <p>For more information about <code>PutItem</code>, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html">Working with Items</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_600298 = header.getOrDefault("X-Amz-Date")
-  valid_600298 = validateParameter(valid_600298, JString, required = false,
-                                 default = nil)
-  if valid_600298 != nil:
-    section.add "X-Amz-Date", valid_600298
-  var valid_600299 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600299 = validateParameter(valid_600299, JString, required = false,
-                                 default = nil)
-  if valid_600299 != nil:
-    section.add "X-Amz-Security-Token", valid_600299
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600300 = header.getOrDefault("X-Amz-Target")
-  valid_600300 = validateParameter(valid_600300, JString, required = true, default = newJString(
-      "DynamoDB_20120810.PutItem"))
-  if valid_600300 != nil:
-    section.add "X-Amz-Target", valid_600300
-  var valid_600301 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600301 = validateParameter(valid_600301, JString, required = false,
-                                 default = nil)
-  if valid_600301 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600301
-  var valid_600302 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600302 = validateParameter(valid_600302, JString, required = false,
-                                 default = nil)
-  if valid_600302 != nil:
-    section.add "X-Amz-Algorithm", valid_600302
-  var valid_600303 = header.getOrDefault("X-Amz-Signature")
-  valid_600303 = validateParameter(valid_600303, JString, required = false,
-                                 default = nil)
-  if valid_600303 != nil:
-    section.add "X-Amz-Signature", valid_600303
-  var valid_600304 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600304 = validateParameter(valid_600304, JString, required = false,
-                                 default = nil)
-  if valid_600304 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600304
-  var valid_600305 = header.getOrDefault("X-Amz-Credential")
-  valid_600305 = validateParameter(valid_600305, JString, required = false,
-                                 default = nil)
-  if valid_600305 != nil:
-    section.add "X-Amz-Credential", valid_600305
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_600307: Call_PutItem_600295; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a new item, or replaces an old item with a new item. If an item that has the same primary key as the new item already exists in the specified table, the new item completely replaces the existing item. You can perform a conditional put operation (add a new item if one with the specified primary key doesn't exist), or replace an existing item if it has certain attribute values. You can return the item's attribute values in the same operation, using the <code>ReturnValues</code> parameter.</p> <important> <p>This topic provides general information about the <code>PutItem</code> API.</p> <p>For information on how to call the <code>PutItem</code> API using the AWS SDK in specific languages, see the following:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/goto/aws-cli/dynamodb-2012-08-10/PutItem"> PutItem in the AWS Command Line Interface</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/DotNetSDKV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for .NET</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForCpp/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for C++</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForGoV1/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Go</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForJava/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Java</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/AWSJavaScriptSDK/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for JavaScript</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForPHPV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for PHP V3</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/boto3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Python</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForRubyV2/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Ruby V2</a> </p> </li> </ul> </important> <p>When you add an item, the primary key attributes are the only required attributes. Attribute values cannot be null. String and Binary type attributes must have lengths greater than zero. Set type attributes cannot be empty. Requests with empty values will be rejected with a <code>ValidationException</code> exception.</p> <note> <p>To prevent a new item from replacing an existing item, use a conditional expression that contains the <code>attribute_not_exists</code> function with the name of the attribute being used as the partition key for the table. Since every record must contain that attribute, the <code>attribute_not_exists</code> function will only succeed if no matching item exists.</p> </note> <p>For more information about <code>PutItem</code>, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html">Working with Items</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
-  ## 
-  let valid = call_600307.validator(path, query, header, formData, body)
-  let scheme = call_600307.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600307.url(scheme.get, call_600307.host, call_600307.base,
-                         call_600307.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_600307, url, valid)
-
-proc call*(call_600308: Call_PutItem_600295; body: JsonNode): Recallable =
-  ## putItem
-  ## <p>Creates a new item, or replaces an old item with a new item. If an item that has the same primary key as the new item already exists in the specified table, the new item completely replaces the existing item. You can perform a conditional put operation (add a new item if one with the specified primary key doesn't exist), or replace an existing item if it has certain attribute values. You can return the item's attribute values in the same operation, using the <code>ReturnValues</code> parameter.</p> <important> <p>This topic provides general information about the <code>PutItem</code> API.</p> <p>For information on how to call the <code>PutItem</code> API using the AWS SDK in specific languages, see the following:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/goto/aws-cli/dynamodb-2012-08-10/PutItem"> PutItem in the AWS Command Line Interface</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/DotNetSDKV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for .NET</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForCpp/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for C++</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForGoV1/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Go</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForJava/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Java</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/AWSJavaScriptSDK/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for JavaScript</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForPHPV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for PHP V3</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/boto3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Python</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForRubyV2/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Ruby V2</a> </p> </li> </ul> </important> <p>When you add an item, the primary key attributes are the only required attributes. Attribute values cannot be null. String and Binary type attributes must have lengths greater than zero. Set type attributes cannot be empty. Requests with empty values will be rejected with a <code>ValidationException</code> exception.</p> <note> <p>To prevent a new item from replacing an existing item, use a conditional expression that contains the <code>attribute_not_exists</code> function with the name of the attribute being used as the partition key for the table. Since every record must contain that attribute, the <code>attribute_not_exists</code> function will only succeed if no matching item exists.</p> </note> <p>For more information about <code>PutItem</code>, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html">Working with Items</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
-  ##   body: JObject (required)
-  var body_600309 = newJObject()
-  if body != nil:
-    body_600309 = body
-  result = call_600308.call(nil, nil, nil, nil, body_600309)
-
-var putItem* = Call_PutItem_600295(name: "putItem", meth: HttpMethod.HttpPost,
-                                host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.PutItem",
-                                validator: validate_PutItem_600296, base: "/",
-                                url: url_PutItem_600297,
-                                schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_Query_600310 = ref object of OpenApiRestCall_599368
-proc url_Query_600312(protocol: Scheme; host: string; base: string; route: string;
-                     path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_Query_600311(path: JsonNode; query: JsonNode; header: JsonNode;
-                          formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>The <code>Query</code> operation finds items based on primary key values. You can query any table or secondary index that has a composite primary key (a partition key and a sort key). </p> <p>Use the <code>KeyConditionExpression</code> parameter to provide a specific value for the partition key. The <code>Query</code> operation will return all of the items from the table or index with that partition key value. You can optionally narrow the scope of the <code>Query</code> operation by specifying a sort key value and a comparison operator in <code>KeyConditionExpression</code>. To further refine the <code>Query</code> results, you can optionally provide a <code>FilterExpression</code>. A <code>FilterExpression</code> determines which items within the results should be returned to you. All of the other results are discarded. </p> <p> A <code>Query</code> operation always returns a result set. If no matching items are found, the result set will be empty. Queries that do not return results consume the minimum number of read capacity units for that type of read operation. </p> <note> <p> DynamoDB calculates the number of read capacity units consumed based on item size, not on the amount of data that is returned to an application. The number of capacity units consumed will be the same whether you request all of the attributes (the default behavior) or just some of them (using a projection expression). The number will also be the same whether or not you use a <code>FilterExpression</code>. </p> </note> <p> <code>Query</code> results are always sorted by the sort key value. If the data type of the sort key is Number, the results are returned in numeric order; otherwise, the results are returned in order of UTF-8 bytes. By default, the sort order is ascending. To reverse the order, set the <code>ScanIndexForward</code> parameter to false. </p> <p> A single <code>Query</code> operation will read up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you will need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>FilterExpression</code> is applied after a <code>Query</code> finishes, but before the results are returned. A <code>FilterExpression</code> cannot contain partition key or sort key attributes. You need to specify those attributes in the <code>KeyConditionExpression</code>. </p> <note> <p> A <code>Query</code> operation can return an empty result set and a <code>LastEvaluatedKey</code> if all the items read for the page of results are filtered out. </p> </note> <p>You can query a table, a local secondary index, or a global secondary index. For a query on a table or on a local secondary index, you can set the <code>ConsistentRead</code> parameter to <code>true</code> and obtain a strongly consistent result. Global secondary indexes support eventually consistent reads only, so do not specify <code>ConsistentRead</code> when querying a global secondary index.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   Limit: JString
-  ##        : Pagination limit
-  ##   ExclusiveStartKey: JString
-  ##                    : Pagination token
-  section = newJObject()
-  var valid_600313 = query.getOrDefault("Limit")
-  valid_600313 = validateParameter(valid_600313, JString, required = false,
-                                 default = nil)
-  if valid_600313 != nil:
-    section.add "Limit", valid_600313
-  var valid_600314 = query.getOrDefault("ExclusiveStartKey")
-  valid_600314 = validateParameter(valid_600314, JString, required = false,
-                                 default = nil)
-  if valid_600314 != nil:
-    section.add "ExclusiveStartKey", valid_600314
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_600315 = header.getOrDefault("X-Amz-Date")
-  valid_600315 = validateParameter(valid_600315, JString, required = false,
-                                 default = nil)
-  if valid_600315 != nil:
-    section.add "X-Amz-Date", valid_600315
-  var valid_600316 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600316 = validateParameter(valid_600316, JString, required = false,
-                                 default = nil)
-  if valid_600316 != nil:
-    section.add "X-Amz-Security-Token", valid_600316
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600317 = header.getOrDefault("X-Amz-Target")
-  valid_600317 = validateParameter(valid_600317, JString, required = true, default = newJString(
-      "DynamoDB_20120810.Query"))
-  if valid_600317 != nil:
-    section.add "X-Amz-Target", valid_600317
-  var valid_600318 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600318 = validateParameter(valid_600318, JString, required = false,
-                                 default = nil)
-  if valid_600318 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600318
-  var valid_600319 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600319 = validateParameter(valid_600319, JString, required = false,
-                                 default = nil)
-  if valid_600319 != nil:
-    section.add "X-Amz-Algorithm", valid_600319
-  var valid_600320 = header.getOrDefault("X-Amz-Signature")
-  valid_600320 = validateParameter(valid_600320, JString, required = false,
-                                 default = nil)
-  if valid_600320 != nil:
-    section.add "X-Amz-Signature", valid_600320
-  var valid_600321 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600321 = validateParameter(valid_600321, JString, required = false,
-                                 default = nil)
-  if valid_600321 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600321
-  var valid_600322 = header.getOrDefault("X-Amz-Credential")
-  valid_600322 = validateParameter(valid_600322, JString, required = false,
-                                 default = nil)
-  if valid_600322 != nil:
-    section.add "X-Amz-Credential", valid_600322
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_600324: Call_Query_600310; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>The <code>Query</code> operation finds items based on primary key values. You can query any table or secondary index that has a composite primary key (a partition key and a sort key). </p> <p>Use the <code>KeyConditionExpression</code> parameter to provide a specific value for the partition key. The <code>Query</code> operation will return all of the items from the table or index with that partition key value. You can optionally narrow the scope of the <code>Query</code> operation by specifying a sort key value and a comparison operator in <code>KeyConditionExpression</code>. To further refine the <code>Query</code> results, you can optionally provide a <code>FilterExpression</code>. A <code>FilterExpression</code> determines which items within the results should be returned to you. All of the other results are discarded. </p> <p> A <code>Query</code> operation always returns a result set. If no matching items are found, the result set will be empty. Queries that do not return results consume the minimum number of read capacity units for that type of read operation. </p> <note> <p> DynamoDB calculates the number of read capacity units consumed based on item size, not on the amount of data that is returned to an application. The number of capacity units consumed will be the same whether you request all of the attributes (the default behavior) or just some of them (using a projection expression). The number will also be the same whether or not you use a <code>FilterExpression</code>. </p> </note> <p> <code>Query</code> results are always sorted by the sort key value. If the data type of the sort key is Number, the results are returned in numeric order; otherwise, the results are returned in order of UTF-8 bytes. By default, the sort order is ascending. To reverse the order, set the <code>ScanIndexForward</code> parameter to false. </p> <p> A single <code>Query</code> operation will read up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you will need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>FilterExpression</code> is applied after a <code>Query</code> finishes, but before the results are returned. A <code>FilterExpression</code> cannot contain partition key or sort key attributes. You need to specify those attributes in the <code>KeyConditionExpression</code>. </p> <note> <p> A <code>Query</code> operation can return an empty result set and a <code>LastEvaluatedKey</code> if all the items read for the page of results are filtered out. </p> </note> <p>You can query a table, a local secondary index, or a global secondary index. For a query on a table or on a local secondary index, you can set the <code>ConsistentRead</code> parameter to <code>true</code> and obtain a strongly consistent result. Global secondary indexes support eventually consistent reads only, so do not specify <code>ConsistentRead</code> when querying a global secondary index.</p>
-  ## 
-  let valid = call_600324.validator(path, query, header, formData, body)
-  let scheme = call_600324.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600324.url(scheme.get, call_600324.host, call_600324.base,
-                         call_600324.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_600324, url, valid)
-
-proc call*(call_600325: Call_Query_600310; body: JsonNode; Limit: string = "";
-          ExclusiveStartKey: string = ""): Recallable =
-  ## query
-  ## <p>The <code>Query</code> operation finds items based on primary key values. You can query any table or secondary index that has a composite primary key (a partition key and a sort key). </p> <p>Use the <code>KeyConditionExpression</code> parameter to provide a specific value for the partition key. The <code>Query</code> operation will return all of the items from the table or index with that partition key value. You can optionally narrow the scope of the <code>Query</code> operation by specifying a sort key value and a comparison operator in <code>KeyConditionExpression</code>. To further refine the <code>Query</code> results, you can optionally provide a <code>FilterExpression</code>. A <code>FilterExpression</code> determines which items within the results should be returned to you. All of the other results are discarded. </p> <p> A <code>Query</code> operation always returns a result set. If no matching items are found, the result set will be empty. Queries that do not return results consume the minimum number of read capacity units for that type of read operation. </p> <note> <p> DynamoDB calculates the number of read capacity units consumed based on item size, not on the amount of data that is returned to an application. The number of capacity units consumed will be the same whether you request all of the attributes (the default behavior) or just some of them (using a projection expression). The number will also be the same whether or not you use a <code>FilterExpression</code>. </p> </note> <p> <code>Query</code> results are always sorted by the sort key value. If the data type of the sort key is Number, the results are returned in numeric order; otherwise, the results are returned in order of UTF-8 bytes. By default, the sort order is ascending. To reverse the order, set the <code>ScanIndexForward</code> parameter to false. </p> <p> A single <code>Query</code> operation will read up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you will need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>FilterExpression</code> is applied after a <code>Query</code> finishes, but before the results are returned. A <code>FilterExpression</code> cannot contain partition key or sort key attributes. You need to specify those attributes in the <code>KeyConditionExpression</code>. </p> <note> <p> A <code>Query</code> operation can return an empty result set and a <code>LastEvaluatedKey</code> if all the items read for the page of results are filtered out. </p> </note> <p>You can query a table, a local secondary index, or a global secondary index. For a query on a table or on a local secondary index, you can set the <code>ConsistentRead</code> parameter to <code>true</code> and obtain a strongly consistent result. Global secondary indexes support eventually consistent reads only, so do not specify <code>ConsistentRead</code> when querying a global secondary index.</p>
-  ##   Limit: string
-  ##        : Pagination limit
-  ##   body: JObject (required)
-  ##   ExclusiveStartKey: string
-  ##                    : Pagination token
-  var query_600326 = newJObject()
-  var body_600327 = newJObject()
-  add(query_600326, "Limit", newJString(Limit))
-  if body != nil:
-    body_600327 = body
-  add(query_600326, "ExclusiveStartKey", newJString(ExclusiveStartKey))
-  result = call_600325.call(nil, query_600326, nil, nil, body_600327)
-
-var query* = Call_Query_600310(name: "query", meth: HttpMethod.HttpPost,
-                            host: "dynamodb.amazonaws.com",
-                            route: "/#X-Amz-Target=DynamoDB_20120810.Query",
-                            validator: validate_Query_600311, base: "/",
-                            url: url_Query_600312,
-                            schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_RestoreTableFromBackup_600328 = ref object of OpenApiRestCall_599368
-proc url_RestoreTableFromBackup_600330(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_RestoreTableFromBackup_600329(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates a new table from an existing backup. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p>You can call <code>RestoreTableFromBackup</code> at a maximum rate of 10 times per second.</p> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> </ul>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2962,7 +2965,7 @@ proc validate_RestoreTableFromBackup_600329(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600333 = header.getOrDefault("X-Amz-Target")
   valid_600333 = validateParameter(valid_600333, JString, required = true, default = newJString(
-      "DynamoDB_20120810.RestoreTableFromBackup"))
+      "DynamoDB_20120810.PutItem"))
   if valid_600333 != nil:
     section.add "X-Amz-Target", valid_600333
   var valid_600334 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3000,9 +3003,9 @@ proc validate_RestoreTableFromBackup_600329(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600340: Call_RestoreTableFromBackup_600328; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a new table from an existing backup. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p>You can call <code>RestoreTableFromBackup</code> at a maximum rate of 10 times per second.</p> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> </ul>
+proc call*(call_600340: Call_PutItem_600328; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Creates a new item, or replaces an old item with a new item. If an item that has the same primary key as the new item already exists in the specified table, the new item completely replaces the existing item. You can perform a conditional put operation (add a new item if one with the specified primary key doesn't exist), or replace an existing item if it has certain attribute values. You can return the item's attribute values in the same operation, using the <code>ReturnValues</code> parameter.</p> <important> <p>This topic provides general information about the <code>PutItem</code> API.</p> <p>For information on how to call the <code>PutItem</code> API using the AWS SDK in specific languages, see the following:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/goto/aws-cli/dynamodb-2012-08-10/PutItem"> PutItem in the AWS Command Line Interface</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/DotNetSDKV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for .NET</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForCpp/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for C++</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForGoV1/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Go</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForJava/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Java</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/AWSJavaScriptSDK/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for JavaScript</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForPHPV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for PHP V3</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/boto3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Python</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForRubyV2/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Ruby V2</a> </p> </li> </ul> </important> <p>When you add an item, the primary key attributes are the only required attributes. Attribute values cannot be null. String and Binary type attributes must have lengths greater than zero. Set type attributes cannot be empty. Requests with empty values will be rejected with a <code>ValidationException</code> exception.</p> <note> <p>To prevent a new item from replacing an existing item, use a conditional expression that contains the <code>attribute_not_exists</code> function with the name of the attribute being used as the partition key for the table. Since every record must contain that attribute, the <code>attribute_not_exists</code> function will only succeed if no matching item exists.</p> </note> <p>For more information about <code>PutItem</code>, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html">Working with Items</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
   ## 
   let valid = call_600340.validator(path, query, header, formData, body)
   let scheme = call_600340.pickScheme
@@ -3013,25 +3016,24 @@ proc call*(call_600340: Call_RestoreTableFromBackup_600328; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600340, url, valid)
 
-proc call*(call_600341: Call_RestoreTableFromBackup_600328; body: JsonNode): Recallable =
-  ## restoreTableFromBackup
-  ## <p>Creates a new table from an existing backup. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p>You can call <code>RestoreTableFromBackup</code> at a maximum rate of 10 times per second.</p> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> </ul>
+proc call*(call_600341: Call_PutItem_600328; body: JsonNode): Recallable =
+  ## putItem
+  ## <p>Creates a new item, or replaces an old item with a new item. If an item that has the same primary key as the new item already exists in the specified table, the new item completely replaces the existing item. You can perform a conditional put operation (add a new item if one with the specified primary key doesn't exist), or replace an existing item if it has certain attribute values. You can return the item's attribute values in the same operation, using the <code>ReturnValues</code> parameter.</p> <important> <p>This topic provides general information about the <code>PutItem</code> API.</p> <p>For information on how to call the <code>PutItem</code> API using the AWS SDK in specific languages, see the following:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/goto/aws-cli/dynamodb-2012-08-10/PutItem"> PutItem in the AWS Command Line Interface</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/DotNetSDKV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for .NET</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForCpp/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for C++</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForGoV1/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Go</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForJava/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Java</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/AWSJavaScriptSDK/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for JavaScript</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForPHPV3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for PHP V3</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/boto3/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Python</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/goto/SdkForRubyV2/dynamodb-2012-08-10/PutItem"> PutItem in the AWS SDK for Ruby V2</a> </p> </li> </ul> </important> <p>When you add an item, the primary key attributes are the only required attributes. Attribute values cannot be null. String and Binary type attributes must have lengths greater than zero. Set type attributes cannot be empty. Requests with empty values will be rejected with a <code>ValidationException</code> exception.</p> <note> <p>To prevent a new item from replacing an existing item, use a conditional expression that contains the <code>attribute_not_exists</code> function with the name of the attribute being used as the partition key for the table. Since every record must contain that attribute, the <code>attribute_not_exists</code> function will only succeed if no matching item exists.</p> </note> <p>For more information about <code>PutItem</code>, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html">Working with Items</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
   ##   body: JObject (required)
   var body_600342 = newJObject()
   if body != nil:
     body_600342 = body
   result = call_600341.call(nil, nil, nil, nil, body_600342)
 
-var restoreTableFromBackup* = Call_RestoreTableFromBackup_600328(
-    name: "restoreTableFromBackup", meth: HttpMethod.HttpPost,
-    host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.RestoreTableFromBackup",
-    validator: validate_RestoreTableFromBackup_600329, base: "/",
-    url: url_RestoreTableFromBackup_600330, schemes: {Scheme.Https, Scheme.Http})
+var putItem* = Call_PutItem_600328(name: "putItem", meth: HttpMethod.HttpPost,
+                                host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.PutItem",
+                                validator: validate_PutItem_600329, base: "/",
+                                url: url_PutItem_600330,
+                                schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestoreTableToPointInTime_600343 = ref object of OpenApiRestCall_599368
-proc url_RestoreTableToPointInTime_600345(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_Query_600343 = ref object of OpenApiRestCall_599368
+proc url_Query_600345(protocol: Scheme; host: string; base: string; route: string;
+                     path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3041,123 +3043,9 @@ proc url_RestoreTableToPointInTime_600345(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_RestoreTableToPointInTime_600344(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Restores the specified table to the specified point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. You can restore your table to any point in time during the last 35 days. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p> When you restore using point in time recovery, DynamoDB restores your table data to the state based on the selected date and time (day:hour:minute:second) to a new table. </p> <p> Along with data, the following are also included on the new restored table using point in time recovery: </p> <ul> <li> <p>Global secondary indexes (GSIs)</p> </li> <li> <p>Local secondary indexes (LSIs)</p> </li> <li> <p>Provisioned read and write capacity</p> </li> <li> <p>Encryption settings</p> <important> <p> All these settings come from the current settings of the source table at the time of restore. </p> </important> </li> </ul> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> <li> <p>Point in time recovery settings</p> </li> </ul>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_600346 = header.getOrDefault("X-Amz-Date")
-  valid_600346 = validateParameter(valid_600346, JString, required = false,
-                                 default = nil)
-  if valid_600346 != nil:
-    section.add "X-Amz-Date", valid_600346
-  var valid_600347 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600347 = validateParameter(valid_600347, JString, required = false,
-                                 default = nil)
-  if valid_600347 != nil:
-    section.add "X-Amz-Security-Token", valid_600347
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600348 = header.getOrDefault("X-Amz-Target")
-  valid_600348 = validateParameter(valid_600348, JString, required = true, default = newJString(
-      "DynamoDB_20120810.RestoreTableToPointInTime"))
-  if valid_600348 != nil:
-    section.add "X-Amz-Target", valid_600348
-  var valid_600349 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600349 = validateParameter(valid_600349, JString, required = false,
-                                 default = nil)
-  if valid_600349 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600349
-  var valid_600350 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600350 = validateParameter(valid_600350, JString, required = false,
-                                 default = nil)
-  if valid_600350 != nil:
-    section.add "X-Amz-Algorithm", valid_600350
-  var valid_600351 = header.getOrDefault("X-Amz-Signature")
-  valid_600351 = validateParameter(valid_600351, JString, required = false,
-                                 default = nil)
-  if valid_600351 != nil:
-    section.add "X-Amz-Signature", valid_600351
-  var valid_600352 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600352 = validateParameter(valid_600352, JString, required = false,
-                                 default = nil)
-  if valid_600352 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600352
-  var valid_600353 = header.getOrDefault("X-Amz-Credential")
-  valid_600353 = validateParameter(valid_600353, JString, required = false,
-                                 default = nil)
-  if valid_600353 != nil:
-    section.add "X-Amz-Credential", valid_600353
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_600355: Call_RestoreTableToPointInTime_600343; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Restores the specified table to the specified point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. You can restore your table to any point in time during the last 35 days. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p> When you restore using point in time recovery, DynamoDB restores your table data to the state based on the selected date and time (day:hour:minute:second) to a new table. </p> <p> Along with data, the following are also included on the new restored table using point in time recovery: </p> <ul> <li> <p>Global secondary indexes (GSIs)</p> </li> <li> <p>Local secondary indexes (LSIs)</p> </li> <li> <p>Provisioned read and write capacity</p> </li> <li> <p>Encryption settings</p> <important> <p> All these settings come from the current settings of the source table at the time of restore. </p> </important> </li> </ul> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> <li> <p>Point in time recovery settings</p> </li> </ul>
-  ## 
-  let valid = call_600355.validator(path, query, header, formData, body)
-  let scheme = call_600355.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600355.url(scheme.get, call_600355.host, call_600355.base,
-                         call_600355.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_600355, url, valid)
-
-proc call*(call_600356: Call_RestoreTableToPointInTime_600343; body: JsonNode): Recallable =
-  ## restoreTableToPointInTime
-  ## <p>Restores the specified table to the specified point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. You can restore your table to any point in time during the last 35 days. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p> When you restore using point in time recovery, DynamoDB restores your table data to the state based on the selected date and time (day:hour:minute:second) to a new table. </p> <p> Along with data, the following are also included on the new restored table using point in time recovery: </p> <ul> <li> <p>Global secondary indexes (GSIs)</p> </li> <li> <p>Local secondary indexes (LSIs)</p> </li> <li> <p>Provisioned read and write capacity</p> </li> <li> <p>Encryption settings</p> <important> <p> All these settings come from the current settings of the source table at the time of restore. </p> </important> </li> </ul> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> <li> <p>Point in time recovery settings</p> </li> </ul>
-  ##   body: JObject (required)
-  var body_600357 = newJObject()
-  if body != nil:
-    body_600357 = body
-  result = call_600356.call(nil, nil, nil, nil, body_600357)
-
-var restoreTableToPointInTime* = Call_RestoreTableToPointInTime_600343(
-    name: "restoreTableToPointInTime", meth: HttpMethod.HttpPost,
-    host: "dynamodb.amazonaws.com",
-    route: "/#X-Amz-Target=DynamoDB_20120810.RestoreTableToPointInTime",
-    validator: validate_RestoreTableToPointInTime_600344, base: "/",
-    url: url_RestoreTableToPointInTime_600345,
-    schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_Scan_600358 = ref object of OpenApiRestCall_599368
-proc url_Scan_600360(protocol: Scheme; host: string; base: string; route: string;
-                    path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_Scan_600359(path: JsonNode; query: JsonNode; header: JsonNode;
-                         formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>The <code>Scan</code> operation returns one or more items and item attributes by accessing every item in a table or a secondary index. To have DynamoDB return fewer items, you can provide a <code>FilterExpression</code> operation.</p> <p>If the total number of scanned items exceeds the maximum dataset size limit of 1 MB, the scan stops and results are returned to the user as a <code>LastEvaluatedKey</code> value to continue the scan in a subsequent operation. The results also include the number of items exceeding the limit. A scan can result in no table data meeting the filter criteria. </p> <p>A single <code>Scan</code> operation reads up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>Scan</code> operations proceed sequentially; however, for faster performance on a large table or secondary index, applications can request a parallel <code>Scan</code> operation by providing the <code>Segment</code> and <code>TotalSegments</code> parameters. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.ParallelScan">Parallel Scan</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p> <code>Scan</code> uses eventually consistent reads when accessing the data in a table; therefore, the result set might not include the changes to data in the table immediately before the operation began. If you need a consistent copy of the data, as of the time that the <code>Scan</code> begins, you can set the <code>ConsistentRead</code> parameter to <code>true</code>.</p>
+proc validate_Query_600344(path: JsonNode; query: JsonNode; header: JsonNode;
+                          formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>The <code>Query</code> operation finds items based on primary key values. You can query any table or secondary index that has a composite primary key (a partition key and a sort key). </p> <p>Use the <code>KeyConditionExpression</code> parameter to provide a specific value for the partition key. The <code>Query</code> operation will return all of the items from the table or index with that partition key value. You can optionally narrow the scope of the <code>Query</code> operation by specifying a sort key value and a comparison operator in <code>KeyConditionExpression</code>. To further refine the <code>Query</code> results, you can optionally provide a <code>FilterExpression</code>. A <code>FilterExpression</code> determines which items within the results should be returned to you. All of the other results are discarded. </p> <p> A <code>Query</code> operation always returns a result set. If no matching items are found, the result set will be empty. Queries that do not return results consume the minimum number of read capacity units for that type of read operation. </p> <note> <p> DynamoDB calculates the number of read capacity units consumed based on item size, not on the amount of data that is returned to an application. The number of capacity units consumed will be the same whether you request all of the attributes (the default behavior) or just some of them (using a projection expression). The number will also be the same whether or not you use a <code>FilterExpression</code>. </p> </note> <p> <code>Query</code> results are always sorted by the sort key value. If the data type of the sort key is Number, the results are returned in numeric order; otherwise, the results are returned in order of UTF-8 bytes. By default, the sort order is ascending. To reverse the order, set the <code>ScanIndexForward</code> parameter to false. </p> <p> A single <code>Query</code> operation will read up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you will need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>FilterExpression</code> is applied after a <code>Query</code> finishes, but before the results are returned. A <code>FilterExpression</code> cannot contain partition key or sort key attributes. You need to specify those attributes in the <code>KeyConditionExpression</code>. </p> <note> <p> A <code>Query</code> operation can return an empty result set and a <code>LastEvaluatedKey</code> if all the items read for the page of results are filtered out. </p> </note> <p>You can query a table, a local secondary index, or a global secondary index. For a query on a table or on a local secondary index, you can set the <code>ConsistentRead</code> parameter to <code>true</code> and obtain a strongly consistent result. Global secondary indexes support eventually consistent reads only, so do not specify <code>ConsistentRead</code> when querying a global secondary index.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3169,16 +3057,16 @@ proc validate_Scan_600359(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   ExclusiveStartKey: JString
   ##                    : Pagination token
   section = newJObject()
-  var valid_600361 = query.getOrDefault("Limit")
-  valid_600361 = validateParameter(valid_600361, JString, required = false,
+  var valid_600346 = query.getOrDefault("Limit")
+  valid_600346 = validateParameter(valid_600346, JString, required = false,
                                  default = nil)
-  if valid_600361 != nil:
-    section.add "Limit", valid_600361
-  var valid_600362 = query.getOrDefault("ExclusiveStartKey")
-  valid_600362 = validateParameter(valid_600362, JString, required = false,
+  if valid_600346 != nil:
+    section.add "Limit", valid_600346
+  var valid_600347 = query.getOrDefault("ExclusiveStartKey")
+  valid_600347 = validateParameter(valid_600347, JString, required = false,
                                  default = nil)
-  if valid_600362 != nil:
-    section.add "ExclusiveStartKey", valid_600362
+  if valid_600347 != nil:
+    section.add "ExclusiveStartKey", valid_600347
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3190,48 +3078,48 @@ proc validate_Scan_600359(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600363 = header.getOrDefault("X-Amz-Date")
-  valid_600363 = validateParameter(valid_600363, JString, required = false,
+  var valid_600348 = header.getOrDefault("X-Amz-Date")
+  valid_600348 = validateParameter(valid_600348, JString, required = false,
                                  default = nil)
-  if valid_600363 != nil:
-    section.add "X-Amz-Date", valid_600363
-  var valid_600364 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600364 = validateParameter(valid_600364, JString, required = false,
+  if valid_600348 != nil:
+    section.add "X-Amz-Date", valid_600348
+  var valid_600349 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600349 = validateParameter(valid_600349, JString, required = false,
                                  default = nil)
-  if valid_600364 != nil:
-    section.add "X-Amz-Security-Token", valid_600364
+  if valid_600349 != nil:
+    section.add "X-Amz-Security-Token", valid_600349
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600365 = header.getOrDefault("X-Amz-Target")
-  valid_600365 = validateParameter(valid_600365, JString, required = true,
-                                 default = newJString("DynamoDB_20120810.Scan"))
-  if valid_600365 != nil:
-    section.add "X-Amz-Target", valid_600365
-  var valid_600366 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600366 = validateParameter(valid_600366, JString, required = false,
+  var valid_600350 = header.getOrDefault("X-Amz-Target")
+  valid_600350 = validateParameter(valid_600350, JString, required = true, default = newJString(
+      "DynamoDB_20120810.Query"))
+  if valid_600350 != nil:
+    section.add "X-Amz-Target", valid_600350
+  var valid_600351 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600351 = validateParameter(valid_600351, JString, required = false,
                                  default = nil)
-  if valid_600366 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600366
-  var valid_600367 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600367 = validateParameter(valid_600367, JString, required = false,
+  if valid_600351 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600351
+  var valid_600352 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600352 = validateParameter(valid_600352, JString, required = false,
                                  default = nil)
-  if valid_600367 != nil:
-    section.add "X-Amz-Algorithm", valid_600367
-  var valid_600368 = header.getOrDefault("X-Amz-Signature")
-  valid_600368 = validateParameter(valid_600368, JString, required = false,
+  if valid_600352 != nil:
+    section.add "X-Amz-Algorithm", valid_600352
+  var valid_600353 = header.getOrDefault("X-Amz-Signature")
+  valid_600353 = validateParameter(valid_600353, JString, required = false,
                                  default = nil)
-  if valid_600368 != nil:
-    section.add "X-Amz-Signature", valid_600368
-  var valid_600369 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600369 = validateParameter(valid_600369, JString, required = false,
+  if valid_600353 != nil:
+    section.add "X-Amz-Signature", valid_600353
+  var valid_600354 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600354 = validateParameter(valid_600354, JString, required = false,
                                  default = nil)
-  if valid_600369 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600369
-  var valid_600370 = header.getOrDefault("X-Amz-Credential")
-  valid_600370 = validateParameter(valid_600370, JString, required = false,
+  if valid_600354 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600354
+  var valid_600355 = header.getOrDefault("X-Amz-Credential")
+  valid_600355 = validateParameter(valid_600355, JString, required = false,
                                  default = nil)
-  if valid_600370 != nil:
-    section.add "X-Amz-Credential", valid_600370
+  if valid_600355 != nil:
+    section.add "X-Amz-Credential", valid_600355
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3242,45 +3130,46 @@ proc validate_Scan_600359(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600372: Call_Scan_600358; path: JsonNode; query: JsonNode;
+proc call*(call_600357: Call_Query_600343; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>The <code>Scan</code> operation returns one or more items and item attributes by accessing every item in a table or a secondary index. To have DynamoDB return fewer items, you can provide a <code>FilterExpression</code> operation.</p> <p>If the total number of scanned items exceeds the maximum dataset size limit of 1 MB, the scan stops and results are returned to the user as a <code>LastEvaluatedKey</code> value to continue the scan in a subsequent operation. The results also include the number of items exceeding the limit. A scan can result in no table data meeting the filter criteria. </p> <p>A single <code>Scan</code> operation reads up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>Scan</code> operations proceed sequentially; however, for faster performance on a large table or secondary index, applications can request a parallel <code>Scan</code> operation by providing the <code>Segment</code> and <code>TotalSegments</code> parameters. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.ParallelScan">Parallel Scan</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p> <code>Scan</code> uses eventually consistent reads when accessing the data in a table; therefore, the result set might not include the changes to data in the table immediately before the operation began. If you need a consistent copy of the data, as of the time that the <code>Scan</code> begins, you can set the <code>ConsistentRead</code> parameter to <code>true</code>.</p>
+  ## <p>The <code>Query</code> operation finds items based on primary key values. You can query any table or secondary index that has a composite primary key (a partition key and a sort key). </p> <p>Use the <code>KeyConditionExpression</code> parameter to provide a specific value for the partition key. The <code>Query</code> operation will return all of the items from the table or index with that partition key value. You can optionally narrow the scope of the <code>Query</code> operation by specifying a sort key value and a comparison operator in <code>KeyConditionExpression</code>. To further refine the <code>Query</code> results, you can optionally provide a <code>FilterExpression</code>. A <code>FilterExpression</code> determines which items within the results should be returned to you. All of the other results are discarded. </p> <p> A <code>Query</code> operation always returns a result set. If no matching items are found, the result set will be empty. Queries that do not return results consume the minimum number of read capacity units for that type of read operation. </p> <note> <p> DynamoDB calculates the number of read capacity units consumed based on item size, not on the amount of data that is returned to an application. The number of capacity units consumed will be the same whether you request all of the attributes (the default behavior) or just some of them (using a projection expression). The number will also be the same whether or not you use a <code>FilterExpression</code>. </p> </note> <p> <code>Query</code> results are always sorted by the sort key value. If the data type of the sort key is Number, the results are returned in numeric order; otherwise, the results are returned in order of UTF-8 bytes. By default, the sort order is ascending. To reverse the order, set the <code>ScanIndexForward</code> parameter to false. </p> <p> A single <code>Query</code> operation will read up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you will need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>FilterExpression</code> is applied after a <code>Query</code> finishes, but before the results are returned. A <code>FilterExpression</code> cannot contain partition key or sort key attributes. You need to specify those attributes in the <code>KeyConditionExpression</code>. </p> <note> <p> A <code>Query</code> operation can return an empty result set and a <code>LastEvaluatedKey</code> if all the items read for the page of results are filtered out. </p> </note> <p>You can query a table, a local secondary index, or a global secondary index. For a query on a table or on a local secondary index, you can set the <code>ConsistentRead</code> parameter to <code>true</code> and obtain a strongly consistent result. Global secondary indexes support eventually consistent reads only, so do not specify <code>ConsistentRead</code> when querying a global secondary index.</p>
   ## 
-  let valid = call_600372.validator(path, query, header, formData, body)
-  let scheme = call_600372.pickScheme
+  let valid = call_600357.validator(path, query, header, formData, body)
+  let scheme = call_600357.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600372.url(scheme.get, call_600372.host, call_600372.base,
-                         call_600372.route, valid.getOrDefault("path"),
+  let url = call_600357.url(scheme.get, call_600357.host, call_600357.base,
+                         call_600357.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600372, url, valid)
+  result = atozHook(call_600357, url, valid)
 
-proc call*(call_600373: Call_Scan_600358; body: JsonNode; Limit: string = "";
+proc call*(call_600358: Call_Query_600343; body: JsonNode; Limit: string = "";
           ExclusiveStartKey: string = ""): Recallable =
-  ## scan
-  ## <p>The <code>Scan</code> operation returns one or more items and item attributes by accessing every item in a table or a secondary index. To have DynamoDB return fewer items, you can provide a <code>FilterExpression</code> operation.</p> <p>If the total number of scanned items exceeds the maximum dataset size limit of 1 MB, the scan stops and results are returned to the user as a <code>LastEvaluatedKey</code> value to continue the scan in a subsequent operation. The results also include the number of items exceeding the limit. A scan can result in no table data meeting the filter criteria. </p> <p>A single <code>Scan</code> operation reads up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>Scan</code> operations proceed sequentially; however, for faster performance on a large table or secondary index, applications can request a parallel <code>Scan</code> operation by providing the <code>Segment</code> and <code>TotalSegments</code> parameters. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.ParallelScan">Parallel Scan</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p> <code>Scan</code> uses eventually consistent reads when accessing the data in a table; therefore, the result set might not include the changes to data in the table immediately before the operation began. If you need a consistent copy of the data, as of the time that the <code>Scan</code> begins, you can set the <code>ConsistentRead</code> parameter to <code>true</code>.</p>
+  ## query
+  ## <p>The <code>Query</code> operation finds items based on primary key values. You can query any table or secondary index that has a composite primary key (a partition key and a sort key). </p> <p>Use the <code>KeyConditionExpression</code> parameter to provide a specific value for the partition key. The <code>Query</code> operation will return all of the items from the table or index with that partition key value. You can optionally narrow the scope of the <code>Query</code> operation by specifying a sort key value and a comparison operator in <code>KeyConditionExpression</code>. To further refine the <code>Query</code> results, you can optionally provide a <code>FilterExpression</code>. A <code>FilterExpression</code> determines which items within the results should be returned to you. All of the other results are discarded. </p> <p> A <code>Query</code> operation always returns a result set. If no matching items are found, the result set will be empty. Queries that do not return results consume the minimum number of read capacity units for that type of read operation. </p> <note> <p> DynamoDB calculates the number of read capacity units consumed based on item size, not on the amount of data that is returned to an application. The number of capacity units consumed will be the same whether you request all of the attributes (the default behavior) or just some of them (using a projection expression). The number will also be the same whether or not you use a <code>FilterExpression</code>. </p> </note> <p> <code>Query</code> results are always sorted by the sort key value. If the data type of the sort key is Number, the results are returned in numeric order; otherwise, the results are returned in order of UTF-8 bytes. By default, the sort order is ascending. To reverse the order, set the <code>ScanIndexForward</code> parameter to false. </p> <p> A single <code>Query</code> operation will read up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you will need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>FilterExpression</code> is applied after a <code>Query</code> finishes, but before the results are returned. A <code>FilterExpression</code> cannot contain partition key or sort key attributes. You need to specify those attributes in the <code>KeyConditionExpression</code>. </p> <note> <p> A <code>Query</code> operation can return an empty result set and a <code>LastEvaluatedKey</code> if all the items read for the page of results are filtered out. </p> </note> <p>You can query a table, a local secondary index, or a global secondary index. For a query on a table or on a local secondary index, you can set the <code>ConsistentRead</code> parameter to <code>true</code> and obtain a strongly consistent result. Global secondary indexes support eventually consistent reads only, so do not specify <code>ConsistentRead</code> when querying a global secondary index.</p>
   ##   Limit: string
   ##        : Pagination limit
   ##   body: JObject (required)
   ##   ExclusiveStartKey: string
   ##                    : Pagination token
-  var query_600374 = newJObject()
-  var body_600375 = newJObject()
-  add(query_600374, "Limit", newJString(Limit))
+  var query_600359 = newJObject()
+  var body_600360 = newJObject()
+  add(query_600359, "Limit", newJString(Limit))
   if body != nil:
-    body_600375 = body
-  add(query_600374, "ExclusiveStartKey", newJString(ExclusiveStartKey))
-  result = call_600373.call(nil, query_600374, nil, nil, body_600375)
+    body_600360 = body
+  add(query_600359, "ExclusiveStartKey", newJString(ExclusiveStartKey))
+  result = call_600358.call(nil, query_600359, nil, nil, body_600360)
 
-var scan* = Call_Scan_600358(name: "scan", meth: HttpMethod.HttpPost,
-                          host: "dynamodb.amazonaws.com",
-                          route: "/#X-Amz-Target=DynamoDB_20120810.Scan",
-                          validator: validate_Scan_600359, base: "/", url: url_Scan_600360,
-                          schemes: {Scheme.Https, Scheme.Http})
+var query* = Call_Query_600343(name: "query", meth: HttpMethod.HttpPost,
+                            host: "dynamodb.amazonaws.com",
+                            route: "/#X-Amz-Target=DynamoDB_20120810.Query",
+                            validator: validate_Query_600344, base: "/",
+                            url: url_Query_600345,
+                            schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_600376 = ref object of OpenApiRestCall_599368
-proc url_TagResource_600378(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RestoreTableFromBackup_600361 = ref object of OpenApiRestCall_599368
+proc url_RestoreTableFromBackup_600363(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3290,9 +3179,122 @@ proc url_TagResource_600378(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TagResource_600377(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Associate a set of tags with an Amazon DynamoDB resource. You can then activate these user-defined tags so that they appear on the Billing and Cost Management console for cost allocation tracking. You can call TagResource up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+proc validate_RestoreTableFromBackup_600362(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Creates a new table from an existing backup. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p>You can call <code>RestoreTableFromBackup</code> at a maximum rate of 10 times per second.</p> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> </ul>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600364 = header.getOrDefault("X-Amz-Date")
+  valid_600364 = validateParameter(valid_600364, JString, required = false,
+                                 default = nil)
+  if valid_600364 != nil:
+    section.add "X-Amz-Date", valid_600364
+  var valid_600365 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600365 = validateParameter(valid_600365, JString, required = false,
+                                 default = nil)
+  if valid_600365 != nil:
+    section.add "X-Amz-Security-Token", valid_600365
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600366 = header.getOrDefault("X-Amz-Target")
+  valid_600366 = validateParameter(valid_600366, JString, required = true, default = newJString(
+      "DynamoDB_20120810.RestoreTableFromBackup"))
+  if valid_600366 != nil:
+    section.add "X-Amz-Target", valid_600366
+  var valid_600367 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600367 = validateParameter(valid_600367, JString, required = false,
+                                 default = nil)
+  if valid_600367 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600367
+  var valid_600368 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600368 = validateParameter(valid_600368, JString, required = false,
+                                 default = nil)
+  if valid_600368 != nil:
+    section.add "X-Amz-Algorithm", valid_600368
+  var valid_600369 = header.getOrDefault("X-Amz-Signature")
+  valid_600369 = validateParameter(valid_600369, JString, required = false,
+                                 default = nil)
+  if valid_600369 != nil:
+    section.add "X-Amz-Signature", valid_600369
+  var valid_600370 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600370 = validateParameter(valid_600370, JString, required = false,
+                                 default = nil)
+  if valid_600370 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600370
+  var valid_600371 = header.getOrDefault("X-Amz-Credential")
+  valid_600371 = validateParameter(valid_600371, JString, required = false,
+                                 default = nil)
+  if valid_600371 != nil:
+    section.add "X-Amz-Credential", valid_600371
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600373: Call_RestoreTableFromBackup_600361; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Creates a new table from an existing backup. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p>You can call <code>RestoreTableFromBackup</code> at a maximum rate of 10 times per second.</p> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> </ul>
+  ## 
+  let valid = call_600373.validator(path, query, header, formData, body)
+  let scheme = call_600373.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600373.url(scheme.get, call_600373.host, call_600373.base,
+                         call_600373.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600373, url, valid)
+
+proc call*(call_600374: Call_RestoreTableFromBackup_600361; body: JsonNode): Recallable =
+  ## restoreTableFromBackup
+  ## <p>Creates a new table from an existing backup. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p>You can call <code>RestoreTableFromBackup</code> at a maximum rate of 10 times per second.</p> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> </ul>
+  ##   body: JObject (required)
+  var body_600375 = newJObject()
+  if body != nil:
+    body_600375 = body
+  result = call_600374.call(nil, nil, nil, nil, body_600375)
+
+var restoreTableFromBackup* = Call_RestoreTableFromBackup_600361(
+    name: "restoreTableFromBackup", meth: HttpMethod.HttpPost,
+    host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.RestoreTableFromBackup",
+    validator: validate_RestoreTableFromBackup_600362, base: "/",
+    url: url_RestoreTableFromBackup_600363, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_RestoreTableToPointInTime_600376 = ref object of OpenApiRestCall_599368
+proc url_RestoreTableToPointInTime_600378(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_RestoreTableToPointInTime_600377(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Restores the specified table to the specified point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. You can restore your table to any point in time during the last 35 days. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p> When you restore using point in time recovery, DynamoDB restores your table data to the state based on the selected date and time (day:hour:minute:second) to a new table. </p> <p> Along with data, the following are also included on the new restored table using point in time recovery: </p> <ul> <li> <p>Global secondary indexes (GSIs)</p> </li> <li> <p>Local secondary indexes (LSIs)</p> </li> <li> <p>Provisioned read and write capacity</p> </li> <li> <p>Encryption settings</p> <important> <p> All these settings come from the current settings of the source table at the time of restore. </p> </important> </li> </ul> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> <li> <p>Point in time recovery settings</p> </li> </ul>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3324,7 +3326,7 @@ proc validate_TagResource_600377(path: JsonNode; query: JsonNode; header: JsonNo
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600381 = header.getOrDefault("X-Amz-Target")
   valid_600381 = validateParameter(valid_600381, JString, required = true, default = newJString(
-      "DynamoDB_20120810.TagResource"))
+      "DynamoDB_20120810.RestoreTableToPointInTime"))
   if valid_600381 != nil:
     section.add "X-Amz-Target", valid_600381
   var valid_600382 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3362,9 +3364,9 @@ proc validate_TagResource_600377(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600388: Call_TagResource_600376; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Associate a set of tags with an Amazon DynamoDB resource. You can then activate these user-defined tags so that they appear on the Billing and Cost Management console for cost allocation tracking. You can call TagResource up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+proc call*(call_600388: Call_RestoreTableToPointInTime_600376; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Restores the specified table to the specified point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. You can restore your table to any point in time during the last 35 days. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p> When you restore using point in time recovery, DynamoDB restores your table data to the state based on the selected date and time (day:hour:minute:second) to a new table. </p> <p> Along with data, the following are also included on the new restored table using point in time recovery: </p> <ul> <li> <p>Global secondary indexes (GSIs)</p> </li> <li> <p>Local secondary indexes (LSIs)</p> </li> <li> <p>Provisioned read and write capacity</p> </li> <li> <p>Encryption settings</p> <important> <p> All these settings come from the current settings of the source table at the time of restore. </p> </important> </li> </ul> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> <li> <p>Point in time recovery settings</p> </li> </ul>
   ## 
   let valid = call_600388.validator(path, query, header, formData, body)
   let scheme = call_600388.pickScheme
@@ -3375,24 +3377,273 @@ proc call*(call_600388: Call_TagResource_600376; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_600388, url, valid)
 
-proc call*(call_600389: Call_TagResource_600376; body: JsonNode): Recallable =
-  ## tagResource
-  ## <p>Associate a set of tags with an Amazon DynamoDB resource. You can then activate these user-defined tags so that they appear on the Billing and Cost Management console for cost allocation tracking. You can call TagResource up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+proc call*(call_600389: Call_RestoreTableToPointInTime_600376; body: JsonNode): Recallable =
+  ## restoreTableToPointInTime
+  ## <p>Restores the specified table to the specified point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. You can restore your table to any point in time during the last 35 days. Any number of users can execute up to 4 concurrent restores (any type of restore) in a given account. </p> <p> When you restore using point in time recovery, DynamoDB restores your table data to the state based on the selected date and time (day:hour:minute:second) to a new table. </p> <p> Along with data, the following are also included on the new restored table using point in time recovery: </p> <ul> <li> <p>Global secondary indexes (GSIs)</p> </li> <li> <p>Local secondary indexes (LSIs)</p> </li> <li> <p>Provisioned read and write capacity</p> </li> <li> <p>Encryption settings</p> <important> <p> All these settings come from the current settings of the source table at the time of restore. </p> </important> </li> </ul> <p>You must manually set up the following on the restored table:</p> <ul> <li> <p>Auto scaling policies</p> </li> <li> <p>IAM policies</p> </li> <li> <p>Amazon CloudWatch metrics and alarms</p> </li> <li> <p>Tags</p> </li> <li> <p>Stream settings</p> </li> <li> <p>Time to Live (TTL) settings</p> </li> <li> <p>Point in time recovery settings</p> </li> </ul>
   ##   body: JObject (required)
   var body_600390 = newJObject()
   if body != nil:
     body_600390 = body
   result = call_600389.call(nil, nil, nil, nil, body_600390)
 
-var tagResource* = Call_TagResource_600376(name: "tagResource",
+var restoreTableToPointInTime* = Call_RestoreTableToPointInTime_600376(
+    name: "restoreTableToPointInTime", meth: HttpMethod.HttpPost,
+    host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.RestoreTableToPointInTime",
+    validator: validate_RestoreTableToPointInTime_600377, base: "/",
+    url: url_RestoreTableToPointInTime_600378,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_Scan_600391 = ref object of OpenApiRestCall_599368
+proc url_Scan_600393(protocol: Scheme; host: string; base: string; route: string;
+                    path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_Scan_600392(path: JsonNode; query: JsonNode; header: JsonNode;
+                         formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>The <code>Scan</code> operation returns one or more items and item attributes by accessing every item in a table or a secondary index. To have DynamoDB return fewer items, you can provide a <code>FilterExpression</code> operation.</p> <p>If the total number of scanned items exceeds the maximum dataset size limit of 1 MB, the scan stops and results are returned to the user as a <code>LastEvaluatedKey</code> value to continue the scan in a subsequent operation. The results also include the number of items exceeding the limit. A scan can result in no table data meeting the filter criteria. </p> <p>A single <code>Scan</code> operation reads up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>Scan</code> operations proceed sequentially; however, for faster performance on a large table or secondary index, applications can request a parallel <code>Scan</code> operation by providing the <code>Segment</code> and <code>TotalSegments</code> parameters. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.ParallelScan">Parallel Scan</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p> <code>Scan</code> uses eventually consistent reads when accessing the data in a table; therefore, the result set might not include the changes to data in the table immediately before the operation began. If you need a consistent copy of the data, as of the time that the <code>Scan</code> begins, you can set the <code>ConsistentRead</code> parameter to <code>true</code>.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   Limit: JString
+  ##        : Pagination limit
+  ##   ExclusiveStartKey: JString
+  ##                    : Pagination token
+  section = newJObject()
+  var valid_600394 = query.getOrDefault("Limit")
+  valid_600394 = validateParameter(valid_600394, JString, required = false,
+                                 default = nil)
+  if valid_600394 != nil:
+    section.add "Limit", valid_600394
+  var valid_600395 = query.getOrDefault("ExclusiveStartKey")
+  valid_600395 = validateParameter(valid_600395, JString, required = false,
+                                 default = nil)
+  if valid_600395 != nil:
+    section.add "ExclusiveStartKey", valid_600395
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600396 = header.getOrDefault("X-Amz-Date")
+  valid_600396 = validateParameter(valid_600396, JString, required = false,
+                                 default = nil)
+  if valid_600396 != nil:
+    section.add "X-Amz-Date", valid_600396
+  var valid_600397 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600397 = validateParameter(valid_600397, JString, required = false,
+                                 default = nil)
+  if valid_600397 != nil:
+    section.add "X-Amz-Security-Token", valid_600397
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600398 = header.getOrDefault("X-Amz-Target")
+  valid_600398 = validateParameter(valid_600398, JString, required = true,
+                                 default = newJString("DynamoDB_20120810.Scan"))
+  if valid_600398 != nil:
+    section.add "X-Amz-Target", valid_600398
+  var valid_600399 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600399 = validateParameter(valid_600399, JString, required = false,
+                                 default = nil)
+  if valid_600399 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600399
+  var valid_600400 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600400 = validateParameter(valid_600400, JString, required = false,
+                                 default = nil)
+  if valid_600400 != nil:
+    section.add "X-Amz-Algorithm", valid_600400
+  var valid_600401 = header.getOrDefault("X-Amz-Signature")
+  valid_600401 = validateParameter(valid_600401, JString, required = false,
+                                 default = nil)
+  if valid_600401 != nil:
+    section.add "X-Amz-Signature", valid_600401
+  var valid_600402 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600402 = validateParameter(valid_600402, JString, required = false,
+                                 default = nil)
+  if valid_600402 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600402
+  var valid_600403 = header.getOrDefault("X-Amz-Credential")
+  valid_600403 = validateParameter(valid_600403, JString, required = false,
+                                 default = nil)
+  if valid_600403 != nil:
+    section.add "X-Amz-Credential", valid_600403
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600405: Call_Scan_600391; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>The <code>Scan</code> operation returns one or more items and item attributes by accessing every item in a table or a secondary index. To have DynamoDB return fewer items, you can provide a <code>FilterExpression</code> operation.</p> <p>If the total number of scanned items exceeds the maximum dataset size limit of 1 MB, the scan stops and results are returned to the user as a <code>LastEvaluatedKey</code> value to continue the scan in a subsequent operation. The results also include the number of items exceeding the limit. A scan can result in no table data meeting the filter criteria. </p> <p>A single <code>Scan</code> operation reads up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>Scan</code> operations proceed sequentially; however, for faster performance on a large table or secondary index, applications can request a parallel <code>Scan</code> operation by providing the <code>Segment</code> and <code>TotalSegments</code> parameters. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.ParallelScan">Parallel Scan</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p> <code>Scan</code> uses eventually consistent reads when accessing the data in a table; therefore, the result set might not include the changes to data in the table immediately before the operation began. If you need a consistent copy of the data, as of the time that the <code>Scan</code> begins, you can set the <code>ConsistentRead</code> parameter to <code>true</code>.</p>
+  ## 
+  let valid = call_600405.validator(path, query, header, formData, body)
+  let scheme = call_600405.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600405.url(scheme.get, call_600405.host, call_600405.base,
+                         call_600405.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600405, url, valid)
+
+proc call*(call_600406: Call_Scan_600391; body: JsonNode; Limit: string = "";
+          ExclusiveStartKey: string = ""): Recallable =
+  ## scan
+  ## <p>The <code>Scan</code> operation returns one or more items and item attributes by accessing every item in a table or a secondary index. To have DynamoDB return fewer items, you can provide a <code>FilterExpression</code> operation.</p> <p>If the total number of scanned items exceeds the maximum dataset size limit of 1 MB, the scan stops and results are returned to the user as a <code>LastEvaluatedKey</code> value to continue the scan in a subsequent operation. The results also include the number of items exceeding the limit. A scan can result in no table data meeting the filter criteria. </p> <p>A single <code>Scan</code> operation reads up to the maximum number of items set (if using the <code>Limit</code> parameter) or a maximum of 1 MB of data and then apply any filtering to the results using <code>FilterExpression</code>. If <code>LastEvaluatedKey</code> is present in the response, you need to paginate the result set. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.Pagination">Paginating the Results</a> in the <i>Amazon DynamoDB Developer Guide</i>. </p> <p> <code>Scan</code> operations proceed sequentially; however, for faster performance on a large table or secondary index, applications can request a parallel <code>Scan</code> operation by providing the <code>Segment</code> and <code>TotalSegments</code> parameters. For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.ParallelScan">Parallel Scan</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p> <p> <code>Scan</code> uses eventually consistent reads when accessing the data in a table; therefore, the result set might not include the changes to data in the table immediately before the operation began. If you need a consistent copy of the data, as of the time that the <code>Scan</code> begins, you can set the <code>ConsistentRead</code> parameter to <code>true</code>.</p>
+  ##   Limit: string
+  ##        : Pagination limit
+  ##   body: JObject (required)
+  ##   ExclusiveStartKey: string
+  ##                    : Pagination token
+  var query_600407 = newJObject()
+  var body_600408 = newJObject()
+  add(query_600407, "Limit", newJString(Limit))
+  if body != nil:
+    body_600408 = body
+  add(query_600407, "ExclusiveStartKey", newJString(ExclusiveStartKey))
+  result = call_600406.call(nil, query_600407, nil, nil, body_600408)
+
+var scan* = Call_Scan_600391(name: "scan", meth: HttpMethod.HttpPost,
+                          host: "dynamodb.amazonaws.com",
+                          route: "/#X-Amz-Target=DynamoDB_20120810.Scan",
+                          validator: validate_Scan_600392, base: "/", url: url_Scan_600393,
+                          schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_TagResource_600409 = ref object of OpenApiRestCall_599368
+proc url_TagResource_600411(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_TagResource_600410(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Associate a set of tags with an Amazon DynamoDB resource. You can then activate these user-defined tags so that they appear on the Billing and Cost Management console for cost allocation tracking. You can call TagResource up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600412 = header.getOrDefault("X-Amz-Date")
+  valid_600412 = validateParameter(valid_600412, JString, required = false,
+                                 default = nil)
+  if valid_600412 != nil:
+    section.add "X-Amz-Date", valid_600412
+  var valid_600413 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600413 = validateParameter(valid_600413, JString, required = false,
+                                 default = nil)
+  if valid_600413 != nil:
+    section.add "X-Amz-Security-Token", valid_600413
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600414 = header.getOrDefault("X-Amz-Target")
+  valid_600414 = validateParameter(valid_600414, JString, required = true, default = newJString(
+      "DynamoDB_20120810.TagResource"))
+  if valid_600414 != nil:
+    section.add "X-Amz-Target", valid_600414
+  var valid_600415 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600415 = validateParameter(valid_600415, JString, required = false,
+                                 default = nil)
+  if valid_600415 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600415
+  var valid_600416 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600416 = validateParameter(valid_600416, JString, required = false,
+                                 default = nil)
+  if valid_600416 != nil:
+    section.add "X-Amz-Algorithm", valid_600416
+  var valid_600417 = header.getOrDefault("X-Amz-Signature")
+  valid_600417 = validateParameter(valid_600417, JString, required = false,
+                                 default = nil)
+  if valid_600417 != nil:
+    section.add "X-Amz-Signature", valid_600417
+  var valid_600418 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600418 = validateParameter(valid_600418, JString, required = false,
+                                 default = nil)
+  if valid_600418 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600418
+  var valid_600419 = header.getOrDefault("X-Amz-Credential")
+  valid_600419 = validateParameter(valid_600419, JString, required = false,
+                                 default = nil)
+  if valid_600419 != nil:
+    section.add "X-Amz-Credential", valid_600419
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600421: Call_TagResource_600409; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Associate a set of tags with an Amazon DynamoDB resource. You can then activate these user-defined tags so that they appear on the Billing and Cost Management console for cost allocation tracking. You can call TagResource up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+  ## 
+  let valid = call_600421.validator(path, query, header, formData, body)
+  let scheme = call_600421.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600421.url(scheme.get, call_600421.host, call_600421.base,
+                         call_600421.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600421, url, valid)
+
+proc call*(call_600422: Call_TagResource_600409; body: JsonNode): Recallable =
+  ## tagResource
+  ## <p>Associate a set of tags with an Amazon DynamoDB resource. You can then activate these user-defined tags so that they appear on the Billing and Cost Management console for cost allocation tracking. You can call TagResource up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
+  ##   body: JObject (required)
+  var body_600423 = newJObject()
+  if body != nil:
+    body_600423 = body
+  result = call_600422.call(nil, nil, nil, nil, body_600423)
+
+var tagResource* = Call_TagResource_600409(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.TagResource",
-                                        validator: validate_TagResource_600377,
-                                        base: "/", url: url_TagResource_600378,
+                                        validator: validate_TagResource_600410,
+                                        base: "/", url: url_TagResource_600411,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TransactGetItems_600391 = ref object of OpenApiRestCall_599368
-proc url_TransactGetItems_600393(protocol: Scheme; host: string; base: string;
+  Call_TransactGetItems_600424 = ref object of OpenApiRestCall_599368
+proc url_TransactGetItems_600426(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3403,7 +3654,7 @@ proc url_TransactGetItems_600393(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TransactGetItems_600392(path: JsonNode; query: JsonNode;
+proc validate_TransactGetItems_600425(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p> <code>TransactGetItems</code> is a synchronous operation that atomically retrieves multiple items from one or more tables (but not from indexes) in a single account and Region. A <code>TransactGetItems</code> call can contain up to 25 <code>TransactGetItem</code> objects, each of which contains a <code>Get</code> structure that specifies an item to retrieve from a table in the account and Region. A call to <code>TransactGetItems</code> cannot retrieve items from tables in more than one AWS account or Region. The aggregate size of the items in the transaction cannot exceed 4 MB.</p> <p>DynamoDB rejects the entire <code>TransactGetItems</code> request if any of the following is true:</p> <ul> <li> <p>A conflicting operation is in the process of updating an item to be read.</p> </li> <li> <p>There is insufficient provisioned capacity for the transaction to be completed.</p> </li> <li> <p>There is a user error, such as an invalid data format.</p> </li> <li> <p>The aggregate size of the items in the transaction cannot exceed 4 MB.</p> </li> </ul>
@@ -3424,48 +3675,48 @@ proc validate_TransactGetItems_600392(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600394 = header.getOrDefault("X-Amz-Date")
-  valid_600394 = validateParameter(valid_600394, JString, required = false,
+  var valid_600427 = header.getOrDefault("X-Amz-Date")
+  valid_600427 = validateParameter(valid_600427, JString, required = false,
                                  default = nil)
-  if valid_600394 != nil:
-    section.add "X-Amz-Date", valid_600394
-  var valid_600395 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600395 = validateParameter(valid_600395, JString, required = false,
+  if valid_600427 != nil:
+    section.add "X-Amz-Date", valid_600427
+  var valid_600428 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600428 = validateParameter(valid_600428, JString, required = false,
                                  default = nil)
-  if valid_600395 != nil:
-    section.add "X-Amz-Security-Token", valid_600395
+  if valid_600428 != nil:
+    section.add "X-Amz-Security-Token", valid_600428
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600396 = header.getOrDefault("X-Amz-Target")
-  valid_600396 = validateParameter(valid_600396, JString, required = true, default = newJString(
+  var valid_600429 = header.getOrDefault("X-Amz-Target")
+  valid_600429 = validateParameter(valid_600429, JString, required = true, default = newJString(
       "DynamoDB_20120810.TransactGetItems"))
-  if valid_600396 != nil:
-    section.add "X-Amz-Target", valid_600396
-  var valid_600397 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600397 = validateParameter(valid_600397, JString, required = false,
+  if valid_600429 != nil:
+    section.add "X-Amz-Target", valid_600429
+  var valid_600430 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600430 = validateParameter(valid_600430, JString, required = false,
                                  default = nil)
-  if valid_600397 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600397
-  var valid_600398 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600398 = validateParameter(valid_600398, JString, required = false,
+  if valid_600430 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600430
+  var valid_600431 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600431 = validateParameter(valid_600431, JString, required = false,
                                  default = nil)
-  if valid_600398 != nil:
-    section.add "X-Amz-Algorithm", valid_600398
-  var valid_600399 = header.getOrDefault("X-Amz-Signature")
-  valid_600399 = validateParameter(valid_600399, JString, required = false,
+  if valid_600431 != nil:
+    section.add "X-Amz-Algorithm", valid_600431
+  var valid_600432 = header.getOrDefault("X-Amz-Signature")
+  valid_600432 = validateParameter(valid_600432, JString, required = false,
                                  default = nil)
-  if valid_600399 != nil:
-    section.add "X-Amz-Signature", valid_600399
-  var valid_600400 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600400 = validateParameter(valid_600400, JString, required = false,
+  if valid_600432 != nil:
+    section.add "X-Amz-Signature", valid_600432
+  var valid_600433 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600433 = validateParameter(valid_600433, JString, required = false,
                                  default = nil)
-  if valid_600400 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600400
-  var valid_600401 = header.getOrDefault("X-Amz-Credential")
-  valid_600401 = validateParameter(valid_600401, JString, required = false,
+  if valid_600433 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600433
+  var valid_600434 = header.getOrDefault("X-Amz-Credential")
+  valid_600434 = validateParameter(valid_600434, JString, required = false,
                                  default = nil)
-  if valid_600401 != nil:
-    section.add "X-Amz-Credential", valid_600401
+  if valid_600434 != nil:
+    section.add "X-Amz-Credential", valid_600434
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3476,36 +3727,36 @@ proc validate_TransactGetItems_600392(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600403: Call_TransactGetItems_600391; path: JsonNode;
+proc call*(call_600436: Call_TransactGetItems_600424; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> <code>TransactGetItems</code> is a synchronous operation that atomically retrieves multiple items from one or more tables (but not from indexes) in a single account and Region. A <code>TransactGetItems</code> call can contain up to 25 <code>TransactGetItem</code> objects, each of which contains a <code>Get</code> structure that specifies an item to retrieve from a table in the account and Region. A call to <code>TransactGetItems</code> cannot retrieve items from tables in more than one AWS account or Region. The aggregate size of the items in the transaction cannot exceed 4 MB.</p> <p>DynamoDB rejects the entire <code>TransactGetItems</code> request if any of the following is true:</p> <ul> <li> <p>A conflicting operation is in the process of updating an item to be read.</p> </li> <li> <p>There is insufficient provisioned capacity for the transaction to be completed.</p> </li> <li> <p>There is a user error, such as an invalid data format.</p> </li> <li> <p>The aggregate size of the items in the transaction cannot exceed 4 MB.</p> </li> </ul>
   ## 
-  let valid = call_600403.validator(path, query, header, formData, body)
-  let scheme = call_600403.pickScheme
+  let valid = call_600436.validator(path, query, header, formData, body)
+  let scheme = call_600436.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600403.url(scheme.get, call_600403.host, call_600403.base,
-                         call_600403.route, valid.getOrDefault("path"),
+  let url = call_600436.url(scheme.get, call_600436.host, call_600436.base,
+                         call_600436.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600403, url, valid)
+  result = atozHook(call_600436, url, valid)
 
-proc call*(call_600404: Call_TransactGetItems_600391; body: JsonNode): Recallable =
+proc call*(call_600437: Call_TransactGetItems_600424; body: JsonNode): Recallable =
   ## transactGetItems
   ## <p> <code>TransactGetItems</code> is a synchronous operation that atomically retrieves multiple items from one or more tables (but not from indexes) in a single account and Region. A <code>TransactGetItems</code> call can contain up to 25 <code>TransactGetItem</code> objects, each of which contains a <code>Get</code> structure that specifies an item to retrieve from a table in the account and Region. A call to <code>TransactGetItems</code> cannot retrieve items from tables in more than one AWS account or Region. The aggregate size of the items in the transaction cannot exceed 4 MB.</p> <p>DynamoDB rejects the entire <code>TransactGetItems</code> request if any of the following is true:</p> <ul> <li> <p>A conflicting operation is in the process of updating an item to be read.</p> </li> <li> <p>There is insufficient provisioned capacity for the transaction to be completed.</p> </li> <li> <p>There is a user error, such as an invalid data format.</p> </li> <li> <p>The aggregate size of the items in the transaction cannot exceed 4 MB.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_600405 = newJObject()
+  var body_600438 = newJObject()
   if body != nil:
-    body_600405 = body
-  result = call_600404.call(nil, nil, nil, nil, body_600405)
+    body_600438 = body
+  result = call_600437.call(nil, nil, nil, nil, body_600438)
 
-var transactGetItems* = Call_TransactGetItems_600391(name: "transactGetItems",
+var transactGetItems* = Call_TransactGetItems_600424(name: "transactGetItems",
     meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.TransactGetItems",
-    validator: validate_TransactGetItems_600392, base: "/",
-    url: url_TransactGetItems_600393, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_TransactGetItems_600425, base: "/",
+    url: url_TransactGetItems_600426, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TransactWriteItems_600406 = ref object of OpenApiRestCall_599368
-proc url_TransactWriteItems_600408(protocol: Scheme; host: string; base: string;
+  Call_TransactWriteItems_600439 = ref object of OpenApiRestCall_599368
+proc url_TransactWriteItems_600441(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3516,7 +3767,7 @@ proc url_TransactWriteItems_600408(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TransactWriteItems_600407(path: JsonNode; query: JsonNode;
+proc validate_TransactWriteItems_600440(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p> <code>TransactWriteItems</code> is a synchronous write operation that groups up to 25 action requests. These actions can target items in different tables, but not in different AWS accounts or Regions, and no two actions can target the same item. For example, you cannot both <code>ConditionCheck</code> and <code>Update</code> the same item. The aggregate size of the items in the transaction cannot exceed 4 MB.</p> <p>The actions are completed atomically so that either all of them succeed, or all of them fail. They are defined by the following objects:</p> <ul> <li> <p> <code>Put</code>  &#x97;   Initiates a <code>PutItem</code> operation to write a new item. This structure specifies the primary key of the item to be written, the name of the table to write it in, an optional condition expression that must be satisfied for the write to succeed, a list of the item's attributes, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>Update</code>  &#x97;   Initiates an <code>UpdateItem</code> operation to update an existing item. This structure specifies the primary key of the item to be updated, the name of the table where it resides, an optional condition expression that must be satisfied for the update to succeed, an expression that defines one or more attributes to be updated, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>Delete</code>  &#x97;   Initiates a <code>DeleteItem</code> operation to delete an existing item. This structure specifies the primary key of the item to be deleted, the name of the table where it resides, an optional condition expression that must be satisfied for the deletion to succeed, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>ConditionCheck</code>  &#x97;   Applies a condition to an item that is not being modified by the transaction. This structure specifies the primary key of the item to be checked, the name of the table where it resides, a condition expression that must be satisfied for the transaction to succeed, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> </ul> <p>DynamoDB rejects the entire <code>TransactWriteItems</code> request if any of the following is true:</p> <ul> <li> <p>A condition in one of the condition expressions is not met.</p> </li> <li> <p>An ongoing operation is in the process of updating the same item.</p> </li> <li> <p>There is insufficient provisioned capacity for the transaction to be completed.</p> </li> <li> <p>An item size becomes too large (bigger than 400 KB), a local secondary index (LSI) becomes too large, or a similar validation error occurs because of changes made by the transaction.</p> </li> <li> <p>The aggregate size of the items in the transaction exceeds 4 MB.</p> </li> <li> <p>There is a user error, such as an invalid data format.</p> </li> </ul>
@@ -3537,48 +3788,48 @@ proc validate_TransactWriteItems_600407(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600409 = header.getOrDefault("X-Amz-Date")
-  valid_600409 = validateParameter(valid_600409, JString, required = false,
+  var valid_600442 = header.getOrDefault("X-Amz-Date")
+  valid_600442 = validateParameter(valid_600442, JString, required = false,
                                  default = nil)
-  if valid_600409 != nil:
-    section.add "X-Amz-Date", valid_600409
-  var valid_600410 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600410 = validateParameter(valid_600410, JString, required = false,
+  if valid_600442 != nil:
+    section.add "X-Amz-Date", valid_600442
+  var valid_600443 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600443 = validateParameter(valid_600443, JString, required = false,
                                  default = nil)
-  if valid_600410 != nil:
-    section.add "X-Amz-Security-Token", valid_600410
+  if valid_600443 != nil:
+    section.add "X-Amz-Security-Token", valid_600443
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600411 = header.getOrDefault("X-Amz-Target")
-  valid_600411 = validateParameter(valid_600411, JString, required = true, default = newJString(
+  var valid_600444 = header.getOrDefault("X-Amz-Target")
+  valid_600444 = validateParameter(valid_600444, JString, required = true, default = newJString(
       "DynamoDB_20120810.TransactWriteItems"))
-  if valid_600411 != nil:
-    section.add "X-Amz-Target", valid_600411
-  var valid_600412 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600412 = validateParameter(valid_600412, JString, required = false,
+  if valid_600444 != nil:
+    section.add "X-Amz-Target", valid_600444
+  var valid_600445 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600445 = validateParameter(valid_600445, JString, required = false,
                                  default = nil)
-  if valid_600412 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600412
-  var valid_600413 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600413 = validateParameter(valid_600413, JString, required = false,
+  if valid_600445 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600445
+  var valid_600446 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600446 = validateParameter(valid_600446, JString, required = false,
                                  default = nil)
-  if valid_600413 != nil:
-    section.add "X-Amz-Algorithm", valid_600413
-  var valid_600414 = header.getOrDefault("X-Amz-Signature")
-  valid_600414 = validateParameter(valid_600414, JString, required = false,
+  if valid_600446 != nil:
+    section.add "X-Amz-Algorithm", valid_600446
+  var valid_600447 = header.getOrDefault("X-Amz-Signature")
+  valid_600447 = validateParameter(valid_600447, JString, required = false,
                                  default = nil)
-  if valid_600414 != nil:
-    section.add "X-Amz-Signature", valid_600414
-  var valid_600415 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600415 = validateParameter(valid_600415, JString, required = false,
+  if valid_600447 != nil:
+    section.add "X-Amz-Signature", valid_600447
+  var valid_600448 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600448 = validateParameter(valid_600448, JString, required = false,
                                  default = nil)
-  if valid_600415 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600415
-  var valid_600416 = header.getOrDefault("X-Amz-Credential")
-  valid_600416 = validateParameter(valid_600416, JString, required = false,
+  if valid_600448 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600448
+  var valid_600449 = header.getOrDefault("X-Amz-Credential")
+  valid_600449 = validateParameter(valid_600449, JString, required = false,
                                  default = nil)
-  if valid_600416 != nil:
-    section.add "X-Amz-Credential", valid_600416
+  if valid_600449 != nil:
+    section.add "X-Amz-Credential", valid_600449
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3589,37 +3840,37 @@ proc validate_TransactWriteItems_600407(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600418: Call_TransactWriteItems_600406; path: JsonNode;
+proc call*(call_600451: Call_TransactWriteItems_600439; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> <code>TransactWriteItems</code> is a synchronous write operation that groups up to 25 action requests. These actions can target items in different tables, but not in different AWS accounts or Regions, and no two actions can target the same item. For example, you cannot both <code>ConditionCheck</code> and <code>Update</code> the same item. The aggregate size of the items in the transaction cannot exceed 4 MB.</p> <p>The actions are completed atomically so that either all of them succeed, or all of them fail. They are defined by the following objects:</p> <ul> <li> <p> <code>Put</code>  &#x97;   Initiates a <code>PutItem</code> operation to write a new item. This structure specifies the primary key of the item to be written, the name of the table to write it in, an optional condition expression that must be satisfied for the write to succeed, a list of the item's attributes, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>Update</code>  &#x97;   Initiates an <code>UpdateItem</code> operation to update an existing item. This structure specifies the primary key of the item to be updated, the name of the table where it resides, an optional condition expression that must be satisfied for the update to succeed, an expression that defines one or more attributes to be updated, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>Delete</code>  &#x97;   Initiates a <code>DeleteItem</code> operation to delete an existing item. This structure specifies the primary key of the item to be deleted, the name of the table where it resides, an optional condition expression that must be satisfied for the deletion to succeed, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>ConditionCheck</code>  &#x97;   Applies a condition to an item that is not being modified by the transaction. This structure specifies the primary key of the item to be checked, the name of the table where it resides, a condition expression that must be satisfied for the transaction to succeed, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> </ul> <p>DynamoDB rejects the entire <code>TransactWriteItems</code> request if any of the following is true:</p> <ul> <li> <p>A condition in one of the condition expressions is not met.</p> </li> <li> <p>An ongoing operation is in the process of updating the same item.</p> </li> <li> <p>There is insufficient provisioned capacity for the transaction to be completed.</p> </li> <li> <p>An item size becomes too large (bigger than 400 KB), a local secondary index (LSI) becomes too large, or a similar validation error occurs because of changes made by the transaction.</p> </li> <li> <p>The aggregate size of the items in the transaction exceeds 4 MB.</p> </li> <li> <p>There is a user error, such as an invalid data format.</p> </li> </ul>
   ## 
-  let valid = call_600418.validator(path, query, header, formData, body)
-  let scheme = call_600418.pickScheme
+  let valid = call_600451.validator(path, query, header, formData, body)
+  let scheme = call_600451.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600418.url(scheme.get, call_600418.host, call_600418.base,
-                         call_600418.route, valid.getOrDefault("path"),
+  let url = call_600451.url(scheme.get, call_600451.host, call_600451.base,
+                         call_600451.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600418, url, valid)
+  result = atozHook(call_600451, url, valid)
 
-proc call*(call_600419: Call_TransactWriteItems_600406; body: JsonNode): Recallable =
+proc call*(call_600452: Call_TransactWriteItems_600439; body: JsonNode): Recallable =
   ## transactWriteItems
   ## <p> <code>TransactWriteItems</code> is a synchronous write operation that groups up to 25 action requests. These actions can target items in different tables, but not in different AWS accounts or Regions, and no two actions can target the same item. For example, you cannot both <code>ConditionCheck</code> and <code>Update</code> the same item. The aggregate size of the items in the transaction cannot exceed 4 MB.</p> <p>The actions are completed atomically so that either all of them succeed, or all of them fail. They are defined by the following objects:</p> <ul> <li> <p> <code>Put</code>  &#x97;   Initiates a <code>PutItem</code> operation to write a new item. This structure specifies the primary key of the item to be written, the name of the table to write it in, an optional condition expression that must be satisfied for the write to succeed, a list of the item's attributes, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>Update</code>  &#x97;   Initiates an <code>UpdateItem</code> operation to update an existing item. This structure specifies the primary key of the item to be updated, the name of the table where it resides, an optional condition expression that must be satisfied for the update to succeed, an expression that defines one or more attributes to be updated, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>Delete</code>  &#x97;   Initiates a <code>DeleteItem</code> operation to delete an existing item. This structure specifies the primary key of the item to be deleted, the name of the table where it resides, an optional condition expression that must be satisfied for the deletion to succeed, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> <li> <p> <code>ConditionCheck</code>  &#x97;   Applies a condition to an item that is not being modified by the transaction. This structure specifies the primary key of the item to be checked, the name of the table where it resides, a condition expression that must be satisfied for the transaction to succeed, and a field indicating whether to retrieve the item's attributes if the condition is not met.</p> </li> </ul> <p>DynamoDB rejects the entire <code>TransactWriteItems</code> request if any of the following is true:</p> <ul> <li> <p>A condition in one of the condition expressions is not met.</p> </li> <li> <p>An ongoing operation is in the process of updating the same item.</p> </li> <li> <p>There is insufficient provisioned capacity for the transaction to be completed.</p> </li> <li> <p>An item size becomes too large (bigger than 400 KB), a local secondary index (LSI) becomes too large, or a similar validation error occurs because of changes made by the transaction.</p> </li> <li> <p>The aggregate size of the items in the transaction exceeds 4 MB.</p> </li> <li> <p>There is a user error, such as an invalid data format.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_600420 = newJObject()
+  var body_600453 = newJObject()
   if body != nil:
-    body_600420 = body
-  result = call_600419.call(nil, nil, nil, nil, body_600420)
+    body_600453 = body
+  result = call_600452.call(nil, nil, nil, nil, body_600453)
 
-var transactWriteItems* = Call_TransactWriteItems_600406(
+var transactWriteItems* = Call_TransactWriteItems_600439(
     name: "transactWriteItems", meth: HttpMethod.HttpPost,
     host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.TransactWriteItems",
-    validator: validate_TransactWriteItems_600407, base: "/",
-    url: url_TransactWriteItems_600408, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_TransactWriteItems_600440, base: "/",
+    url: url_TransactWriteItems_600441, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_600421 = ref object of OpenApiRestCall_599368
-proc url_UntagResource_600423(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_600454 = ref object of OpenApiRestCall_599368
+proc url_UntagResource_600456(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3630,7 +3881,7 @@ proc url_UntagResource_600423(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UntagResource_600422(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_600455(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes the association of tags from an Amazon DynamoDB resource. You can call <code>UntagResource</code> up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
   ## 
@@ -3650,48 +3901,48 @@ proc validate_UntagResource_600422(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600424 = header.getOrDefault("X-Amz-Date")
-  valid_600424 = validateParameter(valid_600424, JString, required = false,
+  var valid_600457 = header.getOrDefault("X-Amz-Date")
+  valid_600457 = validateParameter(valid_600457, JString, required = false,
                                  default = nil)
-  if valid_600424 != nil:
-    section.add "X-Amz-Date", valid_600424
-  var valid_600425 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600425 = validateParameter(valid_600425, JString, required = false,
+  if valid_600457 != nil:
+    section.add "X-Amz-Date", valid_600457
+  var valid_600458 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600458 = validateParameter(valid_600458, JString, required = false,
                                  default = nil)
-  if valid_600425 != nil:
-    section.add "X-Amz-Security-Token", valid_600425
+  if valid_600458 != nil:
+    section.add "X-Amz-Security-Token", valid_600458
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600426 = header.getOrDefault("X-Amz-Target")
-  valid_600426 = validateParameter(valid_600426, JString, required = true, default = newJString(
+  var valid_600459 = header.getOrDefault("X-Amz-Target")
+  valid_600459 = validateParameter(valid_600459, JString, required = true, default = newJString(
       "DynamoDB_20120810.UntagResource"))
-  if valid_600426 != nil:
-    section.add "X-Amz-Target", valid_600426
-  var valid_600427 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600427 = validateParameter(valid_600427, JString, required = false,
+  if valid_600459 != nil:
+    section.add "X-Amz-Target", valid_600459
+  var valid_600460 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600460 = validateParameter(valid_600460, JString, required = false,
                                  default = nil)
-  if valid_600427 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600427
-  var valid_600428 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600428 = validateParameter(valid_600428, JString, required = false,
+  if valid_600460 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600460
+  var valid_600461 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600461 = validateParameter(valid_600461, JString, required = false,
                                  default = nil)
-  if valid_600428 != nil:
-    section.add "X-Amz-Algorithm", valid_600428
-  var valid_600429 = header.getOrDefault("X-Amz-Signature")
-  valid_600429 = validateParameter(valid_600429, JString, required = false,
+  if valid_600461 != nil:
+    section.add "X-Amz-Algorithm", valid_600461
+  var valid_600462 = header.getOrDefault("X-Amz-Signature")
+  valid_600462 = validateParameter(valid_600462, JString, required = false,
                                  default = nil)
-  if valid_600429 != nil:
-    section.add "X-Amz-Signature", valid_600429
-  var valid_600430 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600430 = validateParameter(valid_600430, JString, required = false,
+  if valid_600462 != nil:
+    section.add "X-Amz-Signature", valid_600462
+  var valid_600463 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600463 = validateParameter(valid_600463, JString, required = false,
                                  default = nil)
-  if valid_600430 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600430
-  var valid_600431 = header.getOrDefault("X-Amz-Credential")
-  valid_600431 = validateParameter(valid_600431, JString, required = false,
+  if valid_600463 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600463
+  var valid_600464 = header.getOrDefault("X-Amz-Credential")
+  valid_600464 = validateParameter(valid_600464, JString, required = false,
                                  default = nil)
-  if valid_600431 != nil:
-    section.add "X-Amz-Credential", valid_600431
+  if valid_600464 != nil:
+    section.add "X-Amz-Credential", valid_600464
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3702,36 +3953,36 @@ proc validate_UntagResource_600422(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600433: Call_UntagResource_600421; path: JsonNode; query: JsonNode;
+proc call*(call_600466: Call_UntagResource_600454; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes the association of tags from an Amazon DynamoDB resource. You can call <code>UntagResource</code> up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
   ## 
-  let valid = call_600433.validator(path, query, header, formData, body)
-  let scheme = call_600433.pickScheme
+  let valid = call_600466.validator(path, query, header, formData, body)
+  let scheme = call_600466.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600433.url(scheme.get, call_600433.host, call_600433.base,
-                         call_600433.route, valid.getOrDefault("path"),
+  let url = call_600466.url(scheme.get, call_600466.host, call_600466.base,
+                         call_600466.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600433, url, valid)
+  result = atozHook(call_600466, url, valid)
 
-proc call*(call_600434: Call_UntagResource_600421; body: JsonNode): Recallable =
+proc call*(call_600467: Call_UntagResource_600454; body: JsonNode): Recallable =
   ## untagResource
   ## <p>Removes the association of tags from an Amazon DynamoDB resource. You can call <code>UntagResource</code> up to five times per second, per account. </p> <p>For an overview on tagging DynamoDB resources, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tagging.html">Tagging for DynamoDB</a> in the <i>Amazon DynamoDB Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600435 = newJObject()
+  var body_600468 = newJObject()
   if body != nil:
-    body_600435 = body
-  result = call_600434.call(nil, nil, nil, nil, body_600435)
+    body_600468 = body
+  result = call_600467.call(nil, nil, nil, nil, body_600468)
 
-var untagResource* = Call_UntagResource_600421(name: "untagResource",
+var untagResource* = Call_UntagResource_600454(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.UntagResource",
-    validator: validate_UntagResource_600422, base: "/", url: url_UntagResource_600423,
+    validator: validate_UntagResource_600455, base: "/", url: url_UntagResource_600456,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateContinuousBackups_600436 = ref object of OpenApiRestCall_599368
-proc url_UpdateContinuousBackups_600438(protocol: Scheme; host: string; base: string;
+  Call_UpdateContinuousBackups_600469 = ref object of OpenApiRestCall_599368
+proc url_UpdateContinuousBackups_600471(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -3743,7 +3994,7 @@ proc url_UpdateContinuousBackups_600438(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_UpdateContinuousBackups_600437(path: JsonNode; query: JsonNode;
+proc validate_UpdateContinuousBackups_600470(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> <code>UpdateContinuousBackups</code> enables or disables point in time recovery for the specified table. A successful <code>UpdateContinuousBackups</code> call returns the current <code>ContinuousBackupsDescription</code>. Continuous backups are <code>ENABLED</code> on all tables at table creation. If point in time recovery is enabled, <code>PointInTimeRecoveryStatus</code> will be set to ENABLED.</p> <p> Once continuous backups and point in time recovery are enabled, you can restore to any point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. </p> <p> <code>LatestRestorableDateTime</code> is typically 5 minutes before the current time. You can restore your table to any point in time during the last 35 days. </p>
   ## 
@@ -3763,48 +4014,48 @@ proc validate_UpdateContinuousBackups_600437(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600439 = header.getOrDefault("X-Amz-Date")
-  valid_600439 = validateParameter(valid_600439, JString, required = false,
+  var valid_600472 = header.getOrDefault("X-Amz-Date")
+  valid_600472 = validateParameter(valid_600472, JString, required = false,
                                  default = nil)
-  if valid_600439 != nil:
-    section.add "X-Amz-Date", valid_600439
-  var valid_600440 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600440 = validateParameter(valid_600440, JString, required = false,
+  if valid_600472 != nil:
+    section.add "X-Amz-Date", valid_600472
+  var valid_600473 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600473 = validateParameter(valid_600473, JString, required = false,
                                  default = nil)
-  if valid_600440 != nil:
-    section.add "X-Amz-Security-Token", valid_600440
+  if valid_600473 != nil:
+    section.add "X-Amz-Security-Token", valid_600473
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600441 = header.getOrDefault("X-Amz-Target")
-  valid_600441 = validateParameter(valid_600441, JString, required = true, default = newJString(
+  var valid_600474 = header.getOrDefault("X-Amz-Target")
+  valid_600474 = validateParameter(valid_600474, JString, required = true, default = newJString(
       "DynamoDB_20120810.UpdateContinuousBackups"))
-  if valid_600441 != nil:
-    section.add "X-Amz-Target", valid_600441
-  var valid_600442 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600442 = validateParameter(valid_600442, JString, required = false,
+  if valid_600474 != nil:
+    section.add "X-Amz-Target", valid_600474
+  var valid_600475 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600475 = validateParameter(valid_600475, JString, required = false,
                                  default = nil)
-  if valid_600442 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600442
-  var valid_600443 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600443 = validateParameter(valid_600443, JString, required = false,
+  if valid_600475 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600475
+  var valid_600476 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600476 = validateParameter(valid_600476, JString, required = false,
                                  default = nil)
-  if valid_600443 != nil:
-    section.add "X-Amz-Algorithm", valid_600443
-  var valid_600444 = header.getOrDefault("X-Amz-Signature")
-  valid_600444 = validateParameter(valid_600444, JString, required = false,
+  if valid_600476 != nil:
+    section.add "X-Amz-Algorithm", valid_600476
+  var valid_600477 = header.getOrDefault("X-Amz-Signature")
+  valid_600477 = validateParameter(valid_600477, JString, required = false,
                                  default = nil)
-  if valid_600444 != nil:
-    section.add "X-Amz-Signature", valid_600444
-  var valid_600445 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600445 = validateParameter(valid_600445, JString, required = false,
+  if valid_600477 != nil:
+    section.add "X-Amz-Signature", valid_600477
+  var valid_600478 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600478 = validateParameter(valid_600478, JString, required = false,
                                  default = nil)
-  if valid_600445 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600445
-  var valid_600446 = header.getOrDefault("X-Amz-Credential")
-  valid_600446 = validateParameter(valid_600446, JString, required = false,
+  if valid_600478 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600478
+  var valid_600479 = header.getOrDefault("X-Amz-Credential")
+  valid_600479 = validateParameter(valid_600479, JString, required = false,
                                  default = nil)
-  if valid_600446 != nil:
-    section.add "X-Amz-Credential", valid_600446
+  if valid_600479 != nil:
+    section.add "X-Amz-Credential", valid_600479
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3815,37 +4066,151 @@ proc validate_UpdateContinuousBackups_600437(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600448: Call_UpdateContinuousBackups_600436; path: JsonNode;
+proc call*(call_600481: Call_UpdateContinuousBackups_600469; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> <code>UpdateContinuousBackups</code> enables or disables point in time recovery for the specified table. A successful <code>UpdateContinuousBackups</code> call returns the current <code>ContinuousBackupsDescription</code>. Continuous backups are <code>ENABLED</code> on all tables at table creation. If point in time recovery is enabled, <code>PointInTimeRecoveryStatus</code> will be set to ENABLED.</p> <p> Once continuous backups and point in time recovery are enabled, you can restore to any point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. </p> <p> <code>LatestRestorableDateTime</code> is typically 5 minutes before the current time. You can restore your table to any point in time during the last 35 days. </p>
   ## 
-  let valid = call_600448.validator(path, query, header, formData, body)
-  let scheme = call_600448.pickScheme
+  let valid = call_600481.validator(path, query, header, formData, body)
+  let scheme = call_600481.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600448.url(scheme.get, call_600448.host, call_600448.base,
-                         call_600448.route, valid.getOrDefault("path"),
+  let url = call_600481.url(scheme.get, call_600481.host, call_600481.base,
+                         call_600481.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600448, url, valid)
+  result = atozHook(call_600481, url, valid)
 
-proc call*(call_600449: Call_UpdateContinuousBackups_600436; body: JsonNode): Recallable =
+proc call*(call_600482: Call_UpdateContinuousBackups_600469; body: JsonNode): Recallable =
   ## updateContinuousBackups
   ## <p> <code>UpdateContinuousBackups</code> enables or disables point in time recovery for the specified table. A successful <code>UpdateContinuousBackups</code> call returns the current <code>ContinuousBackupsDescription</code>. Continuous backups are <code>ENABLED</code> on all tables at table creation. If point in time recovery is enabled, <code>PointInTimeRecoveryStatus</code> will be set to ENABLED.</p> <p> Once continuous backups and point in time recovery are enabled, you can restore to any point in time within <code>EarliestRestorableDateTime</code> and <code>LatestRestorableDateTime</code>. </p> <p> <code>LatestRestorableDateTime</code> is typically 5 minutes before the current time. You can restore your table to any point in time during the last 35 days. </p>
   ##   body: JObject (required)
-  var body_600450 = newJObject()
+  var body_600483 = newJObject()
   if body != nil:
-    body_600450 = body
-  result = call_600449.call(nil, nil, nil, nil, body_600450)
+    body_600483 = body
+  result = call_600482.call(nil, nil, nil, nil, body_600483)
 
-var updateContinuousBackups* = Call_UpdateContinuousBackups_600436(
+var updateContinuousBackups* = Call_UpdateContinuousBackups_600469(
     name: "updateContinuousBackups", meth: HttpMethod.HttpPost,
     host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.UpdateContinuousBackups",
-    validator: validate_UpdateContinuousBackups_600437, base: "/",
-    url: url_UpdateContinuousBackups_600438, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateContinuousBackups_600470, base: "/",
+    url: url_UpdateContinuousBackups_600471, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateGlobalTable_600451 = ref object of OpenApiRestCall_599368
-proc url_UpdateGlobalTable_600453(protocol: Scheme; host: string; base: string;
+  Call_UpdateContributorInsights_600484 = ref object of OpenApiRestCall_599368
+proc url_UpdateContributorInsights_600486(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateContributorInsights_600485(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates the status for contributor insights for a specific table or index.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600487 = header.getOrDefault("X-Amz-Date")
+  valid_600487 = validateParameter(valid_600487, JString, required = false,
+                                 default = nil)
+  if valid_600487 != nil:
+    section.add "X-Amz-Date", valid_600487
+  var valid_600488 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600488 = validateParameter(valid_600488, JString, required = false,
+                                 default = nil)
+  if valid_600488 != nil:
+    section.add "X-Amz-Security-Token", valid_600488
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600489 = header.getOrDefault("X-Amz-Target")
+  valid_600489 = validateParameter(valid_600489, JString, required = true, default = newJString(
+      "DynamoDB_20120810.UpdateContributorInsights"))
+  if valid_600489 != nil:
+    section.add "X-Amz-Target", valid_600489
+  var valid_600490 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600490 = validateParameter(valid_600490, JString, required = false,
+                                 default = nil)
+  if valid_600490 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600490
+  var valid_600491 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600491 = validateParameter(valid_600491, JString, required = false,
+                                 default = nil)
+  if valid_600491 != nil:
+    section.add "X-Amz-Algorithm", valid_600491
+  var valid_600492 = header.getOrDefault("X-Amz-Signature")
+  valid_600492 = validateParameter(valid_600492, JString, required = false,
+                                 default = nil)
+  if valid_600492 != nil:
+    section.add "X-Amz-Signature", valid_600492
+  var valid_600493 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600493 = validateParameter(valid_600493, JString, required = false,
+                                 default = nil)
+  if valid_600493 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600493
+  var valid_600494 = header.getOrDefault("X-Amz-Credential")
+  valid_600494 = validateParameter(valid_600494, JString, required = false,
+                                 default = nil)
+  if valid_600494 != nil:
+    section.add "X-Amz-Credential", valid_600494
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600496: Call_UpdateContributorInsights_600484; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates the status for contributor insights for a specific table or index.
+  ## 
+  let valid = call_600496.validator(path, query, header, formData, body)
+  let scheme = call_600496.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600496.url(scheme.get, call_600496.host, call_600496.base,
+                         call_600496.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600496, url, valid)
+
+proc call*(call_600497: Call_UpdateContributorInsights_600484; body: JsonNode): Recallable =
+  ## updateContributorInsights
+  ## Updates the status for contributor insights for a specific table or index.
+  ##   body: JObject (required)
+  var body_600498 = newJObject()
+  if body != nil:
+    body_600498 = body
+  result = call_600497.call(nil, nil, nil, nil, body_600498)
+
+var updateContributorInsights* = Call_UpdateContributorInsights_600484(
+    name: "updateContributorInsights", meth: HttpMethod.HttpPost,
+    host: "dynamodb.amazonaws.com",
+    route: "/#X-Amz-Target=DynamoDB_20120810.UpdateContributorInsights",
+    validator: validate_UpdateContributorInsights_600485, base: "/",
+    url: url_UpdateContributorInsights_600486,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateGlobalTable_600499 = ref object of OpenApiRestCall_599368
+proc url_UpdateGlobalTable_600501(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3856,7 +4221,7 @@ proc url_UpdateGlobalTable_600453(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateGlobalTable_600452(path: JsonNode; query: JsonNode;
+proc validate_UpdateGlobalTable_600500(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Adds or removes replicas in the specified global table. The global table must already exist to be able to use this operation. Any replica to be added must be empty, have the same name as the global table, have the same key schema, have DynamoDB Streams enabled, and have the same provisioned and maximum write capacity units.</p> <note> <p>Although you can use <code>UpdateGlobalTable</code> to add replicas and remove replicas in a single request, for simplicity we recommend that you issue separate requests for adding or removing replicas.</p> </note> <p> If global secondary indexes are specified, then the following conditions must also be met: </p> <ul> <li> <p> The global secondary indexes must have the same name. </p> </li> <li> <p> The global secondary indexes must have the same hash key and sort key (if present). </p> </li> <li> <p> The global secondary indexes must have the same provisioned and maximum write capacity units. </p> </li> </ul>
@@ -3877,48 +4242,48 @@ proc validate_UpdateGlobalTable_600452(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600454 = header.getOrDefault("X-Amz-Date")
-  valid_600454 = validateParameter(valid_600454, JString, required = false,
+  var valid_600502 = header.getOrDefault("X-Amz-Date")
+  valid_600502 = validateParameter(valid_600502, JString, required = false,
                                  default = nil)
-  if valid_600454 != nil:
-    section.add "X-Amz-Date", valid_600454
-  var valid_600455 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600455 = validateParameter(valid_600455, JString, required = false,
+  if valid_600502 != nil:
+    section.add "X-Amz-Date", valid_600502
+  var valid_600503 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600503 = validateParameter(valid_600503, JString, required = false,
                                  default = nil)
-  if valid_600455 != nil:
-    section.add "X-Amz-Security-Token", valid_600455
+  if valid_600503 != nil:
+    section.add "X-Amz-Security-Token", valid_600503
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600456 = header.getOrDefault("X-Amz-Target")
-  valid_600456 = validateParameter(valid_600456, JString, required = true, default = newJString(
+  var valid_600504 = header.getOrDefault("X-Amz-Target")
+  valid_600504 = validateParameter(valid_600504, JString, required = true, default = newJString(
       "DynamoDB_20120810.UpdateGlobalTable"))
-  if valid_600456 != nil:
-    section.add "X-Amz-Target", valid_600456
-  var valid_600457 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600457 = validateParameter(valid_600457, JString, required = false,
+  if valid_600504 != nil:
+    section.add "X-Amz-Target", valid_600504
+  var valid_600505 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600505 = validateParameter(valid_600505, JString, required = false,
                                  default = nil)
-  if valid_600457 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600457
-  var valid_600458 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600458 = validateParameter(valid_600458, JString, required = false,
+  if valid_600505 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600505
+  var valid_600506 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600506 = validateParameter(valid_600506, JString, required = false,
                                  default = nil)
-  if valid_600458 != nil:
-    section.add "X-Amz-Algorithm", valid_600458
-  var valid_600459 = header.getOrDefault("X-Amz-Signature")
-  valid_600459 = validateParameter(valid_600459, JString, required = false,
+  if valid_600506 != nil:
+    section.add "X-Amz-Algorithm", valid_600506
+  var valid_600507 = header.getOrDefault("X-Amz-Signature")
+  valid_600507 = validateParameter(valid_600507, JString, required = false,
                                  default = nil)
-  if valid_600459 != nil:
-    section.add "X-Amz-Signature", valid_600459
-  var valid_600460 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600460 = validateParameter(valid_600460, JString, required = false,
+  if valid_600507 != nil:
+    section.add "X-Amz-Signature", valid_600507
+  var valid_600508 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600508 = validateParameter(valid_600508, JString, required = false,
                                  default = nil)
-  if valid_600460 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600460
-  var valid_600461 = header.getOrDefault("X-Amz-Credential")
-  valid_600461 = validateParameter(valid_600461, JString, required = false,
+  if valid_600508 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600508
+  var valid_600509 = header.getOrDefault("X-Amz-Credential")
+  valid_600509 = validateParameter(valid_600509, JString, required = false,
                                  default = nil)
-  if valid_600461 != nil:
-    section.add "X-Amz-Credential", valid_600461
+  if valid_600509 != nil:
+    section.add "X-Amz-Credential", valid_600509
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3929,36 +4294,36 @@ proc validate_UpdateGlobalTable_600452(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600463: Call_UpdateGlobalTable_600451; path: JsonNode;
+proc call*(call_600511: Call_UpdateGlobalTable_600499; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds or removes replicas in the specified global table. The global table must already exist to be able to use this operation. Any replica to be added must be empty, have the same name as the global table, have the same key schema, have DynamoDB Streams enabled, and have the same provisioned and maximum write capacity units.</p> <note> <p>Although you can use <code>UpdateGlobalTable</code> to add replicas and remove replicas in a single request, for simplicity we recommend that you issue separate requests for adding or removing replicas.</p> </note> <p> If global secondary indexes are specified, then the following conditions must also be met: </p> <ul> <li> <p> The global secondary indexes must have the same name. </p> </li> <li> <p> The global secondary indexes must have the same hash key and sort key (if present). </p> </li> <li> <p> The global secondary indexes must have the same provisioned and maximum write capacity units. </p> </li> </ul>
   ## 
-  let valid = call_600463.validator(path, query, header, formData, body)
-  let scheme = call_600463.pickScheme
+  let valid = call_600511.validator(path, query, header, formData, body)
+  let scheme = call_600511.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600463.url(scheme.get, call_600463.host, call_600463.base,
-                         call_600463.route, valid.getOrDefault("path"),
+  let url = call_600511.url(scheme.get, call_600511.host, call_600511.base,
+                         call_600511.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600463, url, valid)
+  result = atozHook(call_600511, url, valid)
 
-proc call*(call_600464: Call_UpdateGlobalTable_600451; body: JsonNode): Recallable =
+proc call*(call_600512: Call_UpdateGlobalTable_600499; body: JsonNode): Recallable =
   ## updateGlobalTable
   ## <p>Adds or removes replicas in the specified global table. The global table must already exist to be able to use this operation. Any replica to be added must be empty, have the same name as the global table, have the same key schema, have DynamoDB Streams enabled, and have the same provisioned and maximum write capacity units.</p> <note> <p>Although you can use <code>UpdateGlobalTable</code> to add replicas and remove replicas in a single request, for simplicity we recommend that you issue separate requests for adding or removing replicas.</p> </note> <p> If global secondary indexes are specified, then the following conditions must also be met: </p> <ul> <li> <p> The global secondary indexes must have the same name. </p> </li> <li> <p> The global secondary indexes must have the same hash key and sort key (if present). </p> </li> <li> <p> The global secondary indexes must have the same provisioned and maximum write capacity units. </p> </li> </ul>
   ##   body: JObject (required)
-  var body_600465 = newJObject()
+  var body_600513 = newJObject()
   if body != nil:
-    body_600465 = body
-  result = call_600464.call(nil, nil, nil, nil, body_600465)
+    body_600513 = body
+  result = call_600512.call(nil, nil, nil, nil, body_600513)
 
-var updateGlobalTable* = Call_UpdateGlobalTable_600451(name: "updateGlobalTable",
+var updateGlobalTable* = Call_UpdateGlobalTable_600499(name: "updateGlobalTable",
     meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.UpdateGlobalTable",
-    validator: validate_UpdateGlobalTable_600452, base: "/",
-    url: url_UpdateGlobalTable_600453, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateGlobalTable_600500, base: "/",
+    url: url_UpdateGlobalTable_600501, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateGlobalTableSettings_600466 = ref object of OpenApiRestCall_599368
-proc url_UpdateGlobalTableSettings_600468(protocol: Scheme; host: string;
+  Call_UpdateGlobalTableSettings_600514 = ref object of OpenApiRestCall_599368
+proc url_UpdateGlobalTableSettings_600516(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3969,7 +4334,7 @@ proc url_UpdateGlobalTableSettings_600468(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateGlobalTableSettings_600467(path: JsonNode; query: JsonNode;
+proc validate_UpdateGlobalTableSettings_600515(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates settings for a global table.
   ## 
@@ -3989,48 +4354,48 @@ proc validate_UpdateGlobalTableSettings_600467(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600469 = header.getOrDefault("X-Amz-Date")
-  valid_600469 = validateParameter(valid_600469, JString, required = false,
+  var valid_600517 = header.getOrDefault("X-Amz-Date")
+  valid_600517 = validateParameter(valid_600517, JString, required = false,
                                  default = nil)
-  if valid_600469 != nil:
-    section.add "X-Amz-Date", valid_600469
-  var valid_600470 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600470 = validateParameter(valid_600470, JString, required = false,
+  if valid_600517 != nil:
+    section.add "X-Amz-Date", valid_600517
+  var valid_600518 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600518 = validateParameter(valid_600518, JString, required = false,
                                  default = nil)
-  if valid_600470 != nil:
-    section.add "X-Amz-Security-Token", valid_600470
+  if valid_600518 != nil:
+    section.add "X-Amz-Security-Token", valid_600518
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600471 = header.getOrDefault("X-Amz-Target")
-  valid_600471 = validateParameter(valid_600471, JString, required = true, default = newJString(
+  var valid_600519 = header.getOrDefault("X-Amz-Target")
+  valid_600519 = validateParameter(valid_600519, JString, required = true, default = newJString(
       "DynamoDB_20120810.UpdateGlobalTableSettings"))
-  if valid_600471 != nil:
-    section.add "X-Amz-Target", valid_600471
-  var valid_600472 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600472 = validateParameter(valid_600472, JString, required = false,
+  if valid_600519 != nil:
+    section.add "X-Amz-Target", valid_600519
+  var valid_600520 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600520 = validateParameter(valid_600520, JString, required = false,
                                  default = nil)
-  if valid_600472 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600472
-  var valid_600473 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600473 = validateParameter(valid_600473, JString, required = false,
+  if valid_600520 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600520
+  var valid_600521 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600521 = validateParameter(valid_600521, JString, required = false,
                                  default = nil)
-  if valid_600473 != nil:
-    section.add "X-Amz-Algorithm", valid_600473
-  var valid_600474 = header.getOrDefault("X-Amz-Signature")
-  valid_600474 = validateParameter(valid_600474, JString, required = false,
+  if valid_600521 != nil:
+    section.add "X-Amz-Algorithm", valid_600521
+  var valid_600522 = header.getOrDefault("X-Amz-Signature")
+  valid_600522 = validateParameter(valid_600522, JString, required = false,
                                  default = nil)
-  if valid_600474 != nil:
-    section.add "X-Amz-Signature", valid_600474
-  var valid_600475 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600475 = validateParameter(valid_600475, JString, required = false,
+  if valid_600522 != nil:
+    section.add "X-Amz-Signature", valid_600522
+  var valid_600523 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600523 = validateParameter(valid_600523, JString, required = false,
                                  default = nil)
-  if valid_600475 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600475
-  var valid_600476 = header.getOrDefault("X-Amz-Credential")
-  valid_600476 = validateParameter(valid_600476, JString, required = false,
+  if valid_600523 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600523
+  var valid_600524 = header.getOrDefault("X-Amz-Credential")
+  valid_600524 = validateParameter(valid_600524, JString, required = false,
                                  default = nil)
-  if valid_600476 != nil:
-    section.add "X-Amz-Credential", valid_600476
+  if valid_600524 != nil:
+    section.add "X-Amz-Credential", valid_600524
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4041,38 +4406,38 @@ proc validate_UpdateGlobalTableSettings_600467(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600478: Call_UpdateGlobalTableSettings_600466; path: JsonNode;
+proc call*(call_600526: Call_UpdateGlobalTableSettings_600514; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates settings for a global table.
   ## 
-  let valid = call_600478.validator(path, query, header, formData, body)
-  let scheme = call_600478.pickScheme
+  let valid = call_600526.validator(path, query, header, formData, body)
+  let scheme = call_600526.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600478.url(scheme.get, call_600478.host, call_600478.base,
-                         call_600478.route, valid.getOrDefault("path"),
+  let url = call_600526.url(scheme.get, call_600526.host, call_600526.base,
+                         call_600526.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600478, url, valid)
+  result = atozHook(call_600526, url, valid)
 
-proc call*(call_600479: Call_UpdateGlobalTableSettings_600466; body: JsonNode): Recallable =
+proc call*(call_600527: Call_UpdateGlobalTableSettings_600514; body: JsonNode): Recallable =
   ## updateGlobalTableSettings
   ## Updates settings for a global table.
   ##   body: JObject (required)
-  var body_600480 = newJObject()
+  var body_600528 = newJObject()
   if body != nil:
-    body_600480 = body
-  result = call_600479.call(nil, nil, nil, nil, body_600480)
+    body_600528 = body
+  result = call_600527.call(nil, nil, nil, nil, body_600528)
 
-var updateGlobalTableSettings* = Call_UpdateGlobalTableSettings_600466(
+var updateGlobalTableSettings* = Call_UpdateGlobalTableSettings_600514(
     name: "updateGlobalTableSettings", meth: HttpMethod.HttpPost,
     host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.UpdateGlobalTableSettings",
-    validator: validate_UpdateGlobalTableSettings_600467, base: "/",
-    url: url_UpdateGlobalTableSettings_600468,
+    validator: validate_UpdateGlobalTableSettings_600515, base: "/",
+    url: url_UpdateGlobalTableSettings_600516,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateItem_600481 = ref object of OpenApiRestCall_599368
-proc url_UpdateItem_600483(protocol: Scheme; host: string; base: string; route: string;
+  Call_UpdateItem_600529 = ref object of OpenApiRestCall_599368
+proc url_UpdateItem_600531(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4083,7 +4448,7 @@ proc url_UpdateItem_600483(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_UpdateItem_600482(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateItem_600530(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Edits an existing item's attributes, or adds a new item to the table if it does not already exist. You can put, delete, or add attribute values. You can also perform a conditional update on an existing item (insert a new attribute name-value pair if it doesn't exist, or replace an existing name-value pair if it has certain expected attribute values).</p> <p>You can also return the item's attribute values in the same <code>UpdateItem</code> operation using the <code>ReturnValues</code> parameter.</p>
   ## 
@@ -4103,48 +4468,48 @@ proc validate_UpdateItem_600482(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600484 = header.getOrDefault("X-Amz-Date")
-  valid_600484 = validateParameter(valid_600484, JString, required = false,
+  var valid_600532 = header.getOrDefault("X-Amz-Date")
+  valid_600532 = validateParameter(valid_600532, JString, required = false,
                                  default = nil)
-  if valid_600484 != nil:
-    section.add "X-Amz-Date", valid_600484
-  var valid_600485 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600485 = validateParameter(valid_600485, JString, required = false,
+  if valid_600532 != nil:
+    section.add "X-Amz-Date", valid_600532
+  var valid_600533 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600533 = validateParameter(valid_600533, JString, required = false,
                                  default = nil)
-  if valid_600485 != nil:
-    section.add "X-Amz-Security-Token", valid_600485
+  if valid_600533 != nil:
+    section.add "X-Amz-Security-Token", valid_600533
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600486 = header.getOrDefault("X-Amz-Target")
-  valid_600486 = validateParameter(valid_600486, JString, required = true, default = newJString(
+  var valid_600534 = header.getOrDefault("X-Amz-Target")
+  valid_600534 = validateParameter(valid_600534, JString, required = true, default = newJString(
       "DynamoDB_20120810.UpdateItem"))
-  if valid_600486 != nil:
-    section.add "X-Amz-Target", valid_600486
-  var valid_600487 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600487 = validateParameter(valid_600487, JString, required = false,
+  if valid_600534 != nil:
+    section.add "X-Amz-Target", valid_600534
+  var valid_600535 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600535 = validateParameter(valid_600535, JString, required = false,
                                  default = nil)
-  if valid_600487 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600487
-  var valid_600488 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600488 = validateParameter(valid_600488, JString, required = false,
+  if valid_600535 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600535
+  var valid_600536 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600536 = validateParameter(valid_600536, JString, required = false,
                                  default = nil)
-  if valid_600488 != nil:
-    section.add "X-Amz-Algorithm", valid_600488
-  var valid_600489 = header.getOrDefault("X-Amz-Signature")
-  valid_600489 = validateParameter(valid_600489, JString, required = false,
+  if valid_600536 != nil:
+    section.add "X-Amz-Algorithm", valid_600536
+  var valid_600537 = header.getOrDefault("X-Amz-Signature")
+  valid_600537 = validateParameter(valid_600537, JString, required = false,
                                  default = nil)
-  if valid_600489 != nil:
-    section.add "X-Amz-Signature", valid_600489
-  var valid_600490 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600490 = validateParameter(valid_600490, JString, required = false,
+  if valid_600537 != nil:
+    section.add "X-Amz-Signature", valid_600537
+  var valid_600538 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600538 = validateParameter(valid_600538, JString, required = false,
                                  default = nil)
-  if valid_600490 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600490
-  var valid_600491 = header.getOrDefault("X-Amz-Credential")
-  valid_600491 = validateParameter(valid_600491, JString, required = false,
+  if valid_600538 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600538
+  var valid_600539 = header.getOrDefault("X-Amz-Credential")
+  valid_600539 = validateParameter(valid_600539, JString, required = false,
                                  default = nil)
-  if valid_600491 != nil:
-    section.add "X-Amz-Credential", valid_600491
+  if valid_600539 != nil:
+    section.add "X-Amz-Credential", valid_600539
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4155,37 +4520,37 @@ proc validate_UpdateItem_600482(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600493: Call_UpdateItem_600481; path: JsonNode; query: JsonNode;
+proc call*(call_600541: Call_UpdateItem_600529; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Edits an existing item's attributes, or adds a new item to the table if it does not already exist. You can put, delete, or add attribute values. You can also perform a conditional update on an existing item (insert a new attribute name-value pair if it doesn't exist, or replace an existing name-value pair if it has certain expected attribute values).</p> <p>You can also return the item's attribute values in the same <code>UpdateItem</code> operation using the <code>ReturnValues</code> parameter.</p>
   ## 
-  let valid = call_600493.validator(path, query, header, formData, body)
-  let scheme = call_600493.pickScheme
+  let valid = call_600541.validator(path, query, header, formData, body)
+  let scheme = call_600541.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600493.url(scheme.get, call_600493.host, call_600493.base,
-                         call_600493.route, valid.getOrDefault("path"),
+  let url = call_600541.url(scheme.get, call_600541.host, call_600541.base,
+                         call_600541.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600493, url, valid)
+  result = atozHook(call_600541, url, valid)
 
-proc call*(call_600494: Call_UpdateItem_600481; body: JsonNode): Recallable =
+proc call*(call_600542: Call_UpdateItem_600529; body: JsonNode): Recallable =
   ## updateItem
   ## <p>Edits an existing item's attributes, or adds a new item to the table if it does not already exist. You can put, delete, or add attribute values. You can also perform a conditional update on an existing item (insert a new attribute name-value pair if it doesn't exist, or replace an existing name-value pair if it has certain expected attribute values).</p> <p>You can also return the item's attribute values in the same <code>UpdateItem</code> operation using the <code>ReturnValues</code> parameter.</p>
   ##   body: JObject (required)
-  var body_600495 = newJObject()
+  var body_600543 = newJObject()
   if body != nil:
-    body_600495 = body
-  result = call_600494.call(nil, nil, nil, nil, body_600495)
+    body_600543 = body
+  result = call_600542.call(nil, nil, nil, nil, body_600543)
 
-var updateItem* = Call_UpdateItem_600481(name: "updateItem",
+var updateItem* = Call_UpdateItem_600529(name: "updateItem",
                                       meth: HttpMethod.HttpPost,
                                       host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.UpdateItem",
-                                      validator: validate_UpdateItem_600482,
-                                      base: "/", url: url_UpdateItem_600483,
+                                      validator: validate_UpdateItem_600530,
+                                      base: "/", url: url_UpdateItem_600531,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTable_600496 = ref object of OpenApiRestCall_599368
-proc url_UpdateTable_600498(protocol: Scheme; host: string; base: string;
+  Call_UpdateTable_600544 = ref object of OpenApiRestCall_599368
+proc url_UpdateTable_600546(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4196,7 +4561,7 @@ proc url_UpdateTable_600498(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateTable_600497(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateTable_600545(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Modifies the provisioned throughput settings, global secondary indexes, or DynamoDB Streams settings for a given table.</p> <p>You can only perform one of the following operations at once:</p> <ul> <li> <p>Modify the provisioned throughput settings of the table.</p> </li> <li> <p>Enable or disable DynamoDB Streams on the table.</p> </li> <li> <p>Remove a global secondary index from the table.</p> </li> <li> <p>Create a new global secondary index on the table. After the index begins backfilling, you can use <code>UpdateTable</code> to perform other operations.</p> </li> </ul> <p> <code>UpdateTable</code> is an asynchronous operation; while it is executing, the table status changes from <code>ACTIVE</code> to <code>UPDATING</code>. While it is <code>UPDATING</code>, you cannot issue another <code>UpdateTable</code> request. When the table returns to the <code>ACTIVE</code> state, the <code>UpdateTable</code> operation is complete.</p>
   ## 
@@ -4216,48 +4581,48 @@ proc validate_UpdateTable_600497(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600499 = header.getOrDefault("X-Amz-Date")
-  valid_600499 = validateParameter(valid_600499, JString, required = false,
+  var valid_600547 = header.getOrDefault("X-Amz-Date")
+  valid_600547 = validateParameter(valid_600547, JString, required = false,
                                  default = nil)
-  if valid_600499 != nil:
-    section.add "X-Amz-Date", valid_600499
-  var valid_600500 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600500 = validateParameter(valid_600500, JString, required = false,
+  if valid_600547 != nil:
+    section.add "X-Amz-Date", valid_600547
+  var valid_600548 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600548 = validateParameter(valid_600548, JString, required = false,
                                  default = nil)
-  if valid_600500 != nil:
-    section.add "X-Amz-Security-Token", valid_600500
+  if valid_600548 != nil:
+    section.add "X-Amz-Security-Token", valid_600548
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600501 = header.getOrDefault("X-Amz-Target")
-  valid_600501 = validateParameter(valid_600501, JString, required = true, default = newJString(
+  var valid_600549 = header.getOrDefault("X-Amz-Target")
+  valid_600549 = validateParameter(valid_600549, JString, required = true, default = newJString(
       "DynamoDB_20120810.UpdateTable"))
-  if valid_600501 != nil:
-    section.add "X-Amz-Target", valid_600501
-  var valid_600502 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600502 = validateParameter(valid_600502, JString, required = false,
+  if valid_600549 != nil:
+    section.add "X-Amz-Target", valid_600549
+  var valid_600550 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600550 = validateParameter(valid_600550, JString, required = false,
                                  default = nil)
-  if valid_600502 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600502
-  var valid_600503 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600503 = validateParameter(valid_600503, JString, required = false,
+  if valid_600550 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600550
+  var valid_600551 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600551 = validateParameter(valid_600551, JString, required = false,
                                  default = nil)
-  if valid_600503 != nil:
-    section.add "X-Amz-Algorithm", valid_600503
-  var valid_600504 = header.getOrDefault("X-Amz-Signature")
-  valid_600504 = validateParameter(valid_600504, JString, required = false,
+  if valid_600551 != nil:
+    section.add "X-Amz-Algorithm", valid_600551
+  var valid_600552 = header.getOrDefault("X-Amz-Signature")
+  valid_600552 = validateParameter(valid_600552, JString, required = false,
                                  default = nil)
-  if valid_600504 != nil:
-    section.add "X-Amz-Signature", valid_600504
-  var valid_600505 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600505 = validateParameter(valid_600505, JString, required = false,
+  if valid_600552 != nil:
+    section.add "X-Amz-Signature", valid_600552
+  var valid_600553 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600553 = validateParameter(valid_600553, JString, required = false,
                                  default = nil)
-  if valid_600505 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600505
-  var valid_600506 = header.getOrDefault("X-Amz-Credential")
-  valid_600506 = validateParameter(valid_600506, JString, required = false,
+  if valid_600553 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600553
+  var valid_600554 = header.getOrDefault("X-Amz-Credential")
+  valid_600554 = validateParameter(valid_600554, JString, required = false,
                                  default = nil)
-  if valid_600506 != nil:
-    section.add "X-Amz-Credential", valid_600506
+  if valid_600554 != nil:
+    section.add "X-Amz-Credential", valid_600554
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4268,37 +4633,37 @@ proc validate_UpdateTable_600497(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600508: Call_UpdateTable_600496; path: JsonNode; query: JsonNode;
+proc call*(call_600556: Call_UpdateTable_600544; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Modifies the provisioned throughput settings, global secondary indexes, or DynamoDB Streams settings for a given table.</p> <p>You can only perform one of the following operations at once:</p> <ul> <li> <p>Modify the provisioned throughput settings of the table.</p> </li> <li> <p>Enable or disable DynamoDB Streams on the table.</p> </li> <li> <p>Remove a global secondary index from the table.</p> </li> <li> <p>Create a new global secondary index on the table. After the index begins backfilling, you can use <code>UpdateTable</code> to perform other operations.</p> </li> </ul> <p> <code>UpdateTable</code> is an asynchronous operation; while it is executing, the table status changes from <code>ACTIVE</code> to <code>UPDATING</code>. While it is <code>UPDATING</code>, you cannot issue another <code>UpdateTable</code> request. When the table returns to the <code>ACTIVE</code> state, the <code>UpdateTable</code> operation is complete.</p>
   ## 
-  let valid = call_600508.validator(path, query, header, formData, body)
-  let scheme = call_600508.pickScheme
+  let valid = call_600556.validator(path, query, header, formData, body)
+  let scheme = call_600556.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600508.url(scheme.get, call_600508.host, call_600508.base,
-                         call_600508.route, valid.getOrDefault("path"),
+  let url = call_600556.url(scheme.get, call_600556.host, call_600556.base,
+                         call_600556.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600508, url, valid)
+  result = atozHook(call_600556, url, valid)
 
-proc call*(call_600509: Call_UpdateTable_600496; body: JsonNode): Recallable =
+proc call*(call_600557: Call_UpdateTable_600544; body: JsonNode): Recallable =
   ## updateTable
   ## <p>Modifies the provisioned throughput settings, global secondary indexes, or DynamoDB Streams settings for a given table.</p> <p>You can only perform one of the following operations at once:</p> <ul> <li> <p>Modify the provisioned throughput settings of the table.</p> </li> <li> <p>Enable or disable DynamoDB Streams on the table.</p> </li> <li> <p>Remove a global secondary index from the table.</p> </li> <li> <p>Create a new global secondary index on the table. After the index begins backfilling, you can use <code>UpdateTable</code> to perform other operations.</p> </li> </ul> <p> <code>UpdateTable</code> is an asynchronous operation; while it is executing, the table status changes from <code>ACTIVE</code> to <code>UPDATING</code>. While it is <code>UPDATING</code>, you cannot issue another <code>UpdateTable</code> request. When the table returns to the <code>ACTIVE</code> state, the <code>UpdateTable</code> operation is complete.</p>
   ##   body: JObject (required)
-  var body_600510 = newJObject()
+  var body_600558 = newJObject()
   if body != nil:
-    body_600510 = body
-  result = call_600509.call(nil, nil, nil, nil, body_600510)
+    body_600558 = body
+  result = call_600557.call(nil, nil, nil, nil, body_600558)
 
-var updateTable* = Call_UpdateTable_600496(name: "updateTable",
+var updateTable* = Call_UpdateTable_600544(name: "updateTable",
                                         meth: HttpMethod.HttpPost,
                                         host: "dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDB_20120810.UpdateTable",
-                                        validator: validate_UpdateTable_600497,
-                                        base: "/", url: url_UpdateTable_600498,
+                                        validator: validate_UpdateTable_600545,
+                                        base: "/", url: url_UpdateTable_600546,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTableReplicaAutoScaling_600511 = ref object of OpenApiRestCall_599368
-proc url_UpdateTableReplicaAutoScaling_600513(protocol: Scheme; host: string;
+  Call_UpdateTableReplicaAutoScaling_600559 = ref object of OpenApiRestCall_599368
+proc url_UpdateTableReplicaAutoScaling_600561(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4309,7 +4674,7 @@ proc url_UpdateTableReplicaAutoScaling_600513(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateTableReplicaAutoScaling_600512(path: JsonNode; query: JsonNode;
+proc validate_UpdateTableReplicaAutoScaling_600560(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates auto scaling settings on your global tables at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
   ## 
@@ -4329,48 +4694,48 @@ proc validate_UpdateTableReplicaAutoScaling_600512(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600514 = header.getOrDefault("X-Amz-Date")
-  valid_600514 = validateParameter(valid_600514, JString, required = false,
+  var valid_600562 = header.getOrDefault("X-Amz-Date")
+  valid_600562 = validateParameter(valid_600562, JString, required = false,
                                  default = nil)
-  if valid_600514 != nil:
-    section.add "X-Amz-Date", valid_600514
-  var valid_600515 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600515 = validateParameter(valid_600515, JString, required = false,
+  if valid_600562 != nil:
+    section.add "X-Amz-Date", valid_600562
+  var valid_600563 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600563 = validateParameter(valid_600563, JString, required = false,
                                  default = nil)
-  if valid_600515 != nil:
-    section.add "X-Amz-Security-Token", valid_600515
+  if valid_600563 != nil:
+    section.add "X-Amz-Security-Token", valid_600563
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600516 = header.getOrDefault("X-Amz-Target")
-  valid_600516 = validateParameter(valid_600516, JString, required = true, default = newJString(
+  var valid_600564 = header.getOrDefault("X-Amz-Target")
+  valid_600564 = validateParameter(valid_600564, JString, required = true, default = newJString(
       "DynamoDB_20120810.UpdateTableReplicaAutoScaling"))
-  if valid_600516 != nil:
-    section.add "X-Amz-Target", valid_600516
-  var valid_600517 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600517 = validateParameter(valid_600517, JString, required = false,
+  if valid_600564 != nil:
+    section.add "X-Amz-Target", valid_600564
+  var valid_600565 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600565 = validateParameter(valid_600565, JString, required = false,
                                  default = nil)
-  if valid_600517 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600517
-  var valid_600518 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600518 = validateParameter(valid_600518, JString, required = false,
+  if valid_600565 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600565
+  var valid_600566 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600566 = validateParameter(valid_600566, JString, required = false,
                                  default = nil)
-  if valid_600518 != nil:
-    section.add "X-Amz-Algorithm", valid_600518
-  var valid_600519 = header.getOrDefault("X-Amz-Signature")
-  valid_600519 = validateParameter(valid_600519, JString, required = false,
+  if valid_600566 != nil:
+    section.add "X-Amz-Algorithm", valid_600566
+  var valid_600567 = header.getOrDefault("X-Amz-Signature")
+  valid_600567 = validateParameter(valid_600567, JString, required = false,
                                  default = nil)
-  if valid_600519 != nil:
-    section.add "X-Amz-Signature", valid_600519
-  var valid_600520 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600520 = validateParameter(valid_600520, JString, required = false,
+  if valid_600567 != nil:
+    section.add "X-Amz-Signature", valid_600567
+  var valid_600568 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600568 = validateParameter(valid_600568, JString, required = false,
                                  default = nil)
-  if valid_600520 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600520
-  var valid_600521 = header.getOrDefault("X-Amz-Credential")
-  valid_600521 = validateParameter(valid_600521, JString, required = false,
+  if valid_600568 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600568
+  var valid_600569 = header.getOrDefault("X-Amz-Credential")
+  valid_600569 = validateParameter(valid_600569, JString, required = false,
                                  default = nil)
-  if valid_600521 != nil:
-    section.add "X-Amz-Credential", valid_600521
+  if valid_600569 != nil:
+    section.add "X-Amz-Credential", valid_600569
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4381,38 +4746,38 @@ proc validate_UpdateTableReplicaAutoScaling_600512(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600523: Call_UpdateTableReplicaAutoScaling_600511; path: JsonNode;
+proc call*(call_600571: Call_UpdateTableReplicaAutoScaling_600559; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates auto scaling settings on your global tables at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
   ## 
-  let valid = call_600523.validator(path, query, header, formData, body)
-  let scheme = call_600523.pickScheme
+  let valid = call_600571.validator(path, query, header, formData, body)
+  let scheme = call_600571.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600523.url(scheme.get, call_600523.host, call_600523.base,
-                         call_600523.route, valid.getOrDefault("path"),
+  let url = call_600571.url(scheme.get, call_600571.host, call_600571.base,
+                         call_600571.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600523, url, valid)
+  result = atozHook(call_600571, url, valid)
 
-proc call*(call_600524: Call_UpdateTableReplicaAutoScaling_600511; body: JsonNode): Recallable =
+proc call*(call_600572: Call_UpdateTableReplicaAutoScaling_600559; body: JsonNode): Recallable =
   ## updateTableReplicaAutoScaling
   ## <p>Updates auto scaling settings on your global tables at once.</p> <note> <p>This method only applies to <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables.V2.html">Version 2019.11.21</a> of global tables.</p> </note>
   ##   body: JObject (required)
-  var body_600525 = newJObject()
+  var body_600573 = newJObject()
   if body != nil:
-    body_600525 = body
-  result = call_600524.call(nil, nil, nil, nil, body_600525)
+    body_600573 = body
+  result = call_600572.call(nil, nil, nil, nil, body_600573)
 
-var updateTableReplicaAutoScaling* = Call_UpdateTableReplicaAutoScaling_600511(
+var updateTableReplicaAutoScaling* = Call_UpdateTableReplicaAutoScaling_600559(
     name: "updateTableReplicaAutoScaling", meth: HttpMethod.HttpPost,
     host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.UpdateTableReplicaAutoScaling",
-    validator: validate_UpdateTableReplicaAutoScaling_600512, base: "/",
-    url: url_UpdateTableReplicaAutoScaling_600513,
+    validator: validate_UpdateTableReplicaAutoScaling_600560, base: "/",
+    url: url_UpdateTableReplicaAutoScaling_600561,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTimeToLive_600526 = ref object of OpenApiRestCall_599368
-proc url_UpdateTimeToLive_600528(protocol: Scheme; host: string; base: string;
+  Call_UpdateTimeToLive_600574 = ref object of OpenApiRestCall_599368
+proc url_UpdateTimeToLive_600576(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4423,7 +4788,7 @@ proc url_UpdateTimeToLive_600528(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateTimeToLive_600527(path: JsonNode; query: JsonNode;
+proc validate_UpdateTimeToLive_600575(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>The <code>UpdateTimeToLive</code> method enables or disables Time to Live (TTL) for the specified table. A successful <code>UpdateTimeToLive</code> call returns the current <code>TimeToLiveSpecification</code>. It can take up to one hour for the change to fully process. Any additional <code>UpdateTimeToLive</code> calls for the same table during this one hour duration result in a <code>ValidationException</code>. </p> <p>TTL compares the current time in epoch time format to the time stored in the TTL attribute of an item. If the epoch time value stored in the attribute is less than the current time, the item is marked as expired and subsequently deleted.</p> <note> <p> The epoch time format is the number of seconds elapsed since 12:00:00 AM January 1, 1970 UTC. </p> </note> <p>DynamoDB deletes expired items on a best-effort basis to ensure availability of throughput for other data operations. </p> <important> <p>DynamoDB typically deletes expired items within two days of expiration. The exact duration within which an item gets deleted after expiration is specific to the nature of the workload. Items that have expired and not been deleted will still show up in reads, queries, and scans.</p> </important> <p>As items are deleted, they are removed from any local secondary index and global secondary index immediately in the same eventually consistent way as a standard delete operation.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html">Time To Live</a> in the Amazon DynamoDB Developer Guide. </p>
@@ -4444,48 +4809,48 @@ proc validate_UpdateTimeToLive_600527(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600529 = header.getOrDefault("X-Amz-Date")
-  valid_600529 = validateParameter(valid_600529, JString, required = false,
+  var valid_600577 = header.getOrDefault("X-Amz-Date")
+  valid_600577 = validateParameter(valid_600577, JString, required = false,
                                  default = nil)
-  if valid_600529 != nil:
-    section.add "X-Amz-Date", valid_600529
-  var valid_600530 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600530 = validateParameter(valid_600530, JString, required = false,
+  if valid_600577 != nil:
+    section.add "X-Amz-Date", valid_600577
+  var valid_600578 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600578 = validateParameter(valid_600578, JString, required = false,
                                  default = nil)
-  if valid_600530 != nil:
-    section.add "X-Amz-Security-Token", valid_600530
+  if valid_600578 != nil:
+    section.add "X-Amz-Security-Token", valid_600578
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600531 = header.getOrDefault("X-Amz-Target")
-  valid_600531 = validateParameter(valid_600531, JString, required = true, default = newJString(
+  var valid_600579 = header.getOrDefault("X-Amz-Target")
+  valid_600579 = validateParameter(valid_600579, JString, required = true, default = newJString(
       "DynamoDB_20120810.UpdateTimeToLive"))
-  if valid_600531 != nil:
-    section.add "X-Amz-Target", valid_600531
-  var valid_600532 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600532 = validateParameter(valid_600532, JString, required = false,
+  if valid_600579 != nil:
+    section.add "X-Amz-Target", valid_600579
+  var valid_600580 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600580 = validateParameter(valid_600580, JString, required = false,
                                  default = nil)
-  if valid_600532 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600532
-  var valid_600533 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600533 = validateParameter(valid_600533, JString, required = false,
+  if valid_600580 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600580
+  var valid_600581 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600581 = validateParameter(valid_600581, JString, required = false,
                                  default = nil)
-  if valid_600533 != nil:
-    section.add "X-Amz-Algorithm", valid_600533
-  var valid_600534 = header.getOrDefault("X-Amz-Signature")
-  valid_600534 = validateParameter(valid_600534, JString, required = false,
+  if valid_600581 != nil:
+    section.add "X-Amz-Algorithm", valid_600581
+  var valid_600582 = header.getOrDefault("X-Amz-Signature")
+  valid_600582 = validateParameter(valid_600582, JString, required = false,
                                  default = nil)
-  if valid_600534 != nil:
-    section.add "X-Amz-Signature", valid_600534
-  var valid_600535 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600535 = validateParameter(valid_600535, JString, required = false,
+  if valid_600582 != nil:
+    section.add "X-Amz-Signature", valid_600582
+  var valid_600583 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600583 = validateParameter(valid_600583, JString, required = false,
                                  default = nil)
-  if valid_600535 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600535
-  var valid_600536 = header.getOrDefault("X-Amz-Credential")
-  valid_600536 = validateParameter(valid_600536, JString, required = false,
+  if valid_600583 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600583
+  var valid_600584 = header.getOrDefault("X-Amz-Credential")
+  valid_600584 = validateParameter(valid_600584, JString, required = false,
                                  default = nil)
-  if valid_600536 != nil:
-    section.add "X-Amz-Credential", valid_600536
+  if valid_600584 != nil:
+    section.add "X-Amz-Credential", valid_600584
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4496,33 +4861,33 @@ proc validate_UpdateTimeToLive_600527(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600538: Call_UpdateTimeToLive_600526; path: JsonNode;
+proc call*(call_600586: Call_UpdateTimeToLive_600574; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>The <code>UpdateTimeToLive</code> method enables or disables Time to Live (TTL) for the specified table. A successful <code>UpdateTimeToLive</code> call returns the current <code>TimeToLiveSpecification</code>. It can take up to one hour for the change to fully process. Any additional <code>UpdateTimeToLive</code> calls for the same table during this one hour duration result in a <code>ValidationException</code>. </p> <p>TTL compares the current time in epoch time format to the time stored in the TTL attribute of an item. If the epoch time value stored in the attribute is less than the current time, the item is marked as expired and subsequently deleted.</p> <note> <p> The epoch time format is the number of seconds elapsed since 12:00:00 AM January 1, 1970 UTC. </p> </note> <p>DynamoDB deletes expired items on a best-effort basis to ensure availability of throughput for other data operations. </p> <important> <p>DynamoDB typically deletes expired items within two days of expiration. The exact duration within which an item gets deleted after expiration is specific to the nature of the workload. Items that have expired and not been deleted will still show up in reads, queries, and scans.</p> </important> <p>As items are deleted, they are removed from any local secondary index and global secondary index immediately in the same eventually consistent way as a standard delete operation.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html">Time To Live</a> in the Amazon DynamoDB Developer Guide. </p>
   ## 
-  let valid = call_600538.validator(path, query, header, formData, body)
-  let scheme = call_600538.pickScheme
+  let valid = call_600586.validator(path, query, header, formData, body)
+  let scheme = call_600586.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600538.url(scheme.get, call_600538.host, call_600538.base,
-                         call_600538.route, valid.getOrDefault("path"),
+  let url = call_600586.url(scheme.get, call_600586.host, call_600586.base,
+                         call_600586.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600538, url, valid)
+  result = atozHook(call_600586, url, valid)
 
-proc call*(call_600539: Call_UpdateTimeToLive_600526; body: JsonNode): Recallable =
+proc call*(call_600587: Call_UpdateTimeToLive_600574; body: JsonNode): Recallable =
   ## updateTimeToLive
   ## <p>The <code>UpdateTimeToLive</code> method enables or disables Time to Live (TTL) for the specified table. A successful <code>UpdateTimeToLive</code> call returns the current <code>TimeToLiveSpecification</code>. It can take up to one hour for the change to fully process. Any additional <code>UpdateTimeToLive</code> calls for the same table during this one hour duration result in a <code>ValidationException</code>. </p> <p>TTL compares the current time in epoch time format to the time stored in the TTL attribute of an item. If the epoch time value stored in the attribute is less than the current time, the item is marked as expired and subsequently deleted.</p> <note> <p> The epoch time format is the number of seconds elapsed since 12:00:00 AM January 1, 1970 UTC. </p> </note> <p>DynamoDB deletes expired items on a best-effort basis to ensure availability of throughput for other data operations. </p> <important> <p>DynamoDB typically deletes expired items within two days of expiration. The exact duration within which an item gets deleted after expiration is specific to the nature of the workload. Items that have expired and not been deleted will still show up in reads, queries, and scans.</p> </important> <p>As items are deleted, they are removed from any local secondary index and global secondary index immediately in the same eventually consistent way as a standard delete operation.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html">Time To Live</a> in the Amazon DynamoDB Developer Guide. </p>
   ##   body: JObject (required)
-  var body_600540 = newJObject()
+  var body_600588 = newJObject()
   if body != nil:
-    body_600540 = body
-  result = call_600539.call(nil, nil, nil, nil, body_600540)
+    body_600588 = body
+  result = call_600587.call(nil, nil, nil, nil, body_600588)
 
-var updateTimeToLive* = Call_UpdateTimeToLive_600526(name: "updateTimeToLive",
+var updateTimeToLive* = Call_UpdateTimeToLive_600574(name: "updateTimeToLive",
     meth: HttpMethod.HttpPost, host: "dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDB_20120810.UpdateTimeToLive",
-    validator: validate_UpdateTimeToLive_600527, base: "/",
-    url: url_UpdateTimeToLive_600528, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateTimeToLive_600575, base: "/",
+    url: url_UpdateTimeToLive_600576, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

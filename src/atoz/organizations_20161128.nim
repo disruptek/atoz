@@ -261,7 +261,7 @@ proc url_AttachPolicy_599977(protocol: Scheme; host: string; base: string;
 
 proc validate_AttachPolicy_599976(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Attaches a policy to a root, an organizational unit (OU), or an individual account. How the policy affects accounts depends on the type of policy:</p> <ul> <li> <p> <b>Service control policy (SCP)</b> - An SCP specifies what permissions can be delegated to users in affected member accounts. The scope of influence for a policy depends on what you attach the policy to:</p> <ul> <li> <p>If you attach an SCP to a root, it affects all accounts in the organization.</p> </li> <li> <p>If you attach an SCP to an OU, it affects all accounts in that OU and in any child OUs.</p> </li> <li> <p>If you attach the policy directly to an account, it affects only that account.</p> </li> </ul> <p>SCPs are JSON policies that specify the maximum permissions for an organization or organizational unit (OU). You can attach one SCP to a higher level root or OU, and a different SCP to a child OU or to an account. The child policy can further restrict only the permissions that pass through the parent filter and are available to the child. An SCP that is attached to a child can't grant a permission that the parent hasn't already granted. For example, imagine that the parent SCP allows permissions A, B, C, D, and E. The child SCP allows C, D, E, F, and G. The result is that the accounts affected by the child SCP are allowed to use only C, D, and E. They can't use A or B because the child OU filtered them out. They also can't use F and G because the parent OU filtered them out. They can't be granted back by the child SCP; child SCPs can only filter the permissions they receive from the parent SCP.</p> <p>AWS Organizations attaches a default SCP named <code>"FullAWSAccess</code> to every root, OU, and account. This default SCP allows all services and actions, enabling any new child OU or account to inherit the permissions of the parent root or OU. If you detach the default policy, you must replace it with a policy that specifies the permissions that you want to allow in that OU or account.</p> <p>For more information about how AWS Organizations policies permissions work, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scp.html">Using Service Control Policies</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Attaches a policy to a root, an organizational unit (OU), or an individual account.</p> <p>How the policy affects accounts depends on the type of policy:</p> <ul> <li> <p>For more information about attaching SCPs, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html">How SCPs Work</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>For information about attaching tag policies, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies-inheritance.html">How Policy Inheritance Works</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -333,7 +333,7 @@ proc validate_AttachPolicy_599976(path: JsonNode; query: JsonNode; header: JsonN
 
 proc call*(call_599987: Call_AttachPolicy_599975; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Attaches a policy to a root, an organizational unit (OU), or an individual account. How the policy affects accounts depends on the type of policy:</p> <ul> <li> <p> <b>Service control policy (SCP)</b> - An SCP specifies what permissions can be delegated to users in affected member accounts. The scope of influence for a policy depends on what you attach the policy to:</p> <ul> <li> <p>If you attach an SCP to a root, it affects all accounts in the organization.</p> </li> <li> <p>If you attach an SCP to an OU, it affects all accounts in that OU and in any child OUs.</p> </li> <li> <p>If you attach the policy directly to an account, it affects only that account.</p> </li> </ul> <p>SCPs are JSON policies that specify the maximum permissions for an organization or organizational unit (OU). You can attach one SCP to a higher level root or OU, and a different SCP to a child OU or to an account. The child policy can further restrict only the permissions that pass through the parent filter and are available to the child. An SCP that is attached to a child can't grant a permission that the parent hasn't already granted. For example, imagine that the parent SCP allows permissions A, B, C, D, and E. The child SCP allows C, D, E, F, and G. The result is that the accounts affected by the child SCP are allowed to use only C, D, and E. They can't use A or B because the child OU filtered them out. They also can't use F and G because the parent OU filtered them out. They can't be granted back by the child SCP; child SCPs can only filter the permissions they receive from the parent SCP.</p> <p>AWS Organizations attaches a default SCP named <code>"FullAWSAccess</code> to every root, OU, and account. This default SCP allows all services and actions, enabling any new child OU or account to inherit the permissions of the parent root or OU. If you detach the default policy, you must replace it with a policy that specifies the permissions that you want to allow in that OU or account.</p> <p>For more information about how AWS Organizations policies permissions work, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scp.html">Using Service Control Policies</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Attaches a policy to a root, an organizational unit (OU), or an individual account.</p> <p>How the policy affects accounts depends on the type of policy:</p> <ul> <li> <p>For more information about attaching SCPs, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html">How SCPs Work</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>For information about attaching tag policies, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies-inheritance.html">How Policy Inheritance Works</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_599987.validator(path, query, header, formData, body)
   let scheme = call_599987.pickScheme
@@ -346,7 +346,7 @@ proc call*(call_599987: Call_AttachPolicy_599975; path: JsonNode; query: JsonNod
 
 proc call*(call_599988: Call_AttachPolicy_599975; body: JsonNode): Recallable =
   ## attachPolicy
-  ## <p>Attaches a policy to a root, an organizational unit (OU), or an individual account. How the policy affects accounts depends on the type of policy:</p> <ul> <li> <p> <b>Service control policy (SCP)</b> - An SCP specifies what permissions can be delegated to users in affected member accounts. The scope of influence for a policy depends on what you attach the policy to:</p> <ul> <li> <p>If you attach an SCP to a root, it affects all accounts in the organization.</p> </li> <li> <p>If you attach an SCP to an OU, it affects all accounts in that OU and in any child OUs.</p> </li> <li> <p>If you attach the policy directly to an account, it affects only that account.</p> </li> </ul> <p>SCPs are JSON policies that specify the maximum permissions for an organization or organizational unit (OU). You can attach one SCP to a higher level root or OU, and a different SCP to a child OU or to an account. The child policy can further restrict only the permissions that pass through the parent filter and are available to the child. An SCP that is attached to a child can't grant a permission that the parent hasn't already granted. For example, imagine that the parent SCP allows permissions A, B, C, D, and E. The child SCP allows C, D, E, F, and G. The result is that the accounts affected by the child SCP are allowed to use only C, D, and E. They can't use A or B because the child OU filtered them out. They also can't use F and G because the parent OU filtered them out. They can't be granted back by the child SCP; child SCPs can only filter the permissions they receive from the parent SCP.</p> <p>AWS Organizations attaches a default SCP named <code>"FullAWSAccess</code> to every root, OU, and account. This default SCP allows all services and actions, enabling any new child OU or account to inherit the permissions of the parent root or OU. If you detach the default policy, you must replace it with a policy that specifies the permissions that you want to allow in that OU or account.</p> <p>For more information about how AWS Organizations policies permissions work, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scp.html">Using Service Control Policies</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Attaches a policy to a root, an organizational unit (OU), or an individual account.</p> <p>How the policy affects accounts depends on the type of policy:</p> <ul> <li> <p>For more information about attaching SCPs, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html">How SCPs Work</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>For information about attaching tag policies, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies-inheritance.html">How Policy Inheritance Works</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_599989 = newJObject()
   if body != nil:
@@ -486,7 +486,7 @@ proc url_CreateAccount_600007(protocol: Scheme; host: string; base: string;
 
 proc validate_CreateAccount_600006(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates an AWS account that is automatically a member of the organization whose credentials made the request. This is an asynchronous request that AWS performs in the background. Because <code>CreateAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>The user who calls the API to create an account must have the <code>organizations:CreateAccount</code> permission. If you enabled all features in the organization, AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide</i>.</p> <p>AWS Organizations preconfigures the new member account with a role (named <code>OrganizationAccountAccessRole</code> by default) that grants users in the master account administrator permissions in the new member account. Principals in the master account can assume the role. AWS Organizations clones the company name and address information for the new account from the organization's master account.</p> <p>This operation can be called only from the organization's master account.</p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required for the account to operate as a standalone account, such as a payment method and signing the end user license agreement (EULA) is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the Billing and Cost Management Console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
+  ## <p>Creates an AWS account that is automatically a member of the organization whose credentials made the request. This is an asynchronous request that AWS performs in the background. Because <code>CreateAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>The user who calls the API to create an account must have the <code>organizations:CreateAccount</code> permission. If you enabled all features in the organization, AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide</i>.</p> <p>AWS Organizations preconfigures the new member account with a role (named <code>OrganizationAccountAccessRole</code> by default) that grants users in the master account administrator permissions in the new member account. Principals in the master account can assume the role. AWS Organizations clones the company name and address information for the new account from the organization's master account.</p> <p>This operation can be called only from the organization's master account.</p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization, the information required for the account to operate as a standalone account is <i>not</i> automatically collected. For example, information about the payment method and signing the end user license agreement (EULA) is not collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the Billing and Cost Management Console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -558,7 +558,7 @@ proc validate_CreateAccount_600006(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_600017: Call_CreateAccount_600005; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates an AWS account that is automatically a member of the organization whose credentials made the request. This is an asynchronous request that AWS performs in the background. Because <code>CreateAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>The user who calls the API to create an account must have the <code>organizations:CreateAccount</code> permission. If you enabled all features in the organization, AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide</i>.</p> <p>AWS Organizations preconfigures the new member account with a role (named <code>OrganizationAccountAccessRole</code> by default) that grants users in the master account administrator permissions in the new member account. Principals in the master account can assume the role. AWS Organizations clones the company name and address information for the new account from the organization's master account.</p> <p>This operation can be called only from the organization's master account.</p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required for the account to operate as a standalone account, such as a payment method and signing the end user license agreement (EULA) is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the Billing and Cost Management Console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
+  ## <p>Creates an AWS account that is automatically a member of the organization whose credentials made the request. This is an asynchronous request that AWS performs in the background. Because <code>CreateAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>The user who calls the API to create an account must have the <code>organizations:CreateAccount</code> permission. If you enabled all features in the organization, AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide</i>.</p> <p>AWS Organizations preconfigures the new member account with a role (named <code>OrganizationAccountAccessRole</code> by default) that grants users in the master account administrator permissions in the new member account. Principals in the master account can assume the role. AWS Organizations clones the company name and address information for the new account from the organization's master account.</p> <p>This operation can be called only from the organization's master account.</p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization, the information required for the account to operate as a standalone account is <i>not</i> automatically collected. For example, information about the payment method and signing the end user license agreement (EULA) is not collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the Billing and Cost Management Console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
   ## 
   let valid = call_600017.validator(path, query, header, formData, body)
   let scheme = call_600017.pickScheme
@@ -571,7 +571,7 @@ proc call*(call_600017: Call_CreateAccount_600005; path: JsonNode; query: JsonNo
 
 proc call*(call_600018: Call_CreateAccount_600005; body: JsonNode): Recallable =
   ## createAccount
-  ## <p>Creates an AWS account that is automatically a member of the organization whose credentials made the request. This is an asynchronous request that AWS performs in the background. Because <code>CreateAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>The user who calls the API to create an account must have the <code>organizations:CreateAccount</code> permission. If you enabled all features in the organization, AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide</i>.</p> <p>AWS Organizations preconfigures the new member account with a role (named <code>OrganizationAccountAccessRole</code> by default) that grants users in the master account administrator permissions in the new member account. Principals in the master account can assume the role. AWS Organizations clones the company name and address information for the new account from the organization's master account.</p> <p>This operation can be called only from the organization's master account.</p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required for the account to operate as a standalone account, such as a payment method and signing the end user license agreement (EULA) is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the Billing and Cost Management Console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
+  ## <p>Creates an AWS account that is automatically a member of the organization whose credentials made the request. This is an asynchronous request that AWS performs in the background. Because <code>CreateAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>The user who calls the API to create an account must have the <code>organizations:CreateAccount</code> permission. If you enabled all features in the organization, AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide</i>.</p> <p>AWS Organizations preconfigures the new member account with a role (named <code>OrganizationAccountAccessRole</code> by default) that grants users in the master account administrator permissions in the new member account. Principals in the master account can assume the role. AWS Organizations clones the company name and address information for the new account from the organization's master account.</p> <p>This operation can be called only from the organization's master account.</p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization, the information required for the account to operate as a standalone account is <i>not</i> automatically collected. For example, information about the payment method and signing the end user license agreement (EULA) is not collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the Billing and Cost Management Console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
   ##   body: JObject (required)
   var body_600019 = newJObject()
   if body != nil:
@@ -598,7 +598,7 @@ proc url_CreateGovCloudAccount_600022(protocol: Scheme; host: string; base: stri
 
 proc validate_CreateGovCloudAccount_600021(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>This action is available if all of the following are true:</p> <ul> <li> <p>You're authorized to create accounts in the AWS GovCloud (US) Region. For more information on the AWS GovCloud (US) Region, see the <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/welcome.html"> <i>AWS GovCloud User Guide</i>.</a> </p> </li> <li> <p>You already have an account in the AWS GovCloud (US) Region that is associated with your master account in the commercial Region. </p> </li> <li> <p>You call this action from the master account of your organization in the commercial Region.</p> </li> <li> <p>You have the <code>organizations:CreateGovCloudAccount</code> permission. AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>AWS automatically enables AWS CloudTrail for AWS GovCloud (US) accounts, but you should also do the following:</p> <ul> <li> <p>Verify that AWS CloudTrail is enabled to store logs.</p> </li> <li> <p>Create an S3 bucket for AWS CloudTrail log storage.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/verifying-cloudtrail.html">Verifying AWS CloudTrail Is Enabled</a> in the <i>AWS GovCloud User Guide</i>. </p> </li> </ul> <p>You call this action from the master account of your organization in the commercial Region to create a standalone AWS account in the AWS GovCloud (US) Region. After the account is created, the master account of an organization in the AWS GovCloud (US) Region can invite it to that organization. For more information on inviting standalone accounts in the AWS GovCloud (US) to join an organization, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>Calling <code>CreateGovCloudAccount</code> is an asynchronous request that AWS performs in the background. Because <code>CreateGovCloudAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>When you call the <code>CreateGovCloudAccount</code> action, you create two accounts: a standalone account in the AWS GovCloud (US) Region and an associated account in the commercial Region for billing and support purposes. The account in the commercial Region is automatically a member of the organization whose credentials made the request. Both accounts are associated with the same email address.</p> <p>A role is created in the new account in the commercial Region that allows the master account in the organization in the commercial Region to assume it. An AWS GovCloud (US) account is then created and associated with the commercial account that you just created. A role is created in the new AWS GovCloud (US) account that can be assumed by the AWS GovCloud (US) account that is associated with the master account of the commercial organization. For more information and to view a diagram that explains how account access works, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required for the account to operate as a standalone account, such as a payment method and signing the end user license agreement (EULA) is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateGovCloudAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the AWS Billing and Cost Management console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
+  ## <p>This action is available if all of the following are true:</p> <ul> <li> <p>You're authorized to create accounts in the AWS GovCloud (US) Region. For more information on the AWS GovCloud (US) Region, see the <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/welcome.html"> <i>AWS GovCloud User Guide</i>.</a> </p> </li> <li> <p>You already have an account in the AWS GovCloud (US) Region that is associated with your master account in the commercial Region. </p> </li> <li> <p>You call this action from the master account of your organization in the commercial Region.</p> </li> <li> <p>You have the <code>organizations:CreateGovCloudAccount</code> permission. AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>AWS automatically enables AWS CloudTrail for AWS GovCloud (US) accounts, but you should also do the following:</p> <ul> <li> <p>Verify that AWS CloudTrail is enabled to store logs.</p> </li> <li> <p>Create an S3 bucket for AWS CloudTrail log storage.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/verifying-cloudtrail.html">Verifying AWS CloudTrail Is Enabled</a> in the <i>AWS GovCloud User Guide</i>. </p> </li> </ul> <p>You call this action from the master account of your organization in the commercial Region to create a standalone AWS account in the AWS GovCloud (US) Region. After the account is created, the master account of an organization in the AWS GovCloud (US) Region can invite it to that organization. For more information on inviting standalone accounts in the AWS GovCloud (US) to join an organization, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>Calling <code>CreateGovCloudAccount</code> is an asynchronous request that AWS performs in the background. Because <code>CreateGovCloudAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>When you call the <code>CreateGovCloudAccount</code> action, you create two accounts: a standalone account in the AWS GovCloud (US) Region and an associated account in the commercial Region for billing and support purposes. The account in the commercial Region is automatically a member of the organization whose credentials made the request. Both accounts are associated with the same email address.</p> <p>A role is created in the new account in the commercial Region that allows the master account in the organization in the commercial Region to assume it. An AWS GovCloud (US) account is then created and associated with the commercial account that you just created. A role is created in the new AWS GovCloud (US) account. This role can be assumed by the AWS GovCloud (US) account that is associated with the master account of the commercial organization. For more information and to view a diagram that explains how account access works, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>You can create an account in an organization using the AWS Organizations console, API, or CLI commands. When you do, the information required for the account to operate as a standalone account, such as a payment method, is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateGovCloudAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the AWS Billing and Cost Management console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -670,7 +670,7 @@ proc validate_CreateGovCloudAccount_600021(path: JsonNode; query: JsonNode;
 
 proc call*(call_600032: Call_CreateGovCloudAccount_600020; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>This action is available if all of the following are true:</p> <ul> <li> <p>You're authorized to create accounts in the AWS GovCloud (US) Region. For more information on the AWS GovCloud (US) Region, see the <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/welcome.html"> <i>AWS GovCloud User Guide</i>.</a> </p> </li> <li> <p>You already have an account in the AWS GovCloud (US) Region that is associated with your master account in the commercial Region. </p> </li> <li> <p>You call this action from the master account of your organization in the commercial Region.</p> </li> <li> <p>You have the <code>organizations:CreateGovCloudAccount</code> permission. AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>AWS automatically enables AWS CloudTrail for AWS GovCloud (US) accounts, but you should also do the following:</p> <ul> <li> <p>Verify that AWS CloudTrail is enabled to store logs.</p> </li> <li> <p>Create an S3 bucket for AWS CloudTrail log storage.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/verifying-cloudtrail.html">Verifying AWS CloudTrail Is Enabled</a> in the <i>AWS GovCloud User Guide</i>. </p> </li> </ul> <p>You call this action from the master account of your organization in the commercial Region to create a standalone AWS account in the AWS GovCloud (US) Region. After the account is created, the master account of an organization in the AWS GovCloud (US) Region can invite it to that organization. For more information on inviting standalone accounts in the AWS GovCloud (US) to join an organization, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>Calling <code>CreateGovCloudAccount</code> is an asynchronous request that AWS performs in the background. Because <code>CreateGovCloudAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>When you call the <code>CreateGovCloudAccount</code> action, you create two accounts: a standalone account in the AWS GovCloud (US) Region and an associated account in the commercial Region for billing and support purposes. The account in the commercial Region is automatically a member of the organization whose credentials made the request. Both accounts are associated with the same email address.</p> <p>A role is created in the new account in the commercial Region that allows the master account in the organization in the commercial Region to assume it. An AWS GovCloud (US) account is then created and associated with the commercial account that you just created. A role is created in the new AWS GovCloud (US) account that can be assumed by the AWS GovCloud (US) account that is associated with the master account of the commercial organization. For more information and to view a diagram that explains how account access works, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required for the account to operate as a standalone account, such as a payment method and signing the end user license agreement (EULA) is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateGovCloudAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the AWS Billing and Cost Management console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
+  ## <p>This action is available if all of the following are true:</p> <ul> <li> <p>You're authorized to create accounts in the AWS GovCloud (US) Region. For more information on the AWS GovCloud (US) Region, see the <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/welcome.html"> <i>AWS GovCloud User Guide</i>.</a> </p> </li> <li> <p>You already have an account in the AWS GovCloud (US) Region that is associated with your master account in the commercial Region. </p> </li> <li> <p>You call this action from the master account of your organization in the commercial Region.</p> </li> <li> <p>You have the <code>organizations:CreateGovCloudAccount</code> permission. AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>AWS automatically enables AWS CloudTrail for AWS GovCloud (US) accounts, but you should also do the following:</p> <ul> <li> <p>Verify that AWS CloudTrail is enabled to store logs.</p> </li> <li> <p>Create an S3 bucket for AWS CloudTrail log storage.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/verifying-cloudtrail.html">Verifying AWS CloudTrail Is Enabled</a> in the <i>AWS GovCloud User Guide</i>. </p> </li> </ul> <p>You call this action from the master account of your organization in the commercial Region to create a standalone AWS account in the AWS GovCloud (US) Region. After the account is created, the master account of an organization in the AWS GovCloud (US) Region can invite it to that organization. For more information on inviting standalone accounts in the AWS GovCloud (US) to join an organization, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>Calling <code>CreateGovCloudAccount</code> is an asynchronous request that AWS performs in the background. Because <code>CreateGovCloudAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>When you call the <code>CreateGovCloudAccount</code> action, you create two accounts: a standalone account in the AWS GovCloud (US) Region and an associated account in the commercial Region for billing and support purposes. The account in the commercial Region is automatically a member of the organization whose credentials made the request. Both accounts are associated with the same email address.</p> <p>A role is created in the new account in the commercial Region that allows the master account in the organization in the commercial Region to assume it. An AWS GovCloud (US) account is then created and associated with the commercial account that you just created. A role is created in the new AWS GovCloud (US) account. This role can be assumed by the AWS GovCloud (US) account that is associated with the master account of the commercial organization. For more information and to view a diagram that explains how account access works, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>You can create an account in an organization using the AWS Organizations console, API, or CLI commands. When you do, the information required for the account to operate as a standalone account, such as a payment method, is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateGovCloudAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the AWS Billing and Cost Management console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
   ## 
   let valid = call_600032.validator(path, query, header, formData, body)
   let scheme = call_600032.pickScheme
@@ -683,7 +683,7 @@ proc call*(call_600032: Call_CreateGovCloudAccount_600020; path: JsonNode;
 
 proc call*(call_600033: Call_CreateGovCloudAccount_600020; body: JsonNode): Recallable =
   ## createGovCloudAccount
-  ## <p>This action is available if all of the following are true:</p> <ul> <li> <p>You're authorized to create accounts in the AWS GovCloud (US) Region. For more information on the AWS GovCloud (US) Region, see the <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/welcome.html"> <i>AWS GovCloud User Guide</i>.</a> </p> </li> <li> <p>You already have an account in the AWS GovCloud (US) Region that is associated with your master account in the commercial Region. </p> </li> <li> <p>You call this action from the master account of your organization in the commercial Region.</p> </li> <li> <p>You have the <code>organizations:CreateGovCloudAccount</code> permission. AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>AWS automatically enables AWS CloudTrail for AWS GovCloud (US) accounts, but you should also do the following:</p> <ul> <li> <p>Verify that AWS CloudTrail is enabled to store logs.</p> </li> <li> <p>Create an S3 bucket for AWS CloudTrail log storage.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/verifying-cloudtrail.html">Verifying AWS CloudTrail Is Enabled</a> in the <i>AWS GovCloud User Guide</i>. </p> </li> </ul> <p>You call this action from the master account of your organization in the commercial Region to create a standalone AWS account in the AWS GovCloud (US) Region. After the account is created, the master account of an organization in the AWS GovCloud (US) Region can invite it to that organization. For more information on inviting standalone accounts in the AWS GovCloud (US) to join an organization, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>Calling <code>CreateGovCloudAccount</code> is an asynchronous request that AWS performs in the background. Because <code>CreateGovCloudAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>When you call the <code>CreateGovCloudAccount</code> action, you create two accounts: a standalone account in the AWS GovCloud (US) Region and an associated account in the commercial Region for billing and support purposes. The account in the commercial Region is automatically a member of the organization whose credentials made the request. Both accounts are associated with the same email address.</p> <p>A role is created in the new account in the commercial Region that allows the master account in the organization in the commercial Region to assume it. An AWS GovCloud (US) account is then created and associated with the commercial account that you just created. A role is created in the new AWS GovCloud (US) account that can be assumed by the AWS GovCloud (US) account that is associated with the master account of the commercial organization. For more information and to view a diagram that explains how account access works, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required for the account to operate as a standalone account, such as a payment method and signing the end user license agreement (EULA) is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateGovCloudAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the AWS Billing and Cost Management console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
+  ## <p>This action is available if all of the following are true:</p> <ul> <li> <p>You're authorized to create accounts in the AWS GovCloud (US) Region. For more information on the AWS GovCloud (US) Region, see the <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/welcome.html"> <i>AWS GovCloud User Guide</i>.</a> </p> </li> <li> <p>You already have an account in the AWS GovCloud (US) Region that is associated with your master account in the commercial Region. </p> </li> <li> <p>You call this action from the master account of your organization in the commercial Region.</p> </li> <li> <p>You have the <code>organizations:CreateGovCloudAccount</code> permission. AWS Organizations creates the required service-linked role named <code>AWSServiceRoleForOrganizations</code>. For more information, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html#orgs_integrate_services-using_slrs">AWS Organizations and Service-Linked Roles</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p>AWS automatically enables AWS CloudTrail for AWS GovCloud (US) accounts, but you should also do the following:</p> <ul> <li> <p>Verify that AWS CloudTrail is enabled to store logs.</p> </li> <li> <p>Create an S3 bucket for AWS CloudTrail log storage.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/verifying-cloudtrail.html">Verifying AWS CloudTrail Is Enabled</a> in the <i>AWS GovCloud User Guide</i>. </p> </li> </ul> <p>You call this action from the master account of your organization in the commercial Region to create a standalone AWS account in the AWS GovCloud (US) Region. After the account is created, the master account of an organization in the AWS GovCloud (US) Region can invite it to that organization. For more information on inviting standalone accounts in the AWS GovCloud (US) to join an organization, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>Calling <code>CreateGovCloudAccount</code> is an asynchronous request that AWS performs in the background. Because <code>CreateGovCloudAccount</code> operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:</p> <ul> <li> <p>Use the <code>OperationId</code> response element from this operation to provide as a parameter to the <a>DescribeCreateAccountStatus</a> operation.</p> </li> <li> <p>Check the AWS CloudTrail log for the <code>CreateAccountResult</code> event. For information on using AWS CloudTrail with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_monitoring.html">Monitoring the Activity in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> </li> </ul> <p/> <p>When you call the <code>CreateGovCloudAccount</code> action, you create two accounts: a standalone account in the AWS GovCloud (US) Region and an associated account in the commercial Region for billing and support purposes. The account in the commercial Region is automatically a member of the organization whose credentials made the request. Both accounts are associated with the same email address.</p> <p>A role is created in the new account in the commercial Region that allows the master account in the organization in the commercial Region to assume it. An AWS GovCloud (US) account is then created and associated with the commercial account that you just created. A role is created in the new AWS GovCloud (US) account. This role can be assumed by the AWS GovCloud (US) account that is associated with the master account of the commercial organization. For more information and to view a diagram that explains how account access works, see <a href="http://docs.aws.amazon.com/govcloud-us/latest/UserGuide/govcloud-organizations.html">AWS Organizations</a> in the <i>AWS GovCloud User Guide.</i> </p> <p>For more information about creating accounts, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_create.html">Creating an AWS Account in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <ul> <li> <p>You can create an account in an organization using the AWS Organizations console, API, or CLI commands. When you do, the information required for the account to operate as a standalone account, such as a payment method, is <i>not</i> automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization as a member account</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>If you get an exception that indicates that you exceeded your account limits for the organization, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> <li> <p>Using <code>CreateGovCloudAccount</code> to create multiple temporary accounts isn't recommended. You can only close an account from the AWS Billing and Cost Management console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html">Closing an AWS Account</a> in the <i>AWS Organizations User Guide</i>.</p> </li> </ul> </important> <note> <p>When you create a member account with this operation, you can choose whether to create the account with the <b>IAM User and Role Access to Billing Information</b> switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html">Granting Access to Your Billing Information and Tools</a>.</p> </note>
   ##   body: JObject (required)
   var body_600034 = newJObject()
   if body != nil:
@@ -712,7 +712,7 @@ proc url_CreateOrganization_600037(protocol: Scheme; host: string; base: string;
 proc validate_CreateOrganization_600036(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
-  ## <p>Creates an AWS organization. The account whose user is calling the <code>CreateOrganization</code> operation automatically becomes the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/orgs_getting-started_concepts.html#account">master account</a> of the new organization.</p> <p>This operation must be called using credentials from the account that is to become the new organization's master account. The principal must also have the relevant IAM permissions.</p> <p>By default (or if you set the <code>FeatureSet</code> parameter to <code>ALL</code>), the new organization is created with all features enabled and service control policies automatically enabled in the root. If you instead choose to create the organization supporting only the consolidated billing features by setting the <code>FeatureSet</code> parameter to <code>CONSOLIDATED_BILLING"</code>, no policy types are enabled by default, and you can't use organization policies.</p>
+  ## <p>Creates an AWS organization. The account whose user is calling the <code>CreateOrganization</code> operation automatically becomes the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/orgs_getting-started_concepts.html#account">master account</a> of the new organization.</p> <p>This operation must be called using credentials from the account that is to become the new organization's master account. The principal must also have the relevant IAM permissions.</p> <p>By default (or if you set the <code>FeatureSet</code> parameter to <code>ALL</code>), the new organization is created with all features enabled. In addition, service control policies are automatically enabled in the root. If you instead create the organization supporting only the consolidated billing features, no policy types are enabled by default, and you can't use organization policies.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -784,7 +784,7 @@ proc validate_CreateOrganization_600036(path: JsonNode; query: JsonNode;
 
 proc call*(call_600047: Call_CreateOrganization_600035; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates an AWS organization. The account whose user is calling the <code>CreateOrganization</code> operation automatically becomes the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/orgs_getting-started_concepts.html#account">master account</a> of the new organization.</p> <p>This operation must be called using credentials from the account that is to become the new organization's master account. The principal must also have the relevant IAM permissions.</p> <p>By default (or if you set the <code>FeatureSet</code> parameter to <code>ALL</code>), the new organization is created with all features enabled and service control policies automatically enabled in the root. If you instead choose to create the organization supporting only the consolidated billing features by setting the <code>FeatureSet</code> parameter to <code>CONSOLIDATED_BILLING"</code>, no policy types are enabled by default, and you can't use organization policies.</p>
+  ## <p>Creates an AWS organization. The account whose user is calling the <code>CreateOrganization</code> operation automatically becomes the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/orgs_getting-started_concepts.html#account">master account</a> of the new organization.</p> <p>This operation must be called using credentials from the account that is to become the new organization's master account. The principal must also have the relevant IAM permissions.</p> <p>By default (or if you set the <code>FeatureSet</code> parameter to <code>ALL</code>), the new organization is created with all features enabled. In addition, service control policies are automatically enabled in the root. If you instead create the organization supporting only the consolidated billing features, no policy types are enabled by default, and you can't use organization policies.</p>
   ## 
   let valid = call_600047.validator(path, query, header, formData, body)
   let scheme = call_600047.pickScheme
@@ -797,7 +797,7 @@ proc call*(call_600047: Call_CreateOrganization_600035; path: JsonNode;
 
 proc call*(call_600048: Call_CreateOrganization_600035; body: JsonNode): Recallable =
   ## createOrganization
-  ## <p>Creates an AWS organization. The account whose user is calling the <code>CreateOrganization</code> operation automatically becomes the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/orgs_getting-started_concepts.html#account">master account</a> of the new organization.</p> <p>This operation must be called using credentials from the account that is to become the new organization's master account. The principal must also have the relevant IAM permissions.</p> <p>By default (or if you set the <code>FeatureSet</code> parameter to <code>ALL</code>), the new organization is created with all features enabled and service control policies automatically enabled in the root. If you instead choose to create the organization supporting only the consolidated billing features by setting the <code>FeatureSet</code> parameter to <code>CONSOLIDATED_BILLING"</code>, no policy types are enabled by default, and you can't use organization policies.</p>
+  ## <p>Creates an AWS organization. The account whose user is calling the <code>CreateOrganization</code> operation automatically becomes the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/orgs_getting-started_concepts.html#account">master account</a> of the new organization.</p> <p>This operation must be called using credentials from the account that is to become the new organization's master account. The principal must also have the relevant IAM permissions.</p> <p>By default (or if you set the <code>FeatureSet</code> parameter to <code>ALL</code>), the new organization is created with all features enabled. In addition, service control policies are automatically enabled in the root. If you instead create the organization supporting only the consolidated billing features, no policy types are enabled by default, and you can't use organization policies.</p>
   ##   body: JObject (required)
   var body_600049 = newJObject()
   if body != nil:
@@ -1052,7 +1052,7 @@ proc url_DeclineHandshake_600082(protocol: Scheme; host: string; base: string;
 proc validate_DeclineHandshake_600081(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Declines a handshake request. This sets the handshake state to <code>DECLINED</code> and effectively deactivates the request.</p> <p>This operation can be called only from the account that received the handshake. The originator of the handshake can use <a>CancelHandshake</a> instead. The originator can't reactivate a declined request, but can reinitiate the process with a new handshake request.</p> <p>After you decline a handshake, it continues to appear in the results of relevant APIs for only 30 days. After that, it's deleted.</p>
+  ## <p>Declines a handshake request. This sets the handshake state to <code>DECLINED</code> and effectively deactivates the request.</p> <p>This operation can be called only from the account that received the handshake. The originator of the handshake can use <a>CancelHandshake</a> instead. The originator can't reactivate a declined request, but can reinitiate the process with a new handshake request.</p> <p>After you decline a handshake, it continues to appear in the results of relevant API operations for only 30 days. After that, it's deleted.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1124,7 +1124,7 @@ proc validate_DeclineHandshake_600081(path: JsonNode; query: JsonNode;
 
 proc call*(call_600092: Call_DeclineHandshake_600080; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Declines a handshake request. This sets the handshake state to <code>DECLINED</code> and effectively deactivates the request.</p> <p>This operation can be called only from the account that received the handshake. The originator of the handshake can use <a>CancelHandshake</a> instead. The originator can't reactivate a declined request, but can reinitiate the process with a new handshake request.</p> <p>After you decline a handshake, it continues to appear in the results of relevant APIs for only 30 days. After that, it's deleted.</p>
+  ## <p>Declines a handshake request. This sets the handshake state to <code>DECLINED</code> and effectively deactivates the request.</p> <p>This operation can be called only from the account that received the handshake. The originator of the handshake can use <a>CancelHandshake</a> instead. The originator can't reactivate a declined request, but can reinitiate the process with a new handshake request.</p> <p>After you decline a handshake, it continues to appear in the results of relevant API operations for only 30 days. After that, it's deleted.</p>
   ## 
   let valid = call_600092.validator(path, query, header, formData, body)
   let scheme = call_600092.pickScheme
@@ -1137,7 +1137,7 @@ proc call*(call_600092: Call_DeclineHandshake_600080; path: JsonNode;
 
 proc call*(call_600093: Call_DeclineHandshake_600080; body: JsonNode): Recallable =
   ## declineHandshake
-  ## <p>Declines a handshake request. This sets the handshake state to <code>DECLINED</code> and effectively deactivates the request.</p> <p>This operation can be called only from the account that received the handshake. The originator of the handshake can use <a>CancelHandshake</a> instead. The originator can't reactivate a declined request, but can reinitiate the process with a new handshake request.</p> <p>After you decline a handshake, it continues to appear in the results of relevant APIs for only 30 days. After that, it's deleted.</p>
+  ## <p>Declines a handshake request. This sets the handshake state to <code>DECLINED</code> and effectively deactivates the request.</p> <p>This operation can be called only from the account that received the handshake. The originator of the handshake can use <a>CancelHandshake</a> instead. The originator can't reactivate a declined request, but can reinitiate the process with a new handshake request.</p> <p>After you decline a handshake, it continues to appear in the results of relevant API operations for only 30 days. After that, it's deleted.</p>
   ##   body: JObject (required)
   var body_600094 = newJObject()
   if body != nil:
@@ -1497,7 +1497,7 @@ proc url_DescribeAccount_600140(protocol: Scheme; host: string; base: string;
 proc validate_DescribeAccount_600139(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Retrieves AWS Organizations-related information about the specified account.</p> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Retrieves AWS Organizations related information about the specified account.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1569,7 +1569,7 @@ proc validate_DescribeAccount_600139(path: JsonNode; query: JsonNode;
 
 proc call*(call_600150: Call_DescribeAccount_600138; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Retrieves AWS Organizations-related information about the specified account.</p> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Retrieves AWS Organizations related information about the specified account.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600150.validator(path, query, header, formData, body)
   let scheme = call_600150.pickScheme
@@ -1582,7 +1582,7 @@ proc call*(call_600150: Call_DescribeAccount_600138; path: JsonNode; query: Json
 
 proc call*(call_600151: Call_DescribeAccount_600138; body: JsonNode): Recallable =
   ## describeAccount
-  ## <p>Retrieves AWS Organizations-related information about the specified account.</p> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Retrieves AWS Organizations related information about the specified account.</p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600152 = newJObject()
   if body != nil:
@@ -1708,9 +1708,10 @@ var describeCreateAccountStatus* = Call_DescribeCreateAccountStatus_600153(
     url: url_DescribeCreateAccountStatus_600155,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeHandshake_600168 = ref object of OpenApiRestCall_599369
-proc url_DescribeHandshake_600170(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeEffectivePolicy_600168 = ref object of OpenApiRestCall_599369
+proc url_DescribeEffectivePolicy_600170(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1720,10 +1721,9 @@ proc url_DescribeHandshake_600170(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeHandshake_600169(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## <p>Retrieves information about a previously requested handshake. The handshake ID comes from the response to the original <a>InviteAccountToOrganization</a> operation that generated the handshake.</p> <p>You can access handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> for only 30 days after they change to that state. They're then deleted and no longer accessible.</p> <p>This operation can be called from any account in the organization.</p>
+proc validate_DescribeEffectivePolicy_600169(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Returns the contents of the effective tag policy for the account. The effective tag policy is the aggregation of any tag policies the account inherits, plus any policy directly that is attached to the account. </p> <p>This action returns information on tag policies only.</p> <p>For more information on policy inheritance, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies-inheritance.html">How Policy Inheritance Works</a> in the <i>AWS Organizations User Guide</i>.</p> <p>This operation can be called from any account in the organization.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1755,7 +1755,7 @@ proc validate_DescribeHandshake_600169(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600173 = header.getOrDefault("X-Amz-Target")
   valid_600173 = validateParameter(valid_600173, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.DescribeHandshake"))
+      "AWSOrganizationsV20161128.DescribeEffectivePolicy"))
   if valid_600173 != nil:
     section.add "X-Amz-Target", valid_600173
   var valid_600174 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1793,9 +1793,9 @@ proc validate_DescribeHandshake_600169(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600180: Call_DescribeHandshake_600168; path: JsonNode;
+proc call*(call_600180: Call_DescribeEffectivePolicy_600168; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Retrieves information about a previously requested handshake. The handshake ID comes from the response to the original <a>InviteAccountToOrganization</a> operation that generated the handshake.</p> <p>You can access handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> for only 30 days after they change to that state. They're then deleted and no longer accessible.</p> <p>This operation can be called from any account in the organization.</p>
+  ## <p>Returns the contents of the effective tag policy for the account. The effective tag policy is the aggregation of any tag policies the account inherits, plus any policy directly that is attached to the account. </p> <p>This action returns information on tag policies only.</p> <p>For more information on policy inheritance, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies-inheritance.html">How Policy Inheritance Works</a> in the <i>AWS Organizations User Guide</i>.</p> <p>This operation can be called from any account in the organization.</p>
   ## 
   let valid = call_600180.validator(path, query, header, formData, body)
   let scheme = call_600180.pickScheme
@@ -1806,24 +1806,25 @@ proc call*(call_600180: Call_DescribeHandshake_600168; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600180, url, valid)
 
-proc call*(call_600181: Call_DescribeHandshake_600168; body: JsonNode): Recallable =
-  ## describeHandshake
-  ## <p>Retrieves information about a previously requested handshake. The handshake ID comes from the response to the original <a>InviteAccountToOrganization</a> operation that generated the handshake.</p> <p>You can access handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> for only 30 days after they change to that state. They're then deleted and no longer accessible.</p> <p>This operation can be called from any account in the organization.</p>
+proc call*(call_600181: Call_DescribeEffectivePolicy_600168; body: JsonNode): Recallable =
+  ## describeEffectivePolicy
+  ## <p>Returns the contents of the effective tag policy for the account. The effective tag policy is the aggregation of any tag policies the account inherits, plus any policy directly that is attached to the account. </p> <p>This action returns information on tag policies only.</p> <p>For more information on policy inheritance, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies-inheritance.html">How Policy Inheritance Works</a> in the <i>AWS Organizations User Guide</i>.</p> <p>This operation can be called from any account in the organization.</p>
   ##   body: JObject (required)
   var body_600182 = newJObject()
   if body != nil:
     body_600182 = body
   result = call_600181.call(nil, nil, nil, nil, body_600182)
 
-var describeHandshake* = Call_DescribeHandshake_600168(name: "describeHandshake",
-    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribeHandshake",
-    validator: validate_DescribeHandshake_600169, base: "/",
-    url: url_DescribeHandshake_600170, schemes: {Scheme.Https, Scheme.Http})
+var describeEffectivePolicy* = Call_DescribeEffectivePolicy_600168(
+    name: "describeEffectivePolicy", meth: HttpMethod.HttpPost,
+    host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribeEffectivePolicy",
+    validator: validate_DescribeEffectivePolicy_600169, base: "/",
+    url: url_DescribeEffectivePolicy_600170, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeOrganization_600183 = ref object of OpenApiRestCall_599369
-proc url_DescribeOrganization_600185(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeHandshake_600183 = ref object of OpenApiRestCall_599369
+proc url_DescribeHandshake_600185(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1833,9 +1834,10 @@ proc url_DescribeOrganization_600185(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_DescribeOrganization_600184(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Retrieves information about the organization that the user's account belongs to.</p> <p>This operation can be called from any account in the organization.</p> <note> <p>Even if a policy type is shown as available in the organization, you can disable it separately at the root level with <a>DisablePolicyType</a>. Use <a>ListRoots</a> to see the status of policy types for a specified root.</p> </note>
+proc validate_DescribeHandshake_600184(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## <p>Retrieves information about a previously requested handshake. The handshake ID comes from the response to the original <a>InviteAccountToOrganization</a> operation that generated the handshake.</p> <p>You can access handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> for only 30 days after they change to that state. They're then deleted and no longer accessible.</p> <p>This operation can be called from any account in the organization.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1867,7 +1869,7 @@ proc validate_DescribeOrganization_600184(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600188 = header.getOrDefault("X-Amz-Target")
   valid_600188 = validateParameter(valid_600188, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.DescribeOrganization"))
+      "AWSOrganizationsV20161128.DescribeHandshake"))
   if valid_600188 != nil:
     section.add "X-Amz-Target", valid_600188
   var valid_600189 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1898,37 +1900,44 @@ proc validate_DescribeOrganization_600184(path: JsonNode; query: JsonNode;
   result.add "header", section
   section = newJObject()
   result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_600194: Call_DescribeOrganization_600183; path: JsonNode;
+proc call*(call_600195: Call_DescribeHandshake_600183; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Retrieves information about the organization that the user's account belongs to.</p> <p>This operation can be called from any account in the organization.</p> <note> <p>Even if a policy type is shown as available in the organization, you can disable it separately at the root level with <a>DisablePolicyType</a>. Use <a>ListRoots</a> to see the status of policy types for a specified root.</p> </note>
+  ## <p>Retrieves information about a previously requested handshake. The handshake ID comes from the response to the original <a>InviteAccountToOrganization</a> operation that generated the handshake.</p> <p>You can access handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> for only 30 days after they change to that state. They're then deleted and no longer accessible.</p> <p>This operation can be called from any account in the organization.</p>
   ## 
-  let valid = call_600194.validator(path, query, header, formData, body)
-  let scheme = call_600194.pickScheme
+  let valid = call_600195.validator(path, query, header, formData, body)
+  let scheme = call_600195.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600194.url(scheme.get, call_600194.host, call_600194.base,
-                         call_600194.route, valid.getOrDefault("path"),
+  let url = call_600195.url(scheme.get, call_600195.host, call_600195.base,
+                         call_600195.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600194, url, valid)
+  result = atozHook(call_600195, url, valid)
 
-proc call*(call_600195: Call_DescribeOrganization_600183): Recallable =
-  ## describeOrganization
-  ## <p>Retrieves information about the organization that the user's account belongs to.</p> <p>This operation can be called from any account in the organization.</p> <note> <p>Even if a policy type is shown as available in the organization, you can disable it separately at the root level with <a>DisablePolicyType</a>. Use <a>ListRoots</a> to see the status of policy types for a specified root.</p> </note>
-  result = call_600195.call(nil, nil, nil, nil, nil)
+proc call*(call_600196: Call_DescribeHandshake_600183; body: JsonNode): Recallable =
+  ## describeHandshake
+  ## <p>Retrieves information about a previously requested handshake. The handshake ID comes from the response to the original <a>InviteAccountToOrganization</a> operation that generated the handshake.</p> <p>You can access handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> for only 30 days after they change to that state. They're then deleted and no longer accessible.</p> <p>This operation can be called from any account in the organization.</p>
+  ##   body: JObject (required)
+  var body_600197 = newJObject()
+  if body != nil:
+    body_600197 = body
+  result = call_600196.call(nil, nil, nil, nil, body_600197)
 
-var describeOrganization* = Call_DescribeOrganization_600183(
-    name: "describeOrganization", meth: HttpMethod.HttpPost,
-    host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribeOrganization",
-    validator: validate_DescribeOrganization_600184, base: "/",
-    url: url_DescribeOrganization_600185, schemes: {Scheme.Https, Scheme.Http})
+var describeHandshake* = Call_DescribeHandshake_600183(name: "describeHandshake",
+    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribeHandshake",
+    validator: validate_DescribeHandshake_600184, base: "/",
+    url: url_DescribeHandshake_600185, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeOrganizationalUnit_600196 = ref object of OpenApiRestCall_599369
-proc url_DescribeOrganizationalUnit_600198(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeOrganization_600198 = ref object of OpenApiRestCall_599369
+proc url_DescribeOrganization_600200(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1938,9 +1947,9 @@ proc url_DescribeOrganizationalUnit_600198(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeOrganizationalUnit_600197(path: JsonNode; query: JsonNode;
+proc validate_DescribeOrganization_600199(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Retrieves information about an organizational unit (OU).</p> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Retrieves information about the organization that the user's account belongs to.</p> <p>This operation can be called from any account in the organization.</p> <note> <p>Even if a policy type is shown as available in the organization, you can disable it separately at the root level with <a>DisablePolicyType</a>. Use <a>ListRoots</a> to see the status of policy types for a specified root.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1958,90 +1967,82 @@ proc validate_DescribeOrganizationalUnit_600197(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600199 = header.getOrDefault("X-Amz-Date")
-  valid_600199 = validateParameter(valid_600199, JString, required = false,
+  var valid_600201 = header.getOrDefault("X-Amz-Date")
+  valid_600201 = validateParameter(valid_600201, JString, required = false,
                                  default = nil)
-  if valid_600199 != nil:
-    section.add "X-Amz-Date", valid_600199
-  var valid_600200 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600200 = validateParameter(valid_600200, JString, required = false,
-                                 default = nil)
-  if valid_600200 != nil:
-    section.add "X-Amz-Security-Token", valid_600200
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600201 = header.getOrDefault("X-Amz-Target")
-  valid_600201 = validateParameter(valid_600201, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.DescribeOrganizationalUnit"))
   if valid_600201 != nil:
-    section.add "X-Amz-Target", valid_600201
-  var valid_600202 = header.getOrDefault("X-Amz-Content-Sha256")
+    section.add "X-Amz-Date", valid_600201
+  var valid_600202 = header.getOrDefault("X-Amz-Security-Token")
   valid_600202 = validateParameter(valid_600202, JString, required = false,
                                  default = nil)
   if valid_600202 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600202
-  var valid_600203 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600203 = validateParameter(valid_600203, JString, required = false,
-                                 default = nil)
+    section.add "X-Amz-Security-Token", valid_600202
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600203 = header.getOrDefault("X-Amz-Target")
+  valid_600203 = validateParameter(valid_600203, JString, required = true, default = newJString(
+      "AWSOrganizationsV20161128.DescribeOrganization"))
   if valid_600203 != nil:
-    section.add "X-Amz-Algorithm", valid_600203
-  var valid_600204 = header.getOrDefault("X-Amz-Signature")
+    section.add "X-Amz-Target", valid_600203
+  var valid_600204 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_600204 = validateParameter(valid_600204, JString, required = false,
                                  default = nil)
   if valid_600204 != nil:
-    section.add "X-Amz-Signature", valid_600204
-  var valid_600205 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Content-Sha256", valid_600204
+  var valid_600205 = header.getOrDefault("X-Amz-Algorithm")
   valid_600205 = validateParameter(valid_600205, JString, required = false,
                                  default = nil)
   if valid_600205 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600205
-  var valid_600206 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Algorithm", valid_600205
+  var valid_600206 = header.getOrDefault("X-Amz-Signature")
   valid_600206 = validateParameter(valid_600206, JString, required = false,
                                  default = nil)
   if valid_600206 != nil:
-    section.add "X-Amz-Credential", valid_600206
+    section.add "X-Amz-Signature", valid_600206
+  var valid_600207 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600207 = validateParameter(valid_600207, JString, required = false,
+                                 default = nil)
+  if valid_600207 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600207
+  var valid_600208 = header.getOrDefault("X-Amz-Credential")
+  valid_600208 = validateParameter(valid_600208, JString, required = false,
+                                 default = nil)
+  if valid_600208 != nil:
+    section.add "X-Amz-Credential", valid_600208
   result.add "header", section
   section = newJObject()
   result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_600208: Call_DescribeOrganizationalUnit_600196; path: JsonNode;
+proc call*(call_600209: Call_DescribeOrganization_600198; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Retrieves information about an organizational unit (OU).</p> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Retrieves information about the organization that the user's account belongs to.</p> <p>This operation can be called from any account in the organization.</p> <note> <p>Even if a policy type is shown as available in the organization, you can disable it separately at the root level with <a>DisablePolicyType</a>. Use <a>ListRoots</a> to see the status of policy types for a specified root.</p> </note>
   ## 
-  let valid = call_600208.validator(path, query, header, formData, body)
-  let scheme = call_600208.pickScheme
+  let valid = call_600209.validator(path, query, header, formData, body)
+  let scheme = call_600209.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600208.url(scheme.get, call_600208.host, call_600208.base,
-                         call_600208.route, valid.getOrDefault("path"),
+  let url = call_600209.url(scheme.get, call_600209.host, call_600209.base,
+                         call_600209.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600208, url, valid)
+  result = atozHook(call_600209, url, valid)
 
-proc call*(call_600209: Call_DescribeOrganizationalUnit_600196; body: JsonNode): Recallable =
-  ## describeOrganizationalUnit
-  ## <p>Retrieves information about an organizational unit (OU).</p> <p>This operation can be called only from the organization's master account.</p>
-  ##   body: JObject (required)
-  var body_600210 = newJObject()
-  if body != nil:
-    body_600210 = body
-  result = call_600209.call(nil, nil, nil, nil, body_600210)
+proc call*(call_600210: Call_DescribeOrganization_600198): Recallable =
+  ## describeOrganization
+  ## <p>Retrieves information about the organization that the user's account belongs to.</p> <p>This operation can be called from any account in the organization.</p> <note> <p>Even if a policy type is shown as available in the organization, you can disable it separately at the root level with <a>DisablePolicyType</a>. Use <a>ListRoots</a> to see the status of policy types for a specified root.</p> </note>
+  result = call_600210.call(nil, nil, nil, nil, nil)
 
-var describeOrganizationalUnit* = Call_DescribeOrganizationalUnit_600196(
-    name: "describeOrganizationalUnit", meth: HttpMethod.HttpPost,
-    host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribeOrganizationalUnit",
-    validator: validate_DescribeOrganizationalUnit_600197, base: "/",
-    url: url_DescribeOrganizationalUnit_600198,
-    schemes: {Scheme.Https, Scheme.Http})
+var describeOrganization* = Call_DescribeOrganization_600198(
+    name: "describeOrganization", meth: HttpMethod.HttpPost,
+    host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribeOrganization",
+    validator: validate_DescribeOrganization_600199, base: "/",
+    url: url_DescribeOrganization_600200, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribePolicy_600211 = ref object of OpenApiRestCall_599369
-proc url_DescribePolicy_600213(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeOrganizationalUnit_600211 = ref object of OpenApiRestCall_599369
+proc url_DescribeOrganizationalUnit_600213(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2051,10 +2052,9 @@ proc url_DescribePolicy_600213(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribePolicy_600212(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode): JsonNode =
-  ## <p>Retrieves information about a policy.</p> <p>This operation can be called only from the organization's master account.</p>
+proc validate_DescribeOrganizationalUnit_600212(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Retrieves information about an organizational unit (OU).</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2086,7 +2086,7 @@ proc validate_DescribePolicy_600212(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600216 = header.getOrDefault("X-Amz-Target")
   valid_600216 = validateParameter(valid_600216, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.DescribePolicy"))
+      "AWSOrganizationsV20161128.DescribeOrganizationalUnit"))
   if valid_600216 != nil:
     section.add "X-Amz-Target", valid_600216
   var valid_600217 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2124,9 +2124,9 @@ proc validate_DescribePolicy_600212(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600223: Call_DescribePolicy_600211; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Retrieves information about a policy.</p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600223: Call_DescribeOrganizationalUnit_600211; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Retrieves information about an organizational unit (OU).</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600223.validator(path, query, header, formData, body)
   let scheme = call_600223.pickScheme
@@ -2137,24 +2137,25 @@ proc call*(call_600223: Call_DescribePolicy_600211; path: JsonNode; query: JsonN
                          valid.getOrDefault("query"))
   result = atozHook(call_600223, url, valid)
 
-proc call*(call_600224: Call_DescribePolicy_600211; body: JsonNode): Recallable =
-  ## describePolicy
-  ## <p>Retrieves information about a policy.</p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600224: Call_DescribeOrganizationalUnit_600211; body: JsonNode): Recallable =
+  ## describeOrganizationalUnit
+  ## <p>Retrieves information about an organizational unit (OU).</p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600225 = newJObject()
   if body != nil:
     body_600225 = body
   result = call_600224.call(nil, nil, nil, nil, body_600225)
 
-var describePolicy* = Call_DescribePolicy_600211(name: "describePolicy",
-    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribePolicy",
-    validator: validate_DescribePolicy_600212, base: "/", url: url_DescribePolicy_600213,
+var describeOrganizationalUnit* = Call_DescribeOrganizationalUnit_600211(
+    name: "describeOrganizationalUnit", meth: HttpMethod.HttpPost,
+    host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribeOrganizationalUnit",
+    validator: validate_DescribeOrganizationalUnit_600212, base: "/",
+    url: url_DescribeOrganizationalUnit_600213,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetachPolicy_600226 = ref object of OpenApiRestCall_599369
-proc url_DetachPolicy_600228(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribePolicy_600226 = ref object of OpenApiRestCall_599369
+proc url_DescribePolicy_600228(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2164,9 +2165,10 @@ proc url_DetachPolicy_600228(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DetachPolicy_600227(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Detaches a policy from a target root, organizational unit (OU), or account. If the policy being detached is a service control policy (SCP), the changes to permissions for IAM users and roles in affected accounts are immediate.</p> <p> <b>Note:</b> Every root, OU, and account must have at least one SCP attached. If you want to replace the default <code>FullAWSAccess</code> policy with one that limits the permissions that can be delegated, you must attach the replacement policy before you can remove the default one. This is the authorization strategy of <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_whitelist">whitelisting</a>. If you instead attach a second SCP and leave the <code>FullAWSAccess</code> SCP still attached, and specify <code>"Effect": "Deny"</code> in the second SCP to override the <code>"Effect": "Allow"</code> in the <code>FullAWSAccess</code> policy (or any other attached SCP), you're using the authorization strategy of <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_blacklist">blacklisting</a> . </p> <p>This operation can be called only from the organization's master account.</p>
+proc validate_DescribePolicy_600227(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode): JsonNode =
+  ## <p>Retrieves information about a policy.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2198,7 +2200,7 @@ proc validate_DetachPolicy_600227(path: JsonNode; query: JsonNode; header: JsonN
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600231 = header.getOrDefault("X-Amz-Target")
   valid_600231 = validateParameter(valid_600231, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.DetachPolicy"))
+      "AWSOrganizationsV20161128.DescribePolicy"))
   if valid_600231 != nil:
     section.add "X-Amz-Target", valid_600231
   var valid_600232 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2236,9 +2238,9 @@ proc validate_DetachPolicy_600227(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600238: Call_DetachPolicy_600226; path: JsonNode; query: JsonNode;
+proc call*(call_600238: Call_DescribePolicy_600226; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Detaches a policy from a target root, organizational unit (OU), or account. If the policy being detached is a service control policy (SCP), the changes to permissions for IAM users and roles in affected accounts are immediate.</p> <p> <b>Note:</b> Every root, OU, and account must have at least one SCP attached. If you want to replace the default <code>FullAWSAccess</code> policy with one that limits the permissions that can be delegated, you must attach the replacement policy before you can remove the default one. This is the authorization strategy of <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_whitelist">whitelisting</a>. If you instead attach a second SCP and leave the <code>FullAWSAccess</code> SCP still attached, and specify <code>"Effect": "Deny"</code> in the second SCP to override the <code>"Effect": "Allow"</code> in the <code>FullAWSAccess</code> policy (or any other attached SCP), you're using the authorization strategy of <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_blacklist">blacklisting</a> . </p> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Retrieves information about a policy.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600238.validator(path, query, header, formData, body)
   let scheme = call_600238.pickScheme
@@ -2249,25 +2251,24 @@ proc call*(call_600238: Call_DetachPolicy_600226; path: JsonNode; query: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600238, url, valid)
 
-proc call*(call_600239: Call_DetachPolicy_600226; body: JsonNode): Recallable =
-  ## detachPolicy
-  ## <p>Detaches a policy from a target root, organizational unit (OU), or account. If the policy being detached is a service control policy (SCP), the changes to permissions for IAM users and roles in affected accounts are immediate.</p> <p> <b>Note:</b> Every root, OU, and account must have at least one SCP attached. If you want to replace the default <code>FullAWSAccess</code> policy with one that limits the permissions that can be delegated, you must attach the replacement policy before you can remove the default one. This is the authorization strategy of <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_whitelist">whitelisting</a>. If you instead attach a second SCP and leave the <code>FullAWSAccess</code> SCP still attached, and specify <code>"Effect": "Deny"</code> in the second SCP to override the <code>"Effect": "Allow"</code> in the <code>FullAWSAccess</code> policy (or any other attached SCP), you're using the authorization strategy of <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_blacklist">blacklisting</a> . </p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600239: Call_DescribePolicy_600226; body: JsonNode): Recallable =
+  ## describePolicy
+  ## <p>Retrieves information about a policy.</p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600240 = newJObject()
   if body != nil:
     body_600240 = body
   result = call_600239.call(nil, nil, nil, nil, body_600240)
 
-var detachPolicy* = Call_DetachPolicy_600226(name: "detachPolicy",
+var describePolicy* = Call_DescribePolicy_600226(name: "describePolicy",
     meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DetachPolicy",
-    validator: validate_DetachPolicy_600227, base: "/", url: url_DetachPolicy_600228,
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DescribePolicy",
+    validator: validate_DescribePolicy_600227, base: "/", url: url_DescribePolicy_600228,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableAWSServiceAccess_600241 = ref object of OpenApiRestCall_599369
-proc url_DisableAWSServiceAccess_600243(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode;
-                                       query: JsonNode): Uri =
+  Call_DetachPolicy_600241 = ref object of OpenApiRestCall_599369
+proc url_DetachPolicy_600243(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2277,9 +2278,9 @@ proc url_DisableAWSServiceAccess_600243(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_DisableAWSServiceAccess_600242(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Disables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you disable integration, the specified service no longer can create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in <i>new</i> accounts in your organization. This means the service can't perform operations on your behalf on any new accounts in your organization. The service can still perform operations in older accounts until the service completes its clean-up from AWS Organizations.</p> <p/> <important> <p>We recommend that you disable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the other service is aware that it can clean up any resources that are required only for the integration. How the service cleans up its resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>After you perform the <code>DisableAWSServiceAccess</code> operation, the specified service can no longer perform operations in your organization's accounts unless the operations are explicitly permitted by the IAM policies that are attached to your roles. </p> <p>For more information about integrating other services with AWS Organizations, including the list of services that work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
+proc validate_DetachPolicy_600242(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Detaches a policy from a target root, organizational unit (OU), or account. If the policy being detached is a service control policy (SCP), the changes to permissions for IAM users and roles in affected accounts are immediate.</p> <p> <b>Note:</b> Every root, OU, and account must have at least one SCP attached. You can replace the default <code>FullAWSAccess</code> policy with one that limits the permissions that can be delegated. To do that, you must attach the replacement policy before you can remove the default one. This is the authorization strategy of using an <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_whitelist">allow list</a>. You could instead attach a second SCP and leave the <code>FullAWSAccess</code> SCP still attached. You could then specify <code>"Effect": "Deny"</code> in the second SCP to override the <code>"Effect": "Allow"</code> in the <code>FullAWSAccess</code> policy (or any other attached SCP). If you take these steps, you're using the authorization strategy of a <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_blacklist">deny list</a>. </p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2311,7 +2312,7 @@ proc validate_DisableAWSServiceAccess_600242(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600246 = header.getOrDefault("X-Amz-Target")
   valid_600246 = validateParameter(valid_600246, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.DisableAWSServiceAccess"))
+      "AWSOrganizationsV20161128.DetachPolicy"))
   if valid_600246 != nil:
     section.add "X-Amz-Target", valid_600246
   var valid_600247 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2349,9 +2350,9 @@ proc validate_DisableAWSServiceAccess_600242(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600253: Call_DisableAWSServiceAccess_600241; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Disables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you disable integration, the specified service no longer can create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in <i>new</i> accounts in your organization. This means the service can't perform operations on your behalf on any new accounts in your organization. The service can still perform operations in older accounts until the service completes its clean-up from AWS Organizations.</p> <p/> <important> <p>We recommend that you disable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the other service is aware that it can clean up any resources that are required only for the integration. How the service cleans up its resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>After you perform the <code>DisableAWSServiceAccess</code> operation, the specified service can no longer perform operations in your organization's accounts unless the operations are explicitly permitted by the IAM policies that are attached to your roles. </p> <p>For more information about integrating other services with AWS Organizations, including the list of services that work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600253: Call_DetachPolicy_600241; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Detaches a policy from a target root, organizational unit (OU), or account. If the policy being detached is a service control policy (SCP), the changes to permissions for IAM users and roles in affected accounts are immediate.</p> <p> <b>Note:</b> Every root, OU, and account must have at least one SCP attached. You can replace the default <code>FullAWSAccess</code> policy with one that limits the permissions that can be delegated. To do that, you must attach the replacement policy before you can remove the default one. This is the authorization strategy of using an <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_whitelist">allow list</a>. You could instead attach a second SCP and leave the <code>FullAWSAccess</code> SCP still attached. You could then specify <code>"Effect": "Deny"</code> in the second SCP to override the <code>"Effect": "Allow"</code> in the <code>FullAWSAccess</code> policy (or any other attached SCP). If you take these steps, you're using the authorization strategy of a <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_blacklist">deny list</a>. </p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600253.validator(path, query, header, formData, body)
   let scheme = call_600253.pickScheme
@@ -2362,25 +2363,25 @@ proc call*(call_600253: Call_DisableAWSServiceAccess_600241; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600253, url, valid)
 
-proc call*(call_600254: Call_DisableAWSServiceAccess_600241; body: JsonNode): Recallable =
-  ## disableAWSServiceAccess
-  ## <p>Disables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you disable integration, the specified service no longer can create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in <i>new</i> accounts in your organization. This means the service can't perform operations on your behalf on any new accounts in your organization. The service can still perform operations in older accounts until the service completes its clean-up from AWS Organizations.</p> <p/> <important> <p>We recommend that you disable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the other service is aware that it can clean up any resources that are required only for the integration. How the service cleans up its resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>After you perform the <code>DisableAWSServiceAccess</code> operation, the specified service can no longer perform operations in your organization's accounts unless the operations are explicitly permitted by the IAM policies that are attached to your roles. </p> <p>For more information about integrating other services with AWS Organizations, including the list of services that work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600254: Call_DetachPolicy_600241; body: JsonNode): Recallable =
+  ## detachPolicy
+  ## <p>Detaches a policy from a target root, organizational unit (OU), or account. If the policy being detached is a service control policy (SCP), the changes to permissions for IAM users and roles in affected accounts are immediate.</p> <p> <b>Note:</b> Every root, OU, and account must have at least one SCP attached. You can replace the default <code>FullAWSAccess</code> policy with one that limits the permissions that can be delegated. To do that, you must attach the replacement policy before you can remove the default one. This is the authorization strategy of using an <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_whitelist">allow list</a>. You could instead attach a second SCP and leave the <code>FullAWSAccess</code> SCP still attached. You could then specify <code>"Effect": "Deny"</code> in the second SCP to override the <code>"Effect": "Allow"</code> in the <code>FullAWSAccess</code> policy (or any other attached SCP). If you take these steps, you're using the authorization strategy of a <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_about-scps.html#orgs_policies_blacklist">deny list</a>. </p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600255 = newJObject()
   if body != nil:
     body_600255 = body
   result = call_600254.call(nil, nil, nil, nil, body_600255)
 
-var disableAWSServiceAccess* = Call_DisableAWSServiceAccess_600241(
-    name: "disableAWSServiceAccess", meth: HttpMethod.HttpPost,
-    host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DisableAWSServiceAccess",
-    validator: validate_DisableAWSServiceAccess_600242, base: "/",
-    url: url_DisableAWSServiceAccess_600243, schemes: {Scheme.Https, Scheme.Http})
+var detachPolicy* = Call_DetachPolicy_600241(name: "detachPolicy",
+    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DetachPolicy",
+    validator: validate_DetachPolicy_600242, base: "/", url: url_DetachPolicy_600243,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisablePolicyType_600256 = ref object of OpenApiRestCall_599369
-proc url_DisablePolicyType_600258(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DisableAWSServiceAccess_600256 = ref object of OpenApiRestCall_599369
+proc url_DisableAWSServiceAccess_600258(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2390,10 +2391,9 @@ proc url_DisablePolicyType_600258(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DisablePolicyType_600257(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## <p>Disables an organizational control policy type in a root. A policy of a certain type can be attached to entities in a root only if that type is enabled in the root. After you perform this operation, you no longer can attach policies of the specified type to that root or to any organizational unit (OU) or account in that root. You can undo this by using the <a>EnablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. If you disable a policy for a root, it still appears enabled for the organization if <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">all features</a> are enabled for the organization. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p> To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
+proc validate_DisableAWSServiceAccess_600257(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Disables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you disable integration, the specified service no longer can create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in <i>new</i> accounts in your organization. This means the service can't perform operations on your behalf on any new accounts in your organization. The service can still perform operations in older accounts until the service completes its clean-up from AWS Organizations.</p> <p/> <important> <p>We recommend that you disable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the other service is aware that it can clean up any resources that are required only for the integration. How the service cleans up its resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>After you perform the <code>DisableAWSServiceAccess</code> operation, the specified service can no longer perform operations in your organization's accounts. The only exception is when the operations are explicitly permitted by IAM policies that are attached to your roles. </p> <p>For more information about integrating other services with AWS Organizations, including the list of services that work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2425,7 +2425,7 @@ proc validate_DisablePolicyType_600257(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600261 = header.getOrDefault("X-Amz-Target")
   valid_600261 = validateParameter(valid_600261, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.DisablePolicyType"))
+      "AWSOrganizationsV20161128.DisableAWSServiceAccess"))
   if valid_600261 != nil:
     section.add "X-Amz-Target", valid_600261
   var valid_600262 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2463,9 +2463,9 @@ proc validate_DisablePolicyType_600257(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600268: Call_DisablePolicyType_600256; path: JsonNode;
+proc call*(call_600268: Call_DisableAWSServiceAccess_600256; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Disables an organizational control policy type in a root. A policy of a certain type can be attached to entities in a root only if that type is enabled in the root. After you perform this operation, you no longer can attach policies of the specified type to that root or to any organizational unit (OU) or account in that root. You can undo this by using the <a>EnablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. If you disable a policy for a root, it still appears enabled for the organization if <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">all features</a> are enabled for the organization. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p> To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
+  ## <p>Disables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you disable integration, the specified service no longer can create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in <i>new</i> accounts in your organization. This means the service can't perform operations on your behalf on any new accounts in your organization. The service can still perform operations in older accounts until the service completes its clean-up from AWS Organizations.</p> <p/> <important> <p>We recommend that you disable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the other service is aware that it can clean up any resources that are required only for the integration. How the service cleans up its resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>After you perform the <code>DisableAWSServiceAccess</code> operation, the specified service can no longer perform operations in your organization's accounts. The only exception is when the operations are explicitly permitted by IAM policies that are attached to your roles. </p> <p>For more information about integrating other services with AWS Organizations, including the list of services that work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600268.validator(path, query, header, formData, body)
   let scheme = call_600268.pickScheme
@@ -2476,24 +2476,25 @@ proc call*(call_600268: Call_DisablePolicyType_600256; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600268, url, valid)
 
-proc call*(call_600269: Call_DisablePolicyType_600256; body: JsonNode): Recallable =
-  ## disablePolicyType
-  ## <p>Disables an organizational control policy type in a root. A policy of a certain type can be attached to entities in a root only if that type is enabled in the root. After you perform this operation, you no longer can attach policies of the specified type to that root or to any organizational unit (OU) or account in that root. You can undo this by using the <a>EnablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. If you disable a policy for a root, it still appears enabled for the organization if <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">all features</a> are enabled for the organization. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p> To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
+proc call*(call_600269: Call_DisableAWSServiceAccess_600256; body: JsonNode): Recallable =
+  ## disableAWSServiceAccess
+  ## <p>Disables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you disable integration, the specified service no longer can create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in <i>new</i> accounts in your organization. This means the service can't perform operations on your behalf on any new accounts in your organization. The service can still perform operations in older accounts until the service completes its clean-up from AWS Organizations.</p> <p/> <important> <p>We recommend that you disable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the other service is aware that it can clean up any resources that are required only for the integration. How the service cleans up its resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>After you perform the <code>DisableAWSServiceAccess</code> operation, the specified service can no longer perform operations in your organization's accounts. The only exception is when the operations are explicitly permitted by IAM policies that are attached to your roles. </p> <p>For more information about integrating other services with AWS Organizations, including the list of services that work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600270 = newJObject()
   if body != nil:
     body_600270 = body
   result = call_600269.call(nil, nil, nil, nil, body_600270)
 
-var disablePolicyType* = Call_DisablePolicyType_600256(name: "disablePolicyType",
-    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DisablePolicyType",
-    validator: validate_DisablePolicyType_600257, base: "/",
-    url: url_DisablePolicyType_600258, schemes: {Scheme.Https, Scheme.Http})
+var disableAWSServiceAccess* = Call_DisableAWSServiceAccess_600256(
+    name: "disableAWSServiceAccess", meth: HttpMethod.HttpPost,
+    host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DisableAWSServiceAccess",
+    validator: validate_DisableAWSServiceAccess_600257, base: "/",
+    url: url_DisableAWSServiceAccess_600258, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableAWSServiceAccess_600271 = ref object of OpenApiRestCall_599369
-proc url_EnableAWSServiceAccess_600273(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DisablePolicyType_600271 = ref object of OpenApiRestCall_599369
+proc url_DisablePolicyType_600273(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2503,9 +2504,10 @@ proc url_EnableAWSServiceAccess_600273(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_EnableAWSServiceAccess_600272(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Enables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you enable integration, you allow the specified service to create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in all the accounts in your organization. This allows the service to perform operations on your behalf in your organization and its accounts.</p> <important> <p>We recommend that you enable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the service is aware that it can create the resources that are required for the integration. How the service creates those resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>For more information about enabling services to integrate with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account and only if the organization has <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">enabled all features</a>.</p>
+proc validate_DisablePolicyType_600272(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## <p>Disables an organizational control policy type in a root and detaches all policies of that type from the organization root, OUs, and accounts. A policy of a certain type can be attached to entities in a root only if that type is enabled in the root. After you perform this operation, you no longer can attach policies of the specified type to that root or to any organizational unit (OU) or account in that root. You can undo this by using the <a>EnablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. If you disable a policy for a root, it still appears enabled for the organization if <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">all features</a> are enabled for the organization. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p> To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2537,7 +2539,7 @@ proc validate_EnableAWSServiceAccess_600272(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600276 = header.getOrDefault("X-Amz-Target")
   valid_600276 = validateParameter(valid_600276, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.EnableAWSServiceAccess"))
+      "AWSOrganizationsV20161128.DisablePolicyType"))
   if valid_600276 != nil:
     section.add "X-Amz-Target", valid_600276
   var valid_600277 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2575,9 +2577,9 @@ proc validate_EnableAWSServiceAccess_600272(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600283: Call_EnableAWSServiceAccess_600271; path: JsonNode;
+proc call*(call_600283: Call_DisablePolicyType_600271; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Enables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you enable integration, you allow the specified service to create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in all the accounts in your organization. This allows the service to perform operations on your behalf in your organization and its accounts.</p> <important> <p>We recommend that you enable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the service is aware that it can create the resources that are required for the integration. How the service creates those resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>For more information about enabling services to integrate with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account and only if the organization has <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">enabled all features</a>.</p>
+  ## <p>Disables an organizational control policy type in a root and detaches all policies of that type from the organization root, OUs, and accounts. A policy of a certain type can be attached to entities in a root only if that type is enabled in the root. After you perform this operation, you no longer can attach policies of the specified type to that root or to any organizational unit (OU) or account in that root. You can undo this by using the <a>EnablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. If you disable a policy for a root, it still appears enabled for the organization if <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">all features</a> are enabled for the organization. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p> To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
   ## 
   let valid = call_600283.validator(path, query, header, formData, body)
   let scheme = call_600283.pickScheme
@@ -2588,25 +2590,24 @@ proc call*(call_600283: Call_EnableAWSServiceAccess_600271; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600283, url, valid)
 
-proc call*(call_600284: Call_EnableAWSServiceAccess_600271; body: JsonNode): Recallable =
-  ## enableAWSServiceAccess
-  ## <p>Enables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you enable integration, you allow the specified service to create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in all the accounts in your organization. This allows the service to perform operations on your behalf in your organization and its accounts.</p> <important> <p>We recommend that you enable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the service is aware that it can create the resources that are required for the integration. How the service creates those resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>For more information about enabling services to integrate with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account and only if the organization has <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">enabled all features</a>.</p>
+proc call*(call_600284: Call_DisablePolicyType_600271; body: JsonNode): Recallable =
+  ## disablePolicyType
+  ## <p>Disables an organizational control policy type in a root and detaches all policies of that type from the organization root, OUs, and accounts. A policy of a certain type can be attached to entities in a root only if that type is enabled in the root. After you perform this operation, you no longer can attach policies of the specified type to that root or to any organizational unit (OU) or account in that root. You can undo this by using the <a>EnablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. If you disable a policy for a root, it still appears enabled for the organization if <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">all features</a> are enabled for the organization. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p> To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
   ##   body: JObject (required)
   var body_600285 = newJObject()
   if body != nil:
     body_600285 = body
   result = call_600284.call(nil, nil, nil, nil, body_600285)
 
-var enableAWSServiceAccess* = Call_EnableAWSServiceAccess_600271(
-    name: "enableAWSServiceAccess", meth: HttpMethod.HttpPost,
-    host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.EnableAWSServiceAccess",
-    validator: validate_EnableAWSServiceAccess_600272, base: "/",
-    url: url_EnableAWSServiceAccess_600273, schemes: {Scheme.Https, Scheme.Http})
+var disablePolicyType* = Call_DisablePolicyType_600271(name: "disablePolicyType",
+    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.DisablePolicyType",
+    validator: validate_DisablePolicyType_600272, base: "/",
+    url: url_DisablePolicyType_600273, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableAllFeatures_600286 = ref object of OpenApiRestCall_599369
-proc url_EnableAllFeatures_600288(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_EnableAWSServiceAccess_600286 = ref object of OpenApiRestCall_599369
+proc url_EnableAWSServiceAccess_600288(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2616,10 +2617,9 @@ proc url_EnableAllFeatures_600288(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_EnableAllFeatures_600287(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## <p>Enables all features in an organization. This enables the use of organization policies that can restrict the services and actions that can be called in each account. Until you enable all features, you have access only to consolidated billing, and you can't use any of the advanced account administration features that AWS Organizations supports. For more information, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">Enabling All Features in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <p>This operation is required only for organizations that were created explicitly with only the consolidated billing features enabled. Calling this operation sends a handshake to every invited account in the organization. The feature set change can be finalized and the additional features enabled only after all administrators in the invited accounts approve the change by accepting the handshake.</p> </important> <p>After you enable all features, you can separately enable or disable individual policy types in a root using <a>EnablePolicyType</a> and <a>DisablePolicyType</a>. To see the status of policy types in a root, use <a>ListRoots</a>.</p> <p>After all invited member accounts accept the handshake, you finalize the feature set change by accepting the handshake that contains <code>"Action": "ENABLE_ALL_FEATURES"</code>. This completes the change.</p> <p>After you enable all features in your organization, the master account in the organization can apply policies on all member accounts. These policies can restrict what users and even administrators in those accounts can do. The master account can apply policies that prevent accounts from leaving the organization. Ensure that your account administrators are aware of this.</p> <p>This operation can be called only from the organization's master account. </p>
+proc validate_EnableAWSServiceAccess_600287(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Enables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you enable integration, you allow the specified service to create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in all the accounts in your organization. This allows the service to perform operations on your behalf in your organization and its accounts.</p> <important> <p>We recommend that you enable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the service is aware that it can create the resources that are required for the integration. How the service creates those resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>For more information about enabling services to integrate with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account and only if the organization has <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">enabled all features</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2651,7 +2651,7 @@ proc validate_EnableAllFeatures_600287(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600291 = header.getOrDefault("X-Amz-Target")
   valid_600291 = validateParameter(valid_600291, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.EnableAllFeatures"))
+      "AWSOrganizationsV20161128.EnableAWSServiceAccess"))
   if valid_600291 != nil:
     section.add "X-Amz-Target", valid_600291
   var valid_600292 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2689,9 +2689,9 @@ proc validate_EnableAllFeatures_600287(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600298: Call_EnableAllFeatures_600286; path: JsonNode;
+proc call*(call_600298: Call_EnableAWSServiceAccess_600286; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Enables all features in an organization. This enables the use of organization policies that can restrict the services and actions that can be called in each account. Until you enable all features, you have access only to consolidated billing, and you can't use any of the advanced account administration features that AWS Organizations supports. For more information, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">Enabling All Features in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <p>This operation is required only for organizations that were created explicitly with only the consolidated billing features enabled. Calling this operation sends a handshake to every invited account in the organization. The feature set change can be finalized and the additional features enabled only after all administrators in the invited accounts approve the change by accepting the handshake.</p> </important> <p>After you enable all features, you can separately enable or disable individual policy types in a root using <a>EnablePolicyType</a> and <a>DisablePolicyType</a>. To see the status of policy types in a root, use <a>ListRoots</a>.</p> <p>After all invited member accounts accept the handshake, you finalize the feature set change by accepting the handshake that contains <code>"Action": "ENABLE_ALL_FEATURES"</code>. This completes the change.</p> <p>After you enable all features in your organization, the master account in the organization can apply policies on all member accounts. These policies can restrict what users and even administrators in those accounts can do. The master account can apply policies that prevent accounts from leaving the organization. Ensure that your account administrators are aware of this.</p> <p>This operation can be called only from the organization's master account. </p>
+  ## <p>Enables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you enable integration, you allow the specified service to create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in all the accounts in your organization. This allows the service to perform operations on your behalf in your organization and its accounts.</p> <important> <p>We recommend that you enable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the service is aware that it can create the resources that are required for the integration. How the service creates those resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>For more information about enabling services to integrate with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account and only if the organization has <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">enabled all features</a>.</p>
   ## 
   let valid = call_600298.validator(path, query, header, formData, body)
   let scheme = call_600298.pickScheme
@@ -2702,24 +2702,25 @@ proc call*(call_600298: Call_EnableAllFeatures_600286; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600298, url, valid)
 
-proc call*(call_600299: Call_EnableAllFeatures_600286; body: JsonNode): Recallable =
-  ## enableAllFeatures
-  ## <p>Enables all features in an organization. This enables the use of organization policies that can restrict the services and actions that can be called in each account. Until you enable all features, you have access only to consolidated billing, and you can't use any of the advanced account administration features that AWS Organizations supports. For more information, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">Enabling All Features in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <p>This operation is required only for organizations that were created explicitly with only the consolidated billing features enabled. Calling this operation sends a handshake to every invited account in the organization. The feature set change can be finalized and the additional features enabled only after all administrators in the invited accounts approve the change by accepting the handshake.</p> </important> <p>After you enable all features, you can separately enable or disable individual policy types in a root using <a>EnablePolicyType</a> and <a>DisablePolicyType</a>. To see the status of policy types in a root, use <a>ListRoots</a>.</p> <p>After all invited member accounts accept the handshake, you finalize the feature set change by accepting the handshake that contains <code>"Action": "ENABLE_ALL_FEATURES"</code>. This completes the change.</p> <p>After you enable all features in your organization, the master account in the organization can apply policies on all member accounts. These policies can restrict what users and even administrators in those accounts can do. The master account can apply policies that prevent accounts from leaving the organization. Ensure that your account administrators are aware of this.</p> <p>This operation can be called only from the organization's master account. </p>
+proc call*(call_600299: Call_EnableAWSServiceAccess_600286; body: JsonNode): Recallable =
+  ## enableAWSServiceAccess
+  ## <p>Enables the integration of an AWS service (the service that is specified by <code>ServicePrincipal</code>) with AWS Organizations. When you enable integration, you allow the specified service to create a <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html">service-linked role</a> in all the accounts in your organization. This allows the service to perform operations on your behalf in your organization and its accounts.</p> <important> <p>We recommend that you enable integration between AWS Organizations and the specified AWS service by using the console or commands that are provided by the specified service. Doing so ensures that the service is aware that it can create the resources that are required for the integration. How the service creates those resources in the organization's accounts depends on that service. For more information, see the documentation for the other AWS service.</p> </important> <p>For more information about enabling services to integrate with AWS Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account and only if the organization has <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">enabled all features</a>.</p>
   ##   body: JObject (required)
   var body_600300 = newJObject()
   if body != nil:
     body_600300 = body
   result = call_600299.call(nil, nil, nil, nil, body_600300)
 
-var enableAllFeatures* = Call_EnableAllFeatures_600286(name: "enableAllFeatures",
-    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.EnableAllFeatures",
-    validator: validate_EnableAllFeatures_600287, base: "/",
-    url: url_EnableAllFeatures_600288, schemes: {Scheme.Https, Scheme.Http})
+var enableAWSServiceAccess* = Call_EnableAWSServiceAccess_600286(
+    name: "enableAWSServiceAccess", meth: HttpMethod.HttpPost,
+    host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.EnableAWSServiceAccess",
+    validator: validate_EnableAWSServiceAccess_600287, base: "/",
+    url: url_EnableAWSServiceAccess_600288, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnablePolicyType_600301 = ref object of OpenApiRestCall_599369
-proc url_EnablePolicyType_600303(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_EnableAllFeatures_600301 = ref object of OpenApiRestCall_599369
+proc url_EnableAllFeatures_600303(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2729,10 +2730,10 @@ proc url_EnablePolicyType_600303(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_EnablePolicyType_600302(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## <p>Enables a policy type in a root. After you enable a policy type in a root, you can attach policies of that type to the root, any organizational unit (OU), or account in that root. You can undo this by using the <a>DisablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p>You can enable a policy type in a root only if that policy type is available in the organization. To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
+proc validate_EnableAllFeatures_600302(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## <p>Enables all features in an organization. This enables the use of organization policies that can restrict the services and actions that can be called in each account. Until you enable all features, you have access only to consolidated billing. You can't use any of the advanced account administration features that AWS Organizations supports. For more information, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">Enabling All Features in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <p>This operation is required only for organizations that were created explicitly with only the consolidated billing features enabled. Calling this operation sends a handshake to every invited account in the organization. The feature set change can be finalized and the additional features enabled only after all administrators in the invited accounts approve the change. Accepting the handshake approves the change.</p> </important> <p>After you enable all features, you can separately enable or disable individual policy types in a root using <a>EnablePolicyType</a> and <a>DisablePolicyType</a>. To see the status of policy types in a root, use <a>ListRoots</a>.</p> <p>After all invited member accounts accept the handshake, you finalize the feature set change by accepting the handshake that contains <code>"Action": "ENABLE_ALL_FEATURES"</code>. This completes the change.</p> <p>After you enable all features in your organization, the master account in the organization can apply policies on all member accounts. These policies can restrict what users and even administrators in those accounts can do. The master account can apply policies that prevent accounts from leaving the organization. Ensure that your account administrators are aware of this.</p> <p>This operation can be called only from the organization's master account. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2764,7 +2765,7 @@ proc validate_EnablePolicyType_600302(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600306 = header.getOrDefault("X-Amz-Target")
   valid_600306 = validateParameter(valid_600306, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.EnablePolicyType"))
+      "AWSOrganizationsV20161128.EnableAllFeatures"))
   if valid_600306 != nil:
     section.add "X-Amz-Target", valid_600306
   var valid_600307 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2802,9 +2803,9 @@ proc validate_EnablePolicyType_600302(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600313: Call_EnablePolicyType_600301; path: JsonNode;
+proc call*(call_600313: Call_EnableAllFeatures_600301; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Enables a policy type in a root. After you enable a policy type in a root, you can attach policies of that type to the root, any organizational unit (OU), or account in that root. You can undo this by using the <a>DisablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p>You can enable a policy type in a root only if that policy type is available in the organization. To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
+  ## <p>Enables all features in an organization. This enables the use of organization policies that can restrict the services and actions that can be called in each account. Until you enable all features, you have access only to consolidated billing. You can't use any of the advanced account administration features that AWS Organizations supports. For more information, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">Enabling All Features in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <p>This operation is required only for organizations that were created explicitly with only the consolidated billing features enabled. Calling this operation sends a handshake to every invited account in the organization. The feature set change can be finalized and the additional features enabled only after all administrators in the invited accounts approve the change. Accepting the handshake approves the change.</p> </important> <p>After you enable all features, you can separately enable or disable individual policy types in a root using <a>EnablePolicyType</a> and <a>DisablePolicyType</a>. To see the status of policy types in a root, use <a>ListRoots</a>.</p> <p>After all invited member accounts accept the handshake, you finalize the feature set change by accepting the handshake that contains <code>"Action": "ENABLE_ALL_FEATURES"</code>. This completes the change.</p> <p>After you enable all features in your organization, the master account in the organization can apply policies on all member accounts. These policies can restrict what users and even administrators in those accounts can do. The master account can apply policies that prevent accounts from leaving the organization. Ensure that your account administrators are aware of this.</p> <p>This operation can be called only from the organization's master account. </p>
   ## 
   let valid = call_600313.validator(path, query, header, formData, body)
   let scheme = call_600313.pickScheme
@@ -2815,24 +2816,24 @@ proc call*(call_600313: Call_EnablePolicyType_600301; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600313, url, valid)
 
-proc call*(call_600314: Call_EnablePolicyType_600301; body: JsonNode): Recallable =
-  ## enablePolicyType
-  ## <p>Enables a policy type in a root. After you enable a policy type in a root, you can attach policies of that type to the root, any organizational unit (OU), or account in that root. You can undo this by using the <a>DisablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p>You can enable a policy type in a root only if that policy type is available in the organization. To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
+proc call*(call_600314: Call_EnableAllFeatures_600301; body: JsonNode): Recallable =
+  ## enableAllFeatures
+  ## <p>Enables all features in an organization. This enables the use of organization policies that can restrict the services and actions that can be called in each account. Until you enable all features, you have access only to consolidated billing. You can't use any of the advanced account administration features that AWS Organizations supports. For more information, see <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org_support-all-features.html">Enabling All Features in Your Organization</a> in the <i>AWS Organizations User Guide.</i> </p> <important> <p>This operation is required only for organizations that were created explicitly with only the consolidated billing features enabled. Calling this operation sends a handshake to every invited account in the organization. The feature set change can be finalized and the additional features enabled only after all administrators in the invited accounts approve the change. Accepting the handshake approves the change.</p> </important> <p>After you enable all features, you can separately enable or disable individual policy types in a root using <a>EnablePolicyType</a> and <a>DisablePolicyType</a>. To see the status of policy types in a root, use <a>ListRoots</a>.</p> <p>After all invited member accounts accept the handshake, you finalize the feature set change by accepting the handshake that contains <code>"Action": "ENABLE_ALL_FEATURES"</code>. This completes the change.</p> <p>After you enable all features in your organization, the master account in the organization can apply policies on all member accounts. These policies can restrict what users and even administrators in those accounts can do. The master account can apply policies that prevent accounts from leaving the organization. Ensure that your account administrators are aware of this.</p> <p>This operation can be called only from the organization's master account. </p>
   ##   body: JObject (required)
   var body_600315 = newJObject()
   if body != nil:
     body_600315 = body
   result = call_600314.call(nil, nil, nil, nil, body_600315)
 
-var enablePolicyType* = Call_EnablePolicyType_600301(name: "enablePolicyType",
+var enableAllFeatures* = Call_EnableAllFeatures_600301(name: "enableAllFeatures",
     meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.EnablePolicyType",
-    validator: validate_EnablePolicyType_600302, base: "/",
-    url: url_EnablePolicyType_600303, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.EnableAllFeatures",
+    validator: validate_EnableAllFeatures_600302, base: "/",
+    url: url_EnableAllFeatures_600303, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_InviteAccountToOrganization_600316 = ref object of OpenApiRestCall_599369
-proc url_InviteAccountToOrganization_600318(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_EnablePolicyType_600316 = ref object of OpenApiRestCall_599369
+proc url_EnablePolicyType_600318(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2842,9 +2843,10 @@ proc url_InviteAccountToOrganization_600318(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_InviteAccountToOrganization_600317(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Sends an invitation to another account to join your organization as a member account. AWS Organizations sends email on your behalf to the email address that is associated with the other account's owner. The invitation is implemented as a <a>Handshake</a> whose details are in the response.</p> <important> <ul> <li> <p>You can invite AWS accounts only from the same seller as the master account. For example, if your organization's master account was created by Amazon Internet Services Pvt. Ltd (AISPL), an AWS seller in India, you can invite only other AISPL accounts to your organization. You can't combine accounts from AISPL and AWS or from any other AWS seller. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/useconsolidatedbilliing-India.html">Consolidated Billing in India</a>.</p> </li> <li> <p>If you receive an exception that indicates that you exceeded your account limits for the organization or that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists after an hour, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> </ul> </important> <p>This operation can be called only from the organization's master account.</p>
+proc validate_EnablePolicyType_600317(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## <p>Enables a policy type in a root. After you enable a policy type in a root, you can attach policies of that type to the root, any organizational unit (OU), or account in that root. You can undo this by using the <a>DisablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p>You can enable a policy type in a root only if that policy type is available in the organization. To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2876,7 +2878,7 @@ proc validate_InviteAccountToOrganization_600317(path: JsonNode; query: JsonNode
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600321 = header.getOrDefault("X-Amz-Target")
   valid_600321 = validateParameter(valid_600321, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.InviteAccountToOrganization"))
+      "AWSOrganizationsV20161128.EnablePolicyType"))
   if valid_600321 != nil:
     section.add "X-Amz-Target", valid_600321
   var valid_600322 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2914,9 +2916,9 @@ proc validate_InviteAccountToOrganization_600317(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600328: Call_InviteAccountToOrganization_600316; path: JsonNode;
+proc call*(call_600328: Call_EnablePolicyType_600316; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Sends an invitation to another account to join your organization as a member account. AWS Organizations sends email on your behalf to the email address that is associated with the other account's owner. The invitation is implemented as a <a>Handshake</a> whose details are in the response.</p> <important> <ul> <li> <p>You can invite AWS accounts only from the same seller as the master account. For example, if your organization's master account was created by Amazon Internet Services Pvt. Ltd (AISPL), an AWS seller in India, you can invite only other AISPL accounts to your organization. You can't combine accounts from AISPL and AWS or from any other AWS seller. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/useconsolidatedbilliing-India.html">Consolidated Billing in India</a>.</p> </li> <li> <p>If you receive an exception that indicates that you exceeded your account limits for the organization or that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists after an hour, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> </ul> </important> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Enables a policy type in a root. After you enable a policy type in a root, you can attach policies of that type to the root, any organizational unit (OU), or account in that root. You can undo this by using the <a>DisablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p>You can enable a policy type in a root only if that policy type is available in the organization. To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
   ## 
   let valid = call_600328.validator(path, query, header, formData, body)
   let scheme = call_600328.pickScheme
@@ -2927,25 +2929,24 @@ proc call*(call_600328: Call_InviteAccountToOrganization_600316; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600328, url, valid)
 
-proc call*(call_600329: Call_InviteAccountToOrganization_600316; body: JsonNode): Recallable =
-  ## inviteAccountToOrganization
-  ## <p>Sends an invitation to another account to join your organization as a member account. AWS Organizations sends email on your behalf to the email address that is associated with the other account's owner. The invitation is implemented as a <a>Handshake</a> whose details are in the response.</p> <important> <ul> <li> <p>You can invite AWS accounts only from the same seller as the master account. For example, if your organization's master account was created by Amazon Internet Services Pvt. Ltd (AISPL), an AWS seller in India, you can invite only other AISPL accounts to your organization. You can't combine accounts from AISPL and AWS or from any other AWS seller. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/useconsolidatedbilliing-India.html">Consolidated Billing in India</a>.</p> </li> <li> <p>If you receive an exception that indicates that you exceeded your account limits for the organization or that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists after an hour, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> </ul> </important> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600329: Call_EnablePolicyType_600316; body: JsonNode): Recallable =
+  ## enablePolicyType
+  ## <p>Enables a policy type in a root. After you enable a policy type in a root, you can attach policies of that type to the root, any organizational unit (OU), or account in that root. You can undo this by using the <a>DisablePolicyType</a> operation.</p> <p>This is an asynchronous request that AWS performs in the background. AWS recommends that you first use <a>ListRoots</a> to see the status of policy types for a specified root, and then use this operation. </p> <p>This operation can be called only from the organization's master account.</p> <p>You can enable a policy type in a root only if that policy type is available in the organization. To view the status of available policy types in the organization, use <a>DescribeOrganization</a>.</p>
   ##   body: JObject (required)
   var body_600330 = newJObject()
   if body != nil:
     body_600330 = body
   result = call_600329.call(nil, nil, nil, nil, body_600330)
 
-var inviteAccountToOrganization* = Call_InviteAccountToOrganization_600316(
-    name: "inviteAccountToOrganization", meth: HttpMethod.HttpPost,
-    host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.InviteAccountToOrganization",
-    validator: validate_InviteAccountToOrganization_600317, base: "/",
-    url: url_InviteAccountToOrganization_600318,
-    schemes: {Scheme.Https, Scheme.Http})
+var enablePolicyType* = Call_EnablePolicyType_600316(name: "enablePolicyType",
+    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.EnablePolicyType",
+    validator: validate_EnablePolicyType_600317, base: "/",
+    url: url_EnablePolicyType_600318, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_LeaveOrganization_600331 = ref object of OpenApiRestCall_599369
-proc url_LeaveOrganization_600333(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_InviteAccountToOrganization_600331 = ref object of OpenApiRestCall_599369
+proc url_InviteAccountToOrganization_600333(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2955,10 +2956,9 @@ proc url_LeaveOrganization_600333(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_LeaveOrganization_600332(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## <p>Removes a member account from its parent organization. This version of the operation is performed by the account that wants to leave. To remove a member account as a user in the master account, use <a>RemoveAccountFromOrganization</a> instead.</p> <p>This operation can be called only from a member account in the organization.</p> <important> <ul> <li> <p>The master account in an organization with all features enabled can set service control policies (SCPs) that can restrict what administrators of member accounts can do, including preventing them from successfully calling <code>LeaveOrganization</code> and leaving the organization. </p> </li> <li> <p>You can leave an organization as a member account only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required of standalone accounts is <i>not</i> automatically collected. For each account that you want to make standalone, you must accept the end user license agreement (EULA), choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>You can leave an organization only after you enable IAM user access to billing in your account. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html#ControllingAccessWebsite-Activate">Activating Access to the Billing and Cost Management Console</a> in the <i>AWS Billing and Cost Management User Guide.</i> </p> </li> </ul> </important>
+proc validate_InviteAccountToOrganization_600332(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Sends an invitation to another account to join your organization as a member account. AWS Organizations sends email on your behalf to the email address that is associated with the other account's owner. The invitation is implemented as a <a>Handshake</a> whose details are in the response.</p> <important> <ul> <li> <p>You can invite AWS accounts only from the same seller as the master account. For example, assume that your organization's master account was created by Amazon Internet Services Pvt. Ltd (AISPL), an AWS seller in India. You can invite only other AISPL accounts to your organization. You can't combine accounts from AISPL and AWS or from any other AWS seller. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/useconsolidatedbilliing-India.html">Consolidated Billing in India</a>.</p> </li> <li> <p>You might receive an exception that indicates that you exceeded your account limits for the organization or that the operation failed because your organization is still initializing. If so, wait one hour and then try again. If the error persists after an hour, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> </ul> </important> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2990,7 +2990,7 @@ proc validate_LeaveOrganization_600332(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600336 = header.getOrDefault("X-Amz-Target")
   valid_600336 = validateParameter(valid_600336, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.LeaveOrganization"))
+      "AWSOrganizationsV20161128.InviteAccountToOrganization"))
   if valid_600336 != nil:
     section.add "X-Amz-Target", valid_600336
   var valid_600337 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3021,36 +3021,45 @@ proc validate_LeaveOrganization_600332(path: JsonNode; query: JsonNode;
   result.add "header", section
   section = newJObject()
   result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_600342: Call_LeaveOrganization_600331; path: JsonNode;
+proc call*(call_600343: Call_InviteAccountToOrganization_600331; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Removes a member account from its parent organization. This version of the operation is performed by the account that wants to leave. To remove a member account as a user in the master account, use <a>RemoveAccountFromOrganization</a> instead.</p> <p>This operation can be called only from a member account in the organization.</p> <important> <ul> <li> <p>The master account in an organization with all features enabled can set service control policies (SCPs) that can restrict what administrators of member accounts can do, including preventing them from successfully calling <code>LeaveOrganization</code> and leaving the organization. </p> </li> <li> <p>You can leave an organization as a member account only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required of standalone accounts is <i>not</i> automatically collected. For each account that you want to make standalone, you must accept the end user license agreement (EULA), choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>You can leave an organization only after you enable IAM user access to billing in your account. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html#ControllingAccessWebsite-Activate">Activating Access to the Billing and Cost Management Console</a> in the <i>AWS Billing and Cost Management User Guide.</i> </p> </li> </ul> </important>
+  ## <p>Sends an invitation to another account to join your organization as a member account. AWS Organizations sends email on your behalf to the email address that is associated with the other account's owner. The invitation is implemented as a <a>Handshake</a> whose details are in the response.</p> <important> <ul> <li> <p>You can invite AWS accounts only from the same seller as the master account. For example, assume that your organization's master account was created by Amazon Internet Services Pvt. Ltd (AISPL), an AWS seller in India. You can invite only other AISPL accounts to your organization. You can't combine accounts from AISPL and AWS or from any other AWS seller. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/useconsolidatedbilliing-India.html">Consolidated Billing in India</a>.</p> </li> <li> <p>You might receive an exception that indicates that you exceeded your account limits for the organization or that the operation failed because your organization is still initializing. If so, wait one hour and then try again. If the error persists after an hour, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> </ul> </important> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600342.validator(path, query, header, formData, body)
-  let scheme = call_600342.pickScheme
+  let valid = call_600343.validator(path, query, header, formData, body)
+  let scheme = call_600343.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600342.url(scheme.get, call_600342.host, call_600342.base,
-                         call_600342.route, valid.getOrDefault("path"),
+  let url = call_600343.url(scheme.get, call_600343.host, call_600343.base,
+                         call_600343.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600342, url, valid)
+  result = atozHook(call_600343, url, valid)
 
-proc call*(call_600343: Call_LeaveOrganization_600331): Recallable =
-  ## leaveOrganization
-  ## <p>Removes a member account from its parent organization. This version of the operation is performed by the account that wants to leave. To remove a member account as a user in the master account, use <a>RemoveAccountFromOrganization</a> instead.</p> <p>This operation can be called only from a member account in the organization.</p> <important> <ul> <li> <p>The master account in an organization with all features enabled can set service control policies (SCPs) that can restrict what administrators of member accounts can do, including preventing them from successfully calling <code>LeaveOrganization</code> and leaving the organization. </p> </li> <li> <p>You can leave an organization as a member account only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required of standalone accounts is <i>not</i> automatically collected. For each account that you want to make standalone, you must accept the end user license agreement (EULA), choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>You can leave an organization only after you enable IAM user access to billing in your account. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html#ControllingAccessWebsite-Activate">Activating Access to the Billing and Cost Management Console</a> in the <i>AWS Billing and Cost Management User Guide.</i> </p> </li> </ul> </important>
-  result = call_600343.call(nil, nil, nil, nil, nil)
+proc call*(call_600344: Call_InviteAccountToOrganization_600331; body: JsonNode): Recallable =
+  ## inviteAccountToOrganization
+  ## <p>Sends an invitation to another account to join your organization as a member account. AWS Organizations sends email on your behalf to the email address that is associated with the other account's owner. The invitation is implemented as a <a>Handshake</a> whose details are in the response.</p> <important> <ul> <li> <p>You can invite AWS accounts only from the same seller as the master account. For example, assume that your organization's master account was created by Amazon Internet Services Pvt. Ltd (AISPL), an AWS seller in India. You can invite only other AISPL accounts to your organization. You can't combine accounts from AISPL and AWS or from any other AWS seller. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/useconsolidatedbilliing-India.html">Consolidated Billing in India</a>.</p> </li> <li> <p>You might receive an exception that indicates that you exceeded your account limits for the organization or that the operation failed because your organization is still initializing. If so, wait one hour and then try again. If the error persists after an hour, contact <a href="https://console.aws.amazon.com/support/home#/">AWS Support</a>.</p> </li> </ul> </important> <p>This operation can be called only from the organization's master account.</p>
+  ##   body: JObject (required)
+  var body_600345 = newJObject()
+  if body != nil:
+    body_600345 = body
+  result = call_600344.call(nil, nil, nil, nil, body_600345)
 
-var leaveOrganization* = Call_LeaveOrganization_600331(name: "leaveOrganization",
-    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.LeaveOrganization",
-    validator: validate_LeaveOrganization_600332, base: "/",
-    url: url_LeaveOrganization_600333, schemes: {Scheme.Https, Scheme.Http})
+var inviteAccountToOrganization* = Call_InviteAccountToOrganization_600331(
+    name: "inviteAccountToOrganization", meth: HttpMethod.HttpPost,
+    host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.InviteAccountToOrganization",
+    validator: validate_InviteAccountToOrganization_600332, base: "/",
+    url: url_InviteAccountToOrganization_600333,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAWSServiceAccessForOrganization_600344 = ref object of OpenApiRestCall_599369
-proc url_ListAWSServiceAccessForOrganization_600346(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_LeaveOrganization_600346 = ref object of OpenApiRestCall_599369
+proc url_LeaveOrganization_600348(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3060,30 +3069,16 @@ proc url_ListAWSServiceAccessForOrganization_600346(protocol: Scheme; host: stri
   else:
     result.path = base & route
 
-proc validate_ListAWSServiceAccessForOrganization_600345(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Returns a list of the AWS services that you enabled to integrate with your organization. After a service on this list creates the resources that it requires for the integration, it can perform operations on your organization and its accounts.</p> <p>For more information about integrating other services with AWS Organizations, including the list of services that currently work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
+proc validate_LeaveOrganization_600347(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## <p>Removes a member account from its parent organization. This version of the operation is performed by the account that wants to leave. To remove a member account as a user in the master account, use <a>RemoveAccountFromOrganization</a> instead.</p> <p>This operation can be called only from a member account in the organization.</p> <important> <ul> <li> <p>The master account in an organization with all features enabled can set service control policies (SCPs) that can restrict what administrators of member accounts can do. These restrictions can include preventing member accounts from successfully calling <code>LeaveOrganization</code>. </p> </li> <li> <p>You can leave an organization as a member account only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI, the information required of standalone accounts is <i>not</i> automatically collected. For each account that you want to make standalone, you must accept the end user license agreement (EULA). You must also choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>You can leave an organization only after you enable IAM user access to billing in your account. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html#ControllingAccessWebsite-Activate">Activating Access to the Billing and Cost Management Console</a> in the <i>AWS Billing and Cost Management User Guide.</i> </p> </li> </ul> </important>
   ## 
   var section: JsonNode
   result = newJObject()
   section = newJObject()
   result.add "path", section
-  ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
-  ##   MaxResults: JString
-  ##             : Pagination limit
   section = newJObject()
-  var valid_600347 = query.getOrDefault("NextToken")
-  valid_600347 = validateParameter(valid_600347, JString, required = false,
-                                 default = nil)
-  if valid_600347 != nil:
-    section.add "NextToken", valid_600347
-  var valid_600348 = query.getOrDefault("MaxResults")
-  valid_600348 = validateParameter(valid_600348, JString, required = false,
-                                 default = nil)
-  if valid_600348 != nil:
-    section.add "MaxResults", valid_600348
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3109,7 +3104,7 @@ proc validate_ListAWSServiceAccessForOrganization_600345(path: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600351 = header.getOrDefault("X-Amz-Target")
   valid_600351 = validateParameter(valid_600351, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.ListAWSServiceAccessForOrganization"))
+      "AWSOrganizationsV20161128.LeaveOrganization"))
   if valid_600351 != nil:
     section.add "X-Amz-Target", valid_600351
   var valid_600352 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3140,6 +3135,125 @@ proc validate_ListAWSServiceAccessForOrganization_600345(path: JsonNode;
   result.add "header", section
   section = newJObject()
   result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600357: Call_LeaveOrganization_600346; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Removes a member account from its parent organization. This version of the operation is performed by the account that wants to leave. To remove a member account as a user in the master account, use <a>RemoveAccountFromOrganization</a> instead.</p> <p>This operation can be called only from a member account in the organization.</p> <important> <ul> <li> <p>The master account in an organization with all features enabled can set service control policies (SCPs) that can restrict what administrators of member accounts can do. These restrictions can include preventing member accounts from successfully calling <code>LeaveOrganization</code>. </p> </li> <li> <p>You can leave an organization as a member account only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI, the information required of standalone accounts is <i>not</i> automatically collected. For each account that you want to make standalone, you must accept the end user license agreement (EULA). You must also choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>You can leave an organization only after you enable IAM user access to billing in your account. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html#ControllingAccessWebsite-Activate">Activating Access to the Billing and Cost Management Console</a> in the <i>AWS Billing and Cost Management User Guide.</i> </p> </li> </ul> </important>
+  ## 
+  let valid = call_600357.validator(path, query, header, formData, body)
+  let scheme = call_600357.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600357.url(scheme.get, call_600357.host, call_600357.base,
+                         call_600357.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600357, url, valid)
+
+proc call*(call_600358: Call_LeaveOrganization_600346): Recallable =
+  ## leaveOrganization
+  ## <p>Removes a member account from its parent organization. This version of the operation is performed by the account that wants to leave. To remove a member account as a user in the master account, use <a>RemoveAccountFromOrganization</a> instead.</p> <p>This operation can be called only from a member account in the organization.</p> <important> <ul> <li> <p>The master account in an organization with all features enabled can set service control policies (SCPs) that can restrict what administrators of member accounts can do. These restrictions can include preventing member accounts from successfully calling <code>LeaveOrganization</code>. </p> </li> <li> <p>You can leave an organization as a member account only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI, the information required of standalone accounts is <i>not</i> automatically collected. For each account that you want to make standalone, you must accept the end user license agreement (EULA). You must also choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. Follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </li> <li> <p>You can leave an organization only after you enable IAM user access to billing in your account. For more information, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/grantaccess.html#ControllingAccessWebsite-Activate">Activating Access to the Billing and Cost Management Console</a> in the <i>AWS Billing and Cost Management User Guide.</i> </p> </li> </ul> </important>
+  result = call_600358.call(nil, nil, nil, nil, nil)
+
+var leaveOrganization* = Call_LeaveOrganization_600346(name: "leaveOrganization",
+    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.LeaveOrganization",
+    validator: validate_LeaveOrganization_600347, base: "/",
+    url: url_LeaveOrganization_600348, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListAWSServiceAccessForOrganization_600359 = ref object of OpenApiRestCall_599369
+proc url_ListAWSServiceAccessForOrganization_600361(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListAWSServiceAccessForOrganization_600360(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Returns a list of the AWS services that you enabled to integrate with your organization. After a service on this list creates the resources that it requires for the integration, it can perform operations on your organization and its accounts.</p> <p>For more information about integrating other services with AWS Organizations, including the list of services that currently work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   NextToken: JString
+  ##            : Pagination token
+  ##   MaxResults: JString
+  ##             : Pagination limit
+  section = newJObject()
+  var valid_600362 = query.getOrDefault("NextToken")
+  valid_600362 = validateParameter(valid_600362, JString, required = false,
+                                 default = nil)
+  if valid_600362 != nil:
+    section.add "NextToken", valid_600362
+  var valid_600363 = query.getOrDefault("MaxResults")
+  valid_600363 = validateParameter(valid_600363, JString, required = false,
+                                 default = nil)
+  if valid_600363 != nil:
+    section.add "MaxResults", valid_600363
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600364 = header.getOrDefault("X-Amz-Date")
+  valid_600364 = validateParameter(valid_600364, JString, required = false,
+                                 default = nil)
+  if valid_600364 != nil:
+    section.add "X-Amz-Date", valid_600364
+  var valid_600365 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600365 = validateParameter(valid_600365, JString, required = false,
+                                 default = nil)
+  if valid_600365 != nil:
+    section.add "X-Amz-Security-Token", valid_600365
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600366 = header.getOrDefault("X-Amz-Target")
+  valid_600366 = validateParameter(valid_600366, JString, required = true, default = newJString(
+      "AWSOrganizationsV20161128.ListAWSServiceAccessForOrganization"))
+  if valid_600366 != nil:
+    section.add "X-Amz-Target", valid_600366
+  var valid_600367 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600367 = validateParameter(valid_600367, JString, required = false,
+                                 default = nil)
+  if valid_600367 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600367
+  var valid_600368 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600368 = validateParameter(valid_600368, JString, required = false,
+                                 default = nil)
+  if valid_600368 != nil:
+    section.add "X-Amz-Algorithm", valid_600368
+  var valid_600369 = header.getOrDefault("X-Amz-Signature")
+  valid_600369 = validateParameter(valid_600369, JString, required = false,
+                                 default = nil)
+  if valid_600369 != nil:
+    section.add "X-Amz-Signature", valid_600369
+  var valid_600370 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600370 = validateParameter(valid_600370, JString, required = false,
+                                 default = nil)
+  if valid_600370 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600370
+  var valid_600371 = header.getOrDefault("X-Amz-Credential")
+  valid_600371 = validateParameter(valid_600371, JString, required = false,
+                                 default = nil)
+  if valid_600371 != nil:
+    section.add "X-Amz-Credential", valid_600371
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
   ## parameters in `body` object:
   ##   body: JObject (required)
   assert body != nil, "body argument is necessary"
@@ -3147,21 +3261,21 @@ proc validate_ListAWSServiceAccessForOrganization_600345(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600358: Call_ListAWSServiceAccessForOrganization_600344;
+proc call*(call_600373: Call_ListAWSServiceAccessForOrganization_600359;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Returns a list of the AWS services that you enabled to integrate with your organization. After a service on this list creates the resources that it requires for the integration, it can perform operations on your organization and its accounts.</p> <p>For more information about integrating other services with AWS Organizations, including the list of services that currently work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600358.validator(path, query, header, formData, body)
-  let scheme = call_600358.pickScheme
+  let valid = call_600373.validator(path, query, header, formData, body)
+  let scheme = call_600373.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600358.url(scheme.get, call_600358.host, call_600358.base,
-                         call_600358.route, valid.getOrDefault("path"),
+  let url = call_600373.url(scheme.get, call_600373.host, call_600373.base,
+                         call_600373.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600358, url, valid)
+  result = atozHook(call_600373, url, valid)
 
-proc call*(call_600359: Call_ListAWSServiceAccessForOrganization_600344;
+proc call*(call_600374: Call_ListAWSServiceAccessForOrganization_600359;
           body: JsonNode; NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listAWSServiceAccessForOrganization
   ## <p>Returns a list of the AWS services that you enabled to integrate with your organization. After a service on this list creates the resources that it requires for the integration, it can perform operations on your organization and its accounts.</p> <p>For more information about integrating other services with AWS Organizations, including the list of services that currently work with Organizations, see <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services.html">Integrating AWS Organizations with Other AWS Services</a> in the <i>AWS Organizations User Guide.</i> </p> <p>This operation can be called only from the organization's master account.</p>
@@ -3170,23 +3284,23 @@ proc call*(call_600359: Call_ListAWSServiceAccessForOrganization_600344;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600360 = newJObject()
-  var body_600361 = newJObject()
-  add(query_600360, "NextToken", newJString(NextToken))
+  var query_600375 = newJObject()
+  var body_600376 = newJObject()
+  add(query_600375, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600361 = body
-  add(query_600360, "MaxResults", newJString(MaxResults))
-  result = call_600359.call(nil, query_600360, nil, nil, body_600361)
+    body_600376 = body
+  add(query_600375, "MaxResults", newJString(MaxResults))
+  result = call_600374.call(nil, query_600375, nil, nil, body_600376)
 
-var listAWSServiceAccessForOrganization* = Call_ListAWSServiceAccessForOrganization_600344(
+var listAWSServiceAccessForOrganization* = Call_ListAWSServiceAccessForOrganization_600359(
     name: "listAWSServiceAccessForOrganization", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListAWSServiceAccessForOrganization",
-    validator: validate_ListAWSServiceAccessForOrganization_600345, base: "/",
-    url: url_ListAWSServiceAccessForOrganization_600346,
+    validator: validate_ListAWSServiceAccessForOrganization_600360, base: "/",
+    url: url_ListAWSServiceAccessForOrganization_600361,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAccounts_600363 = ref object of OpenApiRestCall_599369
-proc url_ListAccounts_600365(protocol: Scheme; host: string; base: string;
+  Call_ListAccounts_600378 = ref object of OpenApiRestCall_599369
+proc url_ListAccounts_600380(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3197,7 +3311,7 @@ proc url_ListAccounts_600365(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListAccounts_600364(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListAccounts_600379(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists all the accounts in the organization. To request only the accounts in a specified root or organizational unit (OU), use the <a>ListAccountsForParent</a> operation instead.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -3211,16 +3325,16 @@ proc validate_ListAccounts_600364(path: JsonNode; query: JsonNode; header: JsonN
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600366 = query.getOrDefault("NextToken")
-  valid_600366 = validateParameter(valid_600366, JString, required = false,
+  var valid_600381 = query.getOrDefault("NextToken")
+  valid_600381 = validateParameter(valid_600381, JString, required = false,
                                  default = nil)
-  if valid_600366 != nil:
-    section.add "NextToken", valid_600366
-  var valid_600367 = query.getOrDefault("MaxResults")
-  valid_600367 = validateParameter(valid_600367, JString, required = false,
+  if valid_600381 != nil:
+    section.add "NextToken", valid_600381
+  var valid_600382 = query.getOrDefault("MaxResults")
+  valid_600382 = validateParameter(valid_600382, JString, required = false,
                                  default = nil)
-  if valid_600367 != nil:
-    section.add "MaxResults", valid_600367
+  if valid_600382 != nil:
+    section.add "MaxResults", valid_600382
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3232,48 +3346,48 @@ proc validate_ListAccounts_600364(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600368 = header.getOrDefault("X-Amz-Date")
-  valid_600368 = validateParameter(valid_600368, JString, required = false,
+  var valid_600383 = header.getOrDefault("X-Amz-Date")
+  valid_600383 = validateParameter(valid_600383, JString, required = false,
                                  default = nil)
-  if valid_600368 != nil:
-    section.add "X-Amz-Date", valid_600368
-  var valid_600369 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600369 = validateParameter(valid_600369, JString, required = false,
+  if valid_600383 != nil:
+    section.add "X-Amz-Date", valid_600383
+  var valid_600384 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600384 = validateParameter(valid_600384, JString, required = false,
                                  default = nil)
-  if valid_600369 != nil:
-    section.add "X-Amz-Security-Token", valid_600369
+  if valid_600384 != nil:
+    section.add "X-Amz-Security-Token", valid_600384
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600370 = header.getOrDefault("X-Amz-Target")
-  valid_600370 = validateParameter(valid_600370, JString, required = true, default = newJString(
+  var valid_600385 = header.getOrDefault("X-Amz-Target")
+  valid_600385 = validateParameter(valid_600385, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListAccounts"))
-  if valid_600370 != nil:
-    section.add "X-Amz-Target", valid_600370
-  var valid_600371 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600371 = validateParameter(valid_600371, JString, required = false,
+  if valid_600385 != nil:
+    section.add "X-Amz-Target", valid_600385
+  var valid_600386 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600386 = validateParameter(valid_600386, JString, required = false,
                                  default = nil)
-  if valid_600371 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600371
-  var valid_600372 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600372 = validateParameter(valid_600372, JString, required = false,
+  if valid_600386 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600386
+  var valid_600387 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600387 = validateParameter(valid_600387, JString, required = false,
                                  default = nil)
-  if valid_600372 != nil:
-    section.add "X-Amz-Algorithm", valid_600372
-  var valid_600373 = header.getOrDefault("X-Amz-Signature")
-  valid_600373 = validateParameter(valid_600373, JString, required = false,
+  if valid_600387 != nil:
+    section.add "X-Amz-Algorithm", valid_600387
+  var valid_600388 = header.getOrDefault("X-Amz-Signature")
+  valid_600388 = validateParameter(valid_600388, JString, required = false,
                                  default = nil)
-  if valid_600373 != nil:
-    section.add "X-Amz-Signature", valid_600373
-  var valid_600374 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600374 = validateParameter(valid_600374, JString, required = false,
+  if valid_600388 != nil:
+    section.add "X-Amz-Signature", valid_600388
+  var valid_600389 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600389 = validateParameter(valid_600389, JString, required = false,
                                  default = nil)
-  if valid_600374 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600374
-  var valid_600375 = header.getOrDefault("X-Amz-Credential")
-  valid_600375 = validateParameter(valid_600375, JString, required = false,
+  if valid_600389 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600389
+  var valid_600390 = header.getOrDefault("X-Amz-Credential")
+  valid_600390 = validateParameter(valid_600390, JString, required = false,
                                  default = nil)
-  if valid_600375 != nil:
-    section.add "X-Amz-Credential", valid_600375
+  if valid_600390 != nil:
+    section.add "X-Amz-Credential", valid_600390
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3284,20 +3398,20 @@ proc validate_ListAccounts_600364(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600377: Call_ListAccounts_600363; path: JsonNode; query: JsonNode;
+proc call*(call_600392: Call_ListAccounts_600378; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all the accounts in the organization. To request only the accounts in a specified root or organizational unit (OU), use the <a>ListAccountsForParent</a> operation instead.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600377.validator(path, query, header, formData, body)
-  let scheme = call_600377.pickScheme
+  let valid = call_600392.validator(path, query, header, formData, body)
+  let scheme = call_600392.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600377.url(scheme.get, call_600377.host, call_600377.base,
-                         call_600377.route, valid.getOrDefault("path"),
+  let url = call_600392.url(scheme.get, call_600392.host, call_600392.base,
+                         call_600392.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600377, url, valid)
+  result = atozHook(call_600392, url, valid)
 
-proc call*(call_600378: Call_ListAccounts_600363; body: JsonNode;
+proc call*(call_600393: Call_ListAccounts_600378; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listAccounts
   ## <p>Lists all the accounts in the organization. To request only the accounts in a specified root or organizational unit (OU), use the <a>ListAccountsForParent</a> operation instead.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -3306,22 +3420,22 @@ proc call*(call_600378: Call_ListAccounts_600363; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600379 = newJObject()
-  var body_600380 = newJObject()
-  add(query_600379, "NextToken", newJString(NextToken))
+  var query_600394 = newJObject()
+  var body_600395 = newJObject()
+  add(query_600394, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600380 = body
-  add(query_600379, "MaxResults", newJString(MaxResults))
-  result = call_600378.call(nil, query_600379, nil, nil, body_600380)
+    body_600395 = body
+  add(query_600394, "MaxResults", newJString(MaxResults))
+  result = call_600393.call(nil, query_600394, nil, nil, body_600395)
 
-var listAccounts* = Call_ListAccounts_600363(name: "listAccounts",
+var listAccounts* = Call_ListAccounts_600378(name: "listAccounts",
     meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListAccounts",
-    validator: validate_ListAccounts_600364, base: "/", url: url_ListAccounts_600365,
+    validator: validate_ListAccounts_600379, base: "/", url: url_ListAccounts_600380,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAccountsForParent_600381 = ref object of OpenApiRestCall_599369
-proc url_ListAccountsForParent_600383(protocol: Scheme; host: string; base: string;
+  Call_ListAccountsForParent_600396 = ref object of OpenApiRestCall_599369
+proc url_ListAccountsForParent_600398(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3332,7 +3446,7 @@ proc url_ListAccountsForParent_600383(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListAccountsForParent_600382(path: JsonNode; query: JsonNode;
+proc validate_ListAccountsForParent_600397(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the accounts in an organization that are contained by the specified target root or organizational unit (OU). If you specify the root, you get a list of all the accounts that aren't in any OU. If you specify an OU, you get a list of all the accounts in only that OU and not in any child OUs. To get a list of all accounts in the organization, use the <a>ListAccounts</a> operation.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -3346,16 +3460,16 @@ proc validate_ListAccountsForParent_600382(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600384 = query.getOrDefault("NextToken")
-  valid_600384 = validateParameter(valid_600384, JString, required = false,
+  var valid_600399 = query.getOrDefault("NextToken")
+  valid_600399 = validateParameter(valid_600399, JString, required = false,
                                  default = nil)
-  if valid_600384 != nil:
-    section.add "NextToken", valid_600384
-  var valid_600385 = query.getOrDefault("MaxResults")
-  valid_600385 = validateParameter(valid_600385, JString, required = false,
+  if valid_600399 != nil:
+    section.add "NextToken", valid_600399
+  var valid_600400 = query.getOrDefault("MaxResults")
+  valid_600400 = validateParameter(valid_600400, JString, required = false,
                                  default = nil)
-  if valid_600385 != nil:
-    section.add "MaxResults", valid_600385
+  if valid_600400 != nil:
+    section.add "MaxResults", valid_600400
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3367,48 +3481,48 @@ proc validate_ListAccountsForParent_600382(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600386 = header.getOrDefault("X-Amz-Date")
-  valid_600386 = validateParameter(valid_600386, JString, required = false,
+  var valid_600401 = header.getOrDefault("X-Amz-Date")
+  valid_600401 = validateParameter(valid_600401, JString, required = false,
                                  default = nil)
-  if valid_600386 != nil:
-    section.add "X-Amz-Date", valid_600386
-  var valid_600387 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600387 = validateParameter(valid_600387, JString, required = false,
+  if valid_600401 != nil:
+    section.add "X-Amz-Date", valid_600401
+  var valid_600402 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600402 = validateParameter(valid_600402, JString, required = false,
                                  default = nil)
-  if valid_600387 != nil:
-    section.add "X-Amz-Security-Token", valid_600387
+  if valid_600402 != nil:
+    section.add "X-Amz-Security-Token", valid_600402
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600388 = header.getOrDefault("X-Amz-Target")
-  valid_600388 = validateParameter(valid_600388, JString, required = true, default = newJString(
+  var valid_600403 = header.getOrDefault("X-Amz-Target")
+  valid_600403 = validateParameter(valid_600403, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListAccountsForParent"))
-  if valid_600388 != nil:
-    section.add "X-Amz-Target", valid_600388
-  var valid_600389 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600389 = validateParameter(valid_600389, JString, required = false,
+  if valid_600403 != nil:
+    section.add "X-Amz-Target", valid_600403
+  var valid_600404 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600404 = validateParameter(valid_600404, JString, required = false,
                                  default = nil)
-  if valid_600389 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600389
-  var valid_600390 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600390 = validateParameter(valid_600390, JString, required = false,
+  if valid_600404 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600404
+  var valid_600405 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600405 = validateParameter(valid_600405, JString, required = false,
                                  default = nil)
-  if valid_600390 != nil:
-    section.add "X-Amz-Algorithm", valid_600390
-  var valid_600391 = header.getOrDefault("X-Amz-Signature")
-  valid_600391 = validateParameter(valid_600391, JString, required = false,
+  if valid_600405 != nil:
+    section.add "X-Amz-Algorithm", valid_600405
+  var valid_600406 = header.getOrDefault("X-Amz-Signature")
+  valid_600406 = validateParameter(valid_600406, JString, required = false,
                                  default = nil)
-  if valid_600391 != nil:
-    section.add "X-Amz-Signature", valid_600391
-  var valid_600392 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600392 = validateParameter(valid_600392, JString, required = false,
+  if valid_600406 != nil:
+    section.add "X-Amz-Signature", valid_600406
+  var valid_600407 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600407 = validateParameter(valid_600407, JString, required = false,
                                  default = nil)
-  if valid_600392 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600392
-  var valid_600393 = header.getOrDefault("X-Amz-Credential")
-  valid_600393 = validateParameter(valid_600393, JString, required = false,
+  if valid_600407 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600407
+  var valid_600408 = header.getOrDefault("X-Amz-Credential")
+  valid_600408 = validateParameter(valid_600408, JString, required = false,
                                  default = nil)
-  if valid_600393 != nil:
-    section.add "X-Amz-Credential", valid_600393
+  if valid_600408 != nil:
+    section.add "X-Amz-Credential", valid_600408
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3419,20 +3533,20 @@ proc validate_ListAccountsForParent_600382(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600395: Call_ListAccountsForParent_600381; path: JsonNode;
+proc call*(call_600410: Call_ListAccountsForParent_600396; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the accounts in an organization that are contained by the specified target root or organizational unit (OU). If you specify the root, you get a list of all the accounts that aren't in any OU. If you specify an OU, you get a list of all the accounts in only that OU and not in any child OUs. To get a list of all accounts in the organization, use the <a>ListAccounts</a> operation.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600395.validator(path, query, header, formData, body)
-  let scheme = call_600395.pickScheme
+  let valid = call_600410.validator(path, query, header, formData, body)
+  let scheme = call_600410.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600395.url(scheme.get, call_600395.host, call_600395.base,
-                         call_600395.route, valid.getOrDefault("path"),
+  let url = call_600410.url(scheme.get, call_600410.host, call_600410.base,
+                         call_600410.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600395, url, valid)
+  result = atozHook(call_600410, url, valid)
 
-proc call*(call_600396: Call_ListAccountsForParent_600381; body: JsonNode;
+proc call*(call_600411: Call_ListAccountsForParent_600396; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listAccountsForParent
   ## <p>Lists the accounts in an organization that are contained by the specified target root or organizational unit (OU). If you specify the root, you get a list of all the accounts that aren't in any OU. If you specify an OU, you get a list of all the accounts in only that OU and not in any child OUs. To get a list of all accounts in the organization, use the <a>ListAccounts</a> operation.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -3441,23 +3555,23 @@ proc call*(call_600396: Call_ListAccountsForParent_600381; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600397 = newJObject()
-  var body_600398 = newJObject()
-  add(query_600397, "NextToken", newJString(NextToken))
+  var query_600412 = newJObject()
+  var body_600413 = newJObject()
+  add(query_600412, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600398 = body
-  add(query_600397, "MaxResults", newJString(MaxResults))
-  result = call_600396.call(nil, query_600397, nil, nil, body_600398)
+    body_600413 = body
+  add(query_600412, "MaxResults", newJString(MaxResults))
+  result = call_600411.call(nil, query_600412, nil, nil, body_600413)
 
-var listAccountsForParent* = Call_ListAccountsForParent_600381(
+var listAccountsForParent* = Call_ListAccountsForParent_600396(
     name: "listAccountsForParent", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListAccountsForParent",
-    validator: validate_ListAccountsForParent_600382, base: "/",
-    url: url_ListAccountsForParent_600383, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListAccountsForParent_600397, base: "/",
+    url: url_ListAccountsForParent_600398, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListChildren_600399 = ref object of OpenApiRestCall_599369
-proc url_ListChildren_600401(protocol: Scheme; host: string; base: string;
+  Call_ListChildren_600414 = ref object of OpenApiRestCall_599369
+proc url_ListChildren_600416(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3468,7 +3582,7 @@ proc url_ListChildren_600401(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListChildren_600400(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListChildren_600415(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists all of the organizational units (OUs) or accounts that are contained in the specified parent OU or root. This operation, along with <a>ListParents</a> enables you to traverse the tree structure that makes up this root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -3482,16 +3596,16 @@ proc validate_ListChildren_600400(path: JsonNode; query: JsonNode; header: JsonN
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600402 = query.getOrDefault("NextToken")
-  valid_600402 = validateParameter(valid_600402, JString, required = false,
+  var valid_600417 = query.getOrDefault("NextToken")
+  valid_600417 = validateParameter(valid_600417, JString, required = false,
                                  default = nil)
-  if valid_600402 != nil:
-    section.add "NextToken", valid_600402
-  var valid_600403 = query.getOrDefault("MaxResults")
-  valid_600403 = validateParameter(valid_600403, JString, required = false,
+  if valid_600417 != nil:
+    section.add "NextToken", valid_600417
+  var valid_600418 = query.getOrDefault("MaxResults")
+  valid_600418 = validateParameter(valid_600418, JString, required = false,
                                  default = nil)
-  if valid_600403 != nil:
-    section.add "MaxResults", valid_600403
+  if valid_600418 != nil:
+    section.add "MaxResults", valid_600418
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3503,48 +3617,48 @@ proc validate_ListChildren_600400(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600404 = header.getOrDefault("X-Amz-Date")
-  valid_600404 = validateParameter(valid_600404, JString, required = false,
+  var valid_600419 = header.getOrDefault("X-Amz-Date")
+  valid_600419 = validateParameter(valid_600419, JString, required = false,
                                  default = nil)
-  if valid_600404 != nil:
-    section.add "X-Amz-Date", valid_600404
-  var valid_600405 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600405 = validateParameter(valid_600405, JString, required = false,
+  if valid_600419 != nil:
+    section.add "X-Amz-Date", valid_600419
+  var valid_600420 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600420 = validateParameter(valid_600420, JString, required = false,
                                  default = nil)
-  if valid_600405 != nil:
-    section.add "X-Amz-Security-Token", valid_600405
+  if valid_600420 != nil:
+    section.add "X-Amz-Security-Token", valid_600420
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600406 = header.getOrDefault("X-Amz-Target")
-  valid_600406 = validateParameter(valid_600406, JString, required = true, default = newJString(
+  var valid_600421 = header.getOrDefault("X-Amz-Target")
+  valid_600421 = validateParameter(valid_600421, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListChildren"))
-  if valid_600406 != nil:
-    section.add "X-Amz-Target", valid_600406
-  var valid_600407 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600407 = validateParameter(valid_600407, JString, required = false,
+  if valid_600421 != nil:
+    section.add "X-Amz-Target", valid_600421
+  var valid_600422 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600422 = validateParameter(valid_600422, JString, required = false,
                                  default = nil)
-  if valid_600407 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600407
-  var valid_600408 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600408 = validateParameter(valid_600408, JString, required = false,
+  if valid_600422 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600422
+  var valid_600423 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600423 = validateParameter(valid_600423, JString, required = false,
                                  default = nil)
-  if valid_600408 != nil:
-    section.add "X-Amz-Algorithm", valid_600408
-  var valid_600409 = header.getOrDefault("X-Amz-Signature")
-  valid_600409 = validateParameter(valid_600409, JString, required = false,
+  if valid_600423 != nil:
+    section.add "X-Amz-Algorithm", valid_600423
+  var valid_600424 = header.getOrDefault("X-Amz-Signature")
+  valid_600424 = validateParameter(valid_600424, JString, required = false,
                                  default = nil)
-  if valid_600409 != nil:
-    section.add "X-Amz-Signature", valid_600409
-  var valid_600410 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600410 = validateParameter(valid_600410, JString, required = false,
+  if valid_600424 != nil:
+    section.add "X-Amz-Signature", valid_600424
+  var valid_600425 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600425 = validateParameter(valid_600425, JString, required = false,
                                  default = nil)
-  if valid_600410 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600410
-  var valid_600411 = header.getOrDefault("X-Amz-Credential")
-  valid_600411 = validateParameter(valid_600411, JString, required = false,
+  if valid_600425 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600425
+  var valid_600426 = header.getOrDefault("X-Amz-Credential")
+  valid_600426 = validateParameter(valid_600426, JString, required = false,
                                  default = nil)
-  if valid_600411 != nil:
-    section.add "X-Amz-Credential", valid_600411
+  if valid_600426 != nil:
+    section.add "X-Amz-Credential", valid_600426
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3555,20 +3669,20 @@ proc validate_ListChildren_600400(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600413: Call_ListChildren_600399; path: JsonNode; query: JsonNode;
+proc call*(call_600428: Call_ListChildren_600414; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all of the organizational units (OUs) or accounts that are contained in the specified parent OU or root. This operation, along with <a>ListParents</a> enables you to traverse the tree structure that makes up this root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600413.validator(path, query, header, formData, body)
-  let scheme = call_600413.pickScheme
+  let valid = call_600428.validator(path, query, header, formData, body)
+  let scheme = call_600428.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600413.url(scheme.get, call_600413.host, call_600413.base,
-                         call_600413.route, valid.getOrDefault("path"),
+  let url = call_600428.url(scheme.get, call_600428.host, call_600428.base,
+                         call_600428.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600413, url, valid)
+  result = atozHook(call_600428, url, valid)
 
-proc call*(call_600414: Call_ListChildren_600399; body: JsonNode;
+proc call*(call_600429: Call_ListChildren_600414; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listChildren
   ## <p>Lists all of the organizational units (OUs) or accounts that are contained in the specified parent OU or root. This operation, along with <a>ListParents</a> enables you to traverse the tree structure that makes up this root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -3577,22 +3691,22 @@ proc call*(call_600414: Call_ListChildren_600399; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600415 = newJObject()
-  var body_600416 = newJObject()
-  add(query_600415, "NextToken", newJString(NextToken))
+  var query_600430 = newJObject()
+  var body_600431 = newJObject()
+  add(query_600430, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600416 = body
-  add(query_600415, "MaxResults", newJString(MaxResults))
-  result = call_600414.call(nil, query_600415, nil, nil, body_600416)
+    body_600431 = body
+  add(query_600430, "MaxResults", newJString(MaxResults))
+  result = call_600429.call(nil, query_600430, nil, nil, body_600431)
 
-var listChildren* = Call_ListChildren_600399(name: "listChildren",
+var listChildren* = Call_ListChildren_600414(name: "listChildren",
     meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListChildren",
-    validator: validate_ListChildren_600400, base: "/", url: url_ListChildren_600401,
+    validator: validate_ListChildren_600415, base: "/", url: url_ListChildren_600416,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCreateAccountStatus_600417 = ref object of OpenApiRestCall_599369
-proc url_ListCreateAccountStatus_600419(protocol: Scheme; host: string; base: string;
+  Call_ListCreateAccountStatus_600432 = ref object of OpenApiRestCall_599369
+proc url_ListCreateAccountStatus_600434(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -3604,7 +3718,7 @@ proc url_ListCreateAccountStatus_600419(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_ListCreateAccountStatus_600418(path: JsonNode; query: JsonNode;
+proc validate_ListCreateAccountStatus_600433(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the account creation requests that match the specified status that is currently being tracked for the organization.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -3618,16 +3732,16 @@ proc validate_ListCreateAccountStatus_600418(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600420 = query.getOrDefault("NextToken")
-  valid_600420 = validateParameter(valid_600420, JString, required = false,
+  var valid_600435 = query.getOrDefault("NextToken")
+  valid_600435 = validateParameter(valid_600435, JString, required = false,
                                  default = nil)
-  if valid_600420 != nil:
-    section.add "NextToken", valid_600420
-  var valid_600421 = query.getOrDefault("MaxResults")
-  valid_600421 = validateParameter(valid_600421, JString, required = false,
+  if valid_600435 != nil:
+    section.add "NextToken", valid_600435
+  var valid_600436 = query.getOrDefault("MaxResults")
+  valid_600436 = validateParameter(valid_600436, JString, required = false,
                                  default = nil)
-  if valid_600421 != nil:
-    section.add "MaxResults", valid_600421
+  if valid_600436 != nil:
+    section.add "MaxResults", valid_600436
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3639,48 +3753,48 @@ proc validate_ListCreateAccountStatus_600418(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600422 = header.getOrDefault("X-Amz-Date")
-  valid_600422 = validateParameter(valid_600422, JString, required = false,
+  var valid_600437 = header.getOrDefault("X-Amz-Date")
+  valid_600437 = validateParameter(valid_600437, JString, required = false,
                                  default = nil)
-  if valid_600422 != nil:
-    section.add "X-Amz-Date", valid_600422
-  var valid_600423 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600423 = validateParameter(valid_600423, JString, required = false,
+  if valid_600437 != nil:
+    section.add "X-Amz-Date", valid_600437
+  var valid_600438 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600438 = validateParameter(valid_600438, JString, required = false,
                                  default = nil)
-  if valid_600423 != nil:
-    section.add "X-Amz-Security-Token", valid_600423
+  if valid_600438 != nil:
+    section.add "X-Amz-Security-Token", valid_600438
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600424 = header.getOrDefault("X-Amz-Target")
-  valid_600424 = validateParameter(valid_600424, JString, required = true, default = newJString(
+  var valid_600439 = header.getOrDefault("X-Amz-Target")
+  valid_600439 = validateParameter(valid_600439, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListCreateAccountStatus"))
-  if valid_600424 != nil:
-    section.add "X-Amz-Target", valid_600424
-  var valid_600425 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600425 = validateParameter(valid_600425, JString, required = false,
+  if valid_600439 != nil:
+    section.add "X-Amz-Target", valid_600439
+  var valid_600440 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600440 = validateParameter(valid_600440, JString, required = false,
                                  default = nil)
-  if valid_600425 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600425
-  var valid_600426 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600426 = validateParameter(valid_600426, JString, required = false,
+  if valid_600440 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600440
+  var valid_600441 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600441 = validateParameter(valid_600441, JString, required = false,
                                  default = nil)
-  if valid_600426 != nil:
-    section.add "X-Amz-Algorithm", valid_600426
-  var valid_600427 = header.getOrDefault("X-Amz-Signature")
-  valid_600427 = validateParameter(valid_600427, JString, required = false,
+  if valid_600441 != nil:
+    section.add "X-Amz-Algorithm", valid_600441
+  var valid_600442 = header.getOrDefault("X-Amz-Signature")
+  valid_600442 = validateParameter(valid_600442, JString, required = false,
                                  default = nil)
-  if valid_600427 != nil:
-    section.add "X-Amz-Signature", valid_600427
-  var valid_600428 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600428 = validateParameter(valid_600428, JString, required = false,
+  if valid_600442 != nil:
+    section.add "X-Amz-Signature", valid_600442
+  var valid_600443 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600443 = validateParameter(valid_600443, JString, required = false,
                                  default = nil)
-  if valid_600428 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600428
-  var valid_600429 = header.getOrDefault("X-Amz-Credential")
-  valid_600429 = validateParameter(valid_600429, JString, required = false,
+  if valid_600443 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600443
+  var valid_600444 = header.getOrDefault("X-Amz-Credential")
+  valid_600444 = validateParameter(valid_600444, JString, required = false,
                                  default = nil)
-  if valid_600429 != nil:
-    section.add "X-Amz-Credential", valid_600429
+  if valid_600444 != nil:
+    section.add "X-Amz-Credential", valid_600444
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3691,20 +3805,20 @@ proc validate_ListCreateAccountStatus_600418(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600431: Call_ListCreateAccountStatus_600417; path: JsonNode;
+proc call*(call_600446: Call_ListCreateAccountStatus_600432; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the account creation requests that match the specified status that is currently being tracked for the organization.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600431.validator(path, query, header, formData, body)
-  let scheme = call_600431.pickScheme
+  let valid = call_600446.validator(path, query, header, formData, body)
+  let scheme = call_600446.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600431.url(scheme.get, call_600431.host, call_600431.base,
-                         call_600431.route, valid.getOrDefault("path"),
+  let url = call_600446.url(scheme.get, call_600446.host, call_600446.base,
+                         call_600446.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600431, url, valid)
+  result = atozHook(call_600446, url, valid)
 
-proc call*(call_600432: Call_ListCreateAccountStatus_600417; body: JsonNode;
+proc call*(call_600447: Call_ListCreateAccountStatus_600432; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listCreateAccountStatus
   ## <p>Lists the account creation requests that match the specified status that is currently being tracked for the organization.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -3713,23 +3827,23 @@ proc call*(call_600432: Call_ListCreateAccountStatus_600417; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600433 = newJObject()
-  var body_600434 = newJObject()
-  add(query_600433, "NextToken", newJString(NextToken))
+  var query_600448 = newJObject()
+  var body_600449 = newJObject()
+  add(query_600448, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600434 = body
-  add(query_600433, "MaxResults", newJString(MaxResults))
-  result = call_600432.call(nil, query_600433, nil, nil, body_600434)
+    body_600449 = body
+  add(query_600448, "MaxResults", newJString(MaxResults))
+  result = call_600447.call(nil, query_600448, nil, nil, body_600449)
 
-var listCreateAccountStatus* = Call_ListCreateAccountStatus_600417(
+var listCreateAccountStatus* = Call_ListCreateAccountStatus_600432(
     name: "listCreateAccountStatus", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListCreateAccountStatus",
-    validator: validate_ListCreateAccountStatus_600418, base: "/",
-    url: url_ListCreateAccountStatus_600419, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListCreateAccountStatus_600433, base: "/",
+    url: url_ListCreateAccountStatus_600434, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHandshakesForAccount_600435 = ref object of OpenApiRestCall_599369
-proc url_ListHandshakesForAccount_600437(protocol: Scheme; host: string;
+  Call_ListHandshakesForAccount_600450 = ref object of OpenApiRestCall_599369
+proc url_ListHandshakesForAccount_600452(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -3741,7 +3855,7 @@ proc url_ListHandshakesForAccount_600437(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListHandshakesForAccount_600436(path: JsonNode; query: JsonNode;
+proc validate_ListHandshakesForAccount_600451(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the current handshakes that are associated with the account of the requesting user.</p> <p>Handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> appear in the results of this API for only 30 days after changing to that state. After that, they're deleted and no longer accessible.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called from any account in the organization.</p>
   ## 
@@ -3755,16 +3869,16 @@ proc validate_ListHandshakesForAccount_600436(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600438 = query.getOrDefault("NextToken")
-  valid_600438 = validateParameter(valid_600438, JString, required = false,
+  var valid_600453 = query.getOrDefault("NextToken")
+  valid_600453 = validateParameter(valid_600453, JString, required = false,
                                  default = nil)
-  if valid_600438 != nil:
-    section.add "NextToken", valid_600438
-  var valid_600439 = query.getOrDefault("MaxResults")
-  valid_600439 = validateParameter(valid_600439, JString, required = false,
+  if valid_600453 != nil:
+    section.add "NextToken", valid_600453
+  var valid_600454 = query.getOrDefault("MaxResults")
+  valid_600454 = validateParameter(valid_600454, JString, required = false,
                                  default = nil)
-  if valid_600439 != nil:
-    section.add "MaxResults", valid_600439
+  if valid_600454 != nil:
+    section.add "MaxResults", valid_600454
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3776,48 +3890,48 @@ proc validate_ListHandshakesForAccount_600436(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600440 = header.getOrDefault("X-Amz-Date")
-  valid_600440 = validateParameter(valid_600440, JString, required = false,
+  var valid_600455 = header.getOrDefault("X-Amz-Date")
+  valid_600455 = validateParameter(valid_600455, JString, required = false,
                                  default = nil)
-  if valid_600440 != nil:
-    section.add "X-Amz-Date", valid_600440
-  var valid_600441 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600441 = validateParameter(valid_600441, JString, required = false,
+  if valid_600455 != nil:
+    section.add "X-Amz-Date", valid_600455
+  var valid_600456 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600456 = validateParameter(valid_600456, JString, required = false,
                                  default = nil)
-  if valid_600441 != nil:
-    section.add "X-Amz-Security-Token", valid_600441
+  if valid_600456 != nil:
+    section.add "X-Amz-Security-Token", valid_600456
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600442 = header.getOrDefault("X-Amz-Target")
-  valid_600442 = validateParameter(valid_600442, JString, required = true, default = newJString(
+  var valid_600457 = header.getOrDefault("X-Amz-Target")
+  valid_600457 = validateParameter(valid_600457, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListHandshakesForAccount"))
-  if valid_600442 != nil:
-    section.add "X-Amz-Target", valid_600442
-  var valid_600443 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600443 = validateParameter(valid_600443, JString, required = false,
+  if valid_600457 != nil:
+    section.add "X-Amz-Target", valid_600457
+  var valid_600458 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600458 = validateParameter(valid_600458, JString, required = false,
                                  default = nil)
-  if valid_600443 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600443
-  var valid_600444 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600444 = validateParameter(valid_600444, JString, required = false,
+  if valid_600458 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600458
+  var valid_600459 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600459 = validateParameter(valid_600459, JString, required = false,
                                  default = nil)
-  if valid_600444 != nil:
-    section.add "X-Amz-Algorithm", valid_600444
-  var valid_600445 = header.getOrDefault("X-Amz-Signature")
-  valid_600445 = validateParameter(valid_600445, JString, required = false,
+  if valid_600459 != nil:
+    section.add "X-Amz-Algorithm", valid_600459
+  var valid_600460 = header.getOrDefault("X-Amz-Signature")
+  valid_600460 = validateParameter(valid_600460, JString, required = false,
                                  default = nil)
-  if valid_600445 != nil:
-    section.add "X-Amz-Signature", valid_600445
-  var valid_600446 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600446 = validateParameter(valid_600446, JString, required = false,
+  if valid_600460 != nil:
+    section.add "X-Amz-Signature", valid_600460
+  var valid_600461 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600461 = validateParameter(valid_600461, JString, required = false,
                                  default = nil)
-  if valid_600446 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600446
-  var valid_600447 = header.getOrDefault("X-Amz-Credential")
-  valid_600447 = validateParameter(valid_600447, JString, required = false,
+  if valid_600461 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600461
+  var valid_600462 = header.getOrDefault("X-Amz-Credential")
+  valid_600462 = validateParameter(valid_600462, JString, required = false,
                                  default = nil)
-  if valid_600447 != nil:
-    section.add "X-Amz-Credential", valid_600447
+  if valid_600462 != nil:
+    section.add "X-Amz-Credential", valid_600462
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3828,20 +3942,20 @@ proc validate_ListHandshakesForAccount_600436(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600449: Call_ListHandshakesForAccount_600435; path: JsonNode;
+proc call*(call_600464: Call_ListHandshakesForAccount_600450; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the current handshakes that are associated with the account of the requesting user.</p> <p>Handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> appear in the results of this API for only 30 days after changing to that state. After that, they're deleted and no longer accessible.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called from any account in the organization.</p>
   ## 
-  let valid = call_600449.validator(path, query, header, formData, body)
-  let scheme = call_600449.pickScheme
+  let valid = call_600464.validator(path, query, header, formData, body)
+  let scheme = call_600464.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600449.url(scheme.get, call_600449.host, call_600449.base,
-                         call_600449.route, valid.getOrDefault("path"),
+  let url = call_600464.url(scheme.get, call_600464.host, call_600464.base,
+                         call_600464.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600449, url, valid)
+  result = atozHook(call_600464, url, valid)
 
-proc call*(call_600450: Call_ListHandshakesForAccount_600435; body: JsonNode;
+proc call*(call_600465: Call_ListHandshakesForAccount_600450; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listHandshakesForAccount
   ## <p>Lists the current handshakes that are associated with the account of the requesting user.</p> <p>Handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> appear in the results of this API for only 30 days after changing to that state. After that, they're deleted and no longer accessible.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called from any account in the organization.</p>
@@ -3850,23 +3964,23 @@ proc call*(call_600450: Call_ListHandshakesForAccount_600435; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600451 = newJObject()
-  var body_600452 = newJObject()
-  add(query_600451, "NextToken", newJString(NextToken))
+  var query_600466 = newJObject()
+  var body_600467 = newJObject()
+  add(query_600466, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600452 = body
-  add(query_600451, "MaxResults", newJString(MaxResults))
-  result = call_600450.call(nil, query_600451, nil, nil, body_600452)
+    body_600467 = body
+  add(query_600466, "MaxResults", newJString(MaxResults))
+  result = call_600465.call(nil, query_600466, nil, nil, body_600467)
 
-var listHandshakesForAccount* = Call_ListHandshakesForAccount_600435(
+var listHandshakesForAccount* = Call_ListHandshakesForAccount_600450(
     name: "listHandshakesForAccount", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListHandshakesForAccount",
-    validator: validate_ListHandshakesForAccount_600436, base: "/",
-    url: url_ListHandshakesForAccount_600437, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListHandshakesForAccount_600451, base: "/",
+    url: url_ListHandshakesForAccount_600452, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHandshakesForOrganization_600453 = ref object of OpenApiRestCall_599369
-proc url_ListHandshakesForOrganization_600455(protocol: Scheme; host: string;
+  Call_ListHandshakesForOrganization_600468 = ref object of OpenApiRestCall_599369
+proc url_ListHandshakesForOrganization_600470(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3877,7 +3991,7 @@ proc url_ListHandshakesForOrganization_600455(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListHandshakesForOrganization_600454(path: JsonNode; query: JsonNode;
+proc validate_ListHandshakesForOrganization_600469(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the handshakes that are associated with the organization that the requesting user is part of. The <code>ListHandshakesForOrganization</code> operation returns a list of handshake structures. Each structure contains details and status about a handshake.</p> <p>Handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> appear in the results of this API for only 30 days after changing to that state. After that, they're deleted and no longer accessible.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -3891,16 +4005,16 @@ proc validate_ListHandshakesForOrganization_600454(path: JsonNode; query: JsonNo
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600456 = query.getOrDefault("NextToken")
-  valid_600456 = validateParameter(valid_600456, JString, required = false,
+  var valid_600471 = query.getOrDefault("NextToken")
+  valid_600471 = validateParameter(valid_600471, JString, required = false,
                                  default = nil)
-  if valid_600456 != nil:
-    section.add "NextToken", valid_600456
-  var valid_600457 = query.getOrDefault("MaxResults")
-  valid_600457 = validateParameter(valid_600457, JString, required = false,
+  if valid_600471 != nil:
+    section.add "NextToken", valid_600471
+  var valid_600472 = query.getOrDefault("MaxResults")
+  valid_600472 = validateParameter(valid_600472, JString, required = false,
                                  default = nil)
-  if valid_600457 != nil:
-    section.add "MaxResults", valid_600457
+  if valid_600472 != nil:
+    section.add "MaxResults", valid_600472
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -3912,48 +4026,48 @@ proc validate_ListHandshakesForOrganization_600454(path: JsonNode; query: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600458 = header.getOrDefault("X-Amz-Date")
-  valid_600458 = validateParameter(valid_600458, JString, required = false,
+  var valid_600473 = header.getOrDefault("X-Amz-Date")
+  valid_600473 = validateParameter(valid_600473, JString, required = false,
                                  default = nil)
-  if valid_600458 != nil:
-    section.add "X-Amz-Date", valid_600458
-  var valid_600459 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600459 = validateParameter(valid_600459, JString, required = false,
+  if valid_600473 != nil:
+    section.add "X-Amz-Date", valid_600473
+  var valid_600474 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600474 = validateParameter(valid_600474, JString, required = false,
                                  default = nil)
-  if valid_600459 != nil:
-    section.add "X-Amz-Security-Token", valid_600459
+  if valid_600474 != nil:
+    section.add "X-Amz-Security-Token", valid_600474
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600460 = header.getOrDefault("X-Amz-Target")
-  valid_600460 = validateParameter(valid_600460, JString, required = true, default = newJString(
+  var valid_600475 = header.getOrDefault("X-Amz-Target")
+  valid_600475 = validateParameter(valid_600475, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListHandshakesForOrganization"))
-  if valid_600460 != nil:
-    section.add "X-Amz-Target", valid_600460
-  var valid_600461 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600461 = validateParameter(valid_600461, JString, required = false,
+  if valid_600475 != nil:
+    section.add "X-Amz-Target", valid_600475
+  var valid_600476 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600476 = validateParameter(valid_600476, JString, required = false,
                                  default = nil)
-  if valid_600461 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600461
-  var valid_600462 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600462 = validateParameter(valid_600462, JString, required = false,
+  if valid_600476 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600476
+  var valid_600477 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600477 = validateParameter(valid_600477, JString, required = false,
                                  default = nil)
-  if valid_600462 != nil:
-    section.add "X-Amz-Algorithm", valid_600462
-  var valid_600463 = header.getOrDefault("X-Amz-Signature")
-  valid_600463 = validateParameter(valid_600463, JString, required = false,
+  if valid_600477 != nil:
+    section.add "X-Amz-Algorithm", valid_600477
+  var valid_600478 = header.getOrDefault("X-Amz-Signature")
+  valid_600478 = validateParameter(valid_600478, JString, required = false,
                                  default = nil)
-  if valid_600463 != nil:
-    section.add "X-Amz-Signature", valid_600463
-  var valid_600464 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600464 = validateParameter(valid_600464, JString, required = false,
+  if valid_600478 != nil:
+    section.add "X-Amz-Signature", valid_600478
+  var valid_600479 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600479 = validateParameter(valid_600479, JString, required = false,
                                  default = nil)
-  if valid_600464 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600464
-  var valid_600465 = header.getOrDefault("X-Amz-Credential")
-  valid_600465 = validateParameter(valid_600465, JString, required = false,
+  if valid_600479 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600479
+  var valid_600480 = header.getOrDefault("X-Amz-Credential")
+  valid_600480 = validateParameter(valid_600480, JString, required = false,
                                  default = nil)
-  if valid_600465 != nil:
-    section.add "X-Amz-Credential", valid_600465
+  if valid_600480 != nil:
+    section.add "X-Amz-Credential", valid_600480
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3964,20 +4078,20 @@ proc validate_ListHandshakesForOrganization_600454(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600467: Call_ListHandshakesForOrganization_600453; path: JsonNode;
+proc call*(call_600482: Call_ListHandshakesForOrganization_600468; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the handshakes that are associated with the organization that the requesting user is part of. The <code>ListHandshakesForOrganization</code> operation returns a list of handshake structures. Each structure contains details and status about a handshake.</p> <p>Handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> appear in the results of this API for only 30 days after changing to that state. After that, they're deleted and no longer accessible.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600467.validator(path, query, header, formData, body)
-  let scheme = call_600467.pickScheme
+  let valid = call_600482.validator(path, query, header, formData, body)
+  let scheme = call_600482.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600467.url(scheme.get, call_600467.host, call_600467.base,
-                         call_600467.route, valid.getOrDefault("path"),
+  let url = call_600482.url(scheme.get, call_600482.host, call_600482.base,
+                         call_600482.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600467, url, valid)
+  result = atozHook(call_600482, url, valid)
 
-proc call*(call_600468: Call_ListHandshakesForOrganization_600453; body: JsonNode;
+proc call*(call_600483: Call_ListHandshakesForOrganization_600468; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listHandshakesForOrganization
   ## <p>Lists the handshakes that are associated with the organization that the requesting user is part of. The <code>ListHandshakesForOrganization</code> operation returns a list of handshake structures. Each structure contains details and status about a handshake.</p> <p>Handshakes that are <code>ACCEPTED</code>, <code>DECLINED</code>, or <code>CANCELED</code> appear in the results of this API for only 30 days after changing to that state. After that, they're deleted and no longer accessible.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -3986,23 +4100,23 @@ proc call*(call_600468: Call_ListHandshakesForOrganization_600453; body: JsonNod
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600469 = newJObject()
-  var body_600470 = newJObject()
-  add(query_600469, "NextToken", newJString(NextToken))
+  var query_600484 = newJObject()
+  var body_600485 = newJObject()
+  add(query_600484, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600470 = body
-  add(query_600469, "MaxResults", newJString(MaxResults))
-  result = call_600468.call(nil, query_600469, nil, nil, body_600470)
+    body_600485 = body
+  add(query_600484, "MaxResults", newJString(MaxResults))
+  result = call_600483.call(nil, query_600484, nil, nil, body_600485)
 
-var listHandshakesForOrganization* = Call_ListHandshakesForOrganization_600453(
+var listHandshakesForOrganization* = Call_ListHandshakesForOrganization_600468(
     name: "listHandshakesForOrganization", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListHandshakesForOrganization",
-    validator: validate_ListHandshakesForOrganization_600454, base: "/",
-    url: url_ListHandshakesForOrganization_600455,
+    validator: validate_ListHandshakesForOrganization_600469, base: "/",
+    url: url_ListHandshakesForOrganization_600470,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListOrganizationalUnitsForParent_600471 = ref object of OpenApiRestCall_599369
-proc url_ListOrganizationalUnitsForParent_600473(protocol: Scheme; host: string;
+  Call_ListOrganizationalUnitsForParent_600486 = ref object of OpenApiRestCall_599369
+proc url_ListOrganizationalUnitsForParent_600488(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4013,7 +4127,7 @@ proc url_ListOrganizationalUnitsForParent_600473(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListOrganizationalUnitsForParent_600472(path: JsonNode;
+proc validate_ListOrganizationalUnitsForParent_600487(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the organizational units (OUs) in a parent organizational unit or root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -4027,16 +4141,16 @@ proc validate_ListOrganizationalUnitsForParent_600472(path: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600474 = query.getOrDefault("NextToken")
-  valid_600474 = validateParameter(valid_600474, JString, required = false,
+  var valid_600489 = query.getOrDefault("NextToken")
+  valid_600489 = validateParameter(valid_600489, JString, required = false,
                                  default = nil)
-  if valid_600474 != nil:
-    section.add "NextToken", valid_600474
-  var valid_600475 = query.getOrDefault("MaxResults")
-  valid_600475 = validateParameter(valid_600475, JString, required = false,
+  if valid_600489 != nil:
+    section.add "NextToken", valid_600489
+  var valid_600490 = query.getOrDefault("MaxResults")
+  valid_600490 = validateParameter(valid_600490, JString, required = false,
                                  default = nil)
-  if valid_600475 != nil:
-    section.add "MaxResults", valid_600475
+  if valid_600490 != nil:
+    section.add "MaxResults", valid_600490
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4048,48 +4162,48 @@ proc validate_ListOrganizationalUnitsForParent_600472(path: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600476 = header.getOrDefault("X-Amz-Date")
-  valid_600476 = validateParameter(valid_600476, JString, required = false,
+  var valid_600491 = header.getOrDefault("X-Amz-Date")
+  valid_600491 = validateParameter(valid_600491, JString, required = false,
                                  default = nil)
-  if valid_600476 != nil:
-    section.add "X-Amz-Date", valid_600476
-  var valid_600477 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600477 = validateParameter(valid_600477, JString, required = false,
+  if valid_600491 != nil:
+    section.add "X-Amz-Date", valid_600491
+  var valid_600492 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600492 = validateParameter(valid_600492, JString, required = false,
                                  default = nil)
-  if valid_600477 != nil:
-    section.add "X-Amz-Security-Token", valid_600477
+  if valid_600492 != nil:
+    section.add "X-Amz-Security-Token", valid_600492
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600478 = header.getOrDefault("X-Amz-Target")
-  valid_600478 = validateParameter(valid_600478, JString, required = true, default = newJString(
+  var valid_600493 = header.getOrDefault("X-Amz-Target")
+  valid_600493 = validateParameter(valid_600493, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListOrganizationalUnitsForParent"))
-  if valid_600478 != nil:
-    section.add "X-Amz-Target", valid_600478
-  var valid_600479 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600479 = validateParameter(valid_600479, JString, required = false,
+  if valid_600493 != nil:
+    section.add "X-Amz-Target", valid_600493
+  var valid_600494 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600494 = validateParameter(valid_600494, JString, required = false,
                                  default = nil)
-  if valid_600479 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600479
-  var valid_600480 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600480 = validateParameter(valid_600480, JString, required = false,
+  if valid_600494 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600494
+  var valid_600495 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600495 = validateParameter(valid_600495, JString, required = false,
                                  default = nil)
-  if valid_600480 != nil:
-    section.add "X-Amz-Algorithm", valid_600480
-  var valid_600481 = header.getOrDefault("X-Amz-Signature")
-  valid_600481 = validateParameter(valid_600481, JString, required = false,
+  if valid_600495 != nil:
+    section.add "X-Amz-Algorithm", valid_600495
+  var valid_600496 = header.getOrDefault("X-Amz-Signature")
+  valid_600496 = validateParameter(valid_600496, JString, required = false,
                                  default = nil)
-  if valid_600481 != nil:
-    section.add "X-Amz-Signature", valid_600481
-  var valid_600482 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600482 = validateParameter(valid_600482, JString, required = false,
+  if valid_600496 != nil:
+    section.add "X-Amz-Signature", valid_600496
+  var valid_600497 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600497 = validateParameter(valid_600497, JString, required = false,
                                  default = nil)
-  if valid_600482 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600482
-  var valid_600483 = header.getOrDefault("X-Amz-Credential")
-  valid_600483 = validateParameter(valid_600483, JString, required = false,
+  if valid_600497 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600497
+  var valid_600498 = header.getOrDefault("X-Amz-Credential")
+  valid_600498 = validateParameter(valid_600498, JString, required = false,
                                  default = nil)
-  if valid_600483 != nil:
-    section.add "X-Amz-Credential", valid_600483
+  if valid_600498 != nil:
+    section.add "X-Amz-Credential", valid_600498
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4100,21 +4214,21 @@ proc validate_ListOrganizationalUnitsForParent_600472(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600485: Call_ListOrganizationalUnitsForParent_600471;
+proc call*(call_600500: Call_ListOrganizationalUnitsForParent_600486;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Lists the organizational units (OUs) in a parent organizational unit or root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600485.validator(path, query, header, formData, body)
-  let scheme = call_600485.pickScheme
+  let valid = call_600500.validator(path, query, header, formData, body)
+  let scheme = call_600500.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600485.url(scheme.get, call_600485.host, call_600485.base,
-                         call_600485.route, valid.getOrDefault("path"),
+  let url = call_600500.url(scheme.get, call_600500.host, call_600500.base,
+                         call_600500.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600485, url, valid)
+  result = atozHook(call_600500, url, valid)
 
-proc call*(call_600486: Call_ListOrganizationalUnitsForParent_600471;
+proc call*(call_600501: Call_ListOrganizationalUnitsForParent_600486;
           body: JsonNode; NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listOrganizationalUnitsForParent
   ## <p>Lists the organizational units (OUs) in a parent organizational unit or root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -4123,23 +4237,23 @@ proc call*(call_600486: Call_ListOrganizationalUnitsForParent_600471;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600487 = newJObject()
-  var body_600488 = newJObject()
-  add(query_600487, "NextToken", newJString(NextToken))
+  var query_600502 = newJObject()
+  var body_600503 = newJObject()
+  add(query_600502, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600488 = body
-  add(query_600487, "MaxResults", newJString(MaxResults))
-  result = call_600486.call(nil, query_600487, nil, nil, body_600488)
+    body_600503 = body
+  add(query_600502, "MaxResults", newJString(MaxResults))
+  result = call_600501.call(nil, query_600502, nil, nil, body_600503)
 
-var listOrganizationalUnitsForParent* = Call_ListOrganizationalUnitsForParent_600471(
+var listOrganizationalUnitsForParent* = Call_ListOrganizationalUnitsForParent_600486(
     name: "listOrganizationalUnitsForParent", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListOrganizationalUnitsForParent",
-    validator: validate_ListOrganizationalUnitsForParent_600472, base: "/",
-    url: url_ListOrganizationalUnitsForParent_600473,
+    validator: validate_ListOrganizationalUnitsForParent_600487, base: "/",
+    url: url_ListOrganizationalUnitsForParent_600488,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListParents_600489 = ref object of OpenApiRestCall_599369
-proc url_ListParents_600491(protocol: Scheme; host: string; base: string;
+  Call_ListParents_600504 = ref object of OpenApiRestCall_599369
+proc url_ListParents_600506(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4150,7 +4264,7 @@ proc url_ListParents_600491(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListParents_600490(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListParents_600505(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the root or organizational units (OUs) that serve as the immediate parent of the specified child OU or account. This operation, along with <a>ListChildren</a> enables you to traverse the tree structure that makes up this root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p> <note> <p>In the current release, a child can have only a single parent. </p> </note>
   ## 
@@ -4164,16 +4278,16 @@ proc validate_ListParents_600490(path: JsonNode; query: JsonNode; header: JsonNo
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600492 = query.getOrDefault("NextToken")
-  valid_600492 = validateParameter(valid_600492, JString, required = false,
+  var valid_600507 = query.getOrDefault("NextToken")
+  valid_600507 = validateParameter(valid_600507, JString, required = false,
                                  default = nil)
-  if valid_600492 != nil:
-    section.add "NextToken", valid_600492
-  var valid_600493 = query.getOrDefault("MaxResults")
-  valid_600493 = validateParameter(valid_600493, JString, required = false,
+  if valid_600507 != nil:
+    section.add "NextToken", valid_600507
+  var valid_600508 = query.getOrDefault("MaxResults")
+  valid_600508 = validateParameter(valid_600508, JString, required = false,
                                  default = nil)
-  if valid_600493 != nil:
-    section.add "MaxResults", valid_600493
+  if valid_600508 != nil:
+    section.add "MaxResults", valid_600508
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4185,48 +4299,48 @@ proc validate_ListParents_600490(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600494 = header.getOrDefault("X-Amz-Date")
-  valid_600494 = validateParameter(valid_600494, JString, required = false,
+  var valid_600509 = header.getOrDefault("X-Amz-Date")
+  valid_600509 = validateParameter(valid_600509, JString, required = false,
                                  default = nil)
-  if valid_600494 != nil:
-    section.add "X-Amz-Date", valid_600494
-  var valid_600495 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600495 = validateParameter(valid_600495, JString, required = false,
+  if valid_600509 != nil:
+    section.add "X-Amz-Date", valid_600509
+  var valid_600510 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600510 = validateParameter(valid_600510, JString, required = false,
                                  default = nil)
-  if valid_600495 != nil:
-    section.add "X-Amz-Security-Token", valid_600495
+  if valid_600510 != nil:
+    section.add "X-Amz-Security-Token", valid_600510
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600496 = header.getOrDefault("X-Amz-Target")
-  valid_600496 = validateParameter(valid_600496, JString, required = true, default = newJString(
+  var valid_600511 = header.getOrDefault("X-Amz-Target")
+  valid_600511 = validateParameter(valid_600511, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListParents"))
-  if valid_600496 != nil:
-    section.add "X-Amz-Target", valid_600496
-  var valid_600497 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600497 = validateParameter(valid_600497, JString, required = false,
+  if valid_600511 != nil:
+    section.add "X-Amz-Target", valid_600511
+  var valid_600512 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600512 = validateParameter(valid_600512, JString, required = false,
                                  default = nil)
-  if valid_600497 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600497
-  var valid_600498 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600498 = validateParameter(valid_600498, JString, required = false,
+  if valid_600512 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600512
+  var valid_600513 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600513 = validateParameter(valid_600513, JString, required = false,
                                  default = nil)
-  if valid_600498 != nil:
-    section.add "X-Amz-Algorithm", valid_600498
-  var valid_600499 = header.getOrDefault("X-Amz-Signature")
-  valid_600499 = validateParameter(valid_600499, JString, required = false,
+  if valid_600513 != nil:
+    section.add "X-Amz-Algorithm", valid_600513
+  var valid_600514 = header.getOrDefault("X-Amz-Signature")
+  valid_600514 = validateParameter(valid_600514, JString, required = false,
                                  default = nil)
-  if valid_600499 != nil:
-    section.add "X-Amz-Signature", valid_600499
-  var valid_600500 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600500 = validateParameter(valid_600500, JString, required = false,
+  if valid_600514 != nil:
+    section.add "X-Amz-Signature", valid_600514
+  var valid_600515 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600515 = validateParameter(valid_600515, JString, required = false,
                                  default = nil)
-  if valid_600500 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600500
-  var valid_600501 = header.getOrDefault("X-Amz-Credential")
-  valid_600501 = validateParameter(valid_600501, JString, required = false,
+  if valid_600515 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600515
+  var valid_600516 = header.getOrDefault("X-Amz-Credential")
+  valid_600516 = validateParameter(valid_600516, JString, required = false,
                                  default = nil)
-  if valid_600501 != nil:
-    section.add "X-Amz-Credential", valid_600501
+  if valid_600516 != nil:
+    section.add "X-Amz-Credential", valid_600516
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4237,20 +4351,20 @@ proc validate_ListParents_600490(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600503: Call_ListParents_600489; path: JsonNode; query: JsonNode;
+proc call*(call_600518: Call_ListParents_600504; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the root or organizational units (OUs) that serve as the immediate parent of the specified child OU or account. This operation, along with <a>ListChildren</a> enables you to traverse the tree structure that makes up this root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p> <note> <p>In the current release, a child can have only a single parent. </p> </note>
   ## 
-  let valid = call_600503.validator(path, query, header, formData, body)
-  let scheme = call_600503.pickScheme
+  let valid = call_600518.validator(path, query, header, formData, body)
+  let scheme = call_600518.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600503.url(scheme.get, call_600503.host, call_600503.base,
-                         call_600503.route, valid.getOrDefault("path"),
+  let url = call_600518.url(scheme.get, call_600518.host, call_600518.base,
+                         call_600518.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600503, url, valid)
+  result = atozHook(call_600518, url, valid)
 
-proc call*(call_600504: Call_ListParents_600489; body: JsonNode;
+proc call*(call_600519: Call_ListParents_600504; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listParents
   ## <p>Lists the root or organizational units (OUs) that serve as the immediate parent of the specified child OU or account. This operation, along with <a>ListChildren</a> enables you to traverse the tree structure that makes up this root.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p> <note> <p>In the current release, a child can have only a single parent. </p> </note>
@@ -4259,23 +4373,23 @@ proc call*(call_600504: Call_ListParents_600489; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600505 = newJObject()
-  var body_600506 = newJObject()
-  add(query_600505, "NextToken", newJString(NextToken))
+  var query_600520 = newJObject()
+  var body_600521 = newJObject()
+  add(query_600520, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600506 = body
-  add(query_600505, "MaxResults", newJString(MaxResults))
-  result = call_600504.call(nil, query_600505, nil, nil, body_600506)
+    body_600521 = body
+  add(query_600520, "MaxResults", newJString(MaxResults))
+  result = call_600519.call(nil, query_600520, nil, nil, body_600521)
 
-var listParents* = Call_ListParents_600489(name: "listParents",
+var listParents* = Call_ListParents_600504(name: "listParents",
                                         meth: HttpMethod.HttpPost,
                                         host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListParents",
-                                        validator: validate_ListParents_600490,
-                                        base: "/", url: url_ListParents_600491,
+                                        validator: validate_ListParents_600505,
+                                        base: "/", url: url_ListParents_600506,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPolicies_600507 = ref object of OpenApiRestCall_599369
-proc url_ListPolicies_600509(protocol: Scheme; host: string; base: string;
+  Call_ListPolicies_600522 = ref object of OpenApiRestCall_599369
+proc url_ListPolicies_600524(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4286,7 +4400,7 @@ proc url_ListPolicies_600509(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListPolicies_600508(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListPolicies_600523(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves the list of all policies in an organization of a specified type.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -4300,16 +4414,16 @@ proc validate_ListPolicies_600508(path: JsonNode; query: JsonNode; header: JsonN
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600510 = query.getOrDefault("NextToken")
-  valid_600510 = validateParameter(valid_600510, JString, required = false,
+  var valid_600525 = query.getOrDefault("NextToken")
+  valid_600525 = validateParameter(valid_600525, JString, required = false,
                                  default = nil)
-  if valid_600510 != nil:
-    section.add "NextToken", valid_600510
-  var valid_600511 = query.getOrDefault("MaxResults")
-  valid_600511 = validateParameter(valid_600511, JString, required = false,
+  if valid_600525 != nil:
+    section.add "NextToken", valid_600525
+  var valid_600526 = query.getOrDefault("MaxResults")
+  valid_600526 = validateParameter(valid_600526, JString, required = false,
                                  default = nil)
-  if valid_600511 != nil:
-    section.add "MaxResults", valid_600511
+  if valid_600526 != nil:
+    section.add "MaxResults", valid_600526
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4321,48 +4435,48 @@ proc validate_ListPolicies_600508(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600512 = header.getOrDefault("X-Amz-Date")
-  valid_600512 = validateParameter(valid_600512, JString, required = false,
+  var valid_600527 = header.getOrDefault("X-Amz-Date")
+  valid_600527 = validateParameter(valid_600527, JString, required = false,
                                  default = nil)
-  if valid_600512 != nil:
-    section.add "X-Amz-Date", valid_600512
-  var valid_600513 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600513 = validateParameter(valid_600513, JString, required = false,
+  if valid_600527 != nil:
+    section.add "X-Amz-Date", valid_600527
+  var valid_600528 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600528 = validateParameter(valid_600528, JString, required = false,
                                  default = nil)
-  if valid_600513 != nil:
-    section.add "X-Amz-Security-Token", valid_600513
+  if valid_600528 != nil:
+    section.add "X-Amz-Security-Token", valid_600528
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600514 = header.getOrDefault("X-Amz-Target")
-  valid_600514 = validateParameter(valid_600514, JString, required = true, default = newJString(
+  var valid_600529 = header.getOrDefault("X-Amz-Target")
+  valid_600529 = validateParameter(valid_600529, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListPolicies"))
-  if valid_600514 != nil:
-    section.add "X-Amz-Target", valid_600514
-  var valid_600515 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600515 = validateParameter(valid_600515, JString, required = false,
+  if valid_600529 != nil:
+    section.add "X-Amz-Target", valid_600529
+  var valid_600530 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600530 = validateParameter(valid_600530, JString, required = false,
                                  default = nil)
-  if valid_600515 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600515
-  var valid_600516 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600516 = validateParameter(valid_600516, JString, required = false,
+  if valid_600530 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600530
+  var valid_600531 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600531 = validateParameter(valid_600531, JString, required = false,
                                  default = nil)
-  if valid_600516 != nil:
-    section.add "X-Amz-Algorithm", valid_600516
-  var valid_600517 = header.getOrDefault("X-Amz-Signature")
-  valid_600517 = validateParameter(valid_600517, JString, required = false,
+  if valid_600531 != nil:
+    section.add "X-Amz-Algorithm", valid_600531
+  var valid_600532 = header.getOrDefault("X-Amz-Signature")
+  valid_600532 = validateParameter(valid_600532, JString, required = false,
                                  default = nil)
-  if valid_600517 != nil:
-    section.add "X-Amz-Signature", valid_600517
-  var valid_600518 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600518 = validateParameter(valid_600518, JString, required = false,
+  if valid_600532 != nil:
+    section.add "X-Amz-Signature", valid_600532
+  var valid_600533 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600533 = validateParameter(valid_600533, JString, required = false,
                                  default = nil)
-  if valid_600518 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600518
-  var valid_600519 = header.getOrDefault("X-Amz-Credential")
-  valid_600519 = validateParameter(valid_600519, JString, required = false,
+  if valid_600533 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600533
+  var valid_600534 = header.getOrDefault("X-Amz-Credential")
+  valid_600534 = validateParameter(valid_600534, JString, required = false,
                                  default = nil)
-  if valid_600519 != nil:
-    section.add "X-Amz-Credential", valid_600519
+  if valid_600534 != nil:
+    section.add "X-Amz-Credential", valid_600534
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4373,20 +4487,20 @@ proc validate_ListPolicies_600508(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600521: Call_ListPolicies_600507; path: JsonNode; query: JsonNode;
+proc call*(call_600536: Call_ListPolicies_600522; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves the list of all policies in an organization of a specified type.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600521.validator(path, query, header, formData, body)
-  let scheme = call_600521.pickScheme
+  let valid = call_600536.validator(path, query, header, formData, body)
+  let scheme = call_600536.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600521.url(scheme.get, call_600521.host, call_600521.base,
-                         call_600521.route, valid.getOrDefault("path"),
+  let url = call_600536.url(scheme.get, call_600536.host, call_600536.base,
+                         call_600536.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600521, url, valid)
+  result = atozHook(call_600536, url, valid)
 
-proc call*(call_600522: Call_ListPolicies_600507; body: JsonNode;
+proc call*(call_600537: Call_ListPolicies_600522; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listPolicies
   ## <p>Retrieves the list of all policies in an organization of a specified type.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -4395,22 +4509,22 @@ proc call*(call_600522: Call_ListPolicies_600507; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600523 = newJObject()
-  var body_600524 = newJObject()
-  add(query_600523, "NextToken", newJString(NextToken))
+  var query_600538 = newJObject()
+  var body_600539 = newJObject()
+  add(query_600538, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600524 = body
-  add(query_600523, "MaxResults", newJString(MaxResults))
-  result = call_600522.call(nil, query_600523, nil, nil, body_600524)
+    body_600539 = body
+  add(query_600538, "MaxResults", newJString(MaxResults))
+  result = call_600537.call(nil, query_600538, nil, nil, body_600539)
 
-var listPolicies* = Call_ListPolicies_600507(name: "listPolicies",
+var listPolicies* = Call_ListPolicies_600522(name: "listPolicies",
     meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListPolicies",
-    validator: validate_ListPolicies_600508, base: "/", url: url_ListPolicies_600509,
+    validator: validate_ListPolicies_600523, base: "/", url: url_ListPolicies_600524,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPoliciesForTarget_600525 = ref object of OpenApiRestCall_599369
-proc url_ListPoliciesForTarget_600527(protocol: Scheme; host: string; base: string;
+  Call_ListPoliciesForTarget_600540 = ref object of OpenApiRestCall_599369
+proc url_ListPoliciesForTarget_600542(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4421,7 +4535,7 @@ proc url_ListPoliciesForTarget_600527(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListPoliciesForTarget_600526(path: JsonNode; query: JsonNode;
+proc validate_ListPoliciesForTarget_600541(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the policies that are directly attached to the specified target root, organizational unit (OU), or account. You must specify the policy type that you want included in the returned list.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -4435,16 +4549,16 @@ proc validate_ListPoliciesForTarget_600526(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600528 = query.getOrDefault("NextToken")
-  valid_600528 = validateParameter(valid_600528, JString, required = false,
+  var valid_600543 = query.getOrDefault("NextToken")
+  valid_600543 = validateParameter(valid_600543, JString, required = false,
                                  default = nil)
-  if valid_600528 != nil:
-    section.add "NextToken", valid_600528
-  var valid_600529 = query.getOrDefault("MaxResults")
-  valid_600529 = validateParameter(valid_600529, JString, required = false,
+  if valid_600543 != nil:
+    section.add "NextToken", valid_600543
+  var valid_600544 = query.getOrDefault("MaxResults")
+  valid_600544 = validateParameter(valid_600544, JString, required = false,
                                  default = nil)
-  if valid_600529 != nil:
-    section.add "MaxResults", valid_600529
+  if valid_600544 != nil:
+    section.add "MaxResults", valid_600544
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4456,48 +4570,48 @@ proc validate_ListPoliciesForTarget_600526(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600530 = header.getOrDefault("X-Amz-Date")
-  valid_600530 = validateParameter(valid_600530, JString, required = false,
+  var valid_600545 = header.getOrDefault("X-Amz-Date")
+  valid_600545 = validateParameter(valid_600545, JString, required = false,
                                  default = nil)
-  if valid_600530 != nil:
-    section.add "X-Amz-Date", valid_600530
-  var valid_600531 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600531 = validateParameter(valid_600531, JString, required = false,
+  if valid_600545 != nil:
+    section.add "X-Amz-Date", valid_600545
+  var valid_600546 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600546 = validateParameter(valid_600546, JString, required = false,
                                  default = nil)
-  if valid_600531 != nil:
-    section.add "X-Amz-Security-Token", valid_600531
+  if valid_600546 != nil:
+    section.add "X-Amz-Security-Token", valid_600546
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600532 = header.getOrDefault("X-Amz-Target")
-  valid_600532 = validateParameter(valid_600532, JString, required = true, default = newJString(
+  var valid_600547 = header.getOrDefault("X-Amz-Target")
+  valid_600547 = validateParameter(valid_600547, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListPoliciesForTarget"))
-  if valid_600532 != nil:
-    section.add "X-Amz-Target", valid_600532
-  var valid_600533 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600533 = validateParameter(valid_600533, JString, required = false,
+  if valid_600547 != nil:
+    section.add "X-Amz-Target", valid_600547
+  var valid_600548 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600548 = validateParameter(valid_600548, JString, required = false,
                                  default = nil)
-  if valid_600533 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600533
-  var valid_600534 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600534 = validateParameter(valid_600534, JString, required = false,
+  if valid_600548 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600548
+  var valid_600549 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600549 = validateParameter(valid_600549, JString, required = false,
                                  default = nil)
-  if valid_600534 != nil:
-    section.add "X-Amz-Algorithm", valid_600534
-  var valid_600535 = header.getOrDefault("X-Amz-Signature")
-  valid_600535 = validateParameter(valid_600535, JString, required = false,
+  if valid_600549 != nil:
+    section.add "X-Amz-Algorithm", valid_600549
+  var valid_600550 = header.getOrDefault("X-Amz-Signature")
+  valid_600550 = validateParameter(valid_600550, JString, required = false,
                                  default = nil)
-  if valid_600535 != nil:
-    section.add "X-Amz-Signature", valid_600535
-  var valid_600536 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600536 = validateParameter(valid_600536, JString, required = false,
+  if valid_600550 != nil:
+    section.add "X-Amz-Signature", valid_600550
+  var valid_600551 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600551 = validateParameter(valid_600551, JString, required = false,
                                  default = nil)
-  if valid_600536 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600536
-  var valid_600537 = header.getOrDefault("X-Amz-Credential")
-  valid_600537 = validateParameter(valid_600537, JString, required = false,
+  if valid_600551 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600551
+  var valid_600552 = header.getOrDefault("X-Amz-Credential")
+  valid_600552 = validateParameter(valid_600552, JString, required = false,
                                  default = nil)
-  if valid_600537 != nil:
-    section.add "X-Amz-Credential", valid_600537
+  if valid_600552 != nil:
+    section.add "X-Amz-Credential", valid_600552
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4508,20 +4622,20 @@ proc validate_ListPoliciesForTarget_600526(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600539: Call_ListPoliciesForTarget_600525; path: JsonNode;
+proc call*(call_600554: Call_ListPoliciesForTarget_600540; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the policies that are directly attached to the specified target root, organizational unit (OU), or account. You must specify the policy type that you want included in the returned list.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600539.validator(path, query, header, formData, body)
-  let scheme = call_600539.pickScheme
+  let valid = call_600554.validator(path, query, header, formData, body)
+  let scheme = call_600554.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600539.url(scheme.get, call_600539.host, call_600539.base,
-                         call_600539.route, valid.getOrDefault("path"),
+  let url = call_600554.url(scheme.get, call_600554.host, call_600554.base,
+                         call_600554.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600539, url, valid)
+  result = atozHook(call_600554, url, valid)
 
-proc call*(call_600540: Call_ListPoliciesForTarget_600525; body: JsonNode;
+proc call*(call_600555: Call_ListPoliciesForTarget_600540; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listPoliciesForTarget
   ## <p>Lists the policies that are directly attached to the specified target root, organizational unit (OU), or account. You must specify the policy type that you want included in the returned list.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -4530,23 +4644,23 @@ proc call*(call_600540: Call_ListPoliciesForTarget_600525; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600541 = newJObject()
-  var body_600542 = newJObject()
-  add(query_600541, "NextToken", newJString(NextToken))
+  var query_600556 = newJObject()
+  var body_600557 = newJObject()
+  add(query_600556, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600542 = body
-  add(query_600541, "MaxResults", newJString(MaxResults))
-  result = call_600540.call(nil, query_600541, nil, nil, body_600542)
+    body_600557 = body
+  add(query_600556, "MaxResults", newJString(MaxResults))
+  result = call_600555.call(nil, query_600556, nil, nil, body_600557)
 
-var listPoliciesForTarget* = Call_ListPoliciesForTarget_600525(
+var listPoliciesForTarget* = Call_ListPoliciesForTarget_600540(
     name: "listPoliciesForTarget", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListPoliciesForTarget",
-    validator: validate_ListPoliciesForTarget_600526, base: "/",
-    url: url_ListPoliciesForTarget_600527, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListPoliciesForTarget_600541, base: "/",
+    url: url_ListPoliciesForTarget_600542, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRoots_600543 = ref object of OpenApiRestCall_599369
-proc url_ListRoots_600545(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListRoots_600558 = ref object of OpenApiRestCall_599369
+proc url_ListRoots_600560(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4557,7 +4671,7 @@ proc url_ListRoots_600545(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & route
 
-proc validate_ListRoots_600544(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListRoots_600559(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the roots that are defined in the current organization.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p> <note> <p>Policy types can be enabled and disabled in roots. This is distinct from whether they're available in the organization. When you enable all features, you make policy types available for use in that organization. Individual policy types can then be enabled and disabled in a root. To see the availability of a policy type in an organization, use <a>DescribeOrganization</a>.</p> </note>
   ## 
@@ -4571,16 +4685,16 @@ proc validate_ListRoots_600544(path: JsonNode; query: JsonNode; header: JsonNode
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600546 = query.getOrDefault("NextToken")
-  valid_600546 = validateParameter(valid_600546, JString, required = false,
+  var valid_600561 = query.getOrDefault("NextToken")
+  valid_600561 = validateParameter(valid_600561, JString, required = false,
                                  default = nil)
-  if valid_600546 != nil:
-    section.add "NextToken", valid_600546
-  var valid_600547 = query.getOrDefault("MaxResults")
-  valid_600547 = validateParameter(valid_600547, JString, required = false,
+  if valid_600561 != nil:
+    section.add "NextToken", valid_600561
+  var valid_600562 = query.getOrDefault("MaxResults")
+  valid_600562 = validateParameter(valid_600562, JString, required = false,
                                  default = nil)
-  if valid_600547 != nil:
-    section.add "MaxResults", valid_600547
+  if valid_600562 != nil:
+    section.add "MaxResults", valid_600562
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4592,48 +4706,48 @@ proc validate_ListRoots_600544(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600548 = header.getOrDefault("X-Amz-Date")
-  valid_600548 = validateParameter(valid_600548, JString, required = false,
+  var valid_600563 = header.getOrDefault("X-Amz-Date")
+  valid_600563 = validateParameter(valid_600563, JString, required = false,
                                  default = nil)
-  if valid_600548 != nil:
-    section.add "X-Amz-Date", valid_600548
-  var valid_600549 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600549 = validateParameter(valid_600549, JString, required = false,
+  if valid_600563 != nil:
+    section.add "X-Amz-Date", valid_600563
+  var valid_600564 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600564 = validateParameter(valid_600564, JString, required = false,
                                  default = nil)
-  if valid_600549 != nil:
-    section.add "X-Amz-Security-Token", valid_600549
+  if valid_600564 != nil:
+    section.add "X-Amz-Security-Token", valid_600564
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600550 = header.getOrDefault("X-Amz-Target")
-  valid_600550 = validateParameter(valid_600550, JString, required = true, default = newJString(
+  var valid_600565 = header.getOrDefault("X-Amz-Target")
+  valid_600565 = validateParameter(valid_600565, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListRoots"))
-  if valid_600550 != nil:
-    section.add "X-Amz-Target", valid_600550
-  var valid_600551 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600551 = validateParameter(valid_600551, JString, required = false,
+  if valid_600565 != nil:
+    section.add "X-Amz-Target", valid_600565
+  var valid_600566 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600566 = validateParameter(valid_600566, JString, required = false,
                                  default = nil)
-  if valid_600551 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600551
-  var valid_600552 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600552 = validateParameter(valid_600552, JString, required = false,
+  if valid_600566 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600566
+  var valid_600567 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600567 = validateParameter(valid_600567, JString, required = false,
                                  default = nil)
-  if valid_600552 != nil:
-    section.add "X-Amz-Algorithm", valid_600552
-  var valid_600553 = header.getOrDefault("X-Amz-Signature")
-  valid_600553 = validateParameter(valid_600553, JString, required = false,
+  if valid_600567 != nil:
+    section.add "X-Amz-Algorithm", valid_600567
+  var valid_600568 = header.getOrDefault("X-Amz-Signature")
+  valid_600568 = validateParameter(valid_600568, JString, required = false,
                                  default = nil)
-  if valid_600553 != nil:
-    section.add "X-Amz-Signature", valid_600553
-  var valid_600554 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600554 = validateParameter(valid_600554, JString, required = false,
+  if valid_600568 != nil:
+    section.add "X-Amz-Signature", valid_600568
+  var valid_600569 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600569 = validateParameter(valid_600569, JString, required = false,
                                  default = nil)
-  if valid_600554 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600554
-  var valid_600555 = header.getOrDefault("X-Amz-Credential")
-  valid_600555 = validateParameter(valid_600555, JString, required = false,
+  if valid_600569 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600569
+  var valid_600570 = header.getOrDefault("X-Amz-Credential")
+  valid_600570 = validateParameter(valid_600570, JString, required = false,
                                  default = nil)
-  if valid_600555 != nil:
-    section.add "X-Amz-Credential", valid_600555
+  if valid_600570 != nil:
+    section.add "X-Amz-Credential", valid_600570
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4644,20 +4758,20 @@ proc validate_ListRoots_600544(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600557: Call_ListRoots_600543; path: JsonNode; query: JsonNode;
+proc call*(call_600572: Call_ListRoots_600558; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the roots that are defined in the current organization.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p> <note> <p>Policy types can be enabled and disabled in roots. This is distinct from whether they're available in the organization. When you enable all features, you make policy types available for use in that organization. Individual policy types can then be enabled and disabled in a root. To see the availability of a policy type in an organization, use <a>DescribeOrganization</a>.</p> </note>
   ## 
-  let valid = call_600557.validator(path, query, header, formData, body)
-  let scheme = call_600557.pickScheme
+  let valid = call_600572.validator(path, query, header, formData, body)
+  let scheme = call_600572.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600557.url(scheme.get, call_600557.host, call_600557.base,
-                         call_600557.route, valid.getOrDefault("path"),
+  let url = call_600572.url(scheme.get, call_600572.host, call_600572.base,
+                         call_600572.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600557, url, valid)
+  result = atozHook(call_600572, url, valid)
 
-proc call*(call_600558: Call_ListRoots_600543; body: JsonNode;
+proc call*(call_600573: Call_ListRoots_600558; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listRoots
   ## <p>Lists the roots that are defined in the current organization.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p> <note> <p>Policy types can be enabled and disabled in roots. This is distinct from whether they're available in the organization. When you enable all features, you make policy types available for use in that organization. Individual policy types can then be enabled and disabled in a root. To see the availability of a policy type in an organization, use <a>DescribeOrganization</a>.</p> </note>
@@ -4666,22 +4780,22 @@ proc call*(call_600558: Call_ListRoots_600543; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600559 = newJObject()
-  var body_600560 = newJObject()
-  add(query_600559, "NextToken", newJString(NextToken))
+  var query_600574 = newJObject()
+  var body_600575 = newJObject()
+  add(query_600574, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600560 = body
-  add(query_600559, "MaxResults", newJString(MaxResults))
-  result = call_600558.call(nil, query_600559, nil, nil, body_600560)
+    body_600575 = body
+  add(query_600574, "MaxResults", newJString(MaxResults))
+  result = call_600573.call(nil, query_600574, nil, nil, body_600575)
 
-var listRoots* = Call_ListRoots_600543(name: "listRoots", meth: HttpMethod.HttpPost,
+var listRoots* = Call_ListRoots_600558(name: "listRoots", meth: HttpMethod.HttpPost,
                                     host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListRoots",
-                                    validator: validate_ListRoots_600544,
-                                    base: "/", url: url_ListRoots_600545,
+                                    validator: validate_ListRoots_600559,
+                                    base: "/", url: url_ListRoots_600560,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_600561 = ref object of OpenApiRestCall_599369
-proc url_ListTagsForResource_600563(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_600576 = ref object of OpenApiRestCall_599369
+proc url_ListTagsForResource_600578(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4692,7 +4806,7 @@ proc url_ListTagsForResource_600563(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListTagsForResource_600562(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_600577(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Lists tags for the specified resource. </p> <p>Currently, you can list tags on an account in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
@@ -4705,11 +4819,11 @@ proc validate_ListTagsForResource_600562(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_600564 = query.getOrDefault("NextToken")
-  valid_600564 = validateParameter(valid_600564, JString, required = false,
+  var valid_600579 = query.getOrDefault("NextToken")
+  valid_600579 = validateParameter(valid_600579, JString, required = false,
                                  default = nil)
-  if valid_600564 != nil:
-    section.add "NextToken", valid_600564
+  if valid_600579 != nil:
+    section.add "NextToken", valid_600579
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4721,48 +4835,48 @@ proc validate_ListTagsForResource_600562(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600565 = header.getOrDefault("X-Amz-Date")
-  valid_600565 = validateParameter(valid_600565, JString, required = false,
+  var valid_600580 = header.getOrDefault("X-Amz-Date")
+  valid_600580 = validateParameter(valid_600580, JString, required = false,
                                  default = nil)
-  if valid_600565 != nil:
-    section.add "X-Amz-Date", valid_600565
-  var valid_600566 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600566 = validateParameter(valid_600566, JString, required = false,
+  if valid_600580 != nil:
+    section.add "X-Amz-Date", valid_600580
+  var valid_600581 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600581 = validateParameter(valid_600581, JString, required = false,
                                  default = nil)
-  if valid_600566 != nil:
-    section.add "X-Amz-Security-Token", valid_600566
+  if valid_600581 != nil:
+    section.add "X-Amz-Security-Token", valid_600581
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600567 = header.getOrDefault("X-Amz-Target")
-  valid_600567 = validateParameter(valid_600567, JString, required = true, default = newJString(
+  var valid_600582 = header.getOrDefault("X-Amz-Target")
+  valid_600582 = validateParameter(valid_600582, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListTagsForResource"))
-  if valid_600567 != nil:
-    section.add "X-Amz-Target", valid_600567
-  var valid_600568 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600568 = validateParameter(valid_600568, JString, required = false,
+  if valid_600582 != nil:
+    section.add "X-Amz-Target", valid_600582
+  var valid_600583 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600583 = validateParameter(valid_600583, JString, required = false,
                                  default = nil)
-  if valid_600568 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600568
-  var valid_600569 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600569 = validateParameter(valid_600569, JString, required = false,
+  if valid_600583 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600583
+  var valid_600584 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600584 = validateParameter(valid_600584, JString, required = false,
                                  default = nil)
-  if valid_600569 != nil:
-    section.add "X-Amz-Algorithm", valid_600569
-  var valid_600570 = header.getOrDefault("X-Amz-Signature")
-  valid_600570 = validateParameter(valid_600570, JString, required = false,
+  if valid_600584 != nil:
+    section.add "X-Amz-Algorithm", valid_600584
+  var valid_600585 = header.getOrDefault("X-Amz-Signature")
+  valid_600585 = validateParameter(valid_600585, JString, required = false,
                                  default = nil)
-  if valid_600570 != nil:
-    section.add "X-Amz-Signature", valid_600570
-  var valid_600571 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600571 = validateParameter(valid_600571, JString, required = false,
+  if valid_600585 != nil:
+    section.add "X-Amz-Signature", valid_600585
+  var valid_600586 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600586 = validateParameter(valid_600586, JString, required = false,
                                  default = nil)
-  if valid_600571 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600571
-  var valid_600572 = header.getOrDefault("X-Amz-Credential")
-  valid_600572 = validateParameter(valid_600572, JString, required = false,
+  if valid_600586 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600586
+  var valid_600587 = header.getOrDefault("X-Amz-Credential")
+  valid_600587 = validateParameter(valid_600587, JString, required = false,
                                  default = nil)
-  if valid_600572 != nil:
-    section.add "X-Amz-Credential", valid_600572
+  if valid_600587 != nil:
+    section.add "X-Amz-Credential", valid_600587
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4773,42 +4887,42 @@ proc validate_ListTagsForResource_600562(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600574: Call_ListTagsForResource_600561; path: JsonNode;
+proc call*(call_600589: Call_ListTagsForResource_600576; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists tags for the specified resource. </p> <p>Currently, you can list tags on an account in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600574.validator(path, query, header, formData, body)
-  let scheme = call_600574.pickScheme
+  let valid = call_600589.validator(path, query, header, formData, body)
+  let scheme = call_600589.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600574.url(scheme.get, call_600574.host, call_600574.base,
-                         call_600574.route, valid.getOrDefault("path"),
+  let url = call_600589.url(scheme.get, call_600589.host, call_600589.base,
+                         call_600589.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600574, url, valid)
+  result = atozHook(call_600589, url, valid)
 
-proc call*(call_600575: Call_ListTagsForResource_600561; body: JsonNode;
+proc call*(call_600590: Call_ListTagsForResource_600576; body: JsonNode;
           NextToken: string = ""): Recallable =
   ## listTagsForResource
   ## <p>Lists tags for the specified resource. </p> <p>Currently, you can list tags on an account in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_600576 = newJObject()
-  var body_600577 = newJObject()
-  add(query_600576, "NextToken", newJString(NextToken))
+  var query_600591 = newJObject()
+  var body_600592 = newJObject()
+  add(query_600591, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600577 = body
-  result = call_600575.call(nil, query_600576, nil, nil, body_600577)
+    body_600592 = body
+  result = call_600590.call(nil, query_600591, nil, nil, body_600592)
 
-var listTagsForResource* = Call_ListTagsForResource_600561(
+var listTagsForResource* = Call_ListTagsForResource_600576(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListTagsForResource",
-    validator: validate_ListTagsForResource_600562, base: "/",
-    url: url_ListTagsForResource_600563, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_600577, base: "/",
+    url: url_ListTagsForResource_600578, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTargetsForPolicy_600578 = ref object of OpenApiRestCall_599369
-proc url_ListTargetsForPolicy_600580(protocol: Scheme; host: string; base: string;
+  Call_ListTargetsForPolicy_600593 = ref object of OpenApiRestCall_599369
+proc url_ListTargetsForPolicy_600595(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4819,7 +4933,7 @@ proc url_ListTargetsForPolicy_600580(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListTargetsForPolicy_600579(path: JsonNode; query: JsonNode;
+proc validate_ListTargetsForPolicy_600594(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists all the roots, organizational units (OUs), and accounts that the specified policy is attached to.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
@@ -4833,16 +4947,16 @@ proc validate_ListTargetsForPolicy_600579(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600581 = query.getOrDefault("NextToken")
-  valid_600581 = validateParameter(valid_600581, JString, required = false,
+  var valid_600596 = query.getOrDefault("NextToken")
+  valid_600596 = validateParameter(valid_600596, JString, required = false,
                                  default = nil)
-  if valid_600581 != nil:
-    section.add "NextToken", valid_600581
-  var valid_600582 = query.getOrDefault("MaxResults")
-  valid_600582 = validateParameter(valid_600582, JString, required = false,
+  if valid_600596 != nil:
+    section.add "NextToken", valid_600596
+  var valid_600597 = query.getOrDefault("MaxResults")
+  valid_600597 = validateParameter(valid_600597, JString, required = false,
                                  default = nil)
-  if valid_600582 != nil:
-    section.add "MaxResults", valid_600582
+  if valid_600597 != nil:
+    section.add "MaxResults", valid_600597
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -4854,48 +4968,48 @@ proc validate_ListTargetsForPolicy_600579(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600583 = header.getOrDefault("X-Amz-Date")
-  valid_600583 = validateParameter(valid_600583, JString, required = false,
+  var valid_600598 = header.getOrDefault("X-Amz-Date")
+  valid_600598 = validateParameter(valid_600598, JString, required = false,
                                  default = nil)
-  if valid_600583 != nil:
-    section.add "X-Amz-Date", valid_600583
-  var valid_600584 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600584 = validateParameter(valid_600584, JString, required = false,
+  if valid_600598 != nil:
+    section.add "X-Amz-Date", valid_600598
+  var valid_600599 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600599 = validateParameter(valid_600599, JString, required = false,
                                  default = nil)
-  if valid_600584 != nil:
-    section.add "X-Amz-Security-Token", valid_600584
+  if valid_600599 != nil:
+    section.add "X-Amz-Security-Token", valid_600599
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600585 = header.getOrDefault("X-Amz-Target")
-  valid_600585 = validateParameter(valid_600585, JString, required = true, default = newJString(
+  var valid_600600 = header.getOrDefault("X-Amz-Target")
+  valid_600600 = validateParameter(valid_600600, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListTargetsForPolicy"))
-  if valid_600585 != nil:
-    section.add "X-Amz-Target", valid_600585
-  var valid_600586 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600586 = validateParameter(valid_600586, JString, required = false,
+  if valid_600600 != nil:
+    section.add "X-Amz-Target", valid_600600
+  var valid_600601 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600601 = validateParameter(valid_600601, JString, required = false,
                                  default = nil)
-  if valid_600586 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600586
-  var valid_600587 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600587 = validateParameter(valid_600587, JString, required = false,
+  if valid_600601 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600601
+  var valid_600602 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600602 = validateParameter(valid_600602, JString, required = false,
                                  default = nil)
-  if valid_600587 != nil:
-    section.add "X-Amz-Algorithm", valid_600587
-  var valid_600588 = header.getOrDefault("X-Amz-Signature")
-  valid_600588 = validateParameter(valid_600588, JString, required = false,
+  if valid_600602 != nil:
+    section.add "X-Amz-Algorithm", valid_600602
+  var valid_600603 = header.getOrDefault("X-Amz-Signature")
+  valid_600603 = validateParameter(valid_600603, JString, required = false,
                                  default = nil)
-  if valid_600588 != nil:
-    section.add "X-Amz-Signature", valid_600588
-  var valid_600589 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600589 = validateParameter(valid_600589, JString, required = false,
+  if valid_600603 != nil:
+    section.add "X-Amz-Signature", valid_600603
+  var valid_600604 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600604 = validateParameter(valid_600604, JString, required = false,
                                  default = nil)
-  if valid_600589 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600589
-  var valid_600590 = header.getOrDefault("X-Amz-Credential")
-  valid_600590 = validateParameter(valid_600590, JString, required = false,
+  if valid_600604 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600604
+  var valid_600605 = header.getOrDefault("X-Amz-Credential")
+  valid_600605 = validateParameter(valid_600605, JString, required = false,
                                  default = nil)
-  if valid_600590 != nil:
-    section.add "X-Amz-Credential", valid_600590
+  if valid_600605 != nil:
+    section.add "X-Amz-Credential", valid_600605
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4906,20 +5020,20 @@ proc validate_ListTargetsForPolicy_600579(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600592: Call_ListTargetsForPolicy_600578; path: JsonNode;
+proc call*(call_600607: Call_ListTargetsForPolicy_600593; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all the roots, organizational units (OUs), and accounts that the specified policy is attached to.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
   ## 
-  let valid = call_600592.validator(path, query, header, formData, body)
-  let scheme = call_600592.pickScheme
+  let valid = call_600607.validator(path, query, header, formData, body)
+  let scheme = call_600607.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600592.url(scheme.get, call_600592.host, call_600592.base,
-                         call_600592.route, valid.getOrDefault("path"),
+  let url = call_600607.url(scheme.get, call_600607.host, call_600607.base,
+                         call_600607.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600592, url, valid)
+  result = atozHook(call_600607, url, valid)
 
-proc call*(call_600593: Call_ListTargetsForPolicy_600578; body: JsonNode;
+proc call*(call_600608: Call_ListTargetsForPolicy_600593; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listTargetsForPolicy
   ## <p>Lists all the roots, organizational units (OUs), and accounts that the specified policy is attached to.</p> <note> <p>Always check the <code>NextToken</code> response parameter for a <code>null</code> value when calling a <code>List*</code> operation. These operations can occasionally return an empty set of results even when there are more results available. The <code>NextToken</code> response parameter value is <code>null</code> <i>only</i> when there are no more results to display.</p> </note> <p>This operation can be called only from the organization's master account.</p>
@@ -4928,23 +5042,23 @@ proc call*(call_600593: Call_ListTargetsForPolicy_600578; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600594 = newJObject()
-  var body_600595 = newJObject()
-  add(query_600594, "NextToken", newJString(NextToken))
+  var query_600609 = newJObject()
+  var body_600610 = newJObject()
+  add(query_600609, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600595 = body
-  add(query_600594, "MaxResults", newJString(MaxResults))
-  result = call_600593.call(nil, query_600594, nil, nil, body_600595)
+    body_600610 = body
+  add(query_600609, "MaxResults", newJString(MaxResults))
+  result = call_600608.call(nil, query_600609, nil, nil, body_600610)
 
-var listTargetsForPolicy* = Call_ListTargetsForPolicy_600578(
+var listTargetsForPolicy* = Call_ListTargetsForPolicy_600593(
     name: "listTargetsForPolicy", meth: HttpMethod.HttpPost,
     host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.ListTargetsForPolicy",
-    validator: validate_ListTargetsForPolicy_600579, base: "/",
-    url: url_ListTargetsForPolicy_600580, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTargetsForPolicy_600594, base: "/",
+    url: url_ListTargetsForPolicy_600595, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_MoveAccount_600596 = ref object of OpenApiRestCall_599369
-proc url_MoveAccount_600598(protocol: Scheme; host: string; base: string;
+  Call_MoveAccount_600611 = ref object of OpenApiRestCall_599369
+proc url_MoveAccount_600613(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4955,122 +5069,9 @@ proc url_MoveAccount_600598(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_MoveAccount_600597(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_MoveAccount_600612(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Moves an account from its current source parent root or organizational unit (OU) to the specified destination parent root or OU.</p> <p>This operation can be called only from the organization's master account.</p>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_600599 = header.getOrDefault("X-Amz-Date")
-  valid_600599 = validateParameter(valid_600599, JString, required = false,
-                                 default = nil)
-  if valid_600599 != nil:
-    section.add "X-Amz-Date", valid_600599
-  var valid_600600 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600600 = validateParameter(valid_600600, JString, required = false,
-                                 default = nil)
-  if valid_600600 != nil:
-    section.add "X-Amz-Security-Token", valid_600600
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600601 = header.getOrDefault("X-Amz-Target")
-  valid_600601 = validateParameter(valid_600601, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.MoveAccount"))
-  if valid_600601 != nil:
-    section.add "X-Amz-Target", valid_600601
-  var valid_600602 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600602 = validateParameter(valid_600602, JString, required = false,
-                                 default = nil)
-  if valid_600602 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600602
-  var valid_600603 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600603 = validateParameter(valid_600603, JString, required = false,
-                                 default = nil)
-  if valid_600603 != nil:
-    section.add "X-Amz-Algorithm", valid_600603
-  var valid_600604 = header.getOrDefault("X-Amz-Signature")
-  valid_600604 = validateParameter(valid_600604, JString, required = false,
-                                 default = nil)
-  if valid_600604 != nil:
-    section.add "X-Amz-Signature", valid_600604
-  var valid_600605 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600605 = validateParameter(valid_600605, JString, required = false,
-                                 default = nil)
-  if valid_600605 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600605
-  var valid_600606 = header.getOrDefault("X-Amz-Credential")
-  valid_600606 = validateParameter(valid_600606, JString, required = false,
-                                 default = nil)
-  if valid_600606 != nil:
-    section.add "X-Amz-Credential", valid_600606
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_600608: Call_MoveAccount_600596; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Moves an account from its current source parent root or organizational unit (OU) to the specified destination parent root or OU.</p> <p>This operation can be called only from the organization's master account.</p>
-  ## 
-  let valid = call_600608.validator(path, query, header, formData, body)
-  let scheme = call_600608.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600608.url(scheme.get, call_600608.host, call_600608.base,
-                         call_600608.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_600608, url, valid)
-
-proc call*(call_600609: Call_MoveAccount_600596; body: JsonNode): Recallable =
-  ## moveAccount
-  ## <p>Moves an account from its current source parent root or organizational unit (OU) to the specified destination parent root or OU.</p> <p>This operation can be called only from the organization's master account.</p>
-  ##   body: JObject (required)
-  var body_600610 = newJObject()
-  if body != nil:
-    body_600610 = body
-  result = call_600609.call(nil, nil, nil, nil, body_600610)
-
-var moveAccount* = Call_MoveAccount_600596(name: "moveAccount",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.MoveAccount",
-                                        validator: validate_MoveAccount_600597,
-                                        base: "/", url: url_MoveAccount_600598,
-                                        schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_RemoveAccountFromOrganization_600611 = ref object of OpenApiRestCall_599369
-proc url_RemoveAccountFromOrganization_600613(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_RemoveAccountFromOrganization_600612(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Removes the specified account from the organization.</p> <p>The removed account becomes a standalone account that isn't a member of any organization. It's no longer subject to any policies and is responsible for its own bill payments. The organization's master account is no longer charged for any expenses accrued by the member account after it's removed from the organization.</p> <p>This operation can be called only from the organization's master account. Member accounts can remove themselves with <a>LeaveOrganization</a> instead.</p> <important> <p>You can remove an account from your organization only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required of standalone accounts is <i>not</i> automatically collected. For an account that you want to make standalone, you must accept the end user license agreement (EULA), choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. To remove an account that doesn't yet have this information, you must sign in as the member account and follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </important>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5102,7 +5103,7 @@ proc validate_RemoveAccountFromOrganization_600612(path: JsonNode; query: JsonNo
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600616 = header.getOrDefault("X-Amz-Target")
   valid_600616 = validateParameter(valid_600616, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.RemoveAccountFromOrganization"))
+      "AWSOrganizationsV20161128.MoveAccount"))
   if valid_600616 != nil:
     section.add "X-Amz-Target", valid_600616
   var valid_600617 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5140,9 +5141,9 @@ proc validate_RemoveAccountFromOrganization_600612(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600623: Call_RemoveAccountFromOrganization_600611; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Removes the specified account from the organization.</p> <p>The removed account becomes a standalone account that isn't a member of any organization. It's no longer subject to any policies and is responsible for its own bill payments. The organization's master account is no longer charged for any expenses accrued by the member account after it's removed from the organization.</p> <p>This operation can be called only from the organization's master account. Member accounts can remove themselves with <a>LeaveOrganization</a> instead.</p> <important> <p>You can remove an account from your organization only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required of standalone accounts is <i>not</i> automatically collected. For an account that you want to make standalone, you must accept the end user license agreement (EULA), choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. To remove an account that doesn't yet have this information, you must sign in as the member account and follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </important>
+proc call*(call_600623: Call_MoveAccount_600611; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Moves an account from its current source parent root or organizational unit (OU) to the specified destination parent root or OU.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600623.validator(path, query, header, formData, body)
   let scheme = call_600623.pickScheme
@@ -5153,25 +5154,25 @@ proc call*(call_600623: Call_RemoveAccountFromOrganization_600611; path: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600623, url, valid)
 
-proc call*(call_600624: Call_RemoveAccountFromOrganization_600611; body: JsonNode): Recallable =
-  ## removeAccountFromOrganization
-  ## <p>Removes the specified account from the organization.</p> <p>The removed account becomes a standalone account that isn't a member of any organization. It's no longer subject to any policies and is responsible for its own bill payments. The organization's master account is no longer charged for any expenses accrued by the member account after it's removed from the organization.</p> <p>This operation can be called only from the organization's master account. Member accounts can remove themselves with <a>LeaveOrganization</a> instead.</p> <important> <p>You can remove an account from your organization only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required of standalone accounts is <i>not</i> automatically collected. For an account that you want to make standalone, you must accept the end user license agreement (EULA), choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. To remove an account that doesn't yet have this information, you must sign in as the member account and follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </important>
+proc call*(call_600624: Call_MoveAccount_600611; body: JsonNode): Recallable =
+  ## moveAccount
+  ## <p>Moves an account from its current source parent root or organizational unit (OU) to the specified destination parent root or OU.</p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600625 = newJObject()
   if body != nil:
     body_600625 = body
   result = call_600624.call(nil, nil, nil, nil, body_600625)
 
-var removeAccountFromOrganization* = Call_RemoveAccountFromOrganization_600611(
-    name: "removeAccountFromOrganization", meth: HttpMethod.HttpPost,
-    host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.RemoveAccountFromOrganization",
-    validator: validate_RemoveAccountFromOrganization_600612, base: "/",
-    url: url_RemoveAccountFromOrganization_600613,
-    schemes: {Scheme.Https, Scheme.Http})
+var moveAccount* = Call_MoveAccount_600611(name: "moveAccount",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.MoveAccount",
+                                        validator: validate_MoveAccount_600612,
+                                        base: "/", url: url_MoveAccount_600613,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_600626 = ref object of OpenApiRestCall_599369
-proc url_TagResource_600628(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RemoveAccountFromOrganization_600626 = ref object of OpenApiRestCall_599369
+proc url_RemoveAccountFromOrganization_600628(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5181,9 +5182,9 @@ proc url_TagResource_600628(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TagResource_600627(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Adds one or more tags to the specified resource.</p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
+proc validate_RemoveAccountFromOrganization_600627(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Removes the specified account from the organization.</p> <p>The removed account becomes a standalone account that isn't a member of any organization. It's no longer subject to any policies and is responsible for its own bill payments. The organization's master account is no longer charged for any expenses accrued by the member account after it's removed from the organization.</p> <p>This operation can be called only from the organization's master account. Member accounts can remove themselves with <a>LeaveOrganization</a> instead.</p> <important> <p>You can remove an account from your organization only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI, the information required of standalone accounts is <i>not</i> automatically collected. For an account that you want to make standalone, you must accept the end user license agreement (EULA). You must also choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. To remove an account that doesn't yet have this information, you must sign in as the member account. Then follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </important>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5215,7 +5216,7 @@ proc validate_TagResource_600627(path: JsonNode; query: JsonNode; header: JsonNo
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600631 = header.getOrDefault("X-Amz-Target")
   valid_600631 = validateParameter(valid_600631, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.TagResource"))
+      "AWSOrganizationsV20161128.RemoveAccountFromOrganization"))
   if valid_600631 != nil:
     section.add "X-Amz-Target", valid_600631
   var valid_600632 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5253,9 +5254,9 @@ proc validate_TagResource_600627(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600638: Call_TagResource_600626; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Adds one or more tags to the specified resource.</p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600638: Call_RemoveAccountFromOrganization_600626; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Removes the specified account from the organization.</p> <p>The removed account becomes a standalone account that isn't a member of any organization. It's no longer subject to any policies and is responsible for its own bill payments. The organization's master account is no longer charged for any expenses accrued by the member account after it's removed from the organization.</p> <p>This operation can be called only from the organization's master account. Member accounts can remove themselves with <a>LeaveOrganization</a> instead.</p> <important> <p>You can remove an account from your organization only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI, the information required of standalone accounts is <i>not</i> automatically collected. For an account that you want to make standalone, you must accept the end user license agreement (EULA). You must also choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. To remove an account that doesn't yet have this information, you must sign in as the member account. Then follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </important>
   ## 
   let valid = call_600638.validator(path, query, header, formData, body)
   let scheme = call_600638.pickScheme
@@ -5266,25 +5267,25 @@ proc call*(call_600638: Call_TagResource_600626; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_600638, url, valid)
 
-proc call*(call_600639: Call_TagResource_600626; body: JsonNode): Recallable =
-  ## tagResource
-  ## <p>Adds one or more tags to the specified resource.</p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600639: Call_RemoveAccountFromOrganization_600626; body: JsonNode): Recallable =
+  ## removeAccountFromOrganization
+  ## <p>Removes the specified account from the organization.</p> <p>The removed account becomes a standalone account that isn't a member of any organization. It's no longer subject to any policies and is responsible for its own bill payments. The organization's master account is no longer charged for any expenses accrued by the member account after it's removed from the organization.</p> <p>This operation can be called only from the organization's master account. Member accounts can remove themselves with <a>LeaveOrganization</a> instead.</p> <important> <p>You can remove an account from your organization only if the account is configured with the information required to operate as a standalone account. When you create an account in an organization using the AWS Organizations console, API, or CLI, the information required of standalone accounts is <i>not</i> automatically collected. For an account that you want to make standalone, you must accept the end user license agreement (EULA). You must also choose a support plan, provide and verify the required contact information, and provide a current payment method. AWS uses the payment method to charge for any billable (not free tier) AWS activity that occurs while the account isn't attached to an organization. To remove an account that doesn't yet have this information, you must sign in as the member account. Then follow the steps at <a href="http://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_remove.html#leave-without-all-info"> To leave an organization when all required account information has not yet been provided</a> in the <i>AWS Organizations User Guide.</i> </p> </important>
   ##   body: JObject (required)
   var body_600640 = newJObject()
   if body != nil:
     body_600640 = body
   result = call_600639.call(nil, nil, nil, nil, body_600640)
 
-var tagResource* = Call_TagResource_600626(name: "tagResource",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.TagResource",
-                                        validator: validate_TagResource_600627,
-                                        base: "/", url: url_TagResource_600628,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var removeAccountFromOrganization* = Call_RemoveAccountFromOrganization_600626(
+    name: "removeAccountFromOrganization", meth: HttpMethod.HttpPost,
+    host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.RemoveAccountFromOrganization",
+    validator: validate_RemoveAccountFromOrganization_600627, base: "/",
+    url: url_RemoveAccountFromOrganization_600628,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_600641 = ref object of OpenApiRestCall_599369
-proc url_UntagResource_600643(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_TagResource_600641 = ref object of OpenApiRestCall_599369
+proc url_TagResource_600643(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5294,9 +5295,9 @@ proc url_UntagResource_600643(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UntagResource_600642(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Removes a tag from the specified resource. </p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
+proc validate_TagResource_600642(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Adds one or more tags to the specified resource.</p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5328,7 +5329,7 @@ proc validate_UntagResource_600642(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600646 = header.getOrDefault("X-Amz-Target")
   valid_600646 = validateParameter(valid_600646, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.UntagResource"))
+      "AWSOrganizationsV20161128.TagResource"))
   if valid_600646 != nil:
     section.add "X-Amz-Target", valid_600646
   var valid_600647 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5366,9 +5367,9 @@ proc validate_UntagResource_600642(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600653: Call_UntagResource_600641; path: JsonNode; query: JsonNode;
+proc call*(call_600653: Call_TagResource_600641; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Removes a tag from the specified resource. </p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
+  ## <p>Adds one or more tags to the specified resource.</p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600653.validator(path, query, header, formData, body)
   let scheme = call_600653.pickScheme
@@ -5379,25 +5380,25 @@ proc call*(call_600653: Call_UntagResource_600641; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_600653, url, valid)
 
-proc call*(call_600654: Call_UntagResource_600641; body: JsonNode): Recallable =
-  ## untagResource
-  ## <p>Removes a tag from the specified resource. </p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600654: Call_TagResource_600641; body: JsonNode): Recallable =
+  ## tagResource
+  ## <p>Adds one or more tags to the specified resource.</p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600655 = newJObject()
   if body != nil:
     body_600655 = body
   result = call_600654.call(nil, nil, nil, nil, body_600655)
 
-var untagResource* = Call_UntagResource_600641(name: "untagResource",
-    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.UntagResource",
-    validator: validate_UntagResource_600642, base: "/", url: url_UntagResource_600643,
-    schemes: {Scheme.Https, Scheme.Http})
+var tagResource* = Call_TagResource_600641(name: "tagResource",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "organizations.amazonaws.com", route: "/#X-Amz-Target=AWSOrganizationsV20161128.TagResource",
+                                        validator: validate_TagResource_600642,
+                                        base: "/", url: url_TagResource_600643,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateOrganizationalUnit_600656 = ref object of OpenApiRestCall_599369
-proc url_UpdateOrganizationalUnit_600658(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
+  Call_UntagResource_600656 = ref object of OpenApiRestCall_599369
+proc url_UntagResource_600658(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5407,9 +5408,9 @@ proc url_UpdateOrganizationalUnit_600658(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateOrganizationalUnit_600657(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Renames the specified organizational unit (OU). The ID and ARN don't change. The child OUs and accounts remain in place, and any attached policies of the OU remain attached. </p> <p>This operation can be called only from the organization's master account.</p>
+proc validate_UntagResource_600657(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Removes a tag from the specified resource. </p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5441,7 +5442,7 @@ proc validate_UpdateOrganizationalUnit_600657(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600661 = header.getOrDefault("X-Amz-Target")
   valid_600661 = validateParameter(valid_600661, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.UpdateOrganizationalUnit"))
+      "AWSOrganizationsV20161128.UntagResource"))
   if valid_600661 != nil:
     section.add "X-Amz-Target", valid_600661
   var valid_600662 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5479,9 +5480,9 @@ proc validate_UpdateOrganizationalUnit_600657(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600668: Call_UpdateOrganizationalUnit_600656; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Renames the specified organizational unit (OU). The ID and ARN don't change. The child OUs and accounts remain in place, and any attached policies of the OU remain attached. </p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600668: Call_UntagResource_600656; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Removes a tag from the specified resource. </p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600668.validator(path, query, header, formData, body)
   let scheme = call_600668.pickScheme
@@ -5492,25 +5493,25 @@ proc call*(call_600668: Call_UpdateOrganizationalUnit_600656; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600668, url, valid)
 
-proc call*(call_600669: Call_UpdateOrganizationalUnit_600656; body: JsonNode): Recallable =
-  ## updateOrganizationalUnit
-  ## <p>Renames the specified organizational unit (OU). The ID and ARN don't change. The child OUs and accounts remain in place, and any attached policies of the OU remain attached. </p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600669: Call_UntagResource_600656; body: JsonNode): Recallable =
+  ## untagResource
+  ## <p>Removes a tag from the specified resource. </p> <p>Currently, you can tag and untag accounts in AWS Organizations.</p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600670 = newJObject()
   if body != nil:
     body_600670 = body
   result = call_600669.call(nil, nil, nil, nil, body_600670)
 
-var updateOrganizationalUnit* = Call_UpdateOrganizationalUnit_600656(
-    name: "updateOrganizationalUnit", meth: HttpMethod.HttpPost,
-    host: "organizations.amazonaws.com",
-    route: "/#X-Amz-Target=AWSOrganizationsV20161128.UpdateOrganizationalUnit",
-    validator: validate_UpdateOrganizationalUnit_600657, base: "/",
-    url: url_UpdateOrganizationalUnit_600658, schemes: {Scheme.Https, Scheme.Http})
+var untagResource* = Call_UntagResource_600656(name: "untagResource",
+    meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.UntagResource",
+    validator: validate_UntagResource_600657, base: "/", url: url_UntagResource_600658,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdatePolicy_600671 = ref object of OpenApiRestCall_599369
-proc url_UpdatePolicy_600673(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateOrganizationalUnit_600671 = ref object of OpenApiRestCall_599369
+proc url_UpdateOrganizationalUnit_600673(protocol: Scheme; host: string;
+                                        base: string; route: string; path: JsonNode;
+                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -5520,9 +5521,9 @@ proc url_UpdatePolicy_600673(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdatePolicy_600672(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Updates an existing policy with a new name, description, or content. If you don't supply any parameter, that value remains unchanged. You can't change a policy's type.</p> <p>This operation can be called only from the organization's master account.</p>
+proc validate_UpdateOrganizationalUnit_600672(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Renames the specified organizational unit (OU). The ID and ARN don't change. The child OUs and accounts remain in place, and any attached policies of the OU remain attached. </p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5554,7 +5555,7 @@ proc validate_UpdatePolicy_600672(path: JsonNode; query: JsonNode; header: JsonN
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600676 = header.getOrDefault("X-Amz-Target")
   valid_600676 = validateParameter(valid_600676, JString, required = true, default = newJString(
-      "AWSOrganizationsV20161128.UpdatePolicy"))
+      "AWSOrganizationsV20161128.UpdateOrganizationalUnit"))
   if valid_600676 != nil:
     section.add "X-Amz-Target", valid_600676
   var valid_600677 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -5592,9 +5593,9 @@ proc validate_UpdatePolicy_600672(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600683: Call_UpdatePolicy_600671; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Updates an existing policy with a new name, description, or content. If you don't supply any parameter, that value remains unchanged. You can't change a policy's type.</p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600683: Call_UpdateOrganizationalUnit_600671; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Renames the specified organizational unit (OU). The ID and ARN don't change. The child OUs and accounts remain in place, and any attached policies of the OU remain attached. </p> <p>This operation can be called only from the organization's master account.</p>
   ## 
   let valid = call_600683.validator(path, query, header, formData, body)
   let scheme = call_600683.pickScheme
@@ -5605,19 +5606,132 @@ proc call*(call_600683: Call_UpdatePolicy_600671; path: JsonNode; query: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600683, url, valid)
 
-proc call*(call_600684: Call_UpdatePolicy_600671; body: JsonNode): Recallable =
-  ## updatePolicy
-  ## <p>Updates an existing policy with a new name, description, or content. If you don't supply any parameter, that value remains unchanged. You can't change a policy's type.</p> <p>This operation can be called only from the organization's master account.</p>
+proc call*(call_600684: Call_UpdateOrganizationalUnit_600671; body: JsonNode): Recallable =
+  ## updateOrganizationalUnit
+  ## <p>Renames the specified organizational unit (OU). The ID and ARN don't change. The child OUs and accounts remain in place, and any attached policies of the OU remain attached. </p> <p>This operation can be called only from the organization's master account.</p>
   ##   body: JObject (required)
   var body_600685 = newJObject()
   if body != nil:
     body_600685 = body
   result = call_600684.call(nil, nil, nil, nil, body_600685)
 
-var updatePolicy* = Call_UpdatePolicy_600671(name: "updatePolicy",
+var updateOrganizationalUnit* = Call_UpdateOrganizationalUnit_600671(
+    name: "updateOrganizationalUnit", meth: HttpMethod.HttpPost,
+    host: "organizations.amazonaws.com",
+    route: "/#X-Amz-Target=AWSOrganizationsV20161128.UpdateOrganizationalUnit",
+    validator: validate_UpdateOrganizationalUnit_600672, base: "/",
+    url: url_UpdateOrganizationalUnit_600673, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdatePolicy_600686 = ref object of OpenApiRestCall_599369
+proc url_UpdatePolicy_600688(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdatePolicy_600687(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Updates an existing policy with a new name, description, or content. If you don't supply any parameter, that value remains unchanged. You can't change a policy's type.</p> <p>This operation can be called only from the organization's master account.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600689 = header.getOrDefault("X-Amz-Date")
+  valid_600689 = validateParameter(valid_600689, JString, required = false,
+                                 default = nil)
+  if valid_600689 != nil:
+    section.add "X-Amz-Date", valid_600689
+  var valid_600690 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600690 = validateParameter(valid_600690, JString, required = false,
+                                 default = nil)
+  if valid_600690 != nil:
+    section.add "X-Amz-Security-Token", valid_600690
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600691 = header.getOrDefault("X-Amz-Target")
+  valid_600691 = validateParameter(valid_600691, JString, required = true, default = newJString(
+      "AWSOrganizationsV20161128.UpdatePolicy"))
+  if valid_600691 != nil:
+    section.add "X-Amz-Target", valid_600691
+  var valid_600692 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600692 = validateParameter(valid_600692, JString, required = false,
+                                 default = nil)
+  if valid_600692 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600692
+  var valid_600693 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600693 = validateParameter(valid_600693, JString, required = false,
+                                 default = nil)
+  if valid_600693 != nil:
+    section.add "X-Amz-Algorithm", valid_600693
+  var valid_600694 = header.getOrDefault("X-Amz-Signature")
+  valid_600694 = validateParameter(valid_600694, JString, required = false,
+                                 default = nil)
+  if valid_600694 != nil:
+    section.add "X-Amz-Signature", valid_600694
+  var valid_600695 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600695 = validateParameter(valid_600695, JString, required = false,
+                                 default = nil)
+  if valid_600695 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600695
+  var valid_600696 = header.getOrDefault("X-Amz-Credential")
+  valid_600696 = validateParameter(valid_600696, JString, required = false,
+                                 default = nil)
+  if valid_600696 != nil:
+    section.add "X-Amz-Credential", valid_600696
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600698: Call_UpdatePolicy_600686; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Updates an existing policy with a new name, description, or content. If you don't supply any parameter, that value remains unchanged. You can't change a policy's type.</p> <p>This operation can be called only from the organization's master account.</p>
+  ## 
+  let valid = call_600698.validator(path, query, header, formData, body)
+  let scheme = call_600698.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600698.url(scheme.get, call_600698.host, call_600698.base,
+                         call_600698.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600698, url, valid)
+
+proc call*(call_600699: Call_UpdatePolicy_600686; body: JsonNode): Recallable =
+  ## updatePolicy
+  ## <p>Updates an existing policy with a new name, description, or content. If you don't supply any parameter, that value remains unchanged. You can't change a policy's type.</p> <p>This operation can be called only from the organization's master account.</p>
+  ##   body: JObject (required)
+  var body_600700 = newJObject()
+  if body != nil:
+    body_600700 = body
+  result = call_600699.call(nil, nil, nil, nil, body_600700)
+
+var updatePolicy* = Call_UpdatePolicy_600686(name: "updatePolicy",
     meth: HttpMethod.HttpPost, host: "organizations.amazonaws.com",
     route: "/#X-Amz-Target=AWSOrganizationsV20161128.UpdatePolicy",
-    validator: validate_UpdatePolicy_600672, base: "/", url: url_UpdatePolicy_600673,
+    validator: validate_UpdatePolicy_600687, base: "/", url: url_UpdatePolicy_600688,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
