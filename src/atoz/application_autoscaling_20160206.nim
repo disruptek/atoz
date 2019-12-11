@@ -10,7 +10,7 @@ import
 ##     name: Apache 2.0 License
 ##     url: http://www.apache.org/licenses/
 ## 
-## <p>With Application Auto Scaling, you can configure automatic scaling for the following resources:</p> <ul> <li> <p>Amazon ECS services</p> </li> <li> <p>Amazon EC2 Spot Fleet requests</p> </li> <li> <p>Amazon EMR clusters</p> </li> <li> <p>Amazon AppStream 2.0 fleets</p> </li> <li> <p>Amazon DynamoDB tables and global secondary indexes throughput capacity</p> </li> <li> <p>Amazon Aurora Replicas</p> </li> <li> <p>Amazon SageMaker endpoint variants</p> </li> <li> <p>Custom resources provided by your own applications or services</p> </li> <li> <p>Amazon Comprehend document classification endpoints</p> </li> </ul> <p> <b>API Summary</b> </p> <p>The Application Auto Scaling service API includes three key sets of actions: </p> <ul> <li> <p>Register and manage scalable targets - Register AWS or custom resources as scalable targets (a resource that Application Auto Scaling can scale), set minimum and maximum capacity limits, and retrieve information on existing scalable targets.</p> </li> <li> <p>Configure and manage automatic scaling - Define scaling policies to dynamically scale your resources in response to CloudWatch alarms, schedule one-time or recurring scaling actions, and retrieve your recent scaling activity history.</p> </li> <li> <p>Suspend and resume scaling - Temporarily suspend and later resume automatic scaling by calling the <a>RegisterScalableTarget</a> action for any Application Auto Scaling scalable target. You can suspend and resume, individually or in combination, scale-out activities triggered by a scaling policy, scale-in activities triggered by a scaling policy, and scheduled scaling. </p> </li> </ul> <p>To learn more about Application Auto Scaling, including information about granting IAM users required permissions for Application Auto Scaling actions, see the <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application Auto Scaling User Guide</a>.</p>
+## <p>With Application Auto Scaling, you can configure automatic scaling for the following resources:</p> <ul> <li> <p>Amazon ECS services</p> </li> <li> <p>Amazon EC2 Spot Fleet requests</p> </li> <li> <p>Amazon EMR clusters</p> </li> <li> <p>Amazon AppStream 2.0 fleets</p> </li> <li> <p>Amazon DynamoDB tables and global secondary indexes throughput capacity</p> </li> <li> <p>Amazon Aurora Replicas</p> </li> <li> <p>Amazon SageMaker endpoint variants</p> </li> <li> <p>Custom resources provided by your own applications or services</p> </li> <li> <p>Amazon Comprehend document classification endpoints</p> </li> <li> <p>AWS Lambda function provisioned concurrency</p> </li> </ul> <p> <b>API Summary</b> </p> <p>The Application Auto Scaling service API includes three key sets of actions: </p> <ul> <li> <p>Register and manage scalable targets - Register AWS or custom resources as scalable targets (a resource that Application Auto Scaling can scale), set minimum and maximum capacity limits, and retrieve information on existing scalable targets.</p> </li> <li> <p>Configure and manage automatic scaling - Define scaling policies to dynamically scale your resources in response to CloudWatch alarms, schedule one-time or recurring scaling actions, and retrieve your recent scaling activity history.</p> </li> <li> <p>Suspend and resume scaling - Temporarily suspend and later resume automatic scaling by calling the <a>RegisterScalableTarget</a> action for any Application Auto Scaling scalable target. You can suspend and resume, individually or in combination, scale-out activities triggered by a scaling policy, scale-in activities triggered by a scaling policy, and scheduled scaling. </p> </li> </ul> <p>To learn more about Application Auto Scaling, including information about granting IAM users required permissions for Application Auto Scaling actions, see the <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application Auto Scaling User Guide</a>.</p>
 ## 
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/application-autoscaling/
@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599368 = ref object of OpenApiRestCall
+  OpenApiRestCall_597389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_597389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_597389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -133,19 +133,20 @@ const
   awsServiceName = "application-autoscaling"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_DeleteScalingPolicy_599705 = ref object of OpenApiRestCall_599368
-proc url_DeleteScalingPolicy_599707(protocol: Scheme; host: string; base: string;
+  Call_DeleteScalingPolicy_597727 = ref object of OpenApiRestCall_597389
+proc url_DeleteScalingPolicy_597729(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteScalingPolicy_599706(path: JsonNode; query: JsonNode;
+proc validate_DeleteScalingPolicy_597728(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Deletes the specified scaling policy for an Application Auto Scaling scalable target.</p> <p>Deleting a step scaling policy deletes the underlying alarm action, but does not delete the CloudWatch alarm associated with the scaling policy, even if it no longer has an associated action.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-step-scaling-policies.html#delete-step-scaling-policy">Delete a Step Scaling Policy</a> and <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-target-tracking.html#delete-target-tracking-policy">Delete a Target Tracking Scaling Policy</a> in the <i>Application Auto Scaling User Guide</i>.</p> <p>To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>.</p>
@@ -157,57 +158,57 @@ proc validate_DeleteScalingPolicy_599706(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599819 = header.getOrDefault("X-Amz-Date")
-  valid_599819 = validateParameter(valid_599819, JString, required = false,
-                                 default = nil)
-  if valid_599819 != nil:
-    section.add "X-Amz-Date", valid_599819
-  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599820 = validateParameter(valid_599820, JString, required = false,
-                                 default = nil)
-  if valid_599820 != nil:
-    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599834 = header.getOrDefault("X-Amz-Target")
-  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
+  var valid_597854 = header.getOrDefault("X-Amz-Target")
+  valid_597854 = validateParameter(valid_597854, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DeleteScalingPolicy"))
-  if valid_599834 != nil:
-    section.add "X-Amz-Target", valid_599834
-  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599835 = validateParameter(valid_599835, JString, required = false,
+  if valid_597854 != nil:
+    section.add "X-Amz-Target", valid_597854
+  var valid_597855 = header.getOrDefault("X-Amz-Signature")
+  valid_597855 = validateParameter(valid_597855, JString, required = false,
                                  default = nil)
-  if valid_599835 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599835
-  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599836 = validateParameter(valid_599836, JString, required = false,
+  if valid_597855 != nil:
+    section.add "X-Amz-Signature", valid_597855
+  var valid_597856 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_597856 = validateParameter(valid_597856, JString, required = false,
                                  default = nil)
-  if valid_599836 != nil:
-    section.add "X-Amz-Algorithm", valid_599836
-  var valid_599837 = header.getOrDefault("X-Amz-Signature")
-  valid_599837 = validateParameter(valid_599837, JString, required = false,
+  if valid_597856 != nil:
+    section.add "X-Amz-Content-Sha256", valid_597856
+  var valid_597857 = header.getOrDefault("X-Amz-Date")
+  valid_597857 = validateParameter(valid_597857, JString, required = false,
                                  default = nil)
-  if valid_599837 != nil:
-    section.add "X-Amz-Signature", valid_599837
-  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599838 = validateParameter(valid_599838, JString, required = false,
+  if valid_597857 != nil:
+    section.add "X-Amz-Date", valid_597857
+  var valid_597858 = header.getOrDefault("X-Amz-Credential")
+  valid_597858 = validateParameter(valid_597858, JString, required = false,
                                  default = nil)
-  if valid_599838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599838
-  var valid_599839 = header.getOrDefault("X-Amz-Credential")
-  valid_599839 = validateParameter(valid_599839, JString, required = false,
+  if valid_597858 != nil:
+    section.add "X-Amz-Credential", valid_597858
+  var valid_597859 = header.getOrDefault("X-Amz-Security-Token")
+  valid_597859 = validateParameter(valid_597859, JString, required = false,
                                  default = nil)
-  if valid_599839 != nil:
-    section.add "X-Amz-Credential", valid_599839
+  if valid_597859 != nil:
+    section.add "X-Amz-Security-Token", valid_597859
+  var valid_597860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_597860 = validateParameter(valid_597860, JString, required = false,
+                                 default = nil)
+  if valid_597860 != nil:
+    section.add "X-Amz-Algorithm", valid_597860
+  var valid_597861 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_597861 = validateParameter(valid_597861, JString, required = false,
+                                 default = nil)
+  if valid_597861 != nil:
+    section.add "X-Amz-SignedHeaders", valid_597861
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -218,48 +219,49 @@ proc validate_DeleteScalingPolicy_599706(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599863: Call_DeleteScalingPolicy_599705; path: JsonNode;
+proc call*(call_597885: Call_DeleteScalingPolicy_597727; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified scaling policy for an Application Auto Scaling scalable target.</p> <p>Deleting a step scaling policy deletes the underlying alarm action, but does not delete the CloudWatch alarm associated with the scaling policy, even if it no longer has an associated action.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-step-scaling-policies.html#delete-step-scaling-policy">Delete a Step Scaling Policy</a> and <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-target-tracking.html#delete-target-tracking-policy">Delete a Target Tracking Scaling Policy</a> in the <i>Application Auto Scaling User Guide</i>.</p> <p>To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>.</p>
   ## 
-  let valid = call_599863.validator(path, query, header, formData, body)
-  let scheme = call_599863.pickScheme
+  let valid = call_597885.validator(path, query, header, formData, body)
+  let scheme = call_597885.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
-                         call_599863.route, valid.getOrDefault("path"),
+  let url = call_597885.url(scheme.get, call_597885.host, call_597885.base,
+                         call_597885.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599863, url, valid)
+  result = atozHook(call_597885, url, valid)
 
-proc call*(call_599934: Call_DeleteScalingPolicy_599705; body: JsonNode): Recallable =
+proc call*(call_597956: Call_DeleteScalingPolicy_597727; body: JsonNode): Recallable =
   ## deleteScalingPolicy
   ## <p>Deletes the specified scaling policy for an Application Auto Scaling scalable target.</p> <p>Deleting a step scaling policy deletes the underlying alarm action, but does not delete the CloudWatch alarm associated with the scaling policy, even if it no longer has an associated action.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-step-scaling-policies.html#delete-step-scaling-policy">Delete a Step Scaling Policy</a> and <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-target-tracking.html#delete-target-tracking-policy">Delete a Target Tracking Scaling Policy</a> in the <i>Application Auto Scaling User Guide</i>.</p> <p>To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>.</p>
   ##   body: JObject (required)
-  var body_599935 = newJObject()
+  var body_597957 = newJObject()
   if body != nil:
-    body_599935 = body
-  result = call_599934.call(nil, nil, nil, nil, body_599935)
+    body_597957 = body
+  result = call_597956.call(nil, nil, nil, nil, body_597957)
 
-var deleteScalingPolicy* = Call_DeleteScalingPolicy_599705(
+var deleteScalingPolicy* = Call_DeleteScalingPolicy_597727(
     name: "deleteScalingPolicy", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.DeleteScalingPolicy",
-    validator: validate_DeleteScalingPolicy_599706, base: "/",
-    url: url_DeleteScalingPolicy_599707, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteScalingPolicy_597728, base: "/",
+    url: url_DeleteScalingPolicy_597729, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteScheduledAction_599974 = ref object of OpenApiRestCall_599368
-proc url_DeleteScheduledAction_599976(protocol: Scheme; host: string; base: string;
+  Call_DeleteScheduledAction_597996 = ref object of OpenApiRestCall_597389
+proc url_DeleteScheduledAction_597998(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteScheduledAction_599975(path: JsonNode; query: JsonNode;
+proc validate_DeleteScheduledAction_597997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified scheduled action for an Application Auto Scaling scalable target.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-scheduled-scaling.html#delete-scheduled-action">Delete a Scheduled Action</a> in the <i>Application Auto Scaling User Guide</i>.</p>
   ## 
@@ -270,57 +272,57 @@ proc validate_DeleteScheduledAction_599975(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599977 = header.getOrDefault("X-Amz-Date")
-  valid_599977 = validateParameter(valid_599977, JString, required = false,
-                                 default = nil)
-  if valid_599977 != nil:
-    section.add "X-Amz-Date", valid_599977
-  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599978 = validateParameter(valid_599978, JString, required = false,
-                                 default = nil)
-  if valid_599978 != nil:
-    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599979 = header.getOrDefault("X-Amz-Target")
-  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
+  var valid_597999 = header.getOrDefault("X-Amz-Target")
+  valid_597999 = validateParameter(valid_597999, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DeleteScheduledAction"))
-  if valid_599979 != nil:
-    section.add "X-Amz-Target", valid_599979
-  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599980 = validateParameter(valid_599980, JString, required = false,
+  if valid_597999 != nil:
+    section.add "X-Amz-Target", valid_597999
+  var valid_598000 = header.getOrDefault("X-Amz-Signature")
+  valid_598000 = validateParameter(valid_598000, JString, required = false,
                                  default = nil)
-  if valid_599980 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599980
-  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599981 = validateParameter(valid_599981, JString, required = false,
+  if valid_598000 != nil:
+    section.add "X-Amz-Signature", valid_598000
+  var valid_598001 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598001 = validateParameter(valid_598001, JString, required = false,
                                  default = nil)
-  if valid_599981 != nil:
-    section.add "X-Amz-Algorithm", valid_599981
-  var valid_599982 = header.getOrDefault("X-Amz-Signature")
-  valid_599982 = validateParameter(valid_599982, JString, required = false,
+  if valid_598001 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598001
+  var valid_598002 = header.getOrDefault("X-Amz-Date")
+  valid_598002 = validateParameter(valid_598002, JString, required = false,
                                  default = nil)
-  if valid_599982 != nil:
-    section.add "X-Amz-Signature", valid_599982
-  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599983 = validateParameter(valid_599983, JString, required = false,
+  if valid_598002 != nil:
+    section.add "X-Amz-Date", valid_598002
+  var valid_598003 = header.getOrDefault("X-Amz-Credential")
+  valid_598003 = validateParameter(valid_598003, JString, required = false,
                                  default = nil)
-  if valid_599983 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599983
-  var valid_599984 = header.getOrDefault("X-Amz-Credential")
-  valid_599984 = validateParameter(valid_599984, JString, required = false,
+  if valid_598003 != nil:
+    section.add "X-Amz-Credential", valid_598003
+  var valid_598004 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598004 = validateParameter(valid_598004, JString, required = false,
                                  default = nil)
-  if valid_599984 != nil:
-    section.add "X-Amz-Credential", valid_599984
+  if valid_598004 != nil:
+    section.add "X-Amz-Security-Token", valid_598004
+  var valid_598005 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598005 = validateParameter(valid_598005, JString, required = false,
+                                 default = nil)
+  if valid_598005 != nil:
+    section.add "X-Amz-Algorithm", valid_598005
+  var valid_598006 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598006 = validateParameter(valid_598006, JString, required = false,
+                                 default = nil)
+  if valid_598006 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598006
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -331,49 +333,50 @@ proc validate_DeleteScheduledAction_599975(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599986: Call_DeleteScheduledAction_599974; path: JsonNode;
+proc call*(call_598008: Call_DeleteScheduledAction_597996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified scheduled action for an Application Auto Scaling scalable target.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-scheduled-scaling.html#delete-scheduled-action">Delete a Scheduled Action</a> in the <i>Application Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_599986.validator(path, query, header, formData, body)
-  let scheme = call_599986.pickScheme
+  let valid = call_598008.validator(path, query, header, formData, body)
+  let scheme = call_598008.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
-                         call_599986.route, valid.getOrDefault("path"),
+  let url = call_598008.url(scheme.get, call_598008.host, call_598008.base,
+                         call_598008.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599986, url, valid)
+  result = atozHook(call_598008, url, valid)
 
-proc call*(call_599987: Call_DeleteScheduledAction_599974; body: JsonNode): Recallable =
+proc call*(call_598009: Call_DeleteScheduledAction_597996; body: JsonNode): Recallable =
   ## deleteScheduledAction
   ## <p>Deletes the specified scheduled action for an Application Auto Scaling scalable target.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-scheduled-scaling.html#delete-scheduled-action">Delete a Scheduled Action</a> in the <i>Application Auto Scaling User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_599988 = newJObject()
+  var body_598010 = newJObject()
   if body != nil:
-    body_599988 = body
-  result = call_599987.call(nil, nil, nil, nil, body_599988)
+    body_598010 = body
+  result = call_598009.call(nil, nil, nil, nil, body_598010)
 
-var deleteScheduledAction* = Call_DeleteScheduledAction_599974(
+var deleteScheduledAction* = Call_DeleteScheduledAction_597996(
     name: "deleteScheduledAction", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.DeleteScheduledAction",
-    validator: validate_DeleteScheduledAction_599975, base: "/",
-    url: url_DeleteScheduledAction_599976, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteScheduledAction_597997, base: "/",
+    url: url_DeleteScheduledAction_597998, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterScalableTarget_599989 = ref object of OpenApiRestCall_599368
-proc url_DeregisterScalableTarget_599991(protocol: Scheme; host: string;
+  Call_DeregisterScalableTarget_598011 = ref object of OpenApiRestCall_597389
+proc url_DeregisterScalableTarget_598013(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterScalableTarget_599990(path: JsonNode; query: JsonNode;
+proc validate_DeregisterScalableTarget_598012(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deregisters an Application Auto Scaling scalable target.</p> <p>Deregistering a scalable target deletes the scaling policies that are associated with it.</p> <p>To create a scalable target or update an existing one, see <a>RegisterScalableTarget</a>. </p>
   ## 
@@ -384,57 +387,57 @@ proc validate_DeregisterScalableTarget_599990(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599992 = header.getOrDefault("X-Amz-Date")
-  valid_599992 = validateParameter(valid_599992, JString, required = false,
-                                 default = nil)
-  if valid_599992 != nil:
-    section.add "X-Amz-Date", valid_599992
-  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599993 = validateParameter(valid_599993, JString, required = false,
-                                 default = nil)
-  if valid_599993 != nil:
-    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599994 = header.getOrDefault("X-Amz-Target")
-  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
+  var valid_598014 = header.getOrDefault("X-Amz-Target")
+  valid_598014 = validateParameter(valid_598014, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DeregisterScalableTarget"))
-  if valid_599994 != nil:
-    section.add "X-Amz-Target", valid_599994
-  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599995 = validateParameter(valid_599995, JString, required = false,
+  if valid_598014 != nil:
+    section.add "X-Amz-Target", valid_598014
+  var valid_598015 = header.getOrDefault("X-Amz-Signature")
+  valid_598015 = validateParameter(valid_598015, JString, required = false,
                                  default = nil)
-  if valid_599995 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599995
-  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599996 = validateParameter(valid_599996, JString, required = false,
+  if valid_598015 != nil:
+    section.add "X-Amz-Signature", valid_598015
+  var valid_598016 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598016 = validateParameter(valid_598016, JString, required = false,
                                  default = nil)
-  if valid_599996 != nil:
-    section.add "X-Amz-Algorithm", valid_599996
-  var valid_599997 = header.getOrDefault("X-Amz-Signature")
-  valid_599997 = validateParameter(valid_599997, JString, required = false,
+  if valid_598016 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598016
+  var valid_598017 = header.getOrDefault("X-Amz-Date")
+  valid_598017 = validateParameter(valid_598017, JString, required = false,
                                  default = nil)
-  if valid_599997 != nil:
-    section.add "X-Amz-Signature", valid_599997
-  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599998 = validateParameter(valid_599998, JString, required = false,
+  if valid_598017 != nil:
+    section.add "X-Amz-Date", valid_598017
+  var valid_598018 = header.getOrDefault("X-Amz-Credential")
+  valid_598018 = validateParameter(valid_598018, JString, required = false,
                                  default = nil)
-  if valid_599998 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599998
-  var valid_599999 = header.getOrDefault("X-Amz-Credential")
-  valid_599999 = validateParameter(valid_599999, JString, required = false,
+  if valid_598018 != nil:
+    section.add "X-Amz-Credential", valid_598018
+  var valid_598019 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598019 = validateParameter(valid_598019, JString, required = false,
                                  default = nil)
-  if valid_599999 != nil:
-    section.add "X-Amz-Credential", valid_599999
+  if valid_598019 != nil:
+    section.add "X-Amz-Security-Token", valid_598019
+  var valid_598020 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598020 = validateParameter(valid_598020, JString, required = false,
+                                 default = nil)
+  if valid_598020 != nil:
+    section.add "X-Amz-Algorithm", valid_598020
+  var valid_598021 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598021 = validateParameter(valid_598021, JString, required = false,
+                                 default = nil)
+  if valid_598021 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598021
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -445,49 +448,50 @@ proc validate_DeregisterScalableTarget_599990(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600001: Call_DeregisterScalableTarget_599989; path: JsonNode;
+proc call*(call_598023: Call_DeregisterScalableTarget_598011; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregisters an Application Auto Scaling scalable target.</p> <p>Deregistering a scalable target deletes the scaling policies that are associated with it.</p> <p>To create a scalable target or update an existing one, see <a>RegisterScalableTarget</a>. </p>
   ## 
-  let valid = call_600001.validator(path, query, header, formData, body)
-  let scheme = call_600001.pickScheme
+  let valid = call_598023.validator(path, query, header, formData, body)
+  let scheme = call_598023.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
-                         call_600001.route, valid.getOrDefault("path"),
+  let url = call_598023.url(scheme.get, call_598023.host, call_598023.base,
+                         call_598023.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600001, url, valid)
+  result = atozHook(call_598023, url, valid)
 
-proc call*(call_600002: Call_DeregisterScalableTarget_599989; body: JsonNode): Recallable =
+proc call*(call_598024: Call_DeregisterScalableTarget_598011; body: JsonNode): Recallable =
   ## deregisterScalableTarget
   ## <p>Deregisters an Application Auto Scaling scalable target.</p> <p>Deregistering a scalable target deletes the scaling policies that are associated with it.</p> <p>To create a scalable target or update an existing one, see <a>RegisterScalableTarget</a>. </p>
   ##   body: JObject (required)
-  var body_600003 = newJObject()
+  var body_598025 = newJObject()
   if body != nil:
-    body_600003 = body
-  result = call_600002.call(nil, nil, nil, nil, body_600003)
+    body_598025 = body
+  result = call_598024.call(nil, nil, nil, nil, body_598025)
 
-var deregisterScalableTarget* = Call_DeregisterScalableTarget_599989(
+var deregisterScalableTarget* = Call_DeregisterScalableTarget_598011(
     name: "deregisterScalableTarget", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.DeregisterScalableTarget",
-    validator: validate_DeregisterScalableTarget_599990, base: "/",
-    url: url_DeregisterScalableTarget_599991, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterScalableTarget_598012, base: "/",
+    url: url_DeregisterScalableTarget_598013, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeScalableTargets_600004 = ref object of OpenApiRestCall_599368
-proc url_DescribeScalableTargets_600006(protocol: Scheme; host: string; base: string;
+  Call_DescribeScalableTargets_598026 = ref object of OpenApiRestCall_597389
+proc url_DescribeScalableTargets_598028(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeScalableTargets_600005(path: JsonNode; query: JsonNode;
+proc validate_DescribeScalableTargets_598027(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets information about the scalable targets in the specified namespace.</p> <p>You can filter the results using <code>ResourceIds</code> and <code>ScalableDimension</code>.</p> <p>To create a scalable target or update an existing one, see <a>RegisterScalableTarget</a>. If you are no longer using a scalable target, you can deregister it using <a>DeregisterScalableTarget</a>.</p>
   ## 
@@ -496,74 +500,74 @@ proc validate_DescribeScalableTargets_600005(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600007 = query.getOrDefault("NextToken")
-  valid_600007 = validateParameter(valid_600007, JString, required = false,
+  var valid_598029 = query.getOrDefault("MaxResults")
+  valid_598029 = validateParameter(valid_598029, JString, required = false,
                                  default = nil)
-  if valid_600007 != nil:
-    section.add "NextToken", valid_600007
-  var valid_600008 = query.getOrDefault("MaxResults")
-  valid_600008 = validateParameter(valid_600008, JString, required = false,
+  if valid_598029 != nil:
+    section.add "MaxResults", valid_598029
+  var valid_598030 = query.getOrDefault("NextToken")
+  valid_598030 = validateParameter(valid_598030, JString, required = false,
                                  default = nil)
-  if valid_600008 != nil:
-    section.add "MaxResults", valid_600008
+  if valid_598030 != nil:
+    section.add "NextToken", valid_598030
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600009 = header.getOrDefault("X-Amz-Date")
-  valid_600009 = validateParameter(valid_600009, JString, required = false,
-                                 default = nil)
-  if valid_600009 != nil:
-    section.add "X-Amz-Date", valid_600009
-  var valid_600010 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600010 = validateParameter(valid_600010, JString, required = false,
-                                 default = nil)
-  if valid_600010 != nil:
-    section.add "X-Amz-Security-Token", valid_600010
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600011 = header.getOrDefault("X-Amz-Target")
-  valid_600011 = validateParameter(valid_600011, JString, required = true, default = newJString(
+  var valid_598031 = header.getOrDefault("X-Amz-Target")
+  valid_598031 = validateParameter(valid_598031, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DescribeScalableTargets"))
-  if valid_600011 != nil:
-    section.add "X-Amz-Target", valid_600011
-  var valid_600012 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600012 = validateParameter(valid_600012, JString, required = false,
+  if valid_598031 != nil:
+    section.add "X-Amz-Target", valid_598031
+  var valid_598032 = header.getOrDefault("X-Amz-Signature")
+  valid_598032 = validateParameter(valid_598032, JString, required = false,
                                  default = nil)
-  if valid_600012 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600012
-  var valid_600013 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600013 = validateParameter(valid_600013, JString, required = false,
+  if valid_598032 != nil:
+    section.add "X-Amz-Signature", valid_598032
+  var valid_598033 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598033 = validateParameter(valid_598033, JString, required = false,
                                  default = nil)
-  if valid_600013 != nil:
-    section.add "X-Amz-Algorithm", valid_600013
-  var valid_600014 = header.getOrDefault("X-Amz-Signature")
-  valid_600014 = validateParameter(valid_600014, JString, required = false,
+  if valid_598033 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598033
+  var valid_598034 = header.getOrDefault("X-Amz-Date")
+  valid_598034 = validateParameter(valid_598034, JString, required = false,
                                  default = nil)
-  if valid_600014 != nil:
-    section.add "X-Amz-Signature", valid_600014
-  var valid_600015 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600015 = validateParameter(valid_600015, JString, required = false,
+  if valid_598034 != nil:
+    section.add "X-Amz-Date", valid_598034
+  var valid_598035 = header.getOrDefault("X-Amz-Credential")
+  valid_598035 = validateParameter(valid_598035, JString, required = false,
                                  default = nil)
-  if valid_600015 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600015
-  var valid_600016 = header.getOrDefault("X-Amz-Credential")
-  valid_600016 = validateParameter(valid_600016, JString, required = false,
+  if valid_598035 != nil:
+    section.add "X-Amz-Credential", valid_598035
+  var valid_598036 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598036 = validateParameter(valid_598036, JString, required = false,
                                  default = nil)
-  if valid_600016 != nil:
-    section.add "X-Amz-Credential", valid_600016
+  if valid_598036 != nil:
+    section.add "X-Amz-Security-Token", valid_598036
+  var valid_598037 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598037 = validateParameter(valid_598037, JString, required = false,
+                                 default = nil)
+  if valid_598037 != nil:
+    section.add "X-Amz-Algorithm", valid_598037
+  var valid_598038 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598038 = validateParameter(valid_598038, JString, required = false,
+                                 default = nil)
+  if valid_598038 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598038
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -574,56 +578,57 @@ proc validate_DescribeScalableTargets_600005(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600018: Call_DescribeScalableTargets_600004; path: JsonNode;
+proc call*(call_598040: Call_DescribeScalableTargets_598026; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about the scalable targets in the specified namespace.</p> <p>You can filter the results using <code>ResourceIds</code> and <code>ScalableDimension</code>.</p> <p>To create a scalable target or update an existing one, see <a>RegisterScalableTarget</a>. If you are no longer using a scalable target, you can deregister it using <a>DeregisterScalableTarget</a>.</p>
   ## 
-  let valid = call_600018.validator(path, query, header, formData, body)
-  let scheme = call_600018.pickScheme
+  let valid = call_598040.validator(path, query, header, formData, body)
+  let scheme = call_598040.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600018.url(scheme.get, call_600018.host, call_600018.base,
-                         call_600018.route, valid.getOrDefault("path"),
+  let url = call_598040.url(scheme.get, call_598040.host, call_598040.base,
+                         call_598040.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600018, url, valid)
+  result = atozHook(call_598040, url, valid)
 
-proc call*(call_600019: Call_DescribeScalableTargets_600004; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_598041: Call_DescribeScalableTargets_598026; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## describeScalableTargets
   ## <p>Gets information about the scalable targets in the specified namespace.</p> <p>You can filter the results using <code>ResourceIds</code> and <code>ScalableDimension</code>.</p> <p>To create a scalable target or update an existing one, see <a>RegisterScalableTarget</a>. If you are no longer using a scalable target, you can deregister it using <a>DeregisterScalableTarget</a>.</p>
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600020 = newJObject()
-  var body_600021 = newJObject()
-  add(query_600020, "NextToken", newJString(NextToken))
+  var query_598042 = newJObject()
+  var body_598043 = newJObject()
+  add(query_598042, "MaxResults", newJString(MaxResults))
+  add(query_598042, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600021 = body
-  add(query_600020, "MaxResults", newJString(MaxResults))
-  result = call_600019.call(nil, query_600020, nil, nil, body_600021)
+    body_598043 = body
+  result = call_598041.call(nil, query_598042, nil, nil, body_598043)
 
-var describeScalableTargets* = Call_DescribeScalableTargets_600004(
+var describeScalableTargets* = Call_DescribeScalableTargets_598026(
     name: "describeScalableTargets", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.DescribeScalableTargets",
-    validator: validate_DescribeScalableTargets_600005, base: "/",
-    url: url_DescribeScalableTargets_600006, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeScalableTargets_598027, base: "/",
+    url: url_DescribeScalableTargets_598028, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeScalingActivities_600023 = ref object of OpenApiRestCall_599368
-proc url_DescribeScalingActivities_600025(protocol: Scheme; host: string;
+  Call_DescribeScalingActivities_598045 = ref object of OpenApiRestCall_597389
+proc url_DescribeScalingActivities_598047(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeScalingActivities_600024(path: JsonNode; query: JsonNode;
+proc validate_DescribeScalingActivities_598046(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Provides descriptive information about the scaling activities in the specified namespace from the previous six weeks.</p> <p>You can filter the results using <code>ResourceId</code> and <code>ScalableDimension</code>.</p> <p>Scaling activities are triggered by CloudWatch alarms that are associated with scaling policies. To view the scaling policies for a service namespace, see <a>DescribeScalingPolicies</a>. To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>.</p>
   ## 
@@ -632,74 +637,74 @@ proc validate_DescribeScalingActivities_600024(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600026 = query.getOrDefault("NextToken")
-  valid_600026 = validateParameter(valid_600026, JString, required = false,
+  var valid_598048 = query.getOrDefault("MaxResults")
+  valid_598048 = validateParameter(valid_598048, JString, required = false,
                                  default = nil)
-  if valid_600026 != nil:
-    section.add "NextToken", valid_600026
-  var valid_600027 = query.getOrDefault("MaxResults")
-  valid_600027 = validateParameter(valid_600027, JString, required = false,
+  if valid_598048 != nil:
+    section.add "MaxResults", valid_598048
+  var valid_598049 = query.getOrDefault("NextToken")
+  valid_598049 = validateParameter(valid_598049, JString, required = false,
                                  default = nil)
-  if valid_600027 != nil:
-    section.add "MaxResults", valid_600027
+  if valid_598049 != nil:
+    section.add "NextToken", valid_598049
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600028 = header.getOrDefault("X-Amz-Date")
-  valid_600028 = validateParameter(valid_600028, JString, required = false,
-                                 default = nil)
-  if valid_600028 != nil:
-    section.add "X-Amz-Date", valid_600028
-  var valid_600029 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600029 = validateParameter(valid_600029, JString, required = false,
-                                 default = nil)
-  if valid_600029 != nil:
-    section.add "X-Amz-Security-Token", valid_600029
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600030 = header.getOrDefault("X-Amz-Target")
-  valid_600030 = validateParameter(valid_600030, JString, required = true, default = newJString(
+  var valid_598050 = header.getOrDefault("X-Amz-Target")
+  valid_598050 = validateParameter(valid_598050, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DescribeScalingActivities"))
-  if valid_600030 != nil:
-    section.add "X-Amz-Target", valid_600030
-  var valid_600031 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600031 = validateParameter(valid_600031, JString, required = false,
+  if valid_598050 != nil:
+    section.add "X-Amz-Target", valid_598050
+  var valid_598051 = header.getOrDefault("X-Amz-Signature")
+  valid_598051 = validateParameter(valid_598051, JString, required = false,
                                  default = nil)
-  if valid_600031 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600031
-  var valid_600032 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600032 = validateParameter(valid_600032, JString, required = false,
+  if valid_598051 != nil:
+    section.add "X-Amz-Signature", valid_598051
+  var valid_598052 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598052 = validateParameter(valid_598052, JString, required = false,
                                  default = nil)
-  if valid_600032 != nil:
-    section.add "X-Amz-Algorithm", valid_600032
-  var valid_600033 = header.getOrDefault("X-Amz-Signature")
-  valid_600033 = validateParameter(valid_600033, JString, required = false,
+  if valid_598052 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598052
+  var valid_598053 = header.getOrDefault("X-Amz-Date")
+  valid_598053 = validateParameter(valid_598053, JString, required = false,
                                  default = nil)
-  if valid_600033 != nil:
-    section.add "X-Amz-Signature", valid_600033
-  var valid_600034 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600034 = validateParameter(valid_600034, JString, required = false,
+  if valid_598053 != nil:
+    section.add "X-Amz-Date", valid_598053
+  var valid_598054 = header.getOrDefault("X-Amz-Credential")
+  valid_598054 = validateParameter(valid_598054, JString, required = false,
                                  default = nil)
-  if valid_600034 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600034
-  var valid_600035 = header.getOrDefault("X-Amz-Credential")
-  valid_600035 = validateParameter(valid_600035, JString, required = false,
+  if valid_598054 != nil:
+    section.add "X-Amz-Credential", valid_598054
+  var valid_598055 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598055 = validateParameter(valid_598055, JString, required = false,
                                  default = nil)
-  if valid_600035 != nil:
-    section.add "X-Amz-Credential", valid_600035
+  if valid_598055 != nil:
+    section.add "X-Amz-Security-Token", valid_598055
+  var valid_598056 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598056 = validateParameter(valid_598056, JString, required = false,
+                                 default = nil)
+  if valid_598056 != nil:
+    section.add "X-Amz-Algorithm", valid_598056
+  var valid_598057 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598057 = validateParameter(valid_598057, JString, required = false,
+                                 default = nil)
+  if valid_598057 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598057
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -710,58 +715,59 @@ proc validate_DescribeScalingActivities_600024(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600037: Call_DescribeScalingActivities_600023; path: JsonNode;
+proc call*(call_598059: Call_DescribeScalingActivities_598045; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Provides descriptive information about the scaling activities in the specified namespace from the previous six weeks.</p> <p>You can filter the results using <code>ResourceId</code> and <code>ScalableDimension</code>.</p> <p>Scaling activities are triggered by CloudWatch alarms that are associated with scaling policies. To view the scaling policies for a service namespace, see <a>DescribeScalingPolicies</a>. To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>.</p>
   ## 
-  let valid = call_600037.validator(path, query, header, formData, body)
-  let scheme = call_600037.pickScheme
+  let valid = call_598059.validator(path, query, header, formData, body)
+  let scheme = call_598059.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600037.url(scheme.get, call_600037.host, call_600037.base,
-                         call_600037.route, valid.getOrDefault("path"),
+  let url = call_598059.url(scheme.get, call_598059.host, call_598059.base,
+                         call_598059.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600037, url, valid)
+  result = atozHook(call_598059, url, valid)
 
-proc call*(call_600038: Call_DescribeScalingActivities_600023; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_598060: Call_DescribeScalingActivities_598045; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## describeScalingActivities
   ## <p>Provides descriptive information about the scaling activities in the specified namespace from the previous six weeks.</p> <p>You can filter the results using <code>ResourceId</code> and <code>ScalableDimension</code>.</p> <p>Scaling activities are triggered by CloudWatch alarms that are associated with scaling policies. To view the scaling policies for a service namespace, see <a>DescribeScalingPolicies</a>. To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>.</p>
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600039 = newJObject()
-  var body_600040 = newJObject()
-  add(query_600039, "NextToken", newJString(NextToken))
+  var query_598061 = newJObject()
+  var body_598062 = newJObject()
+  add(query_598061, "MaxResults", newJString(MaxResults))
+  add(query_598061, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600040 = body
-  add(query_600039, "MaxResults", newJString(MaxResults))
-  result = call_600038.call(nil, query_600039, nil, nil, body_600040)
+    body_598062 = body
+  result = call_598060.call(nil, query_598061, nil, nil, body_598062)
 
-var describeScalingActivities* = Call_DescribeScalingActivities_600023(
+var describeScalingActivities* = Call_DescribeScalingActivities_598045(
     name: "describeScalingActivities", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.DescribeScalingActivities",
-    validator: validate_DescribeScalingActivities_600024, base: "/",
-    url: url_DescribeScalingActivities_600025,
+    validator: validate_DescribeScalingActivities_598046, base: "/",
+    url: url_DescribeScalingActivities_598047,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeScalingPolicies_600041 = ref object of OpenApiRestCall_599368
-proc url_DescribeScalingPolicies_600043(protocol: Scheme; host: string; base: string;
+  Call_DescribeScalingPolicies_598063 = ref object of OpenApiRestCall_597389
+proc url_DescribeScalingPolicies_598065(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeScalingPolicies_600042(path: JsonNode; query: JsonNode;
+proc validate_DescribeScalingPolicies_598064(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the Application Auto Scaling scaling policies for the specified service namespace.</p> <p>You can filter the results using <code>ResourceId</code>, <code>ScalableDimension</code>, and <code>PolicyNames</code>.</p> <p>To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>. If you are no longer using a scaling policy, you can delete it using <a>DeleteScalingPolicy</a>.</p>
   ## 
@@ -770,74 +776,74 @@ proc validate_DescribeScalingPolicies_600042(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600044 = query.getOrDefault("NextToken")
-  valid_600044 = validateParameter(valid_600044, JString, required = false,
+  var valid_598066 = query.getOrDefault("MaxResults")
+  valid_598066 = validateParameter(valid_598066, JString, required = false,
                                  default = nil)
-  if valid_600044 != nil:
-    section.add "NextToken", valid_600044
-  var valid_600045 = query.getOrDefault("MaxResults")
-  valid_600045 = validateParameter(valid_600045, JString, required = false,
+  if valid_598066 != nil:
+    section.add "MaxResults", valid_598066
+  var valid_598067 = query.getOrDefault("NextToken")
+  valid_598067 = validateParameter(valid_598067, JString, required = false,
                                  default = nil)
-  if valid_600045 != nil:
-    section.add "MaxResults", valid_600045
+  if valid_598067 != nil:
+    section.add "NextToken", valid_598067
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600046 = header.getOrDefault("X-Amz-Date")
-  valid_600046 = validateParameter(valid_600046, JString, required = false,
-                                 default = nil)
-  if valid_600046 != nil:
-    section.add "X-Amz-Date", valid_600046
-  var valid_600047 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600047 = validateParameter(valid_600047, JString, required = false,
-                                 default = nil)
-  if valid_600047 != nil:
-    section.add "X-Amz-Security-Token", valid_600047
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600048 = header.getOrDefault("X-Amz-Target")
-  valid_600048 = validateParameter(valid_600048, JString, required = true, default = newJString(
+  var valid_598068 = header.getOrDefault("X-Amz-Target")
+  valid_598068 = validateParameter(valid_598068, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DescribeScalingPolicies"))
-  if valid_600048 != nil:
-    section.add "X-Amz-Target", valid_600048
-  var valid_600049 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600049 = validateParameter(valid_600049, JString, required = false,
+  if valid_598068 != nil:
+    section.add "X-Amz-Target", valid_598068
+  var valid_598069 = header.getOrDefault("X-Amz-Signature")
+  valid_598069 = validateParameter(valid_598069, JString, required = false,
                                  default = nil)
-  if valid_600049 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600049
-  var valid_600050 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600050 = validateParameter(valid_600050, JString, required = false,
+  if valid_598069 != nil:
+    section.add "X-Amz-Signature", valid_598069
+  var valid_598070 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598070 = validateParameter(valid_598070, JString, required = false,
                                  default = nil)
-  if valid_600050 != nil:
-    section.add "X-Amz-Algorithm", valid_600050
-  var valid_600051 = header.getOrDefault("X-Amz-Signature")
-  valid_600051 = validateParameter(valid_600051, JString, required = false,
+  if valid_598070 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598070
+  var valid_598071 = header.getOrDefault("X-Amz-Date")
+  valid_598071 = validateParameter(valid_598071, JString, required = false,
                                  default = nil)
-  if valid_600051 != nil:
-    section.add "X-Amz-Signature", valid_600051
-  var valid_600052 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600052 = validateParameter(valid_600052, JString, required = false,
+  if valid_598071 != nil:
+    section.add "X-Amz-Date", valid_598071
+  var valid_598072 = header.getOrDefault("X-Amz-Credential")
+  valid_598072 = validateParameter(valid_598072, JString, required = false,
                                  default = nil)
-  if valid_600052 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600052
-  var valid_600053 = header.getOrDefault("X-Amz-Credential")
-  valid_600053 = validateParameter(valid_600053, JString, required = false,
+  if valid_598072 != nil:
+    section.add "X-Amz-Credential", valid_598072
+  var valid_598073 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598073 = validateParameter(valid_598073, JString, required = false,
                                  default = nil)
-  if valid_600053 != nil:
-    section.add "X-Amz-Credential", valid_600053
+  if valid_598073 != nil:
+    section.add "X-Amz-Security-Token", valid_598073
+  var valid_598074 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598074 = validateParameter(valid_598074, JString, required = false,
+                                 default = nil)
+  if valid_598074 != nil:
+    section.add "X-Amz-Algorithm", valid_598074
+  var valid_598075 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598075 = validateParameter(valid_598075, JString, required = false,
+                                 default = nil)
+  if valid_598075 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598075
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -848,57 +854,58 @@ proc validate_DescribeScalingPolicies_600042(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600055: Call_DescribeScalingPolicies_600041; path: JsonNode;
+proc call*(call_598077: Call_DescribeScalingPolicies_598063; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the Application Auto Scaling scaling policies for the specified service namespace.</p> <p>You can filter the results using <code>ResourceId</code>, <code>ScalableDimension</code>, and <code>PolicyNames</code>.</p> <p>To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>. If you are no longer using a scaling policy, you can delete it using <a>DeleteScalingPolicy</a>.</p>
   ## 
-  let valid = call_600055.validator(path, query, header, formData, body)
-  let scheme = call_600055.pickScheme
+  let valid = call_598077.validator(path, query, header, formData, body)
+  let scheme = call_598077.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600055.url(scheme.get, call_600055.host, call_600055.base,
-                         call_600055.route, valid.getOrDefault("path"),
+  let url = call_598077.url(scheme.get, call_598077.host, call_598077.base,
+                         call_598077.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600055, url, valid)
+  result = atozHook(call_598077, url, valid)
 
-proc call*(call_600056: Call_DescribeScalingPolicies_600041; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_598078: Call_DescribeScalingPolicies_598063; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## describeScalingPolicies
   ## <p>Describes the Application Auto Scaling scaling policies for the specified service namespace.</p> <p>You can filter the results using <code>ResourceId</code>, <code>ScalableDimension</code>, and <code>PolicyNames</code>.</p> <p>To create a scaling policy or update an existing one, see <a>PutScalingPolicy</a>. If you are no longer using a scaling policy, you can delete it using <a>DeleteScalingPolicy</a>.</p>
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600057 = newJObject()
-  var body_600058 = newJObject()
-  add(query_600057, "NextToken", newJString(NextToken))
+  var query_598079 = newJObject()
+  var body_598080 = newJObject()
+  add(query_598079, "MaxResults", newJString(MaxResults))
+  add(query_598079, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600058 = body
-  add(query_600057, "MaxResults", newJString(MaxResults))
-  result = call_600056.call(nil, query_600057, nil, nil, body_600058)
+    body_598080 = body
+  result = call_598078.call(nil, query_598079, nil, nil, body_598080)
 
-var describeScalingPolicies* = Call_DescribeScalingPolicies_600041(
+var describeScalingPolicies* = Call_DescribeScalingPolicies_598063(
     name: "describeScalingPolicies", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.DescribeScalingPolicies",
-    validator: validate_DescribeScalingPolicies_600042, base: "/",
-    url: url_DescribeScalingPolicies_600043, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeScalingPolicies_598064, base: "/",
+    url: url_DescribeScalingPolicies_598065, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeScheduledActions_600059 = ref object of OpenApiRestCall_599368
-proc url_DescribeScheduledActions_600061(protocol: Scheme; host: string;
+  Call_DescribeScheduledActions_598081 = ref object of OpenApiRestCall_597389
+proc url_DescribeScheduledActions_598083(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeScheduledActions_600060(path: JsonNode; query: JsonNode;
+proc validate_DescribeScheduledActions_598082(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the Application Auto Scaling scheduled actions for the specified service namespace.</p> <p>You can filter the results using the <code>ResourceId</code>, <code>ScalableDimension</code>, and <code>ScheduledActionNames</code> parameters.</p> <p>To create a scheduled action or update an existing one, see <a>PutScheduledAction</a>. If you are no longer using a scheduled action, you can delete it using <a>DeleteScheduledAction</a>.</p>
   ## 
@@ -907,74 +914,74 @@ proc validate_DescribeScheduledActions_600060(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600062 = query.getOrDefault("NextToken")
-  valid_600062 = validateParameter(valid_600062, JString, required = false,
+  var valid_598084 = query.getOrDefault("MaxResults")
+  valid_598084 = validateParameter(valid_598084, JString, required = false,
                                  default = nil)
-  if valid_600062 != nil:
-    section.add "NextToken", valid_600062
-  var valid_600063 = query.getOrDefault("MaxResults")
-  valid_600063 = validateParameter(valid_600063, JString, required = false,
+  if valid_598084 != nil:
+    section.add "MaxResults", valid_598084
+  var valid_598085 = query.getOrDefault("NextToken")
+  valid_598085 = validateParameter(valid_598085, JString, required = false,
                                  default = nil)
-  if valid_600063 != nil:
-    section.add "MaxResults", valid_600063
+  if valid_598085 != nil:
+    section.add "NextToken", valid_598085
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600064 = header.getOrDefault("X-Amz-Date")
-  valid_600064 = validateParameter(valid_600064, JString, required = false,
-                                 default = nil)
-  if valid_600064 != nil:
-    section.add "X-Amz-Date", valid_600064
-  var valid_600065 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600065 = validateParameter(valid_600065, JString, required = false,
-                                 default = nil)
-  if valid_600065 != nil:
-    section.add "X-Amz-Security-Token", valid_600065
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600066 = header.getOrDefault("X-Amz-Target")
-  valid_600066 = validateParameter(valid_600066, JString, required = true, default = newJString(
+  var valid_598086 = header.getOrDefault("X-Amz-Target")
+  valid_598086 = validateParameter(valid_598086, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DescribeScheduledActions"))
-  if valid_600066 != nil:
-    section.add "X-Amz-Target", valid_600066
-  var valid_600067 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600067 = validateParameter(valid_600067, JString, required = false,
+  if valid_598086 != nil:
+    section.add "X-Amz-Target", valid_598086
+  var valid_598087 = header.getOrDefault("X-Amz-Signature")
+  valid_598087 = validateParameter(valid_598087, JString, required = false,
                                  default = nil)
-  if valid_600067 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600067
-  var valid_600068 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600068 = validateParameter(valid_600068, JString, required = false,
+  if valid_598087 != nil:
+    section.add "X-Amz-Signature", valid_598087
+  var valid_598088 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598088 = validateParameter(valid_598088, JString, required = false,
                                  default = nil)
-  if valid_600068 != nil:
-    section.add "X-Amz-Algorithm", valid_600068
-  var valid_600069 = header.getOrDefault("X-Amz-Signature")
-  valid_600069 = validateParameter(valid_600069, JString, required = false,
+  if valid_598088 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598088
+  var valid_598089 = header.getOrDefault("X-Amz-Date")
+  valid_598089 = validateParameter(valid_598089, JString, required = false,
                                  default = nil)
-  if valid_600069 != nil:
-    section.add "X-Amz-Signature", valid_600069
-  var valid_600070 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600070 = validateParameter(valid_600070, JString, required = false,
+  if valid_598089 != nil:
+    section.add "X-Amz-Date", valid_598089
+  var valid_598090 = header.getOrDefault("X-Amz-Credential")
+  valid_598090 = validateParameter(valid_598090, JString, required = false,
                                  default = nil)
-  if valid_600070 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600070
-  var valid_600071 = header.getOrDefault("X-Amz-Credential")
-  valid_600071 = validateParameter(valid_600071, JString, required = false,
+  if valid_598090 != nil:
+    section.add "X-Amz-Credential", valid_598090
+  var valid_598091 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598091 = validateParameter(valid_598091, JString, required = false,
                                  default = nil)
-  if valid_600071 != nil:
-    section.add "X-Amz-Credential", valid_600071
+  if valid_598091 != nil:
+    section.add "X-Amz-Security-Token", valid_598091
+  var valid_598092 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598092 = validateParameter(valid_598092, JString, required = false,
+                                 default = nil)
+  if valid_598092 != nil:
+    section.add "X-Amz-Algorithm", valid_598092
+  var valid_598093 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598093 = validateParameter(valid_598093, JString, required = false,
+                                 default = nil)
+  if valid_598093 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598093
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -985,56 +992,57 @@ proc validate_DescribeScheduledActions_600060(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600073: Call_DescribeScheduledActions_600059; path: JsonNode;
+proc call*(call_598095: Call_DescribeScheduledActions_598081; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the Application Auto Scaling scheduled actions for the specified service namespace.</p> <p>You can filter the results using the <code>ResourceId</code>, <code>ScalableDimension</code>, and <code>ScheduledActionNames</code> parameters.</p> <p>To create a scheduled action or update an existing one, see <a>PutScheduledAction</a>. If you are no longer using a scheduled action, you can delete it using <a>DeleteScheduledAction</a>.</p>
   ## 
-  let valid = call_600073.validator(path, query, header, formData, body)
-  let scheme = call_600073.pickScheme
+  let valid = call_598095.validator(path, query, header, formData, body)
+  let scheme = call_598095.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600073.url(scheme.get, call_600073.host, call_600073.base,
-                         call_600073.route, valid.getOrDefault("path"),
+  let url = call_598095.url(scheme.get, call_598095.host, call_598095.base,
+                         call_598095.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600073, url, valid)
+  result = atozHook(call_598095, url, valid)
 
-proc call*(call_600074: Call_DescribeScheduledActions_600059; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_598096: Call_DescribeScheduledActions_598081; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## describeScheduledActions
   ## <p>Describes the Application Auto Scaling scheduled actions for the specified service namespace.</p> <p>You can filter the results using the <code>ResourceId</code>, <code>ScalableDimension</code>, and <code>ScheduledActionNames</code> parameters.</p> <p>To create a scheduled action or update an existing one, see <a>PutScheduledAction</a>. If you are no longer using a scheduled action, you can delete it using <a>DeleteScheduledAction</a>.</p>
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600075 = newJObject()
-  var body_600076 = newJObject()
-  add(query_600075, "NextToken", newJString(NextToken))
+  var query_598097 = newJObject()
+  var body_598098 = newJObject()
+  add(query_598097, "MaxResults", newJString(MaxResults))
+  add(query_598097, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600076 = body
-  add(query_600075, "MaxResults", newJString(MaxResults))
-  result = call_600074.call(nil, query_600075, nil, nil, body_600076)
+    body_598098 = body
+  result = call_598096.call(nil, query_598097, nil, nil, body_598098)
 
-var describeScheduledActions* = Call_DescribeScheduledActions_600059(
+var describeScheduledActions* = Call_DescribeScheduledActions_598081(
     name: "describeScheduledActions", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.DescribeScheduledActions",
-    validator: validate_DescribeScheduledActions_600060, base: "/",
-    url: url_DescribeScheduledActions_600061, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeScheduledActions_598082, base: "/",
+    url: url_DescribeScheduledActions_598083, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutScalingPolicy_600077 = ref object of OpenApiRestCall_599368
-proc url_PutScalingPolicy_600079(protocol: Scheme; host: string; base: string;
+  Call_PutScalingPolicy_598099 = ref object of OpenApiRestCall_597389
+proc url_PutScalingPolicy_598101(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PutScalingPolicy_600078(path: JsonNode; query: JsonNode;
+proc validate_PutScalingPolicy_598100(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates or updates a policy for an Application Auto Scaling scalable target.</p> <p>Each scalable target is identified by a service namespace, resource ID, and scalable dimension. A scaling policy applies to the scalable target identified by those three attributes. You cannot create a scaling policy until you have registered the resource as a scalable target using <a>RegisterScalableTarget</a>.</p> <p>To update a policy, specify its policy name and the parameters that you want to change. Any parameters that you don't specify are not changed by this update request.</p> <p>You can view the scaling policies for a service namespace using <a>DescribeScalingPolicies</a>. If you are no longer using a scaling policy, you can delete it using <a>DeleteScalingPolicy</a>.</p> <p>Multiple scaling policies can be in force at the same time for the same scalable target. You can have one or more target tracking scaling policies, one or more step scaling policies, or both. However, there is a chance that multiple policies could conflict, instructing the scalable target to scale out or in at the same time. Application Auto Scaling gives precedence to the policy that provides the largest capacity for both scale out and scale in. For example, if one policy increases capacity by 3, another policy increases capacity by 200 percent, and the current capacity is 10, Application Auto Scaling uses the policy with the highest calculated capacity (200% of 10 = 20) and scales out to 30. </p> <p>Learn more about how to work with scaling policies in the <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application Auto Scaling User Guide</a>.</p>
@@ -1046,57 +1054,57 @@ proc validate_PutScalingPolicy_600078(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600080 = header.getOrDefault("X-Amz-Date")
-  valid_600080 = validateParameter(valid_600080, JString, required = false,
-                                 default = nil)
-  if valid_600080 != nil:
-    section.add "X-Amz-Date", valid_600080
-  var valid_600081 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600081 = validateParameter(valid_600081, JString, required = false,
-                                 default = nil)
-  if valid_600081 != nil:
-    section.add "X-Amz-Security-Token", valid_600081
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600082 = header.getOrDefault("X-Amz-Target")
-  valid_600082 = validateParameter(valid_600082, JString, required = true, default = newJString(
+  var valid_598102 = header.getOrDefault("X-Amz-Target")
+  valid_598102 = validateParameter(valid_598102, JString, required = true, default = newJString(
       "AnyScaleFrontendService.PutScalingPolicy"))
-  if valid_600082 != nil:
-    section.add "X-Amz-Target", valid_600082
-  var valid_600083 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600083 = validateParameter(valid_600083, JString, required = false,
+  if valid_598102 != nil:
+    section.add "X-Amz-Target", valid_598102
+  var valid_598103 = header.getOrDefault("X-Amz-Signature")
+  valid_598103 = validateParameter(valid_598103, JString, required = false,
                                  default = nil)
-  if valid_600083 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600083
-  var valid_600084 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600084 = validateParameter(valid_600084, JString, required = false,
+  if valid_598103 != nil:
+    section.add "X-Amz-Signature", valid_598103
+  var valid_598104 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598104 = validateParameter(valid_598104, JString, required = false,
                                  default = nil)
-  if valid_600084 != nil:
-    section.add "X-Amz-Algorithm", valid_600084
-  var valid_600085 = header.getOrDefault("X-Amz-Signature")
-  valid_600085 = validateParameter(valid_600085, JString, required = false,
+  if valid_598104 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598104
+  var valid_598105 = header.getOrDefault("X-Amz-Date")
+  valid_598105 = validateParameter(valid_598105, JString, required = false,
                                  default = nil)
-  if valid_600085 != nil:
-    section.add "X-Amz-Signature", valid_600085
-  var valid_600086 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600086 = validateParameter(valid_600086, JString, required = false,
+  if valid_598105 != nil:
+    section.add "X-Amz-Date", valid_598105
+  var valid_598106 = header.getOrDefault("X-Amz-Credential")
+  valid_598106 = validateParameter(valid_598106, JString, required = false,
                                  default = nil)
-  if valid_600086 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600086
-  var valid_600087 = header.getOrDefault("X-Amz-Credential")
-  valid_600087 = validateParameter(valid_600087, JString, required = false,
+  if valid_598106 != nil:
+    section.add "X-Amz-Credential", valid_598106
+  var valid_598107 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598107 = validateParameter(valid_598107, JString, required = false,
                                  default = nil)
-  if valid_600087 != nil:
-    section.add "X-Amz-Credential", valid_600087
+  if valid_598107 != nil:
+    section.add "X-Amz-Security-Token", valid_598107
+  var valid_598108 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598108 = validateParameter(valid_598108, JString, required = false,
+                                 default = nil)
+  if valid_598108 != nil:
+    section.add "X-Amz-Algorithm", valid_598108
+  var valid_598109 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598109 = validateParameter(valid_598109, JString, required = false,
+                                 default = nil)
+  if valid_598109 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598109
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1107,47 +1115,48 @@ proc validate_PutScalingPolicy_600078(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600089: Call_PutScalingPolicy_600077; path: JsonNode;
+proc call*(call_598111: Call_PutScalingPolicy_598099; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates or updates a policy for an Application Auto Scaling scalable target.</p> <p>Each scalable target is identified by a service namespace, resource ID, and scalable dimension. A scaling policy applies to the scalable target identified by those three attributes. You cannot create a scaling policy until you have registered the resource as a scalable target using <a>RegisterScalableTarget</a>.</p> <p>To update a policy, specify its policy name and the parameters that you want to change. Any parameters that you don't specify are not changed by this update request.</p> <p>You can view the scaling policies for a service namespace using <a>DescribeScalingPolicies</a>. If you are no longer using a scaling policy, you can delete it using <a>DeleteScalingPolicy</a>.</p> <p>Multiple scaling policies can be in force at the same time for the same scalable target. You can have one or more target tracking scaling policies, one or more step scaling policies, or both. However, there is a chance that multiple policies could conflict, instructing the scalable target to scale out or in at the same time. Application Auto Scaling gives precedence to the policy that provides the largest capacity for both scale out and scale in. For example, if one policy increases capacity by 3, another policy increases capacity by 200 percent, and the current capacity is 10, Application Auto Scaling uses the policy with the highest calculated capacity (200% of 10 = 20) and scales out to 30. </p> <p>Learn more about how to work with scaling policies in the <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application Auto Scaling User Guide</a>.</p>
   ## 
-  let valid = call_600089.validator(path, query, header, formData, body)
-  let scheme = call_600089.pickScheme
+  let valid = call_598111.validator(path, query, header, formData, body)
+  let scheme = call_598111.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600089.url(scheme.get, call_600089.host, call_600089.base,
-                         call_600089.route, valid.getOrDefault("path"),
+  let url = call_598111.url(scheme.get, call_598111.host, call_598111.base,
+                         call_598111.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600089, url, valid)
+  result = atozHook(call_598111, url, valid)
 
-proc call*(call_600090: Call_PutScalingPolicy_600077; body: JsonNode): Recallable =
+proc call*(call_598112: Call_PutScalingPolicy_598099; body: JsonNode): Recallable =
   ## putScalingPolicy
   ## <p>Creates or updates a policy for an Application Auto Scaling scalable target.</p> <p>Each scalable target is identified by a service namespace, resource ID, and scalable dimension. A scaling policy applies to the scalable target identified by those three attributes. You cannot create a scaling policy until you have registered the resource as a scalable target using <a>RegisterScalableTarget</a>.</p> <p>To update a policy, specify its policy name and the parameters that you want to change. Any parameters that you don't specify are not changed by this update request.</p> <p>You can view the scaling policies for a service namespace using <a>DescribeScalingPolicies</a>. If you are no longer using a scaling policy, you can delete it using <a>DeleteScalingPolicy</a>.</p> <p>Multiple scaling policies can be in force at the same time for the same scalable target. You can have one or more target tracking scaling policies, one or more step scaling policies, or both. However, there is a chance that multiple policies could conflict, instructing the scalable target to scale out or in at the same time. Application Auto Scaling gives precedence to the policy that provides the largest capacity for both scale out and scale in. For example, if one policy increases capacity by 3, another policy increases capacity by 200 percent, and the current capacity is 10, Application Auto Scaling uses the policy with the highest calculated capacity (200% of 10 = 20) and scales out to 30. </p> <p>Learn more about how to work with scaling policies in the <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application Auto Scaling User Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600091 = newJObject()
+  var body_598113 = newJObject()
   if body != nil:
-    body_600091 = body
-  result = call_600090.call(nil, nil, nil, nil, body_600091)
+    body_598113 = body
+  result = call_598112.call(nil, nil, nil, nil, body_598113)
 
-var putScalingPolicy* = Call_PutScalingPolicy_600077(name: "putScalingPolicy",
+var putScalingPolicy* = Call_PutScalingPolicy_598099(name: "putScalingPolicy",
     meth: HttpMethod.HttpPost, host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.PutScalingPolicy",
-    validator: validate_PutScalingPolicy_600078, base: "/",
-    url: url_PutScalingPolicy_600079, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutScalingPolicy_598100, base: "/",
+    url: url_PutScalingPolicy_598101, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutScheduledAction_600092 = ref object of OpenApiRestCall_599368
-proc url_PutScheduledAction_600094(protocol: Scheme; host: string; base: string;
+  Call_PutScheduledAction_598114 = ref object of OpenApiRestCall_597389
+proc url_PutScheduledAction_598116(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PutScheduledAction_600093(path: JsonNode; query: JsonNode;
+proc validate_PutScheduledAction_598115(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Creates or updates a scheduled action for an Application Auto Scaling scalable target.</p> <p>Each scalable target is identified by a service namespace, resource ID, and scalable dimension. A scheduled action applies to the scalable target identified by those three attributes. You cannot create a scheduled action until you have registered the resource as a scalable target using <a>RegisterScalableTarget</a>. </p> <p>To update an action, specify its name and the parameters that you want to change. If you don't specify start and end times, the old values are deleted. Any other parameters that you don't specify are not changed by this update request.</p> <p>You can view the scheduled actions using <a>DescribeScheduledActions</a>. If you are no longer using a scheduled action, you can delete it using <a>DeleteScheduledAction</a>.</p> <p>Learn more about how to work with scheduled actions in the <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application Auto Scaling User Guide</a>.</p>
@@ -1159,57 +1168,57 @@ proc validate_PutScheduledAction_600093(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600095 = header.getOrDefault("X-Amz-Date")
-  valid_600095 = validateParameter(valid_600095, JString, required = false,
-                                 default = nil)
-  if valid_600095 != nil:
-    section.add "X-Amz-Date", valid_600095
-  var valid_600096 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600096 = validateParameter(valid_600096, JString, required = false,
-                                 default = nil)
-  if valid_600096 != nil:
-    section.add "X-Amz-Security-Token", valid_600096
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600097 = header.getOrDefault("X-Amz-Target")
-  valid_600097 = validateParameter(valid_600097, JString, required = true, default = newJString(
+  var valid_598117 = header.getOrDefault("X-Amz-Target")
+  valid_598117 = validateParameter(valid_598117, JString, required = true, default = newJString(
       "AnyScaleFrontendService.PutScheduledAction"))
-  if valid_600097 != nil:
-    section.add "X-Amz-Target", valid_600097
-  var valid_600098 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600098 = validateParameter(valid_600098, JString, required = false,
+  if valid_598117 != nil:
+    section.add "X-Amz-Target", valid_598117
+  var valid_598118 = header.getOrDefault("X-Amz-Signature")
+  valid_598118 = validateParameter(valid_598118, JString, required = false,
                                  default = nil)
-  if valid_600098 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600098
-  var valid_600099 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600099 = validateParameter(valid_600099, JString, required = false,
+  if valid_598118 != nil:
+    section.add "X-Amz-Signature", valid_598118
+  var valid_598119 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598119 = validateParameter(valid_598119, JString, required = false,
                                  default = nil)
-  if valid_600099 != nil:
-    section.add "X-Amz-Algorithm", valid_600099
-  var valid_600100 = header.getOrDefault("X-Amz-Signature")
-  valid_600100 = validateParameter(valid_600100, JString, required = false,
+  if valid_598119 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598119
+  var valid_598120 = header.getOrDefault("X-Amz-Date")
+  valid_598120 = validateParameter(valid_598120, JString, required = false,
                                  default = nil)
-  if valid_600100 != nil:
-    section.add "X-Amz-Signature", valid_600100
-  var valid_600101 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600101 = validateParameter(valid_600101, JString, required = false,
+  if valid_598120 != nil:
+    section.add "X-Amz-Date", valid_598120
+  var valid_598121 = header.getOrDefault("X-Amz-Credential")
+  valid_598121 = validateParameter(valid_598121, JString, required = false,
                                  default = nil)
-  if valid_600101 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600101
-  var valid_600102 = header.getOrDefault("X-Amz-Credential")
-  valid_600102 = validateParameter(valid_600102, JString, required = false,
+  if valid_598121 != nil:
+    section.add "X-Amz-Credential", valid_598121
+  var valid_598122 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598122 = validateParameter(valid_598122, JString, required = false,
                                  default = nil)
-  if valid_600102 != nil:
-    section.add "X-Amz-Credential", valid_600102
+  if valid_598122 != nil:
+    section.add "X-Amz-Security-Token", valid_598122
+  var valid_598123 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598123 = validateParameter(valid_598123, JString, required = false,
+                                 default = nil)
+  if valid_598123 != nil:
+    section.add "X-Amz-Algorithm", valid_598123
+  var valid_598124 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598124 = validateParameter(valid_598124, JString, required = false,
+                                 default = nil)
+  if valid_598124 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598124
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1220,48 +1229,49 @@ proc validate_PutScheduledAction_600093(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600104: Call_PutScheduledAction_600092; path: JsonNode;
+proc call*(call_598126: Call_PutScheduledAction_598114; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates or updates a scheduled action for an Application Auto Scaling scalable target.</p> <p>Each scalable target is identified by a service namespace, resource ID, and scalable dimension. A scheduled action applies to the scalable target identified by those three attributes. You cannot create a scheduled action until you have registered the resource as a scalable target using <a>RegisterScalableTarget</a>. </p> <p>To update an action, specify its name and the parameters that you want to change. If you don't specify start and end times, the old values are deleted. Any other parameters that you don't specify are not changed by this update request.</p> <p>You can view the scheduled actions using <a>DescribeScheduledActions</a>. If you are no longer using a scheduled action, you can delete it using <a>DeleteScheduledAction</a>.</p> <p>Learn more about how to work with scheduled actions in the <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application Auto Scaling User Guide</a>.</p>
   ## 
-  let valid = call_600104.validator(path, query, header, formData, body)
-  let scheme = call_600104.pickScheme
+  let valid = call_598126.validator(path, query, header, formData, body)
+  let scheme = call_598126.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600104.url(scheme.get, call_600104.host, call_600104.base,
-                         call_600104.route, valid.getOrDefault("path"),
+  let url = call_598126.url(scheme.get, call_598126.host, call_598126.base,
+                         call_598126.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600104, url, valid)
+  result = atozHook(call_598126, url, valid)
 
-proc call*(call_600105: Call_PutScheduledAction_600092; body: JsonNode): Recallable =
+proc call*(call_598127: Call_PutScheduledAction_598114; body: JsonNode): Recallable =
   ## putScheduledAction
   ## <p>Creates or updates a scheduled action for an Application Auto Scaling scalable target.</p> <p>Each scalable target is identified by a service namespace, resource ID, and scalable dimension. A scheduled action applies to the scalable target identified by those three attributes. You cannot create a scheduled action until you have registered the resource as a scalable target using <a>RegisterScalableTarget</a>. </p> <p>To update an action, specify its name and the parameters that you want to change. If you don't specify start and end times, the old values are deleted. Any other parameters that you don't specify are not changed by this update request.</p> <p>You can view the scheduled actions using <a>DescribeScheduledActions</a>. If you are no longer using a scheduled action, you can delete it using <a>DeleteScheduledAction</a>.</p> <p>Learn more about how to work with scheduled actions in the <a href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application Auto Scaling User Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600106 = newJObject()
+  var body_598128 = newJObject()
   if body != nil:
-    body_600106 = body
-  result = call_600105.call(nil, nil, nil, nil, body_600106)
+    body_598128 = body
+  result = call_598127.call(nil, nil, nil, nil, body_598128)
 
-var putScheduledAction* = Call_PutScheduledAction_600092(
+var putScheduledAction* = Call_PutScheduledAction_598114(
     name: "putScheduledAction", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.PutScheduledAction",
-    validator: validate_PutScheduledAction_600093, base: "/",
-    url: url_PutScheduledAction_600094, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutScheduledAction_598115, base: "/",
+    url: url_PutScheduledAction_598116, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterScalableTarget_600107 = ref object of OpenApiRestCall_599368
-proc url_RegisterScalableTarget_600109(protocol: Scheme; host: string; base: string;
+  Call_RegisterScalableTarget_598129 = ref object of OpenApiRestCall_597389
+proc url_RegisterScalableTarget_598131(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterScalableTarget_600108(path: JsonNode; query: JsonNode;
+proc validate_RegisterScalableTarget_598130(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Registers or updates a scalable target. A scalable target is a resource that Application Auto Scaling can scale out and scale in. Scalable targets are uniquely identified by the combination of resource ID, scalable dimension, and namespace. </p> <p>When you register a new scalable target, you must specify values for minimum and maximum capacity. Application Auto Scaling will not scale capacity to values that are outside of this range. </p> <p>To update a scalable target, specify the parameter that you want to change as well as the following parameters that identify the scalable target: resource ID, scalable dimension, and namespace. Any parameters that you don't specify are not changed by this update request. </p> <p>After you register a scalable target, you do not need to register it again to use other Application Auto Scaling operations. To see which resources have been registered, use <a>DescribeScalableTargets</a>. You can also view the scaling policies for a service namespace by using <a>DescribeScalableTargets</a>. </p> <p>If you no longer need a scalable target, you can deregister it by using <a>DeregisterScalableTarget</a>.</p>
   ## 
@@ -1272,57 +1282,57 @@ proc validate_RegisterScalableTarget_600108(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600110 = header.getOrDefault("X-Amz-Date")
-  valid_600110 = validateParameter(valid_600110, JString, required = false,
-                                 default = nil)
-  if valid_600110 != nil:
-    section.add "X-Amz-Date", valid_600110
-  var valid_600111 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600111 = validateParameter(valid_600111, JString, required = false,
-                                 default = nil)
-  if valid_600111 != nil:
-    section.add "X-Amz-Security-Token", valid_600111
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600112 = header.getOrDefault("X-Amz-Target")
-  valid_600112 = validateParameter(valid_600112, JString, required = true, default = newJString(
+  var valid_598132 = header.getOrDefault("X-Amz-Target")
+  valid_598132 = validateParameter(valid_598132, JString, required = true, default = newJString(
       "AnyScaleFrontendService.RegisterScalableTarget"))
-  if valid_600112 != nil:
-    section.add "X-Amz-Target", valid_600112
-  var valid_600113 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600113 = validateParameter(valid_600113, JString, required = false,
+  if valid_598132 != nil:
+    section.add "X-Amz-Target", valid_598132
+  var valid_598133 = header.getOrDefault("X-Amz-Signature")
+  valid_598133 = validateParameter(valid_598133, JString, required = false,
                                  default = nil)
-  if valid_600113 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600113
-  var valid_600114 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600114 = validateParameter(valid_600114, JString, required = false,
+  if valid_598133 != nil:
+    section.add "X-Amz-Signature", valid_598133
+  var valid_598134 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598134 = validateParameter(valid_598134, JString, required = false,
                                  default = nil)
-  if valid_600114 != nil:
-    section.add "X-Amz-Algorithm", valid_600114
-  var valid_600115 = header.getOrDefault("X-Amz-Signature")
-  valid_600115 = validateParameter(valid_600115, JString, required = false,
+  if valid_598134 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598134
+  var valid_598135 = header.getOrDefault("X-Amz-Date")
+  valid_598135 = validateParameter(valid_598135, JString, required = false,
                                  default = nil)
-  if valid_600115 != nil:
-    section.add "X-Amz-Signature", valid_600115
-  var valid_600116 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600116 = validateParameter(valid_600116, JString, required = false,
+  if valid_598135 != nil:
+    section.add "X-Amz-Date", valid_598135
+  var valid_598136 = header.getOrDefault("X-Amz-Credential")
+  valid_598136 = validateParameter(valid_598136, JString, required = false,
                                  default = nil)
-  if valid_600116 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600116
-  var valid_600117 = header.getOrDefault("X-Amz-Credential")
-  valid_600117 = validateParameter(valid_600117, JString, required = false,
+  if valid_598136 != nil:
+    section.add "X-Amz-Credential", valid_598136
+  var valid_598137 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598137 = validateParameter(valid_598137, JString, required = false,
                                  default = nil)
-  if valid_600117 != nil:
-    section.add "X-Amz-Credential", valid_600117
+  if valid_598137 != nil:
+    section.add "X-Amz-Security-Token", valid_598137
+  var valid_598138 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598138 = validateParameter(valid_598138, JString, required = false,
+                                 default = nil)
+  if valid_598138 != nil:
+    section.add "X-Amz-Algorithm", valid_598138
+  var valid_598139 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598139 = validateParameter(valid_598139, JString, required = false,
+                                 default = nil)
+  if valid_598139 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598139
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1333,34 +1343,34 @@ proc validate_RegisterScalableTarget_600108(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600119: Call_RegisterScalableTarget_600107; path: JsonNode;
+proc call*(call_598141: Call_RegisterScalableTarget_598129; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers or updates a scalable target. A scalable target is a resource that Application Auto Scaling can scale out and scale in. Scalable targets are uniquely identified by the combination of resource ID, scalable dimension, and namespace. </p> <p>When you register a new scalable target, you must specify values for minimum and maximum capacity. Application Auto Scaling will not scale capacity to values that are outside of this range. </p> <p>To update a scalable target, specify the parameter that you want to change as well as the following parameters that identify the scalable target: resource ID, scalable dimension, and namespace. Any parameters that you don't specify are not changed by this update request. </p> <p>After you register a scalable target, you do not need to register it again to use other Application Auto Scaling operations. To see which resources have been registered, use <a>DescribeScalableTargets</a>. You can also view the scaling policies for a service namespace by using <a>DescribeScalableTargets</a>. </p> <p>If you no longer need a scalable target, you can deregister it by using <a>DeregisterScalableTarget</a>.</p>
   ## 
-  let valid = call_600119.validator(path, query, header, formData, body)
-  let scheme = call_600119.pickScheme
+  let valid = call_598141.validator(path, query, header, formData, body)
+  let scheme = call_598141.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600119.url(scheme.get, call_600119.host, call_600119.base,
-                         call_600119.route, valid.getOrDefault("path"),
+  let url = call_598141.url(scheme.get, call_598141.host, call_598141.base,
+                         call_598141.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600119, url, valid)
+  result = atozHook(call_598141, url, valid)
 
-proc call*(call_600120: Call_RegisterScalableTarget_600107; body: JsonNode): Recallable =
+proc call*(call_598142: Call_RegisterScalableTarget_598129; body: JsonNode): Recallable =
   ## registerScalableTarget
   ## <p>Registers or updates a scalable target. A scalable target is a resource that Application Auto Scaling can scale out and scale in. Scalable targets are uniquely identified by the combination of resource ID, scalable dimension, and namespace. </p> <p>When you register a new scalable target, you must specify values for minimum and maximum capacity. Application Auto Scaling will not scale capacity to values that are outside of this range. </p> <p>To update a scalable target, specify the parameter that you want to change as well as the following parameters that identify the scalable target: resource ID, scalable dimension, and namespace. Any parameters that you don't specify are not changed by this update request. </p> <p>After you register a scalable target, you do not need to register it again to use other Application Auto Scaling operations. To see which resources have been registered, use <a>DescribeScalableTargets</a>. You can also view the scaling policies for a service namespace by using <a>DescribeScalableTargets</a>. </p> <p>If you no longer need a scalable target, you can deregister it by using <a>DeregisterScalableTarget</a>.</p>
   ##   body: JObject (required)
-  var body_600121 = newJObject()
+  var body_598143 = newJObject()
   if body != nil:
-    body_600121 = body
-  result = call_600120.call(nil, nil, nil, nil, body_600121)
+    body_598143 = body
+  result = call_598142.call(nil, nil, nil, nil, body_598143)
 
-var registerScalableTarget* = Call_RegisterScalableTarget_600107(
+var registerScalableTarget* = Call_RegisterScalableTarget_598129(
     name: "registerScalableTarget", meth: HttpMethod.HttpPost,
     host: "application-autoscaling.amazonaws.com",
     route: "/#X-Amz-Target=AnyScaleFrontendService.RegisterScalableTarget",
-    validator: validate_RegisterScalableTarget_600108, base: "/",
-    url: url_RegisterScalableTarget_600109, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterScalableTarget_598130, base: "/",
+    url: url_RegisterScalableTarget_598131, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

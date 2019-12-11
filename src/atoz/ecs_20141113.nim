@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599368 = ref object of OpenApiRestCall
+  OpenApiRestCall_597389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_597389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_597389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -149,21 +149,22 @@ const
   awsServiceName = "ecs"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateCluster_599705 = ref object of OpenApiRestCall_599368
-proc url_CreateCluster_599707(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateCapacityProvider_597727 = ref object of OpenApiRestCall_597389
+proc url_CreateCapacityProvider_597729(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateCluster_599706(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates a new Amazon ECS cluster. By default, your account receives a <code>default</code> cluster when you launch your first container instance. However, you can create your own cluster with a unique name with the <code>CreateCluster</code> action.</p> <note> <p>When you call the <a>CreateCluster</a> API operation, Amazon ECS attempts to create the service-linked role for your account so that required resources in other AWS services can be managed on your behalf. However, if the IAM user that makes the call does not have permissions to create the service-linked role, it is not created. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html">Using Service-Linked Roles for Amazon ECS</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
+proc validate_CreateCapacityProvider_597728(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Creates a new capacity provider. Capacity providers are associated with an Amazon ECS cluster and are used in capacity provider strategies to facilitate cluster auto scaling.</p> <p>Only capacity providers using an Auto Scaling group can be created. Amazon ECS tasks on AWS Fargate use the <code>FARGATE</code> and <code>FARGATE_SPOT</code> capacity providers which are already created and available to all accounts in Regions supported by AWS Fargate.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -172,57 +173,57 @@ proc validate_CreateCluster_599706(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599819 = header.getOrDefault("X-Amz-Date")
-  valid_599819 = validateParameter(valid_599819, JString, required = false,
-                                 default = nil)
-  if valid_599819 != nil:
-    section.add "X-Amz-Date", valid_599819
-  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599820 = validateParameter(valid_599820, JString, required = false,
-                                 default = nil)
-  if valid_599820 != nil:
-    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599834 = header.getOrDefault("X-Amz-Target")
-  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
-      "AmazonEC2ContainerServiceV20141113.CreateCluster"))
-  if valid_599834 != nil:
-    section.add "X-Amz-Target", valid_599834
-  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599835 = validateParameter(valid_599835, JString, required = false,
+  var valid_597854 = header.getOrDefault("X-Amz-Target")
+  valid_597854 = validateParameter(valid_597854, JString, required = true, default = newJString(
+      "AmazonEC2ContainerServiceV20141113.CreateCapacityProvider"))
+  if valid_597854 != nil:
+    section.add "X-Amz-Target", valid_597854
+  var valid_597855 = header.getOrDefault("X-Amz-Signature")
+  valid_597855 = validateParameter(valid_597855, JString, required = false,
                                  default = nil)
-  if valid_599835 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599835
-  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599836 = validateParameter(valid_599836, JString, required = false,
+  if valid_597855 != nil:
+    section.add "X-Amz-Signature", valid_597855
+  var valid_597856 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_597856 = validateParameter(valid_597856, JString, required = false,
                                  default = nil)
-  if valid_599836 != nil:
-    section.add "X-Amz-Algorithm", valid_599836
-  var valid_599837 = header.getOrDefault("X-Amz-Signature")
-  valid_599837 = validateParameter(valid_599837, JString, required = false,
+  if valid_597856 != nil:
+    section.add "X-Amz-Content-Sha256", valid_597856
+  var valid_597857 = header.getOrDefault("X-Amz-Date")
+  valid_597857 = validateParameter(valid_597857, JString, required = false,
                                  default = nil)
-  if valid_599837 != nil:
-    section.add "X-Amz-Signature", valid_599837
-  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599838 = validateParameter(valid_599838, JString, required = false,
+  if valid_597857 != nil:
+    section.add "X-Amz-Date", valid_597857
+  var valid_597858 = header.getOrDefault("X-Amz-Credential")
+  valid_597858 = validateParameter(valid_597858, JString, required = false,
                                  default = nil)
-  if valid_599838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599838
-  var valid_599839 = header.getOrDefault("X-Amz-Credential")
-  valid_599839 = validateParameter(valid_599839, JString, required = false,
+  if valid_597858 != nil:
+    section.add "X-Amz-Credential", valid_597858
+  var valid_597859 = header.getOrDefault("X-Amz-Security-Token")
+  valid_597859 = validateParameter(valid_597859, JString, required = false,
                                  default = nil)
-  if valid_599839 != nil:
-    section.add "X-Amz-Credential", valid_599839
+  if valid_597859 != nil:
+    section.add "X-Amz-Security-Token", valid_597859
+  var valid_597860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_597860 = validateParameter(valid_597860, JString, required = false,
+                                 default = nil)
+  if valid_597860 != nil:
+    section.add "X-Amz-Algorithm", valid_597860
+  var valid_597861 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_597861 = validateParameter(valid_597861, JString, required = false,
+                                 default = nil)
+  if valid_597861 != nil:
+    section.add "X-Amz-SignedHeaders", valid_597861
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -233,47 +234,161 @@ proc validate_CreateCluster_599706(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_599863: Call_CreateCluster_599705; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a new Amazon ECS cluster. By default, your account receives a <code>default</code> cluster when you launch your first container instance. However, you can create your own cluster with a unique name with the <code>CreateCluster</code> action.</p> <note> <p>When you call the <a>CreateCluster</a> API operation, Amazon ECS attempts to create the service-linked role for your account so that required resources in other AWS services can be managed on your behalf. However, if the IAM user that makes the call does not have permissions to create the service-linked role, it is not created. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html">Using Service-Linked Roles for Amazon ECS</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
+proc call*(call_597885: Call_CreateCapacityProvider_597727; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Creates a new capacity provider. Capacity providers are associated with an Amazon ECS cluster and are used in capacity provider strategies to facilitate cluster auto scaling.</p> <p>Only capacity providers using an Auto Scaling group can be created. Amazon ECS tasks on AWS Fargate use the <code>FARGATE</code> and <code>FARGATE_SPOT</code> capacity providers which are already created and available to all accounts in Regions supported by AWS Fargate.</p>
   ## 
-  let valid = call_599863.validator(path, query, header, formData, body)
-  let scheme = call_599863.pickScheme
+  let valid = call_597885.validator(path, query, header, formData, body)
+  let scheme = call_597885.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
-                         call_599863.route, valid.getOrDefault("path"),
+  let url = call_597885.url(scheme.get, call_597885.host, call_597885.base,
+                         call_597885.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599863, url, valid)
+  result = atozHook(call_597885, url, valid)
 
-proc call*(call_599934: Call_CreateCluster_599705; body: JsonNode): Recallable =
-  ## createCluster
-  ## <p>Creates a new Amazon ECS cluster. By default, your account receives a <code>default</code> cluster when you launch your first container instance. However, you can create your own cluster with a unique name with the <code>CreateCluster</code> action.</p> <note> <p>When you call the <a>CreateCluster</a> API operation, Amazon ECS attempts to create the service-linked role for your account so that required resources in other AWS services can be managed on your behalf. However, if the IAM user that makes the call does not have permissions to create the service-linked role, it is not created. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html">Using Service-Linked Roles for Amazon ECS</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
+proc call*(call_597956: Call_CreateCapacityProvider_597727; body: JsonNode): Recallable =
+  ## createCapacityProvider
+  ## <p>Creates a new capacity provider. Capacity providers are associated with an Amazon ECS cluster and are used in capacity provider strategies to facilitate cluster auto scaling.</p> <p>Only capacity providers using an Auto Scaling group can be created. Amazon ECS tasks on AWS Fargate use the <code>FARGATE</code> and <code>FARGATE_SPOT</code> capacity providers which are already created and available to all accounts in Regions supported by AWS Fargate.</p>
   ##   body: JObject (required)
-  var body_599935 = newJObject()
+  var body_597957 = newJObject()
   if body != nil:
-    body_599935 = body
-  result = call_599934.call(nil, nil, nil, nil, body_599935)
+    body_597957 = body
+  result = call_597956.call(nil, nil, nil, nil, body_597957)
 
-var createCluster* = Call_CreateCluster_599705(name: "createCluster",
+var createCapacityProvider* = Call_CreateCapacityProvider_597727(
+    name: "createCapacityProvider", meth: HttpMethod.HttpPost,
+    host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.CreateCapacityProvider",
+    validator: validate_CreateCapacityProvider_597728, base: "/",
+    url: url_CreateCapacityProvider_597729, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_CreateCluster_597996 = ref object of OpenApiRestCall_597389
+proc url_CreateCluster_597998(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_CreateCluster_597997(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Creates a new Amazon ECS cluster. By default, your account receives a <code>default</code> cluster when you launch your first container instance. However, you can create your own cluster with a unique name with the <code>CreateCluster</code> action.</p> <note> <p>When you call the <a>CreateCluster</a> API operation, Amazon ECS attempts to create the Amazon ECS service-linked role for your account so that required resources in other AWS services can be managed on your behalf. However, if the IAM user that makes the call does not have permissions to create the service-linked role, it is not created. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html">Using Service-Linked Roles for Amazon ECS</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_597999 = header.getOrDefault("X-Amz-Target")
+  valid_597999 = validateParameter(valid_597999, JString, required = true, default = newJString(
+      "AmazonEC2ContainerServiceV20141113.CreateCluster"))
+  if valid_597999 != nil:
+    section.add "X-Amz-Target", valid_597999
+  var valid_598000 = header.getOrDefault("X-Amz-Signature")
+  valid_598000 = validateParameter(valid_598000, JString, required = false,
+                                 default = nil)
+  if valid_598000 != nil:
+    section.add "X-Amz-Signature", valid_598000
+  var valid_598001 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598001 = validateParameter(valid_598001, JString, required = false,
+                                 default = nil)
+  if valid_598001 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598001
+  var valid_598002 = header.getOrDefault("X-Amz-Date")
+  valid_598002 = validateParameter(valid_598002, JString, required = false,
+                                 default = nil)
+  if valid_598002 != nil:
+    section.add "X-Amz-Date", valid_598002
+  var valid_598003 = header.getOrDefault("X-Amz-Credential")
+  valid_598003 = validateParameter(valid_598003, JString, required = false,
+                                 default = nil)
+  if valid_598003 != nil:
+    section.add "X-Amz-Credential", valid_598003
+  var valid_598004 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598004 = validateParameter(valid_598004, JString, required = false,
+                                 default = nil)
+  if valid_598004 != nil:
+    section.add "X-Amz-Security-Token", valid_598004
+  var valid_598005 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598005 = validateParameter(valid_598005, JString, required = false,
+                                 default = nil)
+  if valid_598005 != nil:
+    section.add "X-Amz-Algorithm", valid_598005
+  var valid_598006 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598006 = validateParameter(valid_598006, JString, required = false,
+                                 default = nil)
+  if valid_598006 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598006
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_598008: Call_CreateCluster_597996; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Creates a new Amazon ECS cluster. By default, your account receives a <code>default</code> cluster when you launch your first container instance. However, you can create your own cluster with a unique name with the <code>CreateCluster</code> action.</p> <note> <p>When you call the <a>CreateCluster</a> API operation, Amazon ECS attempts to create the Amazon ECS service-linked role for your account so that required resources in other AWS services can be managed on your behalf. However, if the IAM user that makes the call does not have permissions to create the service-linked role, it is not created. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html">Using Service-Linked Roles for Amazon ECS</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
+  ## 
+  let valid = call_598008.validator(path, query, header, formData, body)
+  let scheme = call_598008.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_598008.url(scheme.get, call_598008.host, call_598008.base,
+                         call_598008.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_598008, url, valid)
+
+proc call*(call_598009: Call_CreateCluster_597996; body: JsonNode): Recallable =
+  ## createCluster
+  ## <p>Creates a new Amazon ECS cluster. By default, your account receives a <code>default</code> cluster when you launch your first container instance. However, you can create your own cluster with a unique name with the <code>CreateCluster</code> action.</p> <note> <p>When you call the <a>CreateCluster</a> API operation, Amazon ECS attempts to create the Amazon ECS service-linked role for your account so that required resources in other AWS services can be managed on your behalf. However, if the IAM user that makes the call does not have permissions to create the service-linked role, it is not created. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html">Using Service-Linked Roles for Amazon ECS</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
+  ##   body: JObject (required)
+  var body_598010 = newJObject()
+  if body != nil:
+    body_598010 = body
+  result = call_598009.call(nil, nil, nil, nil, body_598010)
+
+var createCluster* = Call_CreateCluster_597996(name: "createCluster",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.CreateCluster",
-    validator: validate_CreateCluster_599706, base: "/", url: url_CreateCluster_599707,
+    validator: validate_CreateCluster_597997, base: "/", url: url_CreateCluster_597998,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateService_599974 = ref object of OpenApiRestCall_599368
-proc url_CreateService_599976(protocol: Scheme; host: string; base: string;
+  Call_CreateService_598011 = ref object of OpenApiRestCall_597389
+proc url_CreateService_598013(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateService_599975(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateService_598012(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Runs and maintains a desired number of tasks from a specified task definition. If the number of tasks running in a service drops below the <code>desiredCount</code>, Amazon ECS runs another copy of the task in the specified cluster. To update an existing service, see <a>UpdateService</a>.</p> <p>In addition to maintaining the desired count of tasks in your service, you can optionally run your service behind one or more load balancers. The load balancers distribute traffic across the tasks that are associated with the service. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-load-balancing.html">Service Load Balancing</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>Tasks for services that <i>do not</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state. Tasks for services that <i>do</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state and the container instance that they're hosted on is reported as healthy by the load balancer.</p> <p>There are two service scheduler strategies available:</p> <ul> <li> <p> <code>REPLICA</code> - The replica scheduling strategy places and maintains the desired number of tasks across your cluster. By default, the service scheduler spreads tasks across Availability Zones. You can use task placement strategies and constraints to customize task placement decisions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html">Service Scheduler Concepts</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </li> <li> <p> <code>DAEMON</code> - The daemon scheduling strategy deploys exactly one task on each active container instance that meets all of the task placement constraints that you specify in your cluster. When using this strategy, you don't need to specify a desired number of tasks, a task placement strategy, or use Service Auto Scaling policies. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html">Service Scheduler Concepts</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </li> </ul> <p>You can optionally specify a deployment configuration for your service. The deployment is triggered by changing properties, such as the task definition or the desired count of a service, with an <a>UpdateService</a> operation. The default value for a replica service for <code>minimumHealthyPercent</code> is 100%. The default value for a daemon service for <code>minimumHealthyPercent</code> is 0%.</p> <p>If a service is using the <code>ECS</code> deployment controller, the minimum healthy percent represents a lower limit on the number of tasks in a service that must remain in the <code>RUNNING</code> state during a deployment, as a percentage of the desired number of tasks (rounded up to the nearest integer), and while any container instances are in the <code>DRAINING</code> state if the service contains tasks using the EC2 launch type. This parameter enables you to deploy without using additional cluster capacity. For example, if your service has a desired number of four tasks and a minimum healthy percent of 50%, the scheduler might stop two existing tasks to free up cluster capacity before starting two new tasks. Tasks for services that <i>do not</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state. Tasks for services that <i>do</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state and they're reported as healthy by the load balancer. The default value for minimum healthy percent is 100%.</p> <p>If a service is using the <code>ECS</code> deployment controller, the <b>maximum percent</b> parameter represents an upper limit on the number of tasks in a service that are allowed in the <code>RUNNING</code> or <code>PENDING</code> state during a deployment, as a percentage of the desired number of tasks (rounded down to the nearest integer), and while any container instances are in the <code>DRAINING</code> state if the service contains tasks using the EC2 launch type. This parameter enables you to define the deployment batch size. For example, if your service has a desired number of four tasks and a maximum percent value of 200%, the scheduler may start four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available). The default value for maximum percent is 200%.</p> <p>If a service is using either the <code>CODE_DEPLOY</code> or <code>EXTERNAL</code> deployment controller types and tasks that use the EC2 launch type, the <b>minimum healthy percent</b> and <b>maximum percent</b> values are used only to define the lower and upper limit on the number of the tasks in the service that remain in the <code>RUNNING</code> state while the container instances are in the <code>DRAINING</code> state. If the tasks in the service use the Fargate launch type, the minimum healthy percent and maximum percent values aren't used, although they're currently visible when describing your service.</p> <p>When creating a service that uses the <code>EXTERNAL</code> deployment controller, you can specify only parameters that aren't controlled at the task set level. The only required parameter is the service name. You control your services using the <a>CreateTaskSet</a> operation. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When the service scheduler launches new tasks, it determines task placement in your cluster using the following logic:</p> <ul> <li> <p>Determine which of the container instances in your cluster can support your service's task definition (for example, they have the required CPU, memory, ports, and container instance attributes).</p> </li> <li> <p>By default, the service scheduler attempts to balance tasks across Availability Zones in this manner (although you can choose a different placement strategy) with the <code>placementStrategy</code> parameter):</p> <ul> <li> <p>Sort the valid container instances, giving priority to instances that have the fewest number of running tasks for this service in their respective Availability Zone. For example, if zone A has one running service task and zones B and C each have zero, valid container instances in either zone B or C are considered optimal for placement.</p> </li> <li> <p>Place the new service task on a valid container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the fewest number of running tasks for this service.</p> </li> </ul> </li> </ul>
   ## 
@@ -284,57 +399,57 @@ proc validate_CreateService_599975(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599977 = header.getOrDefault("X-Amz-Date")
-  valid_599977 = validateParameter(valid_599977, JString, required = false,
-                                 default = nil)
-  if valid_599977 != nil:
-    section.add "X-Amz-Date", valid_599977
-  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599978 = validateParameter(valid_599978, JString, required = false,
-                                 default = nil)
-  if valid_599978 != nil:
-    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599979 = header.getOrDefault("X-Amz-Target")
-  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
+  var valid_598014 = header.getOrDefault("X-Amz-Target")
+  valid_598014 = validateParameter(valid_598014, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.CreateService"))
-  if valid_599979 != nil:
-    section.add "X-Amz-Target", valid_599979
-  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599980 = validateParameter(valid_599980, JString, required = false,
+  if valid_598014 != nil:
+    section.add "X-Amz-Target", valid_598014
+  var valid_598015 = header.getOrDefault("X-Amz-Signature")
+  valid_598015 = validateParameter(valid_598015, JString, required = false,
                                  default = nil)
-  if valid_599980 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599980
-  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599981 = validateParameter(valid_599981, JString, required = false,
+  if valid_598015 != nil:
+    section.add "X-Amz-Signature", valid_598015
+  var valid_598016 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598016 = validateParameter(valid_598016, JString, required = false,
                                  default = nil)
-  if valid_599981 != nil:
-    section.add "X-Amz-Algorithm", valid_599981
-  var valid_599982 = header.getOrDefault("X-Amz-Signature")
-  valid_599982 = validateParameter(valid_599982, JString, required = false,
+  if valid_598016 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598016
+  var valid_598017 = header.getOrDefault("X-Amz-Date")
+  valid_598017 = validateParameter(valid_598017, JString, required = false,
                                  default = nil)
-  if valid_599982 != nil:
-    section.add "X-Amz-Signature", valid_599982
-  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599983 = validateParameter(valid_599983, JString, required = false,
+  if valid_598017 != nil:
+    section.add "X-Amz-Date", valid_598017
+  var valid_598018 = header.getOrDefault("X-Amz-Credential")
+  valid_598018 = validateParameter(valid_598018, JString, required = false,
                                  default = nil)
-  if valid_599983 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599983
-  var valid_599984 = header.getOrDefault("X-Amz-Credential")
-  valid_599984 = validateParameter(valid_599984, JString, required = false,
+  if valid_598018 != nil:
+    section.add "X-Amz-Credential", valid_598018
+  var valid_598019 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598019 = validateParameter(valid_598019, JString, required = false,
                                  default = nil)
-  if valid_599984 != nil:
-    section.add "X-Amz-Credential", valid_599984
+  if valid_598019 != nil:
+    section.add "X-Amz-Security-Token", valid_598019
+  var valid_598020 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598020 = validateParameter(valid_598020, JString, required = false,
+                                 default = nil)
+  if valid_598020 != nil:
+    section.add "X-Amz-Algorithm", valid_598020
+  var valid_598021 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598021 = validateParameter(valid_598021, JString, required = false,
+                                 default = nil)
+  if valid_598021 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598021
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -345,47 +460,48 @@ proc validate_CreateService_599975(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_599986: Call_CreateService_599974; path: JsonNode; query: JsonNode;
+proc call*(call_598023: Call_CreateService_598011; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Runs and maintains a desired number of tasks from a specified task definition. If the number of tasks running in a service drops below the <code>desiredCount</code>, Amazon ECS runs another copy of the task in the specified cluster. To update an existing service, see <a>UpdateService</a>.</p> <p>In addition to maintaining the desired count of tasks in your service, you can optionally run your service behind one or more load balancers. The load balancers distribute traffic across the tasks that are associated with the service. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-load-balancing.html">Service Load Balancing</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>Tasks for services that <i>do not</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state. Tasks for services that <i>do</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state and the container instance that they're hosted on is reported as healthy by the load balancer.</p> <p>There are two service scheduler strategies available:</p> <ul> <li> <p> <code>REPLICA</code> - The replica scheduling strategy places and maintains the desired number of tasks across your cluster. By default, the service scheduler spreads tasks across Availability Zones. You can use task placement strategies and constraints to customize task placement decisions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html">Service Scheduler Concepts</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </li> <li> <p> <code>DAEMON</code> - The daemon scheduling strategy deploys exactly one task on each active container instance that meets all of the task placement constraints that you specify in your cluster. When using this strategy, you don't need to specify a desired number of tasks, a task placement strategy, or use Service Auto Scaling policies. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html">Service Scheduler Concepts</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </li> </ul> <p>You can optionally specify a deployment configuration for your service. The deployment is triggered by changing properties, such as the task definition or the desired count of a service, with an <a>UpdateService</a> operation. The default value for a replica service for <code>minimumHealthyPercent</code> is 100%. The default value for a daemon service for <code>minimumHealthyPercent</code> is 0%.</p> <p>If a service is using the <code>ECS</code> deployment controller, the minimum healthy percent represents a lower limit on the number of tasks in a service that must remain in the <code>RUNNING</code> state during a deployment, as a percentage of the desired number of tasks (rounded up to the nearest integer), and while any container instances are in the <code>DRAINING</code> state if the service contains tasks using the EC2 launch type. This parameter enables you to deploy without using additional cluster capacity. For example, if your service has a desired number of four tasks and a minimum healthy percent of 50%, the scheduler might stop two existing tasks to free up cluster capacity before starting two new tasks. Tasks for services that <i>do not</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state. Tasks for services that <i>do</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state and they're reported as healthy by the load balancer. The default value for minimum healthy percent is 100%.</p> <p>If a service is using the <code>ECS</code> deployment controller, the <b>maximum percent</b> parameter represents an upper limit on the number of tasks in a service that are allowed in the <code>RUNNING</code> or <code>PENDING</code> state during a deployment, as a percentage of the desired number of tasks (rounded down to the nearest integer), and while any container instances are in the <code>DRAINING</code> state if the service contains tasks using the EC2 launch type. This parameter enables you to define the deployment batch size. For example, if your service has a desired number of four tasks and a maximum percent value of 200%, the scheduler may start four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available). The default value for maximum percent is 200%.</p> <p>If a service is using either the <code>CODE_DEPLOY</code> or <code>EXTERNAL</code> deployment controller types and tasks that use the EC2 launch type, the <b>minimum healthy percent</b> and <b>maximum percent</b> values are used only to define the lower and upper limit on the number of the tasks in the service that remain in the <code>RUNNING</code> state while the container instances are in the <code>DRAINING</code> state. If the tasks in the service use the Fargate launch type, the minimum healthy percent and maximum percent values aren't used, although they're currently visible when describing your service.</p> <p>When creating a service that uses the <code>EXTERNAL</code> deployment controller, you can specify only parameters that aren't controlled at the task set level. The only required parameter is the service name. You control your services using the <a>CreateTaskSet</a> operation. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When the service scheduler launches new tasks, it determines task placement in your cluster using the following logic:</p> <ul> <li> <p>Determine which of the container instances in your cluster can support your service's task definition (for example, they have the required CPU, memory, ports, and container instance attributes).</p> </li> <li> <p>By default, the service scheduler attempts to balance tasks across Availability Zones in this manner (although you can choose a different placement strategy) with the <code>placementStrategy</code> parameter):</p> <ul> <li> <p>Sort the valid container instances, giving priority to instances that have the fewest number of running tasks for this service in their respective Availability Zone. For example, if zone A has one running service task and zones B and C each have zero, valid container instances in either zone B or C are considered optimal for placement.</p> </li> <li> <p>Place the new service task on a valid container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the fewest number of running tasks for this service.</p> </li> </ul> </li> </ul>
   ## 
-  let valid = call_599986.validator(path, query, header, formData, body)
-  let scheme = call_599986.pickScheme
+  let valid = call_598023.validator(path, query, header, formData, body)
+  let scheme = call_598023.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
-                         call_599986.route, valid.getOrDefault("path"),
+  let url = call_598023.url(scheme.get, call_598023.host, call_598023.base,
+                         call_598023.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599986, url, valid)
+  result = atozHook(call_598023, url, valid)
 
-proc call*(call_599987: Call_CreateService_599974; body: JsonNode): Recallable =
+proc call*(call_598024: Call_CreateService_598011; body: JsonNode): Recallable =
   ## createService
   ## <p>Runs and maintains a desired number of tasks from a specified task definition. If the number of tasks running in a service drops below the <code>desiredCount</code>, Amazon ECS runs another copy of the task in the specified cluster. To update an existing service, see <a>UpdateService</a>.</p> <p>In addition to maintaining the desired count of tasks in your service, you can optionally run your service behind one or more load balancers. The load balancers distribute traffic across the tasks that are associated with the service. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-load-balancing.html">Service Load Balancing</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>Tasks for services that <i>do not</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state. Tasks for services that <i>do</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state and the container instance that they're hosted on is reported as healthy by the load balancer.</p> <p>There are two service scheduler strategies available:</p> <ul> <li> <p> <code>REPLICA</code> - The replica scheduling strategy places and maintains the desired number of tasks across your cluster. By default, the service scheduler spreads tasks across Availability Zones. You can use task placement strategies and constraints to customize task placement decisions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html">Service Scheduler Concepts</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </li> <li> <p> <code>DAEMON</code> - The daemon scheduling strategy deploys exactly one task on each active container instance that meets all of the task placement constraints that you specify in your cluster. When using this strategy, you don't need to specify a desired number of tasks, a task placement strategy, or use Service Auto Scaling policies. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html">Service Scheduler Concepts</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </li> </ul> <p>You can optionally specify a deployment configuration for your service. The deployment is triggered by changing properties, such as the task definition or the desired count of a service, with an <a>UpdateService</a> operation. The default value for a replica service for <code>minimumHealthyPercent</code> is 100%. The default value for a daemon service for <code>minimumHealthyPercent</code> is 0%.</p> <p>If a service is using the <code>ECS</code> deployment controller, the minimum healthy percent represents a lower limit on the number of tasks in a service that must remain in the <code>RUNNING</code> state during a deployment, as a percentage of the desired number of tasks (rounded up to the nearest integer), and while any container instances are in the <code>DRAINING</code> state if the service contains tasks using the EC2 launch type. This parameter enables you to deploy without using additional cluster capacity. For example, if your service has a desired number of four tasks and a minimum healthy percent of 50%, the scheduler might stop two existing tasks to free up cluster capacity before starting two new tasks. Tasks for services that <i>do not</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state. Tasks for services that <i>do</i> use a load balancer are considered healthy if they're in the <code>RUNNING</code> state and they're reported as healthy by the load balancer. The default value for minimum healthy percent is 100%.</p> <p>If a service is using the <code>ECS</code> deployment controller, the <b>maximum percent</b> parameter represents an upper limit on the number of tasks in a service that are allowed in the <code>RUNNING</code> or <code>PENDING</code> state during a deployment, as a percentage of the desired number of tasks (rounded down to the nearest integer), and while any container instances are in the <code>DRAINING</code> state if the service contains tasks using the EC2 launch type. This parameter enables you to define the deployment batch size. For example, if your service has a desired number of four tasks and a maximum percent value of 200%, the scheduler may start four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available). The default value for maximum percent is 200%.</p> <p>If a service is using either the <code>CODE_DEPLOY</code> or <code>EXTERNAL</code> deployment controller types and tasks that use the EC2 launch type, the <b>minimum healthy percent</b> and <b>maximum percent</b> values are used only to define the lower and upper limit on the number of the tasks in the service that remain in the <code>RUNNING</code> state while the container instances are in the <code>DRAINING</code> state. If the tasks in the service use the Fargate launch type, the minimum healthy percent and maximum percent values aren't used, although they're currently visible when describing your service.</p> <p>When creating a service that uses the <code>EXTERNAL</code> deployment controller, you can specify only parameters that aren't controlled at the task set level. The only required parameter is the service name. You control your services using the <a>CreateTaskSet</a> operation. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When the service scheduler launches new tasks, it determines task placement in your cluster using the following logic:</p> <ul> <li> <p>Determine which of the container instances in your cluster can support your service's task definition (for example, they have the required CPU, memory, ports, and container instance attributes).</p> </li> <li> <p>By default, the service scheduler attempts to balance tasks across Availability Zones in this manner (although you can choose a different placement strategy) with the <code>placementStrategy</code> parameter):</p> <ul> <li> <p>Sort the valid container instances, giving priority to instances that have the fewest number of running tasks for this service in their respective Availability Zone. For example, if zone A has one running service task and zones B and C each have zero, valid container instances in either zone B or C are considered optimal for placement.</p> </li> <li> <p>Place the new service task on a valid container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the fewest number of running tasks for this service.</p> </li> </ul> </li> </ul>
   ##   body: JObject (required)
-  var body_599988 = newJObject()
+  var body_598025 = newJObject()
   if body != nil:
-    body_599988 = body
-  result = call_599987.call(nil, nil, nil, nil, body_599988)
+    body_598025 = body
+  result = call_598024.call(nil, nil, nil, nil, body_598025)
 
-var createService* = Call_CreateService_599974(name: "createService",
+var createService* = Call_CreateService_598011(name: "createService",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.CreateService",
-    validator: validate_CreateService_599975, base: "/", url: url_CreateService_599976,
+    validator: validate_CreateService_598012, base: "/", url: url_CreateService_598013,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTaskSet_599989 = ref object of OpenApiRestCall_599368
-proc url_CreateTaskSet_599991(protocol: Scheme; host: string; base: string;
+  Call_CreateTaskSet_598026 = ref object of OpenApiRestCall_597389
+proc url_CreateTaskSet_598028(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateTaskSet_599990(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateTaskSet_598027(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Create a task set in the specified cluster and service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
@@ -396,57 +512,57 @@ proc validate_CreateTaskSet_599990(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599992 = header.getOrDefault("X-Amz-Date")
-  valid_599992 = validateParameter(valid_599992, JString, required = false,
-                                 default = nil)
-  if valid_599992 != nil:
-    section.add "X-Amz-Date", valid_599992
-  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599993 = validateParameter(valid_599993, JString, required = false,
-                                 default = nil)
-  if valid_599993 != nil:
-    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599994 = header.getOrDefault("X-Amz-Target")
-  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
+  var valid_598029 = header.getOrDefault("X-Amz-Target")
+  valid_598029 = validateParameter(valid_598029, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.CreateTaskSet"))
-  if valid_599994 != nil:
-    section.add "X-Amz-Target", valid_599994
-  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599995 = validateParameter(valid_599995, JString, required = false,
+  if valid_598029 != nil:
+    section.add "X-Amz-Target", valid_598029
+  var valid_598030 = header.getOrDefault("X-Amz-Signature")
+  valid_598030 = validateParameter(valid_598030, JString, required = false,
                                  default = nil)
-  if valid_599995 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599995
-  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599996 = validateParameter(valid_599996, JString, required = false,
+  if valid_598030 != nil:
+    section.add "X-Amz-Signature", valid_598030
+  var valid_598031 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598031 = validateParameter(valid_598031, JString, required = false,
                                  default = nil)
-  if valid_599996 != nil:
-    section.add "X-Amz-Algorithm", valid_599996
-  var valid_599997 = header.getOrDefault("X-Amz-Signature")
-  valid_599997 = validateParameter(valid_599997, JString, required = false,
+  if valid_598031 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598031
+  var valid_598032 = header.getOrDefault("X-Amz-Date")
+  valid_598032 = validateParameter(valid_598032, JString, required = false,
                                  default = nil)
-  if valid_599997 != nil:
-    section.add "X-Amz-Signature", valid_599997
-  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599998 = validateParameter(valid_599998, JString, required = false,
+  if valid_598032 != nil:
+    section.add "X-Amz-Date", valid_598032
+  var valid_598033 = header.getOrDefault("X-Amz-Credential")
+  valid_598033 = validateParameter(valid_598033, JString, required = false,
                                  default = nil)
-  if valid_599998 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599998
-  var valid_599999 = header.getOrDefault("X-Amz-Credential")
-  valid_599999 = validateParameter(valid_599999, JString, required = false,
+  if valid_598033 != nil:
+    section.add "X-Amz-Credential", valid_598033
+  var valid_598034 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598034 = validateParameter(valid_598034, JString, required = false,
                                  default = nil)
-  if valid_599999 != nil:
-    section.add "X-Amz-Credential", valid_599999
+  if valid_598034 != nil:
+    section.add "X-Amz-Security-Token", valid_598034
+  var valid_598035 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598035 = validateParameter(valid_598035, JString, required = false,
+                                 default = nil)
+  if valid_598035 != nil:
+    section.add "X-Amz-Algorithm", valid_598035
+  var valid_598036 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598036 = validateParameter(valid_598036, JString, required = false,
+                                 default = nil)
+  if valid_598036 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598036
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -457,47 +573,48 @@ proc validate_CreateTaskSet_599990(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600001: Call_CreateTaskSet_599989; path: JsonNode; query: JsonNode;
+proc call*(call_598038: Call_CreateTaskSet_598026; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Create a task set in the specified cluster and service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
-  let valid = call_600001.validator(path, query, header, formData, body)
-  let scheme = call_600001.pickScheme
+  let valid = call_598038.validator(path, query, header, formData, body)
+  let scheme = call_598038.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
-                         call_600001.route, valid.getOrDefault("path"),
+  let url = call_598038.url(scheme.get, call_598038.host, call_598038.base,
+                         call_598038.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600001, url, valid)
+  result = atozHook(call_598038, url, valid)
 
-proc call*(call_600002: Call_CreateTaskSet_599989; body: JsonNode): Recallable =
+proc call*(call_598039: Call_CreateTaskSet_598026; body: JsonNode): Recallable =
   ## createTaskSet
   ## Create a task set in the specified cluster and service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ##   body: JObject (required)
-  var body_600003 = newJObject()
+  var body_598040 = newJObject()
   if body != nil:
-    body_600003 = body
-  result = call_600002.call(nil, nil, nil, nil, body_600003)
+    body_598040 = body
+  result = call_598039.call(nil, nil, nil, nil, body_598040)
 
-var createTaskSet* = Call_CreateTaskSet_599989(name: "createTaskSet",
+var createTaskSet* = Call_CreateTaskSet_598026(name: "createTaskSet",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.CreateTaskSet",
-    validator: validate_CreateTaskSet_599990, base: "/", url: url_CreateTaskSet_599991,
+    validator: validate_CreateTaskSet_598027, base: "/", url: url_CreateTaskSet_598028,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteAccountSetting_600004 = ref object of OpenApiRestCall_599368
-proc url_DeleteAccountSetting_600006(protocol: Scheme; host: string; base: string;
+  Call_DeleteAccountSetting_598041 = ref object of OpenApiRestCall_597389
+proc url_DeleteAccountSetting_598043(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteAccountSetting_600005(path: JsonNode; query: JsonNode;
+proc validate_DeleteAccountSetting_598042(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Disables an account setting for a specified IAM user, IAM role, or the root user for an account.
   ## 
@@ -508,57 +625,57 @@ proc validate_DeleteAccountSetting_600005(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600007 = header.getOrDefault("X-Amz-Date")
-  valid_600007 = validateParameter(valid_600007, JString, required = false,
-                                 default = nil)
-  if valid_600007 != nil:
-    section.add "X-Amz-Date", valid_600007
-  var valid_600008 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600008 = validateParameter(valid_600008, JString, required = false,
-                                 default = nil)
-  if valid_600008 != nil:
-    section.add "X-Amz-Security-Token", valid_600008
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600009 = header.getOrDefault("X-Amz-Target")
-  valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
+  var valid_598044 = header.getOrDefault("X-Amz-Target")
+  valid_598044 = validateParameter(valid_598044, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DeleteAccountSetting"))
-  if valid_600009 != nil:
-    section.add "X-Amz-Target", valid_600009
-  var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600010 = validateParameter(valid_600010, JString, required = false,
+  if valid_598044 != nil:
+    section.add "X-Amz-Target", valid_598044
+  var valid_598045 = header.getOrDefault("X-Amz-Signature")
+  valid_598045 = validateParameter(valid_598045, JString, required = false,
                                  default = nil)
-  if valid_600010 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600010
-  var valid_600011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600011 = validateParameter(valid_600011, JString, required = false,
+  if valid_598045 != nil:
+    section.add "X-Amz-Signature", valid_598045
+  var valid_598046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598046 = validateParameter(valid_598046, JString, required = false,
                                  default = nil)
-  if valid_600011 != nil:
-    section.add "X-Amz-Algorithm", valid_600011
-  var valid_600012 = header.getOrDefault("X-Amz-Signature")
-  valid_600012 = validateParameter(valid_600012, JString, required = false,
+  if valid_598046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598046
+  var valid_598047 = header.getOrDefault("X-Amz-Date")
+  valid_598047 = validateParameter(valid_598047, JString, required = false,
                                  default = nil)
-  if valid_600012 != nil:
-    section.add "X-Amz-Signature", valid_600012
-  var valid_600013 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600013 = validateParameter(valid_600013, JString, required = false,
+  if valid_598047 != nil:
+    section.add "X-Amz-Date", valid_598047
+  var valid_598048 = header.getOrDefault("X-Amz-Credential")
+  valid_598048 = validateParameter(valid_598048, JString, required = false,
                                  default = nil)
-  if valid_600013 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600013
-  var valid_600014 = header.getOrDefault("X-Amz-Credential")
-  valid_600014 = validateParameter(valid_600014, JString, required = false,
+  if valid_598048 != nil:
+    section.add "X-Amz-Credential", valid_598048
+  var valid_598049 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598049 = validateParameter(valid_598049, JString, required = false,
                                  default = nil)
-  if valid_600014 != nil:
-    section.add "X-Amz-Credential", valid_600014
+  if valid_598049 != nil:
+    section.add "X-Amz-Security-Token", valid_598049
+  var valid_598050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598050 = validateParameter(valid_598050, JString, required = false,
+                                 default = nil)
+  if valid_598050 != nil:
+    section.add "X-Amz-Algorithm", valid_598050
+  var valid_598051 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598051 = validateParameter(valid_598051, JString, required = false,
+                                 default = nil)
+  if valid_598051 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598051
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -569,47 +686,48 @@ proc validate_DeleteAccountSetting_600005(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600016: Call_DeleteAccountSetting_600004; path: JsonNode;
+proc call*(call_598053: Call_DeleteAccountSetting_598041; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Disables an account setting for a specified IAM user, IAM role, or the root user for an account.
   ## 
-  let valid = call_600016.validator(path, query, header, formData, body)
-  let scheme = call_600016.pickScheme
+  let valid = call_598053.validator(path, query, header, formData, body)
+  let scheme = call_598053.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600016.url(scheme.get, call_600016.host, call_600016.base,
-                         call_600016.route, valid.getOrDefault("path"),
+  let url = call_598053.url(scheme.get, call_598053.host, call_598053.base,
+                         call_598053.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600016, url, valid)
+  result = atozHook(call_598053, url, valid)
 
-proc call*(call_600017: Call_DeleteAccountSetting_600004; body: JsonNode): Recallable =
+proc call*(call_598054: Call_DeleteAccountSetting_598041; body: JsonNode): Recallable =
   ## deleteAccountSetting
   ## Disables an account setting for a specified IAM user, IAM role, or the root user for an account.
   ##   body: JObject (required)
-  var body_600018 = newJObject()
+  var body_598055 = newJObject()
   if body != nil:
-    body_600018 = body
-  result = call_600017.call(nil, nil, nil, nil, body_600018)
+    body_598055 = body
+  result = call_598054.call(nil, nil, nil, nil, body_598055)
 
-var deleteAccountSetting* = Call_DeleteAccountSetting_600004(
+var deleteAccountSetting* = Call_DeleteAccountSetting_598041(
     name: "deleteAccountSetting", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DeleteAccountSetting",
-    validator: validate_DeleteAccountSetting_600005, base: "/",
-    url: url_DeleteAccountSetting_600006, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteAccountSetting_598042, base: "/",
+    url: url_DeleteAccountSetting_598043, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteAttributes_600019 = ref object of OpenApiRestCall_599368
-proc url_DeleteAttributes_600021(protocol: Scheme; host: string; base: string;
+  Call_DeleteAttributes_598056 = ref object of OpenApiRestCall_597389
+proc url_DeleteAttributes_598058(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteAttributes_600020(path: JsonNode; query: JsonNode;
+proc validate_DeleteAttributes_598057(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Deletes one or more custom attributes from an Amazon ECS resource.
@@ -621,57 +739,57 @@ proc validate_DeleteAttributes_600020(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600022 = header.getOrDefault("X-Amz-Date")
-  valid_600022 = validateParameter(valid_600022, JString, required = false,
-                                 default = nil)
-  if valid_600022 != nil:
-    section.add "X-Amz-Date", valid_600022
-  var valid_600023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600023 = validateParameter(valid_600023, JString, required = false,
-                                 default = nil)
-  if valid_600023 != nil:
-    section.add "X-Amz-Security-Token", valid_600023
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600024 = header.getOrDefault("X-Amz-Target")
-  valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
+  var valid_598059 = header.getOrDefault("X-Amz-Target")
+  valid_598059 = validateParameter(valid_598059, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DeleteAttributes"))
-  if valid_600024 != nil:
-    section.add "X-Amz-Target", valid_600024
-  var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600025 = validateParameter(valid_600025, JString, required = false,
+  if valid_598059 != nil:
+    section.add "X-Amz-Target", valid_598059
+  var valid_598060 = header.getOrDefault("X-Amz-Signature")
+  valid_598060 = validateParameter(valid_598060, JString, required = false,
                                  default = nil)
-  if valid_600025 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600025
-  var valid_600026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600026 = validateParameter(valid_600026, JString, required = false,
+  if valid_598060 != nil:
+    section.add "X-Amz-Signature", valid_598060
+  var valid_598061 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598061 = validateParameter(valid_598061, JString, required = false,
                                  default = nil)
-  if valid_600026 != nil:
-    section.add "X-Amz-Algorithm", valid_600026
-  var valid_600027 = header.getOrDefault("X-Amz-Signature")
-  valid_600027 = validateParameter(valid_600027, JString, required = false,
+  if valid_598061 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598061
+  var valid_598062 = header.getOrDefault("X-Amz-Date")
+  valid_598062 = validateParameter(valid_598062, JString, required = false,
                                  default = nil)
-  if valid_600027 != nil:
-    section.add "X-Amz-Signature", valid_600027
-  var valid_600028 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600028 = validateParameter(valid_600028, JString, required = false,
+  if valid_598062 != nil:
+    section.add "X-Amz-Date", valid_598062
+  var valid_598063 = header.getOrDefault("X-Amz-Credential")
+  valid_598063 = validateParameter(valid_598063, JString, required = false,
                                  default = nil)
-  if valid_600028 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600028
-  var valid_600029 = header.getOrDefault("X-Amz-Credential")
-  valid_600029 = validateParameter(valid_600029, JString, required = false,
+  if valid_598063 != nil:
+    section.add "X-Amz-Credential", valid_598063
+  var valid_598064 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598064 = validateParameter(valid_598064, JString, required = false,
                                  default = nil)
-  if valid_600029 != nil:
-    section.add "X-Amz-Credential", valid_600029
+  if valid_598064 != nil:
+    section.add "X-Amz-Security-Token", valid_598064
+  var valid_598065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598065 = validateParameter(valid_598065, JString, required = false,
+                                 default = nil)
+  if valid_598065 != nil:
+    section.add "X-Amz-Algorithm", valid_598065
+  var valid_598066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598066 = validateParameter(valid_598066, JString, required = false,
+                                 default = nil)
+  if valid_598066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598066
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -682,46 +800,47 @@ proc validate_DeleteAttributes_600020(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600031: Call_DeleteAttributes_600019; path: JsonNode;
+proc call*(call_598068: Call_DeleteAttributes_598056; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes one or more custom attributes from an Amazon ECS resource.
   ## 
-  let valid = call_600031.validator(path, query, header, formData, body)
-  let scheme = call_600031.pickScheme
+  let valid = call_598068.validator(path, query, header, formData, body)
+  let scheme = call_598068.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600031.url(scheme.get, call_600031.host, call_600031.base,
-                         call_600031.route, valid.getOrDefault("path"),
+  let url = call_598068.url(scheme.get, call_598068.host, call_598068.base,
+                         call_598068.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600031, url, valid)
+  result = atozHook(call_598068, url, valid)
 
-proc call*(call_600032: Call_DeleteAttributes_600019; body: JsonNode): Recallable =
+proc call*(call_598069: Call_DeleteAttributes_598056; body: JsonNode): Recallable =
   ## deleteAttributes
   ## Deletes one or more custom attributes from an Amazon ECS resource.
   ##   body: JObject (required)
-  var body_600033 = newJObject()
+  var body_598070 = newJObject()
   if body != nil:
-    body_600033 = body
-  result = call_600032.call(nil, nil, nil, nil, body_600033)
+    body_598070 = body
+  result = call_598069.call(nil, nil, nil, nil, body_598070)
 
-var deleteAttributes* = Call_DeleteAttributes_600019(name: "deleteAttributes",
+var deleteAttributes* = Call_DeleteAttributes_598056(name: "deleteAttributes",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DeleteAttributes",
-    validator: validate_DeleteAttributes_600020, base: "/",
-    url: url_DeleteAttributes_600021, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteAttributes_598057, base: "/",
+    url: url_DeleteAttributes_598058, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteCluster_600034 = ref object of OpenApiRestCall_599368
-proc url_DeleteCluster_600036(protocol: Scheme; host: string; base: string;
+  Call_DeleteCluster_598071 = ref object of OpenApiRestCall_597389
+proc url_DeleteCluster_598073(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteCluster_600035(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteCluster_598072(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified cluster. You must deregister all container instances from this cluster before you may delete it. You can list the container instances in a cluster with <a>ListContainerInstances</a> and deregister them with <a>DeregisterContainerInstance</a>.
   ## 
@@ -732,57 +851,57 @@ proc validate_DeleteCluster_600035(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600037 = header.getOrDefault("X-Amz-Date")
-  valid_600037 = validateParameter(valid_600037, JString, required = false,
-                                 default = nil)
-  if valid_600037 != nil:
-    section.add "X-Amz-Date", valid_600037
-  var valid_600038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600038 = validateParameter(valid_600038, JString, required = false,
-                                 default = nil)
-  if valid_600038 != nil:
-    section.add "X-Amz-Security-Token", valid_600038
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600039 = header.getOrDefault("X-Amz-Target")
-  valid_600039 = validateParameter(valid_600039, JString, required = true, default = newJString(
+  var valid_598074 = header.getOrDefault("X-Amz-Target")
+  valid_598074 = validateParameter(valid_598074, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DeleteCluster"))
-  if valid_600039 != nil:
-    section.add "X-Amz-Target", valid_600039
-  var valid_600040 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600040 = validateParameter(valid_600040, JString, required = false,
+  if valid_598074 != nil:
+    section.add "X-Amz-Target", valid_598074
+  var valid_598075 = header.getOrDefault("X-Amz-Signature")
+  valid_598075 = validateParameter(valid_598075, JString, required = false,
                                  default = nil)
-  if valid_600040 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600040
-  var valid_600041 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600041 = validateParameter(valid_600041, JString, required = false,
+  if valid_598075 != nil:
+    section.add "X-Amz-Signature", valid_598075
+  var valid_598076 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598076 = validateParameter(valid_598076, JString, required = false,
                                  default = nil)
-  if valid_600041 != nil:
-    section.add "X-Amz-Algorithm", valid_600041
-  var valid_600042 = header.getOrDefault("X-Amz-Signature")
-  valid_600042 = validateParameter(valid_600042, JString, required = false,
+  if valid_598076 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598076
+  var valid_598077 = header.getOrDefault("X-Amz-Date")
+  valid_598077 = validateParameter(valid_598077, JString, required = false,
                                  default = nil)
-  if valid_600042 != nil:
-    section.add "X-Amz-Signature", valid_600042
-  var valid_600043 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600043 = validateParameter(valid_600043, JString, required = false,
+  if valid_598077 != nil:
+    section.add "X-Amz-Date", valid_598077
+  var valid_598078 = header.getOrDefault("X-Amz-Credential")
+  valid_598078 = validateParameter(valid_598078, JString, required = false,
                                  default = nil)
-  if valid_600043 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600043
-  var valid_600044 = header.getOrDefault("X-Amz-Credential")
-  valid_600044 = validateParameter(valid_600044, JString, required = false,
+  if valid_598078 != nil:
+    section.add "X-Amz-Credential", valid_598078
+  var valid_598079 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598079 = validateParameter(valid_598079, JString, required = false,
                                  default = nil)
-  if valid_600044 != nil:
-    section.add "X-Amz-Credential", valid_600044
+  if valid_598079 != nil:
+    section.add "X-Amz-Security-Token", valid_598079
+  var valid_598080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598080 = validateParameter(valid_598080, JString, required = false,
+                                 default = nil)
+  if valid_598080 != nil:
+    section.add "X-Amz-Algorithm", valid_598080
+  var valid_598081 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598081 = validateParameter(valid_598081, JString, required = false,
+                                 default = nil)
+  if valid_598081 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598081
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -793,47 +912,48 @@ proc validate_DeleteCluster_600035(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600046: Call_DeleteCluster_600034; path: JsonNode; query: JsonNode;
+proc call*(call_598083: Call_DeleteCluster_598071; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified cluster. You must deregister all container instances from this cluster before you may delete it. You can list the container instances in a cluster with <a>ListContainerInstances</a> and deregister them with <a>DeregisterContainerInstance</a>.
   ## 
-  let valid = call_600046.validator(path, query, header, formData, body)
-  let scheme = call_600046.pickScheme
+  let valid = call_598083.validator(path, query, header, formData, body)
+  let scheme = call_598083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600046.url(scheme.get, call_600046.host, call_600046.base,
-                         call_600046.route, valid.getOrDefault("path"),
+  let url = call_598083.url(scheme.get, call_598083.host, call_598083.base,
+                         call_598083.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600046, url, valid)
+  result = atozHook(call_598083, url, valid)
 
-proc call*(call_600047: Call_DeleteCluster_600034; body: JsonNode): Recallable =
+proc call*(call_598084: Call_DeleteCluster_598071; body: JsonNode): Recallable =
   ## deleteCluster
   ## Deletes the specified cluster. You must deregister all container instances from this cluster before you may delete it. You can list the container instances in a cluster with <a>ListContainerInstances</a> and deregister them with <a>DeregisterContainerInstance</a>.
   ##   body: JObject (required)
-  var body_600048 = newJObject()
+  var body_598085 = newJObject()
   if body != nil:
-    body_600048 = body
-  result = call_600047.call(nil, nil, nil, nil, body_600048)
+    body_598085 = body
+  result = call_598084.call(nil, nil, nil, nil, body_598085)
 
-var deleteCluster* = Call_DeleteCluster_600034(name: "deleteCluster",
+var deleteCluster* = Call_DeleteCluster_598071(name: "deleteCluster",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DeleteCluster",
-    validator: validate_DeleteCluster_600035, base: "/", url: url_DeleteCluster_600036,
+    validator: validate_DeleteCluster_598072, base: "/", url: url_DeleteCluster_598073,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteService_600049 = ref object of OpenApiRestCall_599368
-proc url_DeleteService_600051(protocol: Scheme; host: string; base: string;
+  Call_DeleteService_598086 = ref object of OpenApiRestCall_597389
+proc url_DeleteService_598088(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteService_600050(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteService_598087(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a specified service within a cluster. You can delete a service if you have no running tasks in it and the desired task count is zero. If the service is actively maintaining tasks, you cannot delete it, and you must update the service to a desired task count of zero. For more information, see <a>UpdateService</a>.</p> <note> <p>When you delete a service, if there are still running tasks that require cleanup, the service status moves from <code>ACTIVE</code> to <code>DRAINING</code>, and the service is no longer visible in the console or in the <a>ListServices</a> API operation. After all tasks have transitioned to either <code>STOPPING</code> or <code>STOPPED</code> status, the service status moves from <code>DRAINING</code> to <code>INACTIVE</code>. Services in the <code>DRAINING</code> or <code>INACTIVE</code> status can still be viewed with the <a>DescribeServices</a> API operation. However, in the future, <code>INACTIVE</code> services may be cleaned up and purged from Amazon ECS record keeping, and <a>DescribeServices</a> calls on those services return a <code>ServiceNotFoundException</code> error.</p> </note> <important> <p>If you attempt to create a new service with the same name as an existing service in either <code>ACTIVE</code> or <code>DRAINING</code> status, you receive an error.</p> </important>
   ## 
@@ -844,57 +964,57 @@ proc validate_DeleteService_600050(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600052 = header.getOrDefault("X-Amz-Date")
-  valid_600052 = validateParameter(valid_600052, JString, required = false,
-                                 default = nil)
-  if valid_600052 != nil:
-    section.add "X-Amz-Date", valid_600052
-  var valid_600053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600053 = validateParameter(valid_600053, JString, required = false,
-                                 default = nil)
-  if valid_600053 != nil:
-    section.add "X-Amz-Security-Token", valid_600053
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600054 = header.getOrDefault("X-Amz-Target")
-  valid_600054 = validateParameter(valid_600054, JString, required = true, default = newJString(
+  var valid_598089 = header.getOrDefault("X-Amz-Target")
+  valid_598089 = validateParameter(valid_598089, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DeleteService"))
-  if valid_600054 != nil:
-    section.add "X-Amz-Target", valid_600054
-  var valid_600055 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600055 = validateParameter(valid_600055, JString, required = false,
+  if valid_598089 != nil:
+    section.add "X-Amz-Target", valid_598089
+  var valid_598090 = header.getOrDefault("X-Amz-Signature")
+  valid_598090 = validateParameter(valid_598090, JString, required = false,
                                  default = nil)
-  if valid_600055 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600055
-  var valid_600056 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600056 = validateParameter(valid_600056, JString, required = false,
+  if valid_598090 != nil:
+    section.add "X-Amz-Signature", valid_598090
+  var valid_598091 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598091 = validateParameter(valid_598091, JString, required = false,
                                  default = nil)
-  if valid_600056 != nil:
-    section.add "X-Amz-Algorithm", valid_600056
-  var valid_600057 = header.getOrDefault("X-Amz-Signature")
-  valid_600057 = validateParameter(valid_600057, JString, required = false,
+  if valid_598091 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598091
+  var valid_598092 = header.getOrDefault("X-Amz-Date")
+  valid_598092 = validateParameter(valid_598092, JString, required = false,
                                  default = nil)
-  if valid_600057 != nil:
-    section.add "X-Amz-Signature", valid_600057
-  var valid_600058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600058 = validateParameter(valid_600058, JString, required = false,
+  if valid_598092 != nil:
+    section.add "X-Amz-Date", valid_598092
+  var valid_598093 = header.getOrDefault("X-Amz-Credential")
+  valid_598093 = validateParameter(valid_598093, JString, required = false,
                                  default = nil)
-  if valid_600058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600058
-  var valid_600059 = header.getOrDefault("X-Amz-Credential")
-  valid_600059 = validateParameter(valid_600059, JString, required = false,
+  if valid_598093 != nil:
+    section.add "X-Amz-Credential", valid_598093
+  var valid_598094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598094 = validateParameter(valid_598094, JString, required = false,
                                  default = nil)
-  if valid_600059 != nil:
-    section.add "X-Amz-Credential", valid_600059
+  if valid_598094 != nil:
+    section.add "X-Amz-Security-Token", valid_598094
+  var valid_598095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598095 = validateParameter(valid_598095, JString, required = false,
+                                 default = nil)
+  if valid_598095 != nil:
+    section.add "X-Amz-Algorithm", valid_598095
+  var valid_598096 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598096 = validateParameter(valid_598096, JString, required = false,
+                                 default = nil)
+  if valid_598096 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598096
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -905,47 +1025,48 @@ proc validate_DeleteService_600050(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600061: Call_DeleteService_600049; path: JsonNode; query: JsonNode;
+proc call*(call_598098: Call_DeleteService_598086; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specified service within a cluster. You can delete a service if you have no running tasks in it and the desired task count is zero. If the service is actively maintaining tasks, you cannot delete it, and you must update the service to a desired task count of zero. For more information, see <a>UpdateService</a>.</p> <note> <p>When you delete a service, if there are still running tasks that require cleanup, the service status moves from <code>ACTIVE</code> to <code>DRAINING</code>, and the service is no longer visible in the console or in the <a>ListServices</a> API operation. After all tasks have transitioned to either <code>STOPPING</code> or <code>STOPPED</code> status, the service status moves from <code>DRAINING</code> to <code>INACTIVE</code>. Services in the <code>DRAINING</code> or <code>INACTIVE</code> status can still be viewed with the <a>DescribeServices</a> API operation. However, in the future, <code>INACTIVE</code> services may be cleaned up and purged from Amazon ECS record keeping, and <a>DescribeServices</a> calls on those services return a <code>ServiceNotFoundException</code> error.</p> </note> <important> <p>If you attempt to create a new service with the same name as an existing service in either <code>ACTIVE</code> or <code>DRAINING</code> status, you receive an error.</p> </important>
   ## 
-  let valid = call_600061.validator(path, query, header, formData, body)
-  let scheme = call_600061.pickScheme
+  let valid = call_598098.validator(path, query, header, formData, body)
+  let scheme = call_598098.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600061.url(scheme.get, call_600061.host, call_600061.base,
-                         call_600061.route, valid.getOrDefault("path"),
+  let url = call_598098.url(scheme.get, call_598098.host, call_598098.base,
+                         call_598098.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600061, url, valid)
+  result = atozHook(call_598098, url, valid)
 
-proc call*(call_600062: Call_DeleteService_600049; body: JsonNode): Recallable =
+proc call*(call_598099: Call_DeleteService_598086; body: JsonNode): Recallable =
   ## deleteService
   ## <p>Deletes a specified service within a cluster. You can delete a service if you have no running tasks in it and the desired task count is zero. If the service is actively maintaining tasks, you cannot delete it, and you must update the service to a desired task count of zero. For more information, see <a>UpdateService</a>.</p> <note> <p>When you delete a service, if there are still running tasks that require cleanup, the service status moves from <code>ACTIVE</code> to <code>DRAINING</code>, and the service is no longer visible in the console or in the <a>ListServices</a> API operation. After all tasks have transitioned to either <code>STOPPING</code> or <code>STOPPED</code> status, the service status moves from <code>DRAINING</code> to <code>INACTIVE</code>. Services in the <code>DRAINING</code> or <code>INACTIVE</code> status can still be viewed with the <a>DescribeServices</a> API operation. However, in the future, <code>INACTIVE</code> services may be cleaned up and purged from Amazon ECS record keeping, and <a>DescribeServices</a> calls on those services return a <code>ServiceNotFoundException</code> error.</p> </note> <important> <p>If you attempt to create a new service with the same name as an existing service in either <code>ACTIVE</code> or <code>DRAINING</code> status, you receive an error.</p> </important>
   ##   body: JObject (required)
-  var body_600063 = newJObject()
+  var body_598100 = newJObject()
   if body != nil:
-    body_600063 = body
-  result = call_600062.call(nil, nil, nil, nil, body_600063)
+    body_598100 = body
+  result = call_598099.call(nil, nil, nil, nil, body_598100)
 
-var deleteService* = Call_DeleteService_600049(name: "deleteService",
+var deleteService* = Call_DeleteService_598086(name: "deleteService",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DeleteService",
-    validator: validate_DeleteService_600050, base: "/", url: url_DeleteService_600051,
+    validator: validate_DeleteService_598087, base: "/", url: url_DeleteService_598088,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTaskSet_600064 = ref object of OpenApiRestCall_599368
-proc url_DeleteTaskSet_600066(protocol: Scheme; host: string; base: string;
+  Call_DeleteTaskSet_598101 = ref object of OpenApiRestCall_597389
+proc url_DeleteTaskSet_598103(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteTaskSet_600065(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteTaskSet_598102(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes a specified task set within a service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
@@ -956,57 +1077,57 @@ proc validate_DeleteTaskSet_600065(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600067 = header.getOrDefault("X-Amz-Date")
-  valid_600067 = validateParameter(valid_600067, JString, required = false,
-                                 default = nil)
-  if valid_600067 != nil:
-    section.add "X-Amz-Date", valid_600067
-  var valid_600068 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600068 = validateParameter(valid_600068, JString, required = false,
-                                 default = nil)
-  if valid_600068 != nil:
-    section.add "X-Amz-Security-Token", valid_600068
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600069 = header.getOrDefault("X-Amz-Target")
-  valid_600069 = validateParameter(valid_600069, JString, required = true, default = newJString(
+  var valid_598104 = header.getOrDefault("X-Amz-Target")
+  valid_598104 = validateParameter(valid_598104, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DeleteTaskSet"))
-  if valid_600069 != nil:
-    section.add "X-Amz-Target", valid_600069
-  var valid_600070 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600070 = validateParameter(valid_600070, JString, required = false,
+  if valid_598104 != nil:
+    section.add "X-Amz-Target", valid_598104
+  var valid_598105 = header.getOrDefault("X-Amz-Signature")
+  valid_598105 = validateParameter(valid_598105, JString, required = false,
                                  default = nil)
-  if valid_600070 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600070
-  var valid_600071 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600071 = validateParameter(valid_600071, JString, required = false,
+  if valid_598105 != nil:
+    section.add "X-Amz-Signature", valid_598105
+  var valid_598106 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598106 = validateParameter(valid_598106, JString, required = false,
                                  default = nil)
-  if valid_600071 != nil:
-    section.add "X-Amz-Algorithm", valid_600071
-  var valid_600072 = header.getOrDefault("X-Amz-Signature")
-  valid_600072 = validateParameter(valid_600072, JString, required = false,
+  if valid_598106 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598106
+  var valid_598107 = header.getOrDefault("X-Amz-Date")
+  valid_598107 = validateParameter(valid_598107, JString, required = false,
                                  default = nil)
-  if valid_600072 != nil:
-    section.add "X-Amz-Signature", valid_600072
-  var valid_600073 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600073 = validateParameter(valid_600073, JString, required = false,
+  if valid_598107 != nil:
+    section.add "X-Amz-Date", valid_598107
+  var valid_598108 = header.getOrDefault("X-Amz-Credential")
+  valid_598108 = validateParameter(valid_598108, JString, required = false,
                                  default = nil)
-  if valid_600073 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600073
-  var valid_600074 = header.getOrDefault("X-Amz-Credential")
-  valid_600074 = validateParameter(valid_600074, JString, required = false,
+  if valid_598108 != nil:
+    section.add "X-Amz-Credential", valid_598108
+  var valid_598109 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598109 = validateParameter(valid_598109, JString, required = false,
                                  default = nil)
-  if valid_600074 != nil:
-    section.add "X-Amz-Credential", valid_600074
+  if valid_598109 != nil:
+    section.add "X-Amz-Security-Token", valid_598109
+  var valid_598110 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598110 = validateParameter(valid_598110, JString, required = false,
+                                 default = nil)
+  if valid_598110 != nil:
+    section.add "X-Amz-Algorithm", valid_598110
+  var valid_598111 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598111 = validateParameter(valid_598111, JString, required = false,
+                                 default = nil)
+  if valid_598111 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598111
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1017,47 +1138,48 @@ proc validate_DeleteTaskSet_600065(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600076: Call_DeleteTaskSet_600064; path: JsonNode; query: JsonNode;
+proc call*(call_598113: Call_DeleteTaskSet_598101; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a specified task set within a service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
-  let valid = call_600076.validator(path, query, header, formData, body)
-  let scheme = call_600076.pickScheme
+  let valid = call_598113.validator(path, query, header, formData, body)
+  let scheme = call_598113.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600076.url(scheme.get, call_600076.host, call_600076.base,
-                         call_600076.route, valid.getOrDefault("path"),
+  let url = call_598113.url(scheme.get, call_598113.host, call_598113.base,
+                         call_598113.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600076, url, valid)
+  result = atozHook(call_598113, url, valid)
 
-proc call*(call_600077: Call_DeleteTaskSet_600064; body: JsonNode): Recallable =
+proc call*(call_598114: Call_DeleteTaskSet_598101; body: JsonNode): Recallable =
   ## deleteTaskSet
   ## Deletes a specified task set within a service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ##   body: JObject (required)
-  var body_600078 = newJObject()
+  var body_598115 = newJObject()
   if body != nil:
-    body_600078 = body
-  result = call_600077.call(nil, nil, nil, nil, body_600078)
+    body_598115 = body
+  result = call_598114.call(nil, nil, nil, nil, body_598115)
 
-var deleteTaskSet* = Call_DeleteTaskSet_600064(name: "deleteTaskSet",
+var deleteTaskSet* = Call_DeleteTaskSet_598101(name: "deleteTaskSet",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DeleteTaskSet",
-    validator: validate_DeleteTaskSet_600065, base: "/", url: url_DeleteTaskSet_600066,
+    validator: validate_DeleteTaskSet_598102, base: "/", url: url_DeleteTaskSet_598103,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterContainerInstance_600079 = ref object of OpenApiRestCall_599368
-proc url_DeregisterContainerInstance_600081(protocol: Scheme; host: string;
+  Call_DeregisterContainerInstance_598116 = ref object of OpenApiRestCall_597389
+proc url_DeregisterContainerInstance_598118(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterContainerInstance_600080(path: JsonNode; query: JsonNode;
+proc validate_DeregisterContainerInstance_598117(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deregisters an Amazon ECS container instance from the specified cluster. This instance is no longer available to run tasks.</p> <p>If you intend to use the container instance for some other purpose after deregistration, you should stop all of the tasks running on the container instance before deregistration. That prevents any orphaned tasks from consuming resources.</p> <p>Deregistering a container instance removes the instance from a cluster, but it does not terminate the EC2 instance. If you are finished using the instance, be sure to terminate it in the Amazon EC2 console to stop billing.</p> <note> <p>If you terminate a running container instance, Amazon ECS automatically deregisters the instance from your cluster (stopped container instances or instances with disconnected agents are not automatically deregistered when terminated).</p> </note>
   ## 
@@ -1068,57 +1190,57 @@ proc validate_DeregisterContainerInstance_600080(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600082 = header.getOrDefault("X-Amz-Date")
-  valid_600082 = validateParameter(valid_600082, JString, required = false,
-                                 default = nil)
-  if valid_600082 != nil:
-    section.add "X-Amz-Date", valid_600082
-  var valid_600083 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600083 = validateParameter(valid_600083, JString, required = false,
-                                 default = nil)
-  if valid_600083 != nil:
-    section.add "X-Amz-Security-Token", valid_600083
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600084 = header.getOrDefault("X-Amz-Target")
-  valid_600084 = validateParameter(valid_600084, JString, required = true, default = newJString(
+  var valid_598119 = header.getOrDefault("X-Amz-Target")
+  valid_598119 = validateParameter(valid_598119, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DeregisterContainerInstance"))
-  if valid_600084 != nil:
-    section.add "X-Amz-Target", valid_600084
-  var valid_600085 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600085 = validateParameter(valid_600085, JString, required = false,
+  if valid_598119 != nil:
+    section.add "X-Amz-Target", valid_598119
+  var valid_598120 = header.getOrDefault("X-Amz-Signature")
+  valid_598120 = validateParameter(valid_598120, JString, required = false,
                                  default = nil)
-  if valid_600085 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600085
-  var valid_600086 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600086 = validateParameter(valid_600086, JString, required = false,
+  if valid_598120 != nil:
+    section.add "X-Amz-Signature", valid_598120
+  var valid_598121 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598121 = validateParameter(valid_598121, JString, required = false,
                                  default = nil)
-  if valid_600086 != nil:
-    section.add "X-Amz-Algorithm", valid_600086
-  var valid_600087 = header.getOrDefault("X-Amz-Signature")
-  valid_600087 = validateParameter(valid_600087, JString, required = false,
+  if valid_598121 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598121
+  var valid_598122 = header.getOrDefault("X-Amz-Date")
+  valid_598122 = validateParameter(valid_598122, JString, required = false,
                                  default = nil)
-  if valid_600087 != nil:
-    section.add "X-Amz-Signature", valid_600087
-  var valid_600088 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600088 = validateParameter(valid_600088, JString, required = false,
+  if valid_598122 != nil:
+    section.add "X-Amz-Date", valid_598122
+  var valid_598123 = header.getOrDefault("X-Amz-Credential")
+  valid_598123 = validateParameter(valid_598123, JString, required = false,
                                  default = nil)
-  if valid_600088 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600088
-  var valid_600089 = header.getOrDefault("X-Amz-Credential")
-  valid_600089 = validateParameter(valid_600089, JString, required = false,
+  if valid_598123 != nil:
+    section.add "X-Amz-Credential", valid_598123
+  var valid_598124 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598124 = validateParameter(valid_598124, JString, required = false,
                                  default = nil)
-  if valid_600089 != nil:
-    section.add "X-Amz-Credential", valid_600089
+  if valid_598124 != nil:
+    section.add "X-Amz-Security-Token", valid_598124
+  var valid_598125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598125 = validateParameter(valid_598125, JString, required = false,
+                                 default = nil)
+  if valid_598125 != nil:
+    section.add "X-Amz-Algorithm", valid_598125
+  var valid_598126 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598126 = validateParameter(valid_598126, JString, required = false,
+                                 default = nil)
+  if valid_598126 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598126
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1129,49 +1251,50 @@ proc validate_DeregisterContainerInstance_600080(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600091: Call_DeregisterContainerInstance_600079; path: JsonNode;
+proc call*(call_598128: Call_DeregisterContainerInstance_598116; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregisters an Amazon ECS container instance from the specified cluster. This instance is no longer available to run tasks.</p> <p>If you intend to use the container instance for some other purpose after deregistration, you should stop all of the tasks running on the container instance before deregistration. That prevents any orphaned tasks from consuming resources.</p> <p>Deregistering a container instance removes the instance from a cluster, but it does not terminate the EC2 instance. If you are finished using the instance, be sure to terminate it in the Amazon EC2 console to stop billing.</p> <note> <p>If you terminate a running container instance, Amazon ECS automatically deregisters the instance from your cluster (stopped container instances or instances with disconnected agents are not automatically deregistered when terminated).</p> </note>
   ## 
-  let valid = call_600091.validator(path, query, header, formData, body)
-  let scheme = call_600091.pickScheme
+  let valid = call_598128.validator(path, query, header, formData, body)
+  let scheme = call_598128.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600091.url(scheme.get, call_600091.host, call_600091.base,
-                         call_600091.route, valid.getOrDefault("path"),
+  let url = call_598128.url(scheme.get, call_598128.host, call_598128.base,
+                         call_598128.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600091, url, valid)
+  result = atozHook(call_598128, url, valid)
 
-proc call*(call_600092: Call_DeregisterContainerInstance_600079; body: JsonNode): Recallable =
+proc call*(call_598129: Call_DeregisterContainerInstance_598116; body: JsonNode): Recallable =
   ## deregisterContainerInstance
   ## <p>Deregisters an Amazon ECS container instance from the specified cluster. This instance is no longer available to run tasks.</p> <p>If you intend to use the container instance for some other purpose after deregistration, you should stop all of the tasks running on the container instance before deregistration. That prevents any orphaned tasks from consuming resources.</p> <p>Deregistering a container instance removes the instance from a cluster, but it does not terminate the EC2 instance. If you are finished using the instance, be sure to terminate it in the Amazon EC2 console to stop billing.</p> <note> <p>If you terminate a running container instance, Amazon ECS automatically deregisters the instance from your cluster (stopped container instances or instances with disconnected agents are not automatically deregistered when terminated).</p> </note>
   ##   body: JObject (required)
-  var body_600093 = newJObject()
+  var body_598130 = newJObject()
   if body != nil:
-    body_600093 = body
-  result = call_600092.call(nil, nil, nil, nil, body_600093)
+    body_598130 = body
+  result = call_598129.call(nil, nil, nil, nil, body_598130)
 
-var deregisterContainerInstance* = Call_DeregisterContainerInstance_600079(
+var deregisterContainerInstance* = Call_DeregisterContainerInstance_598116(
     name: "deregisterContainerInstance", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DeregisterContainerInstance",
-    validator: validate_DeregisterContainerInstance_600080, base: "/",
-    url: url_DeregisterContainerInstance_600081,
+    validator: validate_DeregisterContainerInstance_598117, base: "/",
+    url: url_DeregisterContainerInstance_598118,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterTaskDefinition_600094 = ref object of OpenApiRestCall_599368
-proc url_DeregisterTaskDefinition_600096(protocol: Scheme; host: string;
+  Call_DeregisterTaskDefinition_598131 = ref object of OpenApiRestCall_597389
+proc url_DeregisterTaskDefinition_598133(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterTaskDefinition_600095(path: JsonNode; query: JsonNode;
+proc validate_DeregisterTaskDefinition_598132(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deregisters the specified task definition by family and revision. Upon deregistration, the task definition is marked as <code>INACTIVE</code>. Existing tasks and services that reference an <code>INACTIVE</code> task definition continue to run without disruption. Existing services that reference an <code>INACTIVE</code> task definition can still scale up or down by modifying the service's desired count.</p> <p>You cannot use an <code>INACTIVE</code> task definition to run new tasks or create new services, and you cannot update an existing service to reference an <code>INACTIVE</code> task definition. However, there may be up to a 10-minute window following deregistration where these restrictions have not yet taken effect.</p> <note> <p>At this time, <code>INACTIVE</code> task definitions remain discoverable in your account indefinitely. However, this behavior is subject to change in the future, so you should not rely on <code>INACTIVE</code> task definitions persisting beyond the lifecycle of any associated tasks and services.</p> </note>
   ## 
@@ -1182,57 +1305,57 @@ proc validate_DeregisterTaskDefinition_600095(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600097 = header.getOrDefault("X-Amz-Date")
-  valid_600097 = validateParameter(valid_600097, JString, required = false,
-                                 default = nil)
-  if valid_600097 != nil:
-    section.add "X-Amz-Date", valid_600097
-  var valid_600098 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600098 = validateParameter(valid_600098, JString, required = false,
-                                 default = nil)
-  if valid_600098 != nil:
-    section.add "X-Amz-Security-Token", valid_600098
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600099 = header.getOrDefault("X-Amz-Target")
-  valid_600099 = validateParameter(valid_600099, JString, required = true, default = newJString(
+  var valid_598134 = header.getOrDefault("X-Amz-Target")
+  valid_598134 = validateParameter(valid_598134, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DeregisterTaskDefinition"))
-  if valid_600099 != nil:
-    section.add "X-Amz-Target", valid_600099
-  var valid_600100 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600100 = validateParameter(valid_600100, JString, required = false,
+  if valid_598134 != nil:
+    section.add "X-Amz-Target", valid_598134
+  var valid_598135 = header.getOrDefault("X-Amz-Signature")
+  valid_598135 = validateParameter(valid_598135, JString, required = false,
                                  default = nil)
-  if valid_600100 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600100
-  var valid_600101 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600101 = validateParameter(valid_600101, JString, required = false,
+  if valid_598135 != nil:
+    section.add "X-Amz-Signature", valid_598135
+  var valid_598136 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598136 = validateParameter(valid_598136, JString, required = false,
                                  default = nil)
-  if valid_600101 != nil:
-    section.add "X-Amz-Algorithm", valid_600101
-  var valid_600102 = header.getOrDefault("X-Amz-Signature")
-  valid_600102 = validateParameter(valid_600102, JString, required = false,
+  if valid_598136 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598136
+  var valid_598137 = header.getOrDefault("X-Amz-Date")
+  valid_598137 = validateParameter(valid_598137, JString, required = false,
                                  default = nil)
-  if valid_600102 != nil:
-    section.add "X-Amz-Signature", valid_600102
-  var valid_600103 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600103 = validateParameter(valid_600103, JString, required = false,
+  if valid_598137 != nil:
+    section.add "X-Amz-Date", valid_598137
+  var valid_598138 = header.getOrDefault("X-Amz-Credential")
+  valid_598138 = validateParameter(valid_598138, JString, required = false,
                                  default = nil)
-  if valid_600103 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600103
-  var valid_600104 = header.getOrDefault("X-Amz-Credential")
-  valid_600104 = validateParameter(valid_600104, JString, required = false,
+  if valid_598138 != nil:
+    section.add "X-Amz-Credential", valid_598138
+  var valid_598139 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598139 = validateParameter(valid_598139, JString, required = false,
                                  default = nil)
-  if valid_600104 != nil:
-    section.add "X-Amz-Credential", valid_600104
+  if valid_598139 != nil:
+    section.add "X-Amz-Security-Token", valid_598139
+  var valid_598140 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598140 = validateParameter(valid_598140, JString, required = false,
+                                 default = nil)
+  if valid_598140 != nil:
+    section.add "X-Amz-Algorithm", valid_598140
+  var valid_598141 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598141 = validateParameter(valid_598141, JString, required = false,
+                                 default = nil)
+  if valid_598141 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598141
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1243,161 +1366,50 @@ proc validate_DeregisterTaskDefinition_600095(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600106: Call_DeregisterTaskDefinition_600094; path: JsonNode;
+proc call*(call_598143: Call_DeregisterTaskDefinition_598131; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregisters the specified task definition by family and revision. Upon deregistration, the task definition is marked as <code>INACTIVE</code>. Existing tasks and services that reference an <code>INACTIVE</code> task definition continue to run without disruption. Existing services that reference an <code>INACTIVE</code> task definition can still scale up or down by modifying the service's desired count.</p> <p>You cannot use an <code>INACTIVE</code> task definition to run new tasks or create new services, and you cannot update an existing service to reference an <code>INACTIVE</code> task definition. However, there may be up to a 10-minute window following deregistration where these restrictions have not yet taken effect.</p> <note> <p>At this time, <code>INACTIVE</code> task definitions remain discoverable in your account indefinitely. However, this behavior is subject to change in the future, so you should not rely on <code>INACTIVE</code> task definitions persisting beyond the lifecycle of any associated tasks and services.</p> </note>
   ## 
-  let valid = call_600106.validator(path, query, header, formData, body)
-  let scheme = call_600106.pickScheme
+  let valid = call_598143.validator(path, query, header, formData, body)
+  let scheme = call_598143.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600106.url(scheme.get, call_600106.host, call_600106.base,
-                         call_600106.route, valid.getOrDefault("path"),
+  let url = call_598143.url(scheme.get, call_598143.host, call_598143.base,
+                         call_598143.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600106, url, valid)
+  result = atozHook(call_598143, url, valid)
 
-proc call*(call_600107: Call_DeregisterTaskDefinition_600094; body: JsonNode): Recallable =
+proc call*(call_598144: Call_DeregisterTaskDefinition_598131; body: JsonNode): Recallable =
   ## deregisterTaskDefinition
   ## <p>Deregisters the specified task definition by family and revision. Upon deregistration, the task definition is marked as <code>INACTIVE</code>. Existing tasks and services that reference an <code>INACTIVE</code> task definition continue to run without disruption. Existing services that reference an <code>INACTIVE</code> task definition can still scale up or down by modifying the service's desired count.</p> <p>You cannot use an <code>INACTIVE</code> task definition to run new tasks or create new services, and you cannot update an existing service to reference an <code>INACTIVE</code> task definition. However, there may be up to a 10-minute window following deregistration where these restrictions have not yet taken effect.</p> <note> <p>At this time, <code>INACTIVE</code> task definitions remain discoverable in your account indefinitely. However, this behavior is subject to change in the future, so you should not rely on <code>INACTIVE</code> task definitions persisting beyond the lifecycle of any associated tasks and services.</p> </note>
   ##   body: JObject (required)
-  var body_600108 = newJObject()
+  var body_598145 = newJObject()
   if body != nil:
-    body_600108 = body
-  result = call_600107.call(nil, nil, nil, nil, body_600108)
+    body_598145 = body
+  result = call_598144.call(nil, nil, nil, nil, body_598145)
 
-var deregisterTaskDefinition* = Call_DeregisterTaskDefinition_600094(
+var deregisterTaskDefinition* = Call_DeregisterTaskDefinition_598131(
     name: "deregisterTaskDefinition", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DeregisterTaskDefinition",
-    validator: validate_DeregisterTaskDefinition_600095, base: "/",
-    url: url_DeregisterTaskDefinition_600096, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterTaskDefinition_598132, base: "/",
+    url: url_DeregisterTaskDefinition_598133, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeClusters_600109 = ref object of OpenApiRestCall_599368
-proc url_DescribeClusters_600111(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_DescribeClusters_600110(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## Describes one or more of your clusters.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_600112 = header.getOrDefault("X-Amz-Date")
-  valid_600112 = validateParameter(valid_600112, JString, required = false,
-                                 default = nil)
-  if valid_600112 != nil:
-    section.add "X-Amz-Date", valid_600112
-  var valid_600113 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600113 = validateParameter(valid_600113, JString, required = false,
-                                 default = nil)
-  if valid_600113 != nil:
-    section.add "X-Amz-Security-Token", valid_600113
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600114 = header.getOrDefault("X-Amz-Target")
-  valid_600114 = validateParameter(valid_600114, JString, required = true, default = newJString(
-      "AmazonEC2ContainerServiceV20141113.DescribeClusters"))
-  if valid_600114 != nil:
-    section.add "X-Amz-Target", valid_600114
-  var valid_600115 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600115 = validateParameter(valid_600115, JString, required = false,
-                                 default = nil)
-  if valid_600115 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600115
-  var valid_600116 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600116 = validateParameter(valid_600116, JString, required = false,
-                                 default = nil)
-  if valid_600116 != nil:
-    section.add "X-Amz-Algorithm", valid_600116
-  var valid_600117 = header.getOrDefault("X-Amz-Signature")
-  valid_600117 = validateParameter(valid_600117, JString, required = false,
-                                 default = nil)
-  if valid_600117 != nil:
-    section.add "X-Amz-Signature", valid_600117
-  var valid_600118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600118 = validateParameter(valid_600118, JString, required = false,
-                                 default = nil)
-  if valid_600118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600118
-  var valid_600119 = header.getOrDefault("X-Amz-Credential")
-  valid_600119 = validateParameter(valid_600119, JString, required = false,
-                                 default = nil)
-  if valid_600119 != nil:
-    section.add "X-Amz-Credential", valid_600119
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_600121: Call_DescribeClusters_600109; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes one or more of your clusters.
-  ## 
-  let valid = call_600121.validator(path, query, header, formData, body)
-  let scheme = call_600121.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600121.url(scheme.get, call_600121.host, call_600121.base,
-                         call_600121.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_600121, url, valid)
-
-proc call*(call_600122: Call_DescribeClusters_600109; body: JsonNode): Recallable =
-  ## describeClusters
-  ## Describes one or more of your clusters.
-  ##   body: JObject (required)
-  var body_600123 = newJObject()
-  if body != nil:
-    body_600123 = body
-  result = call_600122.call(nil, nil, nil, nil, body_600123)
-
-var describeClusters* = Call_DescribeClusters_600109(name: "describeClusters",
-    meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeClusters",
-    validator: validate_DescribeClusters_600110, base: "/",
-    url: url_DescribeClusters_600111, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_DescribeContainerInstances_600124 = ref object of OpenApiRestCall_599368
-proc url_DescribeContainerInstances_600126(protocol: Scheme; host: string;
+  Call_DescribeCapacityProviders_598146 = ref object of OpenApiRestCall_597389
+proc url_DescribeCapacityProviders_598148(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeContainerInstances_600125(path: JsonNode; query: JsonNode;
+proc validate_DescribeCapacityProviders_598147(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes Amazon Elastic Container Service container instances. Returns metadata about registered and remaining resources on each container instance requested.
+  ## Describes one or more of your capacity providers.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1406,57 +1418,57 @@ proc validate_DescribeContainerInstances_600125(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600127 = header.getOrDefault("X-Amz-Date")
-  valid_600127 = validateParameter(valid_600127, JString, required = false,
-                                 default = nil)
-  if valid_600127 != nil:
-    section.add "X-Amz-Date", valid_600127
-  var valid_600128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600128 = validateParameter(valid_600128, JString, required = false,
-                                 default = nil)
-  if valid_600128 != nil:
-    section.add "X-Amz-Security-Token", valid_600128
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600129 = header.getOrDefault("X-Amz-Target")
-  valid_600129 = validateParameter(valid_600129, JString, required = true, default = newJString(
-      "AmazonEC2ContainerServiceV20141113.DescribeContainerInstances"))
-  if valid_600129 != nil:
-    section.add "X-Amz-Target", valid_600129
-  var valid_600130 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600130 = validateParameter(valid_600130, JString, required = false,
+  var valid_598149 = header.getOrDefault("X-Amz-Target")
+  valid_598149 = validateParameter(valid_598149, JString, required = true, default = newJString(
+      "AmazonEC2ContainerServiceV20141113.DescribeCapacityProviders"))
+  if valid_598149 != nil:
+    section.add "X-Amz-Target", valid_598149
+  var valid_598150 = header.getOrDefault("X-Amz-Signature")
+  valid_598150 = validateParameter(valid_598150, JString, required = false,
                                  default = nil)
-  if valid_600130 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600130
-  var valid_600131 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600131 = validateParameter(valid_600131, JString, required = false,
+  if valid_598150 != nil:
+    section.add "X-Amz-Signature", valid_598150
+  var valid_598151 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598151 = validateParameter(valid_598151, JString, required = false,
                                  default = nil)
-  if valid_600131 != nil:
-    section.add "X-Amz-Algorithm", valid_600131
-  var valid_600132 = header.getOrDefault("X-Amz-Signature")
-  valid_600132 = validateParameter(valid_600132, JString, required = false,
+  if valid_598151 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598151
+  var valid_598152 = header.getOrDefault("X-Amz-Date")
+  valid_598152 = validateParameter(valid_598152, JString, required = false,
                                  default = nil)
-  if valid_600132 != nil:
-    section.add "X-Amz-Signature", valid_600132
-  var valid_600133 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600133 = validateParameter(valid_600133, JString, required = false,
+  if valid_598152 != nil:
+    section.add "X-Amz-Date", valid_598152
+  var valid_598153 = header.getOrDefault("X-Amz-Credential")
+  valid_598153 = validateParameter(valid_598153, JString, required = false,
                                  default = nil)
-  if valid_600133 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600133
-  var valid_600134 = header.getOrDefault("X-Amz-Credential")
-  valid_600134 = validateParameter(valid_600134, JString, required = false,
+  if valid_598153 != nil:
+    section.add "X-Amz-Credential", valid_598153
+  var valid_598154 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598154 = validateParameter(valid_598154, JString, required = false,
                                  default = nil)
-  if valid_600134 != nil:
-    section.add "X-Amz-Credential", valid_600134
+  if valid_598154 != nil:
+    section.add "X-Amz-Security-Token", valid_598154
+  var valid_598155 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598155 = validateParameter(valid_598155, JString, required = false,
+                                 default = nil)
+  if valid_598155 != nil:
+    section.add "X-Amz-Algorithm", valid_598155
+  var valid_598156 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598156 = validateParameter(valid_598156, JString, required = false,
+                                 default = nil)
+  if valid_598156 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598156
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1467,48 +1479,276 @@ proc validate_DescribeContainerInstances_600125(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600136: Call_DescribeContainerInstances_600124; path: JsonNode;
+proc call*(call_598158: Call_DescribeCapacityProviders_598146; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes Amazon Elastic Container Service container instances. Returns metadata about registered and remaining resources on each container instance requested.
+  ## Describes one or more of your capacity providers.
   ## 
-  let valid = call_600136.validator(path, query, header, formData, body)
-  let scheme = call_600136.pickScheme
+  let valid = call_598158.validator(path, query, header, formData, body)
+  let scheme = call_598158.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600136.url(scheme.get, call_600136.host, call_600136.base,
-                         call_600136.route, valid.getOrDefault("path"),
+  let url = call_598158.url(scheme.get, call_598158.host, call_598158.base,
+                         call_598158.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600136, url, valid)
+  result = atozHook(call_598158, url, valid)
 
-proc call*(call_600137: Call_DescribeContainerInstances_600124; body: JsonNode): Recallable =
-  ## describeContainerInstances
-  ## Describes Amazon Elastic Container Service container instances. Returns metadata about registered and remaining resources on each container instance requested.
+proc call*(call_598159: Call_DescribeCapacityProviders_598146; body: JsonNode): Recallable =
+  ## describeCapacityProviders
+  ## Describes one or more of your capacity providers.
   ##   body: JObject (required)
-  var body_600138 = newJObject()
+  var body_598160 = newJObject()
   if body != nil:
-    body_600138 = body
-  result = call_600137.call(nil, nil, nil, nil, body_600138)
+    body_598160 = body
+  result = call_598159.call(nil, nil, nil, nil, body_598160)
 
-var describeContainerInstances* = Call_DescribeContainerInstances_600124(
-    name: "describeContainerInstances", meth: HttpMethod.HttpPost,
-    host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeContainerInstances",
-    validator: validate_DescribeContainerInstances_600125, base: "/",
-    url: url_DescribeContainerInstances_600126,
+var describeCapacityProviders* = Call_DescribeCapacityProviders_598146(
+    name: "describeCapacityProviders", meth: HttpMethod.HttpPost,
+    host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeCapacityProviders",
+    validator: validate_DescribeCapacityProviders_598147, base: "/",
+    url: url_DescribeCapacityProviders_598148,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeServices_600139 = ref object of OpenApiRestCall_599368
-proc url_DescribeServices_600141(protocol: Scheme; host: string; base: string;
+  Call_DescribeClusters_598161 = ref object of OpenApiRestCall_597389
+proc url_DescribeClusters_598163(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeServices_600140(path: JsonNode; query: JsonNode;
+proc validate_DescribeClusters_598162(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## Describes one or more of your clusters.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_598164 = header.getOrDefault("X-Amz-Target")
+  valid_598164 = validateParameter(valid_598164, JString, required = true, default = newJString(
+      "AmazonEC2ContainerServiceV20141113.DescribeClusters"))
+  if valid_598164 != nil:
+    section.add "X-Amz-Target", valid_598164
+  var valid_598165 = header.getOrDefault("X-Amz-Signature")
+  valid_598165 = validateParameter(valid_598165, JString, required = false,
+                                 default = nil)
+  if valid_598165 != nil:
+    section.add "X-Amz-Signature", valid_598165
+  var valid_598166 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598166 = validateParameter(valid_598166, JString, required = false,
+                                 default = nil)
+  if valid_598166 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598166
+  var valid_598167 = header.getOrDefault("X-Amz-Date")
+  valid_598167 = validateParameter(valid_598167, JString, required = false,
+                                 default = nil)
+  if valid_598167 != nil:
+    section.add "X-Amz-Date", valid_598167
+  var valid_598168 = header.getOrDefault("X-Amz-Credential")
+  valid_598168 = validateParameter(valid_598168, JString, required = false,
+                                 default = nil)
+  if valid_598168 != nil:
+    section.add "X-Amz-Credential", valid_598168
+  var valid_598169 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598169 = validateParameter(valid_598169, JString, required = false,
+                                 default = nil)
+  if valid_598169 != nil:
+    section.add "X-Amz-Security-Token", valid_598169
+  var valid_598170 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598170 = validateParameter(valid_598170, JString, required = false,
+                                 default = nil)
+  if valid_598170 != nil:
+    section.add "X-Amz-Algorithm", valid_598170
+  var valid_598171 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598171 = validateParameter(valid_598171, JString, required = false,
+                                 default = nil)
+  if valid_598171 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598171
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_598173: Call_DescribeClusters_598161; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Describes one or more of your clusters.
+  ## 
+  let valid = call_598173.validator(path, query, header, formData, body)
+  let scheme = call_598173.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_598173.url(scheme.get, call_598173.host, call_598173.base,
+                         call_598173.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_598173, url, valid)
+
+proc call*(call_598174: Call_DescribeClusters_598161; body: JsonNode): Recallable =
+  ## describeClusters
+  ## Describes one or more of your clusters.
+  ##   body: JObject (required)
+  var body_598175 = newJObject()
+  if body != nil:
+    body_598175 = body
+  result = call_598174.call(nil, nil, nil, nil, body_598175)
+
+var describeClusters* = Call_DescribeClusters_598161(name: "describeClusters",
+    meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeClusters",
+    validator: validate_DescribeClusters_598162, base: "/",
+    url: url_DescribeClusters_598163, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeContainerInstances_598176 = ref object of OpenApiRestCall_597389
+proc url_DescribeContainerInstances_598178(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeContainerInstances_598177(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Describes Amazon Elastic Container Service container instances. Returns metadata about registered and remaining resources on each container instance requested.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_598179 = header.getOrDefault("X-Amz-Target")
+  valid_598179 = validateParameter(valid_598179, JString, required = true, default = newJString(
+      "AmazonEC2ContainerServiceV20141113.DescribeContainerInstances"))
+  if valid_598179 != nil:
+    section.add "X-Amz-Target", valid_598179
+  var valid_598180 = header.getOrDefault("X-Amz-Signature")
+  valid_598180 = validateParameter(valid_598180, JString, required = false,
+                                 default = nil)
+  if valid_598180 != nil:
+    section.add "X-Amz-Signature", valid_598180
+  var valid_598181 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598181 = validateParameter(valid_598181, JString, required = false,
+                                 default = nil)
+  if valid_598181 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598181
+  var valid_598182 = header.getOrDefault("X-Amz-Date")
+  valid_598182 = validateParameter(valid_598182, JString, required = false,
+                                 default = nil)
+  if valid_598182 != nil:
+    section.add "X-Amz-Date", valid_598182
+  var valid_598183 = header.getOrDefault("X-Amz-Credential")
+  valid_598183 = validateParameter(valid_598183, JString, required = false,
+                                 default = nil)
+  if valid_598183 != nil:
+    section.add "X-Amz-Credential", valid_598183
+  var valid_598184 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598184 = validateParameter(valid_598184, JString, required = false,
+                                 default = nil)
+  if valid_598184 != nil:
+    section.add "X-Amz-Security-Token", valid_598184
+  var valid_598185 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598185 = validateParameter(valid_598185, JString, required = false,
+                                 default = nil)
+  if valid_598185 != nil:
+    section.add "X-Amz-Algorithm", valid_598185
+  var valid_598186 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598186 = validateParameter(valid_598186, JString, required = false,
+                                 default = nil)
+  if valid_598186 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598186
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_598188: Call_DescribeContainerInstances_598176; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Describes Amazon Elastic Container Service container instances. Returns metadata about registered and remaining resources on each container instance requested.
+  ## 
+  let valid = call_598188.validator(path, query, header, formData, body)
+  let scheme = call_598188.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_598188.url(scheme.get, call_598188.host, call_598188.base,
+                         call_598188.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_598188, url, valid)
+
+proc call*(call_598189: Call_DescribeContainerInstances_598176; body: JsonNode): Recallable =
+  ## describeContainerInstances
+  ## Describes Amazon Elastic Container Service container instances. Returns metadata about registered and remaining resources on each container instance requested.
+  ##   body: JObject (required)
+  var body_598190 = newJObject()
+  if body != nil:
+    body_598190 = body
+  result = call_598189.call(nil, nil, nil, nil, body_598190)
+
+var describeContainerInstances* = Call_DescribeContainerInstances_598176(
+    name: "describeContainerInstances", meth: HttpMethod.HttpPost,
+    host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeContainerInstances",
+    validator: validate_DescribeContainerInstances_598177, base: "/",
+    url: url_DescribeContainerInstances_598178,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeServices_598191 = ref object of OpenApiRestCall_597389
+proc url_DescribeServices_598193(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeServices_598192(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Describes the specified services running in your cluster.
@@ -1520,57 +1760,57 @@ proc validate_DescribeServices_600140(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600142 = header.getOrDefault("X-Amz-Date")
-  valid_600142 = validateParameter(valid_600142, JString, required = false,
-                                 default = nil)
-  if valid_600142 != nil:
-    section.add "X-Amz-Date", valid_600142
-  var valid_600143 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600143 = validateParameter(valid_600143, JString, required = false,
-                                 default = nil)
-  if valid_600143 != nil:
-    section.add "X-Amz-Security-Token", valid_600143
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600144 = header.getOrDefault("X-Amz-Target")
-  valid_600144 = validateParameter(valid_600144, JString, required = true, default = newJString(
+  var valid_598194 = header.getOrDefault("X-Amz-Target")
+  valid_598194 = validateParameter(valid_598194, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DescribeServices"))
-  if valid_600144 != nil:
-    section.add "X-Amz-Target", valid_600144
-  var valid_600145 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600145 = validateParameter(valid_600145, JString, required = false,
+  if valid_598194 != nil:
+    section.add "X-Amz-Target", valid_598194
+  var valid_598195 = header.getOrDefault("X-Amz-Signature")
+  valid_598195 = validateParameter(valid_598195, JString, required = false,
                                  default = nil)
-  if valid_600145 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600145
-  var valid_600146 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600146 = validateParameter(valid_600146, JString, required = false,
+  if valid_598195 != nil:
+    section.add "X-Amz-Signature", valid_598195
+  var valid_598196 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598196 = validateParameter(valid_598196, JString, required = false,
                                  default = nil)
-  if valid_600146 != nil:
-    section.add "X-Amz-Algorithm", valid_600146
-  var valid_600147 = header.getOrDefault("X-Amz-Signature")
-  valid_600147 = validateParameter(valid_600147, JString, required = false,
+  if valid_598196 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598196
+  var valid_598197 = header.getOrDefault("X-Amz-Date")
+  valid_598197 = validateParameter(valid_598197, JString, required = false,
                                  default = nil)
-  if valid_600147 != nil:
-    section.add "X-Amz-Signature", valid_600147
-  var valid_600148 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600148 = validateParameter(valid_600148, JString, required = false,
+  if valid_598197 != nil:
+    section.add "X-Amz-Date", valid_598197
+  var valid_598198 = header.getOrDefault("X-Amz-Credential")
+  valid_598198 = validateParameter(valid_598198, JString, required = false,
                                  default = nil)
-  if valid_600148 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600148
-  var valid_600149 = header.getOrDefault("X-Amz-Credential")
-  valid_600149 = validateParameter(valid_600149, JString, required = false,
+  if valid_598198 != nil:
+    section.add "X-Amz-Credential", valid_598198
+  var valid_598199 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598199 = validateParameter(valid_598199, JString, required = false,
                                  default = nil)
-  if valid_600149 != nil:
-    section.add "X-Amz-Credential", valid_600149
+  if valid_598199 != nil:
+    section.add "X-Amz-Security-Token", valid_598199
+  var valid_598200 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598200 = validateParameter(valid_598200, JString, required = false,
+                                 default = nil)
+  if valid_598200 != nil:
+    section.add "X-Amz-Algorithm", valid_598200
+  var valid_598201 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598201 = validateParameter(valid_598201, JString, required = false,
+                                 default = nil)
+  if valid_598201 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598201
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1581,46 +1821,47 @@ proc validate_DescribeServices_600140(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600151: Call_DescribeServices_600139; path: JsonNode;
+proc call*(call_598203: Call_DescribeServices_598191; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the specified services running in your cluster.
   ## 
-  let valid = call_600151.validator(path, query, header, formData, body)
-  let scheme = call_600151.pickScheme
+  let valid = call_598203.validator(path, query, header, formData, body)
+  let scheme = call_598203.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600151.url(scheme.get, call_600151.host, call_600151.base,
-                         call_600151.route, valid.getOrDefault("path"),
+  let url = call_598203.url(scheme.get, call_598203.host, call_598203.base,
+                         call_598203.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600151, url, valid)
+  result = atozHook(call_598203, url, valid)
 
-proc call*(call_600152: Call_DescribeServices_600139; body: JsonNode): Recallable =
+proc call*(call_598204: Call_DescribeServices_598191; body: JsonNode): Recallable =
   ## describeServices
   ## Describes the specified services running in your cluster.
   ##   body: JObject (required)
-  var body_600153 = newJObject()
+  var body_598205 = newJObject()
   if body != nil:
-    body_600153 = body
-  result = call_600152.call(nil, nil, nil, nil, body_600153)
+    body_598205 = body
+  result = call_598204.call(nil, nil, nil, nil, body_598205)
 
-var describeServices* = Call_DescribeServices_600139(name: "describeServices",
+var describeServices* = Call_DescribeServices_598191(name: "describeServices",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeServices",
-    validator: validate_DescribeServices_600140, base: "/",
-    url: url_DescribeServices_600141, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeServices_598192, base: "/",
+    url: url_DescribeServices_598193, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTaskDefinition_600154 = ref object of OpenApiRestCall_599368
-proc url_DescribeTaskDefinition_600156(protocol: Scheme; host: string; base: string;
+  Call_DescribeTaskDefinition_598206 = ref object of OpenApiRestCall_597389
+proc url_DescribeTaskDefinition_598208(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeTaskDefinition_600155(path: JsonNode; query: JsonNode;
+proc validate_DescribeTaskDefinition_598207(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes a task definition. You can specify a <code>family</code> and <code>revision</code> to find information about a specific task definition, or you can simply specify the family to find the latest <code>ACTIVE</code> revision in that family.</p> <note> <p>You can only describe <code>INACTIVE</code> task definitions while an active task or service references them.</p> </note>
   ## 
@@ -1631,57 +1872,57 @@ proc validate_DescribeTaskDefinition_600155(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600157 = header.getOrDefault("X-Amz-Date")
-  valid_600157 = validateParameter(valid_600157, JString, required = false,
-                                 default = nil)
-  if valid_600157 != nil:
-    section.add "X-Amz-Date", valid_600157
-  var valid_600158 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600158 = validateParameter(valid_600158, JString, required = false,
-                                 default = nil)
-  if valid_600158 != nil:
-    section.add "X-Amz-Security-Token", valid_600158
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600159 = header.getOrDefault("X-Amz-Target")
-  valid_600159 = validateParameter(valid_600159, JString, required = true, default = newJString(
+  var valid_598209 = header.getOrDefault("X-Amz-Target")
+  valid_598209 = validateParameter(valid_598209, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DescribeTaskDefinition"))
-  if valid_600159 != nil:
-    section.add "X-Amz-Target", valid_600159
-  var valid_600160 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600160 = validateParameter(valid_600160, JString, required = false,
+  if valid_598209 != nil:
+    section.add "X-Amz-Target", valid_598209
+  var valid_598210 = header.getOrDefault("X-Amz-Signature")
+  valid_598210 = validateParameter(valid_598210, JString, required = false,
                                  default = nil)
-  if valid_600160 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600160
-  var valid_600161 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600161 = validateParameter(valid_600161, JString, required = false,
+  if valid_598210 != nil:
+    section.add "X-Amz-Signature", valid_598210
+  var valid_598211 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598211 = validateParameter(valid_598211, JString, required = false,
                                  default = nil)
-  if valid_600161 != nil:
-    section.add "X-Amz-Algorithm", valid_600161
-  var valid_600162 = header.getOrDefault("X-Amz-Signature")
-  valid_600162 = validateParameter(valid_600162, JString, required = false,
+  if valid_598211 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598211
+  var valid_598212 = header.getOrDefault("X-Amz-Date")
+  valid_598212 = validateParameter(valid_598212, JString, required = false,
                                  default = nil)
-  if valid_600162 != nil:
-    section.add "X-Amz-Signature", valid_600162
-  var valid_600163 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600163 = validateParameter(valid_600163, JString, required = false,
+  if valid_598212 != nil:
+    section.add "X-Amz-Date", valid_598212
+  var valid_598213 = header.getOrDefault("X-Amz-Credential")
+  valid_598213 = validateParameter(valid_598213, JString, required = false,
                                  default = nil)
-  if valid_600163 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600163
-  var valid_600164 = header.getOrDefault("X-Amz-Credential")
-  valid_600164 = validateParameter(valid_600164, JString, required = false,
+  if valid_598213 != nil:
+    section.add "X-Amz-Credential", valid_598213
+  var valid_598214 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598214 = validateParameter(valid_598214, JString, required = false,
                                  default = nil)
-  if valid_600164 != nil:
-    section.add "X-Amz-Credential", valid_600164
+  if valid_598214 != nil:
+    section.add "X-Amz-Security-Token", valid_598214
+  var valid_598215 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598215 = validateParameter(valid_598215, JString, required = false,
+                                 default = nil)
+  if valid_598215 != nil:
+    section.add "X-Amz-Algorithm", valid_598215
+  var valid_598216 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598216 = validateParameter(valid_598216, JString, required = false,
+                                 default = nil)
+  if valid_598216 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598216
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1692,47 +1933,48 @@ proc validate_DescribeTaskDefinition_600155(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600166: Call_DescribeTaskDefinition_600154; path: JsonNode;
+proc call*(call_598218: Call_DescribeTaskDefinition_598206; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a task definition. You can specify a <code>family</code> and <code>revision</code> to find information about a specific task definition, or you can simply specify the family to find the latest <code>ACTIVE</code> revision in that family.</p> <note> <p>You can only describe <code>INACTIVE</code> task definitions while an active task or service references them.</p> </note>
   ## 
-  let valid = call_600166.validator(path, query, header, formData, body)
-  let scheme = call_600166.pickScheme
+  let valid = call_598218.validator(path, query, header, formData, body)
+  let scheme = call_598218.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600166.url(scheme.get, call_600166.host, call_600166.base,
-                         call_600166.route, valid.getOrDefault("path"),
+  let url = call_598218.url(scheme.get, call_598218.host, call_598218.base,
+                         call_598218.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600166, url, valid)
+  result = atozHook(call_598218, url, valid)
 
-proc call*(call_600167: Call_DescribeTaskDefinition_600154; body: JsonNode): Recallable =
+proc call*(call_598219: Call_DescribeTaskDefinition_598206; body: JsonNode): Recallable =
   ## describeTaskDefinition
   ## <p>Describes a task definition. You can specify a <code>family</code> and <code>revision</code> to find information about a specific task definition, or you can simply specify the family to find the latest <code>ACTIVE</code> revision in that family.</p> <note> <p>You can only describe <code>INACTIVE</code> task definitions while an active task or service references them.</p> </note>
   ##   body: JObject (required)
-  var body_600168 = newJObject()
+  var body_598220 = newJObject()
   if body != nil:
-    body_600168 = body
-  result = call_600167.call(nil, nil, nil, nil, body_600168)
+    body_598220 = body
+  result = call_598219.call(nil, nil, nil, nil, body_598220)
 
-var describeTaskDefinition* = Call_DescribeTaskDefinition_600154(
+var describeTaskDefinition* = Call_DescribeTaskDefinition_598206(
     name: "describeTaskDefinition", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeTaskDefinition",
-    validator: validate_DescribeTaskDefinition_600155, base: "/",
-    url: url_DescribeTaskDefinition_600156, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeTaskDefinition_598207, base: "/",
+    url: url_DescribeTaskDefinition_598208, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTaskSets_600169 = ref object of OpenApiRestCall_599368
-proc url_DescribeTaskSets_600171(protocol: Scheme; host: string; base: string;
+  Call_DescribeTaskSets_598221 = ref object of OpenApiRestCall_597389
+proc url_DescribeTaskSets_598223(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeTaskSets_600170(path: JsonNode; query: JsonNode;
+proc validate_DescribeTaskSets_598222(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Describes the task sets in the specified cluster and service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
@@ -1744,57 +1986,57 @@ proc validate_DescribeTaskSets_600170(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600172 = header.getOrDefault("X-Amz-Date")
-  valid_600172 = validateParameter(valid_600172, JString, required = false,
-                                 default = nil)
-  if valid_600172 != nil:
-    section.add "X-Amz-Date", valid_600172
-  var valid_600173 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600173 = validateParameter(valid_600173, JString, required = false,
-                                 default = nil)
-  if valid_600173 != nil:
-    section.add "X-Amz-Security-Token", valid_600173
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600174 = header.getOrDefault("X-Amz-Target")
-  valid_600174 = validateParameter(valid_600174, JString, required = true, default = newJString(
+  var valid_598224 = header.getOrDefault("X-Amz-Target")
+  valid_598224 = validateParameter(valid_598224, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DescribeTaskSets"))
-  if valid_600174 != nil:
-    section.add "X-Amz-Target", valid_600174
-  var valid_600175 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600175 = validateParameter(valid_600175, JString, required = false,
+  if valid_598224 != nil:
+    section.add "X-Amz-Target", valid_598224
+  var valid_598225 = header.getOrDefault("X-Amz-Signature")
+  valid_598225 = validateParameter(valid_598225, JString, required = false,
                                  default = nil)
-  if valid_600175 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600175
-  var valid_600176 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600176 = validateParameter(valid_600176, JString, required = false,
+  if valid_598225 != nil:
+    section.add "X-Amz-Signature", valid_598225
+  var valid_598226 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598226 = validateParameter(valid_598226, JString, required = false,
                                  default = nil)
-  if valid_600176 != nil:
-    section.add "X-Amz-Algorithm", valid_600176
-  var valid_600177 = header.getOrDefault("X-Amz-Signature")
-  valid_600177 = validateParameter(valid_600177, JString, required = false,
+  if valid_598226 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598226
+  var valid_598227 = header.getOrDefault("X-Amz-Date")
+  valid_598227 = validateParameter(valid_598227, JString, required = false,
                                  default = nil)
-  if valid_600177 != nil:
-    section.add "X-Amz-Signature", valid_600177
-  var valid_600178 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600178 = validateParameter(valid_600178, JString, required = false,
+  if valid_598227 != nil:
+    section.add "X-Amz-Date", valid_598227
+  var valid_598228 = header.getOrDefault("X-Amz-Credential")
+  valid_598228 = validateParameter(valid_598228, JString, required = false,
                                  default = nil)
-  if valid_600178 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600178
-  var valid_600179 = header.getOrDefault("X-Amz-Credential")
-  valid_600179 = validateParameter(valid_600179, JString, required = false,
+  if valid_598228 != nil:
+    section.add "X-Amz-Credential", valid_598228
+  var valid_598229 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598229 = validateParameter(valid_598229, JString, required = false,
                                  default = nil)
-  if valid_600179 != nil:
-    section.add "X-Amz-Credential", valid_600179
+  if valid_598229 != nil:
+    section.add "X-Amz-Security-Token", valid_598229
+  var valid_598230 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598230 = validateParameter(valid_598230, JString, required = false,
+                                 default = nil)
+  if valid_598230 != nil:
+    section.add "X-Amz-Algorithm", valid_598230
+  var valid_598231 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598231 = validateParameter(valid_598231, JString, required = false,
+                                 default = nil)
+  if valid_598231 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598231
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1805,46 +2047,47 @@ proc validate_DescribeTaskSets_600170(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600181: Call_DescribeTaskSets_600169; path: JsonNode;
+proc call*(call_598233: Call_DescribeTaskSets_598221; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the task sets in the specified cluster and service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
-  let valid = call_600181.validator(path, query, header, formData, body)
-  let scheme = call_600181.pickScheme
+  let valid = call_598233.validator(path, query, header, formData, body)
+  let scheme = call_598233.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600181.url(scheme.get, call_600181.host, call_600181.base,
-                         call_600181.route, valid.getOrDefault("path"),
+  let url = call_598233.url(scheme.get, call_598233.host, call_598233.base,
+                         call_598233.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600181, url, valid)
+  result = atozHook(call_598233, url, valid)
 
-proc call*(call_600182: Call_DescribeTaskSets_600169; body: JsonNode): Recallable =
+proc call*(call_598234: Call_DescribeTaskSets_598221; body: JsonNode): Recallable =
   ## describeTaskSets
   ## Describes the task sets in the specified cluster and service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ##   body: JObject (required)
-  var body_600183 = newJObject()
+  var body_598235 = newJObject()
   if body != nil:
-    body_600183 = body
-  result = call_600182.call(nil, nil, nil, nil, body_600183)
+    body_598235 = body
+  result = call_598234.call(nil, nil, nil, nil, body_598235)
 
-var describeTaskSets* = Call_DescribeTaskSets_600169(name: "describeTaskSets",
+var describeTaskSets* = Call_DescribeTaskSets_598221(name: "describeTaskSets",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeTaskSets",
-    validator: validate_DescribeTaskSets_600170, base: "/",
-    url: url_DescribeTaskSets_600171, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeTaskSets_598222, base: "/",
+    url: url_DescribeTaskSets_598223, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTasks_600184 = ref object of OpenApiRestCall_599368
-proc url_DescribeTasks_600186(protocol: Scheme; host: string; base: string;
+  Call_DescribeTasks_598236 = ref object of OpenApiRestCall_597389
+proc url_DescribeTasks_598238(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeTasks_600185(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeTasks_598237(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes a specified task or tasks.
   ## 
@@ -1855,57 +2098,57 @@ proc validate_DescribeTasks_600185(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600187 = header.getOrDefault("X-Amz-Date")
-  valid_600187 = validateParameter(valid_600187, JString, required = false,
-                                 default = nil)
-  if valid_600187 != nil:
-    section.add "X-Amz-Date", valid_600187
-  var valid_600188 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600188 = validateParameter(valid_600188, JString, required = false,
-                                 default = nil)
-  if valid_600188 != nil:
-    section.add "X-Amz-Security-Token", valid_600188
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600189 = header.getOrDefault("X-Amz-Target")
-  valid_600189 = validateParameter(valid_600189, JString, required = true, default = newJString(
+  var valid_598239 = header.getOrDefault("X-Amz-Target")
+  valid_598239 = validateParameter(valid_598239, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DescribeTasks"))
-  if valid_600189 != nil:
-    section.add "X-Amz-Target", valid_600189
-  var valid_600190 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600190 = validateParameter(valid_600190, JString, required = false,
+  if valid_598239 != nil:
+    section.add "X-Amz-Target", valid_598239
+  var valid_598240 = header.getOrDefault("X-Amz-Signature")
+  valid_598240 = validateParameter(valid_598240, JString, required = false,
                                  default = nil)
-  if valid_600190 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600190
-  var valid_600191 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600191 = validateParameter(valid_600191, JString, required = false,
+  if valid_598240 != nil:
+    section.add "X-Amz-Signature", valid_598240
+  var valid_598241 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598241 = validateParameter(valid_598241, JString, required = false,
                                  default = nil)
-  if valid_600191 != nil:
-    section.add "X-Amz-Algorithm", valid_600191
-  var valid_600192 = header.getOrDefault("X-Amz-Signature")
-  valid_600192 = validateParameter(valid_600192, JString, required = false,
+  if valid_598241 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598241
+  var valid_598242 = header.getOrDefault("X-Amz-Date")
+  valid_598242 = validateParameter(valid_598242, JString, required = false,
                                  default = nil)
-  if valid_600192 != nil:
-    section.add "X-Amz-Signature", valid_600192
-  var valid_600193 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600193 = validateParameter(valid_600193, JString, required = false,
+  if valid_598242 != nil:
+    section.add "X-Amz-Date", valid_598242
+  var valid_598243 = header.getOrDefault("X-Amz-Credential")
+  valid_598243 = validateParameter(valid_598243, JString, required = false,
                                  default = nil)
-  if valid_600193 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600193
-  var valid_600194 = header.getOrDefault("X-Amz-Credential")
-  valid_600194 = validateParameter(valid_600194, JString, required = false,
+  if valid_598243 != nil:
+    section.add "X-Amz-Credential", valid_598243
+  var valid_598244 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598244 = validateParameter(valid_598244, JString, required = false,
                                  default = nil)
-  if valid_600194 != nil:
-    section.add "X-Amz-Credential", valid_600194
+  if valid_598244 != nil:
+    section.add "X-Amz-Security-Token", valid_598244
+  var valid_598245 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598245 = validateParameter(valid_598245, JString, required = false,
+                                 default = nil)
+  if valid_598245 != nil:
+    section.add "X-Amz-Algorithm", valid_598245
+  var valid_598246 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598246 = validateParameter(valid_598246, JString, required = false,
+                                 default = nil)
+  if valid_598246 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598246
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1916,47 +2159,48 @@ proc validate_DescribeTasks_600185(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600196: Call_DescribeTasks_600184; path: JsonNode; query: JsonNode;
+proc call*(call_598248: Call_DescribeTasks_598236; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes a specified task or tasks.
   ## 
-  let valid = call_600196.validator(path, query, header, formData, body)
-  let scheme = call_600196.pickScheme
+  let valid = call_598248.validator(path, query, header, formData, body)
+  let scheme = call_598248.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600196.url(scheme.get, call_600196.host, call_600196.base,
-                         call_600196.route, valid.getOrDefault("path"),
+  let url = call_598248.url(scheme.get, call_598248.host, call_598248.base,
+                         call_598248.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600196, url, valid)
+  result = atozHook(call_598248, url, valid)
 
-proc call*(call_600197: Call_DescribeTasks_600184; body: JsonNode): Recallable =
+proc call*(call_598249: Call_DescribeTasks_598236; body: JsonNode): Recallable =
   ## describeTasks
   ## Describes a specified task or tasks.
   ##   body: JObject (required)
-  var body_600198 = newJObject()
+  var body_598250 = newJObject()
   if body != nil:
-    body_600198 = body
-  result = call_600197.call(nil, nil, nil, nil, body_600198)
+    body_598250 = body
+  result = call_598249.call(nil, nil, nil, nil, body_598250)
 
-var describeTasks* = Call_DescribeTasks_600184(name: "describeTasks",
+var describeTasks* = Call_DescribeTasks_598236(name: "describeTasks",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DescribeTasks",
-    validator: validate_DescribeTasks_600185, base: "/", url: url_DescribeTasks_600186,
+    validator: validate_DescribeTasks_598237, base: "/", url: url_DescribeTasks_598238,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DiscoverPollEndpoint_600199 = ref object of OpenApiRestCall_599368
-proc url_DiscoverPollEndpoint_600201(protocol: Scheme; host: string; base: string;
+  Call_DiscoverPollEndpoint_598251 = ref object of OpenApiRestCall_597389
+proc url_DiscoverPollEndpoint_598253(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DiscoverPollEndpoint_600200(path: JsonNode; query: JsonNode;
+proc validate_DiscoverPollEndpoint_598252(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Returns an endpoint for the Amazon ECS agent to poll for updates.</p>
   ## 
@@ -1967,57 +2211,57 @@ proc validate_DiscoverPollEndpoint_600200(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600202 = header.getOrDefault("X-Amz-Date")
-  valid_600202 = validateParameter(valid_600202, JString, required = false,
-                                 default = nil)
-  if valid_600202 != nil:
-    section.add "X-Amz-Date", valid_600202
-  var valid_600203 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600203 = validateParameter(valid_600203, JString, required = false,
-                                 default = nil)
-  if valid_600203 != nil:
-    section.add "X-Amz-Security-Token", valid_600203
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600204 = header.getOrDefault("X-Amz-Target")
-  valid_600204 = validateParameter(valid_600204, JString, required = true, default = newJString(
+  var valid_598254 = header.getOrDefault("X-Amz-Target")
+  valid_598254 = validateParameter(valid_598254, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.DiscoverPollEndpoint"))
-  if valid_600204 != nil:
-    section.add "X-Amz-Target", valid_600204
-  var valid_600205 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600205 = validateParameter(valid_600205, JString, required = false,
+  if valid_598254 != nil:
+    section.add "X-Amz-Target", valid_598254
+  var valid_598255 = header.getOrDefault("X-Amz-Signature")
+  valid_598255 = validateParameter(valid_598255, JString, required = false,
                                  default = nil)
-  if valid_600205 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600205
-  var valid_600206 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600206 = validateParameter(valid_600206, JString, required = false,
+  if valid_598255 != nil:
+    section.add "X-Amz-Signature", valid_598255
+  var valid_598256 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598256 = validateParameter(valid_598256, JString, required = false,
                                  default = nil)
-  if valid_600206 != nil:
-    section.add "X-Amz-Algorithm", valid_600206
-  var valid_600207 = header.getOrDefault("X-Amz-Signature")
-  valid_600207 = validateParameter(valid_600207, JString, required = false,
+  if valid_598256 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598256
+  var valid_598257 = header.getOrDefault("X-Amz-Date")
+  valid_598257 = validateParameter(valid_598257, JString, required = false,
                                  default = nil)
-  if valid_600207 != nil:
-    section.add "X-Amz-Signature", valid_600207
-  var valid_600208 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600208 = validateParameter(valid_600208, JString, required = false,
+  if valid_598257 != nil:
+    section.add "X-Amz-Date", valid_598257
+  var valid_598258 = header.getOrDefault("X-Amz-Credential")
+  valid_598258 = validateParameter(valid_598258, JString, required = false,
                                  default = nil)
-  if valid_600208 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600208
-  var valid_600209 = header.getOrDefault("X-Amz-Credential")
-  valid_600209 = validateParameter(valid_600209, JString, required = false,
+  if valid_598258 != nil:
+    section.add "X-Amz-Credential", valid_598258
+  var valid_598259 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598259 = validateParameter(valid_598259, JString, required = false,
                                  default = nil)
-  if valid_600209 != nil:
-    section.add "X-Amz-Credential", valid_600209
+  if valid_598259 != nil:
+    section.add "X-Amz-Security-Token", valid_598259
+  var valid_598260 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598260 = validateParameter(valid_598260, JString, required = false,
+                                 default = nil)
+  if valid_598260 != nil:
+    section.add "X-Amz-Algorithm", valid_598260
+  var valid_598261 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598261 = validateParameter(valid_598261, JString, required = false,
+                                 default = nil)
+  if valid_598261 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598261
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2028,47 +2272,48 @@ proc validate_DiscoverPollEndpoint_600200(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600211: Call_DiscoverPollEndpoint_600199; path: JsonNode;
+proc call*(call_598263: Call_DiscoverPollEndpoint_598251; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Returns an endpoint for the Amazon ECS agent to poll for updates.</p>
   ## 
-  let valid = call_600211.validator(path, query, header, formData, body)
-  let scheme = call_600211.pickScheme
+  let valid = call_598263.validator(path, query, header, formData, body)
+  let scheme = call_598263.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600211.url(scheme.get, call_600211.host, call_600211.base,
-                         call_600211.route, valid.getOrDefault("path"),
+  let url = call_598263.url(scheme.get, call_598263.host, call_598263.base,
+                         call_598263.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600211, url, valid)
+  result = atozHook(call_598263, url, valid)
 
-proc call*(call_600212: Call_DiscoverPollEndpoint_600199; body: JsonNode): Recallable =
+proc call*(call_598264: Call_DiscoverPollEndpoint_598251; body: JsonNode): Recallable =
   ## discoverPollEndpoint
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Returns an endpoint for the Amazon ECS agent to poll for updates.</p>
   ##   body: JObject (required)
-  var body_600213 = newJObject()
+  var body_598265 = newJObject()
   if body != nil:
-    body_600213 = body
-  result = call_600212.call(nil, nil, nil, nil, body_600213)
+    body_598265 = body
+  result = call_598264.call(nil, nil, nil, nil, body_598265)
 
-var discoverPollEndpoint* = Call_DiscoverPollEndpoint_600199(
+var discoverPollEndpoint* = Call_DiscoverPollEndpoint_598251(
     name: "discoverPollEndpoint", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.DiscoverPollEndpoint",
-    validator: validate_DiscoverPollEndpoint_600200, base: "/",
-    url: url_DiscoverPollEndpoint_600201, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DiscoverPollEndpoint_598252, base: "/",
+    url: url_DiscoverPollEndpoint_598253, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAccountSettings_600214 = ref object of OpenApiRestCall_599368
-proc url_ListAccountSettings_600216(protocol: Scheme; host: string; base: string;
+  Call_ListAccountSettings_598266 = ref object of OpenApiRestCall_597389
+proc url_ListAccountSettings_598268(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListAccountSettings_600215(path: JsonNode; query: JsonNode;
+proc validate_ListAccountSettings_598267(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lists the account settings for a specified principal.
@@ -2080,57 +2325,57 @@ proc validate_ListAccountSettings_600215(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600217 = header.getOrDefault("X-Amz-Date")
-  valid_600217 = validateParameter(valid_600217, JString, required = false,
-                                 default = nil)
-  if valid_600217 != nil:
-    section.add "X-Amz-Date", valid_600217
-  var valid_600218 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600218 = validateParameter(valid_600218, JString, required = false,
-                                 default = nil)
-  if valid_600218 != nil:
-    section.add "X-Amz-Security-Token", valid_600218
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600219 = header.getOrDefault("X-Amz-Target")
-  valid_600219 = validateParameter(valid_600219, JString, required = true, default = newJString(
+  var valid_598269 = header.getOrDefault("X-Amz-Target")
+  valid_598269 = validateParameter(valid_598269, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListAccountSettings"))
-  if valid_600219 != nil:
-    section.add "X-Amz-Target", valid_600219
-  var valid_600220 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600220 = validateParameter(valid_600220, JString, required = false,
+  if valid_598269 != nil:
+    section.add "X-Amz-Target", valid_598269
+  var valid_598270 = header.getOrDefault("X-Amz-Signature")
+  valid_598270 = validateParameter(valid_598270, JString, required = false,
                                  default = nil)
-  if valid_600220 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600220
-  var valid_600221 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600221 = validateParameter(valid_600221, JString, required = false,
+  if valid_598270 != nil:
+    section.add "X-Amz-Signature", valid_598270
+  var valid_598271 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598271 = validateParameter(valid_598271, JString, required = false,
                                  default = nil)
-  if valid_600221 != nil:
-    section.add "X-Amz-Algorithm", valid_600221
-  var valid_600222 = header.getOrDefault("X-Amz-Signature")
-  valid_600222 = validateParameter(valid_600222, JString, required = false,
+  if valid_598271 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598271
+  var valid_598272 = header.getOrDefault("X-Amz-Date")
+  valid_598272 = validateParameter(valid_598272, JString, required = false,
                                  default = nil)
-  if valid_600222 != nil:
-    section.add "X-Amz-Signature", valid_600222
-  var valid_600223 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600223 = validateParameter(valid_600223, JString, required = false,
+  if valid_598272 != nil:
+    section.add "X-Amz-Date", valid_598272
+  var valid_598273 = header.getOrDefault("X-Amz-Credential")
+  valid_598273 = validateParameter(valid_598273, JString, required = false,
                                  default = nil)
-  if valid_600223 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600223
-  var valid_600224 = header.getOrDefault("X-Amz-Credential")
-  valid_600224 = validateParameter(valid_600224, JString, required = false,
+  if valid_598273 != nil:
+    section.add "X-Amz-Credential", valid_598273
+  var valid_598274 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598274 = validateParameter(valid_598274, JString, required = false,
                                  default = nil)
-  if valid_600224 != nil:
-    section.add "X-Amz-Credential", valid_600224
+  if valid_598274 != nil:
+    section.add "X-Amz-Security-Token", valid_598274
+  var valid_598275 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598275 = validateParameter(valid_598275, JString, required = false,
+                                 default = nil)
+  if valid_598275 != nil:
+    section.add "X-Amz-Algorithm", valid_598275
+  var valid_598276 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598276 = validateParameter(valid_598276, JString, required = false,
+                                 default = nil)
+  if valid_598276 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598276
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2141,47 +2386,48 @@ proc validate_ListAccountSettings_600215(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600226: Call_ListAccountSettings_600214; path: JsonNode;
+proc call*(call_598278: Call_ListAccountSettings_598266; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the account settings for a specified principal.
   ## 
-  let valid = call_600226.validator(path, query, header, formData, body)
-  let scheme = call_600226.pickScheme
+  let valid = call_598278.validator(path, query, header, formData, body)
+  let scheme = call_598278.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600226.url(scheme.get, call_600226.host, call_600226.base,
-                         call_600226.route, valid.getOrDefault("path"),
+  let url = call_598278.url(scheme.get, call_598278.host, call_598278.base,
+                         call_598278.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600226, url, valid)
+  result = atozHook(call_598278, url, valid)
 
-proc call*(call_600227: Call_ListAccountSettings_600214; body: JsonNode): Recallable =
+proc call*(call_598279: Call_ListAccountSettings_598266; body: JsonNode): Recallable =
   ## listAccountSettings
   ## Lists the account settings for a specified principal.
   ##   body: JObject (required)
-  var body_600228 = newJObject()
+  var body_598280 = newJObject()
   if body != nil:
-    body_600228 = body
-  result = call_600227.call(nil, nil, nil, nil, body_600228)
+    body_598280 = body
+  result = call_598279.call(nil, nil, nil, nil, body_598280)
 
-var listAccountSettings* = Call_ListAccountSettings_600214(
+var listAccountSettings* = Call_ListAccountSettings_598266(
     name: "listAccountSettings", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListAccountSettings",
-    validator: validate_ListAccountSettings_600215, base: "/",
-    url: url_ListAccountSettings_600216, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListAccountSettings_598267, base: "/",
+    url: url_ListAccountSettings_598268, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAttributes_600229 = ref object of OpenApiRestCall_599368
-proc url_ListAttributes_600231(protocol: Scheme; host: string; base: string;
+  Call_ListAttributes_598281 = ref object of OpenApiRestCall_597389
+proc url_ListAttributes_598283(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListAttributes_600230(path: JsonNode; query: JsonNode;
+proc validate_ListAttributes_598282(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Lists the attributes for Amazon ECS resources within a specified target type and cluster. When you specify a target type and cluster, <code>ListAttributes</code> returns a list of attribute objects, one for each attribute on each resource. You can filter the list of results to a single attribute name to only return results that have that name. You can also filter the results by attribute name and value, for example, to see which container instances in a cluster are running a Linux AMI (<code>ecs.os-type=linux</code>). 
@@ -2190,60 +2436,75 @@ proc validate_ListAttributes_600230(path: JsonNode; query: JsonNode;
   result = newJObject()
   section = newJObject()
   result.add "path", section
+  ## parameters in `query` object:
+  ##   nextToken: JString
+  ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
+  var valid_598284 = query.getOrDefault("nextToken")
+  valid_598284 = validateParameter(valid_598284, JString, required = false,
+                                 default = nil)
+  if valid_598284 != nil:
+    section.add "nextToken", valid_598284
+  var valid_598285 = query.getOrDefault("maxResults")
+  valid_598285 = validateParameter(valid_598285, JString, required = false,
+                                 default = nil)
+  if valid_598285 != nil:
+    section.add "maxResults", valid_598285
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600232 = header.getOrDefault("X-Amz-Date")
-  valid_600232 = validateParameter(valid_600232, JString, required = false,
-                                 default = nil)
-  if valid_600232 != nil:
-    section.add "X-Amz-Date", valid_600232
-  var valid_600233 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600233 = validateParameter(valid_600233, JString, required = false,
-                                 default = nil)
-  if valid_600233 != nil:
-    section.add "X-Amz-Security-Token", valid_600233
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600234 = header.getOrDefault("X-Amz-Target")
-  valid_600234 = validateParameter(valid_600234, JString, required = true, default = newJString(
+  var valid_598286 = header.getOrDefault("X-Amz-Target")
+  valid_598286 = validateParameter(valid_598286, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListAttributes"))
-  if valid_600234 != nil:
-    section.add "X-Amz-Target", valid_600234
-  var valid_600235 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600235 = validateParameter(valid_600235, JString, required = false,
+  if valid_598286 != nil:
+    section.add "X-Amz-Target", valid_598286
+  var valid_598287 = header.getOrDefault("X-Amz-Signature")
+  valid_598287 = validateParameter(valid_598287, JString, required = false,
                                  default = nil)
-  if valid_600235 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600235
-  var valid_600236 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600236 = validateParameter(valid_600236, JString, required = false,
+  if valid_598287 != nil:
+    section.add "X-Amz-Signature", valid_598287
+  var valid_598288 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598288 = validateParameter(valid_598288, JString, required = false,
                                  default = nil)
-  if valid_600236 != nil:
-    section.add "X-Amz-Algorithm", valid_600236
-  var valid_600237 = header.getOrDefault("X-Amz-Signature")
-  valid_600237 = validateParameter(valid_600237, JString, required = false,
+  if valid_598288 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598288
+  var valid_598289 = header.getOrDefault("X-Amz-Date")
+  valid_598289 = validateParameter(valid_598289, JString, required = false,
                                  default = nil)
-  if valid_600237 != nil:
-    section.add "X-Amz-Signature", valid_600237
-  var valid_600238 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600238 = validateParameter(valid_600238, JString, required = false,
+  if valid_598289 != nil:
+    section.add "X-Amz-Date", valid_598289
+  var valid_598290 = header.getOrDefault("X-Amz-Credential")
+  valid_598290 = validateParameter(valid_598290, JString, required = false,
                                  default = nil)
-  if valid_600238 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600238
-  var valid_600239 = header.getOrDefault("X-Amz-Credential")
-  valid_600239 = validateParameter(valid_600239, JString, required = false,
+  if valid_598290 != nil:
+    section.add "X-Amz-Credential", valid_598290
+  var valid_598291 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598291 = validateParameter(valid_598291, JString, required = false,
                                  default = nil)
-  if valid_600239 != nil:
-    section.add "X-Amz-Credential", valid_600239
+  if valid_598291 != nil:
+    section.add "X-Amz-Security-Token", valid_598291
+  var valid_598292 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598292 = validateParameter(valid_598292, JString, required = false,
+                                 default = nil)
+  if valid_598292 != nil:
+    section.add "X-Amz-Algorithm", valid_598292
+  var valid_598293 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598293 = validateParameter(valid_598293, JString, required = false,
+                                 default = nil)
+  if valid_598293 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598293
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2254,47 +2515,56 @@ proc validate_ListAttributes_600230(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600241: Call_ListAttributes_600229; path: JsonNode; query: JsonNode;
+proc call*(call_598295: Call_ListAttributes_598281; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the attributes for Amazon ECS resources within a specified target type and cluster. When you specify a target type and cluster, <code>ListAttributes</code> returns a list of attribute objects, one for each attribute on each resource. You can filter the list of results to a single attribute name to only return results that have that name. You can also filter the results by attribute name and value, for example, to see which container instances in a cluster are running a Linux AMI (<code>ecs.os-type=linux</code>). 
   ## 
-  let valid = call_600241.validator(path, query, header, formData, body)
-  let scheme = call_600241.pickScheme
+  let valid = call_598295.validator(path, query, header, formData, body)
+  let scheme = call_598295.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600241.url(scheme.get, call_600241.host, call_600241.base,
-                         call_600241.route, valid.getOrDefault("path"),
+  let url = call_598295.url(scheme.get, call_598295.host, call_598295.base,
+                         call_598295.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600241, url, valid)
+  result = atozHook(call_598295, url, valid)
 
-proc call*(call_600242: Call_ListAttributes_600229; body: JsonNode): Recallable =
+proc call*(call_598296: Call_ListAttributes_598281; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listAttributes
   ## Lists the attributes for Amazon ECS resources within a specified target type and cluster. When you specify a target type and cluster, <code>ListAttributes</code> returns a list of attribute objects, one for each attribute on each resource. You can filter the list of results to a single attribute name to only return results that have that name. You can also filter the results by attribute name and value, for example, to see which container instances in a cluster are running a Linux AMI (<code>ecs.os-type=linux</code>). 
+  ##   nextToken: string
+  ##            : Pagination token
   ##   body: JObject (required)
-  var body_600243 = newJObject()
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_598297 = newJObject()
+  var body_598298 = newJObject()
+  add(query_598297, "nextToken", newJString(nextToken))
   if body != nil:
-    body_600243 = body
-  result = call_600242.call(nil, nil, nil, nil, body_600243)
+    body_598298 = body
+  add(query_598297, "maxResults", newJString(maxResults))
+  result = call_598296.call(nil, query_598297, nil, nil, body_598298)
 
-var listAttributes* = Call_ListAttributes_600229(name: "listAttributes",
+var listAttributes* = Call_ListAttributes_598281(name: "listAttributes",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListAttributes",
-    validator: validate_ListAttributes_600230, base: "/", url: url_ListAttributes_600231,
+    validator: validate_ListAttributes_598282, base: "/", url: url_ListAttributes_598283,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListClusters_600244 = ref object of OpenApiRestCall_599368
-proc url_ListClusters_600246(protocol: Scheme; host: string; base: string;
+  Call_ListClusters_598300 = ref object of OpenApiRestCall_597389
+proc url_ListClusters_598302(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListClusters_600245(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListClusters_598301(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of existing clusters.
   ## 
@@ -2303,74 +2573,74 @@ proc validate_ListClusters_600245(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   maxResults: JString
-  ##             : Pagination limit
   ##   nextToken: JString
   ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_600247 = query.getOrDefault("maxResults")
-  valid_600247 = validateParameter(valid_600247, JString, required = false,
+  var valid_598303 = query.getOrDefault("nextToken")
+  valid_598303 = validateParameter(valid_598303, JString, required = false,
                                  default = nil)
-  if valid_600247 != nil:
-    section.add "maxResults", valid_600247
-  var valid_600248 = query.getOrDefault("nextToken")
-  valid_600248 = validateParameter(valid_600248, JString, required = false,
+  if valid_598303 != nil:
+    section.add "nextToken", valid_598303
+  var valid_598304 = query.getOrDefault("maxResults")
+  valid_598304 = validateParameter(valid_598304, JString, required = false,
                                  default = nil)
-  if valid_600248 != nil:
-    section.add "nextToken", valid_600248
+  if valid_598304 != nil:
+    section.add "maxResults", valid_598304
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600249 = header.getOrDefault("X-Amz-Date")
-  valid_600249 = validateParameter(valid_600249, JString, required = false,
-                                 default = nil)
-  if valid_600249 != nil:
-    section.add "X-Amz-Date", valid_600249
-  var valid_600250 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600250 = validateParameter(valid_600250, JString, required = false,
-                                 default = nil)
-  if valid_600250 != nil:
-    section.add "X-Amz-Security-Token", valid_600250
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600251 = header.getOrDefault("X-Amz-Target")
-  valid_600251 = validateParameter(valid_600251, JString, required = true, default = newJString(
+  var valid_598305 = header.getOrDefault("X-Amz-Target")
+  valid_598305 = validateParameter(valid_598305, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListClusters"))
-  if valid_600251 != nil:
-    section.add "X-Amz-Target", valid_600251
-  var valid_600252 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600252 = validateParameter(valid_600252, JString, required = false,
+  if valid_598305 != nil:
+    section.add "X-Amz-Target", valid_598305
+  var valid_598306 = header.getOrDefault("X-Amz-Signature")
+  valid_598306 = validateParameter(valid_598306, JString, required = false,
                                  default = nil)
-  if valid_600252 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600252
-  var valid_600253 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600253 = validateParameter(valid_600253, JString, required = false,
+  if valid_598306 != nil:
+    section.add "X-Amz-Signature", valid_598306
+  var valid_598307 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598307 = validateParameter(valid_598307, JString, required = false,
                                  default = nil)
-  if valid_600253 != nil:
-    section.add "X-Amz-Algorithm", valid_600253
-  var valid_600254 = header.getOrDefault("X-Amz-Signature")
-  valid_600254 = validateParameter(valid_600254, JString, required = false,
+  if valid_598307 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598307
+  var valid_598308 = header.getOrDefault("X-Amz-Date")
+  valid_598308 = validateParameter(valid_598308, JString, required = false,
                                  default = nil)
-  if valid_600254 != nil:
-    section.add "X-Amz-Signature", valid_600254
-  var valid_600255 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600255 = validateParameter(valid_600255, JString, required = false,
+  if valid_598308 != nil:
+    section.add "X-Amz-Date", valid_598308
+  var valid_598309 = header.getOrDefault("X-Amz-Credential")
+  valid_598309 = validateParameter(valid_598309, JString, required = false,
                                  default = nil)
-  if valid_600255 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600255
-  var valid_600256 = header.getOrDefault("X-Amz-Credential")
-  valid_600256 = validateParameter(valid_600256, JString, required = false,
+  if valid_598309 != nil:
+    section.add "X-Amz-Credential", valid_598309
+  var valid_598310 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598310 = validateParameter(valid_598310, JString, required = false,
                                  default = nil)
-  if valid_600256 != nil:
-    section.add "X-Amz-Credential", valid_600256
+  if valid_598310 != nil:
+    section.add "X-Amz-Security-Token", valid_598310
+  var valid_598311 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598311 = validateParameter(valid_598311, JString, required = false,
+                                 default = nil)
+  if valid_598311 != nil:
+    section.add "X-Amz-Algorithm", valid_598311
+  var valid_598312 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598312 = validateParameter(valid_598312, JString, required = false,
+                                 default = nil)
+  if valid_598312 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598312
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2381,55 +2651,56 @@ proc validate_ListClusters_600245(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600258: Call_ListClusters_600244; path: JsonNode; query: JsonNode;
+proc call*(call_598314: Call_ListClusters_598300; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of existing clusters.
   ## 
-  let valid = call_600258.validator(path, query, header, formData, body)
-  let scheme = call_600258.pickScheme
+  let valid = call_598314.validator(path, query, header, formData, body)
+  let scheme = call_598314.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600258.url(scheme.get, call_600258.host, call_600258.base,
-                         call_600258.route, valid.getOrDefault("path"),
+  let url = call_598314.url(scheme.get, call_598314.host, call_598314.base,
+                         call_598314.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600258, url, valid)
+  result = atozHook(call_598314, url, valid)
 
-proc call*(call_600259: Call_ListClusters_600244; body: JsonNode;
-          maxResults: string = ""; nextToken: string = ""): Recallable =
+proc call*(call_598315: Call_ListClusters_598300; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listClusters
   ## Returns a list of existing clusters.
-  ##   maxResults: string
-  ##             : Pagination limit
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_600260 = newJObject()
-  var body_600261 = newJObject()
-  add(query_600260, "maxResults", newJString(maxResults))
-  add(query_600260, "nextToken", newJString(nextToken))
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_598316 = newJObject()
+  var body_598317 = newJObject()
+  add(query_598316, "nextToken", newJString(nextToken))
   if body != nil:
-    body_600261 = body
-  result = call_600259.call(nil, query_600260, nil, nil, body_600261)
+    body_598317 = body
+  add(query_598316, "maxResults", newJString(maxResults))
+  result = call_598315.call(nil, query_598316, nil, nil, body_598317)
 
-var listClusters* = Call_ListClusters_600244(name: "listClusters",
+var listClusters* = Call_ListClusters_598300(name: "listClusters",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListClusters",
-    validator: validate_ListClusters_600245, base: "/", url: url_ListClusters_600246,
+    validator: validate_ListClusters_598301, base: "/", url: url_ListClusters_598302,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListContainerInstances_600263 = ref object of OpenApiRestCall_599368
-proc url_ListContainerInstances_600265(protocol: Scheme; host: string; base: string;
+  Call_ListContainerInstances_598318 = ref object of OpenApiRestCall_597389
+proc url_ListContainerInstances_598320(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListContainerInstances_600264(path: JsonNode; query: JsonNode;
+proc validate_ListContainerInstances_598319(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of container instances in a specified cluster. You can filter the results of a <code>ListContainerInstances</code> operation with cluster query language statements inside the <code>filter</code> parameter. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cluster-query-language.html">Cluster Query Language</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
@@ -2438,74 +2709,74 @@ proc validate_ListContainerInstances_600264(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   maxResults: JString
-  ##             : Pagination limit
   ##   nextToken: JString
   ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_600266 = query.getOrDefault("maxResults")
-  valid_600266 = validateParameter(valid_600266, JString, required = false,
+  var valid_598321 = query.getOrDefault("nextToken")
+  valid_598321 = validateParameter(valid_598321, JString, required = false,
                                  default = nil)
-  if valid_600266 != nil:
-    section.add "maxResults", valid_600266
-  var valid_600267 = query.getOrDefault("nextToken")
-  valid_600267 = validateParameter(valid_600267, JString, required = false,
+  if valid_598321 != nil:
+    section.add "nextToken", valid_598321
+  var valid_598322 = query.getOrDefault("maxResults")
+  valid_598322 = validateParameter(valid_598322, JString, required = false,
                                  default = nil)
-  if valid_600267 != nil:
-    section.add "nextToken", valid_600267
+  if valid_598322 != nil:
+    section.add "maxResults", valid_598322
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600268 = header.getOrDefault("X-Amz-Date")
-  valid_600268 = validateParameter(valid_600268, JString, required = false,
-                                 default = nil)
-  if valid_600268 != nil:
-    section.add "X-Amz-Date", valid_600268
-  var valid_600269 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600269 = validateParameter(valid_600269, JString, required = false,
-                                 default = nil)
-  if valid_600269 != nil:
-    section.add "X-Amz-Security-Token", valid_600269
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600270 = header.getOrDefault("X-Amz-Target")
-  valid_600270 = validateParameter(valid_600270, JString, required = true, default = newJString(
+  var valid_598323 = header.getOrDefault("X-Amz-Target")
+  valid_598323 = validateParameter(valid_598323, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListContainerInstances"))
-  if valid_600270 != nil:
-    section.add "X-Amz-Target", valid_600270
-  var valid_600271 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600271 = validateParameter(valid_600271, JString, required = false,
+  if valid_598323 != nil:
+    section.add "X-Amz-Target", valid_598323
+  var valid_598324 = header.getOrDefault("X-Amz-Signature")
+  valid_598324 = validateParameter(valid_598324, JString, required = false,
                                  default = nil)
-  if valid_600271 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600271
-  var valid_600272 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600272 = validateParameter(valid_600272, JString, required = false,
+  if valid_598324 != nil:
+    section.add "X-Amz-Signature", valid_598324
+  var valid_598325 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598325 = validateParameter(valid_598325, JString, required = false,
                                  default = nil)
-  if valid_600272 != nil:
-    section.add "X-Amz-Algorithm", valid_600272
-  var valid_600273 = header.getOrDefault("X-Amz-Signature")
-  valid_600273 = validateParameter(valid_600273, JString, required = false,
+  if valid_598325 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598325
+  var valid_598326 = header.getOrDefault("X-Amz-Date")
+  valid_598326 = validateParameter(valid_598326, JString, required = false,
                                  default = nil)
-  if valid_600273 != nil:
-    section.add "X-Amz-Signature", valid_600273
-  var valid_600274 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600274 = validateParameter(valid_600274, JString, required = false,
+  if valid_598326 != nil:
+    section.add "X-Amz-Date", valid_598326
+  var valid_598327 = header.getOrDefault("X-Amz-Credential")
+  valid_598327 = validateParameter(valid_598327, JString, required = false,
                                  default = nil)
-  if valid_600274 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600274
-  var valid_600275 = header.getOrDefault("X-Amz-Credential")
-  valid_600275 = validateParameter(valid_600275, JString, required = false,
+  if valid_598327 != nil:
+    section.add "X-Amz-Credential", valid_598327
+  var valid_598328 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598328 = validateParameter(valid_598328, JString, required = false,
                                  default = nil)
-  if valid_600275 != nil:
-    section.add "X-Amz-Credential", valid_600275
+  if valid_598328 != nil:
+    section.add "X-Amz-Security-Token", valid_598328
+  var valid_598329 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598329 = validateParameter(valid_598329, JString, required = false,
+                                 default = nil)
+  if valid_598329 != nil:
+    section.add "X-Amz-Algorithm", valid_598329
+  var valid_598330 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598330 = validateParameter(valid_598330, JString, required = false,
+                                 default = nil)
+  if valid_598330 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598330
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2516,55 +2787,56 @@ proc validate_ListContainerInstances_600264(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600277: Call_ListContainerInstances_600263; path: JsonNode;
+proc call*(call_598332: Call_ListContainerInstances_598318; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of container instances in a specified cluster. You can filter the results of a <code>ListContainerInstances</code> operation with cluster query language statements inside the <code>filter</code> parameter. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cluster-query-language.html">Cluster Query Language</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
-  let valid = call_600277.validator(path, query, header, formData, body)
-  let scheme = call_600277.pickScheme
+  let valid = call_598332.validator(path, query, header, formData, body)
+  let scheme = call_598332.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600277.url(scheme.get, call_600277.host, call_600277.base,
-                         call_600277.route, valid.getOrDefault("path"),
+  let url = call_598332.url(scheme.get, call_598332.host, call_598332.base,
+                         call_598332.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600277, url, valid)
+  result = atozHook(call_598332, url, valid)
 
-proc call*(call_600278: Call_ListContainerInstances_600263; body: JsonNode;
-          maxResults: string = ""; nextToken: string = ""): Recallable =
+proc call*(call_598333: Call_ListContainerInstances_598318; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listContainerInstances
   ## Returns a list of container instances in a specified cluster. You can filter the results of a <code>ListContainerInstances</code> operation with cluster query language statements inside the <code>filter</code> parameter. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cluster-query-language.html">Cluster Query Language</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
-  ##   maxResults: string
-  ##             : Pagination limit
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_600279 = newJObject()
-  var body_600280 = newJObject()
-  add(query_600279, "maxResults", newJString(maxResults))
-  add(query_600279, "nextToken", newJString(nextToken))
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_598334 = newJObject()
+  var body_598335 = newJObject()
+  add(query_598334, "nextToken", newJString(nextToken))
   if body != nil:
-    body_600280 = body
-  result = call_600278.call(nil, query_600279, nil, nil, body_600280)
+    body_598335 = body
+  add(query_598334, "maxResults", newJString(maxResults))
+  result = call_598333.call(nil, query_598334, nil, nil, body_598335)
 
-var listContainerInstances* = Call_ListContainerInstances_600263(
+var listContainerInstances* = Call_ListContainerInstances_598318(
     name: "listContainerInstances", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListContainerInstances",
-    validator: validate_ListContainerInstances_600264, base: "/",
-    url: url_ListContainerInstances_600265, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListContainerInstances_598319, base: "/",
+    url: url_ListContainerInstances_598320, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListServices_600281 = ref object of OpenApiRestCall_599368
-proc url_ListServices_600283(protocol: Scheme; host: string; base: string;
+  Call_ListServices_598336 = ref object of OpenApiRestCall_597389
+proc url_ListServices_598338(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListServices_600282(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListServices_598337(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the services that are running in a specified cluster.
   ## 
@@ -2573,74 +2845,74 @@ proc validate_ListServices_600282(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   maxResults: JString
-  ##             : Pagination limit
   ##   nextToken: JString
   ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_600284 = query.getOrDefault("maxResults")
-  valid_600284 = validateParameter(valid_600284, JString, required = false,
+  var valid_598339 = query.getOrDefault("nextToken")
+  valid_598339 = validateParameter(valid_598339, JString, required = false,
                                  default = nil)
-  if valid_600284 != nil:
-    section.add "maxResults", valid_600284
-  var valid_600285 = query.getOrDefault("nextToken")
-  valid_600285 = validateParameter(valid_600285, JString, required = false,
+  if valid_598339 != nil:
+    section.add "nextToken", valid_598339
+  var valid_598340 = query.getOrDefault("maxResults")
+  valid_598340 = validateParameter(valid_598340, JString, required = false,
                                  default = nil)
-  if valid_600285 != nil:
-    section.add "nextToken", valid_600285
+  if valid_598340 != nil:
+    section.add "maxResults", valid_598340
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600286 = header.getOrDefault("X-Amz-Date")
-  valid_600286 = validateParameter(valid_600286, JString, required = false,
-                                 default = nil)
-  if valid_600286 != nil:
-    section.add "X-Amz-Date", valid_600286
-  var valid_600287 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600287 = validateParameter(valid_600287, JString, required = false,
-                                 default = nil)
-  if valid_600287 != nil:
-    section.add "X-Amz-Security-Token", valid_600287
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600288 = header.getOrDefault("X-Amz-Target")
-  valid_600288 = validateParameter(valid_600288, JString, required = true, default = newJString(
+  var valid_598341 = header.getOrDefault("X-Amz-Target")
+  valid_598341 = validateParameter(valid_598341, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListServices"))
-  if valid_600288 != nil:
-    section.add "X-Amz-Target", valid_600288
-  var valid_600289 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600289 = validateParameter(valid_600289, JString, required = false,
+  if valid_598341 != nil:
+    section.add "X-Amz-Target", valid_598341
+  var valid_598342 = header.getOrDefault("X-Amz-Signature")
+  valid_598342 = validateParameter(valid_598342, JString, required = false,
                                  default = nil)
-  if valid_600289 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600289
-  var valid_600290 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600290 = validateParameter(valid_600290, JString, required = false,
+  if valid_598342 != nil:
+    section.add "X-Amz-Signature", valid_598342
+  var valid_598343 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598343 = validateParameter(valid_598343, JString, required = false,
                                  default = nil)
-  if valid_600290 != nil:
-    section.add "X-Amz-Algorithm", valid_600290
-  var valid_600291 = header.getOrDefault("X-Amz-Signature")
-  valid_600291 = validateParameter(valid_600291, JString, required = false,
+  if valid_598343 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598343
+  var valid_598344 = header.getOrDefault("X-Amz-Date")
+  valid_598344 = validateParameter(valid_598344, JString, required = false,
                                  default = nil)
-  if valid_600291 != nil:
-    section.add "X-Amz-Signature", valid_600291
-  var valid_600292 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600292 = validateParameter(valid_600292, JString, required = false,
+  if valid_598344 != nil:
+    section.add "X-Amz-Date", valid_598344
+  var valid_598345 = header.getOrDefault("X-Amz-Credential")
+  valid_598345 = validateParameter(valid_598345, JString, required = false,
                                  default = nil)
-  if valid_600292 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600292
-  var valid_600293 = header.getOrDefault("X-Amz-Credential")
-  valid_600293 = validateParameter(valid_600293, JString, required = false,
+  if valid_598345 != nil:
+    section.add "X-Amz-Credential", valid_598345
+  var valid_598346 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598346 = validateParameter(valid_598346, JString, required = false,
                                  default = nil)
-  if valid_600293 != nil:
-    section.add "X-Amz-Credential", valid_600293
+  if valid_598346 != nil:
+    section.add "X-Amz-Security-Token", valid_598346
+  var valid_598347 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598347 = validateParameter(valid_598347, JString, required = false,
+                                 default = nil)
+  if valid_598347 != nil:
+    section.add "X-Amz-Algorithm", valid_598347
+  var valid_598348 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598348 = validateParameter(valid_598348, JString, required = false,
+                                 default = nil)
+  if valid_598348 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598348
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2651,55 +2923,56 @@ proc validate_ListServices_600282(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600295: Call_ListServices_600281; path: JsonNode; query: JsonNode;
+proc call*(call_598350: Call_ListServices_598336; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the services that are running in a specified cluster.
   ## 
-  let valid = call_600295.validator(path, query, header, formData, body)
-  let scheme = call_600295.pickScheme
+  let valid = call_598350.validator(path, query, header, formData, body)
+  let scheme = call_598350.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600295.url(scheme.get, call_600295.host, call_600295.base,
-                         call_600295.route, valid.getOrDefault("path"),
+  let url = call_598350.url(scheme.get, call_598350.host, call_598350.base,
+                         call_598350.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600295, url, valid)
+  result = atozHook(call_598350, url, valid)
 
-proc call*(call_600296: Call_ListServices_600281; body: JsonNode;
-          maxResults: string = ""; nextToken: string = ""): Recallable =
+proc call*(call_598351: Call_ListServices_598336; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listServices
   ## Lists the services that are running in a specified cluster.
-  ##   maxResults: string
-  ##             : Pagination limit
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_600297 = newJObject()
-  var body_600298 = newJObject()
-  add(query_600297, "maxResults", newJString(maxResults))
-  add(query_600297, "nextToken", newJString(nextToken))
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_598352 = newJObject()
+  var body_598353 = newJObject()
+  add(query_598352, "nextToken", newJString(nextToken))
   if body != nil:
-    body_600298 = body
-  result = call_600296.call(nil, query_600297, nil, nil, body_600298)
+    body_598353 = body
+  add(query_598352, "maxResults", newJString(maxResults))
+  result = call_598351.call(nil, query_598352, nil, nil, body_598353)
 
-var listServices* = Call_ListServices_600281(name: "listServices",
+var listServices* = Call_ListServices_598336(name: "listServices",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListServices",
-    validator: validate_ListServices_600282, base: "/", url: url_ListServices_600283,
+    validator: validate_ListServices_598337, base: "/", url: url_ListServices_598338,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_600299 = ref object of OpenApiRestCall_599368
-proc url_ListTagsForResource_600301(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_598354 = ref object of OpenApiRestCall_597389
+proc url_ListTagsForResource_598356(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTagsForResource_600300(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_598355(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## List the tags for an Amazon ECS resource.
@@ -2711,57 +2984,57 @@ proc validate_ListTagsForResource_600300(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600302 = header.getOrDefault("X-Amz-Date")
-  valid_600302 = validateParameter(valid_600302, JString, required = false,
-                                 default = nil)
-  if valid_600302 != nil:
-    section.add "X-Amz-Date", valid_600302
-  var valid_600303 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600303 = validateParameter(valid_600303, JString, required = false,
-                                 default = nil)
-  if valid_600303 != nil:
-    section.add "X-Amz-Security-Token", valid_600303
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600304 = header.getOrDefault("X-Amz-Target")
-  valid_600304 = validateParameter(valid_600304, JString, required = true, default = newJString(
+  var valid_598357 = header.getOrDefault("X-Amz-Target")
+  valid_598357 = validateParameter(valid_598357, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListTagsForResource"))
-  if valid_600304 != nil:
-    section.add "X-Amz-Target", valid_600304
-  var valid_600305 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600305 = validateParameter(valid_600305, JString, required = false,
+  if valid_598357 != nil:
+    section.add "X-Amz-Target", valid_598357
+  var valid_598358 = header.getOrDefault("X-Amz-Signature")
+  valid_598358 = validateParameter(valid_598358, JString, required = false,
                                  default = nil)
-  if valid_600305 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600305
-  var valid_600306 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600306 = validateParameter(valid_600306, JString, required = false,
+  if valid_598358 != nil:
+    section.add "X-Amz-Signature", valid_598358
+  var valid_598359 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598359 = validateParameter(valid_598359, JString, required = false,
                                  default = nil)
-  if valid_600306 != nil:
-    section.add "X-Amz-Algorithm", valid_600306
-  var valid_600307 = header.getOrDefault("X-Amz-Signature")
-  valid_600307 = validateParameter(valid_600307, JString, required = false,
+  if valid_598359 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598359
+  var valid_598360 = header.getOrDefault("X-Amz-Date")
+  valid_598360 = validateParameter(valid_598360, JString, required = false,
                                  default = nil)
-  if valid_600307 != nil:
-    section.add "X-Amz-Signature", valid_600307
-  var valid_600308 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600308 = validateParameter(valid_600308, JString, required = false,
+  if valid_598360 != nil:
+    section.add "X-Amz-Date", valid_598360
+  var valid_598361 = header.getOrDefault("X-Amz-Credential")
+  valid_598361 = validateParameter(valid_598361, JString, required = false,
                                  default = nil)
-  if valid_600308 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600308
-  var valid_600309 = header.getOrDefault("X-Amz-Credential")
-  valid_600309 = validateParameter(valid_600309, JString, required = false,
+  if valid_598361 != nil:
+    section.add "X-Amz-Credential", valid_598361
+  var valid_598362 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598362 = validateParameter(valid_598362, JString, required = false,
                                  default = nil)
-  if valid_600309 != nil:
-    section.add "X-Amz-Credential", valid_600309
+  if valid_598362 != nil:
+    section.add "X-Amz-Security-Token", valid_598362
+  var valid_598363 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598363 = validateParameter(valid_598363, JString, required = false,
+                                 default = nil)
+  if valid_598363 != nil:
+    section.add "X-Amz-Algorithm", valid_598363
+  var valid_598364 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598364 = validateParameter(valid_598364, JString, required = false,
+                                 default = nil)
+  if valid_598364 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598364
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2772,47 +3045,48 @@ proc validate_ListTagsForResource_600300(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600311: Call_ListTagsForResource_600299; path: JsonNode;
+proc call*(call_598366: Call_ListTagsForResource_598354; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List the tags for an Amazon ECS resource.
   ## 
-  let valid = call_600311.validator(path, query, header, formData, body)
-  let scheme = call_600311.pickScheme
+  let valid = call_598366.validator(path, query, header, formData, body)
+  let scheme = call_598366.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600311.url(scheme.get, call_600311.host, call_600311.base,
-                         call_600311.route, valid.getOrDefault("path"),
+  let url = call_598366.url(scheme.get, call_598366.host, call_598366.base,
+                         call_598366.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600311, url, valid)
+  result = atozHook(call_598366, url, valid)
 
-proc call*(call_600312: Call_ListTagsForResource_600299; body: JsonNode): Recallable =
+proc call*(call_598367: Call_ListTagsForResource_598354; body: JsonNode): Recallable =
   ## listTagsForResource
   ## List the tags for an Amazon ECS resource.
   ##   body: JObject (required)
-  var body_600313 = newJObject()
+  var body_598368 = newJObject()
   if body != nil:
-    body_600313 = body
-  result = call_600312.call(nil, nil, nil, nil, body_600313)
+    body_598368 = body
+  result = call_598367.call(nil, nil, nil, nil, body_598368)
 
-var listTagsForResource* = Call_ListTagsForResource_600299(
+var listTagsForResource* = Call_ListTagsForResource_598354(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListTagsForResource",
-    validator: validate_ListTagsForResource_600300, base: "/",
-    url: url_ListTagsForResource_600301, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_598355, base: "/",
+    url: url_ListTagsForResource_598356, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTaskDefinitionFamilies_600314 = ref object of OpenApiRestCall_599368
-proc url_ListTaskDefinitionFamilies_600316(protocol: Scheme; host: string;
+  Call_ListTaskDefinitionFamilies_598369 = ref object of OpenApiRestCall_597389
+proc url_ListTaskDefinitionFamilies_598371(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTaskDefinitionFamilies_600315(path: JsonNode; query: JsonNode;
+proc validate_ListTaskDefinitionFamilies_598370(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of task definition families that are registered to your account (which may include task definition families that no longer have any <code>ACTIVE</code> task definition revisions).</p> <p>You can filter out task definition families that do not contain any <code>ACTIVE</code> task definition revisions by setting the <code>status</code> parameter to <code>ACTIVE</code>. You can also filter the results with the <code>familyPrefix</code> parameter.</p>
   ## 
@@ -2821,74 +3095,74 @@ proc validate_ListTaskDefinitionFamilies_600315(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   maxResults: JString
-  ##             : Pagination limit
   ##   nextToken: JString
   ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_600317 = query.getOrDefault("maxResults")
-  valid_600317 = validateParameter(valid_600317, JString, required = false,
+  var valid_598372 = query.getOrDefault("nextToken")
+  valid_598372 = validateParameter(valid_598372, JString, required = false,
                                  default = nil)
-  if valid_600317 != nil:
-    section.add "maxResults", valid_600317
-  var valid_600318 = query.getOrDefault("nextToken")
-  valid_600318 = validateParameter(valid_600318, JString, required = false,
+  if valid_598372 != nil:
+    section.add "nextToken", valid_598372
+  var valid_598373 = query.getOrDefault("maxResults")
+  valid_598373 = validateParameter(valid_598373, JString, required = false,
                                  default = nil)
-  if valid_600318 != nil:
-    section.add "nextToken", valid_600318
+  if valid_598373 != nil:
+    section.add "maxResults", valid_598373
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600319 = header.getOrDefault("X-Amz-Date")
-  valid_600319 = validateParameter(valid_600319, JString, required = false,
-                                 default = nil)
-  if valid_600319 != nil:
-    section.add "X-Amz-Date", valid_600319
-  var valid_600320 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600320 = validateParameter(valid_600320, JString, required = false,
-                                 default = nil)
-  if valid_600320 != nil:
-    section.add "X-Amz-Security-Token", valid_600320
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600321 = header.getOrDefault("X-Amz-Target")
-  valid_600321 = validateParameter(valid_600321, JString, required = true, default = newJString(
+  var valid_598374 = header.getOrDefault("X-Amz-Target")
+  valid_598374 = validateParameter(valid_598374, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListTaskDefinitionFamilies"))
-  if valid_600321 != nil:
-    section.add "X-Amz-Target", valid_600321
-  var valid_600322 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600322 = validateParameter(valid_600322, JString, required = false,
+  if valid_598374 != nil:
+    section.add "X-Amz-Target", valid_598374
+  var valid_598375 = header.getOrDefault("X-Amz-Signature")
+  valid_598375 = validateParameter(valid_598375, JString, required = false,
                                  default = nil)
-  if valid_600322 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600322
-  var valid_600323 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600323 = validateParameter(valid_600323, JString, required = false,
+  if valid_598375 != nil:
+    section.add "X-Amz-Signature", valid_598375
+  var valid_598376 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598376 = validateParameter(valid_598376, JString, required = false,
                                  default = nil)
-  if valid_600323 != nil:
-    section.add "X-Amz-Algorithm", valid_600323
-  var valid_600324 = header.getOrDefault("X-Amz-Signature")
-  valid_600324 = validateParameter(valid_600324, JString, required = false,
+  if valid_598376 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598376
+  var valid_598377 = header.getOrDefault("X-Amz-Date")
+  valid_598377 = validateParameter(valid_598377, JString, required = false,
                                  default = nil)
-  if valid_600324 != nil:
-    section.add "X-Amz-Signature", valid_600324
-  var valid_600325 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600325 = validateParameter(valid_600325, JString, required = false,
+  if valid_598377 != nil:
+    section.add "X-Amz-Date", valid_598377
+  var valid_598378 = header.getOrDefault("X-Amz-Credential")
+  valid_598378 = validateParameter(valid_598378, JString, required = false,
                                  default = nil)
-  if valid_600325 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600325
-  var valid_600326 = header.getOrDefault("X-Amz-Credential")
-  valid_600326 = validateParameter(valid_600326, JString, required = false,
+  if valid_598378 != nil:
+    section.add "X-Amz-Credential", valid_598378
+  var valid_598379 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598379 = validateParameter(valid_598379, JString, required = false,
                                  default = nil)
-  if valid_600326 != nil:
-    section.add "X-Amz-Credential", valid_600326
+  if valid_598379 != nil:
+    section.add "X-Amz-Security-Token", valid_598379
+  var valid_598380 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598380 = validateParameter(valid_598380, JString, required = false,
+                                 default = nil)
+  if valid_598380 != nil:
+    section.add "X-Amz-Algorithm", valid_598380
+  var valid_598381 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598381 = validateParameter(valid_598381, JString, required = false,
+                                 default = nil)
+  if valid_598381 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598381
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2899,56 +3173,57 @@ proc validate_ListTaskDefinitionFamilies_600315(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600328: Call_ListTaskDefinitionFamilies_600314; path: JsonNode;
+proc call*(call_598383: Call_ListTaskDefinitionFamilies_598369; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of task definition families that are registered to your account (which may include task definition families that no longer have any <code>ACTIVE</code> task definition revisions).</p> <p>You can filter out task definition families that do not contain any <code>ACTIVE</code> task definition revisions by setting the <code>status</code> parameter to <code>ACTIVE</code>. You can also filter the results with the <code>familyPrefix</code> parameter.</p>
   ## 
-  let valid = call_600328.validator(path, query, header, formData, body)
-  let scheme = call_600328.pickScheme
+  let valid = call_598383.validator(path, query, header, formData, body)
+  let scheme = call_598383.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600328.url(scheme.get, call_600328.host, call_600328.base,
-                         call_600328.route, valid.getOrDefault("path"),
+  let url = call_598383.url(scheme.get, call_598383.host, call_598383.base,
+                         call_598383.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600328, url, valid)
+  result = atozHook(call_598383, url, valid)
 
-proc call*(call_600329: Call_ListTaskDefinitionFamilies_600314; body: JsonNode;
-          maxResults: string = ""; nextToken: string = ""): Recallable =
+proc call*(call_598384: Call_ListTaskDefinitionFamilies_598369; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listTaskDefinitionFamilies
   ## <p>Returns a list of task definition families that are registered to your account (which may include task definition families that no longer have any <code>ACTIVE</code> task definition revisions).</p> <p>You can filter out task definition families that do not contain any <code>ACTIVE</code> task definition revisions by setting the <code>status</code> parameter to <code>ACTIVE</code>. You can also filter the results with the <code>familyPrefix</code> parameter.</p>
-  ##   maxResults: string
-  ##             : Pagination limit
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_600330 = newJObject()
-  var body_600331 = newJObject()
-  add(query_600330, "maxResults", newJString(maxResults))
-  add(query_600330, "nextToken", newJString(nextToken))
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_598385 = newJObject()
+  var body_598386 = newJObject()
+  add(query_598385, "nextToken", newJString(nextToken))
   if body != nil:
-    body_600331 = body
-  result = call_600329.call(nil, query_600330, nil, nil, body_600331)
+    body_598386 = body
+  add(query_598385, "maxResults", newJString(maxResults))
+  result = call_598384.call(nil, query_598385, nil, nil, body_598386)
 
-var listTaskDefinitionFamilies* = Call_ListTaskDefinitionFamilies_600314(
+var listTaskDefinitionFamilies* = Call_ListTaskDefinitionFamilies_598369(
     name: "listTaskDefinitionFamilies", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListTaskDefinitionFamilies",
-    validator: validate_ListTaskDefinitionFamilies_600315, base: "/",
-    url: url_ListTaskDefinitionFamilies_600316,
+    validator: validate_ListTaskDefinitionFamilies_598370, base: "/",
+    url: url_ListTaskDefinitionFamilies_598371,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTaskDefinitions_600332 = ref object of OpenApiRestCall_599368
-proc url_ListTaskDefinitions_600334(protocol: Scheme; host: string; base: string;
+  Call_ListTaskDefinitions_598387 = ref object of OpenApiRestCall_597389
+proc url_ListTaskDefinitions_598389(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTaskDefinitions_600333(path: JsonNode; query: JsonNode;
+proc validate_ListTaskDefinitions_598388(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns a list of task definitions that are registered to your account. You can filter the results by family name with the <code>familyPrefix</code> parameter or by status with the <code>status</code> parameter.
@@ -2958,74 +3233,74 @@ proc validate_ListTaskDefinitions_600333(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   maxResults: JString
-  ##             : Pagination limit
   ##   nextToken: JString
   ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_600335 = query.getOrDefault("maxResults")
-  valid_600335 = validateParameter(valid_600335, JString, required = false,
+  var valid_598390 = query.getOrDefault("nextToken")
+  valid_598390 = validateParameter(valid_598390, JString, required = false,
                                  default = nil)
-  if valid_600335 != nil:
-    section.add "maxResults", valid_600335
-  var valid_600336 = query.getOrDefault("nextToken")
-  valid_600336 = validateParameter(valid_600336, JString, required = false,
+  if valid_598390 != nil:
+    section.add "nextToken", valid_598390
+  var valid_598391 = query.getOrDefault("maxResults")
+  valid_598391 = validateParameter(valid_598391, JString, required = false,
                                  default = nil)
-  if valid_600336 != nil:
-    section.add "nextToken", valid_600336
+  if valid_598391 != nil:
+    section.add "maxResults", valid_598391
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600337 = header.getOrDefault("X-Amz-Date")
-  valid_600337 = validateParameter(valid_600337, JString, required = false,
-                                 default = nil)
-  if valid_600337 != nil:
-    section.add "X-Amz-Date", valid_600337
-  var valid_600338 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600338 = validateParameter(valid_600338, JString, required = false,
-                                 default = nil)
-  if valid_600338 != nil:
-    section.add "X-Amz-Security-Token", valid_600338
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600339 = header.getOrDefault("X-Amz-Target")
-  valid_600339 = validateParameter(valid_600339, JString, required = true, default = newJString(
+  var valid_598392 = header.getOrDefault("X-Amz-Target")
+  valid_598392 = validateParameter(valid_598392, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListTaskDefinitions"))
-  if valid_600339 != nil:
-    section.add "X-Amz-Target", valid_600339
-  var valid_600340 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600340 = validateParameter(valid_600340, JString, required = false,
+  if valid_598392 != nil:
+    section.add "X-Amz-Target", valid_598392
+  var valid_598393 = header.getOrDefault("X-Amz-Signature")
+  valid_598393 = validateParameter(valid_598393, JString, required = false,
                                  default = nil)
-  if valid_600340 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600340
-  var valid_600341 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600341 = validateParameter(valid_600341, JString, required = false,
+  if valid_598393 != nil:
+    section.add "X-Amz-Signature", valid_598393
+  var valid_598394 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598394 = validateParameter(valid_598394, JString, required = false,
                                  default = nil)
-  if valid_600341 != nil:
-    section.add "X-Amz-Algorithm", valid_600341
-  var valid_600342 = header.getOrDefault("X-Amz-Signature")
-  valid_600342 = validateParameter(valid_600342, JString, required = false,
+  if valid_598394 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598394
+  var valid_598395 = header.getOrDefault("X-Amz-Date")
+  valid_598395 = validateParameter(valid_598395, JString, required = false,
                                  default = nil)
-  if valid_600342 != nil:
-    section.add "X-Amz-Signature", valid_600342
-  var valid_600343 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600343 = validateParameter(valid_600343, JString, required = false,
+  if valid_598395 != nil:
+    section.add "X-Amz-Date", valid_598395
+  var valid_598396 = header.getOrDefault("X-Amz-Credential")
+  valid_598396 = validateParameter(valid_598396, JString, required = false,
                                  default = nil)
-  if valid_600343 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600343
-  var valid_600344 = header.getOrDefault("X-Amz-Credential")
-  valid_600344 = validateParameter(valid_600344, JString, required = false,
+  if valid_598396 != nil:
+    section.add "X-Amz-Credential", valid_598396
+  var valid_598397 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598397 = validateParameter(valid_598397, JString, required = false,
                                  default = nil)
-  if valid_600344 != nil:
-    section.add "X-Amz-Credential", valid_600344
+  if valid_598397 != nil:
+    section.add "X-Amz-Security-Token", valid_598397
+  var valid_598398 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598398 = validateParameter(valid_598398, JString, required = false,
+                                 default = nil)
+  if valid_598398 != nil:
+    section.add "X-Amz-Algorithm", valid_598398
+  var valid_598399 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598399 = validateParameter(valid_598399, JString, required = false,
+                                 default = nil)
+  if valid_598399 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598399
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3036,55 +3311,56 @@ proc validate_ListTaskDefinitions_600333(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600346: Call_ListTaskDefinitions_600332; path: JsonNode;
+proc call*(call_598401: Call_ListTaskDefinitions_598387; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of task definitions that are registered to your account. You can filter the results by family name with the <code>familyPrefix</code> parameter or by status with the <code>status</code> parameter.
   ## 
-  let valid = call_600346.validator(path, query, header, formData, body)
-  let scheme = call_600346.pickScheme
+  let valid = call_598401.validator(path, query, header, formData, body)
+  let scheme = call_598401.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600346.url(scheme.get, call_600346.host, call_600346.base,
-                         call_600346.route, valid.getOrDefault("path"),
+  let url = call_598401.url(scheme.get, call_598401.host, call_598401.base,
+                         call_598401.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600346, url, valid)
+  result = atozHook(call_598401, url, valid)
 
-proc call*(call_600347: Call_ListTaskDefinitions_600332; body: JsonNode;
-          maxResults: string = ""; nextToken: string = ""): Recallable =
+proc call*(call_598402: Call_ListTaskDefinitions_598387; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listTaskDefinitions
   ## Returns a list of task definitions that are registered to your account. You can filter the results by family name with the <code>familyPrefix</code> parameter or by status with the <code>status</code> parameter.
-  ##   maxResults: string
-  ##             : Pagination limit
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_600348 = newJObject()
-  var body_600349 = newJObject()
-  add(query_600348, "maxResults", newJString(maxResults))
-  add(query_600348, "nextToken", newJString(nextToken))
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_598403 = newJObject()
+  var body_598404 = newJObject()
+  add(query_598403, "nextToken", newJString(nextToken))
   if body != nil:
-    body_600349 = body
-  result = call_600347.call(nil, query_600348, nil, nil, body_600349)
+    body_598404 = body
+  add(query_598403, "maxResults", newJString(maxResults))
+  result = call_598402.call(nil, query_598403, nil, nil, body_598404)
 
-var listTaskDefinitions* = Call_ListTaskDefinitions_600332(
+var listTaskDefinitions* = Call_ListTaskDefinitions_598387(
     name: "listTaskDefinitions", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListTaskDefinitions",
-    validator: validate_ListTaskDefinitions_600333, base: "/",
-    url: url_ListTaskDefinitions_600334, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTaskDefinitions_598388, base: "/",
+    url: url_ListTaskDefinitions_598389, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTasks_600350 = ref object of OpenApiRestCall_599368
-proc url_ListTasks_600352(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTasks_598405 = ref object of OpenApiRestCall_597389
+proc url_ListTasks_598407(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTasks_600351(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTasks_598406(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of tasks for a specified cluster. You can filter the results by family name, by a particular container instance, or by the desired status of the task with the <code>family</code>, <code>containerInstance</code>, and <code>desiredStatus</code> parameters.</p> <p>Recently stopped tasks might appear in the returned results. Currently, stopped tasks appear in the returned results for at least one hour. </p>
   ## 
@@ -3093,74 +3369,74 @@ proc validate_ListTasks_600351(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   maxResults: JString
-  ##             : Pagination limit
   ##   nextToken: JString
   ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
   section = newJObject()
-  var valid_600353 = query.getOrDefault("maxResults")
-  valid_600353 = validateParameter(valid_600353, JString, required = false,
+  var valid_598408 = query.getOrDefault("nextToken")
+  valid_598408 = validateParameter(valid_598408, JString, required = false,
                                  default = nil)
-  if valid_600353 != nil:
-    section.add "maxResults", valid_600353
-  var valid_600354 = query.getOrDefault("nextToken")
-  valid_600354 = validateParameter(valid_600354, JString, required = false,
+  if valid_598408 != nil:
+    section.add "nextToken", valid_598408
+  var valid_598409 = query.getOrDefault("maxResults")
+  valid_598409 = validateParameter(valid_598409, JString, required = false,
                                  default = nil)
-  if valid_600354 != nil:
-    section.add "nextToken", valid_600354
+  if valid_598409 != nil:
+    section.add "maxResults", valid_598409
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600355 = header.getOrDefault("X-Amz-Date")
-  valid_600355 = validateParameter(valid_600355, JString, required = false,
-                                 default = nil)
-  if valid_600355 != nil:
-    section.add "X-Amz-Date", valid_600355
-  var valid_600356 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600356 = validateParameter(valid_600356, JString, required = false,
-                                 default = nil)
-  if valid_600356 != nil:
-    section.add "X-Amz-Security-Token", valid_600356
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600357 = header.getOrDefault("X-Amz-Target")
-  valid_600357 = validateParameter(valid_600357, JString, required = true, default = newJString(
+  var valid_598410 = header.getOrDefault("X-Amz-Target")
+  valid_598410 = validateParameter(valid_598410, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.ListTasks"))
-  if valid_600357 != nil:
-    section.add "X-Amz-Target", valid_600357
-  var valid_600358 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600358 = validateParameter(valid_600358, JString, required = false,
+  if valid_598410 != nil:
+    section.add "X-Amz-Target", valid_598410
+  var valid_598411 = header.getOrDefault("X-Amz-Signature")
+  valid_598411 = validateParameter(valid_598411, JString, required = false,
                                  default = nil)
-  if valid_600358 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600358
-  var valid_600359 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600359 = validateParameter(valid_600359, JString, required = false,
+  if valid_598411 != nil:
+    section.add "X-Amz-Signature", valid_598411
+  var valid_598412 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598412 = validateParameter(valid_598412, JString, required = false,
                                  default = nil)
-  if valid_600359 != nil:
-    section.add "X-Amz-Algorithm", valid_600359
-  var valid_600360 = header.getOrDefault("X-Amz-Signature")
-  valid_600360 = validateParameter(valid_600360, JString, required = false,
+  if valid_598412 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598412
+  var valid_598413 = header.getOrDefault("X-Amz-Date")
+  valid_598413 = validateParameter(valid_598413, JString, required = false,
                                  default = nil)
-  if valid_600360 != nil:
-    section.add "X-Amz-Signature", valid_600360
-  var valid_600361 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600361 = validateParameter(valid_600361, JString, required = false,
+  if valid_598413 != nil:
+    section.add "X-Amz-Date", valid_598413
+  var valid_598414 = header.getOrDefault("X-Amz-Credential")
+  valid_598414 = validateParameter(valid_598414, JString, required = false,
                                  default = nil)
-  if valid_600361 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600361
-  var valid_600362 = header.getOrDefault("X-Amz-Credential")
-  valid_600362 = validateParameter(valid_600362, JString, required = false,
+  if valid_598414 != nil:
+    section.add "X-Amz-Credential", valid_598414
+  var valid_598415 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598415 = validateParameter(valid_598415, JString, required = false,
                                  default = nil)
-  if valid_600362 != nil:
-    section.add "X-Amz-Credential", valid_600362
+  if valid_598415 != nil:
+    section.add "X-Amz-Security-Token", valid_598415
+  var valid_598416 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598416 = validateParameter(valid_598416, JString, required = false,
+                                 default = nil)
+  if valid_598416 != nil:
+    section.add "X-Amz-Algorithm", valid_598416
+  var valid_598417 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598417 = validateParameter(valid_598417, JString, required = false,
+                                 default = nil)
+  if valid_598417 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598417
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3171,55 +3447,56 @@ proc validate_ListTasks_600351(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600364: Call_ListTasks_600350; path: JsonNode; query: JsonNode;
+proc call*(call_598419: Call_ListTasks_598405; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of tasks for a specified cluster. You can filter the results by family name, by a particular container instance, or by the desired status of the task with the <code>family</code>, <code>containerInstance</code>, and <code>desiredStatus</code> parameters.</p> <p>Recently stopped tasks might appear in the returned results. Currently, stopped tasks appear in the returned results for at least one hour. </p>
   ## 
-  let valid = call_600364.validator(path, query, header, formData, body)
-  let scheme = call_600364.pickScheme
+  let valid = call_598419.validator(path, query, header, formData, body)
+  let scheme = call_598419.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600364.url(scheme.get, call_600364.host, call_600364.base,
-                         call_600364.route, valid.getOrDefault("path"),
+  let url = call_598419.url(scheme.get, call_598419.host, call_598419.base,
+                         call_598419.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600364, url, valid)
+  result = atozHook(call_598419, url, valid)
 
-proc call*(call_600365: Call_ListTasks_600350; body: JsonNode;
-          maxResults: string = ""; nextToken: string = ""): Recallable =
+proc call*(call_598420: Call_ListTasks_598405; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listTasks
   ## <p>Returns a list of tasks for a specified cluster. You can filter the results by family name, by a particular container instance, or by the desired status of the task with the <code>family</code>, <code>containerInstance</code>, and <code>desiredStatus</code> parameters.</p> <p>Recently stopped tasks might appear in the returned results. Currently, stopped tasks appear in the returned results for at least one hour. </p>
-  ##   maxResults: string
-  ##             : Pagination limit
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_600366 = newJObject()
-  var body_600367 = newJObject()
-  add(query_600366, "maxResults", newJString(maxResults))
-  add(query_600366, "nextToken", newJString(nextToken))
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_598421 = newJObject()
+  var body_598422 = newJObject()
+  add(query_598421, "nextToken", newJString(nextToken))
   if body != nil:
-    body_600367 = body
-  result = call_600365.call(nil, query_600366, nil, nil, body_600367)
+    body_598422 = body
+  add(query_598421, "maxResults", newJString(maxResults))
+  result = call_598420.call(nil, query_598421, nil, nil, body_598422)
 
-var listTasks* = Call_ListTasks_600350(name: "listTasks", meth: HttpMethod.HttpPost,
+var listTasks* = Call_ListTasks_598405(name: "listTasks", meth: HttpMethod.HttpPost,
                                     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.ListTasks",
-                                    validator: validate_ListTasks_600351,
-                                    base: "/", url: url_ListTasks_600352,
+                                    validator: validate_ListTasks_598406,
+                                    base: "/", url: url_ListTasks_598407,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutAccountSetting_600368 = ref object of OpenApiRestCall_599368
-proc url_PutAccountSetting_600370(protocol: Scheme; host: string; base: string;
+  Call_PutAccountSetting_598423 = ref object of OpenApiRestCall_597389
+proc url_PutAccountSetting_598425(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PutAccountSetting_600369(path: JsonNode; query: JsonNode;
+proc validate_PutAccountSetting_598424(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Modifies an account setting. Account settings are set on a per-Region basis.</p> <p>If you change the account setting for the root user, the default settings for all of the IAM users and roles for which no individual account setting has been specified are reset. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html">Account Settings</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When <code>serviceLongArnFormat</code>, <code>taskLongArnFormat</code>, or <code>containerInstanceLongArnFormat</code> are specified, the Amazon Resource Name (ARN) and resource ID format of the resource type for a specified IAM user, IAM role, or the root user for an account is affected. The opt-in and opt-out account setting must be set for each Amazon ECS resource separately. The ARN and resource ID format of a resource will be defined by the opt-in status of the IAM user or role that created the resource. You must enable this setting to use Amazon ECS features such as resource tagging.</p> <p>When <code>awsvpcTrunking</code> is specified, the elastic network interface (ENI) limit for any new container instances that support the feature is changed. If <code>awsvpcTrunking</code> is enabled, any new container instances that support the feature are launched have the increased ENI limits available to them. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/container-instance-eni.html">Elastic Network Interface Trunking</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When <code>containerInsights</code> is specified, the default setting indicating whether CloudWatch Container Insights is enabled for your clusters is changed. If <code>containerInsights</code> is enabled, any new clusters that are created will have Container Insights enabled unless you disable it during cluster creation. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cloudwatch-container-insights.html">CloudWatch Container Insights</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
@@ -3231,57 +3508,57 @@ proc validate_PutAccountSetting_600369(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600371 = header.getOrDefault("X-Amz-Date")
-  valid_600371 = validateParameter(valid_600371, JString, required = false,
-                                 default = nil)
-  if valid_600371 != nil:
-    section.add "X-Amz-Date", valid_600371
-  var valid_600372 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600372 = validateParameter(valid_600372, JString, required = false,
-                                 default = nil)
-  if valid_600372 != nil:
-    section.add "X-Amz-Security-Token", valid_600372
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600373 = header.getOrDefault("X-Amz-Target")
-  valid_600373 = validateParameter(valid_600373, JString, required = true, default = newJString(
+  var valid_598426 = header.getOrDefault("X-Amz-Target")
+  valid_598426 = validateParameter(valid_598426, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.PutAccountSetting"))
-  if valid_600373 != nil:
-    section.add "X-Amz-Target", valid_600373
-  var valid_600374 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600374 = validateParameter(valid_600374, JString, required = false,
+  if valid_598426 != nil:
+    section.add "X-Amz-Target", valid_598426
+  var valid_598427 = header.getOrDefault("X-Amz-Signature")
+  valid_598427 = validateParameter(valid_598427, JString, required = false,
                                  default = nil)
-  if valid_600374 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600374
-  var valid_600375 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600375 = validateParameter(valid_600375, JString, required = false,
+  if valid_598427 != nil:
+    section.add "X-Amz-Signature", valid_598427
+  var valid_598428 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598428 = validateParameter(valid_598428, JString, required = false,
                                  default = nil)
-  if valid_600375 != nil:
-    section.add "X-Amz-Algorithm", valid_600375
-  var valid_600376 = header.getOrDefault("X-Amz-Signature")
-  valid_600376 = validateParameter(valid_600376, JString, required = false,
+  if valid_598428 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598428
+  var valid_598429 = header.getOrDefault("X-Amz-Date")
+  valid_598429 = validateParameter(valid_598429, JString, required = false,
                                  default = nil)
-  if valid_600376 != nil:
-    section.add "X-Amz-Signature", valid_600376
-  var valid_600377 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600377 = validateParameter(valid_600377, JString, required = false,
+  if valid_598429 != nil:
+    section.add "X-Amz-Date", valid_598429
+  var valid_598430 = header.getOrDefault("X-Amz-Credential")
+  valid_598430 = validateParameter(valid_598430, JString, required = false,
                                  default = nil)
-  if valid_600377 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600377
-  var valid_600378 = header.getOrDefault("X-Amz-Credential")
-  valid_600378 = validateParameter(valid_600378, JString, required = false,
+  if valid_598430 != nil:
+    section.add "X-Amz-Credential", valid_598430
+  var valid_598431 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598431 = validateParameter(valid_598431, JString, required = false,
                                  default = nil)
-  if valid_600378 != nil:
-    section.add "X-Amz-Credential", valid_600378
+  if valid_598431 != nil:
+    section.add "X-Amz-Security-Token", valid_598431
+  var valid_598432 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598432 = validateParameter(valid_598432, JString, required = false,
+                                 default = nil)
+  if valid_598432 != nil:
+    section.add "X-Amz-Algorithm", valid_598432
+  var valid_598433 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598433 = validateParameter(valid_598433, JString, required = false,
+                                 default = nil)
+  if valid_598433 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598433
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3292,47 +3569,48 @@ proc validate_PutAccountSetting_600369(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600380: Call_PutAccountSetting_600368; path: JsonNode;
+proc call*(call_598435: Call_PutAccountSetting_598423; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Modifies an account setting. Account settings are set on a per-Region basis.</p> <p>If you change the account setting for the root user, the default settings for all of the IAM users and roles for which no individual account setting has been specified are reset. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html">Account Settings</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When <code>serviceLongArnFormat</code>, <code>taskLongArnFormat</code>, or <code>containerInstanceLongArnFormat</code> are specified, the Amazon Resource Name (ARN) and resource ID format of the resource type for a specified IAM user, IAM role, or the root user for an account is affected. The opt-in and opt-out account setting must be set for each Amazon ECS resource separately. The ARN and resource ID format of a resource will be defined by the opt-in status of the IAM user or role that created the resource. You must enable this setting to use Amazon ECS features such as resource tagging.</p> <p>When <code>awsvpcTrunking</code> is specified, the elastic network interface (ENI) limit for any new container instances that support the feature is changed. If <code>awsvpcTrunking</code> is enabled, any new container instances that support the feature are launched have the increased ENI limits available to them. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/container-instance-eni.html">Elastic Network Interface Trunking</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When <code>containerInsights</code> is specified, the default setting indicating whether CloudWatch Container Insights is enabled for your clusters is changed. If <code>containerInsights</code> is enabled, any new clusters that are created will have Container Insights enabled unless you disable it during cluster creation. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cloudwatch-container-insights.html">CloudWatch Container Insights</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ## 
-  let valid = call_600380.validator(path, query, header, formData, body)
-  let scheme = call_600380.pickScheme
+  let valid = call_598435.validator(path, query, header, formData, body)
+  let scheme = call_598435.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600380.url(scheme.get, call_600380.host, call_600380.base,
-                         call_600380.route, valid.getOrDefault("path"),
+  let url = call_598435.url(scheme.get, call_598435.host, call_598435.base,
+                         call_598435.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600380, url, valid)
+  result = atozHook(call_598435, url, valid)
 
-proc call*(call_600381: Call_PutAccountSetting_600368; body: JsonNode): Recallable =
+proc call*(call_598436: Call_PutAccountSetting_598423; body: JsonNode): Recallable =
   ## putAccountSetting
   ## <p>Modifies an account setting. Account settings are set on a per-Region basis.</p> <p>If you change the account setting for the root user, the default settings for all of the IAM users and roles for which no individual account setting has been specified are reset. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html">Account Settings</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When <code>serviceLongArnFormat</code>, <code>taskLongArnFormat</code>, or <code>containerInstanceLongArnFormat</code> are specified, the Amazon Resource Name (ARN) and resource ID format of the resource type for a specified IAM user, IAM role, or the root user for an account is affected. The opt-in and opt-out account setting must be set for each Amazon ECS resource separately. The ARN and resource ID format of a resource will be defined by the opt-in status of the IAM user or role that created the resource. You must enable this setting to use Amazon ECS features such as resource tagging.</p> <p>When <code>awsvpcTrunking</code> is specified, the elastic network interface (ENI) limit for any new container instances that support the feature is changed. If <code>awsvpcTrunking</code> is enabled, any new container instances that support the feature are launched have the increased ENI limits available to them. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/container-instance-eni.html">Elastic Network Interface Trunking</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>When <code>containerInsights</code> is specified, the default setting indicating whether CloudWatch Container Insights is enabled for your clusters is changed. If <code>containerInsights</code> is enabled, any new clusters that are created will have Container Insights enabled unless you disable it during cluster creation. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cloudwatch-container-insights.html">CloudWatch Container Insights</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600382 = newJObject()
+  var body_598437 = newJObject()
   if body != nil:
-    body_600382 = body
-  result = call_600381.call(nil, nil, nil, nil, body_600382)
+    body_598437 = body
+  result = call_598436.call(nil, nil, nil, nil, body_598437)
 
-var putAccountSetting* = Call_PutAccountSetting_600368(name: "putAccountSetting",
+var putAccountSetting* = Call_PutAccountSetting_598423(name: "putAccountSetting",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.PutAccountSetting",
-    validator: validate_PutAccountSetting_600369, base: "/",
-    url: url_PutAccountSetting_600370, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutAccountSetting_598424, base: "/",
+    url: url_PutAccountSetting_598425, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutAccountSettingDefault_600383 = ref object of OpenApiRestCall_599368
-proc url_PutAccountSettingDefault_600385(protocol: Scheme; host: string;
+  Call_PutAccountSettingDefault_598438 = ref object of OpenApiRestCall_597389
+proc url_PutAccountSettingDefault_598440(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PutAccountSettingDefault_600384(path: JsonNode; query: JsonNode;
+proc validate_PutAccountSettingDefault_598439(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies an account setting for all IAM users on an account for whom no individual account setting has been specified. Account settings are set on a per-Region basis.
   ## 
@@ -3343,57 +3621,57 @@ proc validate_PutAccountSettingDefault_600384(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600386 = header.getOrDefault("X-Amz-Date")
-  valid_600386 = validateParameter(valid_600386, JString, required = false,
-                                 default = nil)
-  if valid_600386 != nil:
-    section.add "X-Amz-Date", valid_600386
-  var valid_600387 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600387 = validateParameter(valid_600387, JString, required = false,
-                                 default = nil)
-  if valid_600387 != nil:
-    section.add "X-Amz-Security-Token", valid_600387
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600388 = header.getOrDefault("X-Amz-Target")
-  valid_600388 = validateParameter(valid_600388, JString, required = true, default = newJString(
+  var valid_598441 = header.getOrDefault("X-Amz-Target")
+  valid_598441 = validateParameter(valid_598441, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.PutAccountSettingDefault"))
-  if valid_600388 != nil:
-    section.add "X-Amz-Target", valid_600388
-  var valid_600389 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600389 = validateParameter(valid_600389, JString, required = false,
+  if valid_598441 != nil:
+    section.add "X-Amz-Target", valid_598441
+  var valid_598442 = header.getOrDefault("X-Amz-Signature")
+  valid_598442 = validateParameter(valid_598442, JString, required = false,
                                  default = nil)
-  if valid_600389 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600389
-  var valid_600390 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600390 = validateParameter(valid_600390, JString, required = false,
+  if valid_598442 != nil:
+    section.add "X-Amz-Signature", valid_598442
+  var valid_598443 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598443 = validateParameter(valid_598443, JString, required = false,
                                  default = nil)
-  if valid_600390 != nil:
-    section.add "X-Amz-Algorithm", valid_600390
-  var valid_600391 = header.getOrDefault("X-Amz-Signature")
-  valid_600391 = validateParameter(valid_600391, JString, required = false,
+  if valid_598443 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598443
+  var valid_598444 = header.getOrDefault("X-Amz-Date")
+  valid_598444 = validateParameter(valid_598444, JString, required = false,
                                  default = nil)
-  if valid_600391 != nil:
-    section.add "X-Amz-Signature", valid_600391
-  var valid_600392 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600392 = validateParameter(valid_600392, JString, required = false,
+  if valid_598444 != nil:
+    section.add "X-Amz-Date", valid_598444
+  var valid_598445 = header.getOrDefault("X-Amz-Credential")
+  valid_598445 = validateParameter(valid_598445, JString, required = false,
                                  default = nil)
-  if valid_600392 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600392
-  var valid_600393 = header.getOrDefault("X-Amz-Credential")
-  valid_600393 = validateParameter(valid_600393, JString, required = false,
+  if valid_598445 != nil:
+    section.add "X-Amz-Credential", valid_598445
+  var valid_598446 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598446 = validateParameter(valid_598446, JString, required = false,
                                  default = nil)
-  if valid_600393 != nil:
-    section.add "X-Amz-Credential", valid_600393
+  if valid_598446 != nil:
+    section.add "X-Amz-Security-Token", valid_598446
+  var valid_598447 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598447 = validateParameter(valid_598447, JString, required = false,
+                                 default = nil)
+  if valid_598447 != nil:
+    section.add "X-Amz-Algorithm", valid_598447
+  var valid_598448 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598448 = validateParameter(valid_598448, JString, required = false,
+                                 default = nil)
+  if valid_598448 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598448
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3404,47 +3682,48 @@ proc validate_PutAccountSettingDefault_600384(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600395: Call_PutAccountSettingDefault_600383; path: JsonNode;
+proc call*(call_598450: Call_PutAccountSettingDefault_598438; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Modifies an account setting for all IAM users on an account for whom no individual account setting has been specified. Account settings are set on a per-Region basis.
   ## 
-  let valid = call_600395.validator(path, query, header, formData, body)
-  let scheme = call_600395.pickScheme
+  let valid = call_598450.validator(path, query, header, formData, body)
+  let scheme = call_598450.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600395.url(scheme.get, call_600395.host, call_600395.base,
-                         call_600395.route, valid.getOrDefault("path"),
+  let url = call_598450.url(scheme.get, call_598450.host, call_598450.base,
+                         call_598450.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600395, url, valid)
+  result = atozHook(call_598450, url, valid)
 
-proc call*(call_600396: Call_PutAccountSettingDefault_600383; body: JsonNode): Recallable =
+proc call*(call_598451: Call_PutAccountSettingDefault_598438; body: JsonNode): Recallable =
   ## putAccountSettingDefault
   ## Modifies an account setting for all IAM users on an account for whom no individual account setting has been specified. Account settings are set on a per-Region basis.
   ##   body: JObject (required)
-  var body_600397 = newJObject()
+  var body_598452 = newJObject()
   if body != nil:
-    body_600397 = body
-  result = call_600396.call(nil, nil, nil, nil, body_600397)
+    body_598452 = body
+  result = call_598451.call(nil, nil, nil, nil, body_598452)
 
-var putAccountSettingDefault* = Call_PutAccountSettingDefault_600383(
+var putAccountSettingDefault* = Call_PutAccountSettingDefault_598438(
     name: "putAccountSettingDefault", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.PutAccountSettingDefault",
-    validator: validate_PutAccountSettingDefault_600384, base: "/",
-    url: url_PutAccountSettingDefault_600385, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutAccountSettingDefault_598439, base: "/",
+    url: url_PutAccountSettingDefault_598440, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutAttributes_600398 = ref object of OpenApiRestCall_599368
-proc url_PutAttributes_600400(protocol: Scheme; host: string; base: string;
+  Call_PutAttributes_598453 = ref object of OpenApiRestCall_597389
+proc url_PutAttributes_598455(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PutAttributes_600399(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutAttributes_598454(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Create or update an attribute on an Amazon ECS resource. If the attribute does not exist, it is created. If the attribute exists, its value is replaced with the specified value. To delete an attribute, use <a>DeleteAttributes</a>. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-constraints.html#attributes">Attributes</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
@@ -3455,57 +3734,57 @@ proc validate_PutAttributes_600399(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600401 = header.getOrDefault("X-Amz-Date")
-  valid_600401 = validateParameter(valid_600401, JString, required = false,
-                                 default = nil)
-  if valid_600401 != nil:
-    section.add "X-Amz-Date", valid_600401
-  var valid_600402 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600402 = validateParameter(valid_600402, JString, required = false,
-                                 default = nil)
-  if valid_600402 != nil:
-    section.add "X-Amz-Security-Token", valid_600402
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600403 = header.getOrDefault("X-Amz-Target")
-  valid_600403 = validateParameter(valid_600403, JString, required = true, default = newJString(
+  var valid_598456 = header.getOrDefault("X-Amz-Target")
+  valid_598456 = validateParameter(valid_598456, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.PutAttributes"))
-  if valid_600403 != nil:
-    section.add "X-Amz-Target", valid_600403
-  var valid_600404 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600404 = validateParameter(valid_600404, JString, required = false,
+  if valid_598456 != nil:
+    section.add "X-Amz-Target", valid_598456
+  var valid_598457 = header.getOrDefault("X-Amz-Signature")
+  valid_598457 = validateParameter(valid_598457, JString, required = false,
                                  default = nil)
-  if valid_600404 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600404
-  var valid_600405 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600405 = validateParameter(valid_600405, JString, required = false,
+  if valid_598457 != nil:
+    section.add "X-Amz-Signature", valid_598457
+  var valid_598458 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598458 = validateParameter(valid_598458, JString, required = false,
                                  default = nil)
-  if valid_600405 != nil:
-    section.add "X-Amz-Algorithm", valid_600405
-  var valid_600406 = header.getOrDefault("X-Amz-Signature")
-  valid_600406 = validateParameter(valid_600406, JString, required = false,
+  if valid_598458 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598458
+  var valid_598459 = header.getOrDefault("X-Amz-Date")
+  valid_598459 = validateParameter(valid_598459, JString, required = false,
                                  default = nil)
-  if valid_600406 != nil:
-    section.add "X-Amz-Signature", valid_600406
-  var valid_600407 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600407 = validateParameter(valid_600407, JString, required = false,
+  if valid_598459 != nil:
+    section.add "X-Amz-Date", valid_598459
+  var valid_598460 = header.getOrDefault("X-Amz-Credential")
+  valid_598460 = validateParameter(valid_598460, JString, required = false,
                                  default = nil)
-  if valid_600407 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600407
-  var valid_600408 = header.getOrDefault("X-Amz-Credential")
-  valid_600408 = validateParameter(valid_600408, JString, required = false,
+  if valid_598460 != nil:
+    section.add "X-Amz-Credential", valid_598460
+  var valid_598461 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598461 = validateParameter(valid_598461, JString, required = false,
                                  default = nil)
-  if valid_600408 != nil:
-    section.add "X-Amz-Credential", valid_600408
+  if valid_598461 != nil:
+    section.add "X-Amz-Security-Token", valid_598461
+  var valid_598462 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598462 = validateParameter(valid_598462, JString, required = false,
+                                 default = nil)
+  if valid_598462 != nil:
+    section.add "X-Amz-Algorithm", valid_598462
+  var valid_598463 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598463 = validateParameter(valid_598463, JString, required = false,
+                                 default = nil)
+  if valid_598463 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598463
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3516,49 +3795,50 @@ proc validate_PutAttributes_600399(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600410: Call_PutAttributes_600398; path: JsonNode; query: JsonNode;
+proc call*(call_598465: Call_PutAttributes_598453; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Create or update an attribute on an Amazon ECS resource. If the attribute does not exist, it is created. If the attribute exists, its value is replaced with the specified value. To delete an attribute, use <a>DeleteAttributes</a>. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-constraints.html#attributes">Attributes</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
-  let valid = call_600410.validator(path, query, header, formData, body)
-  let scheme = call_600410.pickScheme
+  let valid = call_598465.validator(path, query, header, formData, body)
+  let scheme = call_598465.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600410.url(scheme.get, call_600410.host, call_600410.base,
-                         call_600410.route, valid.getOrDefault("path"),
+  let url = call_598465.url(scheme.get, call_598465.host, call_598465.base,
+                         call_598465.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600410, url, valid)
+  result = atozHook(call_598465, url, valid)
 
-proc call*(call_600411: Call_PutAttributes_600398; body: JsonNode): Recallable =
+proc call*(call_598466: Call_PutAttributes_598453; body: JsonNode): Recallable =
   ## putAttributes
   ## Create or update an attribute on an Amazon ECS resource. If the attribute does not exist, it is created. If the attribute exists, its value is replaced with the specified value. To delete an attribute, use <a>DeleteAttributes</a>. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-constraints.html#attributes">Attributes</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ##   body: JObject (required)
-  var body_600412 = newJObject()
+  var body_598467 = newJObject()
   if body != nil:
-    body_600412 = body
-  result = call_600411.call(nil, nil, nil, nil, body_600412)
+    body_598467 = body
+  result = call_598466.call(nil, nil, nil, nil, body_598467)
 
-var putAttributes* = Call_PutAttributes_600398(name: "putAttributes",
+var putAttributes* = Call_PutAttributes_598453(name: "putAttributes",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.PutAttributes",
-    validator: validate_PutAttributes_600399, base: "/", url: url_PutAttributes_600400,
+    validator: validate_PutAttributes_598454, base: "/", url: url_PutAttributes_598455,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterContainerInstance_600413 = ref object of OpenApiRestCall_599368
-proc url_RegisterContainerInstance_600415(protocol: Scheme; host: string;
+  Call_PutClusterCapacityProviders_598468 = ref object of OpenApiRestCall_597389
+proc url_PutClusterCapacityProviders_598470(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterContainerInstance_600414(path: JsonNode; query: JsonNode;
+proc validate_PutClusterCapacityProviders_598469(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Registers an EC2 instance into the specified cluster. This instance becomes available to place containers on.</p>
+  ## <p>Modifies the available capacity providers and the default capacity provider strategy for a cluster.</p> <p>You must specify both the available capacity providers and a default capacity provider strategy for the cluster. If the specified cluster has existing capacity providers associated with it, you must specify all existing capacity providers in addition to any new ones you want to add. Any existing capacity providers associated with a cluster that are omitted from a <a>PutClusterCapacityProviders</a> API call will be disassociated with the cluster. You can only disassociate an existing capacity provider from a cluster if it's not being used by any existing tasks.</p> <p>When creating a service or running a task on a cluster, if no capacity provider or launch type is specified, then the cluster's default capacity provider strategy is used. It is recommended to define a default capacity provider strategy for your cluster, however you may specify an empty array (<code>[]</code>) to bypass defining a default strategy.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3567,57 +3847,57 @@ proc validate_RegisterContainerInstance_600414(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600416 = header.getOrDefault("X-Amz-Date")
-  valid_600416 = validateParameter(valid_600416, JString, required = false,
-                                 default = nil)
-  if valid_600416 != nil:
-    section.add "X-Amz-Date", valid_600416
-  var valid_600417 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600417 = validateParameter(valid_600417, JString, required = false,
-                                 default = nil)
-  if valid_600417 != nil:
-    section.add "X-Amz-Security-Token", valid_600417
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600418 = header.getOrDefault("X-Amz-Target")
-  valid_600418 = validateParameter(valid_600418, JString, required = true, default = newJString(
-      "AmazonEC2ContainerServiceV20141113.RegisterContainerInstance"))
-  if valid_600418 != nil:
-    section.add "X-Amz-Target", valid_600418
-  var valid_600419 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600419 = validateParameter(valid_600419, JString, required = false,
+  var valid_598471 = header.getOrDefault("X-Amz-Target")
+  valid_598471 = validateParameter(valid_598471, JString, required = true, default = newJString(
+      "AmazonEC2ContainerServiceV20141113.PutClusterCapacityProviders"))
+  if valid_598471 != nil:
+    section.add "X-Amz-Target", valid_598471
+  var valid_598472 = header.getOrDefault("X-Amz-Signature")
+  valid_598472 = validateParameter(valid_598472, JString, required = false,
                                  default = nil)
-  if valid_600419 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600419
-  var valid_600420 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600420 = validateParameter(valid_600420, JString, required = false,
+  if valid_598472 != nil:
+    section.add "X-Amz-Signature", valid_598472
+  var valid_598473 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598473 = validateParameter(valid_598473, JString, required = false,
                                  default = nil)
-  if valid_600420 != nil:
-    section.add "X-Amz-Algorithm", valid_600420
-  var valid_600421 = header.getOrDefault("X-Amz-Signature")
-  valid_600421 = validateParameter(valid_600421, JString, required = false,
+  if valid_598473 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598473
+  var valid_598474 = header.getOrDefault("X-Amz-Date")
+  valid_598474 = validateParameter(valid_598474, JString, required = false,
                                  default = nil)
-  if valid_600421 != nil:
-    section.add "X-Amz-Signature", valid_600421
-  var valid_600422 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600422 = validateParameter(valid_600422, JString, required = false,
+  if valid_598474 != nil:
+    section.add "X-Amz-Date", valid_598474
+  var valid_598475 = header.getOrDefault("X-Amz-Credential")
+  valid_598475 = validateParameter(valid_598475, JString, required = false,
                                  default = nil)
-  if valid_600422 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600422
-  var valid_600423 = header.getOrDefault("X-Amz-Credential")
-  valid_600423 = validateParameter(valid_600423, JString, required = false,
+  if valid_598475 != nil:
+    section.add "X-Amz-Credential", valid_598475
+  var valid_598476 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598476 = validateParameter(valid_598476, JString, required = false,
                                  default = nil)
-  if valid_600423 != nil:
-    section.add "X-Amz-Credential", valid_600423
+  if valid_598476 != nil:
+    section.add "X-Amz-Security-Token", valid_598476
+  var valid_598477 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598477 = validateParameter(valid_598477, JString, required = false,
+                                 default = nil)
+  if valid_598477 != nil:
+    section.add "X-Amz-Algorithm", valid_598477
+  var valid_598478 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598478 = validateParameter(valid_598478, JString, required = false,
+                                 default = nil)
+  if valid_598478 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598478
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3628,48 +3908,163 @@ proc validate_RegisterContainerInstance_600414(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600425: Call_RegisterContainerInstance_600413; path: JsonNode;
+proc call*(call_598480: Call_PutClusterCapacityProviders_598468; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Modifies the available capacity providers and the default capacity provider strategy for a cluster.</p> <p>You must specify both the available capacity providers and a default capacity provider strategy for the cluster. If the specified cluster has existing capacity providers associated with it, you must specify all existing capacity providers in addition to any new ones you want to add. Any existing capacity providers associated with a cluster that are omitted from a <a>PutClusterCapacityProviders</a> API call will be disassociated with the cluster. You can only disassociate an existing capacity provider from a cluster if it's not being used by any existing tasks.</p> <p>When creating a service or running a task on a cluster, if no capacity provider or launch type is specified, then the cluster's default capacity provider strategy is used. It is recommended to define a default capacity provider strategy for your cluster, however you may specify an empty array (<code>[]</code>) to bypass defining a default strategy.</p>
+  ## 
+  let valid = call_598480.validator(path, query, header, formData, body)
+  let scheme = call_598480.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_598480.url(scheme.get, call_598480.host, call_598480.base,
+                         call_598480.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_598480, url, valid)
+
+proc call*(call_598481: Call_PutClusterCapacityProviders_598468; body: JsonNode): Recallable =
+  ## putClusterCapacityProviders
+  ## <p>Modifies the available capacity providers and the default capacity provider strategy for a cluster.</p> <p>You must specify both the available capacity providers and a default capacity provider strategy for the cluster. If the specified cluster has existing capacity providers associated with it, you must specify all existing capacity providers in addition to any new ones you want to add. Any existing capacity providers associated with a cluster that are omitted from a <a>PutClusterCapacityProviders</a> API call will be disassociated with the cluster. You can only disassociate an existing capacity provider from a cluster if it's not being used by any existing tasks.</p> <p>When creating a service or running a task on a cluster, if no capacity provider or launch type is specified, then the cluster's default capacity provider strategy is used. It is recommended to define a default capacity provider strategy for your cluster, however you may specify an empty array (<code>[]</code>) to bypass defining a default strategy.</p>
+  ##   body: JObject (required)
+  var body_598482 = newJObject()
+  if body != nil:
+    body_598482 = body
+  result = call_598481.call(nil, nil, nil, nil, body_598482)
+
+var putClusterCapacityProviders* = Call_PutClusterCapacityProviders_598468(
+    name: "putClusterCapacityProviders", meth: HttpMethod.HttpPost,
+    host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.PutClusterCapacityProviders",
+    validator: validate_PutClusterCapacityProviders_598469, base: "/",
+    url: url_PutClusterCapacityProviders_598470,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_RegisterContainerInstance_598483 = ref object of OpenApiRestCall_597389
+proc url_RegisterContainerInstance_598485(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_RegisterContainerInstance_598484(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Registers an EC2 instance into the specified cluster. This instance becomes available to place containers on.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_598486 = header.getOrDefault("X-Amz-Target")
+  valid_598486 = validateParameter(valid_598486, JString, required = true, default = newJString(
+      "AmazonEC2ContainerServiceV20141113.RegisterContainerInstance"))
+  if valid_598486 != nil:
+    section.add "X-Amz-Target", valid_598486
+  var valid_598487 = header.getOrDefault("X-Amz-Signature")
+  valid_598487 = validateParameter(valid_598487, JString, required = false,
+                                 default = nil)
+  if valid_598487 != nil:
+    section.add "X-Amz-Signature", valid_598487
+  var valid_598488 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598488 = validateParameter(valid_598488, JString, required = false,
+                                 default = nil)
+  if valid_598488 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598488
+  var valid_598489 = header.getOrDefault("X-Amz-Date")
+  valid_598489 = validateParameter(valid_598489, JString, required = false,
+                                 default = nil)
+  if valid_598489 != nil:
+    section.add "X-Amz-Date", valid_598489
+  var valid_598490 = header.getOrDefault("X-Amz-Credential")
+  valid_598490 = validateParameter(valid_598490, JString, required = false,
+                                 default = nil)
+  if valid_598490 != nil:
+    section.add "X-Amz-Credential", valid_598490
+  var valid_598491 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598491 = validateParameter(valid_598491, JString, required = false,
+                                 default = nil)
+  if valid_598491 != nil:
+    section.add "X-Amz-Security-Token", valid_598491
+  var valid_598492 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598492 = validateParameter(valid_598492, JString, required = false,
+                                 default = nil)
+  if valid_598492 != nil:
+    section.add "X-Amz-Algorithm", valid_598492
+  var valid_598493 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598493 = validateParameter(valid_598493, JString, required = false,
+                                 default = nil)
+  if valid_598493 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598493
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_598495: Call_RegisterContainerInstance_598483; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Registers an EC2 instance into the specified cluster. This instance becomes available to place containers on.</p>
   ## 
-  let valid = call_600425.validator(path, query, header, formData, body)
-  let scheme = call_600425.pickScheme
+  let valid = call_598495.validator(path, query, header, formData, body)
+  let scheme = call_598495.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600425.url(scheme.get, call_600425.host, call_600425.base,
-                         call_600425.route, valid.getOrDefault("path"),
+  let url = call_598495.url(scheme.get, call_598495.host, call_598495.base,
+                         call_598495.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600425, url, valid)
+  result = atozHook(call_598495, url, valid)
 
-proc call*(call_600426: Call_RegisterContainerInstance_600413; body: JsonNode): Recallable =
+proc call*(call_598496: Call_RegisterContainerInstance_598483; body: JsonNode): Recallable =
   ## registerContainerInstance
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Registers an EC2 instance into the specified cluster. This instance becomes available to place containers on.</p>
   ##   body: JObject (required)
-  var body_600427 = newJObject()
+  var body_598497 = newJObject()
   if body != nil:
-    body_600427 = body
-  result = call_600426.call(nil, nil, nil, nil, body_600427)
+    body_598497 = body
+  result = call_598496.call(nil, nil, nil, nil, body_598497)
 
-var registerContainerInstance* = Call_RegisterContainerInstance_600413(
+var registerContainerInstance* = Call_RegisterContainerInstance_598483(
     name: "registerContainerInstance", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.RegisterContainerInstance",
-    validator: validate_RegisterContainerInstance_600414, base: "/",
-    url: url_RegisterContainerInstance_600415,
+    validator: validate_RegisterContainerInstance_598484, base: "/",
+    url: url_RegisterContainerInstance_598485,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterTaskDefinition_600428 = ref object of OpenApiRestCall_599368
-proc url_RegisterTaskDefinition_600430(protocol: Scheme; host: string; base: string;
+  Call_RegisterTaskDefinition_598498 = ref object of OpenApiRestCall_597389
+proc url_RegisterTaskDefinition_598500(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterTaskDefinition_600429(path: JsonNode; query: JsonNode;
+proc validate_RegisterTaskDefinition_598499(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Registers a new task definition from the supplied <code>family</code> and <code>containerDefinitions</code>. Optionally, you can add data volumes to your containers with the <code>volumes</code> parameter. For more information about task definition parameters and defaults, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_defintions.html">Amazon ECS Task Definitions</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>You can specify an IAM role for your task with the <code>taskRoleArn</code> parameter. When you specify an IAM role for a task, its containers can then use the latest versions of the AWS CLI or SDKs to make API requests to the AWS services that are specified in the IAM policy associated with the role. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html">IAM Roles for Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>You can specify a Docker networking mode for the containers in your task definition with the <code>networkMode</code> parameter. The available network modes correspond to those described in <a href="https://docs.docker.com/engine/reference/run/#/network-settings">Network settings</a> in the Docker run reference. If you specify the <code>awsvpc</code> network mode, the task is allocated an elastic network interface, and you must specify a <a>NetworkConfiguration</a> when you create a service or run a task with the task definition. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking.html">Task Networking</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ## 
@@ -3680,57 +4075,57 @@ proc validate_RegisterTaskDefinition_600429(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600431 = header.getOrDefault("X-Amz-Date")
-  valid_600431 = validateParameter(valid_600431, JString, required = false,
-                                 default = nil)
-  if valid_600431 != nil:
-    section.add "X-Amz-Date", valid_600431
-  var valid_600432 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600432 = validateParameter(valid_600432, JString, required = false,
-                                 default = nil)
-  if valid_600432 != nil:
-    section.add "X-Amz-Security-Token", valid_600432
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600433 = header.getOrDefault("X-Amz-Target")
-  valid_600433 = validateParameter(valid_600433, JString, required = true, default = newJString(
+  var valid_598501 = header.getOrDefault("X-Amz-Target")
+  valid_598501 = validateParameter(valid_598501, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.RegisterTaskDefinition"))
-  if valid_600433 != nil:
-    section.add "X-Amz-Target", valid_600433
-  var valid_600434 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600434 = validateParameter(valid_600434, JString, required = false,
+  if valid_598501 != nil:
+    section.add "X-Amz-Target", valid_598501
+  var valid_598502 = header.getOrDefault("X-Amz-Signature")
+  valid_598502 = validateParameter(valid_598502, JString, required = false,
                                  default = nil)
-  if valid_600434 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600434
-  var valid_600435 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600435 = validateParameter(valid_600435, JString, required = false,
+  if valid_598502 != nil:
+    section.add "X-Amz-Signature", valid_598502
+  var valid_598503 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598503 = validateParameter(valid_598503, JString, required = false,
                                  default = nil)
-  if valid_600435 != nil:
-    section.add "X-Amz-Algorithm", valid_600435
-  var valid_600436 = header.getOrDefault("X-Amz-Signature")
-  valid_600436 = validateParameter(valid_600436, JString, required = false,
+  if valid_598503 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598503
+  var valid_598504 = header.getOrDefault("X-Amz-Date")
+  valid_598504 = validateParameter(valid_598504, JString, required = false,
                                  default = nil)
-  if valid_600436 != nil:
-    section.add "X-Amz-Signature", valid_600436
-  var valid_600437 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600437 = validateParameter(valid_600437, JString, required = false,
+  if valid_598504 != nil:
+    section.add "X-Amz-Date", valid_598504
+  var valid_598505 = header.getOrDefault("X-Amz-Credential")
+  valid_598505 = validateParameter(valid_598505, JString, required = false,
                                  default = nil)
-  if valid_600437 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600437
-  var valid_600438 = header.getOrDefault("X-Amz-Credential")
-  valid_600438 = validateParameter(valid_600438, JString, required = false,
+  if valid_598505 != nil:
+    section.add "X-Amz-Credential", valid_598505
+  var valid_598506 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598506 = validateParameter(valid_598506, JString, required = false,
                                  default = nil)
-  if valid_600438 != nil:
-    section.add "X-Amz-Credential", valid_600438
+  if valid_598506 != nil:
+    section.add "X-Amz-Security-Token", valid_598506
+  var valid_598507 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598507 = validateParameter(valid_598507, JString, required = false,
+                                 default = nil)
+  if valid_598507 != nil:
+    section.add "X-Amz-Algorithm", valid_598507
+  var valid_598508 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598508 = validateParameter(valid_598508, JString, required = false,
+                                 default = nil)
+  if valid_598508 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598508
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3741,47 +4136,48 @@ proc validate_RegisterTaskDefinition_600429(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600440: Call_RegisterTaskDefinition_600428; path: JsonNode;
+proc call*(call_598510: Call_RegisterTaskDefinition_598498; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers a new task definition from the supplied <code>family</code> and <code>containerDefinitions</code>. Optionally, you can add data volumes to your containers with the <code>volumes</code> parameter. For more information about task definition parameters and defaults, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_defintions.html">Amazon ECS Task Definitions</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>You can specify an IAM role for your task with the <code>taskRoleArn</code> parameter. When you specify an IAM role for a task, its containers can then use the latest versions of the AWS CLI or SDKs to make API requests to the AWS services that are specified in the IAM policy associated with the role. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html">IAM Roles for Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>You can specify a Docker networking mode for the containers in your task definition with the <code>networkMode</code> parameter. The available network modes correspond to those described in <a href="https://docs.docker.com/engine/reference/run/#/network-settings">Network settings</a> in the Docker run reference. If you specify the <code>awsvpc</code> network mode, the task is allocated an elastic network interface, and you must specify a <a>NetworkConfiguration</a> when you create a service or run a task with the task definition. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking.html">Task Networking</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ## 
-  let valid = call_600440.validator(path, query, header, formData, body)
-  let scheme = call_600440.pickScheme
+  let valid = call_598510.validator(path, query, header, formData, body)
+  let scheme = call_598510.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600440.url(scheme.get, call_600440.host, call_600440.base,
-                         call_600440.route, valid.getOrDefault("path"),
+  let url = call_598510.url(scheme.get, call_598510.host, call_598510.base,
+                         call_598510.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600440, url, valid)
+  result = atozHook(call_598510, url, valid)
 
-proc call*(call_600441: Call_RegisterTaskDefinition_600428; body: JsonNode): Recallable =
+proc call*(call_598511: Call_RegisterTaskDefinition_598498; body: JsonNode): Recallable =
   ## registerTaskDefinition
   ## <p>Registers a new task definition from the supplied <code>family</code> and <code>containerDefinitions</code>. Optionally, you can add data volumes to your containers with the <code>volumes</code> parameter. For more information about task definition parameters and defaults, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_defintions.html">Amazon ECS Task Definitions</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>You can specify an IAM role for your task with the <code>taskRoleArn</code> parameter. When you specify an IAM role for a task, its containers can then use the latest versions of the AWS CLI or SDKs to make API requests to the AWS services that are specified in the IAM policy associated with the role. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html">IAM Roles for Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>You can specify a Docker networking mode for the containers in your task definition with the <code>networkMode</code> parameter. The available network modes correspond to those described in <a href="https://docs.docker.com/engine/reference/run/#/network-settings">Network settings</a> in the Docker run reference. If you specify the <code>awsvpc</code> network mode, the task is allocated an elastic network interface, and you must specify a <a>NetworkConfiguration</a> when you create a service or run a task with the task definition. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking.html">Task Networking</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600442 = newJObject()
+  var body_598512 = newJObject()
   if body != nil:
-    body_600442 = body
-  result = call_600441.call(nil, nil, nil, nil, body_600442)
+    body_598512 = body
+  result = call_598511.call(nil, nil, nil, nil, body_598512)
 
-var registerTaskDefinition* = Call_RegisterTaskDefinition_600428(
+var registerTaskDefinition* = Call_RegisterTaskDefinition_598498(
     name: "registerTaskDefinition", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.RegisterTaskDefinition",
-    validator: validate_RegisterTaskDefinition_600429, base: "/",
-    url: url_RegisterTaskDefinition_600430, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterTaskDefinition_598499, base: "/",
+    url: url_RegisterTaskDefinition_598500, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RunTask_600443 = ref object of OpenApiRestCall_599368
-proc url_RunTask_600445(protocol: Scheme; host: string; base: string; route: string;
+  Call_RunTask_598513 = ref object of OpenApiRestCall_597389
+proc url_RunTask_598515(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RunTask_600444(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RunTask_598514(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts a new task using the specified task definition.</p> <p>You can allow Amazon ECS to place tasks for you, or you can customize how Amazon ECS places tasks using placement constraints and placement strategies. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html">Scheduling Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>Alternatively, you can use <a>StartTask</a> to use your own scheduler or place tasks manually on specific container instances.</p> <p>The Amazon ECS API follows an eventual consistency model, due to the distributed nature of the system supporting the API. This means that the result of an API command you run that affects your Amazon ECS resources might not be immediately visible to all subsequent commands you run. Keep this in mind when you carry out an API command that immediately follows a previous API command.</p> <p>To manage eventual consistency, you can do the following:</p> <ul> <li> <p>Confirm the state of the resource before you run a command to modify it. Run the DescribeTasks command using an exponential backoff algorithm to ensure that you allow enough time for the previous command to propagate through the system. To do this, run the DescribeTasks command repeatedly, starting with a couple of seconds of wait time and increasing gradually up to five minutes of wait time.</p> </li> <li> <p>Add wait time between subsequent commands, even if the DescribeTasks command returns an accurate response. Apply an exponential backoff algorithm starting with a couple of seconds of wait time, and increase gradually up to about five minutes of wait time.</p> </li> </ul>
   ## 
@@ -3792,57 +4188,57 @@ proc validate_RunTask_600444(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600446 = header.getOrDefault("X-Amz-Date")
-  valid_600446 = validateParameter(valid_600446, JString, required = false,
-                                 default = nil)
-  if valid_600446 != nil:
-    section.add "X-Amz-Date", valid_600446
-  var valid_600447 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600447 = validateParameter(valid_600447, JString, required = false,
-                                 default = nil)
-  if valid_600447 != nil:
-    section.add "X-Amz-Security-Token", valid_600447
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600448 = header.getOrDefault("X-Amz-Target")
-  valid_600448 = validateParameter(valid_600448, JString, required = true, default = newJString(
+  var valid_598516 = header.getOrDefault("X-Amz-Target")
+  valid_598516 = validateParameter(valid_598516, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.RunTask"))
-  if valid_600448 != nil:
-    section.add "X-Amz-Target", valid_600448
-  var valid_600449 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600449 = validateParameter(valid_600449, JString, required = false,
+  if valid_598516 != nil:
+    section.add "X-Amz-Target", valid_598516
+  var valid_598517 = header.getOrDefault("X-Amz-Signature")
+  valid_598517 = validateParameter(valid_598517, JString, required = false,
                                  default = nil)
-  if valid_600449 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600449
-  var valid_600450 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600450 = validateParameter(valid_600450, JString, required = false,
+  if valid_598517 != nil:
+    section.add "X-Amz-Signature", valid_598517
+  var valid_598518 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598518 = validateParameter(valid_598518, JString, required = false,
                                  default = nil)
-  if valid_600450 != nil:
-    section.add "X-Amz-Algorithm", valid_600450
-  var valid_600451 = header.getOrDefault("X-Amz-Signature")
-  valid_600451 = validateParameter(valid_600451, JString, required = false,
+  if valid_598518 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598518
+  var valid_598519 = header.getOrDefault("X-Amz-Date")
+  valid_598519 = validateParameter(valid_598519, JString, required = false,
                                  default = nil)
-  if valid_600451 != nil:
-    section.add "X-Amz-Signature", valid_600451
-  var valid_600452 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600452 = validateParameter(valid_600452, JString, required = false,
+  if valid_598519 != nil:
+    section.add "X-Amz-Date", valid_598519
+  var valid_598520 = header.getOrDefault("X-Amz-Credential")
+  valid_598520 = validateParameter(valid_598520, JString, required = false,
                                  default = nil)
-  if valid_600452 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600452
-  var valid_600453 = header.getOrDefault("X-Amz-Credential")
-  valid_600453 = validateParameter(valid_600453, JString, required = false,
+  if valid_598520 != nil:
+    section.add "X-Amz-Credential", valid_598520
+  var valid_598521 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598521 = validateParameter(valid_598521, JString, required = false,
                                  default = nil)
-  if valid_600453 != nil:
-    section.add "X-Amz-Credential", valid_600453
+  if valid_598521 != nil:
+    section.add "X-Amz-Security-Token", valid_598521
+  var valid_598522 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598522 = validateParameter(valid_598522, JString, required = false,
+                                 default = nil)
+  if valid_598522 != nil:
+    section.add "X-Amz-Algorithm", valid_598522
+  var valid_598523 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598523 = validateParameter(valid_598523, JString, required = false,
+                                 default = nil)
+  if valid_598523 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598523
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3853,47 +4249,48 @@ proc validate_RunTask_600444(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600455: Call_RunTask_600443; path: JsonNode; query: JsonNode;
+proc call*(call_598525: Call_RunTask_598513; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts a new task using the specified task definition.</p> <p>You can allow Amazon ECS to place tasks for you, or you can customize how Amazon ECS places tasks using placement constraints and placement strategies. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html">Scheduling Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>Alternatively, you can use <a>StartTask</a> to use your own scheduler or place tasks manually on specific container instances.</p> <p>The Amazon ECS API follows an eventual consistency model, due to the distributed nature of the system supporting the API. This means that the result of an API command you run that affects your Amazon ECS resources might not be immediately visible to all subsequent commands you run. Keep this in mind when you carry out an API command that immediately follows a previous API command.</p> <p>To manage eventual consistency, you can do the following:</p> <ul> <li> <p>Confirm the state of the resource before you run a command to modify it. Run the DescribeTasks command using an exponential backoff algorithm to ensure that you allow enough time for the previous command to propagate through the system. To do this, run the DescribeTasks command repeatedly, starting with a couple of seconds of wait time and increasing gradually up to five minutes of wait time.</p> </li> <li> <p>Add wait time between subsequent commands, even if the DescribeTasks command returns an accurate response. Apply an exponential backoff algorithm starting with a couple of seconds of wait time, and increase gradually up to about five minutes of wait time.</p> </li> </ul>
   ## 
-  let valid = call_600455.validator(path, query, header, formData, body)
-  let scheme = call_600455.pickScheme
+  let valid = call_598525.validator(path, query, header, formData, body)
+  let scheme = call_598525.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600455.url(scheme.get, call_600455.host, call_600455.base,
-                         call_600455.route, valid.getOrDefault("path"),
+  let url = call_598525.url(scheme.get, call_598525.host, call_598525.base,
+                         call_598525.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600455, url, valid)
+  result = atozHook(call_598525, url, valid)
 
-proc call*(call_600456: Call_RunTask_600443; body: JsonNode): Recallable =
+proc call*(call_598526: Call_RunTask_598513; body: JsonNode): Recallable =
   ## runTask
   ## <p>Starts a new task using the specified task definition.</p> <p>You can allow Amazon ECS to place tasks for you, or you can customize how Amazon ECS places tasks using placement constraints and placement strategies. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html">Scheduling Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> <p>Alternatively, you can use <a>StartTask</a> to use your own scheduler or place tasks manually on specific container instances.</p> <p>The Amazon ECS API follows an eventual consistency model, due to the distributed nature of the system supporting the API. This means that the result of an API command you run that affects your Amazon ECS resources might not be immediately visible to all subsequent commands you run. Keep this in mind when you carry out an API command that immediately follows a previous API command.</p> <p>To manage eventual consistency, you can do the following:</p> <ul> <li> <p>Confirm the state of the resource before you run a command to modify it. Run the DescribeTasks command using an exponential backoff algorithm to ensure that you allow enough time for the previous command to propagate through the system. To do this, run the DescribeTasks command repeatedly, starting with a couple of seconds of wait time and increasing gradually up to five minutes of wait time.</p> </li> <li> <p>Add wait time between subsequent commands, even if the DescribeTasks command returns an accurate response. Apply an exponential backoff algorithm starting with a couple of seconds of wait time, and increase gradually up to about five minutes of wait time.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_600457 = newJObject()
+  var body_598527 = newJObject()
   if body != nil:
-    body_600457 = body
-  result = call_600456.call(nil, nil, nil, nil, body_600457)
+    body_598527 = body
+  result = call_598526.call(nil, nil, nil, nil, body_598527)
 
-var runTask* = Call_RunTask_600443(name: "runTask", meth: HttpMethod.HttpPost,
+var runTask* = Call_RunTask_598513(name: "runTask", meth: HttpMethod.HttpPost,
                                 host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.RunTask",
-                                validator: validate_RunTask_600444, base: "/",
-                                url: url_RunTask_600445,
+                                validator: validate_RunTask_598514, base: "/",
+                                url: url_RunTask_598515,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartTask_600458 = ref object of OpenApiRestCall_599368
-proc url_StartTask_600460(protocol: Scheme; host: string; base: string; route: string;
+  Call_StartTask_598528 = ref object of OpenApiRestCall_597389
+proc url_StartTask_598530(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StartTask_600459(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StartTask_598529(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts a new task from the specified task definition on the specified container instance or instances.</p> <p>Alternatively, you can use <a>RunTask</a> to place tasks for you. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html">Scheduling Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ## 
@@ -3904,57 +4301,57 @@ proc validate_StartTask_600459(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600461 = header.getOrDefault("X-Amz-Date")
-  valid_600461 = validateParameter(valid_600461, JString, required = false,
-                                 default = nil)
-  if valid_600461 != nil:
-    section.add "X-Amz-Date", valid_600461
-  var valid_600462 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600462 = validateParameter(valid_600462, JString, required = false,
-                                 default = nil)
-  if valid_600462 != nil:
-    section.add "X-Amz-Security-Token", valid_600462
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600463 = header.getOrDefault("X-Amz-Target")
-  valid_600463 = validateParameter(valid_600463, JString, required = true, default = newJString(
+  var valid_598531 = header.getOrDefault("X-Amz-Target")
+  valid_598531 = validateParameter(valid_598531, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.StartTask"))
-  if valid_600463 != nil:
-    section.add "X-Amz-Target", valid_600463
-  var valid_600464 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600464 = validateParameter(valid_600464, JString, required = false,
+  if valid_598531 != nil:
+    section.add "X-Amz-Target", valid_598531
+  var valid_598532 = header.getOrDefault("X-Amz-Signature")
+  valid_598532 = validateParameter(valid_598532, JString, required = false,
                                  default = nil)
-  if valid_600464 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600464
-  var valid_600465 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600465 = validateParameter(valid_600465, JString, required = false,
+  if valid_598532 != nil:
+    section.add "X-Amz-Signature", valid_598532
+  var valid_598533 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598533 = validateParameter(valid_598533, JString, required = false,
                                  default = nil)
-  if valid_600465 != nil:
-    section.add "X-Amz-Algorithm", valid_600465
-  var valid_600466 = header.getOrDefault("X-Amz-Signature")
-  valid_600466 = validateParameter(valid_600466, JString, required = false,
+  if valid_598533 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598533
+  var valid_598534 = header.getOrDefault("X-Amz-Date")
+  valid_598534 = validateParameter(valid_598534, JString, required = false,
                                  default = nil)
-  if valid_600466 != nil:
-    section.add "X-Amz-Signature", valid_600466
-  var valid_600467 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600467 = validateParameter(valid_600467, JString, required = false,
+  if valid_598534 != nil:
+    section.add "X-Amz-Date", valid_598534
+  var valid_598535 = header.getOrDefault("X-Amz-Credential")
+  valid_598535 = validateParameter(valid_598535, JString, required = false,
                                  default = nil)
-  if valid_600467 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600467
-  var valid_600468 = header.getOrDefault("X-Amz-Credential")
-  valid_600468 = validateParameter(valid_600468, JString, required = false,
+  if valid_598535 != nil:
+    section.add "X-Amz-Credential", valid_598535
+  var valid_598536 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598536 = validateParameter(valid_598536, JString, required = false,
                                  default = nil)
-  if valid_600468 != nil:
-    section.add "X-Amz-Credential", valid_600468
+  if valid_598536 != nil:
+    section.add "X-Amz-Security-Token", valid_598536
+  var valid_598537 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598537 = validateParameter(valid_598537, JString, required = false,
+                                 default = nil)
+  if valid_598537 != nil:
+    section.add "X-Amz-Algorithm", valid_598537
+  var valid_598538 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598538 = validateParameter(valid_598538, JString, required = false,
+                                 default = nil)
+  if valid_598538 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598538
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3965,47 +4362,48 @@ proc validate_StartTask_600459(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600470: Call_StartTask_600458; path: JsonNode; query: JsonNode;
+proc call*(call_598540: Call_StartTask_598528; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts a new task from the specified task definition on the specified container instance or instances.</p> <p>Alternatively, you can use <a>RunTask</a> to place tasks for you. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html">Scheduling Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ## 
-  let valid = call_600470.validator(path, query, header, formData, body)
-  let scheme = call_600470.pickScheme
+  let valid = call_598540.validator(path, query, header, formData, body)
+  let scheme = call_598540.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600470.url(scheme.get, call_600470.host, call_600470.base,
-                         call_600470.route, valid.getOrDefault("path"),
+  let url = call_598540.url(scheme.get, call_598540.host, call_598540.base,
+                         call_598540.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600470, url, valid)
+  result = atozHook(call_598540, url, valid)
 
-proc call*(call_600471: Call_StartTask_600458; body: JsonNode): Recallable =
+proc call*(call_598541: Call_StartTask_598528; body: JsonNode): Recallable =
   ## startTask
   ## <p>Starts a new task from the specified task definition on the specified container instance or instances.</p> <p>Alternatively, you can use <a>RunTask</a> to place tasks for you. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html">Scheduling Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600472 = newJObject()
+  var body_598542 = newJObject()
   if body != nil:
-    body_600472 = body
-  result = call_600471.call(nil, nil, nil, nil, body_600472)
+    body_598542 = body
+  result = call_598541.call(nil, nil, nil, nil, body_598542)
 
-var startTask* = Call_StartTask_600458(name: "startTask", meth: HttpMethod.HttpPost,
+var startTask* = Call_StartTask_598528(name: "startTask", meth: HttpMethod.HttpPost,
                                     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.StartTask",
-                                    validator: validate_StartTask_600459,
-                                    base: "/", url: url_StartTask_600460,
+                                    validator: validate_StartTask_598529,
+                                    base: "/", url: url_StartTask_598530,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopTask_600473 = ref object of OpenApiRestCall_599368
-proc url_StopTask_600475(protocol: Scheme; host: string; base: string; route: string;
+  Call_StopTask_598543 = ref object of OpenApiRestCall_597389
+proc url_StopTask_598545(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StopTask_600474(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StopTask_598544(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Stops a running task. Any tags associated with the task will be deleted.</p> <p>When <a>StopTask</a> is called on a task, the equivalent of <code>docker stop</code> is issued to the containers running in the task. This results in a <code>SIGTERM</code> value and a default 30-second timeout, after which the <code>SIGKILL</code> value is sent and the containers are forcibly stopped. If the container handles the <code>SIGTERM</code> value gracefully and exits within 30 seconds from receiving it, no <code>SIGKILL</code> value is sent.</p> <note> <p>The default 30-second timeout can be configured on the Amazon ECS container agent with the <code>ECS_CONTAINER_STOP_TIMEOUT</code> variable. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html">Amazon ECS Container Agent Configuration</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
   ## 
@@ -4016,57 +4414,57 @@ proc validate_StopTask_600474(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600476 = header.getOrDefault("X-Amz-Date")
-  valid_600476 = validateParameter(valid_600476, JString, required = false,
-                                 default = nil)
-  if valid_600476 != nil:
-    section.add "X-Amz-Date", valid_600476
-  var valid_600477 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600477 = validateParameter(valid_600477, JString, required = false,
-                                 default = nil)
-  if valid_600477 != nil:
-    section.add "X-Amz-Security-Token", valid_600477
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600478 = header.getOrDefault("X-Amz-Target")
-  valid_600478 = validateParameter(valid_600478, JString, required = true, default = newJString(
+  var valid_598546 = header.getOrDefault("X-Amz-Target")
+  valid_598546 = validateParameter(valid_598546, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.StopTask"))
-  if valid_600478 != nil:
-    section.add "X-Amz-Target", valid_600478
-  var valid_600479 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600479 = validateParameter(valid_600479, JString, required = false,
+  if valid_598546 != nil:
+    section.add "X-Amz-Target", valid_598546
+  var valid_598547 = header.getOrDefault("X-Amz-Signature")
+  valid_598547 = validateParameter(valid_598547, JString, required = false,
                                  default = nil)
-  if valid_600479 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600479
-  var valid_600480 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600480 = validateParameter(valid_600480, JString, required = false,
+  if valid_598547 != nil:
+    section.add "X-Amz-Signature", valid_598547
+  var valid_598548 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598548 = validateParameter(valid_598548, JString, required = false,
                                  default = nil)
-  if valid_600480 != nil:
-    section.add "X-Amz-Algorithm", valid_600480
-  var valid_600481 = header.getOrDefault("X-Amz-Signature")
-  valid_600481 = validateParameter(valid_600481, JString, required = false,
+  if valid_598548 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598548
+  var valid_598549 = header.getOrDefault("X-Amz-Date")
+  valid_598549 = validateParameter(valid_598549, JString, required = false,
                                  default = nil)
-  if valid_600481 != nil:
-    section.add "X-Amz-Signature", valid_600481
-  var valid_600482 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600482 = validateParameter(valid_600482, JString, required = false,
+  if valid_598549 != nil:
+    section.add "X-Amz-Date", valid_598549
+  var valid_598550 = header.getOrDefault("X-Amz-Credential")
+  valid_598550 = validateParameter(valid_598550, JString, required = false,
                                  default = nil)
-  if valid_600482 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600482
-  var valid_600483 = header.getOrDefault("X-Amz-Credential")
-  valid_600483 = validateParameter(valid_600483, JString, required = false,
+  if valid_598550 != nil:
+    section.add "X-Amz-Credential", valid_598550
+  var valid_598551 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598551 = validateParameter(valid_598551, JString, required = false,
                                  default = nil)
-  if valid_600483 != nil:
-    section.add "X-Amz-Credential", valid_600483
+  if valid_598551 != nil:
+    section.add "X-Amz-Security-Token", valid_598551
+  var valid_598552 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598552 = validateParameter(valid_598552, JString, required = false,
+                                 default = nil)
+  if valid_598552 != nil:
+    section.add "X-Amz-Algorithm", valid_598552
+  var valid_598553 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598553 = validateParameter(valid_598553, JString, required = false,
+                                 default = nil)
+  if valid_598553 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598553
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4077,47 +4475,48 @@ proc validate_StopTask_600474(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600485: Call_StopTask_600473; path: JsonNode; query: JsonNode;
+proc call*(call_598555: Call_StopTask_598543; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stops a running task. Any tags associated with the task will be deleted.</p> <p>When <a>StopTask</a> is called on a task, the equivalent of <code>docker stop</code> is issued to the containers running in the task. This results in a <code>SIGTERM</code> value and a default 30-second timeout, after which the <code>SIGKILL</code> value is sent and the containers are forcibly stopped. If the container handles the <code>SIGTERM</code> value gracefully and exits within 30 seconds from receiving it, no <code>SIGKILL</code> value is sent.</p> <note> <p>The default 30-second timeout can be configured on the Amazon ECS container agent with the <code>ECS_CONTAINER_STOP_TIMEOUT</code> variable. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html">Amazon ECS Container Agent Configuration</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
   ## 
-  let valid = call_600485.validator(path, query, header, formData, body)
-  let scheme = call_600485.pickScheme
+  let valid = call_598555.validator(path, query, header, formData, body)
+  let scheme = call_598555.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600485.url(scheme.get, call_600485.host, call_600485.base,
-                         call_600485.route, valid.getOrDefault("path"),
+  let url = call_598555.url(scheme.get, call_598555.host, call_598555.base,
+                         call_598555.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600485, url, valid)
+  result = atozHook(call_598555, url, valid)
 
-proc call*(call_600486: Call_StopTask_600473; body: JsonNode): Recallable =
+proc call*(call_598556: Call_StopTask_598543; body: JsonNode): Recallable =
   ## stopTask
   ## <p>Stops a running task. Any tags associated with the task will be deleted.</p> <p>When <a>StopTask</a> is called on a task, the equivalent of <code>docker stop</code> is issued to the containers running in the task. This results in a <code>SIGTERM</code> value and a default 30-second timeout, after which the <code>SIGKILL</code> value is sent and the containers are forcibly stopped. If the container handles the <code>SIGTERM</code> value gracefully and exits within 30 seconds from receiving it, no <code>SIGKILL</code> value is sent.</p> <note> <p>The default 30-second timeout can be configured on the Amazon ECS container agent with the <code>ECS_CONTAINER_STOP_TIMEOUT</code> variable. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html">Amazon ECS Container Agent Configuration</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p> </note>
   ##   body: JObject (required)
-  var body_600487 = newJObject()
+  var body_598557 = newJObject()
   if body != nil:
-    body_600487 = body
-  result = call_600486.call(nil, nil, nil, nil, body_600487)
+    body_598557 = body
+  result = call_598556.call(nil, nil, nil, nil, body_598557)
 
-var stopTask* = Call_StopTask_600473(name: "stopTask", meth: HttpMethod.HttpPost,
+var stopTask* = Call_StopTask_598543(name: "stopTask", meth: HttpMethod.HttpPost,
                                   host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.StopTask",
-                                  validator: validate_StopTask_600474, base: "/",
-                                  url: url_StopTask_600475,
+                                  validator: validate_StopTask_598544, base: "/",
+                                  url: url_StopTask_598545,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SubmitAttachmentStateChanges_600488 = ref object of OpenApiRestCall_599368
-proc url_SubmitAttachmentStateChanges_600490(protocol: Scheme; host: string;
+  Call_SubmitAttachmentStateChanges_598558 = ref object of OpenApiRestCall_597389
+proc url_SubmitAttachmentStateChanges_598560(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SubmitAttachmentStateChanges_600489(path: JsonNode; query: JsonNode;
+proc validate_SubmitAttachmentStateChanges_598559(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that an attachment changed states.</p>
   ## 
@@ -4128,57 +4527,57 @@ proc validate_SubmitAttachmentStateChanges_600489(path: JsonNode; query: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600491 = header.getOrDefault("X-Amz-Date")
-  valid_600491 = validateParameter(valid_600491, JString, required = false,
-                                 default = nil)
-  if valid_600491 != nil:
-    section.add "X-Amz-Date", valid_600491
-  var valid_600492 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600492 = validateParameter(valid_600492, JString, required = false,
-                                 default = nil)
-  if valid_600492 != nil:
-    section.add "X-Amz-Security-Token", valid_600492
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600493 = header.getOrDefault("X-Amz-Target")
-  valid_600493 = validateParameter(valid_600493, JString, required = true, default = newJString(
+  var valid_598561 = header.getOrDefault("X-Amz-Target")
+  valid_598561 = validateParameter(valid_598561, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.SubmitAttachmentStateChanges"))
-  if valid_600493 != nil:
-    section.add "X-Amz-Target", valid_600493
-  var valid_600494 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600494 = validateParameter(valid_600494, JString, required = false,
+  if valid_598561 != nil:
+    section.add "X-Amz-Target", valid_598561
+  var valid_598562 = header.getOrDefault("X-Amz-Signature")
+  valid_598562 = validateParameter(valid_598562, JString, required = false,
                                  default = nil)
-  if valid_600494 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600494
-  var valid_600495 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600495 = validateParameter(valid_600495, JString, required = false,
+  if valid_598562 != nil:
+    section.add "X-Amz-Signature", valid_598562
+  var valid_598563 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598563 = validateParameter(valid_598563, JString, required = false,
                                  default = nil)
-  if valid_600495 != nil:
-    section.add "X-Amz-Algorithm", valid_600495
-  var valid_600496 = header.getOrDefault("X-Amz-Signature")
-  valid_600496 = validateParameter(valid_600496, JString, required = false,
+  if valid_598563 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598563
+  var valid_598564 = header.getOrDefault("X-Amz-Date")
+  valid_598564 = validateParameter(valid_598564, JString, required = false,
                                  default = nil)
-  if valid_600496 != nil:
-    section.add "X-Amz-Signature", valid_600496
-  var valid_600497 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600497 = validateParameter(valid_600497, JString, required = false,
+  if valid_598564 != nil:
+    section.add "X-Amz-Date", valid_598564
+  var valid_598565 = header.getOrDefault("X-Amz-Credential")
+  valid_598565 = validateParameter(valid_598565, JString, required = false,
                                  default = nil)
-  if valid_600497 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600497
-  var valid_600498 = header.getOrDefault("X-Amz-Credential")
-  valid_600498 = validateParameter(valid_600498, JString, required = false,
+  if valid_598565 != nil:
+    section.add "X-Amz-Credential", valid_598565
+  var valid_598566 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598566 = validateParameter(valid_598566, JString, required = false,
                                  default = nil)
-  if valid_600498 != nil:
-    section.add "X-Amz-Credential", valid_600498
+  if valid_598566 != nil:
+    section.add "X-Amz-Security-Token", valid_598566
+  var valid_598567 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598567 = validateParameter(valid_598567, JString, required = false,
+                                 default = nil)
+  if valid_598567 != nil:
+    section.add "X-Amz-Algorithm", valid_598567
+  var valid_598568 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598568 = validateParameter(valid_598568, JString, required = false,
+                                 default = nil)
+  if valid_598568 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598568
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4189,48 +4588,49 @@ proc validate_SubmitAttachmentStateChanges_600489(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600500: Call_SubmitAttachmentStateChanges_600488; path: JsonNode;
+proc call*(call_598570: Call_SubmitAttachmentStateChanges_598558; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that an attachment changed states.</p>
   ## 
-  let valid = call_600500.validator(path, query, header, formData, body)
-  let scheme = call_600500.pickScheme
+  let valid = call_598570.validator(path, query, header, formData, body)
+  let scheme = call_598570.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600500.url(scheme.get, call_600500.host, call_600500.base,
-                         call_600500.route, valid.getOrDefault("path"),
+  let url = call_598570.url(scheme.get, call_598570.host, call_598570.base,
+                         call_598570.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600500, url, valid)
+  result = atozHook(call_598570, url, valid)
 
-proc call*(call_600501: Call_SubmitAttachmentStateChanges_600488; body: JsonNode): Recallable =
+proc call*(call_598571: Call_SubmitAttachmentStateChanges_598558; body: JsonNode): Recallable =
   ## submitAttachmentStateChanges
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that an attachment changed states.</p>
   ##   body: JObject (required)
-  var body_600502 = newJObject()
+  var body_598572 = newJObject()
   if body != nil:
-    body_600502 = body
-  result = call_600501.call(nil, nil, nil, nil, body_600502)
+    body_598572 = body
+  result = call_598571.call(nil, nil, nil, nil, body_598572)
 
-var submitAttachmentStateChanges* = Call_SubmitAttachmentStateChanges_600488(
+var submitAttachmentStateChanges* = Call_SubmitAttachmentStateChanges_598558(
     name: "submitAttachmentStateChanges", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.SubmitAttachmentStateChanges",
-    validator: validate_SubmitAttachmentStateChanges_600489, base: "/",
-    url: url_SubmitAttachmentStateChanges_600490,
+    validator: validate_SubmitAttachmentStateChanges_598559, base: "/",
+    url: url_SubmitAttachmentStateChanges_598560,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SubmitContainerStateChange_600503 = ref object of OpenApiRestCall_599368
-proc url_SubmitContainerStateChange_600505(protocol: Scheme; host: string;
+  Call_SubmitContainerStateChange_598573 = ref object of OpenApiRestCall_597389
+proc url_SubmitContainerStateChange_598575(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SubmitContainerStateChange_600504(path: JsonNode; query: JsonNode;
+proc validate_SubmitContainerStateChange_598574(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that a container changed states.</p>
   ## 
@@ -4241,57 +4641,57 @@ proc validate_SubmitContainerStateChange_600504(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600506 = header.getOrDefault("X-Amz-Date")
-  valid_600506 = validateParameter(valid_600506, JString, required = false,
-                                 default = nil)
-  if valid_600506 != nil:
-    section.add "X-Amz-Date", valid_600506
-  var valid_600507 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600507 = validateParameter(valid_600507, JString, required = false,
-                                 default = nil)
-  if valid_600507 != nil:
-    section.add "X-Amz-Security-Token", valid_600507
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600508 = header.getOrDefault("X-Amz-Target")
-  valid_600508 = validateParameter(valid_600508, JString, required = true, default = newJString(
+  var valid_598576 = header.getOrDefault("X-Amz-Target")
+  valid_598576 = validateParameter(valid_598576, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.SubmitContainerStateChange"))
-  if valid_600508 != nil:
-    section.add "X-Amz-Target", valid_600508
-  var valid_600509 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600509 = validateParameter(valid_600509, JString, required = false,
+  if valid_598576 != nil:
+    section.add "X-Amz-Target", valid_598576
+  var valid_598577 = header.getOrDefault("X-Amz-Signature")
+  valid_598577 = validateParameter(valid_598577, JString, required = false,
                                  default = nil)
-  if valid_600509 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600509
-  var valid_600510 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600510 = validateParameter(valid_600510, JString, required = false,
+  if valid_598577 != nil:
+    section.add "X-Amz-Signature", valid_598577
+  var valid_598578 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598578 = validateParameter(valid_598578, JString, required = false,
                                  default = nil)
-  if valid_600510 != nil:
-    section.add "X-Amz-Algorithm", valid_600510
-  var valid_600511 = header.getOrDefault("X-Amz-Signature")
-  valid_600511 = validateParameter(valid_600511, JString, required = false,
+  if valid_598578 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598578
+  var valid_598579 = header.getOrDefault("X-Amz-Date")
+  valid_598579 = validateParameter(valid_598579, JString, required = false,
                                  default = nil)
-  if valid_600511 != nil:
-    section.add "X-Amz-Signature", valid_600511
-  var valid_600512 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600512 = validateParameter(valid_600512, JString, required = false,
+  if valid_598579 != nil:
+    section.add "X-Amz-Date", valid_598579
+  var valid_598580 = header.getOrDefault("X-Amz-Credential")
+  valid_598580 = validateParameter(valid_598580, JString, required = false,
                                  default = nil)
-  if valid_600512 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600512
-  var valid_600513 = header.getOrDefault("X-Amz-Credential")
-  valid_600513 = validateParameter(valid_600513, JString, required = false,
+  if valid_598580 != nil:
+    section.add "X-Amz-Credential", valid_598580
+  var valid_598581 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598581 = validateParameter(valid_598581, JString, required = false,
                                  default = nil)
-  if valid_600513 != nil:
-    section.add "X-Amz-Credential", valid_600513
+  if valid_598581 != nil:
+    section.add "X-Amz-Security-Token", valid_598581
+  var valid_598582 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598582 = validateParameter(valid_598582, JString, required = false,
+                                 default = nil)
+  if valid_598582 != nil:
+    section.add "X-Amz-Algorithm", valid_598582
+  var valid_598583 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598583 = validateParameter(valid_598583, JString, required = false,
+                                 default = nil)
+  if valid_598583 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598583
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4302,48 +4702,49 @@ proc validate_SubmitContainerStateChange_600504(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600515: Call_SubmitContainerStateChange_600503; path: JsonNode;
+proc call*(call_598585: Call_SubmitContainerStateChange_598573; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that a container changed states.</p>
   ## 
-  let valid = call_600515.validator(path, query, header, formData, body)
-  let scheme = call_600515.pickScheme
+  let valid = call_598585.validator(path, query, header, formData, body)
+  let scheme = call_598585.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600515.url(scheme.get, call_600515.host, call_600515.base,
-                         call_600515.route, valid.getOrDefault("path"),
+  let url = call_598585.url(scheme.get, call_598585.host, call_598585.base,
+                         call_598585.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600515, url, valid)
+  result = atozHook(call_598585, url, valid)
 
-proc call*(call_600516: Call_SubmitContainerStateChange_600503; body: JsonNode): Recallable =
+proc call*(call_598586: Call_SubmitContainerStateChange_598573; body: JsonNode): Recallable =
   ## submitContainerStateChange
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that a container changed states.</p>
   ##   body: JObject (required)
-  var body_600517 = newJObject()
+  var body_598587 = newJObject()
   if body != nil:
-    body_600517 = body
-  result = call_600516.call(nil, nil, nil, nil, body_600517)
+    body_598587 = body
+  result = call_598586.call(nil, nil, nil, nil, body_598587)
 
-var submitContainerStateChange* = Call_SubmitContainerStateChange_600503(
+var submitContainerStateChange* = Call_SubmitContainerStateChange_598573(
     name: "submitContainerStateChange", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.SubmitContainerStateChange",
-    validator: validate_SubmitContainerStateChange_600504, base: "/",
-    url: url_SubmitContainerStateChange_600505,
+    validator: validate_SubmitContainerStateChange_598574, base: "/",
+    url: url_SubmitContainerStateChange_598575,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SubmitTaskStateChange_600518 = ref object of OpenApiRestCall_599368
-proc url_SubmitTaskStateChange_600520(protocol: Scheme; host: string; base: string;
+  Call_SubmitTaskStateChange_598588 = ref object of OpenApiRestCall_597389
+proc url_SubmitTaskStateChange_598590(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SubmitTaskStateChange_600519(path: JsonNode; query: JsonNode;
+proc validate_SubmitTaskStateChange_598589(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that a task changed states.</p>
   ## 
@@ -4354,57 +4755,57 @@ proc validate_SubmitTaskStateChange_600519(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600521 = header.getOrDefault("X-Amz-Date")
-  valid_600521 = validateParameter(valid_600521, JString, required = false,
-                                 default = nil)
-  if valid_600521 != nil:
-    section.add "X-Amz-Date", valid_600521
-  var valid_600522 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600522 = validateParameter(valid_600522, JString, required = false,
-                                 default = nil)
-  if valid_600522 != nil:
-    section.add "X-Amz-Security-Token", valid_600522
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600523 = header.getOrDefault("X-Amz-Target")
-  valid_600523 = validateParameter(valid_600523, JString, required = true, default = newJString(
+  var valid_598591 = header.getOrDefault("X-Amz-Target")
+  valid_598591 = validateParameter(valid_598591, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.SubmitTaskStateChange"))
-  if valid_600523 != nil:
-    section.add "X-Amz-Target", valid_600523
-  var valid_600524 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600524 = validateParameter(valid_600524, JString, required = false,
+  if valid_598591 != nil:
+    section.add "X-Amz-Target", valid_598591
+  var valid_598592 = header.getOrDefault("X-Amz-Signature")
+  valid_598592 = validateParameter(valid_598592, JString, required = false,
                                  default = nil)
-  if valid_600524 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600524
-  var valid_600525 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600525 = validateParameter(valid_600525, JString, required = false,
+  if valid_598592 != nil:
+    section.add "X-Amz-Signature", valid_598592
+  var valid_598593 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598593 = validateParameter(valid_598593, JString, required = false,
                                  default = nil)
-  if valid_600525 != nil:
-    section.add "X-Amz-Algorithm", valid_600525
-  var valid_600526 = header.getOrDefault("X-Amz-Signature")
-  valid_600526 = validateParameter(valid_600526, JString, required = false,
+  if valid_598593 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598593
+  var valid_598594 = header.getOrDefault("X-Amz-Date")
+  valid_598594 = validateParameter(valid_598594, JString, required = false,
                                  default = nil)
-  if valid_600526 != nil:
-    section.add "X-Amz-Signature", valid_600526
-  var valid_600527 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600527 = validateParameter(valid_600527, JString, required = false,
+  if valid_598594 != nil:
+    section.add "X-Amz-Date", valid_598594
+  var valid_598595 = header.getOrDefault("X-Amz-Credential")
+  valid_598595 = validateParameter(valid_598595, JString, required = false,
                                  default = nil)
-  if valid_600527 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600527
-  var valid_600528 = header.getOrDefault("X-Amz-Credential")
-  valid_600528 = validateParameter(valid_600528, JString, required = false,
+  if valid_598595 != nil:
+    section.add "X-Amz-Credential", valid_598595
+  var valid_598596 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598596 = validateParameter(valid_598596, JString, required = false,
                                  default = nil)
-  if valid_600528 != nil:
-    section.add "X-Amz-Credential", valid_600528
+  if valid_598596 != nil:
+    section.add "X-Amz-Security-Token", valid_598596
+  var valid_598597 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598597 = validateParameter(valid_598597, JString, required = false,
+                                 default = nil)
+  if valid_598597 != nil:
+    section.add "X-Amz-Algorithm", valid_598597
+  var valid_598598 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598598 = validateParameter(valid_598598, JString, required = false,
+                                 default = nil)
+  if valid_598598 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598598
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4415,47 +4816,48 @@ proc validate_SubmitTaskStateChange_600519(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600530: Call_SubmitTaskStateChange_600518; path: JsonNode;
+proc call*(call_598600: Call_SubmitTaskStateChange_598588; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that a task changed states.</p>
   ## 
-  let valid = call_600530.validator(path, query, header, formData, body)
-  let scheme = call_600530.pickScheme
+  let valid = call_598600.validator(path, query, header, formData, body)
+  let scheme = call_598600.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600530.url(scheme.get, call_600530.host, call_600530.base,
-                         call_600530.route, valid.getOrDefault("path"),
+  let url = call_598600.url(scheme.get, call_598600.host, call_598600.base,
+                         call_598600.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600530, url, valid)
+  result = atozHook(call_598600, url, valid)
 
-proc call*(call_600531: Call_SubmitTaskStateChange_600518; body: JsonNode): Recallable =
+proc call*(call_598601: Call_SubmitTaskStateChange_598588; body: JsonNode): Recallable =
   ## submitTaskStateChange
   ## <note> <p>This action is only used by the Amazon ECS agent, and it is not intended for use outside of the agent.</p> </note> <p>Sent to acknowledge that a task changed states.</p>
   ##   body: JObject (required)
-  var body_600532 = newJObject()
+  var body_598602 = newJObject()
   if body != nil:
-    body_600532 = body
-  result = call_600531.call(nil, nil, nil, nil, body_600532)
+    body_598602 = body
+  result = call_598601.call(nil, nil, nil, nil, body_598602)
 
-var submitTaskStateChange* = Call_SubmitTaskStateChange_600518(
+var submitTaskStateChange* = Call_SubmitTaskStateChange_598588(
     name: "submitTaskStateChange", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.SubmitTaskStateChange",
-    validator: validate_SubmitTaskStateChange_600519, base: "/",
-    url: url_SubmitTaskStateChange_600520, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SubmitTaskStateChange_598589, base: "/",
+    url: url_SubmitTaskStateChange_598590, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_600533 = ref object of OpenApiRestCall_599368
-proc url_TagResource_600535(protocol: Scheme; host: string; base: string;
+  Call_TagResource_598603 = ref object of OpenApiRestCall_597389
+proc url_TagResource_598605(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_TagResource_600534(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_598604(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Associates the specified tags to a resource with the specified <code>resourceArn</code>. If existing tags on a resource are not specified in the request parameters, they are not changed. When a resource is deleted, the tags associated with that resource are deleted as well.
   ## 
@@ -4466,57 +4868,57 @@ proc validate_TagResource_600534(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600536 = header.getOrDefault("X-Amz-Date")
-  valid_600536 = validateParameter(valid_600536, JString, required = false,
-                                 default = nil)
-  if valid_600536 != nil:
-    section.add "X-Amz-Date", valid_600536
-  var valid_600537 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600537 = validateParameter(valid_600537, JString, required = false,
-                                 default = nil)
-  if valid_600537 != nil:
-    section.add "X-Amz-Security-Token", valid_600537
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600538 = header.getOrDefault("X-Amz-Target")
-  valid_600538 = validateParameter(valid_600538, JString, required = true, default = newJString(
+  var valid_598606 = header.getOrDefault("X-Amz-Target")
+  valid_598606 = validateParameter(valid_598606, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.TagResource"))
-  if valid_600538 != nil:
-    section.add "X-Amz-Target", valid_600538
-  var valid_600539 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600539 = validateParameter(valid_600539, JString, required = false,
+  if valid_598606 != nil:
+    section.add "X-Amz-Target", valid_598606
+  var valid_598607 = header.getOrDefault("X-Amz-Signature")
+  valid_598607 = validateParameter(valid_598607, JString, required = false,
                                  default = nil)
-  if valid_600539 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600539
-  var valid_600540 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600540 = validateParameter(valid_600540, JString, required = false,
+  if valid_598607 != nil:
+    section.add "X-Amz-Signature", valid_598607
+  var valid_598608 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598608 = validateParameter(valid_598608, JString, required = false,
                                  default = nil)
-  if valid_600540 != nil:
-    section.add "X-Amz-Algorithm", valid_600540
-  var valid_600541 = header.getOrDefault("X-Amz-Signature")
-  valid_600541 = validateParameter(valid_600541, JString, required = false,
+  if valid_598608 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598608
+  var valid_598609 = header.getOrDefault("X-Amz-Date")
+  valid_598609 = validateParameter(valid_598609, JString, required = false,
                                  default = nil)
-  if valid_600541 != nil:
-    section.add "X-Amz-Signature", valid_600541
-  var valid_600542 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600542 = validateParameter(valid_600542, JString, required = false,
+  if valid_598609 != nil:
+    section.add "X-Amz-Date", valid_598609
+  var valid_598610 = header.getOrDefault("X-Amz-Credential")
+  valid_598610 = validateParameter(valid_598610, JString, required = false,
                                  default = nil)
-  if valid_600542 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600542
-  var valid_600543 = header.getOrDefault("X-Amz-Credential")
-  valid_600543 = validateParameter(valid_600543, JString, required = false,
+  if valid_598610 != nil:
+    section.add "X-Amz-Credential", valid_598610
+  var valid_598611 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598611 = validateParameter(valid_598611, JString, required = false,
                                  default = nil)
-  if valid_600543 != nil:
-    section.add "X-Amz-Credential", valid_600543
+  if valid_598611 != nil:
+    section.add "X-Amz-Security-Token", valid_598611
+  var valid_598612 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598612 = validateParameter(valid_598612, JString, required = false,
+                                 default = nil)
+  if valid_598612 != nil:
+    section.add "X-Amz-Algorithm", valid_598612
+  var valid_598613 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598613 = validateParameter(valid_598613, JString, required = false,
+                                 default = nil)
+  if valid_598613 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598613
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4527,48 +4929,49 @@ proc validate_TagResource_600534(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600545: Call_TagResource_600533; path: JsonNode; query: JsonNode;
+proc call*(call_598615: Call_TagResource_598603; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Associates the specified tags to a resource with the specified <code>resourceArn</code>. If existing tags on a resource are not specified in the request parameters, they are not changed. When a resource is deleted, the tags associated with that resource are deleted as well.
   ## 
-  let valid = call_600545.validator(path, query, header, formData, body)
-  let scheme = call_600545.pickScheme
+  let valid = call_598615.validator(path, query, header, formData, body)
+  let scheme = call_598615.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600545.url(scheme.get, call_600545.host, call_600545.base,
-                         call_600545.route, valid.getOrDefault("path"),
+  let url = call_598615.url(scheme.get, call_598615.host, call_598615.base,
+                         call_598615.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600545, url, valid)
+  result = atozHook(call_598615, url, valid)
 
-proc call*(call_600546: Call_TagResource_600533; body: JsonNode): Recallable =
+proc call*(call_598616: Call_TagResource_598603; body: JsonNode): Recallable =
   ## tagResource
   ## Associates the specified tags to a resource with the specified <code>resourceArn</code>. If existing tags on a resource are not specified in the request parameters, they are not changed. When a resource is deleted, the tags associated with that resource are deleted as well.
   ##   body: JObject (required)
-  var body_600547 = newJObject()
+  var body_598617 = newJObject()
   if body != nil:
-    body_600547 = body
-  result = call_600546.call(nil, nil, nil, nil, body_600547)
+    body_598617 = body
+  result = call_598616.call(nil, nil, nil, nil, body_598617)
 
-var tagResource* = Call_TagResource_600533(name: "tagResource",
+var tagResource* = Call_TagResource_598603(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.TagResource",
-                                        validator: validate_TagResource_600534,
-                                        base: "/", url: url_TagResource_600535,
+                                        validator: validate_TagResource_598604,
+                                        base: "/", url: url_TagResource_598605,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_600548 = ref object of OpenApiRestCall_599368
-proc url_UntagResource_600550(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_598618 = ref object of OpenApiRestCall_597389
+proc url_UntagResource_598620(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UntagResource_600549(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_598619(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes specified tags from a resource.
   ## 
@@ -4579,57 +4982,57 @@ proc validate_UntagResource_600549(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600551 = header.getOrDefault("X-Amz-Date")
-  valid_600551 = validateParameter(valid_600551, JString, required = false,
-                                 default = nil)
-  if valid_600551 != nil:
-    section.add "X-Amz-Date", valid_600551
-  var valid_600552 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600552 = validateParameter(valid_600552, JString, required = false,
-                                 default = nil)
-  if valid_600552 != nil:
-    section.add "X-Amz-Security-Token", valid_600552
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600553 = header.getOrDefault("X-Amz-Target")
-  valid_600553 = validateParameter(valid_600553, JString, required = true, default = newJString(
+  var valid_598621 = header.getOrDefault("X-Amz-Target")
+  valid_598621 = validateParameter(valid_598621, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.UntagResource"))
-  if valid_600553 != nil:
-    section.add "X-Amz-Target", valid_600553
-  var valid_600554 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600554 = validateParameter(valid_600554, JString, required = false,
+  if valid_598621 != nil:
+    section.add "X-Amz-Target", valid_598621
+  var valid_598622 = header.getOrDefault("X-Amz-Signature")
+  valid_598622 = validateParameter(valid_598622, JString, required = false,
                                  default = nil)
-  if valid_600554 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600554
-  var valid_600555 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600555 = validateParameter(valid_600555, JString, required = false,
+  if valid_598622 != nil:
+    section.add "X-Amz-Signature", valid_598622
+  var valid_598623 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598623 = validateParameter(valid_598623, JString, required = false,
                                  default = nil)
-  if valid_600555 != nil:
-    section.add "X-Amz-Algorithm", valid_600555
-  var valid_600556 = header.getOrDefault("X-Amz-Signature")
-  valid_600556 = validateParameter(valid_600556, JString, required = false,
+  if valid_598623 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598623
+  var valid_598624 = header.getOrDefault("X-Amz-Date")
+  valid_598624 = validateParameter(valid_598624, JString, required = false,
                                  default = nil)
-  if valid_600556 != nil:
-    section.add "X-Amz-Signature", valid_600556
-  var valid_600557 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600557 = validateParameter(valid_600557, JString, required = false,
+  if valid_598624 != nil:
+    section.add "X-Amz-Date", valid_598624
+  var valid_598625 = header.getOrDefault("X-Amz-Credential")
+  valid_598625 = validateParameter(valid_598625, JString, required = false,
                                  default = nil)
-  if valid_600557 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600557
-  var valid_600558 = header.getOrDefault("X-Amz-Credential")
-  valid_600558 = validateParameter(valid_600558, JString, required = false,
+  if valid_598625 != nil:
+    section.add "X-Amz-Credential", valid_598625
+  var valid_598626 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598626 = validateParameter(valid_598626, JString, required = false,
                                  default = nil)
-  if valid_600558 != nil:
-    section.add "X-Amz-Credential", valid_600558
+  if valid_598626 != nil:
+    section.add "X-Amz-Security-Token", valid_598626
+  var valid_598627 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598627 = validateParameter(valid_598627, JString, required = false,
+                                 default = nil)
+  if valid_598627 != nil:
+    section.add "X-Amz-Algorithm", valid_598627
+  var valid_598628 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598628 = validateParameter(valid_598628, JString, required = false,
+                                 default = nil)
+  if valid_598628 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598628
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4640,47 +5043,48 @@ proc validate_UntagResource_600549(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600560: Call_UntagResource_600548; path: JsonNode; query: JsonNode;
+proc call*(call_598630: Call_UntagResource_598618; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes specified tags from a resource.
   ## 
-  let valid = call_600560.validator(path, query, header, formData, body)
-  let scheme = call_600560.pickScheme
+  let valid = call_598630.validator(path, query, header, formData, body)
+  let scheme = call_598630.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600560.url(scheme.get, call_600560.host, call_600560.base,
-                         call_600560.route, valid.getOrDefault("path"),
+  let url = call_598630.url(scheme.get, call_598630.host, call_598630.base,
+                         call_598630.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600560, url, valid)
+  result = atozHook(call_598630, url, valid)
 
-proc call*(call_600561: Call_UntagResource_600548; body: JsonNode): Recallable =
+proc call*(call_598631: Call_UntagResource_598618; body: JsonNode): Recallable =
   ## untagResource
   ## Deletes specified tags from a resource.
   ##   body: JObject (required)
-  var body_600562 = newJObject()
+  var body_598632 = newJObject()
   if body != nil:
-    body_600562 = body
-  result = call_600561.call(nil, nil, nil, nil, body_600562)
+    body_598632 = body
+  result = call_598631.call(nil, nil, nil, nil, body_598632)
 
-var untagResource* = Call_UntagResource_600548(name: "untagResource",
+var untagResource* = Call_UntagResource_598618(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.UntagResource",
-    validator: validate_UntagResource_600549, base: "/", url: url_UntagResource_600550,
+    validator: validate_UntagResource_598619, base: "/", url: url_UntagResource_598620,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateClusterSettings_600563 = ref object of OpenApiRestCall_599368
-proc url_UpdateClusterSettings_600565(protocol: Scheme; host: string; base: string;
+  Call_UpdateClusterSettings_598633 = ref object of OpenApiRestCall_597389
+proc url_UpdateClusterSettings_598635(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateClusterSettings_600564(path: JsonNode; query: JsonNode;
+proc validate_UpdateClusterSettings_598634(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies the settings to use for a cluster.
   ## 
@@ -4691,57 +5095,57 @@ proc validate_UpdateClusterSettings_600564(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600566 = header.getOrDefault("X-Amz-Date")
-  valid_600566 = validateParameter(valid_600566, JString, required = false,
-                                 default = nil)
-  if valid_600566 != nil:
-    section.add "X-Amz-Date", valid_600566
-  var valid_600567 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600567 = validateParameter(valid_600567, JString, required = false,
-                                 default = nil)
-  if valid_600567 != nil:
-    section.add "X-Amz-Security-Token", valid_600567
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600568 = header.getOrDefault("X-Amz-Target")
-  valid_600568 = validateParameter(valid_600568, JString, required = true, default = newJString(
+  var valid_598636 = header.getOrDefault("X-Amz-Target")
+  valid_598636 = validateParameter(valid_598636, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.UpdateClusterSettings"))
-  if valid_600568 != nil:
-    section.add "X-Amz-Target", valid_600568
-  var valid_600569 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600569 = validateParameter(valid_600569, JString, required = false,
+  if valid_598636 != nil:
+    section.add "X-Amz-Target", valid_598636
+  var valid_598637 = header.getOrDefault("X-Amz-Signature")
+  valid_598637 = validateParameter(valid_598637, JString, required = false,
                                  default = nil)
-  if valid_600569 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600569
-  var valid_600570 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600570 = validateParameter(valid_600570, JString, required = false,
+  if valid_598637 != nil:
+    section.add "X-Amz-Signature", valid_598637
+  var valid_598638 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598638 = validateParameter(valid_598638, JString, required = false,
                                  default = nil)
-  if valid_600570 != nil:
-    section.add "X-Amz-Algorithm", valid_600570
-  var valid_600571 = header.getOrDefault("X-Amz-Signature")
-  valid_600571 = validateParameter(valid_600571, JString, required = false,
+  if valid_598638 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598638
+  var valid_598639 = header.getOrDefault("X-Amz-Date")
+  valid_598639 = validateParameter(valid_598639, JString, required = false,
                                  default = nil)
-  if valid_600571 != nil:
-    section.add "X-Amz-Signature", valid_600571
-  var valid_600572 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600572 = validateParameter(valid_600572, JString, required = false,
+  if valid_598639 != nil:
+    section.add "X-Amz-Date", valid_598639
+  var valid_598640 = header.getOrDefault("X-Amz-Credential")
+  valid_598640 = validateParameter(valid_598640, JString, required = false,
                                  default = nil)
-  if valid_600572 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600572
-  var valid_600573 = header.getOrDefault("X-Amz-Credential")
-  valid_600573 = validateParameter(valid_600573, JString, required = false,
+  if valid_598640 != nil:
+    section.add "X-Amz-Credential", valid_598640
+  var valid_598641 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598641 = validateParameter(valid_598641, JString, required = false,
                                  default = nil)
-  if valid_600573 != nil:
-    section.add "X-Amz-Credential", valid_600573
+  if valid_598641 != nil:
+    section.add "X-Amz-Security-Token", valid_598641
+  var valid_598642 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598642 = validateParameter(valid_598642, JString, required = false,
+                                 default = nil)
+  if valid_598642 != nil:
+    section.add "X-Amz-Algorithm", valid_598642
+  var valid_598643 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598643 = validateParameter(valid_598643, JString, required = false,
+                                 default = nil)
+  if valid_598643 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598643
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4752,47 +5156,48 @@ proc validate_UpdateClusterSettings_600564(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600575: Call_UpdateClusterSettings_600563; path: JsonNode;
+proc call*(call_598645: Call_UpdateClusterSettings_598633; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Modifies the settings to use for a cluster.
   ## 
-  let valid = call_600575.validator(path, query, header, formData, body)
-  let scheme = call_600575.pickScheme
+  let valid = call_598645.validator(path, query, header, formData, body)
+  let scheme = call_598645.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600575.url(scheme.get, call_600575.host, call_600575.base,
-                         call_600575.route, valid.getOrDefault("path"),
+  let url = call_598645.url(scheme.get, call_598645.host, call_598645.base,
+                         call_598645.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600575, url, valid)
+  result = atozHook(call_598645, url, valid)
 
-proc call*(call_600576: Call_UpdateClusterSettings_600563; body: JsonNode): Recallable =
+proc call*(call_598646: Call_UpdateClusterSettings_598633; body: JsonNode): Recallable =
   ## updateClusterSettings
   ## Modifies the settings to use for a cluster.
   ##   body: JObject (required)
-  var body_600577 = newJObject()
+  var body_598647 = newJObject()
   if body != nil:
-    body_600577 = body
-  result = call_600576.call(nil, nil, nil, nil, body_600577)
+    body_598647 = body
+  result = call_598646.call(nil, nil, nil, nil, body_598647)
 
-var updateClusterSettings* = Call_UpdateClusterSettings_600563(
+var updateClusterSettings* = Call_UpdateClusterSettings_598633(
     name: "updateClusterSettings", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.UpdateClusterSettings",
-    validator: validate_UpdateClusterSettings_600564, base: "/",
-    url: url_UpdateClusterSettings_600565, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateClusterSettings_598634, base: "/",
+    url: url_UpdateClusterSettings_598635, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateContainerAgent_600578 = ref object of OpenApiRestCall_599368
-proc url_UpdateContainerAgent_600580(protocol: Scheme; host: string; base: string;
+  Call_UpdateContainerAgent_598648 = ref object of OpenApiRestCall_597389
+proc url_UpdateContainerAgent_598650(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateContainerAgent_600579(path: JsonNode; query: JsonNode;
+proc validate_UpdateContainerAgent_598649(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the Amazon ECS container agent on a specified container instance. Updating the Amazon ECS container agent does not interrupt running tasks or services on the container instance. The process for updating the agent differs depending on whether your container instance was launched with the Amazon ECS-optimized AMI or another operating system.</p> <p> <code>UpdateContainerAgent</code> requires the Amazon ECS-optimized AMI or Amazon Linux with the <code>ecs-init</code> service installed and running. For help updating the Amazon ECS container agent on other operating systems, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-update.html#manually_update_agent">Manually Updating the Amazon ECS Container Agent</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ## 
@@ -4803,57 +5208,57 @@ proc validate_UpdateContainerAgent_600579(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600581 = header.getOrDefault("X-Amz-Date")
-  valid_600581 = validateParameter(valid_600581, JString, required = false,
-                                 default = nil)
-  if valid_600581 != nil:
-    section.add "X-Amz-Date", valid_600581
-  var valid_600582 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600582 = validateParameter(valid_600582, JString, required = false,
-                                 default = nil)
-  if valid_600582 != nil:
-    section.add "X-Amz-Security-Token", valid_600582
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600583 = header.getOrDefault("X-Amz-Target")
-  valid_600583 = validateParameter(valid_600583, JString, required = true, default = newJString(
+  var valid_598651 = header.getOrDefault("X-Amz-Target")
+  valid_598651 = validateParameter(valid_598651, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.UpdateContainerAgent"))
-  if valid_600583 != nil:
-    section.add "X-Amz-Target", valid_600583
-  var valid_600584 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600584 = validateParameter(valid_600584, JString, required = false,
+  if valid_598651 != nil:
+    section.add "X-Amz-Target", valid_598651
+  var valid_598652 = header.getOrDefault("X-Amz-Signature")
+  valid_598652 = validateParameter(valid_598652, JString, required = false,
                                  default = nil)
-  if valid_600584 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600584
-  var valid_600585 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600585 = validateParameter(valid_600585, JString, required = false,
+  if valid_598652 != nil:
+    section.add "X-Amz-Signature", valid_598652
+  var valid_598653 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598653 = validateParameter(valid_598653, JString, required = false,
                                  default = nil)
-  if valid_600585 != nil:
-    section.add "X-Amz-Algorithm", valid_600585
-  var valid_600586 = header.getOrDefault("X-Amz-Signature")
-  valid_600586 = validateParameter(valid_600586, JString, required = false,
+  if valid_598653 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598653
+  var valid_598654 = header.getOrDefault("X-Amz-Date")
+  valid_598654 = validateParameter(valid_598654, JString, required = false,
                                  default = nil)
-  if valid_600586 != nil:
-    section.add "X-Amz-Signature", valid_600586
-  var valid_600587 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600587 = validateParameter(valid_600587, JString, required = false,
+  if valid_598654 != nil:
+    section.add "X-Amz-Date", valid_598654
+  var valid_598655 = header.getOrDefault("X-Amz-Credential")
+  valid_598655 = validateParameter(valid_598655, JString, required = false,
                                  default = nil)
-  if valid_600587 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600587
-  var valid_600588 = header.getOrDefault("X-Amz-Credential")
-  valid_600588 = validateParameter(valid_600588, JString, required = false,
+  if valid_598655 != nil:
+    section.add "X-Amz-Credential", valid_598655
+  var valid_598656 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598656 = validateParameter(valid_598656, JString, required = false,
                                  default = nil)
-  if valid_600588 != nil:
-    section.add "X-Amz-Credential", valid_600588
+  if valid_598656 != nil:
+    section.add "X-Amz-Security-Token", valid_598656
+  var valid_598657 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598657 = validateParameter(valid_598657, JString, required = false,
+                                 default = nil)
+  if valid_598657 != nil:
+    section.add "X-Amz-Algorithm", valid_598657
+  var valid_598658 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598658 = validateParameter(valid_598658, JString, required = false,
+                                 default = nil)
+  if valid_598658 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598658
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4864,47 +5269,48 @@ proc validate_UpdateContainerAgent_600579(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600590: Call_UpdateContainerAgent_600578; path: JsonNode;
+proc call*(call_598660: Call_UpdateContainerAgent_598648; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the Amazon ECS container agent on a specified container instance. Updating the Amazon ECS container agent does not interrupt running tasks or services on the container instance. The process for updating the agent differs depending on whether your container instance was launched with the Amazon ECS-optimized AMI or another operating system.</p> <p> <code>UpdateContainerAgent</code> requires the Amazon ECS-optimized AMI or Amazon Linux with the <code>ecs-init</code> service installed and running. For help updating the Amazon ECS container agent on other operating systems, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-update.html#manually_update_agent">Manually Updating the Amazon ECS Container Agent</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ## 
-  let valid = call_600590.validator(path, query, header, formData, body)
-  let scheme = call_600590.pickScheme
+  let valid = call_598660.validator(path, query, header, formData, body)
+  let scheme = call_598660.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600590.url(scheme.get, call_600590.host, call_600590.base,
-                         call_600590.route, valid.getOrDefault("path"),
+  let url = call_598660.url(scheme.get, call_598660.host, call_598660.base,
+                         call_598660.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600590, url, valid)
+  result = atozHook(call_598660, url, valid)
 
-proc call*(call_600591: Call_UpdateContainerAgent_600578; body: JsonNode): Recallable =
+proc call*(call_598661: Call_UpdateContainerAgent_598648; body: JsonNode): Recallable =
   ## updateContainerAgent
   ## <p>Updates the Amazon ECS container agent on a specified container instance. Updating the Amazon ECS container agent does not interrupt running tasks or services on the container instance. The process for updating the agent differs depending on whether your container instance was launched with the Amazon ECS-optimized AMI or another operating system.</p> <p> <code>UpdateContainerAgent</code> requires the Amazon ECS-optimized AMI or Amazon Linux with the <code>ecs-init</code> service installed and running. For help updating the Amazon ECS container agent on other operating systems, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-update.html#manually_update_agent">Manually Updating the Amazon ECS Container Agent</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600592 = newJObject()
+  var body_598662 = newJObject()
   if body != nil:
-    body_600592 = body
-  result = call_600591.call(nil, nil, nil, nil, body_600592)
+    body_598662 = body
+  result = call_598661.call(nil, nil, nil, nil, body_598662)
 
-var updateContainerAgent* = Call_UpdateContainerAgent_600578(
+var updateContainerAgent* = Call_UpdateContainerAgent_598648(
     name: "updateContainerAgent", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.UpdateContainerAgent",
-    validator: validate_UpdateContainerAgent_600579, base: "/",
-    url: url_UpdateContainerAgent_600580, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateContainerAgent_598649, base: "/",
+    url: url_UpdateContainerAgent_598650, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateContainerInstancesState_600593 = ref object of OpenApiRestCall_599368
-proc url_UpdateContainerInstancesState_600595(protocol: Scheme; host: string;
+  Call_UpdateContainerInstancesState_598663 = ref object of OpenApiRestCall_597389
+proc url_UpdateContainerInstancesState_598665(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateContainerInstancesState_600594(path: JsonNode; query: JsonNode;
+proc validate_UpdateContainerInstancesState_598664(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Modifies the status of an Amazon ECS container instance.</p> <p>Once a container instance has reached an <code>ACTIVE</code> state, you can change the status of a container instance to <code>DRAINING</code> to manually remove an instance from a cluster, for example to perform system updates, update the Docker daemon, or scale down the cluster size.</p> <important> <p>A container instance cannot be changed to <code>DRAINING</code> until it has reached an <code>ACTIVE</code> status. If the instance is in any other status, an error will be received.</p> </important> <p>When you set a container instance to <code>DRAINING</code>, Amazon ECS prevents new tasks from being scheduled for placement on the container instance and replacement service tasks are started on other container instances in the cluster if the resources are available. Service tasks on the container instance that are in the <code>PENDING</code> state are stopped immediately.</p> <p>Service tasks on the container instance that are in the <code>RUNNING</code> state are stopped and replaced according to the service's deployment configuration parameters, <code>minimumHealthyPercent</code> and <code>maximumPercent</code>. You can change the deployment configuration of your service using <a>UpdateService</a>.</p> <ul> <li> <p>If <code>minimumHealthyPercent</code> is below 100%, the scheduler can ignore <code>desiredCount</code> temporarily during task replacement. For example, <code>desiredCount</code> is four tasks, a minimum of 50% allows the scheduler to stop two existing tasks before starting two new tasks. If the minimum is 100%, the service scheduler can't remove existing tasks until the replacement tasks are considered healthy. Tasks for services that do not use a load balancer are considered healthy if they are in the <code>RUNNING</code> state. Tasks for services that use a load balancer are considered healthy if they are in the <code>RUNNING</code> state and the container instance they are hosted on is reported as healthy by the load balancer.</p> </li> <li> <p>The <code>maximumPercent</code> parameter represents an upper limit on the number of running tasks during task replacement, which enables you to define the replacement batch size. For example, if <code>desiredCount</code> is four tasks, a maximum of 200% starts four new tasks before stopping the four tasks to be drained, provided that the cluster resources required to do this are available. If the maximum is 100%, then replacement tasks can't start until the draining tasks have stopped.</p> </li> </ul> <p>Any <code>PENDING</code> or <code>RUNNING</code> tasks that do not belong to a service are not affected. You must wait for them to finish or stop them manually.</p> <p>A container instance has completed draining when it has no more <code>RUNNING</code> tasks. You can verify this using <a>ListTasks</a>.</p> <p>When a container instance has been drained, you can set a container instance to <code>ACTIVE</code> status and once it has reached that status the Amazon ECS scheduler can begin scheduling tasks on the instance again.</p>
   ## 
@@ -4915,57 +5321,57 @@ proc validate_UpdateContainerInstancesState_600594(path: JsonNode; query: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600596 = header.getOrDefault("X-Amz-Date")
-  valid_600596 = validateParameter(valid_600596, JString, required = false,
-                                 default = nil)
-  if valid_600596 != nil:
-    section.add "X-Amz-Date", valid_600596
-  var valid_600597 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600597 = validateParameter(valid_600597, JString, required = false,
-                                 default = nil)
-  if valid_600597 != nil:
-    section.add "X-Amz-Security-Token", valid_600597
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600598 = header.getOrDefault("X-Amz-Target")
-  valid_600598 = validateParameter(valid_600598, JString, required = true, default = newJString(
+  var valid_598666 = header.getOrDefault("X-Amz-Target")
+  valid_598666 = validateParameter(valid_598666, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.UpdateContainerInstancesState"))
-  if valid_600598 != nil:
-    section.add "X-Amz-Target", valid_600598
-  var valid_600599 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600599 = validateParameter(valid_600599, JString, required = false,
+  if valid_598666 != nil:
+    section.add "X-Amz-Target", valid_598666
+  var valid_598667 = header.getOrDefault("X-Amz-Signature")
+  valid_598667 = validateParameter(valid_598667, JString, required = false,
                                  default = nil)
-  if valid_600599 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600599
-  var valid_600600 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600600 = validateParameter(valid_600600, JString, required = false,
+  if valid_598667 != nil:
+    section.add "X-Amz-Signature", valid_598667
+  var valid_598668 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598668 = validateParameter(valid_598668, JString, required = false,
                                  default = nil)
-  if valid_600600 != nil:
-    section.add "X-Amz-Algorithm", valid_600600
-  var valid_600601 = header.getOrDefault("X-Amz-Signature")
-  valid_600601 = validateParameter(valid_600601, JString, required = false,
+  if valid_598668 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598668
+  var valid_598669 = header.getOrDefault("X-Amz-Date")
+  valid_598669 = validateParameter(valid_598669, JString, required = false,
                                  default = nil)
-  if valid_600601 != nil:
-    section.add "X-Amz-Signature", valid_600601
-  var valid_600602 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600602 = validateParameter(valid_600602, JString, required = false,
+  if valid_598669 != nil:
+    section.add "X-Amz-Date", valid_598669
+  var valid_598670 = header.getOrDefault("X-Amz-Credential")
+  valid_598670 = validateParameter(valid_598670, JString, required = false,
                                  default = nil)
-  if valid_600602 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600602
-  var valid_600603 = header.getOrDefault("X-Amz-Credential")
-  valid_600603 = validateParameter(valid_600603, JString, required = false,
+  if valid_598670 != nil:
+    section.add "X-Amz-Credential", valid_598670
+  var valid_598671 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598671 = validateParameter(valid_598671, JString, required = false,
                                  default = nil)
-  if valid_600603 != nil:
-    section.add "X-Amz-Credential", valid_600603
+  if valid_598671 != nil:
+    section.add "X-Amz-Security-Token", valid_598671
+  var valid_598672 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598672 = validateParameter(valid_598672, JString, required = false,
+                                 default = nil)
+  if valid_598672 != nil:
+    section.add "X-Amz-Algorithm", valid_598672
+  var valid_598673 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598673 = validateParameter(valid_598673, JString, required = false,
+                                 default = nil)
+  if valid_598673 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598673
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4976,48 +5382,49 @@ proc validate_UpdateContainerInstancesState_600594(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600605: Call_UpdateContainerInstancesState_600593; path: JsonNode;
+proc call*(call_598675: Call_UpdateContainerInstancesState_598663; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Modifies the status of an Amazon ECS container instance.</p> <p>Once a container instance has reached an <code>ACTIVE</code> state, you can change the status of a container instance to <code>DRAINING</code> to manually remove an instance from a cluster, for example to perform system updates, update the Docker daemon, or scale down the cluster size.</p> <important> <p>A container instance cannot be changed to <code>DRAINING</code> until it has reached an <code>ACTIVE</code> status. If the instance is in any other status, an error will be received.</p> </important> <p>When you set a container instance to <code>DRAINING</code>, Amazon ECS prevents new tasks from being scheduled for placement on the container instance and replacement service tasks are started on other container instances in the cluster if the resources are available. Service tasks on the container instance that are in the <code>PENDING</code> state are stopped immediately.</p> <p>Service tasks on the container instance that are in the <code>RUNNING</code> state are stopped and replaced according to the service's deployment configuration parameters, <code>minimumHealthyPercent</code> and <code>maximumPercent</code>. You can change the deployment configuration of your service using <a>UpdateService</a>.</p> <ul> <li> <p>If <code>minimumHealthyPercent</code> is below 100%, the scheduler can ignore <code>desiredCount</code> temporarily during task replacement. For example, <code>desiredCount</code> is four tasks, a minimum of 50% allows the scheduler to stop two existing tasks before starting two new tasks. If the minimum is 100%, the service scheduler can't remove existing tasks until the replacement tasks are considered healthy. Tasks for services that do not use a load balancer are considered healthy if they are in the <code>RUNNING</code> state. Tasks for services that use a load balancer are considered healthy if they are in the <code>RUNNING</code> state and the container instance they are hosted on is reported as healthy by the load balancer.</p> </li> <li> <p>The <code>maximumPercent</code> parameter represents an upper limit on the number of running tasks during task replacement, which enables you to define the replacement batch size. For example, if <code>desiredCount</code> is four tasks, a maximum of 200% starts four new tasks before stopping the four tasks to be drained, provided that the cluster resources required to do this are available. If the maximum is 100%, then replacement tasks can't start until the draining tasks have stopped.</p> </li> </ul> <p>Any <code>PENDING</code> or <code>RUNNING</code> tasks that do not belong to a service are not affected. You must wait for them to finish or stop them manually.</p> <p>A container instance has completed draining when it has no more <code>RUNNING</code> tasks. You can verify this using <a>ListTasks</a>.</p> <p>When a container instance has been drained, you can set a container instance to <code>ACTIVE</code> status and once it has reached that status the Amazon ECS scheduler can begin scheduling tasks on the instance again.</p>
   ## 
-  let valid = call_600605.validator(path, query, header, formData, body)
-  let scheme = call_600605.pickScheme
+  let valid = call_598675.validator(path, query, header, formData, body)
+  let scheme = call_598675.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600605.url(scheme.get, call_600605.host, call_600605.base,
-                         call_600605.route, valid.getOrDefault("path"),
+  let url = call_598675.url(scheme.get, call_598675.host, call_598675.base,
+                         call_598675.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600605, url, valid)
+  result = atozHook(call_598675, url, valid)
 
-proc call*(call_600606: Call_UpdateContainerInstancesState_600593; body: JsonNode): Recallable =
+proc call*(call_598676: Call_UpdateContainerInstancesState_598663; body: JsonNode): Recallable =
   ## updateContainerInstancesState
   ## <p>Modifies the status of an Amazon ECS container instance.</p> <p>Once a container instance has reached an <code>ACTIVE</code> state, you can change the status of a container instance to <code>DRAINING</code> to manually remove an instance from a cluster, for example to perform system updates, update the Docker daemon, or scale down the cluster size.</p> <important> <p>A container instance cannot be changed to <code>DRAINING</code> until it has reached an <code>ACTIVE</code> status. If the instance is in any other status, an error will be received.</p> </important> <p>When you set a container instance to <code>DRAINING</code>, Amazon ECS prevents new tasks from being scheduled for placement on the container instance and replacement service tasks are started on other container instances in the cluster if the resources are available. Service tasks on the container instance that are in the <code>PENDING</code> state are stopped immediately.</p> <p>Service tasks on the container instance that are in the <code>RUNNING</code> state are stopped and replaced according to the service's deployment configuration parameters, <code>minimumHealthyPercent</code> and <code>maximumPercent</code>. You can change the deployment configuration of your service using <a>UpdateService</a>.</p> <ul> <li> <p>If <code>minimumHealthyPercent</code> is below 100%, the scheduler can ignore <code>desiredCount</code> temporarily during task replacement. For example, <code>desiredCount</code> is four tasks, a minimum of 50% allows the scheduler to stop two existing tasks before starting two new tasks. If the minimum is 100%, the service scheduler can't remove existing tasks until the replacement tasks are considered healthy. Tasks for services that do not use a load balancer are considered healthy if they are in the <code>RUNNING</code> state. Tasks for services that use a load balancer are considered healthy if they are in the <code>RUNNING</code> state and the container instance they are hosted on is reported as healthy by the load balancer.</p> </li> <li> <p>The <code>maximumPercent</code> parameter represents an upper limit on the number of running tasks during task replacement, which enables you to define the replacement batch size. For example, if <code>desiredCount</code> is four tasks, a maximum of 200% starts four new tasks before stopping the four tasks to be drained, provided that the cluster resources required to do this are available. If the maximum is 100%, then replacement tasks can't start until the draining tasks have stopped.</p> </li> </ul> <p>Any <code>PENDING</code> or <code>RUNNING</code> tasks that do not belong to a service are not affected. You must wait for them to finish or stop them manually.</p> <p>A container instance has completed draining when it has no more <code>RUNNING</code> tasks. You can verify this using <a>ListTasks</a>.</p> <p>When a container instance has been drained, you can set a container instance to <code>ACTIVE</code> status and once it has reached that status the Amazon ECS scheduler can begin scheduling tasks on the instance again.</p>
   ##   body: JObject (required)
-  var body_600607 = newJObject()
+  var body_598677 = newJObject()
   if body != nil:
-    body_600607 = body
-  result = call_600606.call(nil, nil, nil, nil, body_600607)
+    body_598677 = body
+  result = call_598676.call(nil, nil, nil, nil, body_598677)
 
-var updateContainerInstancesState* = Call_UpdateContainerInstancesState_600593(
+var updateContainerInstancesState* = Call_UpdateContainerInstancesState_598663(
     name: "updateContainerInstancesState", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.UpdateContainerInstancesState",
-    validator: validate_UpdateContainerInstancesState_600594, base: "/",
-    url: url_UpdateContainerInstancesState_600595,
+    validator: validate_UpdateContainerInstancesState_598664, base: "/",
+    url: url_UpdateContainerInstancesState_598665,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateService_600608 = ref object of OpenApiRestCall_599368
-proc url_UpdateService_600610(protocol: Scheme; host: string; base: string;
+  Call_UpdateService_598678 = ref object of OpenApiRestCall_597389
+proc url_UpdateService_598680(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateService_600609(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateService_598679(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Modifies the parameters of a service.</p> <p>For services using the rolling update (<code>ECS</code>) deployment controller, the desired count, deployment configuration, network configuration, or task definition used can be updated.</p> <p>For services using the blue/green (<code>CODE_DEPLOY</code>) deployment controller, only the desired count, deployment configuration, and health check grace period can be updated using this API. If the network configuration, platform version, or task definition need to be updated, a new AWS CodeDeploy deployment should be created. For more information, see <a href="https://docs.aws.amazon.com/codedeploy/latest/APIReference/API_CreateDeployment.html">CreateDeployment</a> in the <i>AWS CodeDeploy API Reference</i>.</p> <p>For services using an external deployment controller, you can update only the desired count and health check grace period using this API. If the launch type, load balancer, network configuration, platform version, or task definition need to be updated, you should create a new task set. For more information, see <a>CreateTaskSet</a>.</p> <p>You can add to or subtract from the number of instantiations of a task definition in a service by specifying the cluster that the service is running in and a new <code>desiredCount</code> parameter.</p> <p>If you have updated the Docker image of your application, you can create a new task definition with that image and deploy it to your service. The service scheduler uses the minimum healthy percent and maximum percent parameters (in the service's deployment configuration) to determine the deployment strategy.</p> <note> <p>If your updated Docker image uses the same tag as what is in the existing task definition for your service (for example, <code>my_image:latest</code>), you do not need to create a new revision of your task definition. You can update the service using the <code>forceNewDeployment</code> option. The new tasks launched by the deployment pull the current image/tag combination from your repository when they start.</p> </note> <p>You can also update the deployment configuration of a service. When a deployment is triggered by updating the task definition of a service, the service scheduler uses the deployment configuration parameters, <code>minimumHealthyPercent</code> and <code>maximumPercent</code>, to determine the deployment strategy.</p> <ul> <li> <p>If <code>minimumHealthyPercent</code> is below 100%, the scheduler can ignore <code>desiredCount</code> temporarily during a deployment. For example, if <code>desiredCount</code> is four tasks, a minimum of 50% allows the scheduler to stop two existing tasks before starting two new tasks. Tasks for services that do not use a load balancer are considered healthy if they are in the <code>RUNNING</code> state. Tasks for services that use a load balancer are considered healthy if they are in the <code>RUNNING</code> state and the container instance they are hosted on is reported as healthy by the load balancer.</p> </li> <li> <p>The <code>maximumPercent</code> parameter represents an upper limit on the number of running tasks during a deployment, which enables you to define the deployment batch size. For example, if <code>desiredCount</code> is four tasks, a maximum of 200% starts four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available).</p> </li> </ul> <p>When <a>UpdateService</a> stops a task during a deployment, the equivalent of <code>docker stop</code> is issued to the containers running in the task. This results in a <code>SIGTERM</code> and a 30-second timeout, after which <code>SIGKILL</code> is sent and the containers are forcibly stopped. If the container handles the <code>SIGTERM</code> gracefully and exits within 30 seconds from receiving it, no <code>SIGKILL</code> is sent.</p> <p>When the service scheduler launches new tasks, it determines task placement in your cluster with the following logic:</p> <ul> <li> <p>Determine which of the container instances in your cluster can support your service's task definition (for example, they have the required CPU, memory, ports, and container instance attributes).</p> </li> <li> <p>By default, the service scheduler attempts to balance tasks across Availability Zones in this manner (although you can choose a different placement strategy):</p> <ul> <li> <p>Sort the valid container instances by the fewest number of running tasks for this service in the same Availability Zone as the instance. For example, if zone A has one running service task and zones B and C each have zero, valid container instances in either zone B or C are considered optimal for placement.</p> </li> <li> <p>Place the new service task on a valid container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the fewest number of running tasks for this service.</p> </li> </ul> </li> </ul> <p>When the service scheduler stops running tasks, it attempts to maintain balance across the Availability Zones in your cluster using the following logic: </p> <ul> <li> <p>Sort the container instances by the largest number of running tasks for this service in the same Availability Zone as the instance. For example, if zone A has one running service task and zones B and C each have two, container instances in either zone B or C are considered optimal for termination.</p> </li> <li> <p>Stop the task on a container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the largest number of running tasks for this service.</p> </li> </ul>
   ## 
@@ -5028,57 +5435,57 @@ proc validate_UpdateService_600609(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600611 = header.getOrDefault("X-Amz-Date")
-  valid_600611 = validateParameter(valid_600611, JString, required = false,
-                                 default = nil)
-  if valid_600611 != nil:
-    section.add "X-Amz-Date", valid_600611
-  var valid_600612 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600612 = validateParameter(valid_600612, JString, required = false,
-                                 default = nil)
-  if valid_600612 != nil:
-    section.add "X-Amz-Security-Token", valid_600612
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600613 = header.getOrDefault("X-Amz-Target")
-  valid_600613 = validateParameter(valid_600613, JString, required = true, default = newJString(
+  var valid_598681 = header.getOrDefault("X-Amz-Target")
+  valid_598681 = validateParameter(valid_598681, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.UpdateService"))
-  if valid_600613 != nil:
-    section.add "X-Amz-Target", valid_600613
-  var valid_600614 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600614 = validateParameter(valid_600614, JString, required = false,
+  if valid_598681 != nil:
+    section.add "X-Amz-Target", valid_598681
+  var valid_598682 = header.getOrDefault("X-Amz-Signature")
+  valid_598682 = validateParameter(valid_598682, JString, required = false,
                                  default = nil)
-  if valid_600614 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600614
-  var valid_600615 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600615 = validateParameter(valid_600615, JString, required = false,
+  if valid_598682 != nil:
+    section.add "X-Amz-Signature", valid_598682
+  var valid_598683 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598683 = validateParameter(valid_598683, JString, required = false,
                                  default = nil)
-  if valid_600615 != nil:
-    section.add "X-Amz-Algorithm", valid_600615
-  var valid_600616 = header.getOrDefault("X-Amz-Signature")
-  valid_600616 = validateParameter(valid_600616, JString, required = false,
+  if valid_598683 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598683
+  var valid_598684 = header.getOrDefault("X-Amz-Date")
+  valid_598684 = validateParameter(valid_598684, JString, required = false,
                                  default = nil)
-  if valid_600616 != nil:
-    section.add "X-Amz-Signature", valid_600616
-  var valid_600617 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600617 = validateParameter(valid_600617, JString, required = false,
+  if valid_598684 != nil:
+    section.add "X-Amz-Date", valid_598684
+  var valid_598685 = header.getOrDefault("X-Amz-Credential")
+  valid_598685 = validateParameter(valid_598685, JString, required = false,
                                  default = nil)
-  if valid_600617 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600617
-  var valid_600618 = header.getOrDefault("X-Amz-Credential")
-  valid_600618 = validateParameter(valid_600618, JString, required = false,
+  if valid_598685 != nil:
+    section.add "X-Amz-Credential", valid_598685
+  var valid_598686 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598686 = validateParameter(valid_598686, JString, required = false,
                                  default = nil)
-  if valid_600618 != nil:
-    section.add "X-Amz-Credential", valid_600618
+  if valid_598686 != nil:
+    section.add "X-Amz-Security-Token", valid_598686
+  var valid_598687 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598687 = validateParameter(valid_598687, JString, required = false,
+                                 default = nil)
+  if valid_598687 != nil:
+    section.add "X-Amz-Algorithm", valid_598687
+  var valid_598688 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598688 = validateParameter(valid_598688, JString, required = false,
+                                 default = nil)
+  if valid_598688 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598688
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5089,47 +5496,48 @@ proc validate_UpdateService_600609(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600620: Call_UpdateService_600608; path: JsonNode; query: JsonNode;
+proc call*(call_598690: Call_UpdateService_598678; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Modifies the parameters of a service.</p> <p>For services using the rolling update (<code>ECS</code>) deployment controller, the desired count, deployment configuration, network configuration, or task definition used can be updated.</p> <p>For services using the blue/green (<code>CODE_DEPLOY</code>) deployment controller, only the desired count, deployment configuration, and health check grace period can be updated using this API. If the network configuration, platform version, or task definition need to be updated, a new AWS CodeDeploy deployment should be created. For more information, see <a href="https://docs.aws.amazon.com/codedeploy/latest/APIReference/API_CreateDeployment.html">CreateDeployment</a> in the <i>AWS CodeDeploy API Reference</i>.</p> <p>For services using an external deployment controller, you can update only the desired count and health check grace period using this API. If the launch type, load balancer, network configuration, platform version, or task definition need to be updated, you should create a new task set. For more information, see <a>CreateTaskSet</a>.</p> <p>You can add to or subtract from the number of instantiations of a task definition in a service by specifying the cluster that the service is running in and a new <code>desiredCount</code> parameter.</p> <p>If you have updated the Docker image of your application, you can create a new task definition with that image and deploy it to your service. The service scheduler uses the minimum healthy percent and maximum percent parameters (in the service's deployment configuration) to determine the deployment strategy.</p> <note> <p>If your updated Docker image uses the same tag as what is in the existing task definition for your service (for example, <code>my_image:latest</code>), you do not need to create a new revision of your task definition. You can update the service using the <code>forceNewDeployment</code> option. The new tasks launched by the deployment pull the current image/tag combination from your repository when they start.</p> </note> <p>You can also update the deployment configuration of a service. When a deployment is triggered by updating the task definition of a service, the service scheduler uses the deployment configuration parameters, <code>minimumHealthyPercent</code> and <code>maximumPercent</code>, to determine the deployment strategy.</p> <ul> <li> <p>If <code>minimumHealthyPercent</code> is below 100%, the scheduler can ignore <code>desiredCount</code> temporarily during a deployment. For example, if <code>desiredCount</code> is four tasks, a minimum of 50% allows the scheduler to stop two existing tasks before starting two new tasks. Tasks for services that do not use a load balancer are considered healthy if they are in the <code>RUNNING</code> state. Tasks for services that use a load balancer are considered healthy if they are in the <code>RUNNING</code> state and the container instance they are hosted on is reported as healthy by the load balancer.</p> </li> <li> <p>The <code>maximumPercent</code> parameter represents an upper limit on the number of running tasks during a deployment, which enables you to define the deployment batch size. For example, if <code>desiredCount</code> is four tasks, a maximum of 200% starts four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available).</p> </li> </ul> <p>When <a>UpdateService</a> stops a task during a deployment, the equivalent of <code>docker stop</code> is issued to the containers running in the task. This results in a <code>SIGTERM</code> and a 30-second timeout, after which <code>SIGKILL</code> is sent and the containers are forcibly stopped. If the container handles the <code>SIGTERM</code> gracefully and exits within 30 seconds from receiving it, no <code>SIGKILL</code> is sent.</p> <p>When the service scheduler launches new tasks, it determines task placement in your cluster with the following logic:</p> <ul> <li> <p>Determine which of the container instances in your cluster can support your service's task definition (for example, they have the required CPU, memory, ports, and container instance attributes).</p> </li> <li> <p>By default, the service scheduler attempts to balance tasks across Availability Zones in this manner (although you can choose a different placement strategy):</p> <ul> <li> <p>Sort the valid container instances by the fewest number of running tasks for this service in the same Availability Zone as the instance. For example, if zone A has one running service task and zones B and C each have zero, valid container instances in either zone B or C are considered optimal for placement.</p> </li> <li> <p>Place the new service task on a valid container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the fewest number of running tasks for this service.</p> </li> </ul> </li> </ul> <p>When the service scheduler stops running tasks, it attempts to maintain balance across the Availability Zones in your cluster using the following logic: </p> <ul> <li> <p>Sort the container instances by the largest number of running tasks for this service in the same Availability Zone as the instance. For example, if zone A has one running service task and zones B and C each have two, container instances in either zone B or C are considered optimal for termination.</p> </li> <li> <p>Stop the task on a container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the largest number of running tasks for this service.</p> </li> </ul>
   ## 
-  let valid = call_600620.validator(path, query, header, formData, body)
-  let scheme = call_600620.pickScheme
+  let valid = call_598690.validator(path, query, header, formData, body)
+  let scheme = call_598690.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600620.url(scheme.get, call_600620.host, call_600620.base,
-                         call_600620.route, valid.getOrDefault("path"),
+  let url = call_598690.url(scheme.get, call_598690.host, call_598690.base,
+                         call_598690.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600620, url, valid)
+  result = atozHook(call_598690, url, valid)
 
-proc call*(call_600621: Call_UpdateService_600608; body: JsonNode): Recallable =
+proc call*(call_598691: Call_UpdateService_598678; body: JsonNode): Recallable =
   ## updateService
   ## <p>Modifies the parameters of a service.</p> <p>For services using the rolling update (<code>ECS</code>) deployment controller, the desired count, deployment configuration, network configuration, or task definition used can be updated.</p> <p>For services using the blue/green (<code>CODE_DEPLOY</code>) deployment controller, only the desired count, deployment configuration, and health check grace period can be updated using this API. If the network configuration, platform version, or task definition need to be updated, a new AWS CodeDeploy deployment should be created. For more information, see <a href="https://docs.aws.amazon.com/codedeploy/latest/APIReference/API_CreateDeployment.html">CreateDeployment</a> in the <i>AWS CodeDeploy API Reference</i>.</p> <p>For services using an external deployment controller, you can update only the desired count and health check grace period using this API. If the launch type, load balancer, network configuration, platform version, or task definition need to be updated, you should create a new task set. For more information, see <a>CreateTaskSet</a>.</p> <p>You can add to or subtract from the number of instantiations of a task definition in a service by specifying the cluster that the service is running in and a new <code>desiredCount</code> parameter.</p> <p>If you have updated the Docker image of your application, you can create a new task definition with that image and deploy it to your service. The service scheduler uses the minimum healthy percent and maximum percent parameters (in the service's deployment configuration) to determine the deployment strategy.</p> <note> <p>If your updated Docker image uses the same tag as what is in the existing task definition for your service (for example, <code>my_image:latest</code>), you do not need to create a new revision of your task definition. You can update the service using the <code>forceNewDeployment</code> option. The new tasks launched by the deployment pull the current image/tag combination from your repository when they start.</p> </note> <p>You can also update the deployment configuration of a service. When a deployment is triggered by updating the task definition of a service, the service scheduler uses the deployment configuration parameters, <code>minimumHealthyPercent</code> and <code>maximumPercent</code>, to determine the deployment strategy.</p> <ul> <li> <p>If <code>minimumHealthyPercent</code> is below 100%, the scheduler can ignore <code>desiredCount</code> temporarily during a deployment. For example, if <code>desiredCount</code> is four tasks, a minimum of 50% allows the scheduler to stop two existing tasks before starting two new tasks. Tasks for services that do not use a load balancer are considered healthy if they are in the <code>RUNNING</code> state. Tasks for services that use a load balancer are considered healthy if they are in the <code>RUNNING</code> state and the container instance they are hosted on is reported as healthy by the load balancer.</p> </li> <li> <p>The <code>maximumPercent</code> parameter represents an upper limit on the number of running tasks during a deployment, which enables you to define the deployment batch size. For example, if <code>desiredCount</code> is four tasks, a maximum of 200% starts four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available).</p> </li> </ul> <p>When <a>UpdateService</a> stops a task during a deployment, the equivalent of <code>docker stop</code> is issued to the containers running in the task. This results in a <code>SIGTERM</code> and a 30-second timeout, after which <code>SIGKILL</code> is sent and the containers are forcibly stopped. If the container handles the <code>SIGTERM</code> gracefully and exits within 30 seconds from receiving it, no <code>SIGKILL</code> is sent.</p> <p>When the service scheduler launches new tasks, it determines task placement in your cluster with the following logic:</p> <ul> <li> <p>Determine which of the container instances in your cluster can support your service's task definition (for example, they have the required CPU, memory, ports, and container instance attributes).</p> </li> <li> <p>By default, the service scheduler attempts to balance tasks across Availability Zones in this manner (although you can choose a different placement strategy):</p> <ul> <li> <p>Sort the valid container instances by the fewest number of running tasks for this service in the same Availability Zone as the instance. For example, if zone A has one running service task and zones B and C each have zero, valid container instances in either zone B or C are considered optimal for placement.</p> </li> <li> <p>Place the new service task on a valid container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the fewest number of running tasks for this service.</p> </li> </ul> </li> </ul> <p>When the service scheduler stops running tasks, it attempts to maintain balance across the Availability Zones in your cluster using the following logic: </p> <ul> <li> <p>Sort the container instances by the largest number of running tasks for this service in the same Availability Zone as the instance. For example, if zone A has one running service task and zones B and C each have two, container instances in either zone B or C are considered optimal for termination.</p> </li> <li> <p>Stop the task on a container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the largest number of running tasks for this service.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_600622 = newJObject()
+  var body_598692 = newJObject()
   if body != nil:
-    body_600622 = body
-  result = call_600621.call(nil, nil, nil, nil, body_600622)
+    body_598692 = body
+  result = call_598691.call(nil, nil, nil, nil, body_598692)
 
-var updateService* = Call_UpdateService_600608(name: "updateService",
+var updateService* = Call_UpdateService_598678(name: "updateService",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.UpdateService",
-    validator: validate_UpdateService_600609, base: "/", url: url_UpdateService_600610,
+    validator: validate_UpdateService_598679, base: "/", url: url_UpdateService_598680,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateServicePrimaryTaskSet_600623 = ref object of OpenApiRestCall_599368
-proc url_UpdateServicePrimaryTaskSet_600625(protocol: Scheme; host: string;
+  Call_UpdateServicePrimaryTaskSet_598693 = ref object of OpenApiRestCall_597389
+proc url_UpdateServicePrimaryTaskSet_598695(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateServicePrimaryTaskSet_600624(path: JsonNode; query: JsonNode;
+proc validate_UpdateServicePrimaryTaskSet_598694(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies which task set in a service is the primary task set. Any parameters that are updated on the primary task set in a service will transition to the service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
@@ -5140,57 +5548,57 @@ proc validate_UpdateServicePrimaryTaskSet_600624(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600626 = header.getOrDefault("X-Amz-Date")
-  valid_600626 = validateParameter(valid_600626, JString, required = false,
-                                 default = nil)
-  if valid_600626 != nil:
-    section.add "X-Amz-Date", valid_600626
-  var valid_600627 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600627 = validateParameter(valid_600627, JString, required = false,
-                                 default = nil)
-  if valid_600627 != nil:
-    section.add "X-Amz-Security-Token", valid_600627
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600628 = header.getOrDefault("X-Amz-Target")
-  valid_600628 = validateParameter(valid_600628, JString, required = true, default = newJString(
+  var valid_598696 = header.getOrDefault("X-Amz-Target")
+  valid_598696 = validateParameter(valid_598696, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.UpdateServicePrimaryTaskSet"))
-  if valid_600628 != nil:
-    section.add "X-Amz-Target", valid_600628
-  var valid_600629 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600629 = validateParameter(valid_600629, JString, required = false,
+  if valid_598696 != nil:
+    section.add "X-Amz-Target", valid_598696
+  var valid_598697 = header.getOrDefault("X-Amz-Signature")
+  valid_598697 = validateParameter(valid_598697, JString, required = false,
                                  default = nil)
-  if valid_600629 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600629
-  var valid_600630 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600630 = validateParameter(valid_600630, JString, required = false,
+  if valid_598697 != nil:
+    section.add "X-Amz-Signature", valid_598697
+  var valid_598698 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598698 = validateParameter(valid_598698, JString, required = false,
                                  default = nil)
-  if valid_600630 != nil:
-    section.add "X-Amz-Algorithm", valid_600630
-  var valid_600631 = header.getOrDefault("X-Amz-Signature")
-  valid_600631 = validateParameter(valid_600631, JString, required = false,
+  if valid_598698 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598698
+  var valid_598699 = header.getOrDefault("X-Amz-Date")
+  valid_598699 = validateParameter(valid_598699, JString, required = false,
                                  default = nil)
-  if valid_600631 != nil:
-    section.add "X-Amz-Signature", valid_600631
-  var valid_600632 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600632 = validateParameter(valid_600632, JString, required = false,
+  if valid_598699 != nil:
+    section.add "X-Amz-Date", valid_598699
+  var valid_598700 = header.getOrDefault("X-Amz-Credential")
+  valid_598700 = validateParameter(valid_598700, JString, required = false,
                                  default = nil)
-  if valid_600632 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600632
-  var valid_600633 = header.getOrDefault("X-Amz-Credential")
-  valid_600633 = validateParameter(valid_600633, JString, required = false,
+  if valid_598700 != nil:
+    section.add "X-Amz-Credential", valid_598700
+  var valid_598701 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598701 = validateParameter(valid_598701, JString, required = false,
                                  default = nil)
-  if valid_600633 != nil:
-    section.add "X-Amz-Credential", valid_600633
+  if valid_598701 != nil:
+    section.add "X-Amz-Security-Token", valid_598701
+  var valid_598702 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598702 = validateParameter(valid_598702, JString, required = false,
+                                 default = nil)
+  if valid_598702 != nil:
+    section.add "X-Amz-Algorithm", valid_598702
+  var valid_598703 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598703 = validateParameter(valid_598703, JString, required = false,
+                                 default = nil)
+  if valid_598703 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598703
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5201,48 +5609,49 @@ proc validate_UpdateServicePrimaryTaskSet_600624(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600635: Call_UpdateServicePrimaryTaskSet_600623; path: JsonNode;
+proc call*(call_598705: Call_UpdateServicePrimaryTaskSet_598693; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Modifies which task set in a service is the primary task set. Any parameters that are updated on the primary task set in a service will transition to the service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
-  let valid = call_600635.validator(path, query, header, formData, body)
-  let scheme = call_600635.pickScheme
+  let valid = call_598705.validator(path, query, header, formData, body)
+  let scheme = call_598705.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600635.url(scheme.get, call_600635.host, call_600635.base,
-                         call_600635.route, valid.getOrDefault("path"),
+  let url = call_598705.url(scheme.get, call_598705.host, call_598705.base,
+                         call_598705.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600635, url, valid)
+  result = atozHook(call_598705, url, valid)
 
-proc call*(call_600636: Call_UpdateServicePrimaryTaskSet_600623; body: JsonNode): Recallable =
+proc call*(call_598706: Call_UpdateServicePrimaryTaskSet_598693; body: JsonNode): Recallable =
   ## updateServicePrimaryTaskSet
   ## Modifies which task set in a service is the primary task set. Any parameters that are updated on the primary task set in a service will transition to the service. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ##   body: JObject (required)
-  var body_600637 = newJObject()
+  var body_598707 = newJObject()
   if body != nil:
-    body_600637 = body
-  result = call_600636.call(nil, nil, nil, nil, body_600637)
+    body_598707 = body
+  result = call_598706.call(nil, nil, nil, nil, body_598707)
 
-var updateServicePrimaryTaskSet* = Call_UpdateServicePrimaryTaskSet_600623(
+var updateServicePrimaryTaskSet* = Call_UpdateServicePrimaryTaskSet_598693(
     name: "updateServicePrimaryTaskSet", meth: HttpMethod.HttpPost,
     host: "ecs.amazonaws.com", route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.UpdateServicePrimaryTaskSet",
-    validator: validate_UpdateServicePrimaryTaskSet_600624, base: "/",
-    url: url_UpdateServicePrimaryTaskSet_600625,
+    validator: validate_UpdateServicePrimaryTaskSet_598694, base: "/",
+    url: url_UpdateServicePrimaryTaskSet_598695,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTaskSet_600638 = ref object of OpenApiRestCall_599368
-proc url_UpdateTaskSet_600640(protocol: Scheme; host: string; base: string;
+  Call_UpdateTaskSet_598708 = ref object of OpenApiRestCall_597389
+proc url_UpdateTaskSet_598710(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateTaskSet_600639(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateTaskSet_598709(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies a task set. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
@@ -5253,57 +5662,57 @@ proc validate_UpdateTaskSet_600639(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600641 = header.getOrDefault("X-Amz-Date")
-  valid_600641 = validateParameter(valid_600641, JString, required = false,
-                                 default = nil)
-  if valid_600641 != nil:
-    section.add "X-Amz-Date", valid_600641
-  var valid_600642 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600642 = validateParameter(valid_600642, JString, required = false,
-                                 default = nil)
-  if valid_600642 != nil:
-    section.add "X-Amz-Security-Token", valid_600642
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600643 = header.getOrDefault("X-Amz-Target")
-  valid_600643 = validateParameter(valid_600643, JString, required = true, default = newJString(
+  var valid_598711 = header.getOrDefault("X-Amz-Target")
+  valid_598711 = validateParameter(valid_598711, JString, required = true, default = newJString(
       "AmazonEC2ContainerServiceV20141113.UpdateTaskSet"))
-  if valid_600643 != nil:
-    section.add "X-Amz-Target", valid_600643
-  var valid_600644 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600644 = validateParameter(valid_600644, JString, required = false,
+  if valid_598711 != nil:
+    section.add "X-Amz-Target", valid_598711
+  var valid_598712 = header.getOrDefault("X-Amz-Signature")
+  valid_598712 = validateParameter(valid_598712, JString, required = false,
                                  default = nil)
-  if valid_600644 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600644
-  var valid_600645 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600645 = validateParameter(valid_600645, JString, required = false,
+  if valid_598712 != nil:
+    section.add "X-Amz-Signature", valid_598712
+  var valid_598713 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_598713 = validateParameter(valid_598713, JString, required = false,
                                  default = nil)
-  if valid_600645 != nil:
-    section.add "X-Amz-Algorithm", valid_600645
-  var valid_600646 = header.getOrDefault("X-Amz-Signature")
-  valid_600646 = validateParameter(valid_600646, JString, required = false,
+  if valid_598713 != nil:
+    section.add "X-Amz-Content-Sha256", valid_598713
+  var valid_598714 = header.getOrDefault("X-Amz-Date")
+  valid_598714 = validateParameter(valid_598714, JString, required = false,
                                  default = nil)
-  if valid_600646 != nil:
-    section.add "X-Amz-Signature", valid_600646
-  var valid_600647 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600647 = validateParameter(valid_600647, JString, required = false,
+  if valid_598714 != nil:
+    section.add "X-Amz-Date", valid_598714
+  var valid_598715 = header.getOrDefault("X-Amz-Credential")
+  valid_598715 = validateParameter(valid_598715, JString, required = false,
                                  default = nil)
-  if valid_600647 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600647
-  var valid_600648 = header.getOrDefault("X-Amz-Credential")
-  valid_600648 = validateParameter(valid_600648, JString, required = false,
+  if valid_598715 != nil:
+    section.add "X-Amz-Credential", valid_598715
+  var valid_598716 = header.getOrDefault("X-Amz-Security-Token")
+  valid_598716 = validateParameter(valid_598716, JString, required = false,
                                  default = nil)
-  if valid_600648 != nil:
-    section.add "X-Amz-Credential", valid_600648
+  if valid_598716 != nil:
+    section.add "X-Amz-Security-Token", valid_598716
+  var valid_598717 = header.getOrDefault("X-Amz-Algorithm")
+  valid_598717 = validateParameter(valid_598717, JString, required = false,
+                                 default = nil)
+  if valid_598717 != nil:
+    section.add "X-Amz-Algorithm", valid_598717
+  var valid_598718 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_598718 = validateParameter(valid_598718, JString, required = false,
+                                 default = nil)
+  if valid_598718 != nil:
+    section.add "X-Amz-SignedHeaders", valid_598718
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5314,32 +5723,32 @@ proc validate_UpdateTaskSet_600639(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600650: Call_UpdateTaskSet_600638; path: JsonNode; query: JsonNode;
+proc call*(call_598720: Call_UpdateTaskSet_598708; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Modifies a task set. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ## 
-  let valid = call_600650.validator(path, query, header, formData, body)
-  let scheme = call_600650.pickScheme
+  let valid = call_598720.validator(path, query, header, formData, body)
+  let scheme = call_598720.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600650.url(scheme.get, call_600650.host, call_600650.base,
-                         call_600650.route, valid.getOrDefault("path"),
+  let url = call_598720.url(scheme.get, call_598720.host, call_598720.base,
+                         call_598720.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600650, url, valid)
+  result = atozHook(call_598720, url, valid)
 
-proc call*(call_600651: Call_UpdateTaskSet_600638; body: JsonNode): Recallable =
+proc call*(call_598721: Call_UpdateTaskSet_598708; body: JsonNode): Recallable =
   ## updateTaskSet
   ## Modifies a task set. This is used when a service uses the <code>EXTERNAL</code> deployment controller type. For more information, see <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon ECS Deployment Types</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.
   ##   body: JObject (required)
-  var body_600652 = newJObject()
+  var body_598722 = newJObject()
   if body != nil:
-    body_600652 = body
-  result = call_600651.call(nil, nil, nil, nil, body_600652)
+    body_598722 = body
+  result = call_598721.call(nil, nil, nil, nil, body_598722)
 
-var updateTaskSet* = Call_UpdateTaskSet_600638(name: "updateTaskSet",
+var updateTaskSet* = Call_UpdateTaskSet_598708(name: "updateTaskSet",
     meth: HttpMethod.HttpPost, host: "ecs.amazonaws.com",
     route: "/#X-Amz-Target=AmazonEC2ContainerServiceV20141113.UpdateTaskSet",
-    validator: validate_UpdateTaskSet_600639, base: "/", url: url_UpdateTaskSet_600640,
+    validator: validate_UpdateTaskSet_598709, base: "/", url: url_UpdateTaskSet_598710,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
