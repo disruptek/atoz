@@ -10,7 +10,7 @@ import
 ##     name: Apache 2.0 License
 ##     url: http://www.apache.org/licenses/
 ## 
-## <fullname>AWS CodeBuild</fullname> <p>AWS CodeBuild is a fully managed build service in the cloud. AWS CodeBuild compiles your source code, runs unit tests, and produces artifacts that are ready to deploy. AWS CodeBuild eliminates the need to provision, manage, and scale your own build servers. It provides prepackaged build environments for the most popular programming languages and build tools, such as Apache Maven, Gradle, and more. You can also fully customize build environments in AWS CodeBuild to use your own build tools. AWS CodeBuild scales automatically to meet peak build requests. You pay only for the build time you consume. For more information about AWS CodeBuild, see the <i> <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html">AWS CodeBuild User Guide</a>.</i> </p> <p>AWS CodeBuild supports these operations:</p> <ul> <li> <p> <code>BatchDeleteBuilds</code>: Deletes one or more builds.</p> </li> <li> <p> <code>BatchGetBuilds</code>: Gets information about one or more builds.</p> </li> <li> <p> <code>BatchGetProjects</code>: Gets information about one or more build projects. A <i>build project</i> defines how AWS CodeBuild runs a build. This includes information such as where to get the source code to build, the build environment to use, the build commands to run, and where to store the build output. A <i>build environment</i> is a representation of operating system, programming language runtime, and tools that AWS CodeBuild uses to run a build. You can add tags to build projects to help manage your resources and costs.</p> </li> <li> <p> <code>BatchGetReportGroups</code>: Returns an array of report groups. </p> </li> <li> <p> <code>BatchGetReports</code>: Returns an array of reports. </p> </li> <li> <p> <code>CreateProject</code>: Creates a build project.</p> </li> <li> <p> <code>CreateReportGroup</code>: Creates a report group. A report group contains a collection of reports. </p> </li> <li> <p> <code>CreateWebhook</code>: For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, enables AWS CodeBuild to start rebuilding the source code every time a code change is pushed to the repository.</p> </li> <li> <p> <code>DeleteProject</code>: Deletes a build project.</p> </li> <li> <p> <code>DeleteReport</code>: Deletes a report. </p> </li> <li> <p> <code>DeleteReportGroup</code>: Deletes a report group. </p> </li> <li> <p> <code>DeleteSourceCredentials</code>: Deletes a set of GitHub, GitHub Enterprise, or Bitbucket source credentials.</p> </li> <li> <p> <code>DeleteWebhook</code>: For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, stops AWS CodeBuild from rebuilding the source code every time a code change is pushed to the repository.</p> </li> <li> <p> <code>DescribeTestCases</code>: Returns a list of details about test cases for a report. </p> </li> <li> <p> <code>ImportSourceCredentials</code>: Imports the source repository credentials for an AWS CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository.</p> </li> <li> <p> <code>InvalidateProjectCache</code>: Resets the cache for a project.</p> </li> <li> <p> <code>ListBuilds</code>: Gets a list of build IDs, with each build ID representing a single build.</p> </li> <li> <p> <code>ListBuildsForProject</code>: Gets a list of build IDs for the specified build project, with each build ID representing a single build.</p> </li> <li> <p> <code>ListCuratedEnvironmentImages</code>: Gets information about Docker images that are managed by AWS CodeBuild.</p> </li> <li> <p> <code>ListProjects</code>: Gets a list of build project names, with each build project name representing a single build project.</p> </li> <li> <p> <code>ListReportGroups</code>: Gets a list ARNs for the report groups in the current AWS account. </p> </li> <li> <p> <code>ListReports</code>: Gets a list ARNs for the reports in the current AWS account. </p> </li> <li> <p> <code>ListReportsForReportGroup</code>: Returns a list of ARNs for the reports that belong to a <code>ReportGroup</code>. </p> </li> <li> <p> <code>ListSourceCredentials</code>: Returns a list of <code>SourceCredentialsInfo</code> objects. Each <code>SourceCredentialsInfo</code> object includes the authentication type, token ARN, and type of source provider for one set of credentials.</p> </li> <li> <p> <code>StartBuild</code>: Starts running a build.</p> </li> <li> <p> <code>StopBuild</code>: Attempts to stop running a build.</p> </li> <li> <p> <code>UpdateProject</code>: Changes the settings of an existing build project.</p> </li> <li> <p> <code>UpdateReportGroup</code>: Changes a report group.</p> </li> <li> <p> <code>UpdateWebhook</code>: Changes the settings of an existing webhook.</p> </li> </ul>
+## <fullname>AWS CodeBuild</fullname> <p>AWS CodeBuild is a fully managed build service in the cloud. AWS CodeBuild compiles your source code, runs unit tests, and produces artifacts that are ready to deploy. AWS CodeBuild eliminates the need to provision, manage, and scale your own build servers. It provides prepackaged build environments for the most popular programming languages and build tools, such as Apache Maven, Gradle, and more. You can also fully customize build environments in AWS CodeBuild to use your own build tools. AWS CodeBuild scales automatically to meet peak build requests. You pay only for the build time you consume. For more information about AWS CodeBuild, see the <i> <a href="https://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html">AWS CodeBuild User Guide</a>.</i> </p> <p>AWS CodeBuild supports these operations:</p> <ul> <li> <p> <code>BatchDeleteBuilds</code>: Deletes one or more builds.</p> </li> <li> <p> <code>BatchGetBuilds</code>: Gets information about one or more builds.</p> </li> <li> <p> <code>BatchGetProjects</code>: Gets information about one or more build projects. A <i>build project</i> defines how AWS CodeBuild runs a build. This includes information such as where to get the source code to build, the build environment to use, the build commands to run, and where to store the build output. A <i>build environment</i> is a representation of operating system, programming language runtime, and tools that AWS CodeBuild uses to run a build. You can add tags to build projects to help manage your resources and costs.</p> </li> <li> <p> <code>CreateProject</code>: Creates a build project.</p> </li> <li> <p> <code>CreateReportGroup</code>: Creates a report group. A report group contains a collection of reports. </p> </li> <li> <p> <code>CreateWebhook</code>: For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, enables AWS CodeBuild to start rebuilding the source code every time a code change is pushed to the repository.</p> </li> <li> <p> <code>DeleteProject</code>: Deletes a build project.</p> </li> <li> <p> <code>DeleteReport</code>: Deletes a report. </p> </li> <li> <p> <code>DeleteReportGroup</code>: Deletes a report group. </p> </li> <li> <p> <code>DeleteResourcePolicy</code>: Deletes a resource policy that is identified by its resource ARN. </p> </li> <li> <p> <code>DeleteSourceCredentials</code>: Deletes a set of GitHub, GitHub Enterprise, or Bitbucket source credentials.</p> </li> <li> <p> <code>DeleteWebhook</code>: For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, stops AWS CodeBuild from rebuilding the source code every time a code change is pushed to the repository.</p> </li> <li> <p> <code>DescribeTestCases</code>: Returns a list of details about test cases for a report. </p> </li> <li> <p> <code>GetResourcePolicy</code>: Gets a resource policy that is identified by its resource ARN. </p> </li> <li> <p> <code>ImportSourceCredentials</code>: Imports the source repository credentials for an AWS CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository.</p> </li> <li> <p> <code>InvalidateProjectCache</code>: Resets the cache for a project.</p> </li> <li> <p> <code>ListBuilds</code>: Gets a list of build IDs, with each build ID representing a single build.</p> </li> <li> <p> <code>ListBuildsForProject</code>: Gets a list of build IDs for the specified build project, with each build ID representing a single build.</p> </li> <li> <p> <code>ListCuratedEnvironmentImages</code>: Gets information about Docker images that are managed by AWS CodeBuild.</p> </li> <li> <p> <code>ListProjects</code>: Gets a list of build project names, with each build project name representing a single build project.</p> </li> <li> <p> <code>ListReportGroups</code>: Gets a list ARNs for the report groups in the current AWS account. </p> </li> <li> <p> <code>ListReports</code>: Gets a list ARNs for the reports in the current AWS account. </p> </li> <li> <p> <code>ListReportsForReportGroup</code>: Returns a list of ARNs for the reports that belong to a <code>ReportGroup</code>. </p> </li> <li> <p> <code>ListSharedProjects</code>: Gets a list of ARNs associated with projects shared with the current AWS account or user.</p> </li> <li> <p> <code>ListSharedReportGroups</code>: Gets a list of ARNs associated with report groups shared with the current AWS account or user</p> </li> <li> <p> <code>ListSourceCredentials</code>: Returns a list of <code>SourceCredentialsInfo</code> objects. Each <code>SourceCredentialsInfo</code> object includes the authentication type, token ARN, and type of source provider for one set of credentials.</p> </li> <li> <p> <code>PutResourcePolicy</code>: Stores a resource policy for the ARN of a <code>Project</code> or <code>ReportGroup</code> object. </p> </li> <li> <p> <code>StartBuild</code>: Starts running a build.</p> </li> <li> <p> <code>StopBuild</code>: Attempts to stop running a build.</p> </li> <li> <p> <code>UpdateProject</code>: Changes the settings of an existing build project.</p> </li> <li> <p> <code>UpdateReportGroup</code>: Changes a report group.</p> </li> <li> <p> <code>UpdateWebhook</code>: Changes the settings of an existing webhook.</p> </li> </ul>
 ## 
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/codebuild/
@@ -1383,10 +1383,9 @@ var deleteReportGroup* = Call_DeleteReportGroup_600110(name: "deleteReportGroup"
     validator: validate_DeleteReportGroup_600111, base: "/",
     url: url_DeleteReportGroup_600112, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSourceCredentials_600125 = ref object of OpenApiRestCall_599369
-proc url_DeleteSourceCredentials_600127(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode;
-                                       query: JsonNode): Uri =
+  Call_DeleteResourcePolicy_600125 = ref object of OpenApiRestCall_599369
+proc url_DeleteResourcePolicy_600127(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1396,9 +1395,9 @@ proc url_DeleteSourceCredentials_600127(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_DeleteSourceCredentials_600126(path: JsonNode; query: JsonNode;
+proc validate_DeleteResourcePolicy_600126(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ##  Deletes a set of GitHub, GitHub Enterprise, or Bitbucket source credentials. 
+  ##  Deletes a resource policy that is identified by its resource ARN. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1430,7 +1429,7 @@ proc validate_DeleteSourceCredentials_600126(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600130 = header.getOrDefault("X-Amz-Target")
   valid_600130 = validateParameter(valid_600130, JString, required = true, default = newJString(
-      "CodeBuild_20161006.DeleteSourceCredentials"))
+      "CodeBuild_20161006.DeleteResourcePolicy"))
   if valid_600130 != nil:
     section.add "X-Amz-Target", valid_600130
   var valid_600131 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1468,9 +1467,9 @@ proc validate_DeleteSourceCredentials_600126(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600137: Call_DeleteSourceCredentials_600125; path: JsonNode;
+proc call*(call_600137: Call_DeleteResourcePolicy_600125; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Deletes a set of GitHub, GitHub Enterprise, or Bitbucket source credentials. 
+  ##  Deletes a resource policy that is identified by its resource ARN. 
   ## 
   let valid = call_600137.validator(path, query, header, formData, body)
   let scheme = call_600137.pickScheme
@@ -1481,25 +1480,26 @@ proc call*(call_600137: Call_DeleteSourceCredentials_600125; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600137, url, valid)
 
-proc call*(call_600138: Call_DeleteSourceCredentials_600125; body: JsonNode): Recallable =
-  ## deleteSourceCredentials
-  ##  Deletes a set of GitHub, GitHub Enterprise, or Bitbucket source credentials. 
+proc call*(call_600138: Call_DeleteResourcePolicy_600125; body: JsonNode): Recallable =
+  ## deleteResourcePolicy
+  ##  Deletes a resource policy that is identified by its resource ARN. 
   ##   body: JObject (required)
   var body_600139 = newJObject()
   if body != nil:
     body_600139 = body
   result = call_600138.call(nil, nil, nil, nil, body_600139)
 
-var deleteSourceCredentials* = Call_DeleteSourceCredentials_600125(
-    name: "deleteSourceCredentials", meth: HttpMethod.HttpPost,
+var deleteResourcePolicy* = Call_DeleteResourcePolicy_600125(
+    name: "deleteResourcePolicy", meth: HttpMethod.HttpPost,
     host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.DeleteSourceCredentials",
-    validator: validate_DeleteSourceCredentials_600126, base: "/",
-    url: url_DeleteSourceCredentials_600127, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=CodeBuild_20161006.DeleteResourcePolicy",
+    validator: validate_DeleteResourcePolicy_600126, base: "/",
+    url: url_DeleteResourcePolicy_600127, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteWebhook_600140 = ref object of OpenApiRestCall_599369
-proc url_DeleteWebhook_600142(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteSourceCredentials_600140 = ref object of OpenApiRestCall_599369
+proc url_DeleteSourceCredentials_600142(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1509,9 +1509,9 @@ proc url_DeleteWebhook_600142(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteWebhook_600141(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, stops AWS CodeBuild from rebuilding the source code every time a code change is pushed to the repository.
+proc validate_DeleteSourceCredentials_600141(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ##  Deletes a set of GitHub, GitHub Enterprise, or Bitbucket source credentials. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1543,7 +1543,7 @@ proc validate_DeleteWebhook_600141(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600145 = header.getOrDefault("X-Amz-Target")
   valid_600145 = validateParameter(valid_600145, JString, required = true, default = newJString(
-      "CodeBuild_20161006.DeleteWebhook"))
+      "CodeBuild_20161006.DeleteSourceCredentials"))
   if valid_600145 != nil:
     section.add "X-Amz-Target", valid_600145
   var valid_600146 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1581,9 +1581,9 @@ proc validate_DeleteWebhook_600141(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600152: Call_DeleteWebhook_600140; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, stops AWS CodeBuild from rebuilding the source code every time a code change is pushed to the repository.
+proc call*(call_600152: Call_DeleteSourceCredentials_600140; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ##  Deletes a set of GitHub, GitHub Enterprise, or Bitbucket source credentials. 
   ## 
   let valid = call_600152.validator(path, query, header, formData, body)
   let scheme = call_600152.pickScheme
@@ -1594,24 +1594,25 @@ proc call*(call_600152: Call_DeleteWebhook_600140; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_600152, url, valid)
 
-proc call*(call_600153: Call_DeleteWebhook_600140; body: JsonNode): Recallable =
-  ## deleteWebhook
-  ## For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, stops AWS CodeBuild from rebuilding the source code every time a code change is pushed to the repository.
+proc call*(call_600153: Call_DeleteSourceCredentials_600140; body: JsonNode): Recallable =
+  ## deleteSourceCredentials
+  ##  Deletes a set of GitHub, GitHub Enterprise, or Bitbucket source credentials. 
   ##   body: JObject (required)
   var body_600154 = newJObject()
   if body != nil:
     body_600154 = body
   result = call_600153.call(nil, nil, nil, nil, body_600154)
 
-var deleteWebhook* = Call_DeleteWebhook_600140(name: "deleteWebhook",
-    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.DeleteWebhook",
-    validator: validate_DeleteWebhook_600141, base: "/", url: url_DeleteWebhook_600142,
-    schemes: {Scheme.Https, Scheme.Http})
+var deleteSourceCredentials* = Call_DeleteSourceCredentials_600140(
+    name: "deleteSourceCredentials", meth: HttpMethod.HttpPost,
+    host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.DeleteSourceCredentials",
+    validator: validate_DeleteSourceCredentials_600141, base: "/",
+    url: url_DeleteSourceCredentials_600142, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTestCases_600155 = ref object of OpenApiRestCall_599369
-proc url_DescribeTestCases_600157(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteWebhook_600155 = ref object of OpenApiRestCall_599369
+proc url_DeleteWebhook_600157(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1621,10 +1622,9 @@ proc url_DescribeTestCases_600157(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeTestCases_600156(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ##  Returns a list of details about test cases for a report. 
+proc validate_DeleteWebhook_600156(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, stops AWS CodeBuild from rebuilding the source code every time a code change is pushed to the repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1656,7 +1656,7 @@ proc validate_DescribeTestCases_600156(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600160 = header.getOrDefault("X-Amz-Target")
   valid_600160 = validateParameter(valid_600160, JString, required = true, default = newJString(
-      "CodeBuild_20161006.DescribeTestCases"))
+      "CodeBuild_20161006.DeleteWebhook"))
   if valid_600160 != nil:
     section.add "X-Amz-Target", valid_600160
   var valid_600161 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1694,9 +1694,9 @@ proc validate_DescribeTestCases_600156(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600167: Call_DescribeTestCases_600155; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Returns a list of details about test cases for a report. 
+proc call*(call_600167: Call_DeleteWebhook_600155; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, stops AWS CodeBuild from rebuilding the source code every time a code change is pushed to the repository.
   ## 
   let valid = call_600167.validator(path, query, header, formData, body)
   let scheme = call_600167.pickScheme
@@ -1707,25 +1707,24 @@ proc call*(call_600167: Call_DescribeTestCases_600155; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600167, url, valid)
 
-proc call*(call_600168: Call_DescribeTestCases_600155; body: JsonNode): Recallable =
-  ## describeTestCases
-  ##  Returns a list of details about test cases for a report. 
+proc call*(call_600168: Call_DeleteWebhook_600155; body: JsonNode): Recallable =
+  ## deleteWebhook
+  ## For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, stops AWS CodeBuild from rebuilding the source code every time a code change is pushed to the repository.
   ##   body: JObject (required)
   var body_600169 = newJObject()
   if body != nil:
     body_600169 = body
   result = call_600168.call(nil, nil, nil, nil, body_600169)
 
-var describeTestCases* = Call_DescribeTestCases_600155(name: "describeTestCases",
+var deleteWebhook* = Call_DeleteWebhook_600155(name: "deleteWebhook",
     meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.DescribeTestCases",
-    validator: validate_DescribeTestCases_600156, base: "/",
-    url: url_DescribeTestCases_600157, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=CodeBuild_20161006.DeleteWebhook",
+    validator: validate_DeleteWebhook_600156, base: "/", url: url_DeleteWebhook_600157,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ImportSourceCredentials_600170 = ref object of OpenApiRestCall_599369
-proc url_ImportSourceCredentials_600172(protocol: Scheme; host: string; base: string;
-                                       route: string; path: JsonNode;
-                                       query: JsonNode): Uri =
+  Call_DescribeTestCases_600170 = ref object of OpenApiRestCall_599369
+proc url_DescribeTestCases_600172(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1735,9 +1734,10 @@ proc url_ImportSourceCredentials_600172(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_ImportSourceCredentials_600171(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ##  Imports the source repository credentials for an AWS CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository. 
+proc validate_DescribeTestCases_600171(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ##  Returns a list of details about test cases for a report. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1769,7 +1769,7 @@ proc validate_ImportSourceCredentials_600171(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600175 = header.getOrDefault("X-Amz-Target")
   valid_600175 = validateParameter(valid_600175, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ImportSourceCredentials"))
+      "CodeBuild_20161006.DescribeTestCases"))
   if valid_600175 != nil:
     section.add "X-Amz-Target", valid_600175
   var valid_600176 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1807,9 +1807,9 @@ proc validate_ImportSourceCredentials_600171(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600182: Call_ImportSourceCredentials_600170; path: JsonNode;
+proc call*(call_600182: Call_DescribeTestCases_600170; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Imports the source repository credentials for an AWS CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository. 
+  ##  Returns a list of details about test cases for a report. 
   ## 
   let valid = call_600182.validator(path, query, header, formData, body)
   let scheme = call_600182.pickScheme
@@ -1820,25 +1820,24 @@ proc call*(call_600182: Call_ImportSourceCredentials_600170; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600182, url, valid)
 
-proc call*(call_600183: Call_ImportSourceCredentials_600170; body: JsonNode): Recallable =
-  ## importSourceCredentials
-  ##  Imports the source repository credentials for an AWS CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository. 
+proc call*(call_600183: Call_DescribeTestCases_600170; body: JsonNode): Recallable =
+  ## describeTestCases
+  ##  Returns a list of details about test cases for a report. 
   ##   body: JObject (required)
   var body_600184 = newJObject()
   if body != nil:
     body_600184 = body
   result = call_600183.call(nil, nil, nil, nil, body_600184)
 
-var importSourceCredentials* = Call_ImportSourceCredentials_600170(
-    name: "importSourceCredentials", meth: HttpMethod.HttpPost,
-    host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.ImportSourceCredentials",
-    validator: validate_ImportSourceCredentials_600171, base: "/",
-    url: url_ImportSourceCredentials_600172, schemes: {Scheme.Https, Scheme.Http})
+var describeTestCases* = Call_DescribeTestCases_600170(name: "describeTestCases",
+    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.DescribeTestCases",
+    validator: validate_DescribeTestCases_600171, base: "/",
+    url: url_DescribeTestCases_600172, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_InvalidateProjectCache_600185 = ref object of OpenApiRestCall_599369
-proc url_InvalidateProjectCache_600187(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_GetResourcePolicy_600185 = ref object of OpenApiRestCall_599369
+proc url_GetResourcePolicy_600187(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1848,9 +1847,10 @@ proc url_InvalidateProjectCache_600187(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_InvalidateProjectCache_600186(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Resets the cache for a project.
+proc validate_GetResourcePolicy_600186(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ##  Gets a resource policy that is identified by its resource ARN. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1882,7 +1882,7 @@ proc validate_InvalidateProjectCache_600186(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600190 = header.getOrDefault("X-Amz-Target")
   valid_600190 = validateParameter(valid_600190, JString, required = true, default = newJString(
-      "CodeBuild_20161006.InvalidateProjectCache"))
+      "CodeBuild_20161006.GetResourcePolicy"))
   if valid_600190 != nil:
     section.add "X-Amz-Target", valid_600190
   var valid_600191 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1920,9 +1920,9 @@ proc validate_InvalidateProjectCache_600186(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600197: Call_InvalidateProjectCache_600185; path: JsonNode;
+proc call*(call_600197: Call_GetResourcePolicy_600185; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Resets the cache for a project.
+  ##  Gets a resource policy that is identified by its resource ARN. 
   ## 
   let valid = call_600197.validator(path, query, header, formData, body)
   let scheme = call_600197.pickScheme
@@ -1933,25 +1933,25 @@ proc call*(call_600197: Call_InvalidateProjectCache_600185; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600197, url, valid)
 
-proc call*(call_600198: Call_InvalidateProjectCache_600185; body: JsonNode): Recallable =
-  ## invalidateProjectCache
-  ## Resets the cache for a project.
+proc call*(call_600198: Call_GetResourcePolicy_600185; body: JsonNode): Recallable =
+  ## getResourcePolicy
+  ##  Gets a resource policy that is identified by its resource ARN. 
   ##   body: JObject (required)
   var body_600199 = newJObject()
   if body != nil:
     body_600199 = body
   result = call_600198.call(nil, nil, nil, nil, body_600199)
 
-var invalidateProjectCache* = Call_InvalidateProjectCache_600185(
-    name: "invalidateProjectCache", meth: HttpMethod.HttpPost,
-    host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.InvalidateProjectCache",
-    validator: validate_InvalidateProjectCache_600186, base: "/",
-    url: url_InvalidateProjectCache_600187, schemes: {Scheme.Https, Scheme.Http})
+var getResourcePolicy* = Call_GetResourcePolicy_600185(name: "getResourcePolicy",
+    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.GetResourcePolicy",
+    validator: validate_GetResourcePolicy_600186, base: "/",
+    url: url_GetResourcePolicy_600187, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListBuilds_600200 = ref object of OpenApiRestCall_599369
-proc url_ListBuilds_600202(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
+  Call_ImportSourceCredentials_600200 = ref object of OpenApiRestCall_599369
+proc url_ImportSourceCredentials_600202(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1961,9 +1961,9 @@ proc url_ListBuilds_600202(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_ListBuilds_600201(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode): JsonNode =
-  ## Gets a list of build IDs, with each build ID representing a single build.
+proc validate_ImportSourceCredentials_600201(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ##  Imports the source repository credentials for an AWS CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1995,7 +1995,7 @@ proc validate_ListBuilds_600201(path: JsonNode; query: JsonNode; header: JsonNod
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600205 = header.getOrDefault("X-Amz-Target")
   valid_600205 = validateParameter(valid_600205, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ListBuilds"))
+      "CodeBuild_20161006.ImportSourceCredentials"))
   if valid_600205 != nil:
     section.add "X-Amz-Target", valid_600205
   var valid_600206 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2033,9 +2033,9 @@ proc validate_ListBuilds_600201(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600212: Call_ListBuilds_600200; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets a list of build IDs, with each build ID representing a single build.
+proc call*(call_600212: Call_ImportSourceCredentials_600200; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ##  Imports the source repository credentials for an AWS CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository. 
   ## 
   let valid = call_600212.validator(path, query, header, formData, body)
   let scheme = call_600212.pickScheme
@@ -2046,25 +2046,25 @@ proc call*(call_600212: Call_ListBuilds_600200; path: JsonNode; query: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600212, url, valid)
 
-proc call*(call_600213: Call_ListBuilds_600200; body: JsonNode): Recallable =
-  ## listBuilds
-  ## Gets a list of build IDs, with each build ID representing a single build.
+proc call*(call_600213: Call_ImportSourceCredentials_600200; body: JsonNode): Recallable =
+  ## importSourceCredentials
+  ##  Imports the source repository credentials for an AWS CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository. 
   ##   body: JObject (required)
   var body_600214 = newJObject()
   if body != nil:
     body_600214 = body
   result = call_600213.call(nil, nil, nil, nil, body_600214)
 
-var listBuilds* = Call_ListBuilds_600200(name: "listBuilds",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "codebuild.amazonaws.com", route: "/#X-Amz-Target=CodeBuild_20161006.ListBuilds",
-                                      validator: validate_ListBuilds_600201,
-                                      base: "/", url: url_ListBuilds_600202,
-                                      schemes: {Scheme.Https, Scheme.Http})
+var importSourceCredentials* = Call_ImportSourceCredentials_600200(
+    name: "importSourceCredentials", meth: HttpMethod.HttpPost,
+    host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ImportSourceCredentials",
+    validator: validate_ImportSourceCredentials_600201, base: "/",
+    url: url_ImportSourceCredentials_600202, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListBuildsForProject_600215 = ref object of OpenApiRestCall_599369
-proc url_ListBuildsForProject_600217(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_InvalidateProjectCache_600215 = ref object of OpenApiRestCall_599369
+proc url_InvalidateProjectCache_600217(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2074,9 +2074,9 @@ proc url_ListBuildsForProject_600217(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListBuildsForProject_600216(path: JsonNode; query: JsonNode;
+proc validate_InvalidateProjectCache_600216(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Gets a list of build IDs for the specified build project, with each build ID representing a single build.
+  ## Resets the cache for a project.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2108,7 +2108,7 @@ proc validate_ListBuildsForProject_600216(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600220 = header.getOrDefault("X-Amz-Target")
   valid_600220 = validateParameter(valid_600220, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ListBuildsForProject"))
+      "CodeBuild_20161006.InvalidateProjectCache"))
   if valid_600220 != nil:
     section.add "X-Amz-Target", valid_600220
   var valid_600221 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2146,9 +2146,9 @@ proc validate_ListBuildsForProject_600216(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600227: Call_ListBuildsForProject_600215; path: JsonNode;
+proc call*(call_600227: Call_InvalidateProjectCache_600215; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets a list of build IDs for the specified build project, with each build ID representing a single build.
+  ## Resets the cache for a project.
   ## 
   let valid = call_600227.validator(path, query, header, formData, body)
   let scheme = call_600227.pickScheme
@@ -2159,25 +2159,25 @@ proc call*(call_600227: Call_ListBuildsForProject_600215; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600227, url, valid)
 
-proc call*(call_600228: Call_ListBuildsForProject_600215; body: JsonNode): Recallable =
-  ## listBuildsForProject
-  ## Gets a list of build IDs for the specified build project, with each build ID representing a single build.
+proc call*(call_600228: Call_InvalidateProjectCache_600215; body: JsonNode): Recallable =
+  ## invalidateProjectCache
+  ## Resets the cache for a project.
   ##   body: JObject (required)
   var body_600229 = newJObject()
   if body != nil:
     body_600229 = body
   result = call_600228.call(nil, nil, nil, nil, body_600229)
 
-var listBuildsForProject* = Call_ListBuildsForProject_600215(
-    name: "listBuildsForProject", meth: HttpMethod.HttpPost,
+var invalidateProjectCache* = Call_InvalidateProjectCache_600215(
+    name: "invalidateProjectCache", meth: HttpMethod.HttpPost,
     host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.ListBuildsForProject",
-    validator: validate_ListBuildsForProject_600216, base: "/",
-    url: url_ListBuildsForProject_600217, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=CodeBuild_20161006.InvalidateProjectCache",
+    validator: validate_InvalidateProjectCache_600216, base: "/",
+    url: url_InvalidateProjectCache_600217, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCuratedEnvironmentImages_600230 = ref object of OpenApiRestCall_599369
-proc url_ListCuratedEnvironmentImages_600232(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListBuilds_600230 = ref object of OpenApiRestCall_599369
+proc url_ListBuilds_600232(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2187,9 +2187,9 @@ proc url_ListCuratedEnvironmentImages_600232(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListCuratedEnvironmentImages_600231(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Gets information about Docker images that are managed by AWS CodeBuild.
+proc validate_ListBuilds_600231(path: JsonNode; query: JsonNode; header: JsonNode;
+                               formData: JsonNode; body: JsonNode): JsonNode =
+  ## Gets a list of build IDs, with each build ID representing a single build.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2221,7 +2221,7 @@ proc validate_ListCuratedEnvironmentImages_600231(path: JsonNode; query: JsonNod
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600235 = header.getOrDefault("X-Amz-Target")
   valid_600235 = validateParameter(valid_600235, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ListCuratedEnvironmentImages"))
+      "CodeBuild_20161006.ListBuilds"))
   if valid_600235 != nil:
     section.add "X-Amz-Target", valid_600235
   var valid_600236 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2259,9 +2259,9 @@ proc validate_ListCuratedEnvironmentImages_600231(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600242: Call_ListCuratedEnvironmentImages_600230; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets information about Docker images that are managed by AWS CodeBuild.
+proc call*(call_600242: Call_ListBuilds_600230; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Gets a list of build IDs, with each build ID representing a single build.
   ## 
   let valid = call_600242.validator(path, query, header, formData, body)
   let scheme = call_600242.pickScheme
@@ -2272,26 +2272,25 @@ proc call*(call_600242: Call_ListCuratedEnvironmentImages_600230; path: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_600242, url, valid)
 
-proc call*(call_600243: Call_ListCuratedEnvironmentImages_600230; body: JsonNode): Recallable =
-  ## listCuratedEnvironmentImages
-  ## Gets information about Docker images that are managed by AWS CodeBuild.
+proc call*(call_600243: Call_ListBuilds_600230; body: JsonNode): Recallable =
+  ## listBuilds
+  ## Gets a list of build IDs, with each build ID representing a single build.
   ##   body: JObject (required)
   var body_600244 = newJObject()
   if body != nil:
     body_600244 = body
   result = call_600243.call(nil, nil, nil, nil, body_600244)
 
-var listCuratedEnvironmentImages* = Call_ListCuratedEnvironmentImages_600230(
-    name: "listCuratedEnvironmentImages", meth: HttpMethod.HttpPost,
-    host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.ListCuratedEnvironmentImages",
-    validator: validate_ListCuratedEnvironmentImages_600231, base: "/",
-    url: url_ListCuratedEnvironmentImages_600232,
-    schemes: {Scheme.Https, Scheme.Http})
+var listBuilds* = Call_ListBuilds_600230(name: "listBuilds",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "codebuild.amazonaws.com", route: "/#X-Amz-Target=CodeBuild_20161006.ListBuilds",
+                                      validator: validate_ListBuilds_600231,
+                                      base: "/", url: url_ListBuilds_600232,
+                                      schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListProjects_600245 = ref object of OpenApiRestCall_599369
-proc url_ListProjects_600247(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListBuildsForProject_600245 = ref object of OpenApiRestCall_599369
+proc url_ListBuildsForProject_600247(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2301,9 +2300,9 @@ proc url_ListProjects_600247(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListProjects_600246(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## Gets a list of build project names, with each build project name representing a single build project.
+proc validate_ListBuildsForProject_600246(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Gets a list of build IDs for the specified build project, with each build ID representing a single build.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2335,7 +2334,7 @@ proc validate_ListProjects_600246(path: JsonNode; query: JsonNode; header: JsonN
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600250 = header.getOrDefault("X-Amz-Target")
   valid_600250 = validateParameter(valid_600250, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ListProjects"))
+      "CodeBuild_20161006.ListBuildsForProject"))
   if valid_600250 != nil:
     section.add "X-Amz-Target", valid_600250
   var valid_600251 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2373,9 +2372,9 @@ proc validate_ListProjects_600246(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600257: Call_ListProjects_600245; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets a list of build project names, with each build project name representing a single build project.
+proc call*(call_600257: Call_ListBuildsForProject_600245; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Gets a list of build IDs for the specified build project, with each build ID representing a single build.
   ## 
   let valid = call_600257.validator(path, query, header, formData, body)
   let scheme = call_600257.pickScheme
@@ -2386,24 +2385,25 @@ proc call*(call_600257: Call_ListProjects_600245; path: JsonNode; query: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600257, url, valid)
 
-proc call*(call_600258: Call_ListProjects_600245; body: JsonNode): Recallable =
-  ## listProjects
-  ## Gets a list of build project names, with each build project name representing a single build project.
+proc call*(call_600258: Call_ListBuildsForProject_600245; body: JsonNode): Recallable =
+  ## listBuildsForProject
+  ## Gets a list of build IDs for the specified build project, with each build ID representing a single build.
   ##   body: JObject (required)
   var body_600259 = newJObject()
   if body != nil:
     body_600259 = body
   result = call_600258.call(nil, nil, nil, nil, body_600259)
 
-var listProjects* = Call_ListProjects_600245(name: "listProjects",
-    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.ListProjects",
-    validator: validate_ListProjects_600246, base: "/", url: url_ListProjects_600247,
-    schemes: {Scheme.Https, Scheme.Http})
+var listBuildsForProject* = Call_ListBuildsForProject_600245(
+    name: "listBuildsForProject", meth: HttpMethod.HttpPost,
+    host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ListBuildsForProject",
+    validator: validate_ListBuildsForProject_600246, base: "/",
+    url: url_ListBuildsForProject_600247, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListReportGroups_600260 = ref object of OpenApiRestCall_599369
-proc url_ListReportGroups_600262(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListCuratedEnvironmentImages_600260 = ref object of OpenApiRestCall_599369
+proc url_ListCuratedEnvironmentImages_600262(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2413,10 +2413,9 @@ proc url_ListReportGroups_600262(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListReportGroups_600261(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ##  Gets a list ARNs for the report groups in the current AWS account. 
+proc validate_ListCuratedEnvironmentImages_600261(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Gets information about Docker images that are managed by AWS CodeBuild.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2448,7 +2447,7 @@ proc validate_ListReportGroups_600261(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600265 = header.getOrDefault("X-Amz-Target")
   valid_600265 = validateParameter(valid_600265, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ListReportGroups"))
+      "CodeBuild_20161006.ListCuratedEnvironmentImages"))
   if valid_600265 != nil:
     section.add "X-Amz-Target", valid_600265
   var valid_600266 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2486,9 +2485,9 @@ proc validate_ListReportGroups_600261(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600272: Call_ListReportGroups_600260; path: JsonNode;
+proc call*(call_600272: Call_ListCuratedEnvironmentImages_600260; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Gets a list ARNs for the report groups in the current AWS account. 
+  ## Gets information about Docker images that are managed by AWS CodeBuild.
   ## 
   let valid = call_600272.validator(path, query, header, formData, body)
   let scheme = call_600272.pickScheme
@@ -2499,24 +2498,26 @@ proc call*(call_600272: Call_ListReportGroups_600260; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600272, url, valid)
 
-proc call*(call_600273: Call_ListReportGroups_600260; body: JsonNode): Recallable =
-  ## listReportGroups
-  ##  Gets a list ARNs for the report groups in the current AWS account. 
+proc call*(call_600273: Call_ListCuratedEnvironmentImages_600260; body: JsonNode): Recallable =
+  ## listCuratedEnvironmentImages
+  ## Gets information about Docker images that are managed by AWS CodeBuild.
   ##   body: JObject (required)
   var body_600274 = newJObject()
   if body != nil:
     body_600274 = body
   result = call_600273.call(nil, nil, nil, nil, body_600274)
 
-var listReportGroups* = Call_ListReportGroups_600260(name: "listReportGroups",
-    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.ListReportGroups",
-    validator: validate_ListReportGroups_600261, base: "/",
-    url: url_ListReportGroups_600262, schemes: {Scheme.Https, Scheme.Http})
+var listCuratedEnvironmentImages* = Call_ListCuratedEnvironmentImages_600260(
+    name: "listCuratedEnvironmentImages", meth: HttpMethod.HttpPost,
+    host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ListCuratedEnvironmentImages",
+    validator: validate_ListCuratedEnvironmentImages_600261, base: "/",
+    url: url_ListCuratedEnvironmentImages_600262,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListReports_600275 = ref object of OpenApiRestCall_599369
-proc url_ListReports_600277(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListProjects_600275 = ref object of OpenApiRestCall_599369
+proc url_ListProjects_600277(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2526,9 +2527,9 @@ proc url_ListReports_600277(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListReports_600276(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ##  Returns a list of ARNs for the reports in the current AWS account. 
+proc validate_ListProjects_600276(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## Gets a list of build project names, with each build project name representing a single build project.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2560,7 +2561,7 @@ proc validate_ListReports_600276(path: JsonNode; query: JsonNode; header: JsonNo
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600280 = header.getOrDefault("X-Amz-Target")
   valid_600280 = validateParameter(valid_600280, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ListReports"))
+      "CodeBuild_20161006.ListProjects"))
   if valid_600280 != nil:
     section.add "X-Amz-Target", valid_600280
   var valid_600281 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2598,9 +2599,9 @@ proc validate_ListReports_600276(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600287: Call_ListReports_600275; path: JsonNode; query: JsonNode;
+proc call*(call_600287: Call_ListProjects_600275; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Returns a list of ARNs for the reports in the current AWS account. 
+  ## Gets a list of build project names, with each build project name representing a single build project.
   ## 
   let valid = call_600287.validator(path, query, header, formData, body)
   let scheme = call_600287.pickScheme
@@ -2611,25 +2612,24 @@ proc call*(call_600287: Call_ListReports_600275; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_600287, url, valid)
 
-proc call*(call_600288: Call_ListReports_600275; body: JsonNode): Recallable =
-  ## listReports
-  ##  Returns a list of ARNs for the reports in the current AWS account. 
+proc call*(call_600288: Call_ListProjects_600275; body: JsonNode): Recallable =
+  ## listProjects
+  ## Gets a list of build project names, with each build project name representing a single build project.
   ##   body: JObject (required)
   var body_600289 = newJObject()
   if body != nil:
     body_600289 = body
   result = call_600288.call(nil, nil, nil, nil, body_600289)
 
-var listReports* = Call_ListReports_600275(name: "listReports",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "codebuild.amazonaws.com", route: "/#X-Amz-Target=CodeBuild_20161006.ListReports",
-                                        validator: validate_ListReports_600276,
-                                        base: "/", url: url_ListReports_600277,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var listProjects* = Call_ListProjects_600275(name: "listProjects",
+    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ListProjects",
+    validator: validate_ListProjects_600276, base: "/", url: url_ListProjects_600277,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListReportsForReportGroup_600290 = ref object of OpenApiRestCall_599369
-proc url_ListReportsForReportGroup_600292(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListReportGroups_600290 = ref object of OpenApiRestCall_599369
+proc url_ListReportGroups_600292(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2639,9 +2639,10 @@ proc url_ListReportsForReportGroup_600292(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListReportsForReportGroup_600291(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ##  Returns a list of ARNs for the reports that belong to a <code>ReportGroup</code>. 
+proc validate_ListReportGroups_600291(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ##  Gets a list ARNs for the report groups in the current AWS account. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2673,7 +2674,7 @@ proc validate_ListReportsForReportGroup_600291(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600295 = header.getOrDefault("X-Amz-Target")
   valid_600295 = validateParameter(valid_600295, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ListReportsForReportGroup"))
+      "CodeBuild_20161006.ListReportGroups"))
   if valid_600295 != nil:
     section.add "X-Amz-Target", valid_600295
   var valid_600296 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2711,9 +2712,9 @@ proc validate_ListReportsForReportGroup_600291(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600302: Call_ListReportsForReportGroup_600290; path: JsonNode;
+proc call*(call_600302: Call_ListReportGroups_600290; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Returns a list of ARNs for the reports that belong to a <code>ReportGroup</code>. 
+  ##  Gets a list ARNs for the report groups in the current AWS account. 
   ## 
   let valid = call_600302.validator(path, query, header, formData, body)
   let scheme = call_600302.pickScheme
@@ -2724,26 +2725,24 @@ proc call*(call_600302: Call_ListReportsForReportGroup_600290; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600302, url, valid)
 
-proc call*(call_600303: Call_ListReportsForReportGroup_600290; body: JsonNode): Recallable =
-  ## listReportsForReportGroup
-  ##  Returns a list of ARNs for the reports that belong to a <code>ReportGroup</code>. 
+proc call*(call_600303: Call_ListReportGroups_600290; body: JsonNode): Recallable =
+  ## listReportGroups
+  ##  Gets a list ARNs for the report groups in the current AWS account. 
   ##   body: JObject (required)
   var body_600304 = newJObject()
   if body != nil:
     body_600304 = body
   result = call_600303.call(nil, nil, nil, nil, body_600304)
 
-var listReportsForReportGroup* = Call_ListReportsForReportGroup_600290(
-    name: "listReportsForReportGroup", meth: HttpMethod.HttpPost,
-    host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.ListReportsForReportGroup",
-    validator: validate_ListReportsForReportGroup_600291, base: "/",
-    url: url_ListReportsForReportGroup_600292,
-    schemes: {Scheme.Https, Scheme.Http})
+var listReportGroups* = Call_ListReportGroups_600290(name: "listReportGroups",
+    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ListReportGroups",
+    validator: validate_ListReportGroups_600291, base: "/",
+    url: url_ListReportGroups_600292, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSourceCredentials_600305 = ref object of OpenApiRestCall_599369
-proc url_ListSourceCredentials_600307(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListReports_600305 = ref object of OpenApiRestCall_599369
+proc url_ListReports_600307(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2753,9 +2752,9 @@ proc url_ListSourceCredentials_600307(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListSourceCredentials_600306(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ##  Returns a list of <code>SourceCredentialsInfo</code> objects. 
+proc validate_ListReports_600306(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ##  Returns a list of ARNs for the reports in the current AWS account. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2787,7 +2786,7 @@ proc validate_ListSourceCredentials_600306(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600310 = header.getOrDefault("X-Amz-Target")
   valid_600310 = validateParameter(valid_600310, JString, required = true, default = newJString(
-      "CodeBuild_20161006.ListSourceCredentials"))
+      "CodeBuild_20161006.ListReports"))
   if valid_600310 != nil:
     section.add "X-Amz-Target", valid_600310
   var valid_600311 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2825,9 +2824,9 @@ proc validate_ListSourceCredentials_600306(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600317: Call_ListSourceCredentials_600305; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Returns a list of <code>SourceCredentialsInfo</code> objects. 
+proc call*(call_600317: Call_ListReports_600305; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ##  Returns a list of ARNs for the reports in the current AWS account. 
   ## 
   let valid = call_600317.validator(path, query, header, formData, body)
   let scheme = call_600317.pickScheme
@@ -2838,25 +2837,25 @@ proc call*(call_600317: Call_ListSourceCredentials_600305; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600317, url, valid)
 
-proc call*(call_600318: Call_ListSourceCredentials_600305; body: JsonNode): Recallable =
-  ## listSourceCredentials
-  ##  Returns a list of <code>SourceCredentialsInfo</code> objects. 
+proc call*(call_600318: Call_ListReports_600305; body: JsonNode): Recallable =
+  ## listReports
+  ##  Returns a list of ARNs for the reports in the current AWS account. 
   ##   body: JObject (required)
   var body_600319 = newJObject()
   if body != nil:
     body_600319 = body
   result = call_600318.call(nil, nil, nil, nil, body_600319)
 
-var listSourceCredentials* = Call_ListSourceCredentials_600305(
-    name: "listSourceCredentials", meth: HttpMethod.HttpPost,
-    host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.ListSourceCredentials",
-    validator: validate_ListSourceCredentials_600306, base: "/",
-    url: url_ListSourceCredentials_600307, schemes: {Scheme.Https, Scheme.Http})
+var listReports* = Call_ListReports_600305(name: "listReports",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "codebuild.amazonaws.com", route: "/#X-Amz-Target=CodeBuild_20161006.ListReports",
+                                        validator: validate_ListReports_600306,
+                                        base: "/", url: url_ListReports_600307,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartBuild_600320 = ref object of OpenApiRestCall_599369
-proc url_StartBuild_600322(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
+  Call_ListReportsForReportGroup_600320 = ref object of OpenApiRestCall_599369
+proc url_ListReportsForReportGroup_600322(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2866,9 +2865,9 @@ proc url_StartBuild_600322(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_StartBuild_600321(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode): JsonNode =
-  ## Starts running a build.
+proc validate_ListReportsForReportGroup_600321(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ##  Returns a list of ARNs for the reports that belong to a <code>ReportGroup</code>. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2900,7 +2899,7 @@ proc validate_StartBuild_600321(path: JsonNode; query: JsonNode; header: JsonNod
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600325 = header.getOrDefault("X-Amz-Target")
   valid_600325 = validateParameter(valid_600325, JString, required = true, default = newJString(
-      "CodeBuild_20161006.StartBuild"))
+      "CodeBuild_20161006.ListReportsForReportGroup"))
   if valid_600325 != nil:
     section.add "X-Amz-Target", valid_600325
   var valid_600326 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -2938,9 +2937,9 @@ proc validate_StartBuild_600321(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600332: Call_StartBuild_600320; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Starts running a build.
+proc call*(call_600332: Call_ListReportsForReportGroup_600320; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ##  Returns a list of ARNs for the reports that belong to a <code>ReportGroup</code>. 
   ## 
   let valid = call_600332.validator(path, query, header, formData, body)
   let scheme = call_600332.pickScheme
@@ -2951,25 +2950,26 @@ proc call*(call_600332: Call_StartBuild_600320; path: JsonNode; query: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600332, url, valid)
 
-proc call*(call_600333: Call_StartBuild_600320; body: JsonNode): Recallable =
-  ## startBuild
-  ## Starts running a build.
+proc call*(call_600333: Call_ListReportsForReportGroup_600320; body: JsonNode): Recallable =
+  ## listReportsForReportGroup
+  ##  Returns a list of ARNs for the reports that belong to a <code>ReportGroup</code>. 
   ##   body: JObject (required)
   var body_600334 = newJObject()
   if body != nil:
     body_600334 = body
   result = call_600333.call(nil, nil, nil, nil, body_600334)
 
-var startBuild* = Call_StartBuild_600320(name: "startBuild",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "codebuild.amazonaws.com", route: "/#X-Amz-Target=CodeBuild_20161006.StartBuild",
-                                      validator: validate_StartBuild_600321,
-                                      base: "/", url: url_StartBuild_600322,
-                                      schemes: {Scheme.Https, Scheme.Http})
+var listReportsForReportGroup* = Call_ListReportsForReportGroup_600320(
+    name: "listReportsForReportGroup", meth: HttpMethod.HttpPost,
+    host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ListReportsForReportGroup",
+    validator: validate_ListReportsForReportGroup_600321, base: "/",
+    url: url_ListReportsForReportGroup_600322,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopBuild_600335 = ref object of OpenApiRestCall_599369
-proc url_StopBuild_600337(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode; query: JsonNode): Uri =
+  Call_ListSharedProjects_600335 = ref object of OpenApiRestCall_599369
+proc url_ListSharedProjects_600337(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2979,9 +2979,10 @@ proc url_StopBuild_600337(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & route
 
-proc validate_StopBuild_600336(path: JsonNode; query: JsonNode; header: JsonNode;
-                              formData: JsonNode; body: JsonNode): JsonNode =
-  ## Attempts to stop running a build.
+proc validate_ListSharedProjects_600336(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode): JsonNode =
+  ##  Gets a list of projects that are shared with other AWS accounts or users. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3013,7 +3014,7 @@ proc validate_StopBuild_600336(path: JsonNode; query: JsonNode; header: JsonNode
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600340 = header.getOrDefault("X-Amz-Target")
   valid_600340 = validateParameter(valid_600340, JString, required = true, default = newJString(
-      "CodeBuild_20161006.StopBuild"))
+      "CodeBuild_20161006.ListSharedProjects"))
   if valid_600340 != nil:
     section.add "X-Amz-Target", valid_600340
   var valid_600341 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3051,9 +3052,9 @@ proc validate_StopBuild_600336(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600347: Call_StopBuild_600335; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Attempts to stop running a build.
+proc call*(call_600347: Call_ListSharedProjects_600335; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ##  Gets a list of projects that are shared with other AWS accounts or users. 
   ## 
   let valid = call_600347.validator(path, query, header, formData, body)
   let scheme = call_600347.pickScheme
@@ -3064,24 +3065,25 @@ proc call*(call_600347: Call_StopBuild_600335; path: JsonNode; query: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600347, url, valid)
 
-proc call*(call_600348: Call_StopBuild_600335; body: JsonNode): Recallable =
-  ## stopBuild
-  ## Attempts to stop running a build.
+proc call*(call_600348: Call_ListSharedProjects_600335; body: JsonNode): Recallable =
+  ## listSharedProjects
+  ##  Gets a list of projects that are shared with other AWS accounts or users. 
   ##   body: JObject (required)
   var body_600349 = newJObject()
   if body != nil:
     body_600349 = body
   result = call_600348.call(nil, nil, nil, nil, body_600349)
 
-var stopBuild* = Call_StopBuild_600335(name: "stopBuild", meth: HttpMethod.HttpPost,
-                                    host: "codebuild.amazonaws.com", route: "/#X-Amz-Target=CodeBuild_20161006.StopBuild",
-                                    validator: validate_StopBuild_600336,
-                                    base: "/", url: url_StopBuild_600337,
-                                    schemes: {Scheme.Https, Scheme.Http})
+var listSharedProjects* = Call_ListSharedProjects_600335(
+    name: "listSharedProjects", meth: HttpMethod.HttpPost,
+    host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ListSharedProjects",
+    validator: validate_ListSharedProjects_600336, base: "/",
+    url: url_ListSharedProjects_600337, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateProject_600350 = ref object of OpenApiRestCall_599369
-proc url_UpdateProject_600352(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListSharedReportGroups_600350 = ref object of OpenApiRestCall_599369
+proc url_ListSharedReportGroups_600352(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3091,9 +3093,9 @@ proc url_UpdateProject_600352(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateProject_600351(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## Changes the settings of a build project.
+proc validate_ListSharedReportGroups_600351(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ##  Gets a list of report groups that are shared with other AWS accounts or users. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3125,7 +3127,7 @@ proc validate_UpdateProject_600351(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600355 = header.getOrDefault("X-Amz-Target")
   valid_600355 = validateParameter(valid_600355, JString, required = true, default = newJString(
-      "CodeBuild_20161006.UpdateProject"))
+      "CodeBuild_20161006.ListSharedReportGroups"))
   if valid_600355 != nil:
     section.add "X-Amz-Target", valid_600355
   var valid_600356 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3163,9 +3165,9 @@ proc validate_UpdateProject_600351(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600362: Call_UpdateProject_600350; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Changes the settings of a build project.
+proc call*(call_600362: Call_ListSharedReportGroups_600350; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ##  Gets a list of report groups that are shared with other AWS accounts or users. 
   ## 
   let valid = call_600362.validator(path, query, header, formData, body)
   let scheme = call_600362.pickScheme
@@ -3176,24 +3178,25 @@ proc call*(call_600362: Call_UpdateProject_600350; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_600362, url, valid)
 
-proc call*(call_600363: Call_UpdateProject_600350; body: JsonNode): Recallable =
-  ## updateProject
-  ## Changes the settings of a build project.
+proc call*(call_600363: Call_ListSharedReportGroups_600350; body: JsonNode): Recallable =
+  ## listSharedReportGroups
+  ##  Gets a list of report groups that are shared with other AWS accounts or users. 
   ##   body: JObject (required)
   var body_600364 = newJObject()
   if body != nil:
     body_600364 = body
   result = call_600363.call(nil, nil, nil, nil, body_600364)
 
-var updateProject* = Call_UpdateProject_600350(name: "updateProject",
-    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.UpdateProject",
-    validator: validate_UpdateProject_600351, base: "/", url: url_UpdateProject_600352,
-    schemes: {Scheme.Https, Scheme.Http})
+var listSharedReportGroups* = Call_ListSharedReportGroups_600350(
+    name: "listSharedReportGroups", meth: HttpMethod.HttpPost,
+    host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ListSharedReportGroups",
+    validator: validate_ListSharedReportGroups_600351, base: "/",
+    url: url_ListSharedReportGroups_600352, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateReportGroup_600365 = ref object of OpenApiRestCall_599369
-proc url_UpdateReportGroup_600367(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListSourceCredentials_600365 = ref object of OpenApiRestCall_599369
+proc url_ListSourceCredentials_600367(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3203,10 +3206,9 @@ proc url_UpdateReportGroup_600367(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateReportGroup_600366(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ##  Updates a report group. 
+proc validate_ListSourceCredentials_600366(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ##  Returns a list of <code>SourceCredentialsInfo</code> objects. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3238,7 +3240,7 @@ proc validate_UpdateReportGroup_600366(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600370 = header.getOrDefault("X-Amz-Target")
   valid_600370 = validateParameter(valid_600370, JString, required = true, default = newJString(
-      "CodeBuild_20161006.UpdateReportGroup"))
+      "CodeBuild_20161006.ListSourceCredentials"))
   if valid_600370 != nil:
     section.add "X-Amz-Target", valid_600370
   var valid_600371 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3276,9 +3278,9 @@ proc validate_UpdateReportGroup_600366(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600377: Call_UpdateReportGroup_600365; path: JsonNode;
+proc call*(call_600377: Call_ListSourceCredentials_600365; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Updates a report group. 
+  ##  Returns a list of <code>SourceCredentialsInfo</code> objects. 
   ## 
   let valid = call_600377.validator(path, query, header, formData, body)
   let scheme = call_600377.pickScheme
@@ -3289,24 +3291,25 @@ proc call*(call_600377: Call_UpdateReportGroup_600365; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600377, url, valid)
 
-proc call*(call_600378: Call_UpdateReportGroup_600365; body: JsonNode): Recallable =
-  ## updateReportGroup
-  ##  Updates a report group. 
+proc call*(call_600378: Call_ListSourceCredentials_600365; body: JsonNode): Recallable =
+  ## listSourceCredentials
+  ##  Returns a list of <code>SourceCredentialsInfo</code> objects. 
   ##   body: JObject (required)
   var body_600379 = newJObject()
   if body != nil:
     body_600379 = body
   result = call_600378.call(nil, nil, nil, nil, body_600379)
 
-var updateReportGroup* = Call_UpdateReportGroup_600365(name: "updateReportGroup",
-    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
-    route: "/#X-Amz-Target=CodeBuild_20161006.UpdateReportGroup",
-    validator: validate_UpdateReportGroup_600366, base: "/",
-    url: url_UpdateReportGroup_600367, schemes: {Scheme.Https, Scheme.Http})
+var listSourceCredentials* = Call_ListSourceCredentials_600365(
+    name: "listSourceCredentials", meth: HttpMethod.HttpPost,
+    host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.ListSourceCredentials",
+    validator: validate_ListSourceCredentials_600366, base: "/",
+    url: url_ListSourceCredentials_600367, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateWebhook_600380 = ref object of OpenApiRestCall_599369
-proc url_UpdateWebhook_600382(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PutResourcePolicy_600380 = ref object of OpenApiRestCall_599369
+proc url_PutResourcePolicy_600382(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -3316,9 +3319,10 @@ proc url_UpdateWebhook_600382(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateWebhook_600381(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p> Updates the webhook associated with an AWS CodeBuild build project. </p> <note> <p> If you use Bitbucket for your repository, <code>rotateSecret</code> is ignored. </p> </note>
+proc validate_PutResourcePolicy_600381(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ##  Stores a resource policy for the ARN of a <code>Project</code> or <code>ReportGroup</code> object. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3350,7 +3354,7 @@ proc validate_UpdateWebhook_600381(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600385 = header.getOrDefault("X-Amz-Target")
   valid_600385 = validateParameter(valid_600385, JString, required = true, default = newJString(
-      "CodeBuild_20161006.UpdateWebhook"))
+      "CodeBuild_20161006.PutResourcePolicy"))
   if valid_600385 != nil:
     section.add "X-Amz-Target", valid_600385
   var valid_600386 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -3388,9 +3392,9 @@ proc validate_UpdateWebhook_600381(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600392: Call_UpdateWebhook_600380; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p> Updates the webhook associated with an AWS CodeBuild build project. </p> <note> <p> If you use Bitbucket for your repository, <code>rotateSecret</code> is ignored. </p> </note>
+proc call*(call_600392: Call_PutResourcePolicy_600380; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ##  Stores a resource policy for the ARN of a <code>Project</code> or <code>ReportGroup</code> object. 
   ## 
   let valid = call_600392.validator(path, query, header, formData, body)
   let scheme = call_600392.pickScheme
@@ -3401,19 +3405,581 @@ proc call*(call_600392: Call_UpdateWebhook_600380; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_600392, url, valid)
 
-proc call*(call_600393: Call_UpdateWebhook_600380; body: JsonNode): Recallable =
-  ## updateWebhook
-  ## <p> Updates the webhook associated with an AWS CodeBuild build project. </p> <note> <p> If you use Bitbucket for your repository, <code>rotateSecret</code> is ignored. </p> </note>
+proc call*(call_600393: Call_PutResourcePolicy_600380; body: JsonNode): Recallable =
+  ## putResourcePolicy
+  ##  Stores a resource policy for the ARN of a <code>Project</code> or <code>ReportGroup</code> object. 
   ##   body: JObject (required)
   var body_600394 = newJObject()
   if body != nil:
     body_600394 = body
   result = call_600393.call(nil, nil, nil, nil, body_600394)
 
-var updateWebhook* = Call_UpdateWebhook_600380(name: "updateWebhook",
+var putResourcePolicy* = Call_PutResourcePolicy_600380(name: "putResourcePolicy",
+    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.PutResourcePolicy",
+    validator: validate_PutResourcePolicy_600381, base: "/",
+    url: url_PutResourcePolicy_600382, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_StartBuild_600395 = ref object of OpenApiRestCall_599369
+proc url_StartBuild_600397(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StartBuild_600396(path: JsonNode; query: JsonNode; header: JsonNode;
+                               formData: JsonNode; body: JsonNode): JsonNode =
+  ## Starts running a build.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600398 = header.getOrDefault("X-Amz-Date")
+  valid_600398 = validateParameter(valid_600398, JString, required = false,
+                                 default = nil)
+  if valid_600398 != nil:
+    section.add "X-Amz-Date", valid_600398
+  var valid_600399 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600399 = validateParameter(valid_600399, JString, required = false,
+                                 default = nil)
+  if valid_600399 != nil:
+    section.add "X-Amz-Security-Token", valid_600399
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600400 = header.getOrDefault("X-Amz-Target")
+  valid_600400 = validateParameter(valid_600400, JString, required = true, default = newJString(
+      "CodeBuild_20161006.StartBuild"))
+  if valid_600400 != nil:
+    section.add "X-Amz-Target", valid_600400
+  var valid_600401 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600401 = validateParameter(valid_600401, JString, required = false,
+                                 default = nil)
+  if valid_600401 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600401
+  var valid_600402 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600402 = validateParameter(valid_600402, JString, required = false,
+                                 default = nil)
+  if valid_600402 != nil:
+    section.add "X-Amz-Algorithm", valid_600402
+  var valid_600403 = header.getOrDefault("X-Amz-Signature")
+  valid_600403 = validateParameter(valid_600403, JString, required = false,
+                                 default = nil)
+  if valid_600403 != nil:
+    section.add "X-Amz-Signature", valid_600403
+  var valid_600404 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600404 = validateParameter(valid_600404, JString, required = false,
+                                 default = nil)
+  if valid_600404 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600404
+  var valid_600405 = header.getOrDefault("X-Amz-Credential")
+  valid_600405 = validateParameter(valid_600405, JString, required = false,
+                                 default = nil)
+  if valid_600405 != nil:
+    section.add "X-Amz-Credential", valid_600405
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600407: Call_StartBuild_600395; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Starts running a build.
+  ## 
+  let valid = call_600407.validator(path, query, header, formData, body)
+  let scheme = call_600407.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600407.url(scheme.get, call_600407.host, call_600407.base,
+                         call_600407.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600407, url, valid)
+
+proc call*(call_600408: Call_StartBuild_600395; body: JsonNode): Recallable =
+  ## startBuild
+  ## Starts running a build.
+  ##   body: JObject (required)
+  var body_600409 = newJObject()
+  if body != nil:
+    body_600409 = body
+  result = call_600408.call(nil, nil, nil, nil, body_600409)
+
+var startBuild* = Call_StartBuild_600395(name: "startBuild",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "codebuild.amazonaws.com", route: "/#X-Amz-Target=CodeBuild_20161006.StartBuild",
+                                      validator: validate_StartBuild_600396,
+                                      base: "/", url: url_StartBuild_600397,
+                                      schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_StopBuild_600410 = ref object of OpenApiRestCall_599369
+proc url_StopBuild_600412(protocol: Scheme; host: string; base: string; route: string;
+                         path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StopBuild_600411(path: JsonNode; query: JsonNode; header: JsonNode;
+                              formData: JsonNode; body: JsonNode): JsonNode =
+  ## Attempts to stop running a build.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600413 = header.getOrDefault("X-Amz-Date")
+  valid_600413 = validateParameter(valid_600413, JString, required = false,
+                                 default = nil)
+  if valid_600413 != nil:
+    section.add "X-Amz-Date", valid_600413
+  var valid_600414 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600414 = validateParameter(valid_600414, JString, required = false,
+                                 default = nil)
+  if valid_600414 != nil:
+    section.add "X-Amz-Security-Token", valid_600414
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600415 = header.getOrDefault("X-Amz-Target")
+  valid_600415 = validateParameter(valid_600415, JString, required = true, default = newJString(
+      "CodeBuild_20161006.StopBuild"))
+  if valid_600415 != nil:
+    section.add "X-Amz-Target", valid_600415
+  var valid_600416 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600416 = validateParameter(valid_600416, JString, required = false,
+                                 default = nil)
+  if valid_600416 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600416
+  var valid_600417 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600417 = validateParameter(valid_600417, JString, required = false,
+                                 default = nil)
+  if valid_600417 != nil:
+    section.add "X-Amz-Algorithm", valid_600417
+  var valid_600418 = header.getOrDefault("X-Amz-Signature")
+  valid_600418 = validateParameter(valid_600418, JString, required = false,
+                                 default = nil)
+  if valid_600418 != nil:
+    section.add "X-Amz-Signature", valid_600418
+  var valid_600419 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600419 = validateParameter(valid_600419, JString, required = false,
+                                 default = nil)
+  if valid_600419 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600419
+  var valid_600420 = header.getOrDefault("X-Amz-Credential")
+  valid_600420 = validateParameter(valid_600420, JString, required = false,
+                                 default = nil)
+  if valid_600420 != nil:
+    section.add "X-Amz-Credential", valid_600420
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600422: Call_StopBuild_600410; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Attempts to stop running a build.
+  ## 
+  let valid = call_600422.validator(path, query, header, formData, body)
+  let scheme = call_600422.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600422.url(scheme.get, call_600422.host, call_600422.base,
+                         call_600422.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600422, url, valid)
+
+proc call*(call_600423: Call_StopBuild_600410; body: JsonNode): Recallable =
+  ## stopBuild
+  ## Attempts to stop running a build.
+  ##   body: JObject (required)
+  var body_600424 = newJObject()
+  if body != nil:
+    body_600424 = body
+  result = call_600423.call(nil, nil, nil, nil, body_600424)
+
+var stopBuild* = Call_StopBuild_600410(name: "stopBuild", meth: HttpMethod.HttpPost,
+                                    host: "codebuild.amazonaws.com", route: "/#X-Amz-Target=CodeBuild_20161006.StopBuild",
+                                    validator: validate_StopBuild_600411,
+                                    base: "/", url: url_StopBuild_600412,
+                                    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateProject_600425 = ref object of OpenApiRestCall_599369
+proc url_UpdateProject_600427(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateProject_600426(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Changes the settings of a build project.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600428 = header.getOrDefault("X-Amz-Date")
+  valid_600428 = validateParameter(valid_600428, JString, required = false,
+                                 default = nil)
+  if valid_600428 != nil:
+    section.add "X-Amz-Date", valid_600428
+  var valid_600429 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600429 = validateParameter(valid_600429, JString, required = false,
+                                 default = nil)
+  if valid_600429 != nil:
+    section.add "X-Amz-Security-Token", valid_600429
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600430 = header.getOrDefault("X-Amz-Target")
+  valid_600430 = validateParameter(valid_600430, JString, required = true, default = newJString(
+      "CodeBuild_20161006.UpdateProject"))
+  if valid_600430 != nil:
+    section.add "X-Amz-Target", valid_600430
+  var valid_600431 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600431 = validateParameter(valid_600431, JString, required = false,
+                                 default = nil)
+  if valid_600431 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600431
+  var valid_600432 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600432 = validateParameter(valid_600432, JString, required = false,
+                                 default = nil)
+  if valid_600432 != nil:
+    section.add "X-Amz-Algorithm", valid_600432
+  var valid_600433 = header.getOrDefault("X-Amz-Signature")
+  valid_600433 = validateParameter(valid_600433, JString, required = false,
+                                 default = nil)
+  if valid_600433 != nil:
+    section.add "X-Amz-Signature", valid_600433
+  var valid_600434 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600434 = validateParameter(valid_600434, JString, required = false,
+                                 default = nil)
+  if valid_600434 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600434
+  var valid_600435 = header.getOrDefault("X-Amz-Credential")
+  valid_600435 = validateParameter(valid_600435, JString, required = false,
+                                 default = nil)
+  if valid_600435 != nil:
+    section.add "X-Amz-Credential", valid_600435
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600437: Call_UpdateProject_600425; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Changes the settings of a build project.
+  ## 
+  let valid = call_600437.validator(path, query, header, formData, body)
+  let scheme = call_600437.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600437.url(scheme.get, call_600437.host, call_600437.base,
+                         call_600437.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600437, url, valid)
+
+proc call*(call_600438: Call_UpdateProject_600425; body: JsonNode): Recallable =
+  ## updateProject
+  ## Changes the settings of a build project.
+  ##   body: JObject (required)
+  var body_600439 = newJObject()
+  if body != nil:
+    body_600439 = body
+  result = call_600438.call(nil, nil, nil, nil, body_600439)
+
+var updateProject* = Call_UpdateProject_600425(name: "updateProject",
+    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.UpdateProject",
+    validator: validate_UpdateProject_600426, base: "/", url: url_UpdateProject_600427,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateReportGroup_600440 = ref object of OpenApiRestCall_599369
+proc url_UpdateReportGroup_600442(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateReportGroup_600441(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ##  Updates a report group. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600443 = header.getOrDefault("X-Amz-Date")
+  valid_600443 = validateParameter(valid_600443, JString, required = false,
+                                 default = nil)
+  if valid_600443 != nil:
+    section.add "X-Amz-Date", valid_600443
+  var valid_600444 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600444 = validateParameter(valid_600444, JString, required = false,
+                                 default = nil)
+  if valid_600444 != nil:
+    section.add "X-Amz-Security-Token", valid_600444
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600445 = header.getOrDefault("X-Amz-Target")
+  valid_600445 = validateParameter(valid_600445, JString, required = true, default = newJString(
+      "CodeBuild_20161006.UpdateReportGroup"))
+  if valid_600445 != nil:
+    section.add "X-Amz-Target", valid_600445
+  var valid_600446 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600446 = validateParameter(valid_600446, JString, required = false,
+                                 default = nil)
+  if valid_600446 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600446
+  var valid_600447 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600447 = validateParameter(valid_600447, JString, required = false,
+                                 default = nil)
+  if valid_600447 != nil:
+    section.add "X-Amz-Algorithm", valid_600447
+  var valid_600448 = header.getOrDefault("X-Amz-Signature")
+  valid_600448 = validateParameter(valid_600448, JString, required = false,
+                                 default = nil)
+  if valid_600448 != nil:
+    section.add "X-Amz-Signature", valid_600448
+  var valid_600449 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600449 = validateParameter(valid_600449, JString, required = false,
+                                 default = nil)
+  if valid_600449 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600449
+  var valid_600450 = header.getOrDefault("X-Amz-Credential")
+  valid_600450 = validateParameter(valid_600450, JString, required = false,
+                                 default = nil)
+  if valid_600450 != nil:
+    section.add "X-Amz-Credential", valid_600450
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600452: Call_UpdateReportGroup_600440; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ##  Updates a report group. 
+  ## 
+  let valid = call_600452.validator(path, query, header, formData, body)
+  let scheme = call_600452.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600452.url(scheme.get, call_600452.host, call_600452.base,
+                         call_600452.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600452, url, valid)
+
+proc call*(call_600453: Call_UpdateReportGroup_600440; body: JsonNode): Recallable =
+  ## updateReportGroup
+  ##  Updates a report group. 
+  ##   body: JObject (required)
+  var body_600454 = newJObject()
+  if body != nil:
+    body_600454 = body
+  result = call_600453.call(nil, nil, nil, nil, body_600454)
+
+var updateReportGroup* = Call_UpdateReportGroup_600440(name: "updateReportGroup",
+    meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
+    route: "/#X-Amz-Target=CodeBuild_20161006.UpdateReportGroup",
+    validator: validate_UpdateReportGroup_600441, base: "/",
+    url: url_UpdateReportGroup_600442, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateWebhook_600455 = ref object of OpenApiRestCall_599369
+proc url_UpdateWebhook_600457(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateWebhook_600456(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p> Updates the webhook associated with an AWS CodeBuild build project. </p> <note> <p> If you use Bitbucket for your repository, <code>rotateSecret</code> is ignored. </p> </note>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600458 = header.getOrDefault("X-Amz-Date")
+  valid_600458 = validateParameter(valid_600458, JString, required = false,
+                                 default = nil)
+  if valid_600458 != nil:
+    section.add "X-Amz-Date", valid_600458
+  var valid_600459 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600459 = validateParameter(valid_600459, JString, required = false,
+                                 default = nil)
+  if valid_600459 != nil:
+    section.add "X-Amz-Security-Token", valid_600459
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600460 = header.getOrDefault("X-Amz-Target")
+  valid_600460 = validateParameter(valid_600460, JString, required = true, default = newJString(
+      "CodeBuild_20161006.UpdateWebhook"))
+  if valid_600460 != nil:
+    section.add "X-Amz-Target", valid_600460
+  var valid_600461 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600461 = validateParameter(valid_600461, JString, required = false,
+                                 default = nil)
+  if valid_600461 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600461
+  var valid_600462 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600462 = validateParameter(valid_600462, JString, required = false,
+                                 default = nil)
+  if valid_600462 != nil:
+    section.add "X-Amz-Algorithm", valid_600462
+  var valid_600463 = header.getOrDefault("X-Amz-Signature")
+  valid_600463 = validateParameter(valid_600463, JString, required = false,
+                                 default = nil)
+  if valid_600463 != nil:
+    section.add "X-Amz-Signature", valid_600463
+  var valid_600464 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600464 = validateParameter(valid_600464, JString, required = false,
+                                 default = nil)
+  if valid_600464 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600464
+  var valid_600465 = header.getOrDefault("X-Amz-Credential")
+  valid_600465 = validateParameter(valid_600465, JString, required = false,
+                                 default = nil)
+  if valid_600465 != nil:
+    section.add "X-Amz-Credential", valid_600465
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600467: Call_UpdateWebhook_600455; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p> Updates the webhook associated with an AWS CodeBuild build project. </p> <note> <p> If you use Bitbucket for your repository, <code>rotateSecret</code> is ignored. </p> </note>
+  ## 
+  let valid = call_600467.validator(path, query, header, formData, body)
+  let scheme = call_600467.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600467.url(scheme.get, call_600467.host, call_600467.base,
+                         call_600467.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600467, url, valid)
+
+proc call*(call_600468: Call_UpdateWebhook_600455; body: JsonNode): Recallable =
+  ## updateWebhook
+  ## <p> Updates the webhook associated with an AWS CodeBuild build project. </p> <note> <p> If you use Bitbucket for your repository, <code>rotateSecret</code> is ignored. </p> </note>
+  ##   body: JObject (required)
+  var body_600469 = newJObject()
+  if body != nil:
+    body_600469 = body
+  result = call_600468.call(nil, nil, nil, nil, body_600469)
+
+var updateWebhook* = Call_UpdateWebhook_600455(name: "updateWebhook",
     meth: HttpMethod.HttpPost, host: "codebuild.amazonaws.com",
     route: "/#X-Amz-Target=CodeBuild_20161006.UpdateWebhook",
-    validator: validate_UpdateWebhook_600381, base: "/", url: url_UpdateWebhook_600382,
+    validator: validate_UpdateWebhook_600456, base: "/", url: url_UpdateWebhook_600457,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

@@ -859,7 +859,7 @@ proc url_CreateDeliverabilityTestReport_600051(protocol: Scheme; host: string;
 
 proc validate_CreateDeliverabilityTestReport_600050(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon SES API v2 then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
+  ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon SES then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -923,7 +923,7 @@ proc validate_CreateDeliverabilityTestReport_600050(path: JsonNode;
 
 proc call*(call_600060: Call_CreateDeliverabilityTestReport_600049; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon SES API v2 then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
+  ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon SES then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
   ## 
   let valid = call_600060.validator(path, query, header, formData, body)
   let scheme = call_600060.pickScheme
@@ -936,7 +936,7 @@ proc call*(call_600060: Call_CreateDeliverabilityTestReport_600049; path: JsonNo
 
 proc call*(call_600061: Call_CreateDeliverabilityTestReport_600049; body: JsonNode): Recallable =
   ## createDeliverabilityTestReport
-  ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon SES API v2 then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
+  ## Create a new predictive inbox placement test. Predictive inbox placement tests can help you predict how your messages will be handled by various email providers around the world. When you perform a predictive inbox placement test, you provide a sample message that contains the content that you plan to send to your customers. Amazon SES then sends that message to special email addresses spread across several major email providers. After about 24 hours, the test is complete, and you can use the <code>GetDeliverabilityTestReport</code> operation to view the results of the test.
   ##   body: JObject (required)
   var body_600062 = newJObject()
   if body != nil:
@@ -965,7 +965,7 @@ proc url_CreateEmailIdentity_600080(protocol: Scheme; host: string; base: string
 proc validate_CreateEmailIdentity_600079(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Starts the process of verifying an email identity. An <i>identity</i> is an email address or domain that you use when you send email. Before you can use an identity to send email, you first have to verify it. By verifying an identity, you demonstrate that you're the owner of the identity, and that you've given Amazon SES API v2 permission to send email from the identity.</p> <p>When you verify an email address, Amazon SES sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain, this operation provides a set of DKIM tokens, which you can convert into CNAME tokens. You add these CNAME tokens to the DNS configuration for your domain. Your domain is verified when Amazon SES detects these records in the DNS configuration for your domain. For some DNS providers, it can take 72 hours or more to complete the domain verification process.</p>
+  ## <p>Starts the process of verifying an email identity. An <i>identity</i> is an email address or domain that you use when you send email. Before you can use an identity to send email, you first have to verify it. By verifying an identity, you demonstrate that you're the owner of the identity, and that you've given Amazon SES API v2 permission to send email from the identity.</p> <p>When you verify an email address, Amazon SES sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain without specifying the <code>DkimSigningAttributes</code> object, this operation provides a set of DKIM tokens. You can convert these tokens into CNAME records, which you then add to the DNS configuration for your domain. Your domain is verified when Amazon SES detects these records in the DNS configuration for your domain. This verification method is known as <a href="https://docs.aws.amazon.com/ses/latest/DeveloperGuide/easy-dkim.html">Easy DKIM</a>.</p> <p>Alternatively, you can perform the verification process by providing your own public-private key pair. This verification method is known as Bring Your Own DKIM (BYODKIM). To use BYODKIM, your call to the <code>CreateEmailIdentity</code> operation has to include the <code>DkimSigningAttributes</code> object. When you specify this object, you provide a selector (a component of the DNS record name that identifies the public key that you want to use for DKIM authentication) and a private key.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1029,7 +1029,7 @@ proc validate_CreateEmailIdentity_600079(path: JsonNode; query: JsonNode;
 
 proc call*(call_600089: Call_CreateEmailIdentity_600078; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Starts the process of verifying an email identity. An <i>identity</i> is an email address or domain that you use when you send email. Before you can use an identity to send email, you first have to verify it. By verifying an identity, you demonstrate that you're the owner of the identity, and that you've given Amazon SES API v2 permission to send email from the identity.</p> <p>When you verify an email address, Amazon SES sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain, this operation provides a set of DKIM tokens, which you can convert into CNAME tokens. You add these CNAME tokens to the DNS configuration for your domain. Your domain is verified when Amazon SES detects these records in the DNS configuration for your domain. For some DNS providers, it can take 72 hours or more to complete the domain verification process.</p>
+  ## <p>Starts the process of verifying an email identity. An <i>identity</i> is an email address or domain that you use when you send email. Before you can use an identity to send email, you first have to verify it. By verifying an identity, you demonstrate that you're the owner of the identity, and that you've given Amazon SES API v2 permission to send email from the identity.</p> <p>When you verify an email address, Amazon SES sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain without specifying the <code>DkimSigningAttributes</code> object, this operation provides a set of DKIM tokens. You can convert these tokens into CNAME records, which you then add to the DNS configuration for your domain. Your domain is verified when Amazon SES detects these records in the DNS configuration for your domain. This verification method is known as <a href="https://docs.aws.amazon.com/ses/latest/DeveloperGuide/easy-dkim.html">Easy DKIM</a>.</p> <p>Alternatively, you can perform the verification process by providing your own public-private key pair. This verification method is known as Bring Your Own DKIM (BYODKIM). To use BYODKIM, your call to the <code>CreateEmailIdentity</code> operation has to include the <code>DkimSigningAttributes</code> object. When you specify this object, you provide a selector (a component of the DNS record name that identifies the public key that you want to use for DKIM authentication) and a private key.</p>
   ## 
   let valid = call_600089.validator(path, query, header, formData, body)
   let scheme = call_600089.pickScheme
@@ -1042,7 +1042,7 @@ proc call*(call_600089: Call_CreateEmailIdentity_600078; path: JsonNode;
 
 proc call*(call_600090: Call_CreateEmailIdentity_600078; body: JsonNode): Recallable =
   ## createEmailIdentity
-  ## <p>Starts the process of verifying an email identity. An <i>identity</i> is an email address or domain that you use when you send email. Before you can use an identity to send email, you first have to verify it. By verifying an identity, you demonstrate that you're the owner of the identity, and that you've given Amazon SES API v2 permission to send email from the identity.</p> <p>When you verify an email address, Amazon SES sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain, this operation provides a set of DKIM tokens, which you can convert into CNAME tokens. You add these CNAME tokens to the DNS configuration for your domain. Your domain is verified when Amazon SES detects these records in the DNS configuration for your domain. For some DNS providers, it can take 72 hours or more to complete the domain verification process.</p>
+  ## <p>Starts the process of verifying an email identity. An <i>identity</i> is an email address or domain that you use when you send email. Before you can use an identity to send email, you first have to verify it. By verifying an identity, you demonstrate that you're the owner of the identity, and that you've given Amazon SES API v2 permission to send email from the identity.</p> <p>When you verify an email address, Amazon SES sends an email to the address. Your email address is verified as soon as you follow the link in the verification email. </p> <p>When you verify a domain without specifying the <code>DkimSigningAttributes</code> object, this operation provides a set of DKIM tokens. You can convert these tokens into CNAME records, which you then add to the DNS configuration for your domain. Your domain is verified when Amazon SES detects these records in the DNS configuration for your domain. This verification method is known as <a href="https://docs.aws.amazon.com/ses/latest/DeveloperGuide/easy-dkim.html">Easy DKIM</a>.</p> <p>Alternatively, you can perform the verification process by providing your own public-private key pair. This verification method is known as Bring Your Own DKIM (BYODKIM). To use BYODKIM, your call to the <code>CreateEmailIdentity</code> operation has to include the <code>DkimSigningAttributes</code> object. When you specify this object, you provide a selector (a component of the DNS record name that identifies the public key that you want to use for DKIM authentication) and a private key.</p>
   ##   body: JObject (required)
   var body_600091 = newJObject()
   if body != nil:
@@ -2079,13 +2079,13 @@ proc url_GetSuppressedDestination_600196(protocol: Scheme; host: string;
 
 proc validate_GetSuppressedDestination_600195(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Used to fetch a single suppressed email destination from your suppression list.
+  ## Retrieves information about a specific email address that's on the suppression list for your account.
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   EmailAddress: JString (required)
-  ##               : Email destination to fetch from the suppression list.
+  ##               : The email address that's on the account suppression list.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailAddress` field"
@@ -2149,7 +2149,7 @@ proc validate_GetSuppressedDestination_600195(path: JsonNode; query: JsonNode;
 
 proc call*(call_600205: Call_GetSuppressedDestination_600194; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Used to fetch a single suppressed email destination from your suppression list.
+  ## Retrieves information about a specific email address that's on the suppression list for your account.
   ## 
   let valid = call_600205.validator(path, query, header, formData, body)
   let scheme = call_600205.pickScheme
@@ -2162,9 +2162,9 @@ proc call*(call_600205: Call_GetSuppressedDestination_600194; path: JsonNode;
 
 proc call*(call_600206: Call_GetSuppressedDestination_600194; EmailAddress: string): Recallable =
   ## getSuppressedDestination
-  ## Used to fetch a single suppressed email destination from your suppression list.
+  ## Retrieves information about a specific email address that's on the suppression list for your account.
   ##   EmailAddress: string (required)
-  ##               : Email destination to fetch from the suppression list.
+  ##               : The email address that's on the account suppression list.
   var path_600207 = newJObject()
   add(path_600207, "EmailAddress", newJString(EmailAddress))
   result = call_600206.call(path_600207, nil, nil, nil, nil)
@@ -2199,13 +2199,13 @@ proc url_DeleteSuppressedDestination_600210(protocol: Scheme; host: string;
 
 proc validate_DeleteSuppressedDestination_600209(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Used to delete a suppressed email destination from your suppression list.
+  ## Removes an email address from the suppression list for your account.
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   EmailAddress: JString (required)
-  ##               : The suppressed email destination to delete.
+  ##               : The suppressed email destination to remove from the account suppression list.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailAddress` field"
@@ -2269,7 +2269,7 @@ proc validate_DeleteSuppressedDestination_600209(path: JsonNode; query: JsonNode
 
 proc call*(call_600219: Call_DeleteSuppressedDestination_600208; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Used to delete a suppressed email destination from your suppression list.
+  ## Removes an email address from the suppression list for your account.
   ## 
   let valid = call_600219.validator(path, query, header, formData, body)
   let scheme = call_600219.pickScheme
@@ -2283,9 +2283,9 @@ proc call*(call_600219: Call_DeleteSuppressedDestination_600208; path: JsonNode;
 proc call*(call_600220: Call_DeleteSuppressedDestination_600208;
           EmailAddress: string): Recallable =
   ## deleteSuppressedDestination
-  ## Used to delete a suppressed email destination from your suppression list.
+  ## Removes an email address from the suppression list for your account.
   ##   EmailAddress: string (required)
-  ##               : The suppressed email destination to delete.
+  ##               : The suppressed email destination to remove from the account suppression list.
   var path_600221 = newJObject()
   add(path_600221, "EmailAddress", newJString(EmailAddress))
   result = call_600220.call(path_600221, nil, nil, nil, nil)
@@ -2767,7 +2767,7 @@ proc url_PutDeliverabilityDashboardOption_600292(protocol: Scheme; host: string;
 
 proc validate_PutDeliverabilityDashboardOption_600291(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Enable or disable the Deliverability dashboard. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
+  ## <p>Enable or disable the Deliverability dashboard. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/ses/pricing/">Amazon SES Pricing</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2832,7 +2832,7 @@ proc validate_PutDeliverabilityDashboardOption_600291(path: JsonNode;
 proc call*(call_600301: Call_PutDeliverabilityDashboardOption_600290;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## <p>Enable or disable the Deliverability dashboard. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
+  ## <p>Enable or disable the Deliverability dashboard. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/ses/pricing/">Amazon SES Pricing</a>.</p>
   ## 
   let valid = call_600301.validator(path, query, header, formData, body)
   let scheme = call_600301.pickScheme
@@ -2846,7 +2846,7 @@ proc call*(call_600301: Call_PutDeliverabilityDashboardOption_600290;
 proc call*(call_600302: Call_PutDeliverabilityDashboardOption_600290;
           body: JsonNode): Recallable =
   ## putDeliverabilityDashboardOption
-  ## <p>Enable or disable the Deliverability dashboard. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
+  ## <p>Enable or disable the Deliverability dashboard. When you enable the Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/ses/pricing/">Amazon SES Pricing</a>.</p>
   ##   body: JObject (required)
   var body_600303 = newJObject()
   if body != nil:
@@ -2874,7 +2874,7 @@ proc url_GetDeliverabilityDashboardOptions_600280(protocol: Scheme; host: string
 
 proc validate_GetDeliverabilityDashboardOptions_600279(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Retrieve information about the status of the Deliverability dashboard for your account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
+  ## <p>Retrieve information about the status of the Deliverability dashboard for your account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/ses/pricing/">Amazon SES Pricing</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2935,7 +2935,7 @@ proc validate_GetDeliverabilityDashboardOptions_600279(path: JsonNode;
 proc call*(call_600288: Call_GetDeliverabilityDashboardOptions_600278;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## <p>Retrieve information about the status of the Deliverability dashboard for your account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
+  ## <p>Retrieve information about the status of the Deliverability dashboard for your account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/ses/pricing/">Amazon SES Pricing</a>.</p>
   ## 
   let valid = call_600288.validator(path, query, header, formData, body)
   let scheme = call_600288.pickScheme
@@ -2948,7 +2948,7 @@ proc call*(call_600288: Call_GetDeliverabilityDashboardOptions_600278;
 
 proc call*(call_600289: Call_GetDeliverabilityDashboardOptions_600278): Recallable =
   ## getDeliverabilityDashboardOptions
-  ## <p>Retrieve information about the status of the Deliverability dashboard for your account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/pinpoint/pricing/">Amazon Pinpoint Pricing</a>.</p>
+  ## <p>Retrieve information about the status of the Deliverability dashboard for your account. When the Deliverability dashboard is enabled, you gain access to reputation, deliverability, and other metrics for the domains that you use to send email. You also gain the ability to perform predictive inbox placement tests.</p> <p>When you use the Deliverability dashboard, you pay a monthly subscription charge, in addition to any other fees that you accrue by using Amazon SES and other AWS services. For more information about the features and cost of a Deliverability dashboard subscription, see <a href="http://aws.amazon.com/ses/pricing/">Amazon SES Pricing</a>.</p>
   result = call_600289.call(nil, nil, nil, nil, nil)
 
 var getDeliverabilityDashboardOptions* = Call_GetDeliverabilityDashboardOptions_600278(
@@ -3651,7 +3651,7 @@ proc url_PutSuppressedDestination_600403(protocol: Scheme; host: string;
 
 proc validate_PutSuppressedDestination_600402(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Puts (overwrites) an email destination in your suppression list.
+  ## Adds an email address to the suppression list for your account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3715,7 +3715,7 @@ proc validate_PutSuppressedDestination_600402(path: JsonNode; query: JsonNode;
 
 proc call*(call_600412: Call_PutSuppressedDestination_600401; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Puts (overwrites) an email destination in your suppression list.
+  ## Adds an email address to the suppression list for your account.
   ## 
   let valid = call_600412.validator(path, query, header, formData, body)
   let scheme = call_600412.pickScheme
@@ -3728,7 +3728,7 @@ proc call*(call_600412: Call_PutSuppressedDestination_600401; path: JsonNode;
 
 proc call*(call_600413: Call_PutSuppressedDestination_600401; body: JsonNode): Recallable =
   ## putSuppressedDestination
-  ## Puts (overwrites) an email destination in your suppression list.
+  ## Adds an email address to the suppression list for your account.
   ##   body: JObject (required)
   var body_600414 = newJObject()
   if body != nil:
@@ -3755,7 +3755,7 @@ proc url_ListSuppressedDestinations_600385(protocol: Scheme; host: string;
 
 proc validate_ListSuppressedDestinations_600384(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Used to fetch a list suppressed email destinations from your suppression list.
+  ## Retrieves a list of email addresses that are on the suppression list for your account.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3763,15 +3763,15 @@ proc validate_ListSuppressedDestinations_600384(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   Reason: JArray
-  ##         : Filters email destinations suppressed by the given reasons.
+  ##         : The factors that caused the email address to be added to .
   ##   EndDate: JString
-  ##          : Filters email destinations suppressed after the given time.
+  ##          : Used to filter the list of suppressed email destinations so that it only includes addresses that were added to the list before a specific date. The date that you specify should be in Unix time format.
   ##   PageSize: JInt
   ##           : The number of results to show in a single call to <code>ListSuppressedDestinations</code>. If the number of results is larger than the number you specified in this parameter, then the response includes a <code>NextToken</code> element, which you can use to obtain additional results.
   ##   NextToken: JString
-  ##            : A token returned from a previous call to <code>ListSuppressedDestinations</code> to indicate the position in the list of suppressed email destinations.
+  ##            : A token returned from a previous call to <code>ListSuppressedDestinations</code> to indicate the position in the list of suppressed email addresses.
   ##   StartDate: JString
-  ##            : Filters email destinations suppressed before the given time.
+  ##            : Used to filter the list of suppressed email destinations so that it only includes addresses that were added to the list after a specific date. The date that you specify should be in Unix time format.
   section = newJObject()
   var valid_600386 = query.getOrDefault("Reason")
   valid_600386 = validateParameter(valid_600386, JArray, required = false,
@@ -3850,7 +3850,7 @@ proc validate_ListSuppressedDestinations_600384(path: JsonNode; query: JsonNode;
 
 proc call*(call_600398: Call_ListSuppressedDestinations_600383; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Used to fetch a list suppressed email destinations from your suppression list.
+  ## Retrieves a list of email addresses that are on the suppression list for your account.
   ## 
   let valid = call_600398.validator(path, query, header, formData, body)
   let scheme = call_600398.pickScheme
@@ -3865,17 +3865,17 @@ proc call*(call_600399: Call_ListSuppressedDestinations_600383;
           Reason: JsonNode = nil; EndDate: string = ""; PageSize: int = 0;
           NextToken: string = ""; StartDate: string = ""): Recallable =
   ## listSuppressedDestinations
-  ## Used to fetch a list suppressed email destinations from your suppression list.
+  ## Retrieves a list of email addresses that are on the suppression list for your account.
   ##   Reason: JArray
-  ##         : Filters email destinations suppressed by the given reasons.
+  ##         : The factors that caused the email address to be added to .
   ##   EndDate: string
-  ##          : Filters email destinations suppressed after the given time.
+  ##          : Used to filter the list of suppressed email destinations so that it only includes addresses that were added to the list before a specific date. The date that you specify should be in Unix time format.
   ##   PageSize: int
   ##           : The number of results to show in a single call to <code>ListSuppressedDestinations</code>. If the number of results is larger than the number you specified in this parameter, then the response includes a <code>NextToken</code> element, which you can use to obtain additional results.
   ##   NextToken: string
-  ##            : A token returned from a previous call to <code>ListSuppressedDestinations</code> to indicate the position in the list of suppressed email destinations.
+  ##            : A token returned from a previous call to <code>ListSuppressedDestinations</code> to indicate the position in the list of suppressed email addresses.
   ##   StartDate: string
-  ##            : Filters email destinations suppressed before the given time.
+  ##            : Used to filter the list of suppressed email destinations so that it only includes addresses that were added to the list after a specific date. The date that you specify should be in Unix time format.
   var query_600400 = newJObject()
   if Reason != nil:
     query_600400.add "Reason", Reason
@@ -4229,7 +4229,7 @@ proc url_PutAccountSuppressionAttributes_600459(protocol: Scheme; host: string;
 
 proc validate_PutAccountSuppressionAttributes_600458(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Change your account's suppression preferences for your account.
+  ## Change the settings for the account-level suppression list.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4294,7 +4294,7 @@ proc validate_PutAccountSuppressionAttributes_600458(path: JsonNode;
 proc call*(call_600468: Call_PutAccountSuppressionAttributes_600457;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## Change your account's suppression preferences for your account.
+  ## Change the settings for the account-level suppression list.
   ## 
   let valid = call_600468.validator(path, query, header, formData, body)
   let scheme = call_600468.pickScheme
@@ -4307,7 +4307,7 @@ proc call*(call_600468: Call_PutAccountSuppressionAttributes_600457;
 
 proc call*(call_600469: Call_PutAccountSuppressionAttributes_600457; body: JsonNode): Recallable =
   ## putAccountSuppressionAttributes
-  ## Change your account's suppression preferences for your account.
+  ## Change the settings for the account-level suppression list.
   ##   body: JObject (required)
   var body_600470 = newJObject()
   if body != nil:
@@ -4740,7 +4740,7 @@ proc url_PutConfigurationSetSuppressionOptions_600521(protocol: Scheme;
 
 proc validate_PutConfigurationSetSuppressionOptions_600520(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Specify your account's suppression preferences for a configuration set.
+  ## Specify the account suppression list preferences for a configuration set.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -4814,7 +4814,7 @@ proc validate_PutConfigurationSetSuppressionOptions_600520(path: JsonNode;
 proc call*(call_600531: Call_PutConfigurationSetSuppressionOptions_600519;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## Specify your account's suppression preferences for a configuration set.
+  ## Specify the account suppression list preferences for a configuration set.
   ## 
   let valid = call_600531.validator(path, query, header, formData, body)
   let scheme = call_600531.pickScheme
@@ -4828,7 +4828,7 @@ proc call*(call_600531: Call_PutConfigurationSetSuppressionOptions_600519;
 proc call*(call_600532: Call_PutConfigurationSetSuppressionOptions_600519;
           ConfigurationSetName: string; body: JsonNode): Recallable =
   ## putConfigurationSetSuppressionOptions
-  ## Specify your account's suppression preferences for a configuration set.
+  ## Specify the account suppression list preferences for a configuration set.
   ##   ConfigurationSetName: string (required)
   ##                       : <p>The name of a configuration set.</p> <p> <i>Configuration sets</i> are groups of rules that you can apply to the emails you send. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email.</p>
   ##   body: JObject (required)
@@ -5364,18 +5364,18 @@ var putEmailIdentityDkimAttributes* = Call_PutEmailIdentityDkimAttributes_600583
     url: url_PutEmailIdentityDkimAttributes_600585,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutEmailIdentityFeedbackAttributes_600599 = ref object of OpenApiRestCall_599368
-proc url_PutEmailIdentityFeedbackAttributes_600601(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_PutEmailIdentityDkimSigningAttributes_600599 = ref object of OpenApiRestCall_599368
+proc url_PutEmailIdentityDkimSigningAttributes_600601(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   assert path != nil, "path is required to populate template"
   assert "EmailIdentity" in path, "`EmailIdentity` is a required path parameter"
   const
-    segments = @[(kind: ConstantSegment, value: "/v2/email/identities/"),
+    segments = @[(kind: ConstantSegment, value: "/v1/email/identities/"),
                (kind: VariableSegment, value: "EmailIdentity"),
-               (kind: ConstantSegment, value: "/feedback")]
+               (kind: ConstantSegment, value: "/dkim/signing")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -5386,15 +5386,15 @@ proc url_PutEmailIdentityFeedbackAttributes_600601(protocol: Scheme; host: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_PutEmailIdentityFeedbackAttributes_600600(path: JsonNode;
+proc validate_PutEmailIdentityDkimSigningAttributes_600600(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>If the value is <code>true</code>, you receive email notifications when bounce or complaint events occur. These notifications are sent to the address that you specified in the <code>Return-Path</code> header of the original email.</p> <p>You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications (for example, by setting up an event destination), you receive an email notification when these events occur (even if this setting is disabled).</p>
+  ## <p>Used to configure or change the DKIM authentication settings for an email domain identity. You can use this operation to do any of the following:</p> <ul> <li> <p>Update the signing attributes for an identity that uses Bring Your Own DKIM (BYODKIM).</p> </li> <li> <p>Change from using no DKIM authentication to using Easy DKIM.</p> </li> <li> <p>Change from using no DKIM authentication to using BYODKIM.</p> </li> <li> <p>Change from using Easy DKIM to using BYODKIM.</p> </li> <li> <p>Change from using BYODKIM to using Easy DKIM.</p> </li> </ul>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   EmailIdentity: JString (required)
-  ##                : The email identity that you want to configure bounce and complaint feedback forwarding for.
+  ##                : The email identity that you want to configure DKIM for.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailIdentity` field"
@@ -5460,10 +5460,10 @@ proc validate_PutEmailIdentityFeedbackAttributes_600600(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600611: Call_PutEmailIdentityFeedbackAttributes_600599;
+proc call*(call_600611: Call_PutEmailIdentityDkimSigningAttributes_600599;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>If the value is <code>true</code>, you receive email notifications when bounce or complaint events occur. These notifications are sent to the address that you specified in the <code>Return-Path</code> header of the original email.</p> <p>You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications (for example, by setting up an event destination), you receive an email notification when these events occur (even if this setting is disabled).</p>
+  ## <p>Used to configure or change the DKIM authentication settings for an email domain identity. You can use this operation to do any of the following:</p> <ul> <li> <p>Update the signing attributes for an identity that uses Bring Your Own DKIM (BYODKIM).</p> </li> <li> <p>Change from using no DKIM authentication to using Easy DKIM.</p> </li> <li> <p>Change from using no DKIM authentication to using BYODKIM.</p> </li> <li> <p>Change from using Easy DKIM to using BYODKIM.</p> </li> <li> <p>Change from using BYODKIM to using Easy DKIM.</p> </li> </ul>
   ## 
   let valid = call_600611.validator(path, query, header, formData, body)
   let scheme = call_600611.pickScheme
@@ -5474,12 +5474,12 @@ proc call*(call_600611: Call_PutEmailIdentityFeedbackAttributes_600599;
                          valid.getOrDefault("query"))
   result = atozHook(call_600611, url, valid)
 
-proc call*(call_600612: Call_PutEmailIdentityFeedbackAttributes_600599;
+proc call*(call_600612: Call_PutEmailIdentityDkimSigningAttributes_600599;
           EmailIdentity: string; body: JsonNode): Recallable =
-  ## putEmailIdentityFeedbackAttributes
-  ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>If the value is <code>true</code>, you receive email notifications when bounce or complaint events occur. These notifications are sent to the address that you specified in the <code>Return-Path</code> header of the original email.</p> <p>You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications (for example, by setting up an event destination), you receive an email notification when these events occur (even if this setting is disabled).</p>
+  ## putEmailIdentityDkimSigningAttributes
+  ## <p>Used to configure or change the DKIM authentication settings for an email domain identity. You can use this operation to do any of the following:</p> <ul> <li> <p>Update the signing attributes for an identity that uses Bring Your Own DKIM (BYODKIM).</p> </li> <li> <p>Change from using no DKIM authentication to using Easy DKIM.</p> </li> <li> <p>Change from using no DKIM authentication to using BYODKIM.</p> </li> <li> <p>Change from using Easy DKIM to using BYODKIM.</p> </li> <li> <p>Change from using BYODKIM to using Easy DKIM.</p> </li> </ul>
   ##   EmailIdentity: string (required)
-  ##                : The email identity that you want to configure bounce and complaint feedback forwarding for.
+  ##                : The email identity that you want to configure DKIM for.
   ##   body: JObject (required)
   var path_600613 = newJObject()
   var body_600614 = newJObject()
@@ -5488,16 +5488,16 @@ proc call*(call_600612: Call_PutEmailIdentityFeedbackAttributes_600599;
     body_600614 = body
   result = call_600612.call(path_600613, nil, nil, nil, body_600614)
 
-var putEmailIdentityFeedbackAttributes* = Call_PutEmailIdentityFeedbackAttributes_600599(
-    name: "putEmailIdentityFeedbackAttributes", meth: HttpMethod.HttpPut,
+var putEmailIdentityDkimSigningAttributes* = Call_PutEmailIdentityDkimSigningAttributes_600599(
+    name: "putEmailIdentityDkimSigningAttributes", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com",
-    route: "/v2/email/identities/{EmailIdentity}/feedback",
-    validator: validate_PutEmailIdentityFeedbackAttributes_600600, base: "/",
-    url: url_PutEmailIdentityFeedbackAttributes_600601,
+    route: "/v1/email/identities/{EmailIdentity}/dkim/signing",
+    validator: validate_PutEmailIdentityDkimSigningAttributes_600600, base: "/",
+    url: url_PutEmailIdentityDkimSigningAttributes_600601,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutEmailIdentityMailFromAttributes_600615 = ref object of OpenApiRestCall_599368
-proc url_PutEmailIdentityMailFromAttributes_600617(protocol: Scheme; host: string;
+  Call_PutEmailIdentityFeedbackAttributes_600615 = ref object of OpenApiRestCall_599368
+proc url_PutEmailIdentityFeedbackAttributes_600617(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5507,7 +5507,7 @@ proc url_PutEmailIdentityMailFromAttributes_600617(protocol: Scheme; host: strin
   const
     segments = @[(kind: ConstantSegment, value: "/v2/email/identities/"),
                (kind: VariableSegment, value: "EmailIdentity"),
-               (kind: ConstantSegment, value: "/mail-from")]
+               (kind: ConstantSegment, value: "/feedback")]
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
@@ -5518,15 +5518,15 @@ proc url_PutEmailIdentityMailFromAttributes_600617(protocol: Scheme; host: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_PutEmailIdentityMailFromAttributes_600616(path: JsonNode;
+proc validate_PutEmailIdentityFeedbackAttributes_600616(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
+  ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>If the value is <code>true</code>, you receive email notifications when bounce or complaint events occur. These notifications are sent to the address that you specified in the <code>Return-Path</code> header of the original email.</p> <p>You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications (for example, by setting up an event destination), you receive an email notification when these events occur (even if this setting is disabled).</p>
   ## 
   var section: JsonNode
   result = newJObject()
   ## parameters in `path` object:
   ##   EmailIdentity: JString (required)
-  ##                : The verified email identity that you want to set up the custom MAIL FROM domain for.
+  ##                : The email identity that you want to configure bounce and complaint feedback forwarding for.
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `EmailIdentity` field"
@@ -5592,10 +5592,10 @@ proc validate_PutEmailIdentityMailFromAttributes_600616(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600627: Call_PutEmailIdentityMailFromAttributes_600615;
+proc call*(call_600627: Call_PutEmailIdentityFeedbackAttributes_600615;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
+  ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>If the value is <code>true</code>, you receive email notifications when bounce or complaint events occur. These notifications are sent to the address that you specified in the <code>Return-Path</code> header of the original email.</p> <p>You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications (for example, by setting up an event destination), you receive an email notification when these events occur (even if this setting is disabled).</p>
   ## 
   let valid = call_600627.validator(path, query, header, formData, body)
   let scheme = call_600627.pickScheme
@@ -5606,12 +5606,12 @@ proc call*(call_600627: Call_PutEmailIdentityMailFromAttributes_600615;
                          valid.getOrDefault("query"))
   result = atozHook(call_600627, url, valid)
 
-proc call*(call_600628: Call_PutEmailIdentityMailFromAttributes_600615;
+proc call*(call_600628: Call_PutEmailIdentityFeedbackAttributes_600615;
           EmailIdentity: string; body: JsonNode): Recallable =
-  ## putEmailIdentityMailFromAttributes
-  ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
+  ## putEmailIdentityFeedbackAttributes
+  ## <p>Used to enable or disable feedback forwarding for an identity. This setting determines what happens when an identity is used to send an email that results in a bounce or complaint event.</p> <p>If the value is <code>true</code>, you receive email notifications when bounce or complaint events occur. These notifications are sent to the address that you specified in the <code>Return-Path</code> header of the original email.</p> <p>You're required to have a method of tracking bounces and complaints. If you haven't set up another mechanism for receiving bounce or complaint notifications (for example, by setting up an event destination), you receive an email notification when these events occur (even if this setting is disabled).</p>
   ##   EmailIdentity: string (required)
-  ##                : The verified email identity that you want to set up the custom MAIL FROM domain for.
+  ##                : The email identity that you want to configure bounce and complaint feedback forwarding for.
   ##   body: JObject (required)
   var path_600629 = newJObject()
   var body_600630 = newJObject()
@@ -5620,16 +5620,148 @@ proc call*(call_600628: Call_PutEmailIdentityMailFromAttributes_600615;
     body_600630 = body
   result = call_600628.call(path_600629, nil, nil, nil, body_600630)
 
-var putEmailIdentityMailFromAttributes* = Call_PutEmailIdentityMailFromAttributes_600615(
+var putEmailIdentityFeedbackAttributes* = Call_PutEmailIdentityFeedbackAttributes_600615(
+    name: "putEmailIdentityFeedbackAttributes", meth: HttpMethod.HttpPut,
+    host: "email.amazonaws.com",
+    route: "/v2/email/identities/{EmailIdentity}/feedback",
+    validator: validate_PutEmailIdentityFeedbackAttributes_600616, base: "/",
+    url: url_PutEmailIdentityFeedbackAttributes_600617,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_PutEmailIdentityMailFromAttributes_600631 = ref object of OpenApiRestCall_599368
+proc url_PutEmailIdentityMailFromAttributes_600633(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  assert path != nil, "path is required to populate template"
+  assert "EmailIdentity" in path, "`EmailIdentity` is a required path parameter"
+  const
+    segments = @[(kind: ConstantSegment, value: "/v2/email/identities/"),
+               (kind: VariableSegment, value: "EmailIdentity"),
+               (kind: ConstantSegment, value: "/mail-from")]
+  var hydrated = hydratePath(path, segments)
+  if hydrated.isNone:
+    raise newException(ValueError, "unable to fully hydrate path")
+  if base ==
+      "/" and
+      hydrated.get.startsWith "/":
+    result.path = hydrated.get
+  else:
+    result.path = base & hydrated.get
+
+proc validate_PutEmailIdentityMailFromAttributes_600632(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  ## parameters in `path` object:
+  ##   EmailIdentity: JString (required)
+  ##                : The verified email identity that you want to set up the custom MAIL FROM domain for.
+  section = newJObject()
+  assert path != nil,
+        "path argument is necessary due to required `EmailIdentity` field"
+  var valid_600634 = path.getOrDefault("EmailIdentity")
+  valid_600634 = validateParameter(valid_600634, JString, required = true,
+                                 default = nil)
+  if valid_600634 != nil:
+    section.add "EmailIdentity", valid_600634
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600635 = header.getOrDefault("X-Amz-Date")
+  valid_600635 = validateParameter(valid_600635, JString, required = false,
+                                 default = nil)
+  if valid_600635 != nil:
+    section.add "X-Amz-Date", valid_600635
+  var valid_600636 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600636 = validateParameter(valid_600636, JString, required = false,
+                                 default = nil)
+  if valid_600636 != nil:
+    section.add "X-Amz-Security-Token", valid_600636
+  var valid_600637 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600637 = validateParameter(valid_600637, JString, required = false,
+                                 default = nil)
+  if valid_600637 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600637
+  var valid_600638 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600638 = validateParameter(valid_600638, JString, required = false,
+                                 default = nil)
+  if valid_600638 != nil:
+    section.add "X-Amz-Algorithm", valid_600638
+  var valid_600639 = header.getOrDefault("X-Amz-Signature")
+  valid_600639 = validateParameter(valid_600639, JString, required = false,
+                                 default = nil)
+  if valid_600639 != nil:
+    section.add "X-Amz-Signature", valid_600639
+  var valid_600640 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600640 = validateParameter(valid_600640, JString, required = false,
+                                 default = nil)
+  if valid_600640 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600640
+  var valid_600641 = header.getOrDefault("X-Amz-Credential")
+  valid_600641 = validateParameter(valid_600641, JString, required = false,
+                                 default = nil)
+  if valid_600641 != nil:
+    section.add "X-Amz-Credential", valid_600641
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600643: Call_PutEmailIdentityMailFromAttributes_600631;
+          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
+          body: JsonNode): Recallable =
+  ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
+  ## 
+  let valid = call_600643.validator(path, query, header, formData, body)
+  let scheme = call_600643.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600643.url(scheme.get, call_600643.host, call_600643.base,
+                         call_600643.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600643, url, valid)
+
+proc call*(call_600644: Call_PutEmailIdentityMailFromAttributes_600631;
+          EmailIdentity: string; body: JsonNode): Recallable =
+  ## putEmailIdentityMailFromAttributes
+  ## Used to enable or disable the custom Mail-From domain configuration for an email identity.
+  ##   EmailIdentity: string (required)
+  ##                : The verified email identity that you want to set up the custom MAIL FROM domain for.
+  ##   body: JObject (required)
+  var path_600645 = newJObject()
+  var body_600646 = newJObject()
+  add(path_600645, "EmailIdentity", newJString(EmailIdentity))
+  if body != nil:
+    body_600646 = body
+  result = call_600644.call(path_600645, nil, nil, nil, body_600646)
+
+var putEmailIdentityMailFromAttributes* = Call_PutEmailIdentityMailFromAttributes_600631(
     name: "putEmailIdentityMailFromAttributes", meth: HttpMethod.HttpPut,
     host: "email.amazonaws.com",
     route: "/v2/email/identities/{EmailIdentity}/mail-from",
-    validator: validate_PutEmailIdentityMailFromAttributes_600616, base: "/",
-    url: url_PutEmailIdentityMailFromAttributes_600617,
+    validator: validate_PutEmailIdentityMailFromAttributes_600632, base: "/",
+    url: url_PutEmailIdentityMailFromAttributes_600633,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SendEmail_600631 = ref object of OpenApiRestCall_599368
-proc url_SendEmail_600633(protocol: Scheme; host: string; base: string; route: string;
+  Call_SendEmail_600647 = ref object of OpenApiRestCall_599368
+proc url_SendEmail_600649(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5640,9 +5772,9 @@ proc url_SendEmail_600633(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & route
 
-proc validate_SendEmail_600632(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_SendEmail_600648(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Sends an email message. You can use the Amazon SES API v2 to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and the Amazon SES API v2 assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
+  ## <p>Sends an email message. You can use the Amazon SES API v2 to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and Amazon SES assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5659,41 +5791,41 @@ proc validate_SendEmail_600632(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600634 = header.getOrDefault("X-Amz-Date")
-  valid_600634 = validateParameter(valid_600634, JString, required = false,
+  var valid_600650 = header.getOrDefault("X-Amz-Date")
+  valid_600650 = validateParameter(valid_600650, JString, required = false,
                                  default = nil)
-  if valid_600634 != nil:
-    section.add "X-Amz-Date", valid_600634
-  var valid_600635 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600635 = validateParameter(valid_600635, JString, required = false,
+  if valid_600650 != nil:
+    section.add "X-Amz-Date", valid_600650
+  var valid_600651 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600651 = validateParameter(valid_600651, JString, required = false,
                                  default = nil)
-  if valid_600635 != nil:
-    section.add "X-Amz-Security-Token", valid_600635
-  var valid_600636 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600636 = validateParameter(valid_600636, JString, required = false,
+  if valid_600651 != nil:
+    section.add "X-Amz-Security-Token", valid_600651
+  var valid_600652 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600652 = validateParameter(valid_600652, JString, required = false,
                                  default = nil)
-  if valid_600636 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600636
-  var valid_600637 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600637 = validateParameter(valid_600637, JString, required = false,
+  if valid_600652 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600652
+  var valid_600653 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600653 = validateParameter(valid_600653, JString, required = false,
                                  default = nil)
-  if valid_600637 != nil:
-    section.add "X-Amz-Algorithm", valid_600637
-  var valid_600638 = header.getOrDefault("X-Amz-Signature")
-  valid_600638 = validateParameter(valid_600638, JString, required = false,
+  if valid_600653 != nil:
+    section.add "X-Amz-Algorithm", valid_600653
+  var valid_600654 = header.getOrDefault("X-Amz-Signature")
+  valid_600654 = validateParameter(valid_600654, JString, required = false,
                                  default = nil)
-  if valid_600638 != nil:
-    section.add "X-Amz-Signature", valid_600638
-  var valid_600639 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600639 = validateParameter(valid_600639, JString, required = false,
+  if valid_600654 != nil:
+    section.add "X-Amz-Signature", valid_600654
+  var valid_600655 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600655 = validateParameter(valid_600655, JString, required = false,
                                  default = nil)
-  if valid_600639 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600639
-  var valid_600640 = header.getOrDefault("X-Amz-Credential")
-  valid_600640 = validateParameter(valid_600640, JString, required = false,
+  if valid_600655 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600655
+  var valid_600656 = header.getOrDefault("X-Amz-Credential")
+  valid_600656 = validateParameter(valid_600656, JString, required = false,
                                  default = nil)
-  if valid_600640 != nil:
-    section.add "X-Amz-Credential", valid_600640
+  if valid_600656 != nil:
+    section.add "X-Amz-Credential", valid_600656
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5704,37 +5836,37 @@ proc validate_SendEmail_600632(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600642: Call_SendEmail_600631; path: JsonNode; query: JsonNode;
+proc call*(call_600658: Call_SendEmail_600647; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Sends an email message. You can use the Amazon SES API v2 to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and the Amazon SES API v2 assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
+  ## <p>Sends an email message. You can use the Amazon SES API v2 to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and Amazon SES assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
   ## 
-  let valid = call_600642.validator(path, query, header, formData, body)
-  let scheme = call_600642.pickScheme
+  let valid = call_600658.validator(path, query, header, formData, body)
+  let scheme = call_600658.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600642.url(scheme.get, call_600642.host, call_600642.base,
-                         call_600642.route, valid.getOrDefault("path"),
+  let url = call_600658.url(scheme.get, call_600658.host, call_600658.base,
+                         call_600658.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600642, url, valid)
+  result = atozHook(call_600658, url, valid)
 
-proc call*(call_600643: Call_SendEmail_600631; body: JsonNode): Recallable =
+proc call*(call_600659: Call_SendEmail_600647; body: JsonNode): Recallable =
   ## sendEmail
-  ## <p>Sends an email message. You can use the Amazon SES API v2 to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and the Amazon SES API v2 assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
+  ## <p>Sends an email message. You can use the Amazon SES API v2 to send two types of messages:</p> <ul> <li> <p> <b>Simple</b> – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and Amazon SES assembles the message for you.</p> </li> <li> <p> <b>Raw</b> – A raw, MIME-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_600644 = newJObject()
+  var body_600660 = newJObject()
   if body != nil:
-    body_600644 = body
-  result = call_600643.call(nil, nil, nil, nil, body_600644)
+    body_600660 = body
+  result = call_600659.call(nil, nil, nil, nil, body_600660)
 
-var sendEmail* = Call_SendEmail_600631(name: "sendEmail", meth: HttpMethod.HttpPost,
+var sendEmail* = Call_SendEmail_600647(name: "sendEmail", meth: HttpMethod.HttpPost,
                                     host: "email.amazonaws.com",
                                     route: "/v2/email/outbound-emails",
-                                    validator: validate_SendEmail_600632,
-                                    base: "/", url: url_SendEmail_600633,
+                                    validator: validate_SendEmail_600648,
+                                    base: "/", url: url_SendEmail_600649,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_600645 = ref object of OpenApiRestCall_599368
-proc url_TagResource_600647(protocol: Scheme; host: string; base: string;
+  Call_TagResource_600661 = ref object of OpenApiRestCall_599368
+proc url_TagResource_600663(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5745,7 +5877,7 @@ proc url_TagResource_600647(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TagResource_600646(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_600662(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Add one or more tags (keys and values) to a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource. Tags can help you categorize and manage resources in different ways, such as by purpose, owner, environment, or other criteria. A resource can have as many as 50 tags.</p> <p>Each tag consists of a required <i>tag key</i> and an associated <i>tag value</i>, both of which you define. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.</p>
   ## 
@@ -5754,129 +5886,6 @@ proc validate_TagResource_600646(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "path", section
   section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
-  ##   X-Amz-Credential: JString
-  section = newJObject()
-  var valid_600648 = header.getOrDefault("X-Amz-Date")
-  valid_600648 = validateParameter(valid_600648, JString, required = false,
-                                 default = nil)
-  if valid_600648 != nil:
-    section.add "X-Amz-Date", valid_600648
-  var valid_600649 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600649 = validateParameter(valid_600649, JString, required = false,
-                                 default = nil)
-  if valid_600649 != nil:
-    section.add "X-Amz-Security-Token", valid_600649
-  var valid_600650 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600650 = validateParameter(valid_600650, JString, required = false,
-                                 default = nil)
-  if valid_600650 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600650
-  var valid_600651 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600651 = validateParameter(valid_600651, JString, required = false,
-                                 default = nil)
-  if valid_600651 != nil:
-    section.add "X-Amz-Algorithm", valid_600651
-  var valid_600652 = header.getOrDefault("X-Amz-Signature")
-  valid_600652 = validateParameter(valid_600652, JString, required = false,
-                                 default = nil)
-  if valid_600652 != nil:
-    section.add "X-Amz-Signature", valid_600652
-  var valid_600653 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600653 = validateParameter(valid_600653, JString, required = false,
-                                 default = nil)
-  if valid_600653 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600653
-  var valid_600654 = header.getOrDefault("X-Amz-Credential")
-  valid_600654 = validateParameter(valid_600654, JString, required = false,
-                                 default = nil)
-  if valid_600654 != nil:
-    section.add "X-Amz-Credential", valid_600654
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_600656: Call_TagResource_600645; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Add one or more tags (keys and values) to a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource. Tags can help you categorize and manage resources in different ways, such as by purpose, owner, environment, or other criteria. A resource can have as many as 50 tags.</p> <p>Each tag consists of a required <i>tag key</i> and an associated <i>tag value</i>, both of which you define. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.</p>
-  ## 
-  let valid = call_600656.validator(path, query, header, formData, body)
-  let scheme = call_600656.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600656.url(scheme.get, call_600656.host, call_600656.base,
-                         call_600656.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_600656, url, valid)
-
-proc call*(call_600657: Call_TagResource_600645; body: JsonNode): Recallable =
-  ## tagResource
-  ## <p>Add one or more tags (keys and values) to a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource. Tags can help you categorize and manage resources in different ways, such as by purpose, owner, environment, or other criteria. A resource can have as many as 50 tags.</p> <p>Each tag consists of a required <i>tag key</i> and an associated <i>tag value</i>, both of which you define. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.</p>
-  ##   body: JObject (required)
-  var body_600658 = newJObject()
-  if body != nil:
-    body_600658 = body
-  result = call_600657.call(nil, nil, nil, nil, body_600658)
-
-var tagResource* = Call_TagResource_600645(name: "tagResource",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "email.amazonaws.com",
-                                        route: "/v2/email/tags",
-                                        validator: validate_TagResource_600646,
-                                        base: "/", url: url_TagResource_600647,
-                                        schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_UntagResource_600659 = ref object of OpenApiRestCall_599368
-proc url_UntagResource_600661(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_UntagResource_600660(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## Remove one or more tags (keys and values) from a specified resource.
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   ResourceArn: JString (required)
-  ##              : The Amazon Resource Name (ARN) of the resource that you want to remove one or more tags from.
-  ##   TagKeys: JArray (required)
-  ##          : <p>The tags (tag keys) that you want to remove from the resource. When you specify a tag key, the action removes both that key and its associated tag value.</p> <p>To remove more than one tag from the resource, append the <code>TagKeys</code> parameter and argument for each additional tag to remove, separated by an ampersand. For example: 
-  ## <code>/v2/email/tags?ResourceArn=ResourceArn&amp;TagKeys=Key1&amp;TagKeys=Key2</code> </p>
-  section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `ResourceArn` field"
-  var valid_600662 = query.getOrDefault("ResourceArn")
-  valid_600662 = validateParameter(valid_600662, JString, required = true,
-                                 default = nil)
-  if valid_600662 != nil:
-    section.add "ResourceArn", valid_600662
-  var valid_600663 = query.getOrDefault("TagKeys")
-  valid_600663 = validateParameter(valid_600663, JArray, required = true, default = nil)
-  if valid_600663 != nil:
-    section.add "TagKeys", valid_600663
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -5925,23 +5934,146 @@ proc validate_UntagResource_600660(path: JsonNode; query: JsonNode; header: Json
   result.add "header", section
   section = newJObject()
   result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
   if body != nil:
     result.add "body", body
 
-proc call*(call_600671: Call_UntagResource_600659; path: JsonNode; query: JsonNode;
+proc call*(call_600672: Call_TagResource_600661; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Add one or more tags (keys and values) to a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource. Tags can help you categorize and manage resources in different ways, such as by purpose, owner, environment, or other criteria. A resource can have as many as 50 tags.</p> <p>Each tag consists of a required <i>tag key</i> and an associated <i>tag value</i>, both of which you define. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.</p>
+  ## 
+  let valid = call_600672.validator(path, query, header, formData, body)
+  let scheme = call_600672.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600672.url(scheme.get, call_600672.host, call_600672.base,
+                         call_600672.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600672, url, valid)
+
+proc call*(call_600673: Call_TagResource_600661; body: JsonNode): Recallable =
+  ## tagResource
+  ## <p>Add one or more tags (keys and values) to a specified resource. A <i>tag</i> is a label that you optionally define and associate with a resource. Tags can help you categorize and manage resources in different ways, such as by purpose, owner, environment, or other criteria. A resource can have as many as 50 tags.</p> <p>Each tag consists of a required <i>tag key</i> and an associated <i>tag value</i>, both of which you define. A tag key is a general label that acts as a category for more specific tag values. A tag value acts as a descriptor within a tag key.</p>
+  ##   body: JObject (required)
+  var body_600674 = newJObject()
+  if body != nil:
+    body_600674 = body
+  result = call_600673.call(nil, nil, nil, nil, body_600674)
+
+var tagResource* = Call_TagResource_600661(name: "tagResource",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "email.amazonaws.com",
+                                        route: "/v2/email/tags",
+                                        validator: validate_TagResource_600662,
+                                        base: "/", url: url_TagResource_600663,
+                                        schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UntagResource_600675 = ref object of OpenApiRestCall_599368
+proc url_UntagResource_600677(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UntagResource_600676(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Remove one or more tags (keys and values) from a specified resource.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   ResourceArn: JString (required)
+  ##              : The Amazon Resource Name (ARN) of the resource that you want to remove one or more tags from.
+  ##   TagKeys: JArray (required)
+  ##          : <p>The tags (tag keys) that you want to remove from the resource. When you specify a tag key, the action removes both that key and its associated tag value.</p> <p>To remove more than one tag from the resource, append the <code>TagKeys</code> parameter and argument for each additional tag to remove, separated by an ampersand. For example: 
+  ## <code>/v2/email/tags?ResourceArn=ResourceArn&amp;TagKeys=Key1&amp;TagKeys=Key2</code> </p>
+  section = newJObject()
+  assert query != nil,
+        "query argument is necessary due to required `ResourceArn` field"
+  var valid_600678 = query.getOrDefault("ResourceArn")
+  valid_600678 = validateParameter(valid_600678, JString, required = true,
+                                 default = nil)
+  if valid_600678 != nil:
+    section.add "ResourceArn", valid_600678
+  var valid_600679 = query.getOrDefault("TagKeys")
+  valid_600679 = validateParameter(valid_600679, JArray, required = true, default = nil)
+  if valid_600679 != nil:
+    section.add "TagKeys", valid_600679
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600680 = header.getOrDefault("X-Amz-Date")
+  valid_600680 = validateParameter(valid_600680, JString, required = false,
+                                 default = nil)
+  if valid_600680 != nil:
+    section.add "X-Amz-Date", valid_600680
+  var valid_600681 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600681 = validateParameter(valid_600681, JString, required = false,
+                                 default = nil)
+  if valid_600681 != nil:
+    section.add "X-Amz-Security-Token", valid_600681
+  var valid_600682 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600682 = validateParameter(valid_600682, JString, required = false,
+                                 default = nil)
+  if valid_600682 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600682
+  var valid_600683 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600683 = validateParameter(valid_600683, JString, required = false,
+                                 default = nil)
+  if valid_600683 != nil:
+    section.add "X-Amz-Algorithm", valid_600683
+  var valid_600684 = header.getOrDefault("X-Amz-Signature")
+  valid_600684 = validateParameter(valid_600684, JString, required = false,
+                                 default = nil)
+  if valid_600684 != nil:
+    section.add "X-Amz-Signature", valid_600684
+  var valid_600685 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600685 = validateParameter(valid_600685, JString, required = false,
+                                 default = nil)
+  if valid_600685 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600685
+  var valid_600686 = header.getOrDefault("X-Amz-Credential")
+  valid_600686 = validateParameter(valid_600686, JString, required = false,
+                                 default = nil)
+  if valid_600686 != nil:
+    section.add "X-Amz-Credential", valid_600686
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600687: Call_UntagResource_600675; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Remove one or more tags (keys and values) from a specified resource.
   ## 
-  let valid = call_600671.validator(path, query, header, formData, body)
-  let scheme = call_600671.pickScheme
+  let valid = call_600687.validator(path, query, header, formData, body)
+  let scheme = call_600687.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600671.url(scheme.get, call_600671.host, call_600671.base,
-                         call_600671.route, valid.getOrDefault("path"),
+  let url = call_600687.url(scheme.get, call_600687.host, call_600687.base,
+                         call_600687.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600671, url, valid)
+  result = atozHook(call_600687, url, valid)
 
-proc call*(call_600672: Call_UntagResource_600659; ResourceArn: string;
+proc call*(call_600688: Call_UntagResource_600675; ResourceArn: string;
           TagKeys: JsonNode): Recallable =
   ## untagResource
   ## Remove one or more tags (keys and values) from a specified resource.
@@ -5950,16 +6082,16 @@ proc call*(call_600672: Call_UntagResource_600659; ResourceArn: string;
   ##   TagKeys: JArray (required)
   ##          : <p>The tags (tag keys) that you want to remove from the resource. When you specify a tag key, the action removes both that key and its associated tag value.</p> <p>To remove more than one tag from the resource, append the <code>TagKeys</code> parameter and argument for each additional tag to remove, separated by an ampersand. For example: 
   ## <code>/v2/email/tags?ResourceArn=ResourceArn&amp;TagKeys=Key1&amp;TagKeys=Key2</code> </p>
-  var query_600673 = newJObject()
-  add(query_600673, "ResourceArn", newJString(ResourceArn))
+  var query_600689 = newJObject()
+  add(query_600689, "ResourceArn", newJString(ResourceArn))
   if TagKeys != nil:
-    query_600673.add "TagKeys", TagKeys
-  result = call_600672.call(nil, query_600673, nil, nil, nil)
+    query_600689.add "TagKeys", TagKeys
+  result = call_600688.call(nil, query_600689, nil, nil, nil)
 
-var untagResource* = Call_UntagResource_600659(name: "untagResource",
+var untagResource* = Call_UntagResource_600675(name: "untagResource",
     meth: HttpMethod.HttpDelete, host: "email.amazonaws.com",
     route: "/v2/email/tags#ResourceArn&TagKeys",
-    validator: validate_UntagResource_600660, base: "/", url: url_UntagResource_600661,
+    validator: validate_UntagResource_600676, base: "/", url: url_UntagResource_600677,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
