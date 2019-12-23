@@ -257,8 +257,8 @@ var createVocabulary* = Call_CreateVocabulary_599705(name: "createVocabulary",
     validator: validate_CreateVocabulary_599706, base: "/",
     url: url_CreateVocabulary_599707, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTranscriptionJob_599974 = ref object of OpenApiRestCall_599368
-proc url_DeleteTranscriptionJob_599976(protocol: Scheme; host: string; base: string;
+  Call_CreateVocabularyFilter_599974 = ref object of OpenApiRestCall_599368
+proc url_CreateVocabularyFilter_599976(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -269,9 +269,9 @@ proc url_DeleteTranscriptionJob_599976(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_DeleteTranscriptionJob_599975(path: JsonNode; query: JsonNode;
+proc validate_CreateVocabularyFilter_599975(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes a previously submitted transcription job along with any other generated results such as the transcription, models, and so on.
+  ## Creates a new vocabulary filter that you can use to filter words, such as profane words, from the output of a transcription job.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -303,7 +303,7 @@ proc validate_DeleteTranscriptionJob_599975(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_599979 = header.getOrDefault("X-Amz-Target")
   valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
-      "Transcribe.DeleteTranscriptionJob"))
+      "Transcribe.CreateVocabularyFilter"))
   if valid_599979 != nil:
     section.add "X-Amz-Target", valid_599979
   var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -341,9 +341,9 @@ proc validate_DeleteTranscriptionJob_599975(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599986: Call_DeleteTranscriptionJob_599974; path: JsonNode;
+proc call*(call_599986: Call_CreateVocabularyFilter_599974; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a previously submitted transcription job along with any other generated results such as the transcription, models, and so on.
+  ## Creates a new vocabulary filter that you can use to filter words, such as profane words, from the output of a transcription job.
   ## 
   let valid = call_599986.validator(path, query, header, formData, body)
   let scheme = call_599986.pickScheme
@@ -354,25 +354,25 @@ proc call*(call_599986: Call_DeleteTranscriptionJob_599974; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_599986, url, valid)
 
-proc call*(call_599987: Call_DeleteTranscriptionJob_599974; body: JsonNode): Recallable =
-  ## deleteTranscriptionJob
-  ## Deletes a previously submitted transcription job along with any other generated results such as the transcription, models, and so on.
+proc call*(call_599987: Call_CreateVocabularyFilter_599974; body: JsonNode): Recallable =
+  ## createVocabularyFilter
+  ## Creates a new vocabulary filter that you can use to filter words, such as profane words, from the output of a transcription job.
   ##   body: JObject (required)
   var body_599988 = newJObject()
   if body != nil:
     body_599988 = body
   result = call_599987.call(nil, nil, nil, nil, body_599988)
 
-var deleteTranscriptionJob* = Call_DeleteTranscriptionJob_599974(
-    name: "deleteTranscriptionJob", meth: HttpMethod.HttpPost,
+var createVocabularyFilter* = Call_CreateVocabularyFilter_599974(
+    name: "createVocabularyFilter", meth: HttpMethod.HttpPost,
     host: "transcribe.amazonaws.com",
-    route: "/#X-Amz-Target=Transcribe.DeleteTranscriptionJob",
-    validator: validate_DeleteTranscriptionJob_599975, base: "/",
-    url: url_DeleteTranscriptionJob_599976, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=Transcribe.CreateVocabularyFilter",
+    validator: validate_CreateVocabularyFilter_599975, base: "/",
+    url: url_CreateVocabularyFilter_599976, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteVocabulary_599989 = ref object of OpenApiRestCall_599368
-proc url_DeleteVocabulary_599991(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteTranscriptionJob_599989 = ref object of OpenApiRestCall_599368
+proc url_DeleteTranscriptionJob_599991(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -382,10 +382,9 @@ proc url_DeleteVocabulary_599991(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteVocabulary_599990(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## Deletes a vocabulary from Amazon Transcribe. 
+proc validate_DeleteTranscriptionJob_599990(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Deletes a previously submitted transcription job along with any other generated results such as the transcription, models, and so on.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -417,7 +416,7 @@ proc validate_DeleteVocabulary_599990(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_599994 = header.getOrDefault("X-Amz-Target")
   valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
-      "Transcribe.DeleteVocabulary"))
+      "Transcribe.DeleteTranscriptionJob"))
   if valid_599994 != nil:
     section.add "X-Amz-Target", valid_599994
   var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -455,9 +454,9 @@ proc validate_DeleteVocabulary_599990(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600001: Call_DeleteVocabulary_599989; path: JsonNode;
+proc call*(call_600001: Call_DeleteTranscriptionJob_599989; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a vocabulary from Amazon Transcribe. 
+  ## Deletes a previously submitted transcription job along with any other generated results such as the transcription, models, and so on.
   ## 
   let valid = call_600001.validator(path, query, header, formData, body)
   let scheme = call_600001.pickScheme
@@ -468,24 +467,25 @@ proc call*(call_600001: Call_DeleteVocabulary_599989; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600001, url, valid)
 
-proc call*(call_600002: Call_DeleteVocabulary_599989; body: JsonNode): Recallable =
-  ## deleteVocabulary
-  ## Deletes a vocabulary from Amazon Transcribe. 
+proc call*(call_600002: Call_DeleteTranscriptionJob_599989; body: JsonNode): Recallable =
+  ## deleteTranscriptionJob
+  ## Deletes a previously submitted transcription job along with any other generated results such as the transcription, models, and so on.
   ##   body: JObject (required)
   var body_600003 = newJObject()
   if body != nil:
     body_600003 = body
   result = call_600002.call(nil, nil, nil, nil, body_600003)
 
-var deleteVocabulary* = Call_DeleteVocabulary_599989(name: "deleteVocabulary",
-    meth: HttpMethod.HttpPost, host: "transcribe.amazonaws.com",
-    route: "/#X-Amz-Target=Transcribe.DeleteVocabulary",
-    validator: validate_DeleteVocabulary_599990, base: "/",
-    url: url_DeleteVocabulary_599991, schemes: {Scheme.Https, Scheme.Http})
+var deleteTranscriptionJob* = Call_DeleteTranscriptionJob_599989(
+    name: "deleteTranscriptionJob", meth: HttpMethod.HttpPost,
+    host: "transcribe.amazonaws.com",
+    route: "/#X-Amz-Target=Transcribe.DeleteTranscriptionJob",
+    validator: validate_DeleteTranscriptionJob_599990, base: "/",
+    url: url_DeleteTranscriptionJob_599991, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTranscriptionJob_600004 = ref object of OpenApiRestCall_599368
-proc url_GetTranscriptionJob_600006(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteVocabulary_600004 = ref object of OpenApiRestCall_599368
+proc url_DeleteVocabulary_600006(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -495,10 +495,10 @@ proc url_GetTranscriptionJob_600006(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_GetTranscriptionJob_600005(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode): JsonNode =
-  ## Returns information about a transcription job. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished and you can find the results at the location specified in the <code>TranscriptionFileUri</code> field.
+proc validate_DeleteVocabulary_600005(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## Deletes a vocabulary from Amazon Transcribe. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -530,7 +530,7 @@ proc validate_GetTranscriptionJob_600005(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600009 = header.getOrDefault("X-Amz-Target")
   valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
-      "Transcribe.GetTranscriptionJob"))
+      "Transcribe.DeleteVocabulary"))
   if valid_600009 != nil:
     section.add "X-Amz-Target", valid_600009
   var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -568,9 +568,9 @@ proc validate_GetTranscriptionJob_600005(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600016: Call_GetTranscriptionJob_600004; path: JsonNode;
+proc call*(call_600016: Call_DeleteVocabulary_600004; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns information about a transcription job. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished and you can find the results at the location specified in the <code>TranscriptionFileUri</code> field.
+  ## Deletes a vocabulary from Amazon Transcribe. 
   ## 
   let valid = call_600016.validator(path, query, header, formData, body)
   let scheme = call_600016.pickScheme
@@ -581,25 +581,24 @@ proc call*(call_600016: Call_GetTranscriptionJob_600004; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600016, url, valid)
 
-proc call*(call_600017: Call_GetTranscriptionJob_600004; body: JsonNode): Recallable =
-  ## getTranscriptionJob
-  ## Returns information about a transcription job. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished and you can find the results at the location specified in the <code>TranscriptionFileUri</code> field.
+proc call*(call_600017: Call_DeleteVocabulary_600004; body: JsonNode): Recallable =
+  ## deleteVocabulary
+  ## Deletes a vocabulary from Amazon Transcribe. 
   ##   body: JObject (required)
   var body_600018 = newJObject()
   if body != nil:
     body_600018 = body
   result = call_600017.call(nil, nil, nil, nil, body_600018)
 
-var getTranscriptionJob* = Call_GetTranscriptionJob_600004(
-    name: "getTranscriptionJob", meth: HttpMethod.HttpPost,
-    host: "transcribe.amazonaws.com",
-    route: "/#X-Amz-Target=Transcribe.GetTranscriptionJob",
-    validator: validate_GetTranscriptionJob_600005, base: "/",
-    url: url_GetTranscriptionJob_600006, schemes: {Scheme.Https, Scheme.Http})
+var deleteVocabulary* = Call_DeleteVocabulary_600004(name: "deleteVocabulary",
+    meth: HttpMethod.HttpPost, host: "transcribe.amazonaws.com",
+    route: "/#X-Amz-Target=Transcribe.DeleteVocabulary",
+    validator: validate_DeleteVocabulary_600005, base: "/",
+    url: url_DeleteVocabulary_600006, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetVocabulary_600019 = ref object of OpenApiRestCall_599368
-proc url_GetVocabulary_600021(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteVocabularyFilter_600019 = ref object of OpenApiRestCall_599368
+proc url_DeleteVocabularyFilter_600021(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -609,9 +608,9 @@ proc url_GetVocabulary_600021(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetVocabulary_600020(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## Gets information about a vocabulary. 
+proc validate_DeleteVocabularyFilter_600020(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Removes a vocabulary filter.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -643,7 +642,7 @@ proc validate_GetVocabulary_600020(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600024 = header.getOrDefault("X-Amz-Target")
   valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
-      "Transcribe.GetVocabulary"))
+      "Transcribe.DeleteVocabularyFilter"))
   if valid_600024 != nil:
     section.add "X-Amz-Target", valid_600024
   var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -681,9 +680,9 @@ proc validate_GetVocabulary_600020(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600031: Call_GetVocabulary_600019; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets information about a vocabulary. 
+proc call*(call_600031: Call_DeleteVocabularyFilter_600019; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Removes a vocabulary filter.
   ## 
   let valid = call_600031.validator(path, query, header, formData, body)
   let scheme = call_600031.pickScheme
@@ -694,23 +693,364 @@ proc call*(call_600031: Call_GetVocabulary_600019; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_600031, url, valid)
 
-proc call*(call_600032: Call_GetVocabulary_600019; body: JsonNode): Recallable =
-  ## getVocabulary
-  ## Gets information about a vocabulary. 
+proc call*(call_600032: Call_DeleteVocabularyFilter_600019; body: JsonNode): Recallable =
+  ## deleteVocabularyFilter
+  ## Removes a vocabulary filter.
   ##   body: JObject (required)
   var body_600033 = newJObject()
   if body != nil:
     body_600033 = body
   result = call_600032.call(nil, nil, nil, nil, body_600033)
 
-var getVocabulary* = Call_GetVocabulary_600019(name: "getVocabulary",
+var deleteVocabularyFilter* = Call_DeleteVocabularyFilter_600019(
+    name: "deleteVocabularyFilter", meth: HttpMethod.HttpPost,
+    host: "transcribe.amazonaws.com",
+    route: "/#X-Amz-Target=Transcribe.DeleteVocabularyFilter",
+    validator: validate_DeleteVocabularyFilter_600020, base: "/",
+    url: url_DeleteVocabularyFilter_600021, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetTranscriptionJob_600034 = ref object of OpenApiRestCall_599368
+proc url_GetTranscriptionJob_600036(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetTranscriptionJob_600035(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## Returns information about a transcription job. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished and you can find the results at the location specified in the <code>TranscriptionFileUri</code> field.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600037 = header.getOrDefault("X-Amz-Date")
+  valid_600037 = validateParameter(valid_600037, JString, required = false,
+                                 default = nil)
+  if valid_600037 != nil:
+    section.add "X-Amz-Date", valid_600037
+  var valid_600038 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600038 = validateParameter(valid_600038, JString, required = false,
+                                 default = nil)
+  if valid_600038 != nil:
+    section.add "X-Amz-Security-Token", valid_600038
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600039 = header.getOrDefault("X-Amz-Target")
+  valid_600039 = validateParameter(valid_600039, JString, required = true, default = newJString(
+      "Transcribe.GetTranscriptionJob"))
+  if valid_600039 != nil:
+    section.add "X-Amz-Target", valid_600039
+  var valid_600040 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600040 = validateParameter(valid_600040, JString, required = false,
+                                 default = nil)
+  if valid_600040 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600040
+  var valid_600041 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600041 = validateParameter(valid_600041, JString, required = false,
+                                 default = nil)
+  if valid_600041 != nil:
+    section.add "X-Amz-Algorithm", valid_600041
+  var valid_600042 = header.getOrDefault("X-Amz-Signature")
+  valid_600042 = validateParameter(valid_600042, JString, required = false,
+                                 default = nil)
+  if valid_600042 != nil:
+    section.add "X-Amz-Signature", valid_600042
+  var valid_600043 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600043 = validateParameter(valid_600043, JString, required = false,
+                                 default = nil)
+  if valid_600043 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600043
+  var valid_600044 = header.getOrDefault("X-Amz-Credential")
+  valid_600044 = validateParameter(valid_600044, JString, required = false,
+                                 default = nil)
+  if valid_600044 != nil:
+    section.add "X-Amz-Credential", valid_600044
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600046: Call_GetTranscriptionJob_600034; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns information about a transcription job. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished and you can find the results at the location specified in the <code>TranscriptionFileUri</code> field.
+  ## 
+  let valid = call_600046.validator(path, query, header, formData, body)
+  let scheme = call_600046.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600046.url(scheme.get, call_600046.host, call_600046.base,
+                         call_600046.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600046, url, valid)
+
+proc call*(call_600047: Call_GetTranscriptionJob_600034; body: JsonNode): Recallable =
+  ## getTranscriptionJob
+  ## Returns information about a transcription job. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished and you can find the results at the location specified in the <code>TranscriptionFileUri</code> field.
+  ##   body: JObject (required)
+  var body_600048 = newJObject()
+  if body != nil:
+    body_600048 = body
+  result = call_600047.call(nil, nil, nil, nil, body_600048)
+
+var getTranscriptionJob* = Call_GetTranscriptionJob_600034(
+    name: "getTranscriptionJob", meth: HttpMethod.HttpPost,
+    host: "transcribe.amazonaws.com",
+    route: "/#X-Amz-Target=Transcribe.GetTranscriptionJob",
+    validator: validate_GetTranscriptionJob_600035, base: "/",
+    url: url_GetTranscriptionJob_600036, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetVocabulary_600049 = ref object of OpenApiRestCall_599368
+proc url_GetVocabulary_600051(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetVocabulary_600050(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Gets information about a vocabulary. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600052 = header.getOrDefault("X-Amz-Date")
+  valid_600052 = validateParameter(valid_600052, JString, required = false,
+                                 default = nil)
+  if valid_600052 != nil:
+    section.add "X-Amz-Date", valid_600052
+  var valid_600053 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600053 = validateParameter(valid_600053, JString, required = false,
+                                 default = nil)
+  if valid_600053 != nil:
+    section.add "X-Amz-Security-Token", valid_600053
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600054 = header.getOrDefault("X-Amz-Target")
+  valid_600054 = validateParameter(valid_600054, JString, required = true, default = newJString(
+      "Transcribe.GetVocabulary"))
+  if valid_600054 != nil:
+    section.add "X-Amz-Target", valid_600054
+  var valid_600055 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600055 = validateParameter(valid_600055, JString, required = false,
+                                 default = nil)
+  if valid_600055 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600055
+  var valid_600056 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600056 = validateParameter(valid_600056, JString, required = false,
+                                 default = nil)
+  if valid_600056 != nil:
+    section.add "X-Amz-Algorithm", valid_600056
+  var valid_600057 = header.getOrDefault("X-Amz-Signature")
+  valid_600057 = validateParameter(valid_600057, JString, required = false,
+                                 default = nil)
+  if valid_600057 != nil:
+    section.add "X-Amz-Signature", valid_600057
+  var valid_600058 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600058 = validateParameter(valid_600058, JString, required = false,
+                                 default = nil)
+  if valid_600058 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600058
+  var valid_600059 = header.getOrDefault("X-Amz-Credential")
+  valid_600059 = validateParameter(valid_600059, JString, required = false,
+                                 default = nil)
+  if valid_600059 != nil:
+    section.add "X-Amz-Credential", valid_600059
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600061: Call_GetVocabulary_600049; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Gets information about a vocabulary. 
+  ## 
+  let valid = call_600061.validator(path, query, header, formData, body)
+  let scheme = call_600061.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600061.url(scheme.get, call_600061.host, call_600061.base,
+                         call_600061.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600061, url, valid)
+
+proc call*(call_600062: Call_GetVocabulary_600049; body: JsonNode): Recallable =
+  ## getVocabulary
+  ## Gets information about a vocabulary. 
+  ##   body: JObject (required)
+  var body_600063 = newJObject()
+  if body != nil:
+    body_600063 = body
+  result = call_600062.call(nil, nil, nil, nil, body_600063)
+
+var getVocabulary* = Call_GetVocabulary_600049(name: "getVocabulary",
     meth: HttpMethod.HttpPost, host: "transcribe.amazonaws.com",
     route: "/#X-Amz-Target=Transcribe.GetVocabulary",
-    validator: validate_GetVocabulary_600020, base: "/", url: url_GetVocabulary_600021,
+    validator: validate_GetVocabulary_600050, base: "/", url: url_GetVocabulary_600051,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTranscriptionJobs_600034 = ref object of OpenApiRestCall_599368
-proc url_ListTranscriptionJobs_600036(protocol: Scheme; host: string; base: string;
+  Call_GetVocabularyFilter_600064 = ref object of OpenApiRestCall_599368
+proc url_GetVocabularyFilter_600066(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetVocabularyFilter_600065(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## Returns information about a vocabulary filter.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600067 = header.getOrDefault("X-Amz-Date")
+  valid_600067 = validateParameter(valid_600067, JString, required = false,
+                                 default = nil)
+  if valid_600067 != nil:
+    section.add "X-Amz-Date", valid_600067
+  var valid_600068 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600068 = validateParameter(valid_600068, JString, required = false,
+                                 default = nil)
+  if valid_600068 != nil:
+    section.add "X-Amz-Security-Token", valid_600068
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600069 = header.getOrDefault("X-Amz-Target")
+  valid_600069 = validateParameter(valid_600069, JString, required = true, default = newJString(
+      "Transcribe.GetVocabularyFilter"))
+  if valid_600069 != nil:
+    section.add "X-Amz-Target", valid_600069
+  var valid_600070 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600070 = validateParameter(valid_600070, JString, required = false,
+                                 default = nil)
+  if valid_600070 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600070
+  var valid_600071 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600071 = validateParameter(valid_600071, JString, required = false,
+                                 default = nil)
+  if valid_600071 != nil:
+    section.add "X-Amz-Algorithm", valid_600071
+  var valid_600072 = header.getOrDefault("X-Amz-Signature")
+  valid_600072 = validateParameter(valid_600072, JString, required = false,
+                                 default = nil)
+  if valid_600072 != nil:
+    section.add "X-Amz-Signature", valid_600072
+  var valid_600073 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600073 = validateParameter(valid_600073, JString, required = false,
+                                 default = nil)
+  if valid_600073 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600073
+  var valid_600074 = header.getOrDefault("X-Amz-Credential")
+  valid_600074 = validateParameter(valid_600074, JString, required = false,
+                                 default = nil)
+  if valid_600074 != nil:
+    section.add "X-Amz-Credential", valid_600074
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600076: Call_GetVocabularyFilter_600064; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns information about a vocabulary filter.
+  ## 
+  let valid = call_600076.validator(path, query, header, formData, body)
+  let scheme = call_600076.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600076.url(scheme.get, call_600076.host, call_600076.base,
+                         call_600076.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600076, url, valid)
+
+proc call*(call_600077: Call_GetVocabularyFilter_600064; body: JsonNode): Recallable =
+  ## getVocabularyFilter
+  ## Returns information about a vocabulary filter.
+  ##   body: JObject (required)
+  var body_600078 = newJObject()
+  if body != nil:
+    body_600078 = body
+  result = call_600077.call(nil, nil, nil, nil, body_600078)
+
+var getVocabularyFilter* = Call_GetVocabularyFilter_600064(
+    name: "getVocabularyFilter", meth: HttpMethod.HttpPost,
+    host: "transcribe.amazonaws.com",
+    route: "/#X-Amz-Target=Transcribe.GetVocabularyFilter",
+    validator: validate_GetVocabularyFilter_600065, base: "/",
+    url: url_GetVocabularyFilter_600066, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListTranscriptionJobs_600079 = ref object of OpenApiRestCall_599368
+proc url_ListTranscriptionJobs_600081(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -721,7 +1061,7 @@ proc url_ListTranscriptionJobs_600036(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListTranscriptionJobs_600035(path: JsonNode; query: JsonNode;
+proc validate_ListTranscriptionJobs_600080(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists transcription jobs with the specified status.
   ## 
@@ -735,16 +1075,16 @@ proc validate_ListTranscriptionJobs_600035(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600037 = query.getOrDefault("NextToken")
-  valid_600037 = validateParameter(valid_600037, JString, required = false,
+  var valid_600082 = query.getOrDefault("NextToken")
+  valid_600082 = validateParameter(valid_600082, JString, required = false,
                                  default = nil)
-  if valid_600037 != nil:
-    section.add "NextToken", valid_600037
-  var valid_600038 = query.getOrDefault("MaxResults")
-  valid_600038 = validateParameter(valid_600038, JString, required = false,
+  if valid_600082 != nil:
+    section.add "NextToken", valid_600082
+  var valid_600083 = query.getOrDefault("MaxResults")
+  valid_600083 = validateParameter(valid_600083, JString, required = false,
                                  default = nil)
-  if valid_600038 != nil:
-    section.add "MaxResults", valid_600038
+  if valid_600083 != nil:
+    section.add "MaxResults", valid_600083
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -756,48 +1096,48 @@ proc validate_ListTranscriptionJobs_600035(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600039 = header.getOrDefault("X-Amz-Date")
-  valid_600039 = validateParameter(valid_600039, JString, required = false,
+  var valid_600084 = header.getOrDefault("X-Amz-Date")
+  valid_600084 = validateParameter(valid_600084, JString, required = false,
                                  default = nil)
-  if valid_600039 != nil:
-    section.add "X-Amz-Date", valid_600039
-  var valid_600040 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600040 = validateParameter(valid_600040, JString, required = false,
+  if valid_600084 != nil:
+    section.add "X-Amz-Date", valid_600084
+  var valid_600085 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600085 = validateParameter(valid_600085, JString, required = false,
                                  default = nil)
-  if valid_600040 != nil:
-    section.add "X-Amz-Security-Token", valid_600040
+  if valid_600085 != nil:
+    section.add "X-Amz-Security-Token", valid_600085
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600041 = header.getOrDefault("X-Amz-Target")
-  valid_600041 = validateParameter(valid_600041, JString, required = true, default = newJString(
+  var valid_600086 = header.getOrDefault("X-Amz-Target")
+  valid_600086 = validateParameter(valid_600086, JString, required = true, default = newJString(
       "Transcribe.ListTranscriptionJobs"))
-  if valid_600041 != nil:
-    section.add "X-Amz-Target", valid_600041
-  var valid_600042 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600042 = validateParameter(valid_600042, JString, required = false,
+  if valid_600086 != nil:
+    section.add "X-Amz-Target", valid_600086
+  var valid_600087 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600087 = validateParameter(valid_600087, JString, required = false,
                                  default = nil)
-  if valid_600042 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600042
-  var valid_600043 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600043 = validateParameter(valid_600043, JString, required = false,
+  if valid_600087 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600087
+  var valid_600088 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600088 = validateParameter(valid_600088, JString, required = false,
                                  default = nil)
-  if valid_600043 != nil:
-    section.add "X-Amz-Algorithm", valid_600043
-  var valid_600044 = header.getOrDefault("X-Amz-Signature")
-  valid_600044 = validateParameter(valid_600044, JString, required = false,
+  if valid_600088 != nil:
+    section.add "X-Amz-Algorithm", valid_600088
+  var valid_600089 = header.getOrDefault("X-Amz-Signature")
+  valid_600089 = validateParameter(valid_600089, JString, required = false,
                                  default = nil)
-  if valid_600044 != nil:
-    section.add "X-Amz-Signature", valid_600044
-  var valid_600045 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600045 = validateParameter(valid_600045, JString, required = false,
+  if valid_600089 != nil:
+    section.add "X-Amz-Signature", valid_600089
+  var valid_600090 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600090 = validateParameter(valid_600090, JString, required = false,
                                  default = nil)
-  if valid_600045 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600045
-  var valid_600046 = header.getOrDefault("X-Amz-Credential")
-  valid_600046 = validateParameter(valid_600046, JString, required = false,
+  if valid_600090 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600090
+  var valid_600091 = header.getOrDefault("X-Amz-Credential")
+  valid_600091 = validateParameter(valid_600091, JString, required = false,
                                  default = nil)
-  if valid_600046 != nil:
-    section.add "X-Amz-Credential", valid_600046
+  if valid_600091 != nil:
+    section.add "X-Amz-Credential", valid_600091
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -808,20 +1148,20 @@ proc validate_ListTranscriptionJobs_600035(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600048: Call_ListTranscriptionJobs_600034; path: JsonNode;
+proc call*(call_600093: Call_ListTranscriptionJobs_600079; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists transcription jobs with the specified status.
   ## 
-  let valid = call_600048.validator(path, query, header, formData, body)
-  let scheme = call_600048.pickScheme
+  let valid = call_600093.validator(path, query, header, formData, body)
+  let scheme = call_600093.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600048.url(scheme.get, call_600048.host, call_600048.base,
-                         call_600048.route, valid.getOrDefault("path"),
+  let url = call_600093.url(scheme.get, call_600093.host, call_600093.base,
+                         call_600093.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600048, url, valid)
+  result = atozHook(call_600093, url, valid)
 
-proc call*(call_600049: Call_ListTranscriptionJobs_600034; body: JsonNode;
+proc call*(call_600094: Call_ListTranscriptionJobs_600079; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listTranscriptionJobs
   ## Lists transcription jobs with the specified status.
@@ -830,23 +1170,23 @@ proc call*(call_600049: Call_ListTranscriptionJobs_600034; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600050 = newJObject()
-  var body_600051 = newJObject()
-  add(query_600050, "NextToken", newJString(NextToken))
+  var query_600095 = newJObject()
+  var body_600096 = newJObject()
+  add(query_600095, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600051 = body
-  add(query_600050, "MaxResults", newJString(MaxResults))
-  result = call_600049.call(nil, query_600050, nil, nil, body_600051)
+    body_600096 = body
+  add(query_600095, "MaxResults", newJString(MaxResults))
+  result = call_600094.call(nil, query_600095, nil, nil, body_600096)
 
-var listTranscriptionJobs* = Call_ListTranscriptionJobs_600034(
+var listTranscriptionJobs* = Call_ListTranscriptionJobs_600079(
     name: "listTranscriptionJobs", meth: HttpMethod.HttpPost,
     host: "transcribe.amazonaws.com",
     route: "/#X-Amz-Target=Transcribe.ListTranscriptionJobs",
-    validator: validate_ListTranscriptionJobs_600035, base: "/",
-    url: url_ListTranscriptionJobs_600036, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTranscriptionJobs_600080, base: "/",
+    url: url_ListTranscriptionJobs_600081, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListVocabularies_600053 = ref object of OpenApiRestCall_599368
-proc url_ListVocabularies_600055(protocol: Scheme; host: string; base: string;
+  Call_ListVocabularies_600098 = ref object of OpenApiRestCall_599368
+proc url_ListVocabularies_600100(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -857,7 +1197,7 @@ proc url_ListVocabularies_600055(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListVocabularies_600054(path: JsonNode; query: JsonNode;
+proc validate_ListVocabularies_600099(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns a list of vocabularies that match the specified criteria. If no criteria are specified, returns the entire list of vocabularies.
@@ -872,16 +1212,16 @@ proc validate_ListVocabularies_600054(path: JsonNode; query: JsonNode;
   ##   MaxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_600056 = query.getOrDefault("NextToken")
-  valid_600056 = validateParameter(valid_600056, JString, required = false,
+  var valid_600101 = query.getOrDefault("NextToken")
+  valid_600101 = validateParameter(valid_600101, JString, required = false,
                                  default = nil)
-  if valid_600056 != nil:
-    section.add "NextToken", valid_600056
-  var valid_600057 = query.getOrDefault("MaxResults")
-  valid_600057 = validateParameter(valid_600057, JString, required = false,
+  if valid_600101 != nil:
+    section.add "NextToken", valid_600101
+  var valid_600102 = query.getOrDefault("MaxResults")
+  valid_600102 = validateParameter(valid_600102, JString, required = false,
                                  default = nil)
-  if valid_600057 != nil:
-    section.add "MaxResults", valid_600057
+  if valid_600102 != nil:
+    section.add "MaxResults", valid_600102
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Date: JString
@@ -893,48 +1233,48 @@ proc validate_ListVocabularies_600054(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600058 = header.getOrDefault("X-Amz-Date")
-  valid_600058 = validateParameter(valid_600058, JString, required = false,
+  var valid_600103 = header.getOrDefault("X-Amz-Date")
+  valid_600103 = validateParameter(valid_600103, JString, required = false,
                                  default = nil)
-  if valid_600058 != nil:
-    section.add "X-Amz-Date", valid_600058
-  var valid_600059 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600059 = validateParameter(valid_600059, JString, required = false,
+  if valid_600103 != nil:
+    section.add "X-Amz-Date", valid_600103
+  var valid_600104 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600104 = validateParameter(valid_600104, JString, required = false,
                                  default = nil)
-  if valid_600059 != nil:
-    section.add "X-Amz-Security-Token", valid_600059
+  if valid_600104 != nil:
+    section.add "X-Amz-Security-Token", valid_600104
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600060 = header.getOrDefault("X-Amz-Target")
-  valid_600060 = validateParameter(valid_600060, JString, required = true, default = newJString(
+  var valid_600105 = header.getOrDefault("X-Amz-Target")
+  valid_600105 = validateParameter(valid_600105, JString, required = true, default = newJString(
       "Transcribe.ListVocabularies"))
-  if valid_600060 != nil:
-    section.add "X-Amz-Target", valid_600060
-  var valid_600061 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600061 = validateParameter(valid_600061, JString, required = false,
+  if valid_600105 != nil:
+    section.add "X-Amz-Target", valid_600105
+  var valid_600106 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600106 = validateParameter(valid_600106, JString, required = false,
                                  default = nil)
-  if valid_600061 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600061
-  var valid_600062 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600062 = validateParameter(valid_600062, JString, required = false,
+  if valid_600106 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600106
+  var valid_600107 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600107 = validateParameter(valid_600107, JString, required = false,
                                  default = nil)
-  if valid_600062 != nil:
-    section.add "X-Amz-Algorithm", valid_600062
-  var valid_600063 = header.getOrDefault("X-Amz-Signature")
-  valid_600063 = validateParameter(valid_600063, JString, required = false,
+  if valid_600107 != nil:
+    section.add "X-Amz-Algorithm", valid_600107
+  var valid_600108 = header.getOrDefault("X-Amz-Signature")
+  valid_600108 = validateParameter(valid_600108, JString, required = false,
                                  default = nil)
-  if valid_600063 != nil:
-    section.add "X-Amz-Signature", valid_600063
-  var valid_600064 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600064 = validateParameter(valid_600064, JString, required = false,
+  if valid_600108 != nil:
+    section.add "X-Amz-Signature", valid_600108
+  var valid_600109 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600109 = validateParameter(valid_600109, JString, required = false,
                                  default = nil)
-  if valid_600064 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600064
-  var valid_600065 = header.getOrDefault("X-Amz-Credential")
-  valid_600065 = validateParameter(valid_600065, JString, required = false,
+  if valid_600109 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600109
+  var valid_600110 = header.getOrDefault("X-Amz-Credential")
+  valid_600110 = validateParameter(valid_600110, JString, required = false,
                                  default = nil)
-  if valid_600065 != nil:
-    section.add "X-Amz-Credential", valid_600065
+  if valid_600110 != nil:
+    section.add "X-Amz-Credential", valid_600110
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -945,20 +1285,20 @@ proc validate_ListVocabularies_600054(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600067: Call_ListVocabularies_600053; path: JsonNode;
+proc call*(call_600112: Call_ListVocabularies_600098; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of vocabularies that match the specified criteria. If no criteria are specified, returns the entire list of vocabularies.
   ## 
-  let valid = call_600067.validator(path, query, header, formData, body)
-  let scheme = call_600067.pickScheme
+  let valid = call_600112.validator(path, query, header, formData, body)
+  let scheme = call_600112.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600067.url(scheme.get, call_600067.host, call_600067.base,
-                         call_600067.route, valid.getOrDefault("path"),
+  let url = call_600112.url(scheme.get, call_600112.host, call_600112.base,
+                         call_600112.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600067, url, valid)
+  result = atozHook(call_600112, url, valid)
 
-proc call*(call_600068: Call_ListVocabularies_600053; body: JsonNode;
+proc call*(call_600113: Call_ListVocabularies_600098; body: JsonNode;
           NextToken: string = ""; MaxResults: string = ""): Recallable =
   ## listVocabularies
   ## Returns a list of vocabularies that match the specified criteria. If no criteria are specified, returns the entire list of vocabularies.
@@ -967,22 +1307,22 @@ proc call*(call_600068: Call_ListVocabularies_600053; body: JsonNode;
   ##   body: JObject (required)
   ##   MaxResults: string
   ##             : Pagination limit
-  var query_600069 = newJObject()
-  var body_600070 = newJObject()
-  add(query_600069, "NextToken", newJString(NextToken))
+  var query_600114 = newJObject()
+  var body_600115 = newJObject()
+  add(query_600114, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600070 = body
-  add(query_600069, "MaxResults", newJString(MaxResults))
-  result = call_600068.call(nil, query_600069, nil, nil, body_600070)
+    body_600115 = body
+  add(query_600114, "MaxResults", newJString(MaxResults))
+  result = call_600113.call(nil, query_600114, nil, nil, body_600115)
 
-var listVocabularies* = Call_ListVocabularies_600053(name: "listVocabularies",
+var listVocabularies* = Call_ListVocabularies_600098(name: "listVocabularies",
     meth: HttpMethod.HttpPost, host: "transcribe.amazonaws.com",
     route: "/#X-Amz-Target=Transcribe.ListVocabularies",
-    validator: validate_ListVocabularies_600054, base: "/",
-    url: url_ListVocabularies_600055, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListVocabularies_600099, base: "/",
+    url: url_ListVocabularies_600100, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartTranscriptionJob_600071 = ref object of OpenApiRestCall_599368
-proc url_StartTranscriptionJob_600073(protocol: Scheme; host: string; base: string;
+  Call_ListVocabularyFilters_600116 = ref object of OpenApiRestCall_599368
+proc url_ListVocabularyFilters_600118(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -993,7 +1333,143 @@ proc url_StartTranscriptionJob_600073(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_StartTranscriptionJob_600072(path: JsonNode; query: JsonNode;
+proc validate_ListVocabularyFilters_600117(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Gets information about vocabulary filters.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   NextToken: JString
+  ##            : Pagination token
+  ##   MaxResults: JString
+  ##             : Pagination limit
+  section = newJObject()
+  var valid_600119 = query.getOrDefault("NextToken")
+  valid_600119 = validateParameter(valid_600119, JString, required = false,
+                                 default = nil)
+  if valid_600119 != nil:
+    section.add "NextToken", valid_600119
+  var valid_600120 = query.getOrDefault("MaxResults")
+  valid_600120 = validateParameter(valid_600120, JString, required = false,
+                                 default = nil)
+  if valid_600120 != nil:
+    section.add "MaxResults", valid_600120
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600121 = header.getOrDefault("X-Amz-Date")
+  valid_600121 = validateParameter(valid_600121, JString, required = false,
+                                 default = nil)
+  if valid_600121 != nil:
+    section.add "X-Amz-Date", valid_600121
+  var valid_600122 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600122 = validateParameter(valid_600122, JString, required = false,
+                                 default = nil)
+  if valid_600122 != nil:
+    section.add "X-Amz-Security-Token", valid_600122
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600123 = header.getOrDefault("X-Amz-Target")
+  valid_600123 = validateParameter(valid_600123, JString, required = true, default = newJString(
+      "Transcribe.ListVocabularyFilters"))
+  if valid_600123 != nil:
+    section.add "X-Amz-Target", valid_600123
+  var valid_600124 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600124 = validateParameter(valid_600124, JString, required = false,
+                                 default = nil)
+  if valid_600124 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600124
+  var valid_600125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600125 = validateParameter(valid_600125, JString, required = false,
+                                 default = nil)
+  if valid_600125 != nil:
+    section.add "X-Amz-Algorithm", valid_600125
+  var valid_600126 = header.getOrDefault("X-Amz-Signature")
+  valid_600126 = validateParameter(valid_600126, JString, required = false,
+                                 default = nil)
+  if valid_600126 != nil:
+    section.add "X-Amz-Signature", valid_600126
+  var valid_600127 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600127 = validateParameter(valid_600127, JString, required = false,
+                                 default = nil)
+  if valid_600127 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600127
+  var valid_600128 = header.getOrDefault("X-Amz-Credential")
+  valid_600128 = validateParameter(valid_600128, JString, required = false,
+                                 default = nil)
+  if valid_600128 != nil:
+    section.add "X-Amz-Credential", valid_600128
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600130: Call_ListVocabularyFilters_600116; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Gets information about vocabulary filters.
+  ## 
+  let valid = call_600130.validator(path, query, header, formData, body)
+  let scheme = call_600130.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600130.url(scheme.get, call_600130.host, call_600130.base,
+                         call_600130.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600130, url, valid)
+
+proc call*(call_600131: Call_ListVocabularyFilters_600116; body: JsonNode;
+          NextToken: string = ""; MaxResults: string = ""): Recallable =
+  ## listVocabularyFilters
+  ## Gets information about vocabulary filters.
+  ##   NextToken: string
+  ##            : Pagination token
+  ##   body: JObject (required)
+  ##   MaxResults: string
+  ##             : Pagination limit
+  var query_600132 = newJObject()
+  var body_600133 = newJObject()
+  add(query_600132, "NextToken", newJString(NextToken))
+  if body != nil:
+    body_600133 = body
+  add(query_600132, "MaxResults", newJString(MaxResults))
+  result = call_600131.call(nil, query_600132, nil, nil, body_600133)
+
+var listVocabularyFilters* = Call_ListVocabularyFilters_600116(
+    name: "listVocabularyFilters", meth: HttpMethod.HttpPost,
+    host: "transcribe.amazonaws.com",
+    route: "/#X-Amz-Target=Transcribe.ListVocabularyFilters",
+    validator: validate_ListVocabularyFilters_600117, base: "/",
+    url: url_ListVocabularyFilters_600118, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_StartTranscriptionJob_600134 = ref object of OpenApiRestCall_599368
+proc url_StartTranscriptionJob_600136(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StartTranscriptionJob_600135(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Starts an asynchronous job to transcribe speech to text. 
   ## 
@@ -1013,48 +1489,48 @@ proc validate_StartTranscriptionJob_600072(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600074 = header.getOrDefault("X-Amz-Date")
-  valid_600074 = validateParameter(valid_600074, JString, required = false,
+  var valid_600137 = header.getOrDefault("X-Amz-Date")
+  valid_600137 = validateParameter(valid_600137, JString, required = false,
                                  default = nil)
-  if valid_600074 != nil:
-    section.add "X-Amz-Date", valid_600074
-  var valid_600075 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600075 = validateParameter(valid_600075, JString, required = false,
+  if valid_600137 != nil:
+    section.add "X-Amz-Date", valid_600137
+  var valid_600138 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600138 = validateParameter(valid_600138, JString, required = false,
                                  default = nil)
-  if valid_600075 != nil:
-    section.add "X-Amz-Security-Token", valid_600075
+  if valid_600138 != nil:
+    section.add "X-Amz-Security-Token", valid_600138
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600076 = header.getOrDefault("X-Amz-Target")
-  valid_600076 = validateParameter(valid_600076, JString, required = true, default = newJString(
+  var valid_600139 = header.getOrDefault("X-Amz-Target")
+  valid_600139 = validateParameter(valid_600139, JString, required = true, default = newJString(
       "Transcribe.StartTranscriptionJob"))
-  if valid_600076 != nil:
-    section.add "X-Amz-Target", valid_600076
-  var valid_600077 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600077 = validateParameter(valid_600077, JString, required = false,
+  if valid_600139 != nil:
+    section.add "X-Amz-Target", valid_600139
+  var valid_600140 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600140 = validateParameter(valid_600140, JString, required = false,
                                  default = nil)
-  if valid_600077 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600077
-  var valid_600078 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600078 = validateParameter(valid_600078, JString, required = false,
+  if valid_600140 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600140
+  var valid_600141 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600141 = validateParameter(valid_600141, JString, required = false,
                                  default = nil)
-  if valid_600078 != nil:
-    section.add "X-Amz-Algorithm", valid_600078
-  var valid_600079 = header.getOrDefault("X-Amz-Signature")
-  valid_600079 = validateParameter(valid_600079, JString, required = false,
+  if valid_600141 != nil:
+    section.add "X-Amz-Algorithm", valid_600141
+  var valid_600142 = header.getOrDefault("X-Amz-Signature")
+  valid_600142 = validateParameter(valid_600142, JString, required = false,
                                  default = nil)
-  if valid_600079 != nil:
-    section.add "X-Amz-Signature", valid_600079
-  var valid_600080 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600080 = validateParameter(valid_600080, JString, required = false,
+  if valid_600142 != nil:
+    section.add "X-Amz-Signature", valid_600142
+  var valid_600143 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600143 = validateParameter(valid_600143, JString, required = false,
                                  default = nil)
-  if valid_600080 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600080
-  var valid_600081 = header.getOrDefault("X-Amz-Credential")
-  valid_600081 = validateParameter(valid_600081, JString, required = false,
+  if valid_600143 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600143
+  var valid_600144 = header.getOrDefault("X-Amz-Credential")
+  valid_600144 = validateParameter(valid_600144, JString, required = false,
                                  default = nil)
-  if valid_600081 != nil:
-    section.add "X-Amz-Credential", valid_600081
+  if valid_600144 != nil:
+    section.add "X-Amz-Credential", valid_600144
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1065,37 +1541,37 @@ proc validate_StartTranscriptionJob_600072(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600083: Call_StartTranscriptionJob_600071; path: JsonNode;
+proc call*(call_600146: Call_StartTranscriptionJob_600134; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Starts an asynchronous job to transcribe speech to text. 
   ## 
-  let valid = call_600083.validator(path, query, header, formData, body)
-  let scheme = call_600083.pickScheme
+  let valid = call_600146.validator(path, query, header, formData, body)
+  let scheme = call_600146.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600083.url(scheme.get, call_600083.host, call_600083.base,
-                         call_600083.route, valid.getOrDefault("path"),
+  let url = call_600146.url(scheme.get, call_600146.host, call_600146.base,
+                         call_600146.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600083, url, valid)
+  result = atozHook(call_600146, url, valid)
 
-proc call*(call_600084: Call_StartTranscriptionJob_600071; body: JsonNode): Recallable =
+proc call*(call_600147: Call_StartTranscriptionJob_600134; body: JsonNode): Recallable =
   ## startTranscriptionJob
   ## Starts an asynchronous job to transcribe speech to text. 
   ##   body: JObject (required)
-  var body_600085 = newJObject()
+  var body_600148 = newJObject()
   if body != nil:
-    body_600085 = body
-  result = call_600084.call(nil, nil, nil, nil, body_600085)
+    body_600148 = body
+  result = call_600147.call(nil, nil, nil, nil, body_600148)
 
-var startTranscriptionJob* = Call_StartTranscriptionJob_600071(
+var startTranscriptionJob* = Call_StartTranscriptionJob_600134(
     name: "startTranscriptionJob", meth: HttpMethod.HttpPost,
     host: "transcribe.amazonaws.com",
     route: "/#X-Amz-Target=Transcribe.StartTranscriptionJob",
-    validator: validate_StartTranscriptionJob_600072, base: "/",
-    url: url_StartTranscriptionJob_600073, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartTranscriptionJob_600135, base: "/",
+    url: url_StartTranscriptionJob_600136, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateVocabulary_600086 = ref object of OpenApiRestCall_599368
-proc url_UpdateVocabulary_600088(protocol: Scheme; host: string; base: string;
+  Call_UpdateVocabulary_600149 = ref object of OpenApiRestCall_599368
+proc url_UpdateVocabulary_600151(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1106,7 +1582,7 @@ proc url_UpdateVocabulary_600088(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateVocabulary_600087(path: JsonNode; query: JsonNode;
+proc validate_UpdateVocabulary_600150(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Updates an existing vocabulary with new values. The <code>UpdateVocabulary</code> operation overwrites all of the existing information with the values that you provide in the request. 
@@ -1127,48 +1603,48 @@ proc validate_UpdateVocabulary_600087(path: JsonNode; query: JsonNode;
   ##   X-Amz-SignedHeaders: JString
   ##   X-Amz-Credential: JString
   section = newJObject()
-  var valid_600089 = header.getOrDefault("X-Amz-Date")
-  valid_600089 = validateParameter(valid_600089, JString, required = false,
+  var valid_600152 = header.getOrDefault("X-Amz-Date")
+  valid_600152 = validateParameter(valid_600152, JString, required = false,
                                  default = nil)
-  if valid_600089 != nil:
-    section.add "X-Amz-Date", valid_600089
-  var valid_600090 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600090 = validateParameter(valid_600090, JString, required = false,
+  if valid_600152 != nil:
+    section.add "X-Amz-Date", valid_600152
+  var valid_600153 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600153 = validateParameter(valid_600153, JString, required = false,
                                  default = nil)
-  if valid_600090 != nil:
-    section.add "X-Amz-Security-Token", valid_600090
+  if valid_600153 != nil:
+    section.add "X-Amz-Security-Token", valid_600153
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600091 = header.getOrDefault("X-Amz-Target")
-  valid_600091 = validateParameter(valid_600091, JString, required = true, default = newJString(
+  var valid_600154 = header.getOrDefault("X-Amz-Target")
+  valid_600154 = validateParameter(valid_600154, JString, required = true, default = newJString(
       "Transcribe.UpdateVocabulary"))
-  if valid_600091 != nil:
-    section.add "X-Amz-Target", valid_600091
-  var valid_600092 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600092 = validateParameter(valid_600092, JString, required = false,
+  if valid_600154 != nil:
+    section.add "X-Amz-Target", valid_600154
+  var valid_600155 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600155 = validateParameter(valid_600155, JString, required = false,
                                  default = nil)
-  if valid_600092 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600092
-  var valid_600093 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600093 = validateParameter(valid_600093, JString, required = false,
+  if valid_600155 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600155
+  var valid_600156 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600156 = validateParameter(valid_600156, JString, required = false,
                                  default = nil)
-  if valid_600093 != nil:
-    section.add "X-Amz-Algorithm", valid_600093
-  var valid_600094 = header.getOrDefault("X-Amz-Signature")
-  valid_600094 = validateParameter(valid_600094, JString, required = false,
+  if valid_600156 != nil:
+    section.add "X-Amz-Algorithm", valid_600156
+  var valid_600157 = header.getOrDefault("X-Amz-Signature")
+  valid_600157 = validateParameter(valid_600157, JString, required = false,
                                  default = nil)
-  if valid_600094 != nil:
-    section.add "X-Amz-Signature", valid_600094
-  var valid_600095 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600095 = validateParameter(valid_600095, JString, required = false,
+  if valid_600157 != nil:
+    section.add "X-Amz-Signature", valid_600157
+  var valid_600158 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600158 = validateParameter(valid_600158, JString, required = false,
                                  default = nil)
-  if valid_600095 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600095
-  var valid_600096 = header.getOrDefault("X-Amz-Credential")
-  valid_600096 = validateParameter(valid_600096, JString, required = false,
+  if valid_600158 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600158
+  var valid_600159 = header.getOrDefault("X-Amz-Credential")
+  valid_600159 = validateParameter(valid_600159, JString, required = false,
                                  default = nil)
-  if valid_600096 != nil:
-    section.add "X-Amz-Credential", valid_600096
+  if valid_600159 != nil:
+    section.add "X-Amz-Credential", valid_600159
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1179,33 +1655,146 @@ proc validate_UpdateVocabulary_600087(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600098: Call_UpdateVocabulary_600086; path: JsonNode;
+proc call*(call_600161: Call_UpdateVocabulary_600149; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates an existing vocabulary with new values. The <code>UpdateVocabulary</code> operation overwrites all of the existing information with the values that you provide in the request. 
   ## 
-  let valid = call_600098.validator(path, query, header, formData, body)
-  let scheme = call_600098.pickScheme
+  let valid = call_600161.validator(path, query, header, formData, body)
+  let scheme = call_600161.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600098.url(scheme.get, call_600098.host, call_600098.base,
-                         call_600098.route, valid.getOrDefault("path"),
+  let url = call_600161.url(scheme.get, call_600161.host, call_600161.base,
+                         call_600161.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600098, url, valid)
+  result = atozHook(call_600161, url, valid)
 
-proc call*(call_600099: Call_UpdateVocabulary_600086; body: JsonNode): Recallable =
+proc call*(call_600162: Call_UpdateVocabulary_600149; body: JsonNode): Recallable =
   ## updateVocabulary
   ## Updates an existing vocabulary with new values. The <code>UpdateVocabulary</code> operation overwrites all of the existing information with the values that you provide in the request. 
   ##   body: JObject (required)
-  var body_600100 = newJObject()
+  var body_600163 = newJObject()
   if body != nil:
-    body_600100 = body
-  result = call_600099.call(nil, nil, nil, nil, body_600100)
+    body_600163 = body
+  result = call_600162.call(nil, nil, nil, nil, body_600163)
 
-var updateVocabulary* = Call_UpdateVocabulary_600086(name: "updateVocabulary",
+var updateVocabulary* = Call_UpdateVocabulary_600149(name: "updateVocabulary",
     meth: HttpMethod.HttpPost, host: "transcribe.amazonaws.com",
     route: "/#X-Amz-Target=Transcribe.UpdateVocabulary",
-    validator: validate_UpdateVocabulary_600087, base: "/",
-    url: url_UpdateVocabulary_600088, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateVocabulary_600150, base: "/",
+    url: url_UpdateVocabulary_600151, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateVocabularyFilter_600164 = ref object of OpenApiRestCall_599368
+proc url_UpdateVocabularyFilter_600166(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateVocabularyFilter_600165(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates a vocabulary filter with a new list of filtered words.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600167 = header.getOrDefault("X-Amz-Date")
+  valid_600167 = validateParameter(valid_600167, JString, required = false,
+                                 default = nil)
+  if valid_600167 != nil:
+    section.add "X-Amz-Date", valid_600167
+  var valid_600168 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600168 = validateParameter(valid_600168, JString, required = false,
+                                 default = nil)
+  if valid_600168 != nil:
+    section.add "X-Amz-Security-Token", valid_600168
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600169 = header.getOrDefault("X-Amz-Target")
+  valid_600169 = validateParameter(valid_600169, JString, required = true, default = newJString(
+      "Transcribe.UpdateVocabularyFilter"))
+  if valid_600169 != nil:
+    section.add "X-Amz-Target", valid_600169
+  var valid_600170 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600170 = validateParameter(valid_600170, JString, required = false,
+                                 default = nil)
+  if valid_600170 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600170
+  var valid_600171 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600171 = validateParameter(valid_600171, JString, required = false,
+                                 default = nil)
+  if valid_600171 != nil:
+    section.add "X-Amz-Algorithm", valid_600171
+  var valid_600172 = header.getOrDefault("X-Amz-Signature")
+  valid_600172 = validateParameter(valid_600172, JString, required = false,
+                                 default = nil)
+  if valid_600172 != nil:
+    section.add "X-Amz-Signature", valid_600172
+  var valid_600173 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600173 = validateParameter(valid_600173, JString, required = false,
+                                 default = nil)
+  if valid_600173 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600173
+  var valid_600174 = header.getOrDefault("X-Amz-Credential")
+  valid_600174 = validateParameter(valid_600174, JString, required = false,
+                                 default = nil)
+  if valid_600174 != nil:
+    section.add "X-Amz-Credential", valid_600174
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600176: Call_UpdateVocabularyFilter_600164; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates a vocabulary filter with a new list of filtered words.
+  ## 
+  let valid = call_600176.validator(path, query, header, formData, body)
+  let scheme = call_600176.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600176.url(scheme.get, call_600176.host, call_600176.base,
+                         call_600176.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600176, url, valid)
+
+proc call*(call_600177: Call_UpdateVocabularyFilter_600164; body: JsonNode): Recallable =
+  ## updateVocabularyFilter
+  ## Updates a vocabulary filter with a new list of filtered words.
+  ##   body: JObject (required)
+  var body_600178 = newJObject()
+  if body != nil:
+    body_600178 = body
+  result = call_600177.call(nil, nil, nil, nil, body_600178)
+
+var updateVocabularyFilter* = Call_UpdateVocabularyFilter_600164(
+    name: "updateVocabularyFilter", meth: HttpMethod.HttpPost,
+    host: "transcribe.amazonaws.com",
+    route: "/#X-Amz-Target=Transcribe.UpdateVocabularyFilter",
+    validator: validate_UpdateVocabularyFilter_600165, base: "/",
+    url: url_UpdateVocabularyFilter_600166, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

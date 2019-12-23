@@ -1495,9 +1495,9 @@ var exportServerEngineAttribute* = Call_ExportServerEngineAttribute_600124(
     url: url_ExportServerEngineAttribute_600126,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestoreServer_600139 = ref object of OpenApiRestCall_599368
-proc url_RestoreServer_600141(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListTagsForResource_600139 = ref object of OpenApiRestCall_599368
+proc url_ListTagsForResource_600141(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1507,9 +1507,10 @@ proc url_RestoreServer_600141(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RestoreServer_600140(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p> Restores a backup to a server that is in a <code>CONNECTION_LOST</code>, <code>HEALTHY</code>, <code>RUNNING</code>, <code>UNHEALTHY</code>, or <code>TERMINATED</code> state. When you run RestoreServer, the server's EC2 instance is deleted, and a new EC2 instance is configured. RestoreServer maintains the existing server endpoint, so configuration management of the server's client devices (nodes) should continue to work. </p> <p> This operation is asynchronous. </p> <p> An <code>InvalidStateException</code> is thrown when the server is not in a valid state. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc validate_ListTagsForResource_600140(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## Returns a list of tags that are applied to the specified AWS OpsWorks for Chef Automate or AWS OpsWorks for Puppet Enterprise servers or backups.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1541,7 +1542,7 @@ proc validate_RestoreServer_600140(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600144 = header.getOrDefault("X-Amz-Target")
   valid_600144 = validateParameter(valid_600144, JString, required = true, default = newJString(
-      "OpsWorksCM_V2016_11_01.RestoreServer"))
+      "OpsWorksCM_V2016_11_01.ListTagsForResource"))
   if valid_600144 != nil:
     section.add "X-Amz-Target", valid_600144
   var valid_600145 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1579,9 +1580,9 @@ proc validate_RestoreServer_600140(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600151: Call_RestoreServer_600139; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p> Restores a backup to a server that is in a <code>CONNECTION_LOST</code>, <code>HEALTHY</code>, <code>RUNNING</code>, <code>UNHEALTHY</code>, or <code>TERMINATED</code> state. When you run RestoreServer, the server's EC2 instance is deleted, and a new EC2 instance is configured. RestoreServer maintains the existing server endpoint, so configuration management of the server's client devices (nodes) should continue to work. </p> <p> This operation is asynchronous. </p> <p> An <code>InvalidStateException</code> is thrown when the server is not in a valid state. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc call*(call_600151: Call_ListTagsForResource_600139; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns a list of tags that are applied to the specified AWS OpsWorks for Chef Automate or AWS OpsWorks for Puppet Enterprise servers or backups.
   ## 
   let valid = call_600151.validator(path, query, header, formData, body)
   let scheme = call_600151.pickScheme
@@ -1592,24 +1593,25 @@ proc call*(call_600151: Call_RestoreServer_600139; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_600151, url, valid)
 
-proc call*(call_600152: Call_RestoreServer_600139; body: JsonNode): Recallable =
-  ## restoreServer
-  ## <p> Restores a backup to a server that is in a <code>CONNECTION_LOST</code>, <code>HEALTHY</code>, <code>RUNNING</code>, <code>UNHEALTHY</code>, or <code>TERMINATED</code> state. When you run RestoreServer, the server's EC2 instance is deleted, and a new EC2 instance is configured. RestoreServer maintains the existing server endpoint, so configuration management of the server's client devices (nodes) should continue to work. </p> <p> This operation is asynchronous. </p> <p> An <code>InvalidStateException</code> is thrown when the server is not in a valid state. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc call*(call_600152: Call_ListTagsForResource_600139; body: JsonNode): Recallable =
+  ## listTagsForResource
+  ## Returns a list of tags that are applied to the specified AWS OpsWorks for Chef Automate or AWS OpsWorks for Puppet Enterprise servers or backups.
   ##   body: JObject (required)
   var body_600153 = newJObject()
   if body != nil:
     body_600153 = body
   result = call_600152.call(nil, nil, nil, nil, body_600153)
 
-var restoreServer* = Call_RestoreServer_600139(name: "restoreServer",
-    meth: HttpMethod.HttpPost, host: "opsworks-cm.amazonaws.com",
-    route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.RestoreServer",
-    validator: validate_RestoreServer_600140, base: "/", url: url_RestoreServer_600141,
-    schemes: {Scheme.Https, Scheme.Http})
+var listTagsForResource* = Call_ListTagsForResource_600139(
+    name: "listTagsForResource", meth: HttpMethod.HttpPost,
+    host: "opsworks-cm.amazonaws.com",
+    route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.ListTagsForResource",
+    validator: validate_ListTagsForResource_600140, base: "/",
+    url: url_ListTagsForResource_600141, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartMaintenance_600154 = ref object of OpenApiRestCall_599368
-proc url_StartMaintenance_600156(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_RestoreServer_600154 = ref object of OpenApiRestCall_599368
+proc url_RestoreServer_600156(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1619,10 +1621,9 @@ proc url_StartMaintenance_600156(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StartMaintenance_600155(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## <p> Manually starts server maintenance. This command can be useful if an earlier maintenance attempt failed, and the underlying cause of maintenance failure has been resolved. The server is in an <code>UNDER_MAINTENANCE</code> state while maintenance is in progress. </p> <p> Maintenance can only be started on servers in <code>HEALTHY</code> and <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is thrown. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc validate_RestoreServer_600155(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p> Restores a backup to a server that is in a <code>CONNECTION_LOST</code>, <code>HEALTHY</code>, <code>RUNNING</code>, <code>UNHEALTHY</code>, or <code>TERMINATED</code> state. When you run RestoreServer, the server's EC2 instance is deleted, and a new EC2 instance is configured. RestoreServer maintains the existing server endpoint, so configuration management of the server's client devices (nodes) should continue to work. </p> <p>Restoring from a backup is performed by creating a new EC2 instance. If restoration is successful, and the server is in a <code>HEALTHY</code> state, AWS OpsWorks CM switches traffic over to the new instance. After restoration is finished, the old EC2 instance is maintained in a <code>Running</code> or <code>Stopped</code> state, but is eventually terminated.</p> <p> This operation is asynchronous. </p> <p> An <code>InvalidStateException</code> is thrown when the server is not in a valid state. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1654,7 +1655,7 @@ proc validate_StartMaintenance_600155(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600159 = header.getOrDefault("X-Amz-Target")
   valid_600159 = validateParameter(valid_600159, JString, required = true, default = newJString(
-      "OpsWorksCM_V2016_11_01.StartMaintenance"))
+      "OpsWorksCM_V2016_11_01.RestoreServer"))
   if valid_600159 != nil:
     section.add "X-Amz-Target", valid_600159
   var valid_600160 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1692,9 +1693,9 @@ proc validate_StartMaintenance_600155(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600166: Call_StartMaintenance_600154; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p> Manually starts server maintenance. This command can be useful if an earlier maintenance attempt failed, and the underlying cause of maintenance failure has been resolved. The server is in an <code>UNDER_MAINTENANCE</code> state while maintenance is in progress. </p> <p> Maintenance can only be started on servers in <code>HEALTHY</code> and <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is thrown. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc call*(call_600166: Call_RestoreServer_600154; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p> Restores a backup to a server that is in a <code>CONNECTION_LOST</code>, <code>HEALTHY</code>, <code>RUNNING</code>, <code>UNHEALTHY</code>, or <code>TERMINATED</code> state. When you run RestoreServer, the server's EC2 instance is deleted, and a new EC2 instance is configured. RestoreServer maintains the existing server endpoint, so configuration management of the server's client devices (nodes) should continue to work. </p> <p>Restoring from a backup is performed by creating a new EC2 instance. If restoration is successful, and the server is in a <code>HEALTHY</code> state, AWS OpsWorks CM switches traffic over to the new instance. After restoration is finished, the old EC2 instance is maintained in a <code>Running</code> or <code>Stopped</code> state, but is eventually terminated.</p> <p> This operation is asynchronous. </p> <p> An <code>InvalidStateException</code> is thrown when the server is not in a valid state. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
   ## 
   let valid = call_600166.validator(path, query, header, formData, body)
   let scheme = call_600166.pickScheme
@@ -1705,24 +1706,24 @@ proc call*(call_600166: Call_StartMaintenance_600154; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600166, url, valid)
 
-proc call*(call_600167: Call_StartMaintenance_600154; body: JsonNode): Recallable =
-  ## startMaintenance
-  ## <p> Manually starts server maintenance. This command can be useful if an earlier maintenance attempt failed, and the underlying cause of maintenance failure has been resolved. The server is in an <code>UNDER_MAINTENANCE</code> state while maintenance is in progress. </p> <p> Maintenance can only be started on servers in <code>HEALTHY</code> and <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is thrown. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc call*(call_600167: Call_RestoreServer_600154; body: JsonNode): Recallable =
+  ## restoreServer
+  ## <p> Restores a backup to a server that is in a <code>CONNECTION_LOST</code>, <code>HEALTHY</code>, <code>RUNNING</code>, <code>UNHEALTHY</code>, or <code>TERMINATED</code> state. When you run RestoreServer, the server's EC2 instance is deleted, and a new EC2 instance is configured. RestoreServer maintains the existing server endpoint, so configuration management of the server's client devices (nodes) should continue to work. </p> <p>Restoring from a backup is performed by creating a new EC2 instance. If restoration is successful, and the server is in a <code>HEALTHY</code> state, AWS OpsWorks CM switches traffic over to the new instance. After restoration is finished, the old EC2 instance is maintained in a <code>Running</code> or <code>Stopped</code> state, but is eventually terminated.</p> <p> This operation is asynchronous. </p> <p> An <code>InvalidStateException</code> is thrown when the server is not in a valid state. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
   ##   body: JObject (required)
   var body_600168 = newJObject()
   if body != nil:
     body_600168 = body
   result = call_600167.call(nil, nil, nil, nil, body_600168)
 
-var startMaintenance* = Call_StartMaintenance_600154(name: "startMaintenance",
+var restoreServer* = Call_RestoreServer_600154(name: "restoreServer",
     meth: HttpMethod.HttpPost, host: "opsworks-cm.amazonaws.com",
-    route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.StartMaintenance",
-    validator: validate_StartMaintenance_600155, base: "/",
-    url: url_StartMaintenance_600156, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.RestoreServer",
+    validator: validate_RestoreServer_600155, base: "/", url: url_RestoreServer_600156,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateServer_600169 = ref object of OpenApiRestCall_599368
-proc url_UpdateServer_600171(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StartMaintenance_600169 = ref object of OpenApiRestCall_599368
+proc url_StartMaintenance_600171(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1732,9 +1733,10 @@ proc url_UpdateServer_600171(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateServer_600170(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p> Updates settings for a server. </p> <p> This operation is synchronous. </p>
+proc validate_StartMaintenance_600170(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## <p> Manually starts server maintenance. This command can be useful if an earlier maintenance attempt failed, and the underlying cause of maintenance failure has been resolved. The server is in an <code>UNDER_MAINTENANCE</code> state while maintenance is in progress. </p> <p> Maintenance can only be started on servers in <code>HEALTHY</code> and <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is thrown. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1766,7 +1768,7 @@ proc validate_UpdateServer_600170(path: JsonNode; query: JsonNode; header: JsonN
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600174 = header.getOrDefault("X-Amz-Target")
   valid_600174 = validateParameter(valid_600174, JString, required = true, default = newJString(
-      "OpsWorksCM_V2016_11_01.UpdateServer"))
+      "OpsWorksCM_V2016_11_01.StartMaintenance"))
   if valid_600174 != nil:
     section.add "X-Amz-Target", valid_600174
   var valid_600175 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1804,9 +1806,9 @@ proc validate_UpdateServer_600170(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600181: Call_UpdateServer_600169; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p> Updates settings for a server. </p> <p> This operation is synchronous. </p>
+proc call*(call_600181: Call_StartMaintenance_600169; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p> Manually starts server maintenance. This command can be useful if an earlier maintenance attempt failed, and the underlying cause of maintenance failure has been resolved. The server is in an <code>UNDER_MAINTENANCE</code> state while maintenance is in progress. </p> <p> Maintenance can only be started on servers in <code>HEALTHY</code> and <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is thrown. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
   ## 
   let valid = call_600181.validator(path, query, header, formData, body)
   let scheme = call_600181.pickScheme
@@ -1817,24 +1819,24 @@ proc call*(call_600181: Call_UpdateServer_600169; path: JsonNode; query: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_600181, url, valid)
 
-proc call*(call_600182: Call_UpdateServer_600169; body: JsonNode): Recallable =
-  ## updateServer
-  ## <p> Updates settings for a server. </p> <p> This operation is synchronous. </p>
+proc call*(call_600182: Call_StartMaintenance_600169; body: JsonNode): Recallable =
+  ## startMaintenance
+  ## <p> Manually starts server maintenance. This command can be useful if an earlier maintenance attempt failed, and the underlying cause of maintenance failure has been resolved. The server is in an <code>UNDER_MAINTENANCE</code> state while maintenance is in progress. </p> <p> Maintenance can only be started on servers in <code>HEALTHY</code> and <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is thrown. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
   ##   body: JObject (required)
   var body_600183 = newJObject()
   if body != nil:
     body_600183 = body
   result = call_600182.call(nil, nil, nil, nil, body_600183)
 
-var updateServer* = Call_UpdateServer_600169(name: "updateServer",
+var startMaintenance* = Call_StartMaintenance_600169(name: "startMaintenance",
     meth: HttpMethod.HttpPost, host: "opsworks-cm.amazonaws.com",
-    route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.UpdateServer",
-    validator: validate_UpdateServer_600170, base: "/", url: url_UpdateServer_600171,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.StartMaintenance",
+    validator: validate_StartMaintenance_600170, base: "/",
+    url: url_StartMaintenance_600171, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateServerEngineAttributes_600184 = ref object of OpenApiRestCall_599368
-proc url_UpdateServerEngineAttributes_600186(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_TagResource_600184 = ref object of OpenApiRestCall_599368
+proc url_TagResource_600186(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1844,9 +1846,9 @@ proc url_UpdateServerEngineAttributes_600186(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateServerEngineAttributes_600185(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p> Updates engine-specific attributes on a specified server. The server enters the <code>MODIFYING</code> state when this operation is in progress. Only one update can occur at a time. You can use this command to reset a Chef server's public key (<code>CHEF_PIVOTAL_KEY</code>) or a Puppet server's admin password (<code>PUPPET_ADMIN_PASSWORD</code>). </p> <p> This operation is asynchronous. </p> <p> This operation can only be called for servers in <code>HEALTHY</code> or <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is raised. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc validate_TagResource_600185(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## Applies tags to an AWS OpsWorks for Chef Automate or AWS OpsWorks for Puppet Enterprise server, or to server backups.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1878,7 +1880,7 @@ proc validate_UpdateServerEngineAttributes_600185(path: JsonNode; query: JsonNod
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600189 = header.getOrDefault("X-Amz-Target")
   valid_600189 = validateParameter(valid_600189, JString, required = true, default = newJString(
-      "OpsWorksCM_V2016_11_01.UpdateServerEngineAttributes"))
+      "OpsWorksCM_V2016_11_01.TagResource"))
   if valid_600189 != nil:
     section.add "X-Amz-Target", valid_600189
   var valid_600190 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1916,9 +1918,9 @@ proc validate_UpdateServerEngineAttributes_600185(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600196: Call_UpdateServerEngineAttributes_600184; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p> Updates engine-specific attributes on a specified server. The server enters the <code>MODIFYING</code> state when this operation is in progress. Only one update can occur at a time. You can use this command to reset a Chef server's public key (<code>CHEF_PIVOTAL_KEY</code>) or a Puppet server's admin password (<code>PUPPET_ADMIN_PASSWORD</code>). </p> <p> This operation is asynchronous. </p> <p> This operation can only be called for servers in <code>HEALTHY</code> or <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is raised. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc call*(call_600196: Call_TagResource_600184; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Applies tags to an AWS OpsWorks for Chef Automate or AWS OpsWorks for Puppet Enterprise server, or to server backups.
   ## 
   let valid = call_600196.validator(path, query, header, formData, body)
   let scheme = call_600196.pickScheme
@@ -1929,20 +1931,357 @@ proc call*(call_600196: Call_UpdateServerEngineAttributes_600184; path: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_600196, url, valid)
 
-proc call*(call_600197: Call_UpdateServerEngineAttributes_600184; body: JsonNode): Recallable =
-  ## updateServerEngineAttributes
-  ## <p> Updates engine-specific attributes on a specified server. The server enters the <code>MODIFYING</code> state when this operation is in progress. Only one update can occur at a time. You can use this command to reset a Chef server's public key (<code>CHEF_PIVOTAL_KEY</code>) or a Puppet server's admin password (<code>PUPPET_ADMIN_PASSWORD</code>). </p> <p> This operation is asynchronous. </p> <p> This operation can only be called for servers in <code>HEALTHY</code> or <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is raised. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+proc call*(call_600197: Call_TagResource_600184; body: JsonNode): Recallable =
+  ## tagResource
+  ## Applies tags to an AWS OpsWorks for Chef Automate or AWS OpsWorks for Puppet Enterprise server, or to server backups.
   ##   body: JObject (required)
   var body_600198 = newJObject()
   if body != nil:
     body_600198 = body
   result = call_600197.call(nil, nil, nil, nil, body_600198)
 
-var updateServerEngineAttributes* = Call_UpdateServerEngineAttributes_600184(
+var tagResource* = Call_TagResource_600184(name: "tagResource",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "opsworks-cm.amazonaws.com", route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.TagResource",
+                                        validator: validate_TagResource_600185,
+                                        base: "/", url: url_TagResource_600186,
+                                        schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UntagResource_600199 = ref object of OpenApiRestCall_599368
+proc url_UntagResource_600201(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UntagResource_600200(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Removes specified tags from an AWS OpsWorks-CM server or backup.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600202 = header.getOrDefault("X-Amz-Date")
+  valid_600202 = validateParameter(valid_600202, JString, required = false,
+                                 default = nil)
+  if valid_600202 != nil:
+    section.add "X-Amz-Date", valid_600202
+  var valid_600203 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600203 = validateParameter(valid_600203, JString, required = false,
+                                 default = nil)
+  if valid_600203 != nil:
+    section.add "X-Amz-Security-Token", valid_600203
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600204 = header.getOrDefault("X-Amz-Target")
+  valid_600204 = validateParameter(valid_600204, JString, required = true, default = newJString(
+      "OpsWorksCM_V2016_11_01.UntagResource"))
+  if valid_600204 != nil:
+    section.add "X-Amz-Target", valid_600204
+  var valid_600205 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600205 = validateParameter(valid_600205, JString, required = false,
+                                 default = nil)
+  if valid_600205 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600205
+  var valid_600206 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600206 = validateParameter(valid_600206, JString, required = false,
+                                 default = nil)
+  if valid_600206 != nil:
+    section.add "X-Amz-Algorithm", valid_600206
+  var valid_600207 = header.getOrDefault("X-Amz-Signature")
+  valid_600207 = validateParameter(valid_600207, JString, required = false,
+                                 default = nil)
+  if valid_600207 != nil:
+    section.add "X-Amz-Signature", valid_600207
+  var valid_600208 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600208 = validateParameter(valid_600208, JString, required = false,
+                                 default = nil)
+  if valid_600208 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600208
+  var valid_600209 = header.getOrDefault("X-Amz-Credential")
+  valid_600209 = validateParameter(valid_600209, JString, required = false,
+                                 default = nil)
+  if valid_600209 != nil:
+    section.add "X-Amz-Credential", valid_600209
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600211: Call_UntagResource_600199; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Removes specified tags from an AWS OpsWorks-CM server or backup.
+  ## 
+  let valid = call_600211.validator(path, query, header, formData, body)
+  let scheme = call_600211.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600211.url(scheme.get, call_600211.host, call_600211.base,
+                         call_600211.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600211, url, valid)
+
+proc call*(call_600212: Call_UntagResource_600199; body: JsonNode): Recallable =
+  ## untagResource
+  ## Removes specified tags from an AWS OpsWorks-CM server or backup.
+  ##   body: JObject (required)
+  var body_600213 = newJObject()
+  if body != nil:
+    body_600213 = body
+  result = call_600212.call(nil, nil, nil, nil, body_600213)
+
+var untagResource* = Call_UntagResource_600199(name: "untagResource",
+    meth: HttpMethod.HttpPost, host: "opsworks-cm.amazonaws.com",
+    route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.UntagResource",
+    validator: validate_UntagResource_600200, base: "/", url: url_UntagResource_600201,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateServer_600214 = ref object of OpenApiRestCall_599368
+proc url_UpdateServer_600216(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateServer_600215(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p> Updates settings for a server. </p> <p> This operation is synchronous. </p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600217 = header.getOrDefault("X-Amz-Date")
+  valid_600217 = validateParameter(valid_600217, JString, required = false,
+                                 default = nil)
+  if valid_600217 != nil:
+    section.add "X-Amz-Date", valid_600217
+  var valid_600218 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600218 = validateParameter(valid_600218, JString, required = false,
+                                 default = nil)
+  if valid_600218 != nil:
+    section.add "X-Amz-Security-Token", valid_600218
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600219 = header.getOrDefault("X-Amz-Target")
+  valid_600219 = validateParameter(valid_600219, JString, required = true, default = newJString(
+      "OpsWorksCM_V2016_11_01.UpdateServer"))
+  if valid_600219 != nil:
+    section.add "X-Amz-Target", valid_600219
+  var valid_600220 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600220 = validateParameter(valid_600220, JString, required = false,
+                                 default = nil)
+  if valid_600220 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600220
+  var valid_600221 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600221 = validateParameter(valid_600221, JString, required = false,
+                                 default = nil)
+  if valid_600221 != nil:
+    section.add "X-Amz-Algorithm", valid_600221
+  var valid_600222 = header.getOrDefault("X-Amz-Signature")
+  valid_600222 = validateParameter(valid_600222, JString, required = false,
+                                 default = nil)
+  if valid_600222 != nil:
+    section.add "X-Amz-Signature", valid_600222
+  var valid_600223 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600223 = validateParameter(valid_600223, JString, required = false,
+                                 default = nil)
+  if valid_600223 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600223
+  var valid_600224 = header.getOrDefault("X-Amz-Credential")
+  valid_600224 = validateParameter(valid_600224, JString, required = false,
+                                 default = nil)
+  if valid_600224 != nil:
+    section.add "X-Amz-Credential", valid_600224
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600226: Call_UpdateServer_600214; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p> Updates settings for a server. </p> <p> This operation is synchronous. </p>
+  ## 
+  let valid = call_600226.validator(path, query, header, formData, body)
+  let scheme = call_600226.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600226.url(scheme.get, call_600226.host, call_600226.base,
+                         call_600226.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600226, url, valid)
+
+proc call*(call_600227: Call_UpdateServer_600214; body: JsonNode): Recallable =
+  ## updateServer
+  ## <p> Updates settings for a server. </p> <p> This operation is synchronous. </p>
+  ##   body: JObject (required)
+  var body_600228 = newJObject()
+  if body != nil:
+    body_600228 = body
+  result = call_600227.call(nil, nil, nil, nil, body_600228)
+
+var updateServer* = Call_UpdateServer_600214(name: "updateServer",
+    meth: HttpMethod.HttpPost, host: "opsworks-cm.amazonaws.com",
+    route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.UpdateServer",
+    validator: validate_UpdateServer_600215, base: "/", url: url_UpdateServer_600216,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateServerEngineAttributes_600229 = ref object of OpenApiRestCall_599368
+proc url_UpdateServerEngineAttributes_600231(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateServerEngineAttributes_600230(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p> Updates engine-specific attributes on a specified server. The server enters the <code>MODIFYING</code> state when this operation is in progress. Only one update can occur at a time. You can use this command to reset a Chef server's public key (<code>CHEF_PIVOTAL_KEY</code>) or a Puppet server's admin password (<code>PUPPET_ADMIN_PASSWORD</code>). </p> <p> This operation is asynchronous. </p> <p> This operation can only be called for servers in <code>HEALTHY</code> or <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is raised. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600232 = header.getOrDefault("X-Amz-Date")
+  valid_600232 = validateParameter(valid_600232, JString, required = false,
+                                 default = nil)
+  if valid_600232 != nil:
+    section.add "X-Amz-Date", valid_600232
+  var valid_600233 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600233 = validateParameter(valid_600233, JString, required = false,
+                                 default = nil)
+  if valid_600233 != nil:
+    section.add "X-Amz-Security-Token", valid_600233
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600234 = header.getOrDefault("X-Amz-Target")
+  valid_600234 = validateParameter(valid_600234, JString, required = true, default = newJString(
+      "OpsWorksCM_V2016_11_01.UpdateServerEngineAttributes"))
+  if valid_600234 != nil:
+    section.add "X-Amz-Target", valid_600234
+  var valid_600235 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600235 = validateParameter(valid_600235, JString, required = false,
+                                 default = nil)
+  if valid_600235 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600235
+  var valid_600236 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600236 = validateParameter(valid_600236, JString, required = false,
+                                 default = nil)
+  if valid_600236 != nil:
+    section.add "X-Amz-Algorithm", valid_600236
+  var valid_600237 = header.getOrDefault("X-Amz-Signature")
+  valid_600237 = validateParameter(valid_600237, JString, required = false,
+                                 default = nil)
+  if valid_600237 != nil:
+    section.add "X-Amz-Signature", valid_600237
+  var valid_600238 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600238 = validateParameter(valid_600238, JString, required = false,
+                                 default = nil)
+  if valid_600238 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600238
+  var valid_600239 = header.getOrDefault("X-Amz-Credential")
+  valid_600239 = validateParameter(valid_600239, JString, required = false,
+                                 default = nil)
+  if valid_600239 != nil:
+    section.add "X-Amz-Credential", valid_600239
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600241: Call_UpdateServerEngineAttributes_600229; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p> Updates engine-specific attributes on a specified server. The server enters the <code>MODIFYING</code> state when this operation is in progress. Only one update can occur at a time. You can use this command to reset a Chef server's public key (<code>CHEF_PIVOTAL_KEY</code>) or a Puppet server's admin password (<code>PUPPET_ADMIN_PASSWORD</code>). </p> <p> This operation is asynchronous. </p> <p> This operation can only be called for servers in <code>HEALTHY</code> or <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is raised. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+  ## 
+  let valid = call_600241.validator(path, query, header, formData, body)
+  let scheme = call_600241.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600241.url(scheme.get, call_600241.host, call_600241.base,
+                         call_600241.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600241, url, valid)
+
+proc call*(call_600242: Call_UpdateServerEngineAttributes_600229; body: JsonNode): Recallable =
+  ## updateServerEngineAttributes
+  ## <p> Updates engine-specific attributes on a specified server. The server enters the <code>MODIFYING</code> state when this operation is in progress. Only one update can occur at a time. You can use this command to reset a Chef server's public key (<code>CHEF_PIVOTAL_KEY</code>) or a Puppet server's admin password (<code>PUPPET_ADMIN_PASSWORD</code>). </p> <p> This operation is asynchronous. </p> <p> This operation can only be called for servers in <code>HEALTHY</code> or <code>UNHEALTHY</code> states. Otherwise, an <code>InvalidStateException</code> is raised. A <code>ResourceNotFoundException</code> is thrown when the server does not exist. A <code>ValidationException</code> is raised when parameters of the request are not valid. </p>
+  ##   body: JObject (required)
+  var body_600243 = newJObject()
+  if body != nil:
+    body_600243 = body
+  result = call_600242.call(nil, nil, nil, nil, body_600243)
+
+var updateServerEngineAttributes* = Call_UpdateServerEngineAttributes_600229(
     name: "updateServerEngineAttributes", meth: HttpMethod.HttpPost,
     host: "opsworks-cm.amazonaws.com", route: "/#X-Amz-Target=OpsWorksCM_V2016_11_01.UpdateServerEngineAttributes",
-    validator: validate_UpdateServerEngineAttributes_600185, base: "/",
-    url: url_UpdateServerEngineAttributes_600186,
+    validator: validate_UpdateServerEngineAttributes_600230, base: "/",
+    url: url_UpdateServerEngineAttributes_600231,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

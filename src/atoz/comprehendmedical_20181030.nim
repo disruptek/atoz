@@ -489,7 +489,7 @@ proc url_DetectEntitiesV2_600006(protocol: Scheme; host: string; base: string;
 proc validate_DetectEntitiesV2_600005(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Inspects the clinical text for a variety of medical entities and returns specific information about them such as entity category, location, and confidence score on that information.</p> <p>The <code>DetectEntitiesV2</code> operation replaces the <a>DetectEntities</a> operation. This new action uses a different model for determining the entities in your medical text and changes the way that some entities are returned in the output. You should use the <code>DetectEntitiesV2</code> operation in all new applications.</p> <p>The <code>DetectEntitiesV2</code> operation returns the <code>Acuity</code> and <code>Direction</code> entities as attributes instead of types. It does not return the <code>Quality</code> or <code>Quantity</code> entities.</p>
+  ## <p>Inspects the clinical text for a variety of medical entities and returns specific information about them such as entity category, location, and confidence score on that information.</p> <p>The <code>DetectEntitiesV2</code> operation replaces the <a>DetectEntities</a> operation. This new action uses a different model for determining the entities in your medical text and changes the way that some entities are returned in the output. You should use the <code>DetectEntitiesV2</code> operation in all new applications.</p> <p>The <code>DetectEntitiesV2</code> operation returns the <code>Acuity</code> and <code>Direction</code> entities as attributes instead of types. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -561,7 +561,7 @@ proc validate_DetectEntitiesV2_600005(path: JsonNode; query: JsonNode;
 
 proc call*(call_600016: Call_DetectEntitiesV2_600004; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Inspects the clinical text for a variety of medical entities and returns specific information about them such as entity category, location, and confidence score on that information.</p> <p>The <code>DetectEntitiesV2</code> operation replaces the <a>DetectEntities</a> operation. This new action uses a different model for determining the entities in your medical text and changes the way that some entities are returned in the output. You should use the <code>DetectEntitiesV2</code> operation in all new applications.</p> <p>The <code>DetectEntitiesV2</code> operation returns the <code>Acuity</code> and <code>Direction</code> entities as attributes instead of types. It does not return the <code>Quality</code> or <code>Quantity</code> entities.</p>
+  ## <p>Inspects the clinical text for a variety of medical entities and returns specific information about them such as entity category, location, and confidence score on that information.</p> <p>The <code>DetectEntitiesV2</code> operation replaces the <a>DetectEntities</a> operation. This new action uses a different model for determining the entities in your medical text and changes the way that some entities are returned in the output. You should use the <code>DetectEntitiesV2</code> operation in all new applications.</p> <p>The <code>DetectEntitiesV2</code> operation returns the <code>Acuity</code> and <code>Direction</code> entities as attributes instead of types. </p>
   ## 
   let valid = call_600016.validator(path, query, header, formData, body)
   let scheme = call_600016.pickScheme
@@ -574,7 +574,7 @@ proc call*(call_600016: Call_DetectEntitiesV2_600004; path: JsonNode;
 
 proc call*(call_600017: Call_DetectEntitiesV2_600004; body: JsonNode): Recallable =
   ## detectEntitiesV2
-  ## <p>Inspects the clinical text for a variety of medical entities and returns specific information about them such as entity category, location, and confidence score on that information.</p> <p>The <code>DetectEntitiesV2</code> operation replaces the <a>DetectEntities</a> operation. This new action uses a different model for determining the entities in your medical text and changes the way that some entities are returned in the output. You should use the <code>DetectEntitiesV2</code> operation in all new applications.</p> <p>The <code>DetectEntitiesV2</code> operation returns the <code>Acuity</code> and <code>Direction</code> entities as attributes instead of types. It does not return the <code>Quality</code> or <code>Quantity</code> entities.</p>
+  ## <p>Inspects the clinical text for a variety of medical entities and returns specific information about them such as entity category, location, and confidence score on that information.</p> <p>The <code>DetectEntitiesV2</code> operation replaces the <a>DetectEntities</a> operation. This new action uses a different model for determining the entities in your medical text and changes the way that some entities are returned in the output. You should use the <code>DetectEntitiesV2</code> operation in all new applications.</p> <p>The <code>DetectEntitiesV2</code> operation returns the <code>Acuity</code> and <code>Direction</code> entities as attributes instead of types. </p>
   ##   body: JObject (required)
   var body_600018 = newJObject()
   if body != nil:
@@ -699,9 +699,9 @@ var detectPHI* = Call_DetectPHI_600019(name: "detectPHI", meth: HttpMethod.HttpP
                                     base: "/", url: url_DetectPHI_600021,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListEntitiesDetectionV2Jobs_600034 = ref object of OpenApiRestCall_599368
-proc url_ListEntitiesDetectionV2Jobs_600036(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_InferICD10CM_600034 = ref object of OpenApiRestCall_599368
+proc url_InferICD10CM_600036(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -711,9 +711,9 @@ proc url_ListEntitiesDetectionV2Jobs_600036(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListEntitiesDetectionV2Jobs_600035(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Gets a list of medical entity detection jobs that you have submitted.
+proc validate_InferICD10CM_600035(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## InferICD10CM detects medical conditions as entities listed in a patient record and links those entities to normalized concept identifiers in the ICD-10-CM knowledge base from the Centers for Disease Control.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -745,7 +745,7 @@ proc validate_ListEntitiesDetectionV2Jobs_600035(path: JsonNode; query: JsonNode
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600039 = header.getOrDefault("X-Amz-Target")
   valid_600039 = validateParameter(valid_600039, JString, required = true, default = newJString(
-      "ComprehendMedical_20181030.ListEntitiesDetectionV2Jobs"))
+      "ComprehendMedical_20181030.InferICD10CM"))
   if valid_600039 != nil:
     section.add "X-Amz-Target", valid_600039
   var valid_600040 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -783,9 +783,9 @@ proc validate_ListEntitiesDetectionV2Jobs_600035(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600046: Call_ListEntitiesDetectionV2Jobs_600034; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets a list of medical entity detection jobs that you have submitted.
+proc call*(call_600046: Call_InferICD10CM_600034; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## InferICD10CM detects medical conditions as entities listed in a patient record and links those entities to normalized concept identifiers in the ICD-10-CM knowledge base from the Centers for Disease Control.
   ## 
   let valid = call_600046.validator(path, query, header, formData, body)
   let scheme = call_600046.pickScheme
@@ -796,25 +796,24 @@ proc call*(call_600046: Call_ListEntitiesDetectionV2Jobs_600034; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600046, url, valid)
 
-proc call*(call_600047: Call_ListEntitiesDetectionV2Jobs_600034; body: JsonNode): Recallable =
-  ## listEntitiesDetectionV2Jobs
-  ## Gets a list of medical entity detection jobs that you have submitted.
+proc call*(call_600047: Call_InferICD10CM_600034; body: JsonNode): Recallable =
+  ## inferICD10CM
+  ## InferICD10CM detects medical conditions as entities listed in a patient record and links those entities to normalized concept identifiers in the ICD-10-CM knowledge base from the Centers for Disease Control.
   ##   body: JObject (required)
   var body_600048 = newJObject()
   if body != nil:
     body_600048 = body
   result = call_600047.call(nil, nil, nil, nil, body_600048)
 
-var listEntitiesDetectionV2Jobs* = Call_ListEntitiesDetectionV2Jobs_600034(
-    name: "listEntitiesDetectionV2Jobs", meth: HttpMethod.HttpPost,
-    host: "comprehendmedical.amazonaws.com", route: "/#X-Amz-Target=ComprehendMedical_20181030.ListEntitiesDetectionV2Jobs",
-    validator: validate_ListEntitiesDetectionV2Jobs_600035, base: "/",
-    url: url_ListEntitiesDetectionV2Jobs_600036,
+var inferICD10CM* = Call_InferICD10CM_600034(name: "inferICD10CM",
+    meth: HttpMethod.HttpPost, host: "comprehendmedical.amazonaws.com",
+    route: "/#X-Amz-Target=ComprehendMedical_20181030.InferICD10CM",
+    validator: validate_InferICD10CM_600035, base: "/", url: url_InferICD10CM_600036,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPHIDetectionJobs_600049 = ref object of OpenApiRestCall_599368
-proc url_ListPHIDetectionJobs_600051(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_InferRxNorm_600049 = ref object of OpenApiRestCall_599368
+proc url_InferRxNorm_600051(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -824,9 +823,9 @@ proc url_ListPHIDetectionJobs_600051(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListPHIDetectionJobs_600050(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Gets a list of protected health information (PHI) detection jobs that you have submitted.
+proc validate_InferRxNorm_600050(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## InferRxNorm detects medications as entities listed in a patient record and links to the normalized concept identifiers in the RxNorm database from the National Library of Medicine.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -858,7 +857,7 @@ proc validate_ListPHIDetectionJobs_600050(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600054 = header.getOrDefault("X-Amz-Target")
   valid_600054 = validateParameter(valid_600054, JString, required = true, default = newJString(
-      "ComprehendMedical_20181030.ListPHIDetectionJobs"))
+      "ComprehendMedical_20181030.InferRxNorm"))
   if valid_600054 != nil:
     section.add "X-Amz-Target", valid_600054
   var valid_600055 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -896,9 +895,9 @@ proc validate_ListPHIDetectionJobs_600050(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600061: Call_ListPHIDetectionJobs_600049; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets a list of protected health information (PHI) detection jobs that you have submitted.
+proc call*(call_600061: Call_InferRxNorm_600049; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## InferRxNorm detects medications as entities listed in a patient record and links to the normalized concept identifiers in the RxNorm database from the National Library of Medicine.
   ## 
   let valid = call_600061.validator(path, query, header, formData, body)
   let scheme = call_600061.pickScheme
@@ -909,24 +908,23 @@ proc call*(call_600061: Call_ListPHIDetectionJobs_600049; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600061, url, valid)
 
-proc call*(call_600062: Call_ListPHIDetectionJobs_600049; body: JsonNode): Recallable =
-  ## listPHIDetectionJobs
-  ## Gets a list of protected health information (PHI) detection jobs that you have submitted.
+proc call*(call_600062: Call_InferRxNorm_600049; body: JsonNode): Recallable =
+  ## inferRxNorm
+  ## InferRxNorm detects medications as entities listed in a patient record and links to the normalized concept identifiers in the RxNorm database from the National Library of Medicine.
   ##   body: JObject (required)
   var body_600063 = newJObject()
   if body != nil:
     body_600063 = body
   result = call_600062.call(nil, nil, nil, nil, body_600063)
 
-var listPHIDetectionJobs* = Call_ListPHIDetectionJobs_600049(
-    name: "listPHIDetectionJobs", meth: HttpMethod.HttpPost,
-    host: "comprehendmedical.amazonaws.com",
-    route: "/#X-Amz-Target=ComprehendMedical_20181030.ListPHIDetectionJobs",
-    validator: validate_ListPHIDetectionJobs_600050, base: "/",
-    url: url_ListPHIDetectionJobs_600051, schemes: {Scheme.Https, Scheme.Http})
+var inferRxNorm* = Call_InferRxNorm_600049(name: "inferRxNorm",
+                                        meth: HttpMethod.HttpPost, host: "comprehendmedical.amazonaws.com", route: "/#X-Amz-Target=ComprehendMedical_20181030.InferRxNorm",
+                                        validator: validate_InferRxNorm_600050,
+                                        base: "/", url: url_InferRxNorm_600051,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartEntitiesDetectionV2Job_600064 = ref object of OpenApiRestCall_599368
-proc url_StartEntitiesDetectionV2Job_600066(protocol: Scheme; host: string;
+  Call_ListEntitiesDetectionV2Jobs_600064 = ref object of OpenApiRestCall_599368
+proc url_ListEntitiesDetectionV2Jobs_600066(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -937,9 +935,9 @@ proc url_StartEntitiesDetectionV2Job_600066(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_StartEntitiesDetectionV2Job_600065(path: JsonNode; query: JsonNode;
+proc validate_ListEntitiesDetectionV2Jobs_600065(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Starts an asynchronous medical entity detection job for a collection of documents. Use the <code>DescribeEntitiesDetectionV2Job</code> operation to track the status of a job.
+  ## Gets a list of medical entity detection jobs that you have submitted.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -971,7 +969,7 @@ proc validate_StartEntitiesDetectionV2Job_600065(path: JsonNode; query: JsonNode
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600069 = header.getOrDefault("X-Amz-Target")
   valid_600069 = validateParameter(valid_600069, JString, required = true, default = newJString(
-      "ComprehendMedical_20181030.StartEntitiesDetectionV2Job"))
+      "ComprehendMedical_20181030.ListEntitiesDetectionV2Jobs"))
   if valid_600069 != nil:
     section.add "X-Amz-Target", valid_600069
   var valid_600070 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1009,9 +1007,9 @@ proc validate_StartEntitiesDetectionV2Job_600065(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600076: Call_StartEntitiesDetectionV2Job_600064; path: JsonNode;
+proc call*(call_600076: Call_ListEntitiesDetectionV2Jobs_600064; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Starts an asynchronous medical entity detection job for a collection of documents. Use the <code>DescribeEntitiesDetectionV2Job</code> operation to track the status of a job.
+  ## Gets a list of medical entity detection jobs that you have submitted.
   ## 
   let valid = call_600076.validator(path, query, header, formData, body)
   let scheme = call_600076.pickScheme
@@ -1022,24 +1020,24 @@ proc call*(call_600076: Call_StartEntitiesDetectionV2Job_600064; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600076, url, valid)
 
-proc call*(call_600077: Call_StartEntitiesDetectionV2Job_600064; body: JsonNode): Recallable =
-  ## startEntitiesDetectionV2Job
-  ## Starts an asynchronous medical entity detection job for a collection of documents. Use the <code>DescribeEntitiesDetectionV2Job</code> operation to track the status of a job.
+proc call*(call_600077: Call_ListEntitiesDetectionV2Jobs_600064; body: JsonNode): Recallable =
+  ## listEntitiesDetectionV2Jobs
+  ## Gets a list of medical entity detection jobs that you have submitted.
   ##   body: JObject (required)
   var body_600078 = newJObject()
   if body != nil:
     body_600078 = body
   result = call_600077.call(nil, nil, nil, nil, body_600078)
 
-var startEntitiesDetectionV2Job* = Call_StartEntitiesDetectionV2Job_600064(
-    name: "startEntitiesDetectionV2Job", meth: HttpMethod.HttpPost,
-    host: "comprehendmedical.amazonaws.com", route: "/#X-Amz-Target=ComprehendMedical_20181030.StartEntitiesDetectionV2Job",
-    validator: validate_StartEntitiesDetectionV2Job_600065, base: "/",
-    url: url_StartEntitiesDetectionV2Job_600066,
+var listEntitiesDetectionV2Jobs* = Call_ListEntitiesDetectionV2Jobs_600064(
+    name: "listEntitiesDetectionV2Jobs", meth: HttpMethod.HttpPost,
+    host: "comprehendmedical.amazonaws.com", route: "/#X-Amz-Target=ComprehendMedical_20181030.ListEntitiesDetectionV2Jobs",
+    validator: validate_ListEntitiesDetectionV2Jobs_600065, base: "/",
+    url: url_ListEntitiesDetectionV2Jobs_600066,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartPHIDetectionJob_600079 = ref object of OpenApiRestCall_599368
-proc url_StartPHIDetectionJob_600081(protocol: Scheme; host: string; base: string;
+  Call_ListPHIDetectionJobs_600079 = ref object of OpenApiRestCall_599368
+proc url_ListPHIDetectionJobs_600081(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1050,9 +1048,9 @@ proc url_StartPHIDetectionJob_600081(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_StartPHIDetectionJob_600080(path: JsonNode; query: JsonNode;
+proc validate_ListPHIDetectionJobs_600080(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Starts an asynchronous job to detect protected health information (PHI). Use the <code>DescribePHIDetectionJob</code> operation to track the status of a job.
+  ## Gets a list of protected health information (PHI) detection jobs that you have submitted.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1084,7 +1082,7 @@ proc validate_StartPHIDetectionJob_600080(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600084 = header.getOrDefault("X-Amz-Target")
   valid_600084 = validateParameter(valid_600084, JString, required = true, default = newJString(
-      "ComprehendMedical_20181030.StartPHIDetectionJob"))
+      "ComprehendMedical_20181030.ListPHIDetectionJobs"))
   if valid_600084 != nil:
     section.add "X-Amz-Target", valid_600084
   var valid_600085 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1122,9 +1120,9 @@ proc validate_StartPHIDetectionJob_600080(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600091: Call_StartPHIDetectionJob_600079; path: JsonNode;
+proc call*(call_600091: Call_ListPHIDetectionJobs_600079; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Starts an asynchronous job to detect protected health information (PHI). Use the <code>DescribePHIDetectionJob</code> operation to track the status of a job.
+  ## Gets a list of protected health information (PHI) detection jobs that you have submitted.
   ## 
   let valid = call_600091.validator(path, query, header, formData, body)
   let scheme = call_600091.pickScheme
@@ -1135,24 +1133,24 @@ proc call*(call_600091: Call_StartPHIDetectionJob_600079; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600091, url, valid)
 
-proc call*(call_600092: Call_StartPHIDetectionJob_600079; body: JsonNode): Recallable =
-  ## startPHIDetectionJob
-  ## Starts an asynchronous job to detect protected health information (PHI). Use the <code>DescribePHIDetectionJob</code> operation to track the status of a job.
+proc call*(call_600092: Call_ListPHIDetectionJobs_600079; body: JsonNode): Recallable =
+  ## listPHIDetectionJobs
+  ## Gets a list of protected health information (PHI) detection jobs that you have submitted.
   ##   body: JObject (required)
   var body_600093 = newJObject()
   if body != nil:
     body_600093 = body
   result = call_600092.call(nil, nil, nil, nil, body_600093)
 
-var startPHIDetectionJob* = Call_StartPHIDetectionJob_600079(
-    name: "startPHIDetectionJob", meth: HttpMethod.HttpPost,
+var listPHIDetectionJobs* = Call_ListPHIDetectionJobs_600079(
+    name: "listPHIDetectionJobs", meth: HttpMethod.HttpPost,
     host: "comprehendmedical.amazonaws.com",
-    route: "/#X-Amz-Target=ComprehendMedical_20181030.StartPHIDetectionJob",
-    validator: validate_StartPHIDetectionJob_600080, base: "/",
-    url: url_StartPHIDetectionJob_600081, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=ComprehendMedical_20181030.ListPHIDetectionJobs",
+    validator: validate_ListPHIDetectionJobs_600080, base: "/",
+    url: url_ListPHIDetectionJobs_600081, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopEntitiesDetectionV2Job_600094 = ref object of OpenApiRestCall_599368
-proc url_StopEntitiesDetectionV2Job_600096(protocol: Scheme; host: string;
+  Call_StartEntitiesDetectionV2Job_600094 = ref object of OpenApiRestCall_599368
+proc url_StartEntitiesDetectionV2Job_600096(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1163,9 +1161,9 @@ proc url_StopEntitiesDetectionV2Job_600096(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_StopEntitiesDetectionV2Job_600095(path: JsonNode; query: JsonNode;
+proc validate_StartEntitiesDetectionV2Job_600095(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Stops a medical entities detection job in progress.
+  ## Starts an asynchronous medical entity detection job for a collection of documents. Use the <code>DescribeEntitiesDetectionV2Job</code> operation to track the status of a job.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1197,7 +1195,7 @@ proc validate_StopEntitiesDetectionV2Job_600095(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600099 = header.getOrDefault("X-Amz-Target")
   valid_600099 = validateParameter(valid_600099, JString, required = true, default = newJString(
-      "ComprehendMedical_20181030.StopEntitiesDetectionV2Job"))
+      "ComprehendMedical_20181030.StartEntitiesDetectionV2Job"))
   if valid_600099 != nil:
     section.add "X-Amz-Target", valid_600099
   var valid_600100 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1235,9 +1233,9 @@ proc validate_StopEntitiesDetectionV2Job_600095(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600106: Call_StopEntitiesDetectionV2Job_600094; path: JsonNode;
+proc call*(call_600106: Call_StartEntitiesDetectionV2Job_600094; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Stops a medical entities detection job in progress.
+  ## Starts an asynchronous medical entity detection job for a collection of documents. Use the <code>DescribeEntitiesDetectionV2Job</code> operation to track the status of a job.
   ## 
   let valid = call_600106.validator(path, query, header, formData, body)
   let scheme = call_600106.pickScheme
@@ -1248,25 +1246,25 @@ proc call*(call_600106: Call_StopEntitiesDetectionV2Job_600094; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600106, url, valid)
 
-proc call*(call_600107: Call_StopEntitiesDetectionV2Job_600094; body: JsonNode): Recallable =
-  ## stopEntitiesDetectionV2Job
-  ## Stops a medical entities detection job in progress.
+proc call*(call_600107: Call_StartEntitiesDetectionV2Job_600094; body: JsonNode): Recallable =
+  ## startEntitiesDetectionV2Job
+  ## Starts an asynchronous medical entity detection job for a collection of documents. Use the <code>DescribeEntitiesDetectionV2Job</code> operation to track the status of a job.
   ##   body: JObject (required)
   var body_600108 = newJObject()
   if body != nil:
     body_600108 = body
   result = call_600107.call(nil, nil, nil, nil, body_600108)
 
-var stopEntitiesDetectionV2Job* = Call_StopEntitiesDetectionV2Job_600094(
-    name: "stopEntitiesDetectionV2Job", meth: HttpMethod.HttpPost,
-    host: "comprehendmedical.amazonaws.com", route: "/#X-Amz-Target=ComprehendMedical_20181030.StopEntitiesDetectionV2Job",
-    validator: validate_StopEntitiesDetectionV2Job_600095, base: "/",
-    url: url_StopEntitiesDetectionV2Job_600096,
+var startEntitiesDetectionV2Job* = Call_StartEntitiesDetectionV2Job_600094(
+    name: "startEntitiesDetectionV2Job", meth: HttpMethod.HttpPost,
+    host: "comprehendmedical.amazonaws.com", route: "/#X-Amz-Target=ComprehendMedical_20181030.StartEntitiesDetectionV2Job",
+    validator: validate_StartEntitiesDetectionV2Job_600095, base: "/",
+    url: url_StartEntitiesDetectionV2Job_600096,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopPHIDetectionJob_600109 = ref object of OpenApiRestCall_599368
-proc url_StopPHIDetectionJob_600111(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StartPHIDetectionJob_600109 = ref object of OpenApiRestCall_599368
+proc url_StartPHIDetectionJob_600111(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1276,10 +1274,9 @@ proc url_StopPHIDetectionJob_600111(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_StopPHIDetectionJob_600110(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode): JsonNode =
-  ## Stops a protected health information (PHI) detection job in progress.
+proc validate_StartPHIDetectionJob_600110(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Starts an asynchronous job to detect protected health information (PHI). Use the <code>DescribePHIDetectionJob</code> operation to track the status of a job.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1311,7 +1308,7 @@ proc validate_StopPHIDetectionJob_600110(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_600114 = header.getOrDefault("X-Amz-Target")
   valid_600114 = validateParameter(valid_600114, JString, required = true, default = newJString(
-      "ComprehendMedical_20181030.StopPHIDetectionJob"))
+      "ComprehendMedical_20181030.StartPHIDetectionJob"))
   if valid_600114 != nil:
     section.add "X-Amz-Target", valid_600114
   var valid_600115 = header.getOrDefault("X-Amz-Content-Sha256")
@@ -1349,9 +1346,9 @@ proc validate_StopPHIDetectionJob_600110(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600121: Call_StopPHIDetectionJob_600109; path: JsonNode;
+proc call*(call_600121: Call_StartPHIDetectionJob_600109; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Stops a protected health information (PHI) detection job in progress.
+  ## Starts an asynchronous job to detect protected health information (PHI). Use the <code>DescribePHIDetectionJob</code> operation to track the status of a job.
   ## 
   let valid = call_600121.validator(path, query, header, formData, body)
   let scheme = call_600121.pickScheme
@@ -1362,21 +1359,248 @@ proc call*(call_600121: Call_StopPHIDetectionJob_600109; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_600121, url, valid)
 
-proc call*(call_600122: Call_StopPHIDetectionJob_600109; body: JsonNode): Recallable =
-  ## stopPHIDetectionJob
-  ## Stops a protected health information (PHI) detection job in progress.
+proc call*(call_600122: Call_StartPHIDetectionJob_600109; body: JsonNode): Recallable =
+  ## startPHIDetectionJob
+  ## Starts an asynchronous job to detect protected health information (PHI). Use the <code>DescribePHIDetectionJob</code> operation to track the status of a job.
   ##   body: JObject (required)
   var body_600123 = newJObject()
   if body != nil:
     body_600123 = body
   result = call_600122.call(nil, nil, nil, nil, body_600123)
 
-var stopPHIDetectionJob* = Call_StopPHIDetectionJob_600109(
+var startPHIDetectionJob* = Call_StartPHIDetectionJob_600109(
+    name: "startPHIDetectionJob", meth: HttpMethod.HttpPost,
+    host: "comprehendmedical.amazonaws.com",
+    route: "/#X-Amz-Target=ComprehendMedical_20181030.StartPHIDetectionJob",
+    validator: validate_StartPHIDetectionJob_600110, base: "/",
+    url: url_StartPHIDetectionJob_600111, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_StopEntitiesDetectionV2Job_600124 = ref object of OpenApiRestCall_599368
+proc url_StopEntitiesDetectionV2Job_600126(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StopEntitiesDetectionV2Job_600125(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Stops a medical entities detection job in progress.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600127 = header.getOrDefault("X-Amz-Date")
+  valid_600127 = validateParameter(valid_600127, JString, required = false,
+                                 default = nil)
+  if valid_600127 != nil:
+    section.add "X-Amz-Date", valid_600127
+  var valid_600128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600128 = validateParameter(valid_600128, JString, required = false,
+                                 default = nil)
+  if valid_600128 != nil:
+    section.add "X-Amz-Security-Token", valid_600128
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600129 = header.getOrDefault("X-Amz-Target")
+  valid_600129 = validateParameter(valid_600129, JString, required = true, default = newJString(
+      "ComprehendMedical_20181030.StopEntitiesDetectionV2Job"))
+  if valid_600129 != nil:
+    section.add "X-Amz-Target", valid_600129
+  var valid_600130 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600130 = validateParameter(valid_600130, JString, required = false,
+                                 default = nil)
+  if valid_600130 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600130
+  var valid_600131 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600131 = validateParameter(valid_600131, JString, required = false,
+                                 default = nil)
+  if valid_600131 != nil:
+    section.add "X-Amz-Algorithm", valid_600131
+  var valid_600132 = header.getOrDefault("X-Amz-Signature")
+  valid_600132 = validateParameter(valid_600132, JString, required = false,
+                                 default = nil)
+  if valid_600132 != nil:
+    section.add "X-Amz-Signature", valid_600132
+  var valid_600133 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600133 = validateParameter(valid_600133, JString, required = false,
+                                 default = nil)
+  if valid_600133 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600133
+  var valid_600134 = header.getOrDefault("X-Amz-Credential")
+  valid_600134 = validateParameter(valid_600134, JString, required = false,
+                                 default = nil)
+  if valid_600134 != nil:
+    section.add "X-Amz-Credential", valid_600134
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600136: Call_StopEntitiesDetectionV2Job_600124; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Stops a medical entities detection job in progress.
+  ## 
+  let valid = call_600136.validator(path, query, header, formData, body)
+  let scheme = call_600136.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600136.url(scheme.get, call_600136.host, call_600136.base,
+                         call_600136.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600136, url, valid)
+
+proc call*(call_600137: Call_StopEntitiesDetectionV2Job_600124; body: JsonNode): Recallable =
+  ## stopEntitiesDetectionV2Job
+  ## Stops a medical entities detection job in progress.
+  ##   body: JObject (required)
+  var body_600138 = newJObject()
+  if body != nil:
+    body_600138 = body
+  result = call_600137.call(nil, nil, nil, nil, body_600138)
+
+var stopEntitiesDetectionV2Job* = Call_StopEntitiesDetectionV2Job_600124(
+    name: "stopEntitiesDetectionV2Job", meth: HttpMethod.HttpPost,
+    host: "comprehendmedical.amazonaws.com", route: "/#X-Amz-Target=ComprehendMedical_20181030.StopEntitiesDetectionV2Job",
+    validator: validate_StopEntitiesDetectionV2Job_600125, base: "/",
+    url: url_StopEntitiesDetectionV2Job_600126,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_StopPHIDetectionJob_600139 = ref object of OpenApiRestCall_599368
+proc url_StopPHIDetectionJob_600141(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StopPHIDetectionJob_600140(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## Stops a protected health information (PHI) detection job in progress.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Credential: JString
+  section = newJObject()
+  var valid_600142 = header.getOrDefault("X-Amz-Date")
+  valid_600142 = validateParameter(valid_600142, JString, required = false,
+                                 default = nil)
+  if valid_600142 != nil:
+    section.add "X-Amz-Date", valid_600142
+  var valid_600143 = header.getOrDefault("X-Amz-Security-Token")
+  valid_600143 = validateParameter(valid_600143, JString, required = false,
+                                 default = nil)
+  if valid_600143 != nil:
+    section.add "X-Amz-Security-Token", valid_600143
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_600144 = header.getOrDefault("X-Amz-Target")
+  valid_600144 = validateParameter(valid_600144, JString, required = true, default = newJString(
+      "ComprehendMedical_20181030.StopPHIDetectionJob"))
+  if valid_600144 != nil:
+    section.add "X-Amz-Target", valid_600144
+  var valid_600145 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_600145 = validateParameter(valid_600145, JString, required = false,
+                                 default = nil)
+  if valid_600145 != nil:
+    section.add "X-Amz-Content-Sha256", valid_600145
+  var valid_600146 = header.getOrDefault("X-Amz-Algorithm")
+  valid_600146 = validateParameter(valid_600146, JString, required = false,
+                                 default = nil)
+  if valid_600146 != nil:
+    section.add "X-Amz-Algorithm", valid_600146
+  var valid_600147 = header.getOrDefault("X-Amz-Signature")
+  valid_600147 = validateParameter(valid_600147, JString, required = false,
+                                 default = nil)
+  if valid_600147 != nil:
+    section.add "X-Amz-Signature", valid_600147
+  var valid_600148 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_600148 = validateParameter(valid_600148, JString, required = false,
+                                 default = nil)
+  if valid_600148 != nil:
+    section.add "X-Amz-SignedHeaders", valid_600148
+  var valid_600149 = header.getOrDefault("X-Amz-Credential")
+  valid_600149 = validateParameter(valid_600149, JString, required = false,
+                                 default = nil)
+  if valid_600149 != nil:
+    section.add "X-Amz-Credential", valid_600149
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_600151: Call_StopPHIDetectionJob_600139; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Stops a protected health information (PHI) detection job in progress.
+  ## 
+  let valid = call_600151.validator(path, query, header, formData, body)
+  let scheme = call_600151.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_600151.url(scheme.get, call_600151.host, call_600151.base,
+                         call_600151.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_600151, url, valid)
+
+proc call*(call_600152: Call_StopPHIDetectionJob_600139; body: JsonNode): Recallable =
+  ## stopPHIDetectionJob
+  ## Stops a protected health information (PHI) detection job in progress.
+  ##   body: JObject (required)
+  var body_600153 = newJObject()
+  if body != nil:
+    body_600153 = body
+  result = call_600152.call(nil, nil, nil, nil, body_600153)
+
+var stopPHIDetectionJob* = Call_StopPHIDetectionJob_600139(
     name: "stopPHIDetectionJob", meth: HttpMethod.HttpPost,
     host: "comprehendmedical.amazonaws.com",
     route: "/#X-Amz-Target=ComprehendMedical_20181030.StopPHIDetectionJob",
-    validator: validate_StopPHIDetectionJob_600110, base: "/",
-    url: url_StopPHIDetectionJob_600111, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StopPHIDetectionJob_600140, base: "/",
+    url: url_StopPHIDetectionJob_600141, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
