@@ -559,7 +559,7 @@ proc url_DeleteMembers_599993(protocol: Scheme; host: string; base: string;
 
 proc validate_DeleteMembers_599992(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the Morocco graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
+  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -623,7 +623,7 @@ proc validate_DeleteMembers_599992(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_600002: Call_DeleteMembers_599991; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the Morocco graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
+  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
   ## 
   let valid = call_600002.validator(path, query, header, formData, body)
   let scheme = call_600002.pickScheme
@@ -636,7 +636,7 @@ proc call*(call_600002: Call_DeleteMembers_599991; path: JsonNode; query: JsonNo
 
 proc call*(call_600003: Call_DeleteMembers_599991; body: JsonNode): Recallable =
   ## deleteMembers
-  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the Morocco graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
+  ## <p>Amazon Detective is currently in preview.</p> <p>Deletes one or more member accounts from the master account behavior graph. This operation can only be called by a Detective master account. That account cannot use <code>DeleteMembers</code> to delete their own account from the behavior graph. To disable a behavior graph, the master account uses the <code>DeleteGraph</code> API method.</p>
   ##   body: JObject (required)
   var body_600004 = newJObject()
   if body != nil:
